@@ -1,14 +1,11 @@
 {
-  "name": "rc-footer",
-  "version": "0.6.1",
-  "description": "Pretty Footer react component used in used in ant.design",
+  "name": "rc-picker",
+  "version": "0.0.0",
+  "description": "React date & time picker",
   "keywords": [
     "react",
     "react-component",
-    "react-footer",
-    "footer",
-    "antd",
-    "ant-design"
+    "react-picker"
   ],
   "main": "./lib/index",
   "module": "./es/index",
@@ -19,13 +16,13 @@
     "lib",
     "dist"
   ],
-  "homepage": "https://react-component.github.io/footer",
+  "homepage": "https://react-component.github.io/picker",
   "repository": {
     "type": "git",
-    "url": "git@github.com:react-component/footer.git"
+    "url": "git@github.com:react-component/picker.git"
   },
   "bugs": {
-    "url": "http://github.com/react-component/footer/issues"
+    "url": "http://github.com/react-component/picker/issues"
   },
   "license": "MIT",
   "scripts": {
@@ -36,9 +33,9 @@
     "prepublishOnly": "npm run compile && np --yolo --no-publish && npm run gh-pages",
     "lint": "eslint src/ --ext .ts,.tsx,.jsx,.js,.md",
     "prettier": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "pretty-quick": "pretty-quick",
     "test": "father test",
-    "coverage": "father test --coverage"
+    "coverage": "father test --coverage",
+    "now-build": "npm run build"
   },
   "dependencies": {
     "classnames": "^2.2.1"
@@ -55,11 +52,9 @@
     "enzyme-to-json": "^3.4.0",
     "eslint": "^6.6.0",
     "father": "^2.13.4",
-    "husky": "^3.0.9",
     "less": "^3.10.3",
     "np": "^5.1.0",
     "prettier": "^1.18.2",
-    "pretty-quick": "^2.0.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0"
@@ -67,11 +62,6 @@
   "peerDependencies": {
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
   },
   "cnpm": {
     "mode": "npm"
