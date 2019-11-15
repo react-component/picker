@@ -1,0 +1,546 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rc-footer render Footer 1`] = `
+<footer
+  class="rc-footer rc-footer-dark"
+>
+  <section
+    class="rc-footer-container"
+  >
+    <section
+      class="rc-footer-columns"
+    >
+      <div
+        class="rc-footer-column"
+      >
+        <h2>
+          相关资源
+        </h2>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://pro.ant.design/"
+            target="_blank"
+          >
+            Ant Design Pro
+          </a>
+        </div>
+        <div
+          class="rc-footer-item my-class-name"
+          style="color: blue;"
+        >
+          <a
+            href="https://mobile.ant.design/"
+            target="_blank"
+          >
+            Ant Design Mobile
+          </a>
+        </div>
+        <div
+          class="rc-footer-item"
+        >
+          <span
+            href="https://kitchen.alipay.com/"
+          >
+            Kitchen
+          </span>
+          <span
+            class="rc-footer-item-separator"
+          >
+            -
+          </span>
+          <span
+            class="rc-footer-item-description"
+          >
+            Sketch 工具集
+          </span>
+        </div>
+      </div>
+      <div
+        class="rc-footer-column my-class-name"
+        style="color: red;"
+      >
+        <h2>
+          社区
+        </h2>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://pro.ant.design/"
+            target="_blank"
+          >
+            Ant Design Pro
+          </a>
+        </div>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://mobile.ant.design/"
+            target="_blank"
+          >
+            Ant Design Mobile
+          </a>
+        </div>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://kitchen.alipay.com/"
+          >
+            Kitchen
+          </a>
+          <span
+            class="rc-footer-item-separator"
+          >
+            -
+          </span>
+          <span
+            class="rc-footer-item-description"
+          >
+            Sketch 工具集
+          </span>
+        </div>
+      </div>
+      <div
+        class="rc-footer-column"
+      >
+        <h2>
+          帮助
+        </h2>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://pro.ant.design/"
+            target="_blank"
+          >
+            Ant Design Pro
+          </a>
+        </div>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://mobile.ant.design/"
+            target="_blank"
+          >
+            Ant Design Mobile
+          </a>
+        </div>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://kitchen.alipay.com/"
+          >
+            Kitchen
+          </a>
+          <span
+            class="rc-footer-item-separator"
+          >
+            -
+          </span>
+          <span
+            class="rc-footer-item-description"
+          >
+            Sketch 工具集
+          </span>
+        </div>
+      </div>
+      <div
+        class="rc-footer-column"
+      >
+        <h2>
+          <span
+            class="rc-footer-column-icon"
+          >
+            <img
+              alt="more products"
+              src="https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg"
+            />
+          </span>
+          更多产品
+        </h2>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://yuque.com"
+            target="_blank"
+          >
+            <span
+              class="rc-footer-item-icon"
+            >
+              <img
+                alt="yuque"
+                src="https://gw.alipayobjects.com/zos/rmsportal/XuVpGqBFxXplzvLjJBZB.svg"
+              />
+            </span>
+            语雀
+          </a>
+          <span
+            class="rc-footer-item-separator"
+          >
+            -
+          </span>
+          <span
+            class="rc-footer-item-description"
+          >
+            知识创作与分享工具
+          </span>
+        </div>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://yunfengdie.com"
+            target="_blank"
+          >
+            <span
+              class="rc-footer-item-icon"
+            >
+              <img
+                alt="yuque"
+                src="https://gw.alipayobjects.com/zos/rmsportal/uHocHZfNWZOdsRUonZNr.png"
+              />
+            </span>
+            云凤蝶
+          </a>
+          <span
+            class="rc-footer-item-separator"
+          >
+            -
+          </span>
+          <span
+            class="rc-footer-item-description"
+          >
+            中台建站平台
+          </span>
+        </div>
+      </div>
+    </section>
+  </section>
+  <section
+    class="rc-footer-bottom"
+  >
+    <div
+      class="rc-footer-bottom-container"
+    >
+      Made with ❤️ by AFX
+    </div>
+  </section>
+</footer>
+`;
+
+exports[`rc-footer render Footer with columnLayout and backgroundColor 1`] = `
+<footer
+  class="rc-footer rc-footer-dark"
+  style="color: red; background-color: transparent;"
+>
+  <section
+    class="rc-footer-container"
+  >
+    <section
+      class="rc-footer-columns"
+      style="justify-content: space-between;"
+    >
+      <div
+        class="rc-footer-column"
+      >
+        <h2>
+          title
+        </h2>
+      </div>
+      <div
+        class="rc-footer-column"
+      >
+        <h2>
+          title
+        </h2>
+      </div>
+    </section>
+  </section>
+</footer>
+`;
+
+exports[`rc-footer render Footer with maxColumnsPerRow 1`] = `
+<footer
+  class="rc-footer rc-footer-dark"
+>
+  <section
+    class="rc-footer-container"
+  >
+    <section
+      class="rc-footer-columns"
+      style="flex-wrap: wrap;"
+    >
+      <div
+        class="rc-footer-column"
+        style="flex: 0 0 33.43333333333334%;"
+      >
+        <h2>
+          相关资源
+        </h2>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://pro.ant.design/"
+            target="_blank"
+          >
+            Ant Design Pro
+          </a>
+        </div>
+        <div
+          class="rc-footer-item my-class-name"
+          style="color: blue;"
+        >
+          <a
+            href="https://mobile.ant.design/"
+            target="_blank"
+          >
+            Ant Design Mobile
+          </a>
+        </div>
+        <div
+          class="rc-footer-item"
+        >
+          <span
+            href="https://kitchen.alipay.com/"
+          >
+            Kitchen
+          </span>
+          <span
+            class="rc-footer-item-separator"
+          >
+            -
+          </span>
+          <span
+            class="rc-footer-item-description"
+          >
+            Sketch 工具集
+          </span>
+        </div>
+      </div>
+      <div
+        class="rc-footer-column my-class-name"
+        style="color: red; flex: 0 0 33.43333333333334%;"
+      >
+        <h2>
+          社区
+        </h2>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://pro.ant.design/"
+            target="_blank"
+          >
+            Ant Design Pro
+          </a>
+        </div>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://mobile.ant.design/"
+            target="_blank"
+          >
+            Ant Design Mobile
+          </a>
+        </div>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://kitchen.alipay.com/"
+          >
+            Kitchen
+          </a>
+          <span
+            class="rc-footer-item-separator"
+          >
+            -
+          </span>
+          <span
+            class="rc-footer-item-description"
+          >
+            Sketch 工具集
+          </span>
+        </div>
+      </div>
+      <div
+        class="rc-footer-column"
+        style="flex: 0 0 33.43333333333334%;"
+      >
+        <h2>
+          帮助
+        </h2>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://pro.ant.design/"
+            target="_blank"
+          >
+            Ant Design Pro
+          </a>
+        </div>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://mobile.ant.design/"
+            target="_blank"
+          >
+            Ant Design Mobile
+          </a>
+        </div>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://kitchen.alipay.com/"
+          >
+            Kitchen
+          </a>
+          <span
+            class="rc-footer-item-separator"
+          >
+            -
+          </span>
+          <span
+            class="rc-footer-item-description"
+          >
+            Sketch 工具集
+          </span>
+        </div>
+      </div>
+      <div
+        class="rc-footer-column"
+        style="flex: 0 0 33.43333333333334%;"
+      >
+        <h2>
+          <span
+            class="rc-footer-column-icon"
+          >
+            <img
+              alt="more products"
+              src="https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg"
+            />
+          </span>
+          更多产品
+        </h2>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://yuque.com"
+            target="_blank"
+          >
+            <span
+              class="rc-footer-item-icon"
+            >
+              <img
+                alt="yuque"
+                src="https://gw.alipayobjects.com/zos/rmsportal/XuVpGqBFxXplzvLjJBZB.svg"
+              />
+            </span>
+            语雀
+          </a>
+          <span
+            class="rc-footer-item-separator"
+          >
+            -
+          </span>
+          <span
+            class="rc-footer-item-description"
+          >
+            知识创作与分享工具
+          </span>
+        </div>
+        <div
+          class="rc-footer-item"
+        >
+          <a
+            href="https://yunfengdie.com"
+            target="_blank"
+          >
+            <span
+              class="rc-footer-item-icon"
+            >
+              <img
+                alt="yuque"
+                src="https://gw.alipayobjects.com/zos/rmsportal/uHocHZfNWZOdsRUonZNr.png"
+              />
+            </span>
+            云凤蝶
+          </a>
+          <span
+            class="rc-footer-item-separator"
+          >
+            -
+          </span>
+          <span
+            class="rc-footer-item-description"
+          >
+            中台建站平台
+          </span>
+        </div>
+      </div>
+    </section>
+  </section>
+  <section
+    class="rc-footer-bottom"
+  >
+    <div
+      class="rc-footer-bottom-container"
+    >
+      Made with ❤️ by AFX
+    </div>
+  </section>
+</footer>
+`;
+
+exports[`rc-footer render empty Footer 1`] = `
+<footer
+  class="rc-footer rc-footer-dark"
+>
+  <section
+    class="rc-footer-container"
+  />
+</footer>
+`;
+
+exports[`rc-footer render light theme Footer 1`] = `
+<footer
+  class="rc-footer rc-footer-light"
+  style="color: red;"
+>
+  <section
+    class="rc-footer-container"
+  >
+    <section
+      class="rc-footer-columns"
+    >
+      <div
+        class="rc-footer-column"
+      >
+        <h2>
+          title
+        </h2>
+      </div>
+      <div
+        class="rc-footer-column"
+      >
+        <h2>
+          title
+        </h2>
+      </div>
+    </section>
+  </section>
+</footer>
+`;
