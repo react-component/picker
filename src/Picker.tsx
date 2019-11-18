@@ -37,6 +37,12 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
+  React.useEffect(() => {
+    if (value) {
+      setViewDate(value);
+    }
+  }, [value]);
+
   const pickerProps = {
     ...props,
     prefixCls,

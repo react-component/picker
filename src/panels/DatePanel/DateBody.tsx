@@ -57,7 +57,7 @@ function DateBody<DateType>({
       <td
         key={index}
         className={classNames(datePrefixCls, {
-          [`${datePrefixCls}-current`]: currentMonth,
+          [`${datePrefixCls}-current-month`]: currentMonth,
           [`${datePrefixCls}-today`]: generateConfig.isSameDate(today, date),
           [`${datePrefixCls}-now`]: generateConfig.isSameDate(value, date),
         })}
