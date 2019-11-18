@@ -4,8 +4,11 @@ export interface GenerateConfig<DateType> {
   getLastDateOfMonth: (value: DateType) => DateType;
   getWeekDay: (value: DateType) => number;
   getDate: (value: DateType) => number;
+  getMonth: (value: DateType) => number;
+  getNow: () => DateType;
 
   // Set
+  addYear: (value: DateType, diff: number) => DateType;
   addMonth: (value: DateType, diff: number) => DateType;
   addDate: (value: DateType, diff: number) => DateType;
 
@@ -14,8 +17,16 @@ export interface GenerateConfig<DateType> {
 
   locale: {
     getWeekFirstDay: (locale: string) => number;
-    getWeekDays: (locale: string) => string[];
+
+    format: (locale: string, date: DateType, format: string) => string;
+
+    /** A proxy for getting locale with moment or other locale library */
+    getShortWeekDays?: (locale: string) => string[];
+    /** A proxy for getting locale with moment or other locale library */
+    getShortMonths?: (locale: string) => string[];
   };
 }
 
 function generate() {}
+
+export default generate;

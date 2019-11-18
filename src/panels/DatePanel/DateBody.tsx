@@ -2,13 +2,17 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { GenerateConfig } from '../../generate';
 import { WEEK_DAY_COUNT, getVisibleDates } from '../../utils/dateUtil';
+import { Locale } from '../../interface';
 
 export interface DateBodyProps<DateType> {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
   value: DateType;
-  locale: string;
+  viewDate: DateType;
+  locale: Locale;
   rowCount: number;
+
+  onSelect: (value: DateType) => void;
 }
 
 function DateBody<DateType>({
@@ -16,14 +20,21 @@ function DateBody<DateType>({
   generateConfig,
   locale,
   rowCount,
+  viewDate,
   value,
+  onSelect,
 }: DateBodyProps<DateType>) {
   const datePrefixCls = `${prefixCls}-date`;
-  const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale);
+  const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale.locale);
+  const today = generateConfig.getNow();
 
   // ============================== Header ==============================
   const headerCells: React.ReactNode[] = [];
-  const weekDaysLocale: string[] = generateConfig.locale.getWeekDays(locale);
+  const weekDaysLocale: string[] =
+    locale.shortWeekDays ||
+    (generateConfig.locale.getShortWeekDays
+      ? generateConfig.locale.getShortWeekDays(locale.locale)
+      : []);
 
   for (let i = 0; i < WEEK_DAY_COUNT; i += 1) {
     headerCells.push(
@@ -32,7 +43,12 @@ function DateBody<DateType>({
   }
 
   // =============================== Date ===============================
-  const dateList = getVisibleDates(locale, generateConfig, rowCount, value);
+  const dateList = getVisibleDates(
+    locale.locale,
+    generateConfig,
+    rowCount,
+    viewDate,
+  );
 
   const rows: React.ReactNode[] = [];
   let row: React.ReactNode[] = [];
@@ -42,20 +58,30 @@ function DateBody<DateType>({
         key={index}
         className={classNames(datePrefixCls, {
           [`${datePrefixCls}-current`]: currentMonth,
+          [`${datePrefixCls}-today`]: generateConfig.isSameDate(today, date),
+          [`${datePrefixCls}-now`]: generateConfig.isSameDate(value, date),
         })}
       >
-        {generateConfig.getDate(date)}
+        <button
+          type="button"
+          className={`${datePrefixCls}-cell`}
+          onClick={() => {
+            onSelect(date);
+          }}
+        >
+          {generateConfig.getDate(date)}
+        </button>
       </td>,
     );
 
     if (row.length === WEEK_DAY_COUNT) {
-      rows.push(<tr>{row}</tr>);
+      rows.push(<tr key={rows.length}>{row}</tr>);
       row = [];
     }
   });
 
   return (
-    <table>
+    <table className={`${prefixCls}-content`}>
       <thead>
         <tr>{headerCells}</tr>
       </thead>

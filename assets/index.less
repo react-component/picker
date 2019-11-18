@@ -1,11 +1,56 @@
 @prefix-cls: rc-picker;
 
 .@{prefix-cls} {
-  &-date {
-    color: #aaa;
+  // ====================== Date Panel ======================
+  &-date-panel {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
 
-    &-current {
-      color: #333;
+    // Header
+    &-header {
+      display: flex;
+
+      > * {
+        flex: none;
+      }
+
+      &-month-year {
+        flex: auto;
+        text-align: center;
+      }
+    }
+
+    // Content
+    &-content {
+      text-align: center;
+    }
+
+    &-date {
+      color: #aaa;
+
+      &-current {
+        color: #333;
+      }
+
+      &-cell {
+        font-size: 12px;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        display: block;
+        box-sizing: border-box;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+      }
+
+      &-today > &-cell {
+        border: 1px solid blue;
+      }
+      &-now > &-cell {
+        background: green;
+      }
     }
   }
 }

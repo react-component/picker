@@ -2,6 +2,8 @@ import React from 'react';
 import moment, { Moment } from 'moment';
 import DatePanel from '../src/panels/DatePanel';
 import { GenerateConfig } from '../src/generate';
+import zhCN from '../src/locale/zh_CN';
+import enUS from '../src/locale/en_US';
 import '../assets/index.less';
 
 // const defaultValue = moment('2019-09-03');
@@ -21,6 +23,12 @@ const generateConfig: GenerateConfig<Moment> = {
       .subtract(1, 'day');
     return clone;
   },
+  getNow: () => moment(),
+  addYear: (date, diff) => {
+    const clone = date.clone();
+    clone.add(diff, 'year');
+    return clone;
+  },
   addMonth: (date, diff) => {
     const clone = date.clone();
     clone.add(diff, 'month');
@@ -32,6 +40,7 @@ const generateConfig: GenerateConfig<Moment> = {
     return clone;
   },
   getWeekDay: date => date.weekday(),
+  getMonth: date => date.month(),
   getDate: date => date.date(),
   isSameDate: (date1, date2) => date1.isSame(date2, 'day'),
 
@@ -40,30 +49,37 @@ const generateConfig: GenerateConfig<Moment> = {
       const date = moment().locale(locale);
       return date.localeData().firstDayOfWeek();
     },
-    getWeekDays: locale => {
+    getShortWeekDays: locale => {
       const date = moment().locale(locale);
       return date.localeData().weekdaysMin();
+    },
+    getShortMonths: locale => {
+      const date = moment().locale(locale);
+      return date.localeData().monthsShort();
+    },
+    format: (locale, date, format) => {
+      const clone = date.clone();
+      clone.locale(locale);
+      return clone.format(format);
     },
   },
 };
 
-export default () => {
-  return (
-    <div>
-      {defaultValue.toString()}
+export default () => (
+  <div>
+    {defaultValue.toString()}
 
-      <DatePanel<Moment>
-        prefixCls="rc-picker"
-        generateConfig={generateConfig}
-        value={defaultValue}
-        locale="zh-cn"
-      />
-      <DatePanel<Moment>
-        prefixCls="rc-picker"
-        generateConfig={generateConfig}
-        value={defaultValue}
-        locale="en-us"
-      />
-    </div>
-  );
-};
+    <DatePanel<Moment>
+      prefixCls="rc-picker"
+      generateConfig={generateConfig}
+      value={defaultValue}
+      locale={zhCN}
+    />
+    <DatePanel<Moment>
+      prefixCls="rc-picker"
+      generateConfig={generateConfig}
+      value={defaultValue}
+      locale={enUS}
+    />
+  </div>
+);
