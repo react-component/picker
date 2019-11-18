@@ -65,21 +65,26 @@ const generateConfig: GenerateConfig<Moment> = {
   },
 };
 
-export default () => (
-  <div>
-    {defaultValue.toString()}
+export default () => {
+  const [value, setValue] = React.useState(defaultValue);
+  return (
+    <div>
+      {defaultValue.toString()}
 
-    <DatePanel<Moment>
-      prefixCls="rc-picker"
-      generateConfig={generateConfig}
-      value={defaultValue}
-      locale={zhCN}
-    />
-    <DatePanel<Moment>
-      prefixCls="rc-picker"
-      generateConfig={generateConfig}
-      value={defaultValue}
-      locale={enUS}
-    />
-  </div>
-);
+      <DatePanel<Moment>
+        prefixCls="rc-picker"
+        generateConfig={generateConfig}
+        value={value}
+        locale={zhCN}
+        onSelect={setValue}
+      />
+      <DatePanel<Moment>
+        prefixCls="rc-picker"
+        generateConfig={generateConfig}
+        value={value}
+        locale={enUS}
+        onSelect={setValue}
+      />
+    </div>
+  );
+};
