@@ -11,6 +11,7 @@ export interface GenerateConfig<DateType> {
   addYear: (value: DateType, diff: number) => DateType;
   addMonth: (value: DateType, diff: number) => DateType;
   addDate: (value: DateType, diff: number) => DateType;
+  setMonth: (value: DateType, month: number) => DateType;
 
   // Calculate
   isSameDate: (date1: DateType, date2: DateType) => boolean;

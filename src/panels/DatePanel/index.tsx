@@ -1,23 +1,11 @@
 import * as React from 'react';
-import { GenerateConfig } from '../../generate';
 import DateBody from './DateBody';
 import DateHeader from './DateHeader';
-import { Locale } from '../../interface';
+import { PanelSharedProps } from '../../interface';
 
 const DATE_ROW_COUNT = 6;
 
-export interface DatePanelProps<DateType> {
-  prefixCls: string;
-  generateConfig: GenerateConfig<DateType>;
-  value: DateType;
-  viewDate: DateType;
-  /** [Legacy] Set default display picker view date */
-  defaultPickerValue?: DateType;
-  locale: Locale;
-
-  onSelect?: (value: DateType) => void;
-  onViewDateChange: (value: DateType) => void;
-}
+export type DatePanelProps<DateType> = PanelSharedProps<DateType>;
 
 function DatePanel<DateType>(props: DatePanelProps<DateType>) {
   const {
@@ -27,10 +15,9 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
     viewDate,
     onSelect,
     onViewDateChange,
+    onPanelChange,
   } = props;
   const panelPrefixCls = `${prefixCls}-date-panel`;
-
-  const currentDate = value;
 
   const onInternalSelect = (newValue: DateType) => {
     if (onSelect) {
@@ -51,7 +38,7 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
       <DateHeader
         {...props}
         prefixCls={panelPrefixCls}
-        value={currentDate}
+        value={value}
         viewDate={viewDate}
         // View Operation
         onPrevYear={() => {
@@ -66,11 +53,17 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
         onNextMonth={() => {
           onMonthChange(1);
         }}
+        onMonthClick={() => {
+          onPanelChange('month');
+        }}
+        onYearClick={() => {
+          onPanelChange('year');
+        }}
       />
       <DateBody
         {...props}
         prefixCls={panelPrefixCls}
-        value={currentDate}
+        value={value}
         viewDate={viewDate}
         rowCount={DATE_ROW_COUNT}
         onSelect={onInternalSelect}

@@ -1,3 +1,5 @@
+import { GenerateConfig } from './generate';
+
 export interface Locale {
   locale: string;
 
@@ -35,4 +37,27 @@ export interface Locale {
 
   shortWeekDays?: string[];
   shortMonths?: string[];
+}
+
+export type PanelMode =
+  | 'time'
+  | 'datetime'
+  | 'date'
+  | 'week'
+  | 'month'
+  | 'year'
+  | 'decade';
+
+export interface PanelSharedProps<DateType> {
+  prefixCls: string;
+  generateConfig: GenerateConfig<DateType>;
+  value: DateType;
+  viewDate: DateType;
+  /** [Legacy] Set default display picker view date */
+  defaultPickerValue?: DateType;
+  locale: Locale;
+
+  onSelect?: (value: DateType) => void;
+  onViewDateChange: (value: DateType) => void;
+  onPanelChange: (mode: PanelMode) => void;
 }

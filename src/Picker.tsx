@@ -1,7 +1,8 @@
 import * as React from 'react';
 import DatePanel from './panels/DatePanel';
+import MonthPanel from './panels/MonthPanel';
 import { GenerateConfig } from './generate';
-import { Locale } from './interface';
+import { Locale, PanelMode } from './interface';
 
 export interface PickerProps<DateType> {
   prefixCls?: string;
@@ -12,7 +13,7 @@ export interface PickerProps<DateType> {
   locale: Locale;
   onSelect?: (value: DateType) => void;
 
-  mode?: 'time' | 'date' | 'month' | 'year' | 'decade';
+  mode?: PanelMode;
 }
 
 function Picker<DateType>(props: PickerProps<DateType>) {
@@ -21,19 +22,44 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     generateConfig,
     value,
     defaultPickerValue,
+    onSelect,
   } = props;
+
   const [viewDate, setViewDate] = React.useState(
     defaultPickerValue || value || generateConfig.getNow(),
   );
 
-  return (
-    <DatePanel
-      {...props}
-      prefixCls={prefixCls}
-      viewDate={viewDate}
-      onViewDateChange={setViewDate}
-    />
-  );
+  const [mode, setMode] = React.useState<PanelMode>('date');
+
+  const triggerSelect = (date: DateType) => {
+    if (onSelect) {
+      onSelect(date);
+    }
+  };
+
+  const pickerProps = {
+    ...props,
+    prefixCls,
+    viewDate,
+    onViewDateChange: setViewDate,
+    onPanelChange: setMode,
+  };
+
+  switch (mode) {
+    case 'month':
+      return (
+        <MonthPanel
+          {...pickerProps}
+          onSelect={date => {
+            setMode('date');
+            setViewDate(date);
+            triggerSelect(date);
+          }}
+        />
+      );
+    default:
+      return <DatePanel {...pickerProps} />;
+  }
 }
 
 export default Picker;

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Header from '../Header';
 import { Locale } from '../../interface';
 import { GenerateConfig } from '../../generate';
 
@@ -13,6 +14,8 @@ export interface DateHeaderProps<DateType> {
   onNextYear: () => void;
   onPrevMonth: () => void;
   onNextMonth: () => void;
+  onYearClick: () => void;
+  onMonthClick: () => void;
 }
 
 function DateHeader<DateType>(props: DateHeaderProps<DateType>) {
@@ -25,6 +28,8 @@ function DateHeader<DateType>(props: DateHeaderProps<DateType>) {
     onPrevMonth,
     onNextYear,
     onPrevYear,
+    onYearClick,
+    onMonthClick,
   } = props;
   const headerPrefixCls = `${prefixCls}-header`;
 
@@ -38,12 +43,12 @@ function DateHeader<DateType>(props: DateHeaderProps<DateType>) {
 
   // =================== Month & Year ===================
   const yearNode: React.ReactNode = (
-    <button type="button" key="year">
+    <button type="button" key="year" onClick={onYearClick}>
       {generateConfig.locale.format(locale.locale, viewDate, locale.yearFormat)}
     </button>
   );
   const monthNode: React.ReactNode = (
-    <button type="button" key="month">
+    <button type="button" key="month" onClick={onMonthClick}>
       {locale.monthFormat
         ? generateConfig.locale.format(
             locale.locale,
@@ -59,21 +64,15 @@ function DateHeader<DateType>(props: DateHeaderProps<DateType>) {
     : [yearNode, monthNode];
 
   return (
-    <div className={headerPrefixCls}>
-      <button type="button" onClick={onPrevYear}>
-        {'\u00AB'}
-      </button>
-      <button type="button" onClick={onPrevMonth}>
-        {'\u2039'}
-      </button>
-      <div className={`${headerPrefixCls}-month-year`}>{monthYearNodes}</div>
-      <button type="button" onClick={onNextMonth}>
-        {'\u203A'}
-      </button>
-      <button type="button" onClick={onNextYear}>
-        {'\u00BB'}
-      </button>
-    </div>
+    <Header
+      prefixCls={headerPrefixCls}
+      onSuperPrev={onPrevYear}
+      onPrev={onPrevMonth}
+      onNext={onNextMonth}
+      onSuperNext={onNextYear}
+    >
+      {monthYearNodes}
+    </Header>
   );
 }
 

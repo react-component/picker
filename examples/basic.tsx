@@ -10,6 +10,7 @@ import '../assets/index.less';
 const defaultValue = moment('2019-11-28');
 
 const generateConfig: GenerateConfig<Moment> = {
+  // get
   getFirstDateOfMonth: date => {
     const clone = date.clone();
     clone.date(1);
@@ -24,6 +25,11 @@ const generateConfig: GenerateConfig<Moment> = {
     return clone;
   },
   getNow: () => moment(),
+  getWeekDay: date => date.weekday(),
+  getMonth: date => date.month(),
+  getDate: date => date.date(),
+
+  // set
   addYear: (date, diff) => {
     const clone = date.clone();
     clone.add(diff, 'year');
@@ -39,9 +45,12 @@ const generateConfig: GenerateConfig<Moment> = {
     clone.add(diff, 'day');
     return clone;
   },
-  getWeekDay: date => date.weekday(),
-  getMonth: date => date.month(),
-  getDate: date => date.date(),
+  setMonth: (date, month) => {
+    const clone = date.clone();
+    clone.month(month);
+    return clone;
+  },
+
   isSameDate: (date1, date2) => date1.isSame(date2, 'day'),
 
   locale: {
