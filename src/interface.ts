@@ -1,4 +1,4 @@
-import { GenerateConfig } from './generate';
+import { GenerateConfig } from './utils/generateUtil';
 
 export interface Locale {
   locale: string;

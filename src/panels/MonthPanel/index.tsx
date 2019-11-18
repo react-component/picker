@@ -42,7 +42,11 @@ function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
           onPanelChange('year');
         }}
       />
-      <MonthBody {...props} onSelect={onInternalSelect} />
+      <MonthBody
+        {...props}
+        prefixCls={panelPrefixCls}
+        onSelect={onInternalSelect}
+      />
     </div>
   );
 }

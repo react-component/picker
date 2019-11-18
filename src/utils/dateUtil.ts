@@ -1,4 +1,4 @@
-import { GenerateConfig } from '../generate';
+import { GenerateConfig, isSameDate } from './generateUtil';
 
 export const WEEK_DAY_COUNT = 7;
 
@@ -42,7 +42,7 @@ export function getVisibleDates<DateType>(
       break;
     }
 
-    if (generateConfig.isSameDate(date, endDate)) {
+    if (isSameDate(generateConfig, date, endDate)) {
       currentMonth = false;
     }
 

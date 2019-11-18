@@ -1,0 +1,75 @@
+import * as React from 'react';
+import classNames from 'classnames';
+import { GenerateConfig } from '../../utils/generateUtil';
+import { YEAR_DECADE_COUNT } from '.';
+
+const YEAR_COL_COUNT = 3;
+const YEAR_ROW_COUNT = 4;
+
+export interface YearBodyProps<DateType> {
+  prefixCls: string;
+  generateConfig: GenerateConfig<DateType>;
+  viewDate: DateType;
+  onSelect: (value: DateType) => void;
+}
+
+function YearBody<DateType>({
+  prefixCls,
+  viewDate,
+  generateConfig,
+  onSelect,
+}: YearBodyProps<DateType>) {
+  const yearPrefixCls = `${prefixCls}-cell`;
+  const rows: React.ReactNode[] = [];
+
+  const yearNumber = generateConfig.getYear(viewDate);
+  const startYear =
+    Math.floor(yearNumber / YEAR_DECADE_COUNT) * YEAR_DECADE_COUNT;
+  const endYear = startYear + YEAR_DECADE_COUNT - 1;
+  const baseYear = generateConfig.setYear(
+    viewDate,
+    startYear -
+      Math.ceil((YEAR_COL_COUNT * YEAR_ROW_COUNT - YEAR_DECADE_COUNT) / 2),
+  );
+
+  for (let i = 0; i < YEAR_ROW_COUNT; i += 1) {
+    const row: React.ReactNode[] = [];
+
+    for (let j = 0; j < YEAR_COL_COUNT; j += 1) {
+      const diffYear = i * YEAR_COL_COUNT + j;
+      const yearDate = generateConfig.addYear(baseYear, diffYear);
+      const currentYearNumber = generateConfig.getYear(yearDate);
+
+      row.push(
+        <td
+          key={j}
+          className={classNames(yearPrefixCls, {
+            [`${yearPrefixCls}-in-view`]:
+              startYear <= currentYearNumber && currentYearNumber <= endYear,
+            [`${yearPrefixCls}-selected`]: currentYearNumber === yearNumber,
+          })}
+        >
+          <button
+            type="button"
+            className={`${yearPrefixCls}-cell`}
+            onClick={() => {
+              onSelect(yearDate);
+            }}
+          >
+            {currentYearNumber}
+          </button>
+        </td>,
+      );
+    }
+
+    rows.push(<tr key={i}>{row}</tr>);
+  }
+
+  return (
+    <table>
+      <tbody>{rows}</tbody>
+    </table>
+  );
+}
+
+export default YearBody;

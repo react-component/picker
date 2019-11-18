@@ -1,7 +1,9 @@
 import * as React from 'react';
 import DatePanel from './panels/DatePanel';
 import MonthPanel from './panels/MonthPanel';
-import { GenerateConfig } from './generate';
+import YearPanel from './panels/YearPanel';
+import DecadePanel from './panels/DecadePanel';
+import { GenerateConfig } from './utils/generateUtil';
 import { Locale, PanelMode } from './interface';
 
 export interface PickerProps<DateType> {
@@ -52,6 +54,27 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   };
 
   switch (mode) {
+    case 'decade':
+      return (
+        <DecadePanel
+          {...pickerProps}
+          onSelect={date => {
+            setMode('year');
+            setViewDate(date);
+          }}
+        />
+      );
+    case 'year':
+      return (
+        <YearPanel
+          {...pickerProps}
+          onSelect={date => {
+            setMode('month');
+            setViewDate(date);
+            triggerSelect(date);
+          }}
+        />
+      );
     case 'month':
       return (
         <MonthPanel

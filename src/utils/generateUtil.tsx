@@ -5,16 +5,15 @@ export interface GenerateConfig<DateType> {
   getWeekDay: (value: DateType) => number;
   getDate: (value: DateType) => number;
   getMonth: (value: DateType) => number;
+  getYear: (value: DateType) => number;
   getNow: () => DateType;
 
   // Set
   addYear: (value: DateType, diff: number) => DateType;
   addMonth: (value: DateType, diff: number) => DateType;
   addDate: (value: DateType, diff: number) => DateType;
+  setYear: (value: DateType, year: number) => DateType;
   setMonth: (value: DateType, month: number) => DateType;
-
-  // Calculate
-  isSameDate: (date1: DateType, date2: DateType) => boolean;
 
   locale: {
     getWeekFirstDay: (locale: string) => number;
@@ -28,6 +27,14 @@ export interface GenerateConfig<DateType> {
   };
 }
 
-function generate() {}
-
-export default generate;
+export function isSameDate<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  date1: DateType,
+  date2: DateType,
+) {
+  return (
+    generateConfig.getYear(date1) === generateConfig.getYear(date2) &&
+    generateConfig.getMonth(date1) === generateConfig.getMonth(date2) &&
+    generateConfig.getDate(date1) === generateConfig.getDate(date2)
+  );
+}

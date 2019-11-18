@@ -1,7 +1,7 @@
 import React from 'react';
 import moment, { Moment } from 'moment';
 import Picker from '../src/Picker';
-import { GenerateConfig } from '../src/generate';
+import { GenerateConfig } from '../src/utils/generateUtil';
 import zhCN from '../src/locale/zh_CN';
 import enUS from '../src/locale/en_US';
 import '../assets/index.less';
@@ -26,6 +26,7 @@ const generateConfig: GenerateConfig<Moment> = {
   },
   getNow: () => moment(),
   getWeekDay: date => date.weekday(),
+  getYear: date => date.year(),
   getMonth: date => date.month(),
   getDate: date => date.date(),
 
@@ -45,13 +46,16 @@ const generateConfig: GenerateConfig<Moment> = {
     clone.add(diff, 'day');
     return clone;
   },
+  setYear: (date, year) => {
+    const clone = date.clone();
+    clone.year(year);
+    return clone;
+  },
   setMonth: (date, month) => {
     const clone = date.clone();
     clone.month(month);
     return clone;
   },
-
-  isSameDate: (date1, date2) => date1.isSame(date2, 'day'),
 
   locale: {
     getWeekFirstDay: locale => {

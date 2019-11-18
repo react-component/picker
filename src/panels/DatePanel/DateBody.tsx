@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { GenerateConfig } from '../../generate';
+import { GenerateConfig, isSameDate } from '../../utils/generateUtil';
 import { WEEK_DAY_COUNT, getVisibleDates } from '../../utils/dateUtil';
 import { Locale } from '../../interface';
 
@@ -24,7 +24,7 @@ function DateBody<DateType>({
   value,
   onSelect,
 }: DateBodyProps<DateType>) {
-  const datePrefixCls = `${prefixCls}-date`;
+  const datePrefixCls = `${prefixCls}-cell`;
   const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale.locale);
   const today = generateConfig.getNow();
 
@@ -57,14 +57,17 @@ function DateBody<DateType>({
       <td
         key={index}
         className={classNames(datePrefixCls, {
-          [`${datePrefixCls}-current-month`]: currentMonth,
-          [`${datePrefixCls}-today`]: generateConfig.isSameDate(today, date),
-          [`${datePrefixCls}-now`]: generateConfig.isSameDate(value, date),
+          [`${datePrefixCls}-in-view`]: currentMonth,
+          [`${datePrefixCls}-today`]: isSameDate(generateConfig, today, date),
+          [`${datePrefixCls}-selected`]: isSameDate(
+            generateConfig,
+            value,
+            date,
+          ),
         })}
       >
         <button
           type="button"
-          className={`${datePrefixCls}-cell`}
           onClick={() => {
             onSelect(date);
           }}

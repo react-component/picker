@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { GenerateConfig } from '../../generate';
+import classNames from 'classnames';
+import { GenerateConfig } from '../../utils/generateUtil';
 import { Locale } from '../../interface';
 
 const MONTH_COL_COUNT = 3;
@@ -9,18 +10,31 @@ export interface MonthBodyProps<DateType> {
   prefixCls: string;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
+  value: DateType;
   viewDate: DateType;
   onSelect: (value: DateType) => void;
+}
+
+function isSameMonth<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  month1: DateType,
+  month2: DateType,
+) {
+  return (
+    generateConfig.getYear(month1) === generateConfig.getYear(month2) &&
+    generateConfig.getMonth(month1) === generateConfig.getMonth(month2)
+  );
 }
 
 function MonthBody<DateType>({
   prefixCls,
   locale,
+  value,
   viewDate,
   generateConfig,
   onSelect,
 }: MonthBodyProps<DateType>) {
-  const monthPrefixCls = `${prefixCls}-month`;
+  const monthPrefixCls = `${prefixCls}-cell`;
   const rows: React.ReactNode[] = [];
 
   const monthsLocale: string[] =
@@ -39,10 +53,19 @@ function MonthBody<DateType>({
       const monthDate = generateConfig.addMonth(startMonth, diffMonth);
 
       row.push(
-        <td key={j}>
+        <td
+          key={j}
+          className={classNames(monthPrefixCls, {
+            [`${monthPrefixCls}-in-view`]: true,
+            [`${monthPrefixCls}-selected`]: isSameMonth(
+              generateConfig,
+              value,
+              monthDate,
+            ),
+          })}
+        >
           <button
             type="button"
-            className={`${monthPrefixCls}-cell`}
             onClick={() => {
               onSelect(monthDate);
             }}
@@ -62,7 +85,11 @@ function MonthBody<DateType>({
     rows.push(<tr key={i}>{row}</tr>);
   }
 
-  return <table>{rows}</table>;
+  return (
+    <table>
+      <tbody>{rows}</tbody>
+    </table>
+  );
 }
 
 export default MonthBody;
