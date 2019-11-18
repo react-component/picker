@@ -37,14 +37,22 @@ function DateHeader<DateType>(props: DateHeaderProps<DateType>) {
   const month = generateConfig.getMonth(viewDate);
 
   // =================== Month & Year ===================
-  const yearNode: React.ReactNode = generateConfig.locale.format(
-    locale.locale,
-    viewDate,
-    locale.yearFormat,
+  const yearNode: React.ReactNode = (
+    <button type="button" key="year">
+      {generateConfig.locale.format(locale.locale, viewDate, locale.yearFormat)}
+    </button>
   );
-  const monthNode: React.ReactNode = locale.monthFormat
-    ? generateConfig.locale.format(locale.locale, viewDate, locale.monthFormat)
-    : monthsLocale[month];
+  const monthNode: React.ReactNode = (
+    <button type="button" key="month">
+      {locale.monthFormat
+        ? generateConfig.locale.format(
+            locale.locale,
+            viewDate,
+            locale.monthFormat,
+          )
+        : monthsLocale[month]}
+    </button>
+  );
 
   const monthYearNodes = locale.monthBeforeYear
     ? [monthNode, yearNode]

@@ -10,16 +10,24 @@ export interface DatePanelProps<DateType> {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
   value: DateType;
+  /** [Legacy] Set default display picker view date */
+  defaultPickerValue?: DateType;
   locale: Locale;
   onSelect?: (value: DateType) => void;
 }
 
 function DatePanel<DateType>(props: DatePanelProps<DateType>) {
-  const { prefixCls, generateConfig, value, onSelect } = props;
+  const {
+    prefixCls,
+    generateConfig,
+    value,
+    defaultPickerValue,
+    onSelect,
+  } = props;
   const panelPrefixCls = `${prefixCls}-date-panel`;
 
   const currentDate = value;
-  const [viewDate, setViewDate] = React.useState(value);
+  const [viewDate, setViewDate] = React.useState(defaultPickerValue || value);
 
   const onInternalSelect = (newValue: DateType) => {
     if (onSelect) {

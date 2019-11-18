@@ -69,8 +69,7 @@ export default () => {
   const [value, setValue] = React.useState(defaultValue);
   return (
     <div>
-      {defaultValue.toString()}
-
+      <h3>Basic {defaultValue.toString()}</h3>
       <DatePanel<Moment>
         prefixCls="rc-picker"
         generateConfig={generateConfig}
@@ -78,10 +77,13 @@ export default () => {
         locale={zhCN}
         onSelect={setValue}
       />
+
+      <h3>1 Month earlier</h3>
       <DatePanel<Moment>
         prefixCls="rc-picker"
         generateConfig={generateConfig}
         value={value}
+        defaultPickerValue={defaultValue.clone().subtract(1, 'month')}
         locale={enUS}
         onSelect={setValue}
       />
