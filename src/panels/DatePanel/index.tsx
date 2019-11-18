@@ -10,10 +10,13 @@ export interface DatePanelProps<DateType> {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
   value: DateType;
+  viewDate: DateType;
   /** [Legacy] Set default display picker view date */
   defaultPickerValue?: DateType;
   locale: Locale;
+
   onSelect?: (value: DateType) => void;
+  onViewDateChange: (value: DateType) => void;
 }
 
 function DatePanel<DateType>(props: DatePanelProps<DateType>) {
@@ -21,13 +24,13 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
     prefixCls,
     generateConfig,
     value,
-    defaultPickerValue,
+    viewDate,
     onSelect,
+    onViewDateChange,
   } = props;
   const panelPrefixCls = `${prefixCls}-date-panel`;
 
   const currentDate = value;
-  const [viewDate, setViewDate] = React.useState(defaultPickerValue || value);
 
   const onInternalSelect = (newValue: DateType) => {
     if (onSelect) {
@@ -37,10 +40,10 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
 
   // ==================== View Operation ====================
   const onYearChange = (diff: number) => {
-    setViewDate(generateConfig.addYear(viewDate, diff));
+    onViewDateChange(generateConfig.addYear(viewDate, diff));
   };
   const onMonthChange = (diff: number) => {
-    setViewDate(generateConfig.addMonth(viewDate, diff));
+    onViewDateChange(generateConfig.addMonth(viewDate, diff));
   };
 
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import moment, { Moment } from 'moment';
-import DatePanel from '../src/panels/DatePanel';
+import Picker from '../src/Picker';
 import { GenerateConfig } from '../src/generate';
 import zhCN from '../src/locale/zh_CN';
 import enUS from '../src/locale/en_US';
@@ -69,8 +69,10 @@ export default () => {
   const [value, setValue] = React.useState(defaultValue);
   return (
     <div>
-      <h3>Basic {defaultValue.toString()}</h3>
-      <DatePanel<Moment>
+      <h1>Value: {value.format('YYYY-MM-DD')}</h1>
+
+      <h3>Basic</h3>
+      <Picker<Moment>
         prefixCls="rc-picker"
         generateConfig={generateConfig}
         value={value}
@@ -79,7 +81,7 @@ export default () => {
       />
 
       <h3>1 Month earlier</h3>
-      <DatePanel<Moment>
+      <Picker<Moment>
         prefixCls="rc-picker"
         generateConfig={generateConfig}
         value={value}
