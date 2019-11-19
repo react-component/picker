@@ -12,6 +12,7 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
     prefixCls,
     onViewDateChange,
     generateConfig,
+    value,
     viewDate,
     onPanelChange,
     onSelect,
@@ -41,7 +42,7 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
           onDecadeChange(1);
         }}
         onDecadeClick={() => {
-          onPanelChange('decade');
+          onPanelChange('decade', value);
         }}
       />
       <YearBody

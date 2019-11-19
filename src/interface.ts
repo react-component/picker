@@ -59,5 +59,5 @@ export interface PanelSharedProps<DateType> {
 
   onSelect?: (value: DateType) => void;
   onViewDateChange: (value: DateType) => void;
-  onPanelChange: (mode: PanelMode) => void;
+  onPanelChange: (mode: PanelMode, viewValue: DateType) => void;
 }

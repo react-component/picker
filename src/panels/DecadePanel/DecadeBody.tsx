@@ -58,7 +58,7 @@ function YearBody<DateType>({
             type="button"
             className={`${yearPrefixCls}-cell`}
             onClick={() => {
-              onSelect(generateConfig.setYear(viewDate, startDecadeYear));
+              onSelect(generateConfig.setYear(viewDate, startDecadeNumber));
             }}
           >
             {startDecadeNumber}-{endDecadeNumber}

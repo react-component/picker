@@ -10,6 +10,7 @@ function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
     prefixCls,
     onViewDateChange,
     generateConfig,
+    value,
     viewDate,
     onPanelChange,
     onSelect,
@@ -39,7 +40,7 @@ function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
           onYearChange(1);
         }}
         onYearClick={() => {
-          onPanelChange('year');
+          onPanelChange('year', value);
         }}
       />
       <MonthBody

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import TimePanel from './panels/TimePanel';
 import DatePanel from './panels/DatePanel';
 import MonthPanel from './panels/MonthPanel';
 import YearPanel from './panels/YearPanel';
@@ -13,9 +14,9 @@ export interface PickerProps<DateType> {
   /** [Legacy] Set default display picker view date */
   defaultPickerValue?: DateType;
   locale: Locale;
-  onSelect?: (value: DateType) => void;
-
   mode?: PanelMode;
+  onSelect?: (value: DateType) => void;
+  onPanelChange?: (value: DateType, mode: PanelMode) => void;
 }
 
 function Picker<DateType>(props: PickerProps<DateType>) {
@@ -25,13 +26,24 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     value,
     defaultPickerValue,
     onSelect,
+    mode,
+    onPanelChange,
   } = props;
 
   const [viewDate, setViewDate] = React.useState(
     defaultPickerValue || value || generateConfig.getNow(),
   );
 
-  const [mode, setMode] = React.useState<PanelMode>('date');
+  const [innerMode, setInnerMode] = React.useState<PanelMode>('date');
+  const mergedMode = mode || innerMode;
+
+  const onInternalPanelChange = (mode: PanelMode, viewValue: DateType) => {
+    setInnerMode(mode);
+
+    if (onPanelChange) {
+      onPanelChange(viewValue, mode);
+    }
+  };
 
   const triggerSelect = (date: DateType) => {
     if (onSelect) {
@@ -50,16 +62,16 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     prefixCls,
     viewDate,
     onViewDateChange: setViewDate,
-    onPanelChange: setMode,
+    onPanelChange: onInternalPanelChange,
   };
 
-  switch (mode) {
+  switch (mergedMode) {
     case 'decade':
       return (
         <DecadePanel
           {...pickerProps}
           onSelect={date => {
-            setMode('year');
+            onInternalPanelChange('year', date);
             setViewDate(date);
           }}
         />
@@ -69,7 +81,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
         <YearPanel
           {...pickerProps}
           onSelect={date => {
-            setMode('month');
+            onInternalPanelChange('month', date);
             setViewDate(date);
             triggerSelect(date);
           }}
@@ -80,7 +92,18 @@ function Picker<DateType>(props: PickerProps<DateType>) {
         <MonthPanel
           {...pickerProps}
           onSelect={date => {
-            setMode('date');
+            onInternalPanelChange('date', date);
+            setViewDate(date);
+            triggerSelect(date);
+          }}
+        />
+      );
+    case 'time':
+      return (
+        <TimePanel
+          {...pickerProps}
+          onSelect={date => {
+            onInternalPanelChange('date', date);
             setViewDate(date);
             triggerSelect(date);
           }}
