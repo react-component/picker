@@ -11,13 +11,7 @@ export type DecadePanelProps<DateType> = Omit<
 export const DECADE_DISTANCE_COUNT = 100;
 
 function DecadePanel<DateType>(props: DecadePanelProps<DateType>) {
-  const {
-    prefixCls,
-    onViewDateChange,
-    generateConfig,
-    viewDate,
-    onSelect,
-  } = props;
+  const { prefixCls, onViewDateChange, generateConfig, viewDate } = props;
 
   const panelPrefixCls = `${prefixCls}-year-panel`;
 
@@ -25,12 +19,6 @@ function DecadePanel<DateType>(props: DecadePanelProps<DateType>) {
     onViewDateChange(
       generateConfig.addYear(viewDate, diff * DECADE_DISTANCE_COUNT),
     );
-  };
-
-  const onInternalSelect = (newValue: DateType) => {
-    if (onSelect) {
-      onSelect(newValue);
-    }
   };
 
   return (
@@ -45,11 +33,7 @@ function DecadePanel<DateType>(props: DecadePanelProps<DateType>) {
           onDecadesChange(1);
         }}
       />
-      <DecadeBody
-        {...props}
-        prefixCls={panelPrefixCls}
-        onSelect={onInternalSelect}
-      />
+      <DecadeBody {...props} prefixCls={panelPrefixCls} />
     </div>
   );
 }

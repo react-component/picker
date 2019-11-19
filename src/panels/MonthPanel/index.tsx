@@ -13,19 +13,12 @@ function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
     value,
     viewDate,
     onPanelChange,
-    onSelect,
   } = props;
 
   const panelPrefixCls = `${prefixCls}-month-panel`;
 
   const onYearChange = (diff: number) => {
     onViewDateChange(generateConfig.addYear(viewDate, diff));
-  };
-
-  const onInternalSelect = (newValue: DateType) => {
-    if (onSelect) {
-      onSelect(newValue);
-    }
   };
 
   return (
@@ -43,11 +36,7 @@ function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
           onPanelChange('year', value);
         }}
       />
-      <MonthBody
-        {...props}
-        prefixCls={panelPrefixCls}
-        onSelect={onInternalSelect}
-      />
+      <MonthBody {...props} prefixCls={panelPrefixCls} />
     </div>
   );
 }

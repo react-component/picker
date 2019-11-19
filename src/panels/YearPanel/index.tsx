@@ -15,19 +15,12 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
     value,
     viewDate,
     onPanelChange,
-    onSelect,
   } = props;
 
   const panelPrefixCls = `${prefixCls}-year-panel`;
 
   const onDecadeChange = (diff: number) => {
     onViewDateChange(generateConfig.addYear(viewDate, diff * 10));
-  };
-
-  const onInternalSelect = (newValue: DateType) => {
-    if (onSelect) {
-      onSelect(newValue);
-    }
   };
 
   return (
@@ -45,11 +38,7 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
           onPanelChange('decade', value);
         }}
       />
-      <YearBody
-        {...props}
-        prefixCls={panelPrefixCls}
-        onSelect={onInternalSelect}
-      />
+      <YearBody {...props} prefixCls={panelPrefixCls} />
     </div>
   );
 }

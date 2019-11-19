@@ -1,10 +1,15 @@
-export default {
+import { Locale } from '../interface';
+
+const locale: Locale = {
+  locale: 'zh_TW',
+
   today: '今天',
   now: '此刻',
   backToToday: '返回今天',
   ok: '確定',
   timeSelect: '選擇時間',
   dateSelect: '選擇日期',
+  weekSelect: '選擇周',
   clear: '清除',
   month: '月',
   year: '年',
@@ -24,3 +29,5 @@ export default {
   previousCentury: '上一世紀',
   nextCentury: '下一世紀',
 };
+
+export default locale;

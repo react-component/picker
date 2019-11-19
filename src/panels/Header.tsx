@@ -7,9 +7,9 @@ export interface HeaderProps {
   /** Next one step */
   onNext?: () => void;
   /** Last multiple steps */
-  onSuperPrev: () => void;
+  onSuperPrev?: () => void;
   /** Next multiple steps */
-  onSuperNext: () => void;
+  onSuperNext?: () => void;
 
   children?: React.ReactNode;
 }

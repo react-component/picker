@@ -3,6 +3,9 @@ export interface GenerateConfig<DateType> {
   getFirstDateOfMonth: (value: DateType) => DateType;
   getLastDateOfMonth: (value: DateType) => DateType;
   getWeekDay: (value: DateType) => number;
+  getSecond: (value: DateType) => number;
+  getMinute: (value: DateType) => number;
+  getHour: (value: DateType) => number;
   getDate: (value: DateType) => number;
   getMonth: (value: DateType) => number;
   getYear: (value: DateType) => number;
@@ -14,6 +17,9 @@ export interface GenerateConfig<DateType> {
   addDate: (value: DateType, diff: number) => DateType;
   setYear: (value: DateType, year: number) => DateType;
   setMonth: (value: DateType, month: number) => DateType;
+  setHour: (value: DateType, hour: number) => DateType;
+  setMinute: (value: DateType, minute: number) => DateType;
+  setSecond: (value: DateType, second: number) => DateType;
 
   locale: {
     getWeekFirstDay: (locale: string) => number;

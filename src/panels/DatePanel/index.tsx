@@ -13,17 +13,10 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
     generateConfig,
     value,
     viewDate,
-    onSelect,
     onViewDateChange,
     onPanelChange,
   } = props;
   const panelPrefixCls = `${prefixCls}-date-panel`;
-
-  const onInternalSelect = (newValue: DateType) => {
-    if (onSelect) {
-      onSelect(newValue);
-    }
-  };
 
   // ==================== View Operation ====================
   const onYearChange = (diff: number) => {
@@ -66,7 +59,6 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
         value={value}
         viewDate={viewDate}
         rowCount={DATE_ROW_COUNT}
-        onSelect={onInternalSelect}
       />
     </div>
   );

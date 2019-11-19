@@ -4,10 +4,11 @@ import Picker from '../src/Picker';
 import { GenerateConfig } from '../src/utils/generateUtil';
 import zhCN from '../src/locale/zh_CN';
 import enUS from '../src/locale/en_US';
+import jaJP from '../src/locale/ja_JP';
 import '../assets/index.less';
 
 // const defaultValue = moment('2019-09-03');
-const defaultValue = moment('2019-11-28');
+const defaultValue = moment('2019-11-28 01:02:03');
 
 const generateConfig: GenerateConfig<Moment> = {
   // get
@@ -29,6 +30,9 @@ const generateConfig: GenerateConfig<Moment> = {
   getYear: date => date.year(),
   getMonth: date => date.month(),
   getDate: date => date.date(),
+  getHour: date => date.hour(),
+  getMinute: date => date.minute(),
+  getSecond: date => date.second(),
 
   // set
   addYear: (date, diff) => {
@@ -56,6 +60,21 @@ const generateConfig: GenerateConfig<Moment> = {
     clone.month(month);
     return clone;
   },
+  setHour: (date, hour) => {
+    const clone = date.clone();
+    clone.hour(hour);
+    return clone;
+  },
+  setMinute: (date, minute) => {
+    const clone = date.clone();
+    clone.minute(minute);
+    return clone;
+  },
+  setSecond: (date, second) => {
+    const clone = date.clone();
+    clone.second(second);
+    return clone;
+  },
 
   locale: {
     getWeekFirstDay: locale => {
@@ -80,28 +99,46 @@ const generateConfig: GenerateConfig<Moment> = {
 
 export default () => {
   const [value, setValue] = React.useState(defaultValue);
+
+  const sharedProps = {
+    generateConfig,
+    value,
+    onSelect: setValue,
+  };
+
   return (
     <div>
-      <h1>Value: {value.format('YYYY-MM-DD')}</h1>
+      <h1>Value: {value.format('YYYY-MM-DD HH:mm:ss')}</h1>
 
-      <h3>Basic</h3>
-      <Picker<Moment>
-        prefixCls="rc-picker"
-        generateConfig={generateConfig}
-        value={value}
-        locale={zhCN}
-        onSelect={setValue}
-      />
+      <div style={{ display: 'flex' }}>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Basic</h3>
+          <Picker<Moment> {...sharedProps} locale={zhCN} />
+        </div>
 
-      <h3>1 Month earlier</h3>
-      <Picker<Moment>
-        prefixCls="rc-picker"
-        generateConfig={generateConfig}
-        value={value}
-        defaultPickerValue={defaultValue.clone().subtract(1, 'month')}
-        locale={enUS}
-        onSelect={setValue}
-      />
+        <div style={{ margin: '0 8px' }}>
+          <h3>1 Month earlier</h3>
+          <Picker<Moment>
+            {...sharedProps}
+            defaultPickerValue={defaultValue.clone().subtract(1, 'month')}
+            locale={enUS}
+          />
+        </div>
+
+        <div style={{ margin: '0 8px' }}>
+          <h3>Time</h3>
+          <Picker<Moment> {...sharedProps} locale={jaJP} mode="time" />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Time 121</h3>
+          <Picker<Moment>
+            {...sharedProps}
+            locale={jaJP}
+            mode="time"
+            showTime={{ use12Hours: true }}
+          />
+        </div>
+      </div>
     </div>
   );
 };

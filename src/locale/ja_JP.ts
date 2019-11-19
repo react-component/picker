@@ -1,10 +1,14 @@
-export default {
+import { Locale } from '../interface';
+
+const locale: Locale = {
+  locale: 'ja_JP',
   today: '今日',
   now: '現在時刻',
   backToToday: '今日に戻る',
   ok: '決定',
   timeSelect: '時間を選択',
   dateSelect: '日時を選択',
+  weekSelect: '週を選択',
   clear: 'クリア',
   month: '月',
   year: '年',
@@ -24,3 +28,5 @@ export default {
   previousCentury: '前の世紀',
   nextCentury: '次の世紀',
 };
+
+export default locale;

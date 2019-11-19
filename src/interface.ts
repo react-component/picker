@@ -5,7 +5,7 @@ export interface Locale {
 
   // ===================== Date Panel =====================
   /** Display month before year in date panel header */
-  monthBeforeYear: boolean;
+  monthBeforeYear?: boolean;
   yearFormat: string;
   monthFormat?: string;
 
@@ -57,7 +57,7 @@ export interface PanelSharedProps<DateType> {
   defaultPickerValue?: DateType;
   locale: Locale;
 
-  onSelect?: (value: DateType) => void;
+  onSelect: (value: DateType) => void;
   onViewDateChange: (value: DateType) => void;
   onPanelChange: (mode: PanelMode, viewValue: DateType) => void;
 }
