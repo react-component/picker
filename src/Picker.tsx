@@ -114,6 +114,29 @@ function Picker<DateType>(props: PickerProps<DateType>) {
       );
       break;
 
+    case 'datetime':
+      panelNode = (
+        <div className={`${prefixCls}-datetime`}>
+          <DatePanel<DateType>
+            {...pickerProps}
+            onSelect={date => {
+              setViewDate(date);
+              triggerSelect(date);
+            }}
+          />
+          <TimePanel<DateType>
+            {...pickerProps}
+            {...(typeof showTime === 'object' ? showTime : null)}
+            onSelect={date => {
+              onInternalPanelChange('date', date);
+              setViewDate(date);
+              triggerSelect(date);
+            }}
+          />
+        </div>
+      );
+      break;
+
     case 'time':
       delete pickerProps.showTime;
       panelNode = (

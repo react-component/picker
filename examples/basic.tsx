@@ -130,13 +130,17 @@ export default () => {
           <Picker<Moment> {...sharedProps} locale={jaJP} mode="time" />
         </div>
         <div style={{ margin: '0 8px' }}>
-          <h3>Time 121</h3>
+          <h3>Time AM/PM</h3>
           <Picker<Moment>
             {...sharedProps}
             locale={jaJP}
             mode="time"
             showTime={{ use12Hours: true }}
           />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Datetime</h3>
+          <Picker<Moment> {...sharedProps} locale={zhCN} mode="datetime" />
         </div>
       </div>
     </div>

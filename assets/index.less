@@ -91,7 +91,7 @@
       margin: 0;
       padding: 0 0 180px 0;
       overflow-y: hidden;
-      width: 60px;
+      width: 50px;
 
       &:hover {
         overflow-y: auto;
@@ -103,7 +103,7 @@
 
         > button {
           color: #333;
-          padding: 0 0 0 16px;
+          padding: 0 0 0 12px;
           margin: 0;
           height: 20px;
           line-height: 20px;
@@ -116,6 +116,15 @@
           }
         }
       }
+    }
+  }
+
+  // ====================== Date Time =======================
+  &-datetime {
+    display: flex;
+
+    .@{prefix-cls}-time-panel {
+      border-left: 1px solid #999;
     }
   }
 }
