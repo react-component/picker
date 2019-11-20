@@ -1,6 +1,6 @@
 import React from 'react';
 import moment, { Moment } from 'moment';
-import Picker from '../src/Picker';
+import Picker from '../src/PickerPanel';
 import { GenerateConfig } from '../src/utils/generateUtil';
 import zhCN from '../src/locale/zh_CN';
 import enUS from '../src/locale/en_US';

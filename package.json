@@ -39,7 +39,8 @@
   },
   "dependencies": {
     "classnames": "^2.2.1",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "rc-util": "^4.15.7"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.9",
@@ -52,15 +53,15 @@
     "enzyme-adapter-react-16": "^1.0.1",
     "enzyme-to-json": "^3.4.0",
     "eslint": "^6.6.0",
-    "eslint-plugin-react-hooks":"^2.3.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
     "father": "^2.13.4",
     "less": "^3.10.3",
     "np": "^5.1.0",
     "prettier": "^1.18.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-test-renderer": "^16.0.0"
-    
+    "react-test-renderer": "^16.0.0",
+    "typescript": "^3.7.2"
   },
   "peerDependencies": {
     "react": "^16.0.0",

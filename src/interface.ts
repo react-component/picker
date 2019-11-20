@@ -48,6 +48,10 @@ export type PanelMode =
   | 'year'
   | 'decade';
 
+export interface PanelRefProps {
+  onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
+}
+
 export interface PanelSharedProps<DateType> {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
@@ -56,6 +60,13 @@ export interface PanelSharedProps<DateType> {
   /** [Legacy] Set default display picker view date */
   defaultPickerValue?: DateType;
   locale: Locale;
+
+  /**
+   * Typescript can not handle generic type so we can not use `forwardRef` here.
+   * Thus, move ref into operationRef.
+   * This is little hack which should refactor after typescript support.
+   */
+  operationRef: React.MutableRefObject<PanelRefProps>;
 
   onSelect: (value: DateType) => void;
   onViewDateChange: (value: DateType) => void;

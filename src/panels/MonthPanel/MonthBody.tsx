@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { GenerateConfig } from '../../utils/generateUtil';
 import { Locale } from '../../interface';
 
-const MONTH_COL_COUNT = 3;
+export const MONTH_COL_COUNT = 3;
 const MONTH_ROW_COUNT = 4;
 
 export interface MonthBodyProps<DateType> {
