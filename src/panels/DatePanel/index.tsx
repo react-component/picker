@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classNames from 'classnames';
 import DateBody from './DateBody';
 import DateHeader from './DateHeader';
 import { PanelSharedProps } from '../../interface';
@@ -7,11 +8,14 @@ import { createKeyDownHandler } from '../../utils/uiUtil';
 
 const DATE_ROW_COUNT = 6;
 
-export type DatePanelProps<DateType> = PanelSharedProps<DateType>;
+export interface DatePanelProps<DateType> extends PanelSharedProps<DateType> {
+  active?: boolean;
+}
 
 function DatePanel<DateType>(props: DatePanelProps<DateType>) {
   const {
     prefixCls,
+    active,
     operationRef,
     generateConfig,
     value,
@@ -51,7 +55,11 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
   };
 
   return (
-    <div className={panelPrefixCls}>
+    <div
+      className={classNames(panelPrefixCls, {
+        [`${panelPrefixCls}-active`]: active,
+      })}
+    >
       <DateHeader
         {...props}
         prefixCls={panelPrefixCls}

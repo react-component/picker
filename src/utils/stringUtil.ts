@@ -9,3 +9,5 @@ export function leftPad(
   }
   return current;
 }
+
+export const tuple = <T extends string[]>(...args: T) => args;

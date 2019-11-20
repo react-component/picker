@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classNames from 'classnames';
 import TimeHeader from './TimeHeader';
 import TimeBody, { BodyOperationRef } from './TimeBody';
 import { PanelSharedProps } from '../../interface';
@@ -22,6 +23,7 @@ export interface TimePanelProps<DateType>
   extends PanelSharedProps<DateType>,
     SharedTimeProps {
   format?: string;
+  active?: boolean;
 }
 
 const countBoolean = (boolList: (boolean | undefined)[]) =>
@@ -31,6 +33,7 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
   const {
     format = 'HH:mm:ss',
     prefixCls,
+    active,
     operationRef,
     showHour,
     showMinute,
@@ -79,7 +82,11 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
   };
 
   return (
-    <div className={panelPrefixCls}>
+    <div
+      className={classNames(panelPrefixCls, {
+        [`${panelPrefixCls}-active`]: active,
+      })}
+    >
       <TimeHeader {...props} format={format} prefixCls={panelPrefixCls} />
       <TimeBody
         {...props}

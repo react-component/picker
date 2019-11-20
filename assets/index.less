@@ -132,5 +132,18 @@
     .@{prefix-cls}-time-panel {
       border-left: 1px solid #999;
     }
+
+    // Keyboard
+    &-active {
+      .@{prefix-cls}-date-panel,
+      .@{prefix-cls}-time-panel {
+        transition: opacity 0.3s;
+        opacity: 0.3;
+
+        &-active {
+          opacity: 1;
+        }
+      }
+    }
   }
 }
