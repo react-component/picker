@@ -1,9 +1,9 @@
 import * as React from 'react';
-import KeyCode from 'rc-util/lib/KeyCode';
 import DateBody from './DateBody';
 import DateHeader from './DateHeader';
 import { PanelSharedProps } from '../../interface';
 import { WEEK_DAY_COUNT } from '../../utils/dateUtil';
+import { createKeyDownHandler } from '../../utils/uiUtil';
 
 const DATE_ROW_COUNT = 6;
 
@@ -24,38 +24,21 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
 
   // ======================= Keyboard =======================
   operationRef.current = {
-    onKeyDown: ({ which, ctrlKey, metaKey }) => {
-      switch (which) {
-        case KeyCode.LEFT:
-          if (ctrlKey || metaKey) {
-            onSelect(generateConfig.addYear(value, -1));
-          } else {
-            onSelect(generateConfig.addDate(value, -1));
-          }
-
-          break;
-        case KeyCode.RIGHT:
-          if (ctrlKey || metaKey) {
-            onSelect(generateConfig.addYear(value, 1));
-          } else {
-            onSelect(generateConfig.addDate(value, 1));
-          }
-          break;
-
-        case KeyCode.UP:
-          onSelect(generateConfig.addDate(value, -WEEK_DAY_COUNT));
-          break;
-        case KeyCode.DOWN:
-          onSelect(generateConfig.addDate(value, WEEK_DAY_COUNT));
-          break;
-
-        case KeyCode.PAGE_UP:
-          onSelect(generateConfig.addMonth(value, -1));
-          break;
-        case KeyCode.PAGE_DOWN:
-          onSelect(generateConfig.addMonth(value, 1));
-          break;
-      }
+    onKeyDown: event => {
+      createKeyDownHandler(event, {
+        onLeftRight: diff => {
+          onSelect(generateConfig.addDate(value, diff));
+        },
+        onCtrlLeftRight: diff => {
+          onSelect(generateConfig.addYear(value, diff));
+        },
+        onUpDown: diff => {
+          onSelect(generateConfig.addDate(value, diff * WEEK_DAY_COUNT));
+        },
+        onPageUpDown: diff => {
+          onSelect(generateConfig.addMonth(value, diff));
+        },
+      });
     },
   };
 

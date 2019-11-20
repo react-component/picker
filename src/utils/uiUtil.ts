@@ -52,7 +52,7 @@ interface KeyboardConfig {
   onPageUpDown?: (diff: number) => void;
   onEnter?: () => void;
 }
-export function createKeyboardRef(
+export function createKeyDownHandler(
   event: React.KeyboardEvent<HTMLElement>,
   {
     onLeftRight,
@@ -67,35 +67,31 @@ export function createKeyboardRef(
   switch (which) {
     case KeyCode.LEFT:
       if (ctrlKey || metaKey) {
-        onCtrlLeftRight?.(-1);
-      } else {
-        onLeftRight?.(-1);
-      }
+        if (onCtrlLeftRight) onCtrlLeftRight(-1);
+      } else if (onLeftRight) onLeftRight(-1);
       break;
     case KeyCode.RIGHT:
       if (ctrlKey || metaKey) {
-        onCtrlLeftRight?.(1);
-      } else {
-        onLeftRight?.(1);
-      }
+        if (onCtrlLeftRight) onCtrlLeftRight(1);
+      } else if (onLeftRight) onLeftRight(1);
       break;
 
     case KeyCode.UP:
-      onUpDown?.(-1);
+      if (onUpDown) onUpDown(-1);
       break;
     case KeyCode.DOWN:
-      onUpDown?.(1);
+      if (onUpDown) onUpDown(1);
       break;
 
     case KeyCode.PAGE_UP:
-      onPageUpDown?.(-1);
+      if (onPageUpDown) onPageUpDown(-1);
       break;
     case KeyCode.PAGE_DOWN:
-      onPageUpDown?.(1);
+      if (onPageUpDown) onPageUpDown(1);
       break;
 
     case KeyCode.ENTER:
-      onEnter?.();
+      if (onEnter) onEnter();
       break;
   }
 }
