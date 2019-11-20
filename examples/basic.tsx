@@ -135,7 +135,11 @@ export default () => {
             {...sharedProps}
             locale={jaJP}
             mode="time"
-            showTime={{ use12Hours: true }}
+            showTime={{
+              use12Hours: true,
+              showSecond: false,
+              format: 'hh:mm A',
+            }}
           />
         </div>
         <div style={{ margin: '0 8px' }}>

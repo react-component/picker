@@ -10,13 +10,14 @@ export interface Unit {
 
 export interface TimeUnitColumnProps {
   prefixCls: string;
-  units: Unit[];
-  value: number;
-  onSelect: (value: number) => void;
+  units?: Unit[];
+  value?: number;
+  active?: boolean;
+  onSelect?: (value: number) => void;
 }
 
 function TimeUnitColumn(props: TimeUnitColumnProps) {
-  const { prefixCls, units, onSelect, value } = props;
+  const { prefixCls, units, onSelect, value, active } = props;
   const cellPrefixCls = `${prefixCls}-cell`;
 
   const initRef = React.useRef(true);
@@ -25,7 +26,7 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
 
   // `useLayoutEffect` here to avoid blink by duration is 0
   React.useLayoutEffect(() => {
-    const li = liRefs.current.get(value);
+    const li = liRefs.current.get(value!);
     if (li) {
       scrollTo(ulRef.current!, li.offsetTop, initRef.current ? 0 : 120);
     }
@@ -35,11 +36,13 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
 
   return (
     <ul
-      className={`${prefixCls}-column`}
+      className={classNames(`${prefixCls}-column`, {
+        [`${prefixCls}-column-active`]: active,
+      })}
       ref={ulRef}
       style={{ position: 'relative' }}
     >
-      {units.map(unit => (
+      {units!.map(unit => (
         <li
           key={unit.value}
           ref={element => {
@@ -52,9 +55,10 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
         >
           <button
             type="button"
+            tabIndex={-1}
             disabled={unit.disabled}
             onClick={() => {
-              onSelect(unit.value);
+              onSelect!(unit.value);
             }}
           >
             {unit.label}

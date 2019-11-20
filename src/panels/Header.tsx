@@ -25,23 +25,23 @@ function Header({
   return (
     <div className={prefixCls}>
       {onSuperPrev && (
-        <button type="button" onClick={onSuperPrev}>
+        <button type="button" onClick={onSuperPrev} tabIndex={-1}>
           {'\u00AB'}
         </button>
       )}
       {onPrev && (
-        <button type="button" onClick={onPrev}>
+        <button type="button" onClick={onPrev} tabIndex={-1}>
           {'\u2039'}
         </button>
       )}
       <div className={`${prefixCls}-view`}>{children}</div>
       {onNext && (
-        <button type="button" onClick={onNext}>
+        <button type="button" onClick={onNext} tabIndex={-1}>
           {'\u203A'}
         </button>
       )}
       {onSuperNext && (
-        <button type="button" onClick={onSuperNext}>
+        <button type="button" onClick={onSuperNext} tabIndex={-1}>
           {'\u00BB'}
         </button>
       )}

@@ -45,6 +45,7 @@
         border: 0;
         padding: 0;
         margin: 0;
+        background: transparent;
         cursor: pointer;
         outline: none;
         border: none;
@@ -92,6 +93,11 @@
       padding: 0 0 180px 0;
       overflow-y: hidden;
       width: 50px;
+      transition: background 0.3s;
+
+      &-active {
+        background: rgba(0, 0, 255, 0.1);
+      }
 
       &:hover {
         overflow-y: auto;
@@ -120,7 +126,7 @@
   }
 
   // ====================== Date Time =======================
-  &-datetime {
+  &-datetime-panel {
     display: flex;
 
     .@{prefix-cls}-time-panel {

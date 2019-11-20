@@ -1,6 +1,10 @@
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
+
 import * as React from 'react';
 import classNames from 'classnames';
+import KeyCode from 'rc-util/lib/KeyCode';
 import TimePanel, { SharedTimeProps } from './panels/TimePanel';
+import DatetimePanel from './panels/DatetimePanel';
 import DatePanel from './panels/DatePanel';
 import MonthPanel from './panels/MonthPanel';
 import YearPanel from './panels/YearPanel';
@@ -78,11 +82,29 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     }
   }, [value]);
 
-  // =========================== Keyboard ===========================
+  // ========================= Interactive ==========================
   const onInternalKeyDown: React.KeyboardEventHandler<HTMLElement> = e => {
     if (panelRef.current && panelRef.current.onKeyDown) {
-      e.preventDefault();
+      if (
+        [
+          KeyCode.LEFT,
+          KeyCode.RIGHT,
+          KeyCode.UP,
+          KeyCode.DOWN,
+          KeyCode.PAGE_UP,
+          KeyCode.PAGE_DOWN,
+          KeyCode.ENTER,
+        ].includes(e.which)
+      ) {
+        e.preventDefault();
+      }
       panelRef.current.onKeyDown(e);
+    }
+  };
+
+  const onInternalBlur: React.FocusEventHandler<HTMLElement> = e => {
+    if (panelRef.current && panelRef.current.onBlur) {
+      panelRef.current.onBlur(e);
     }
   };
 
@@ -98,32 +120,6 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     onPanelChange: onInternalPanelChange,
   };
   delete pickerProps.onSelect;
-
-  function renderDatePanel() {
-    return (
-      <DatePanel<DateType>
-        {...pickerProps}
-        onSelect={date => {
-          setViewDate(date);
-          triggerSelect(date);
-        }}
-      />
-    );
-  }
-
-  function renderTimePanel() {
-    return (
-      <TimePanel<DateType>
-        {...pickerProps}
-        {...(typeof showTime === 'object' ? showTime : null)}
-        onSelect={date => {
-          onInternalPanelChange('date', date);
-          setViewDate(date);
-          triggerSelect(date);
-        }}
-      />
-    );
-  }
 
   switch (mergedMode) {
     case 'decade':
@@ -143,7 +139,6 @@ function Picker<DateType>(props: PickerProps<DateType>) {
         <YearPanel<DateType>
           {...pickerProps}
           onSelect={date => {
-            onInternalPanelChange('month', date);
             setViewDate(date);
             triggerSelect(date);
           }}
@@ -165,28 +160,50 @@ function Picker<DateType>(props: PickerProps<DateType>) {
 
     case 'datetime':
       panelNode = (
-        <div className={`${prefixCls}-datetime`}>
-          {renderDatePanel()}
-          {renderTimePanel()}
-        </div>
+        <DatetimePanel
+          {...pickerProps}
+          onSelect={date => {
+            setViewDate(date);
+            triggerSelect(date);
+          }}
+        />
       );
       break;
 
     case 'time':
       delete pickerProps.showTime;
-      panelNode = renderTimePanel();
+      panelNode = (
+        <TimePanel<DateType>
+          {...pickerProps}
+          {...(typeof showTime === 'object' ? showTime : null)}
+          onSelect={date => {
+            onInternalPanelChange('date', date);
+            setViewDate(date);
+            triggerSelect(date);
+          }}
+        />
+      );
       break;
 
     default:
-      panelNode = renderDatePanel();
+      panelNode = (
+        <DatePanel<DateType>
+          {...pickerProps}
+          onSelect={date => {
+            setViewDate(date);
+            triggerSelect(date);
+          }}
+        />
+      );
   }
 
   return (
     <div
-      tabIndex={-1}
+      tabIndex={0}
       className={classNames(prefixCls, className)}
       style={style}
       onKeyDown={onInternalKeyDown}
+      onBlur={onInternalBlur}
     >
       {panelNode}
     </div>
@@ -194,3 +211,4 @@ function Picker<DateType>(props: PickerProps<DateType>) {
 }
 
 export default Picker;
+/* eslint-enable */

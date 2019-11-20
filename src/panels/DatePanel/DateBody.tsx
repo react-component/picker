@@ -68,6 +68,7 @@ function DateBody<DateType>({
       >
         <button
           type="button"
+          tabIndex={-1}
           onClick={() => {
             onSelect(date);
           }}

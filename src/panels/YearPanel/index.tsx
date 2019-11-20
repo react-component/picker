@@ -1,7 +1,8 @@
 import * as React from 'react';
 import YearHeader from './YearHeader';
-import YearBody from './YearBody';
+import YearBody, { YEAR_COL_COUNT } from './YearBody';
 import { PanelSharedProps } from '../../interface';
+import { createKeyDownHandler } from '../../utils/uiUtil';
 
 export type YearPanelProps<DateType> = PanelSharedProps<DateType>;
 
@@ -10,15 +11,38 @@ export const YEAR_DECADE_COUNT = 10;
 function YearPanel<DateType>(props: YearPanelProps<DateType>) {
   const {
     prefixCls,
+    operationRef,
     onViewDateChange,
     generateConfig,
     value,
     viewDate,
+    onSelect,
     onPanelChange,
   } = props;
 
   const panelPrefixCls = `${prefixCls}-year-panel`;
 
+  // ======================= Keyboard =======================
+  operationRef.current = {
+    onKeyDown: event => {
+      createKeyDownHandler(event, {
+        onLeftRight: diff => {
+          onSelect(generateConfig.addYear(value, diff));
+        },
+        onCtrlLeftRight: diff => {
+          onSelect(generateConfig.addYear(value, diff * YEAR_DECADE_COUNT));
+        },
+        onUpDown: diff => {
+          onSelect(generateConfig.addYear(value, diff * YEAR_COL_COUNT));
+        },
+        onEnter: () => {
+          onPanelChange('month', value);
+        },
+      });
+    },
+  };
+
+  // ==================== View Operation ====================
   const onDecadeChange = (diff: number) => {
     onViewDateChange(generateConfig.addYear(viewDate, diff * 10));
   };
@@ -38,7 +62,14 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
           onPanelChange('decade', value);
         }}
       />
-      <YearBody {...props} prefixCls={panelPrefixCls} />
+      <YearBody
+        {...props}
+        prefixCls={panelPrefixCls}
+        onSelect={date => {
+          onPanelChange('month', date);
+          onSelect(date);
+        }}
+      />
     </div>
   );
 }

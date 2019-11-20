@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { GenerateConfig } from '../../utils/generateUtil';
 import { YEAR_DECADE_COUNT } from '.';
 
-const YEAR_COL_COUNT = 3;
+export const YEAR_COL_COUNT = 3;
 const YEAR_ROW_COUNT = 4;
 
 export interface YearBodyProps<DateType> {
