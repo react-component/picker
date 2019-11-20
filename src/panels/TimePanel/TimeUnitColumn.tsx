@@ -23,7 +23,8 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
   const ulRef = React.useRef<HTMLUListElement>(null);
   const liRefs = React.useRef<Map<number, HTMLElement | null>>(new Map());
 
-  React.useEffect(() => {
+  // `useLayoutEffect` here to avoid blink by duration is 0
+  React.useLayoutEffect(() => {
     const li = liRefs.current.get(value);
     if (li) {
       scrollTo(ulRef.current!, li.offsetTop, initRef.current ? 0 : 120);

@@ -41,14 +41,24 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     defaultPickerValue || value || generateConfig.getNow(),
   );
 
-  const [innerMode, setInnerMode] = React.useState<PanelMode>('date');
-  const mergedMode = mode || innerMode;
+  const getNextMode = (nextMode: PanelMode): PanelMode => {
+    if (nextMode === 'date' && showTime) {
+      return 'datetime';
+    }
+    return nextMode;
+  };
+
+  const [innerMode, setInnerMode] = React.useState<PanelMode>(
+    getNextMode('date'),
+  );
+  const mergedMode: PanelMode = mode || innerMode;
 
   const onInternalPanelChange = (newMode: PanelMode, viewValue: DateType) => {
-    setInnerMode(newMode);
+    const nextMode = getNextMode(newMode);
+    setInnerMode(nextMode);
 
     if (onPanelChange) {
-      onPanelChange(viewValue, newMode);
+      onPanelChange(viewValue, nextMode);
     }
   };
 
@@ -64,6 +74,9 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     }
   }, [value]);
 
+  // ============================ Panels ============================
+  let panelNode: React.ReactNode;
+
   const pickerProps = {
     ...props,
     prefixCls,
@@ -73,7 +86,31 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   };
   delete pickerProps.onSelect;
 
-  let panelNode: React.ReactNode;
+  function renderDatePanel() {
+    return (
+      <DatePanel<DateType>
+        {...pickerProps}
+        onSelect={date => {
+          setViewDate(date);
+          triggerSelect(date);
+        }}
+      />
+    );
+  }
+
+  function renderTimePanel() {
+    return (
+      <TimePanel<DateType>
+        {...pickerProps}
+        {...(typeof showTime === 'object' ? showTime : null)}
+        onSelect={date => {
+          onInternalPanelChange('date', date);
+          setViewDate(date);
+          triggerSelect(date);
+        }}
+      />
+    );
+  }
 
   switch (mergedMode) {
     case 'decade':
@@ -117,51 +154,19 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     case 'datetime':
       panelNode = (
         <div className={`${prefixCls}-datetime`}>
-          <DatePanel<DateType>
-            {...pickerProps}
-            onSelect={date => {
-              setViewDate(date);
-              triggerSelect(date);
-            }}
-          />
-          <TimePanel<DateType>
-            {...pickerProps}
-            {...(typeof showTime === 'object' ? showTime : null)}
-            onSelect={date => {
-              onInternalPanelChange('date', date);
-              setViewDate(date);
-              triggerSelect(date);
-            }}
-          />
+          {renderDatePanel()}
+          {renderTimePanel()}
         </div>
       );
       break;
 
     case 'time':
       delete pickerProps.showTime;
-      panelNode = (
-        <TimePanel<DateType>
-          {...pickerProps}
-          {...(typeof showTime === 'object' ? showTime : null)}
-          onSelect={date => {
-            onInternalPanelChange('date', date);
-            setViewDate(date);
-            triggerSelect(date);
-          }}
-        />
-      );
+      panelNode = renderTimePanel();
       break;
 
     default:
-      panelNode = (
-        <DatePanel<DateType>
-          {...pickerProps}
-          onSelect={date => {
-            setViewDate(date);
-            triggerSelect(date);
-          }}
-        />
-      );
+      panelNode = renderDatePanel();
   }
 
   return (

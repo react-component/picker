@@ -140,7 +140,7 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Datetime</h3>
-          <Picker<Moment> {...sharedProps} locale={zhCN} mode="datetime" />
+          <Picker<Moment> {...sharedProps} locale={zhCN} showTime />
         </div>
       </div>
     </div>
