@@ -2,7 +2,7 @@ import * as React from 'react';
 import { GenerateConfig } from '../../utils/generateUtil';
 import { Locale } from '../../interface';
 import TimeUnitColumn, { Unit } from './TimeUnitColumn';
-import { leftPad } from '../../utils/stringUtil';
+import { leftPad } from '../../utils/miscUtil';
 import { SharedTimeProps } from '.';
 
 function generateUnits(

@@ -26,6 +26,9 @@ export interface GenerateConfig<DateType> {
 
     format: (locale: string, date: DateType, format: string) => string;
 
+    /** Should only return validate date instance */
+    parse: (locale: string, text: string, formats: string[]) => DateType | null;
+
     /** A proxy for getting locale with moment or other locale library */
     getShortWeekDays?: (locale: string) => string[];
     /** A proxy for getting locale with moment or other locale library */

@@ -11,3 +11,11 @@ export function leftPad(
 }
 
 export const tuple = <T extends string[]>(...args: T) => args;
+
+export function toArray<T>(val: T | T[]): T[] {
+  if (val === null || val === undefined) {
+    return [];
+  }
+
+  return Array.isArray(val) ? val : [val];
+}

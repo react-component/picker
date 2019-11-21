@@ -95,6 +95,15 @@ const generateConfig: GenerateConfig<Moment> = {
       clone.locale(locale);
       return clone.format(format);
     },
+    parse: (locale, text, formats) => {
+      for (let i = 0; i < formats.length; i += 1) {
+        const date = moment(text, formats[i], locale, true);
+        if (date.isValid()) {
+          return date;
+        }
+      }
+      return null;
+    },
   },
 };
 

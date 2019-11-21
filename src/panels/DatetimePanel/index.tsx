@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import KeyCode from 'rc-util/lib/KeyCode';
 import DatePanel, { DatePanelProps } from '../DatePanel';
 import TimePanel, { TimePanelProps } from '../TimePanel';
-import { tuple } from '../../utils/stringUtil';
+import { tuple } from '../../utils/miscUtil';
 import { PanelRefProps } from '../../interface';
 
 export type DatetimePanelProps<DateType> = DatePanelProps<DateType> &
