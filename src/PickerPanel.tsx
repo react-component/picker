@@ -24,9 +24,11 @@ export interface PickerProps<DateType> {
   locale: Locale;
   mode?: PanelMode;
   showTime?: boolean | SharedTimeProps;
+  tabIndex?: number;
   onSelect?: (value: DateType) => void;
   onChange?: (value: DateType) => void;
   onPanelChange?: (value: DateType, mode: PanelMode) => void;
+  onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 function Picker<DateType>(props: PickerProps<DateType>) {
@@ -37,11 +39,13 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     generateConfig,
     value,
     defaultPickerValue,
+    mode,
+    tabIndex = 0,
+    showTime,
     onSelect,
     onChange,
-    mode,
     onPanelChange,
-    showTime,
+    onMouseDown,
   } = props;
 
   const panelRef = React.useRef<PanelRefProps>({});
@@ -206,11 +210,12 @@ function Picker<DateType>(props: PickerProps<DateType>) {
 
   return (
     <div
-      tabIndex={0}
+      tabIndex={tabIndex}
       className={classNames(`${prefixCls}-panel`, className)}
       style={style}
       onKeyDown={onInternalKeyDown}
       onBlur={onInternalBlur}
+      onMouseDown={onMouseDown}
     >
       {panelNode}
     </div>

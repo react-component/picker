@@ -103,11 +103,11 @@ export default () => {
 
   const onSelect = (newValue: Moment) => {
     console.log('Select:', newValue);
-    setValue(newValue);
   };
 
   const onChange = (newValue: Moment) => {
     console.log('Change:', newValue);
+    setValue(newValue);
   };
 
   const sharedProps = {

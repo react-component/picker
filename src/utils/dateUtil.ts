@@ -15,9 +15,15 @@ export function isSameMonth<DateType>(
 
 export function isSameDate<DateType>(
   generateConfig: GenerateConfig<DateType>,
-  date1: DateType,
-  date2: DateType,
+  date1?: DateType,
+  date2?: DateType,
 ) {
+  if (!date1 && !date2) {
+    return true;
+  } if (!date1 || !date2) {
+    return false;
+  }
+
   return (
     generateConfig.getYear(date1) === generateConfig.getYear(date2) &&
     generateConfig.getMonth(date1) === generateConfig.getMonth(date2) &&
@@ -27,9 +33,15 @@ export function isSameDate<DateType>(
 
 export function isSameTime<DateType>(
   generateConfig: GenerateConfig<DateType>,
-  time1: DateType,
-  time2: DateType,
+  time1?: DateType,
+  time2?: DateType,
 ) {
+  if (!time1 && !time2) {
+    return true;
+  } if (!time1 || !time2) {
+    return false;
+  }
+
   return (
     generateConfig.getHour(time1) === generateConfig.getHour(time2) &&
     generateConfig.getMinute(time1) === generateConfig.getMinute(time2) &&
@@ -39,8 +51,8 @@ export function isSameTime<DateType>(
 
 export function isEqual<DateType>(
   generateConfig: GenerateConfig<DateType>,
-  value1: DateType,
-  value2: DateType,
+  value1?: DateType,
+  value2?: DateType,
 ) {
   return (
     isSameDate(generateConfig, value1, value2) &&

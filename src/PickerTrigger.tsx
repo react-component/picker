@@ -22,6 +22,7 @@ const BUILT_IN_PLACEMENTS = {
 
 export interface PickerTriggerProps {
   prefixCls: string;
+  visible: boolean;
   popupElement: React.ReactElement;
   children: React.ReactElement;
 }
@@ -29,6 +30,7 @@ export interface PickerTriggerProps {
 function PickerTrigger({
   prefixCls,
   popupElement,
+  visible,
   children,
 }: PickerTriggerProps) {
   const dropdownPrefixCls = `${prefixCls}-dropdown`;
@@ -39,7 +41,7 @@ function PickerTrigger({
       builtinPlacements={BUILT_IN_PLACEMENTS}
       prefixCls={dropdownPrefixCls}
       popup={popupElement}
-      popupVisible
+      popupVisible={visible}
     >
       {children}
     </Trigger>
