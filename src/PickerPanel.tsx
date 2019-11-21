@@ -12,6 +12,7 @@ import DecadePanel from './panels/DecadePanel';
 import { GenerateConfig } from './utils/generateUtil';
 import { Locale, PanelMode, PanelRefProps } from './interface';
 import { isEqual } from './utils/dateUtil';
+import PanelContext from './PanelContext';
 
 export interface PickerProps<DateType> {
   className?: string;
@@ -48,6 +49,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     onMouseDown,
   } = props;
 
+  const { operationRef } = React.useContext(PanelContext);
   const panelRef = React.useRef<PanelRefProps>({});
 
   // View date control
@@ -118,6 +120,12 @@ function Picker<DateType>(props: PickerProps<DateType>) {
       panelRef.current.onBlur(e);
     }
   };
+
+  if (operationRef) {
+    operationRef.current = {
+      onKeyDown: onInternalKeyDown,
+    };
+  }
 
   // ============================ Panels ============================
   let panelNode: React.ReactNode;

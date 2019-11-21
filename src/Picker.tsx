@@ -1,11 +1,13 @@
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
+import classNames from 'classnames';
 import PickerPanel from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
 import { GenerateConfig } from './utils/generateUtil';
 import { Locale } from './interface';
 import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
+import PanelContext, { ContextOperationRefProps } from './PanelContext';
 
 export interface PickerProps<DateType> {
   prefixCls?: string;
@@ -15,6 +17,7 @@ export interface PickerProps<DateType> {
   open?: boolean;
   format?: string | string[];
   onChange?: (value: DateType) => void;
+  onOpenChange?: (open: boolean) => void;
 }
 
 function Picker<DateType>(props: PickerProps<DateType>) {
@@ -26,6 +29,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     value,
     open,
     onChange,
+    onOpenChange,
   } = props;
 
   // ============================= State =============================
@@ -58,6 +62,11 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   // Trigger
   const [innerOpen, setInnerOpen] = React.useState<boolean>(false);
   const mergedOpen = typeof open === 'boolean' ? open : innerOpen;
+
+  // Operation ref
+  const operationRef: React.MutableRefObject<ContextOperationRefProps | null> = React.useRef<
+    ContextOperationRefProps
+  >(null);
 
   // ============================= Value =============================
   const isSameTextDate = (text: string, date: DateType) => {
@@ -95,6 +104,13 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   };
 
   // ============================ Trigger ============================
+  const triggerOpen = (newOpen: boolean) => {
+    setInnerOpen(newOpen);
+    if (onOpenChange) {
+      onOpenChange(newOpen);
+    }
+  };
+
   const triggerChange = (newValue: DateType) => {
     if (!isSameTextDate(textValue, newValue)) {
       setDateText(newValue);
@@ -106,19 +122,44 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   };
 
   const onInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = e => {
-    if (KeyCode.ENTER === e.which) {
-      triggerChange(selectedValue);
-      return;
+    switch (e.which) {
+      case KeyCode.ENTER: {
+        if (!mergedOpen) {
+          triggerOpen(true);
+        } else {
+          triggerChange(selectedValue);
+          triggerOpen(false);
+        }
+        break;
+      }
+
+      case KeyCode.TAB: {
+        if (typing && mergedOpen) {
+          setTyping(false);
+          e.preventDefault();
+        } else if (!typing && mergedOpen && e.shiftKey) {
+          setTyping(true);
+          e.preventDefault();
+        }
+        break;
+      }
+
+      case KeyCode.ESC: {
+        triggerChange(mergedValue);
+        setSelectedValue(mergedValue);
+        triggerOpen(false);
+        return;
+      }
     }
 
-    // if ([KeyCode.UP, KeyCode.DOWN].includes(e.which)) {
-    //   setTyping(false);
-    //   e.preventDefault();
-    //   return;
-    // }
-
-    if (!typing) {
-      e.preventDefault();
+    // Let popup panel handle keyboard
+    if (
+      !typing &&
+      mergedOpen &&
+      operationRef.current &&
+      operationRef.current.onKeyDown
+    ) {
+      operationRef.current.onKeyDown(e);
     }
   };
 
@@ -150,6 +191,9 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   const panel = (
     <PickerPanel<DateType>
       generateConfig={generateConfig}
+      className={classNames({
+        [`${prefixCls}-panel-focused`]: !typing,
+      })}
       value={selectedValue}
       locale={locale}
       tabIndex={-1}
@@ -161,23 +205,29 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   );
 
   return (
-    <div>
-      <PickerTrigger
-        visible={mergedOpen}
-        popupElement={panel}
-        prefixCls={prefixCls}
-      >
-        <input
-          readOnly={!typing}
-          onMouseDown={onInputMouseDown}
-          onFocus={onInputFocus}
-          onBlur={onInputBlur}
-          value={textValue}
-          onChange={onInputChange}
-          onKeyDown={onInputKeyDown}
-        />
-      </PickerTrigger>
-    </div>
+    <PanelContext.Provider
+      value={{
+        operationRef,
+      }}
+    >
+      <div>
+        <PickerTrigger
+          visible={mergedOpen}
+          popupElement={panel}
+          prefixCls={prefixCls}
+        >
+          <input
+            readOnly={!typing}
+            onMouseDown={onInputMouseDown}
+            onFocus={onInputFocus}
+            onBlur={onInputBlur}
+            value={textValue}
+            onChange={onInputChange}
+            onKeyDown={onInputKeyDown}
+          />
+        </PickerTrigger>
+      </div>
+    </PanelContext.Provider>
   );
 }
 
