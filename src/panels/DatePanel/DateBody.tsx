@@ -1,7 +1,11 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { GenerateConfig, isSameDate } from '../../utils/generateUtil';
-import { WEEK_DAY_COUNT, getVisibleDates } from '../../utils/dateUtil';
+import { GenerateConfig } from '../../utils/generateUtil';
+import {
+  WEEK_DAY_COUNT,
+  getVisibleDates,
+  isSameDate,
+} from '../../utils/dateUtil';
 import { Locale } from '../../interface';
 
 export interface DateBodyProps<DateType> {

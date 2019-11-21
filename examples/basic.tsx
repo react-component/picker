@@ -1,14 +1,15 @@
 import React from 'react';
 import moment, { Moment } from 'moment';
-import Picker from '../src/PickerPanel';
+import Picker from '../src/Picker';
+import PickerPanel from '../src/PickerPanel';
 import { GenerateConfig } from '../src/utils/generateUtil';
 import zhCN from '../src/locale/zh_CN';
 import enUS from '../src/locale/en_US';
 import jaJP from '../src/locale/ja_JP';
 import '../assets/index.less';
 
-// const defaultValue = moment('2019-09-03');
-const defaultValue = moment('2019-11-28 01:02:03');
+const defaultValue = moment('2019-09-03 05:02:03');
+// const defaultValue = moment('2019-11-28 01:02:03');
 
 const generateConfig: GenerateConfig<Moment> = {
   // get
@@ -100,10 +101,20 @@ const generateConfig: GenerateConfig<Moment> = {
 export default () => {
   const [value, setValue] = React.useState(defaultValue);
 
+  const onSelect = (newValue: Moment) => {
+    console.log('Select:', newValue);
+    setValue(newValue);
+  };
+
+  const onChange = (newValue: Moment) => {
+    console.log('Change:', newValue);
+  };
+
   const sharedProps = {
     generateConfig,
     value,
-    onSelect: setValue,
+    onSelect,
+    onChange,
   };
 
   return (
@@ -113,12 +124,12 @@ export default () => {
       <div style={{ display: 'flex' }}>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
-          <Picker<Moment> {...sharedProps} locale={zhCN} />
+          <PickerPanel<Moment> {...sharedProps} locale={zhCN} />
         </div>
 
         <div style={{ margin: '0 8px' }}>
           <h3>1 Month earlier</h3>
-          <Picker<Moment>
+          <PickerPanel<Moment>
             {...sharedProps}
             defaultPickerValue={defaultValue.clone().subtract(1, 'month')}
             locale={enUS}
@@ -127,11 +138,11 @@ export default () => {
 
         <div style={{ margin: '0 8px' }}>
           <h3>Time</h3>
-          <Picker<Moment> {...sharedProps} locale={jaJP} mode="time" />
+          <PickerPanel<Moment> {...sharedProps} locale={jaJP} mode="time" />
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Time AM/PM</h3>
-          <Picker<Moment>
+          <PickerPanel<Moment>
             {...sharedProps}
             locale={jaJP}
             mode="time"
@@ -144,7 +155,14 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Datetime</h3>
-          <Picker<Moment> {...sharedProps} locale={zhCN} showTime />
+          <PickerPanel<Moment> {...sharedProps} locale={zhCN} showTime />
+        </div>
+      </div>
+
+      <div style={{ display: 'flex' }}>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Basic</h3>
+          <Picker<Moment> {...sharedProps} locale={zhCN} />
         </div>
       </div>
     </div>

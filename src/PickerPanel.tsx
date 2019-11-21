@@ -11,6 +11,7 @@ import YearPanel from './panels/YearPanel';
 import DecadePanel from './panels/DecadePanel';
 import { GenerateConfig } from './utils/generateUtil';
 import { Locale, PanelMode, PanelRefProps } from './interface';
+import { isEqual } from './utils/dateUtil';
 
 export interface PickerProps<DateType> {
   className?: string;
@@ -24,6 +25,7 @@ export interface PickerProps<DateType> {
   mode?: PanelMode;
   showTime?: boolean | SharedTimeProps;
   onSelect?: (value: DateType) => void;
+  onChange?: (value: DateType) => void;
   onPanelChange?: (value: DateType, mode: PanelMode) => void;
 }
 
@@ -36,6 +38,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     value,
     defaultPickerValue,
     onSelect,
+    onChange,
     mode,
     onPanelChange,
     showTime,
@@ -73,6 +76,10 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   const triggerSelect = (date: DateType) => {
     if (onSelect) {
       onSelect(date);
+    }
+
+    if (onChange && !isEqual(generateConfig, date, value)) {
+      onChange(date);
     }
   };
 
@@ -200,7 +207,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   return (
     <div
       tabIndex={0}
-      className={classNames(prefixCls, className)}
+      className={classNames(`${prefixCls}-panel`, className)}
       style={style}
       onKeyDown={onInternalKeyDown}
       onBlur={onInternalBlur}

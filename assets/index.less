@@ -1,7 +1,10 @@
 @prefix-cls: rc-picker;
 
 .@{prefix-cls} {
-  border: 1px solid #666;
+  &-panel {
+    border: 1px solid #666;
+    background: rgb(255,240,255);
+  }
 
   // ===================== Shared Panel =====================
   &-decade-panel,
@@ -133,11 +136,15 @@
       border-left: 1px solid #999;
     }
 
+    .@{prefix-cls}-date-panel,
+    .@{prefix-cls}-time-panel {
+      transition: opacity 0.3s;
+    }
+
     // Keyboard
     &-active {
       .@{prefix-cls}-date-panel,
       .@{prefix-cls}-time-panel {
-        transition: opacity 0.3s;
         opacity: 0.3;
 
         &-active {
@@ -145,5 +152,11 @@
         }
       }
     }
+  }
+
+  // ======================= Dropdown =======================
+  &-dropdown {
+    position: absolute;
+    box-shadow: 0 0 5px red;
   }
 }

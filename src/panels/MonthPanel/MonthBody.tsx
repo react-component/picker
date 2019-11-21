@@ -2,6 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { GenerateConfig } from '../../utils/generateUtil';
 import { Locale } from '../../interface';
+import { isSameMonth } from '../../utils/dateUtil';
 
 export const MONTH_COL_COUNT = 3;
 const MONTH_ROW_COUNT = 4;
@@ -13,17 +14,6 @@ export interface MonthBodyProps<DateType> {
   value: DateType;
   viewDate: DateType;
   onSelect: (value: DateType) => void;
-}
-
-function isSameMonth<DateType>(
-  generateConfig: GenerateConfig<DateType>,
-  month1: DateType,
-  month2: DateType,
-) {
-  return (
-    generateConfig.getYear(month1) === generateConfig.getYear(month2) &&
-    generateConfig.getMonth(month1) === generateConfig.getMonth(month2)
-  );
 }
 
 function MonthBody<DateType>({

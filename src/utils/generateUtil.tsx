@@ -32,15 +32,3 @@ export interface GenerateConfig<DateType> {
     getShortMonths?: (locale: string) => string[];
   };
 }
-
-export function isSameDate<DateType>(
-  generateConfig: GenerateConfig<DateType>,
-  date1: DateType,
-  date2: DateType,
-) {
-  return (
-    generateConfig.getYear(date1) === generateConfig.getYear(date2) &&
-    generateConfig.getMonth(date1) === generateConfig.getMonth(date2) &&
-    generateConfig.getDate(date1) === generateConfig.getDate(date2)
-  );
-}

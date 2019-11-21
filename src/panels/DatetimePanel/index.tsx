@@ -45,6 +45,12 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         if (ref.current && ref.current.onKeyDown) {
           ref.current.onKeyDown(event);
         }
+      } else if (
+        [KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN].includes(
+          event.which,
+        )
+      ) {
+        setActivePanel('date');
       }
     },
     onBlur: e => {
