@@ -52,6 +52,9 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   const { operationRef } = React.useContext(PanelContext);
   const panelRef = React.useRef<PanelRefProps>({});
 
+  // Handle init logic
+  const initRef = React.useRef(true);
+
   // View date control
   const [viewDate, setViewDate] = React.useState(
     defaultPickerValue || value || generateConfig.getNow(),
@@ -89,14 +92,8 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
-  React.useEffect(() => {
-    if (value) {
-      setViewDate(value);
-    }
-  }, [value]);
-
   // ========================= Interactive ==========================
-  const onInternalKeyDown: React.KeyboardEventHandler<HTMLElement> = e => {
+  const onInternalKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (panelRef.current && panelRef.current.onKeyDown) {
       if (
         [
@@ -111,8 +108,9 @@ function Picker<DateType>(props: PickerProps<DateType>) {
       ) {
         e.preventDefault();
       }
-      panelRef.current.onKeyDown(e);
+      return panelRef.current.onKeyDown(e);
     }
+    return false;
   };
 
   const onInternalBlur: React.FocusEventHandler<HTMLElement> = e => {
@@ -126,6 +124,17 @@ function Picker<DateType>(props: PickerProps<DateType>) {
       onKeyDown: onInternalKeyDown,
     };
   }
+
+  // ============================ Effect ============================
+  React.useEffect(() => {
+    if (value && !initRef.current) {
+      setViewDate(value);
+    }
+  }, [value]);
+
+  React.useEffect(() => {
+    initRef.current = false;
+  }, []);
 
   // ============================ Panels ============================
   let panelNode: React.ReactNode;
@@ -146,7 +155,6 @@ function Picker<DateType>(props: PickerProps<DateType>) {
         <DecadePanel<DateType>
           {...pickerProps}
           onSelect={date => {
-            onInternalPanelChange('year', date);
             setViewDate(date);
           }}
         />

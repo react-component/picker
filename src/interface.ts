@@ -49,7 +49,7 @@ export type PanelMode =
   | 'decade';
 
 export interface PanelRefProps {
-  onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => boolean;
   onBlur?: React.FocusEventHandler<HTMLElement>;
 }
 

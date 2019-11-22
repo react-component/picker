@@ -10,5 +10,6 @@ module.exports = {
     'react/sort-comp': 0,
     '@typescript-eslint/no-explicit-any': 0,
     'default-case': 0,
+    'jsx-a11y/no-autofocus': 0,
   },
 };

@@ -24,7 +24,7 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
 
   // ======================= Keyboard =======================
   operationRef.current = {
-    onKeyDown: event => {
+    onKeyDown: event =>
       createKeyDownHandler(event, {
         onLeftRight: diff => {
           onSelect(generateConfig.addYear(value, diff));
@@ -38,8 +38,7 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
         onEnter: () => {
           onPanelChange('month', value);
         },
-      });
-    },
+      }),
   };
 
   // ==================== View Operation ====================

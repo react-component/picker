@@ -173,6 +173,10 @@ export default () => {
           <h3>Basic</h3>
           <Picker<Moment> {...sharedProps} locale={zhCN} />
         </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Datetime</h3>
+          <Picker<Moment> {...sharedProps} locale={zhCN} showTime />
+        </div>
       </div>
     </div>
   );

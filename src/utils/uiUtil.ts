@@ -61,37 +61,66 @@ export function createKeyDownHandler(
     onPageUpDown,
     onEnter,
   }: KeyboardConfig,
-) {
+): boolean {
   const { which, ctrlKey, metaKey } = event;
 
   switch (which) {
     case KeyCode.LEFT:
       if (ctrlKey || metaKey) {
-        if (onCtrlLeftRight) onCtrlLeftRight(-1);
-      } else if (onLeftRight) onLeftRight(-1);
+        if (onCtrlLeftRight) {
+          onCtrlLeftRight(-1);
+          return true;
+        }
+      } else if (onLeftRight) {
+        onLeftRight(-1);
+        return true;
+      }
       break;
     case KeyCode.RIGHT:
       if (ctrlKey || metaKey) {
-        if (onCtrlLeftRight) onCtrlLeftRight(1);
-      } else if (onLeftRight) onLeftRight(1);
+        if (onCtrlLeftRight) {
+          onCtrlLeftRight(1);
+          return true;
+        }
+      } else if (onLeftRight) {
+        onLeftRight(1);
+        return true;
+      }
       break;
 
     case KeyCode.UP:
-      if (onUpDown) onUpDown(-1);
+      if (onUpDown) {
+        onUpDown(-1);
+        return true;
+      }
       break;
     case KeyCode.DOWN:
-      if (onUpDown) onUpDown(1);
+      if (onUpDown) {
+        onUpDown(1);
+        return true;
+      }
       break;
 
     case KeyCode.PAGE_UP:
-      if (onPageUpDown) onPageUpDown(-1);
+      if (onPageUpDown) {
+        onPageUpDown(-1);
+        return true;
+      }
       break;
     case KeyCode.PAGE_DOWN:
-      if (onPageUpDown) onPageUpDown(1);
+      if (onPageUpDown) {
+        onPageUpDown(1);
+        return true;
+      }
       break;
 
     case KeyCode.ENTER:
-      if (onEnter) onEnter();
+      if (onEnter) {
+        onEnter();
+        return true;
+      }
       break;
   }
+
+  return false;
 }

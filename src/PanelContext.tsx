@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export type ContextOperationRefProps = {
-  onKeyDown: React.KeyboardEventHandler<HTMLElement>;
+  onKeyDown: (e: React.KeyboardEvent<HTMLElement>) => boolean;
 };
 
 export interface PanelContextProps {

@@ -38,20 +38,29 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         if (nextActivePanel) {
           event.preventDefault();
         }
-      } else if (activePanel) {
+
+        return true;
+      }
+      if (activePanel) {
         const ref =
           activePanel === 'date' ? dateOperationRef : timeOperationRef;
 
         if (ref.current && ref.current.onKeyDown) {
           ref.current.onKeyDown(event);
         }
-      } else if (
+
+        return true;
+      }
+      if (
         [KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN].includes(
           event.which,
         )
       ) {
         setActivePanel('date');
+        return true;
       }
+
+      return false;
     },
     onBlur: e => {
       if (timeOperationRef.current.onBlur) {

@@ -22,7 +22,7 @@ function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
 
   // ======================= Keyboard =======================
   operationRef.current = {
-    onKeyDown: event => {
+    onKeyDown: event =>
       createKeyDownHandler(event, {
         onLeftRight: diff => {
           onSelect(generateConfig.addMonth(value, diff));
@@ -36,8 +36,7 @@ function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
         onEnter: () => {
           onPanelChange('date', value);
         },
-      });
-    },
+      }),
   };
 
   // ==================== View Operation ====================

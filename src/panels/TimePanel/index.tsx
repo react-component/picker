@@ -55,7 +55,7 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
   ]);
 
   operationRef.current = {
-    onKeyDown: event => {
+    onKeyDown: event =>
       createKeyDownHandler(event, {
         onLeftRight: diff => {
           setActiveColumnIndex(
@@ -73,8 +73,7 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
           onSelect(value);
           setActiveColumnIndex(-1);
         },
-      });
-    },
+      }),
 
     onBlur: () => {
       setActiveColumnIndex(-1);

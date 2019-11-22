@@ -8,11 +8,14 @@ import { Locale } from './interface';
 import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
+import { SharedTimeProps } from './panels/TimePanel';
 
 export interface PickerProps<DateType> {
   prefixCls?: string;
   generateConfig: GenerateConfig<DateType>;
   locale: Locale;
+  autoFocus?: boolean;
+  showTime?: boolean | SharedTimeProps;
   value?: DateType;
   open?: boolean;
   format?: string | string[];
@@ -25,7 +28,9 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     prefixCls = 'rc-picker',
     generateConfig,
     locale,
-    format = 'YYYY-MM-DD',
+    autoFocus,
+    showTime,
+    format = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
     value,
     open,
     onChange,
@@ -121,6 +126,19 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
+  const forwardKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (
+      !typing &&
+      mergedOpen &&
+      operationRef.current &&
+      operationRef.current.onKeyDown
+    ) {
+      // Let popup panel handle keyboard
+      return operationRef.current.onKeyDown(e);
+    }
+    return false;
+  };
+
   const onInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = e => {
     switch (e.which) {
       case KeyCode.ENTER: {
@@ -129,37 +147,38 @@ function Picker<DateType>(props: PickerProps<DateType>) {
         } else {
           triggerChange(selectedValue);
           triggerOpen(false);
+          setTyping(true);
         }
-        break;
+        return;
       }
 
       case KeyCode.TAB: {
-        if (typing && mergedOpen) {
+        if (typing && mergedOpen && !e.shiftKey) {
           setTyping(false);
           e.preventDefault();
-        } else if (!typing && mergedOpen && e.shiftKey) {
-          setTyping(true);
-          e.preventDefault();
+        } else if (!typing && mergedOpen) {
+          if (!forwardKeyDown(e) && e.shiftKey) {
+            setTyping(true);
+            e.preventDefault();
+          }
         }
-        break;
+        return;
       }
 
       case KeyCode.ESC: {
         triggerChange(mergedValue);
         setSelectedValue(mergedValue);
         triggerOpen(false);
+        setTyping(true);
         return;
       }
     }
 
-    // Let popup panel handle keyboard
-    if (
-      !typing &&
-      mergedOpen &&
-      operationRef.current &&
-      operationRef.current.onKeyDown
-    ) {
-      operationRef.current.onKeyDown(e);
+    if (!mergedOpen && ![KeyCode.SHIFT].includes(e.which)) {
+      triggerOpen(true);
+    } else {
+      // Let popup panel handle keyboard
+      forwardKeyDown(e);
     }
   };
 
@@ -190,6 +209,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   // ============================= Panel =============================
   const panel = (
     <PickerPanel<DateType>
+      {...props}
       generateConfig={generateConfig}
       className={classNames({
         [`${prefixCls}-panel-focused`]: !typing,
@@ -224,6 +244,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
             value={textValue}
             onChange={onInputChange}
             onKeyDown={onInputKeyDown}
+            autoFocus={autoFocus}
           />
         </PickerTrigger>
       </div>
