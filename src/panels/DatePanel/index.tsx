@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import DateBody from './DateBody';
+import DateBody, { DateBodyPassProps } from './DateBody';
 import DateHeader from './DateHeader';
 import { PanelSharedProps } from '../../interface';
 import { WEEK_DAY_COUNT } from '../../utils/dateUtil';
@@ -8,12 +8,13 @@ import { createKeyDownHandler } from '../../utils/uiUtil';
 
 const DATE_ROW_COUNT = 6;
 
-export interface DatePanelProps<DateType> extends PanelSharedProps<DateType> {
+export interface DatePanelProps<DateType>
+  extends PanelSharedProps<DateType>,
+    DateBodyPassProps<DateType> {
   active?: boolean;
 
   // Used for week panel
   panelName?: string;
-  prefixColumn?: (date: DateType) => React.ReactNode;
 }
 
 function DatePanel<DateType>(props: DatePanelProps<DateType>) {

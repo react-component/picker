@@ -83,10 +83,16 @@
 
   // ====================== Week Panel ======================
   &-week-panel {
-    table {
-      tr:hover {
+    &-row {
+      &:hover {
         .@{prefix-cls}-week-panel-cell {
           background: red;
+        }
+      }
+
+      &-selected {
+        .@{prefix-cls}-week-panel-cell {
+          background: rgba(0, 0, 255, 0.3);
         }
       }
     }
@@ -95,6 +101,11 @@
       font-size: 12px;
       color: #999;
       font-weight: bold;
+    }
+
+    &-cell:hover > button,
+    &-cell-selected > button {
+      background: transparent;
     }
   }
 

@@ -9,7 +9,13 @@ import {
 } from '../../utils/dateUtil';
 import { Locale } from '../../interface';
 
-export interface DateBodyProps<DateType> {
+export interface DateBodyPassProps<DateType> {
+  // Used for week panel
+  prefixColumn?: (date: DateType) => React.ReactNode;
+  rowClassName?: (date: DateType) => string;
+}
+
+export interface DateBodyProps<DateType> extends DateBodyPassProps<DateType> {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
   value: DateType;
@@ -17,15 +23,13 @@ export interface DateBodyProps<DateType> {
   locale: Locale;
   rowCount: number;
   onSelect: (value: DateType) => void;
-
-  // Used for week panel
-  prefixColumn?: (date: DateType) => React.ReactNode;
 }
 
 function DateBody<DateType>({
   prefixCls,
   generateConfig,
   prefixColumn,
+  rowClassName,
   locale,
   rowCount,
   viewDate,
@@ -101,7 +105,14 @@ function DateBody<DateType>({
       );
     }
 
-    rows.push(<tr key={y}>{row}</tr>);
+    rows.push(
+      <tr
+        key={y}
+        className={classNames(rowClassName && rowClassName(startWeekDate))}
+      >
+        {row}
+      </tr>,
+    );
   }
 
   return (

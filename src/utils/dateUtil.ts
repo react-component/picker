@@ -51,6 +51,25 @@ export function isSameTime<DateType>(
   );
 }
 
+export function isSameWeek<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  locale: string,
+  date1?: DateType | null,
+  date2?: DateType | null,
+) {
+  if (!date1 && !date2) {
+    return true;
+  }
+  if (!date1 || !date2) {
+    return false;
+  }
+
+  return (
+    generateConfig.locale.getWeek(locale, date1) ===
+    generateConfig.locale.getWeek(locale, date2)
+  );
+}
+
 export function isEqual<DateType>(
   generateConfig: GenerateConfig<DateType>,
   value1?: DateType | null,
