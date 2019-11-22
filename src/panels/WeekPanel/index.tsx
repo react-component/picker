@@ -38,6 +38,9 @@ function WeekPanel<DateType>(props: WeekPanelProps<DateType>) {
       panelName="week"
       prefixColumn={prefixColumn}
       rowClassName={rowClassName}
+      keyboardConfig={{
+        onLeftRight: null,
+      }}
     />
   );
 }

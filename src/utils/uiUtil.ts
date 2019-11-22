@@ -45,12 +45,12 @@ export function scrollTo(
 }
 /* eslint-enable */
 
-interface KeyboardConfig {
-  onLeftRight?: (diff: number) => void;
-  onCtrlLeftRight?: (diff: number) => void;
-  onUpDown?: (diff: number) => void;
-  onPageUpDown?: (diff: number) => void;
-  onEnter?: () => void;
+export interface KeyboardConfig {
+  onLeftRight?: ((diff: number) => void) | null;
+  onCtrlLeftRight?: ((diff: number) => void) | null;
+  onUpDown?: ((diff: number) => void) | null;
+  onPageUpDown?: ((diff: number) => void) | null;
+  onEnter?: (() => void) | null;
 }
 export function createKeyDownHandler(
   event: React.KeyboardEvent<HTMLElement>,

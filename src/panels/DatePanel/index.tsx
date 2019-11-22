@@ -4,7 +4,7 @@ import DateBody, { DateBodyPassProps } from './DateBody';
 import DateHeader from './DateHeader';
 import { PanelSharedProps } from '../../interface';
 import { WEEK_DAY_COUNT } from '../../utils/dateUtil';
-import { createKeyDownHandler } from '../../utils/uiUtil';
+import { createKeyDownHandler, KeyboardConfig } from '../../utils/uiUtil';
 
 const DATE_ROW_COUNT = 6;
 
@@ -15,12 +15,14 @@ export interface DatePanelProps<DateType>
 
   // Used for week panel
   panelName?: string;
+  keyboardConfig?: KeyboardConfig;
 }
 
 function DatePanel<DateType>(props: DatePanelProps<DateType>) {
   const {
     prefixCls,
     panelName = 'date',
+    keyboardConfig,
     active,
     operationRef,
     generateConfig,
@@ -48,6 +50,7 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
         onPageUpDown: diff => {
           onSelect(generateConfig.addMonth(value, diff));
         },
+        ...keyboardConfig,
       }),
   };
 

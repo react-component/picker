@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import PickerPanel from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
 import { GenerateConfig } from './utils/generateUtil';
-import { Locale } from './interface';
+import { Locale, PanelMode } from './interface';
 import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
@@ -19,6 +19,7 @@ export interface PickerProps<DateType> {
   value?: DateType;
   open?: boolean;
   format?: string | string[];
+  mode?: PanelMode;
   onChange?: (value: DateType, dateString: string) => void;
   onOpenChange?: (open: boolean) => void;
 }

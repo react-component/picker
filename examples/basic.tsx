@@ -107,7 +107,15 @@ const generateConfig: GenerateConfig<Moment> = {
     },
     parse: (locale, text, formats) => {
       for (let i = 0; i < formats.length; i += 1) {
-        const date = moment(text, formats[i], locale, true);
+        let format = formats[i];
+        let strictMode = true;
+
+        if (format.includes('o')) {
+          format = format.replace(/o/g, '');
+          strictMode = false;
+        }
+
+        const date = moment(text, format, locale, strictMode);
         if (date.isValid()) {
           return date;
         }
@@ -124,7 +132,7 @@ export default () => {
     console.log('Select:', newValue);
   };
 
-  const onChange = (newValue: Moment, formatString: string) => {
+  const onChange = (newValue: Moment, formatString?: string) => {
     console.log('Change:', newValue, formatString);
     setValue(newValue);
   };
@@ -196,6 +204,15 @@ export default () => {
         <div style={{ margin: '0 8px' }}>
           <h3>Datetime</h3>
           <Picker<Moment> {...sharedProps} locale={zhCN} showTime />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Week</h3>
+          <Picker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            mode="week"
+            format="YYYY-Wo"
+          />
         </div>
       </div>
     </div>
