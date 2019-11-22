@@ -3,8 +3,9 @@ import classNames from 'classnames';
 import { GenerateConfig } from '../../utils/generateUtil';
 import {
   WEEK_DAY_COUNT,
-  getVisibleDates,
+  getWeekStartDate,
   isSameDate,
+  isSameMonth,
 } from '../../utils/dateUtil';
 import { Locale } from '../../interface';
 
@@ -24,6 +25,7 @@ export interface DateBodyProps<DateType> {
 function DateBody<DateType>({
   prefixCls,
   generateConfig,
+  prefixColumn,
   locale,
   rowCount,
   viewDate,
@@ -49,46 +51,56 @@ function DateBody<DateType>({
   }
 
   // =============================== Date ===============================
-  const dateList = getVisibleDates(
-    locale.locale,
-    generateConfig,
-    rowCount,
-    viewDate,
-  );
-
   const rows: React.ReactNode[] = [];
-  let row: React.ReactNode[] = [];
-  dateList.forEach(({ date, currentMonth }, index) => {
-    row.push(
-      <td
-        key={index}
-        className={classNames(datePrefixCls, {
-          [`${datePrefixCls}-in-view`]: currentMonth,
-          [`${datePrefixCls}-today`]: isSameDate(generateConfig, today, date),
-          [`${datePrefixCls}-selected`]: isSameDate(
-            generateConfig,
-            value,
-            date,
-          ),
-        })}
-      >
-        <button
-          type="button"
-          tabIndex={-1}
-          onClick={() => {
-            onSelect(date);
-          }}
-        >
-          {generateConfig.getDate(date)}
-        </button>
-      </td>,
-    );
+  const startDate = getWeekStartDate(locale.locale, generateConfig, viewDate);
 
-    if (row.length === WEEK_DAY_COUNT) {
-      rows.push(<tr key={rows.length}>{row}</tr>);
-      row = [];
+  for (let y = 0; y < rowCount; y += 1) {
+    const row: React.ReactNode[] = [];
+    if (prefixColumn) {
+      row.push(prefixColumn());
     }
-  });
+
+    for (let x = 0; x < WEEK_DAY_COUNT; x += 1) {
+      const currentDate = generateConfig.addDate(
+        startDate,
+        y * WEEK_DAY_COUNT + x,
+      );
+      row.push(
+        <td
+          key={`${x}-${y}`}
+          className={classNames(datePrefixCls, {
+            [`${datePrefixCls}-in-view`]: isSameMonth(
+              generateConfig,
+              currentDate,
+              viewDate,
+            ),
+            [`${datePrefixCls}-today`]: isSameDate(
+              generateConfig,
+              today,
+              currentDate,
+            ),
+            [`${datePrefixCls}-selected`]: isSameDate(
+              generateConfig,
+              value,
+              currentDate,
+            ),
+          })}
+        >
+          <button
+            type="button"
+            tabIndex={-1}
+            onClick={() => {
+              onSelect(currentDate);
+            }}
+          >
+            {generateConfig.getDate(currentDate)}
+          </button>
+        </td>,
+      );
+    }
+
+    rows.push(<tr key={y}>{row}</tr>);
+  }
 
   return (
     <table className={`${prefixCls}-content`}>

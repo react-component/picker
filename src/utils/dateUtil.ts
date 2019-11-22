@@ -62,52 +62,20 @@ export function isEqual<DateType>(
   );
 }
 
-interface VisibleDate<DateType> {
-  date: DateType;
-  currentMonth: boolean;
-}
-
-export function getVisibleDates<DateType>(
+export function getWeekStartDate<DateType>(
   locale: string,
   generateConfig: GenerateConfig<DateType>,
-  rowCount: number,
   value: DateType,
-): VisibleDate<DateType>[] {
-  const dateList: VisibleDate<DateType>[] = [];
-
-  // Prepare date
+) {
   const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale);
-  const startDate = generateConfig.getFirstDateOfMonth(value);
-  const endDate = generateConfig.getLastDateOfMonth(value);
-  const startWeekDay = generateConfig.getWeekDay(startDate);
+  const monthStartDate = generateConfig.setDate(value, 1);
 
-  // Insert before weekday
-  let weekday = startWeekDay;
-  let date = startDate;
-  while (weekday !== weekFirstDay) {
-    weekday = (weekday - 1 + WEEK_DAY_COUNT) % WEEK_DAY_COUNT;
-    date = generateConfig.addDate(date, -1);
-
-    dateList.unshift({ date, currentMonth: false });
+  for (let i = 0; i < 7; i += 1) {
+    const current = generateConfig.addDate(monthStartDate, -i);
+    if (generateConfig.getWeekDay(current) === weekFirstDay) {
+      return current;
+    }
   }
 
-  // Insert current month
-  const total = WEEK_DAY_COUNT * rowCount;
-  let currentMonth = true;
-  date = startDate;
-  for (let i = 0; i < total; i += 1) {
-    dateList.push({ date, currentMonth });
-
-    if (dateList.length >= total) {
-      break;
-    }
-
-    if (isSameDate(generateConfig, date, endDate)) {
-      currentMonth = false;
-    }
-
-    date = generateConfig.addDate(date, 1);
-  }
-
-  return dateList;
+  return value;
 }

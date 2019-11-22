@@ -61,6 +61,11 @@ const generateConfig: GenerateConfig<Moment> = {
     clone.month(month);
     return clone;
   },
+  setDate: (date, num) => {
+    const clone = date.clone();
+    clone.date(num);
+    return clone;
+  },
   setHour: (date, hour) => {
     const clone = date.clone();
     clone.hour(hour);
