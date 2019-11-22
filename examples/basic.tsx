@@ -144,6 +144,10 @@ export default () => {
             locale={enUS}
           />
         </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Week</h3>
+          <PickerPanel<Moment> {...sharedProps} locale={enUS} mode="week" />
+        </div>
 
         <div style={{ margin: '0 8px' }}>
           <h3>Time</h3>

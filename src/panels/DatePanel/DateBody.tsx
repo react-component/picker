@@ -15,8 +15,10 @@ export interface DateBodyProps<DateType> {
   viewDate: DateType;
   locale: Locale;
   rowCount: number;
-
   onSelect: (value: DateType) => void;
+
+  // Used for week panel
+  prefixColumn?: () => React.ReactNode;
 }
 
 function DateBody<DateType>({

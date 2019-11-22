@@ -10,11 +10,16 @@ const DATE_ROW_COUNT = 6;
 
 export interface DatePanelProps<DateType> extends PanelSharedProps<DateType> {
   active?: boolean;
+
+  // Used for week panel
+  panelName?: string;
+  prefixColumn?: () => React.ReactNode;
 }
 
 function DatePanel<DateType>(props: DatePanelProps<DateType>) {
   const {
     prefixCls,
+    panelName = 'date',
     active,
     operationRef,
     generateConfig,
@@ -24,7 +29,7 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
     onPanelChange,
     onSelect,
   } = props;
-  const panelPrefixCls = `${prefixCls}-date-panel`;
+  const panelPrefixCls = `${prefixCls}-${panelName}-panel`;
 
   // ======================= Keyboard =======================
   operationRef.current = {

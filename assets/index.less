@@ -14,6 +14,7 @@
   &-decade-panel,
   &-year-panel,
   &-month-panel,
+  &-week-panel,
   &-date-panel,
   &-time-panel {
     display: flex;
@@ -57,6 +58,10 @@
         outline: none;
         border: none;
         transition: background 0.3s, border 0.3s;
+
+        &:hover {
+          background: fade(blue, 10%);
+        }
       }
 
       &-in-view > button {
@@ -73,6 +78,17 @@
 
     table {
       text-align: center;
+    }
+  }
+
+  // ====================== Week Panel ======================
+  &-week-panel {
+    table {
+      tr:hover {
+        .@{prefix-cls}-week-panel-cell > button {
+          background: red;
+        }
+      }
     }
   }
 
@@ -123,10 +139,6 @@
           display: block;
           width: 100%;
           text-align: left;
-
-          &:hover {
-            background: rgba(0, 255, 0, 0.1);
-          }
         }
       }
     }

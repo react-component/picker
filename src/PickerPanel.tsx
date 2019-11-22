@@ -6,6 +6,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import TimePanel, { SharedTimeProps } from './panels/TimePanel';
 import DatetimePanel from './panels/DatetimePanel';
 import DatePanel from './panels/DatePanel';
+import WeekPanel from './panels/WeekPanel';
 import MonthPanel from './panels/MonthPanel';
 import YearPanel from './panels/YearPanel';
 import DecadePanel from './panels/DecadePanel';
@@ -176,6 +177,18 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     case 'month':
       panelNode = (
         <MonthPanel<DateType>
+          {...pickerProps}
+          onSelect={date => {
+            setViewDate(date);
+            triggerSelect(date);
+          }}
+        />
+      );
+      break;
+
+    case 'week':
+      panelNode = (
+        <WeekPanel
           {...pickerProps}
           onSelect={date => {
             setViewDate(date);
