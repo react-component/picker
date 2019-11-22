@@ -19,7 +19,7 @@ export interface PickerProps<DateType> {
   value?: DateType;
   open?: boolean;
   format?: string | string[];
-  onChange?: (value: DateType) => void;
+  onChange?: (value: DateType, dateString: string) => void;
   onOpenChange?: (open: boolean) => void;
 }
 
@@ -122,7 +122,10 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     }
 
     if (onChange && !isEqual(generateConfig, mergedValue, newValue)) {
-      onChange(newValue);
+      onChange(
+        newValue,
+        generateConfig.locale.format(locale.locale, newValue, formatList[0]),
+      );
     }
   };
 

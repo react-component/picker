@@ -13,7 +13,7 @@ export interface DatePanelProps<DateType> extends PanelSharedProps<DateType> {
 
   // Used for week panel
   panelName?: string;
-  prefixColumn?: () => React.ReactNode;
+  prefixColumn?: (date: DateType) => React.ReactNode;
 }
 
 function DatePanel<DateType>(props: DatePanelProps<DateType>) {

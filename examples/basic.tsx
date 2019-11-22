@@ -8,8 +8,8 @@ import enUS from '../src/locale/en_US';
 import jaJP from '../src/locale/ja_JP';
 import '../assets/index.less';
 
-const defaultValue = moment('2019-09-03 05:02:03');
-// const defaultValue = moment('2019-11-28 01:02:03');
+// const defaultValue = moment('2019-09-03 05:02:03');
+const defaultValue = moment('2019-11-28 01:02:03');
 
 const generateConfig: GenerateConfig<Moment> = {
   // get
@@ -87,6 +87,11 @@ const generateConfig: GenerateConfig<Moment> = {
       const date = moment().locale(locale);
       return date.localeData().firstDayOfWeek();
     },
+    getWeek: (locale, date) => {
+      const clone = date.clone();
+      clone.locale(locale);
+      return clone.week();
+    },
     getShortWeekDays: locale => {
       const date = moment().locale(locale);
       return date.localeData().weekdaysMin();
@@ -119,8 +124,8 @@ export default () => {
     console.log('Select:', newValue);
   };
 
-  const onChange = (newValue: Moment) => {
-    console.log('Change:', newValue);
+  const onChange = (newValue: Moment, formatString: string) => {
+    console.log('Change:', newValue, formatString);
     setValue(newValue);
   };
 
@@ -149,8 +154,14 @@ export default () => {
             locale={enUS}
           />
         </div>
+
         <div style={{ margin: '0 8px' }}>
-          <h3>Week</h3>
+          <h3>Week CN</h3>
+          <PickerPanel<Moment> {...sharedProps} locale={zhCN} mode="week" />
+        </div>
+
+        <div style={{ margin: '0 8px' }}>
+          <h3>Week US</h3>
           <PickerPanel<Moment> {...sharedProps} locale={enUS} mode="week" />
         </div>
 

@@ -19,7 +19,7 @@ export interface DateBodyProps<DateType> {
   onSelect: (value: DateType) => void;
 
   // Used for week panel
-  prefixColumn?: () => React.ReactNode;
+  prefixColumn?: (date: DateType) => React.ReactNode;
 }
 
 function DateBody<DateType>({
@@ -44,6 +44,9 @@ function DateBody<DateType>({
       ? generateConfig.locale.getShortWeekDays(locale.locale)
       : []);
 
+  if (prefixColumn) {
+    headerCells.push(<th key="empty" />);
+  }
   for (let i = 0; i < WEEK_DAY_COUNT; i += 1) {
     headerCells.push(
       <th key={i}>{weekDaysLocale[(i + weekFirstDay) % WEEK_DAY_COUNT]}</th>,
@@ -56,15 +59,14 @@ function DateBody<DateType>({
 
   for (let y = 0; y < rowCount; y += 1) {
     const row: React.ReactNode[] = [];
+    const startWeekDate = generateConfig.addDate(startDate, y * WEEK_DAY_COUNT);
+
     if (prefixColumn) {
-      row.push(prefixColumn());
+      row.push(prefixColumn(startWeekDate));
     }
 
     for (let x = 0; x < WEEK_DAY_COUNT; x += 1) {
-      const currentDate = generateConfig.addDate(
-        startDate,
-        y * WEEK_DAY_COUNT + x,
-      );
+      const currentDate = generateConfig.addDate(startWeekDate, x);
       row.push(
         <td
           key={`${x}-${y}`}
