@@ -51,6 +51,7 @@ export type PanelMode =
 export interface PanelRefProps {
   onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => boolean;
   onBlur?: React.FocusEventHandler<HTMLElement>;
+  onClose?: () => void;
 }
 
 export interface PanelSharedProps<DateType> {

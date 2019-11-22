@@ -123,6 +123,11 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   if (operationRef) {
     operationRef.current = {
       onKeyDown: onInternalKeyDown,
+      onClose: () => {
+        if (panelRef.current && panelRef.current.onClose) {
+          panelRef.current.onClose();
+        }
+      },
     };
   }
 

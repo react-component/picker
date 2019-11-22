@@ -115,6 +115,10 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     if (onOpenChange) {
       onOpenChange(newOpen);
     }
+
+    if (!newOpen && operationRef.current && operationRef.current.onClose) {
+      operationRef.current.onClose();
+    }
   };
 
   const triggerChange = (newValue: DateType) => {
@@ -190,7 +194,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     setTyping(true);
   };
 
-  const onInputBlur = () => {
+  const onInputBlur: React.FocusEventHandler<HTMLInputElement> = () => {
     setInnerOpen(false);
     setInnerValue(selectedValue);
     triggerChange(selectedValue);

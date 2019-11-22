@@ -29,6 +29,13 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
     return nextActivePanel;
   }
 
+  const onBlur = (e?: React.FocusEvent<HTMLElement>) => {
+    if (timeOperationRef.current.onBlur) {
+      timeOperationRef.current.onBlur(e!);
+    }
+    setActivePanel(null);
+  };
+
   operationRef.current = {
     onKeyDown: event => {
       if (event.which === KeyCode.TAB) {
@@ -62,12 +69,8 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
 
       return false;
     },
-    onBlur: e => {
-      if (timeOperationRef.current.onBlur) {
-        timeOperationRef.current.onBlur(e);
-      }
-      setActivePanel(null);
-    },
+    onBlur,
+    onClose: onBlur,
   };
 
   return (
