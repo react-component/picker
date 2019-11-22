@@ -212,6 +212,7 @@ export default () => {
             locale={zhCN}
             mode="week"
             format="YYYY-Wo"
+            allowClear
           />
         </div>
       </div>

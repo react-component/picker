@@ -14,13 +14,15 @@ export interface PickerProps<DateType> {
   prefixCls?: string;
   generateConfig: GenerateConfig<DateType>;
   locale: Locale;
+  allowClear?: boolean;
   autoFocus?: boolean;
   showTime?: boolean | SharedTimeProps;
   value?: DateType;
   open?: boolean;
   format?: string | string[];
   mode?: PanelMode;
-  onChange?: (value: DateType, dateString: string) => void;
+  clearIcon?: React.ReactNode;
+  onChange?: (value: DateType | null, dateString: string) => void;
   onOpenChange?: (open: boolean) => void;
 }
 
@@ -29,11 +31,13 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     prefixCls = 'rc-picker',
     generateConfig,
     locale,
+    allowClear,
     autoFocus,
     showTime,
     format = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
     value,
     open,
+    clearIcon,
     onChange,
     onOpenChange,
   } = props;
@@ -59,9 +63,11 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   const [typing, setTyping] = React.useState(false);
 
   /** Similar as `setTextValue` but accept `DateType` and convert into string */
-  const setDateText = (date: DateType) => {
+  const setDateText = (date: DateType | null) => {
     setTextValue(
-      generateConfig.locale.format(locale.locale, date, formatList[0]),
+      date === null
+        ? ''
+        : generateConfig.locale.format(locale.locale, date, formatList[0]),
     );
   };
 
@@ -75,7 +81,11 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   >(null);
 
   // ============================= Value =============================
-  const isSameTextDate = (text: string, date: DateType) => {
+  const isSameTextDate = (text: string, date: DateType | null) => {
+    if (date === null) {
+      return !text;
+    }
+
     const inputDate = generateConfig.locale.parse(
       locale.locale,
       text,
@@ -121,7 +131,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
-  const triggerChange = (newValue: DateType) => {
+  const triggerChange = (newValue: DateType | null) => {
     if (!isSameTextDate(textValue, newValue)) {
       setDateText(newValue);
     }
@@ -129,7 +139,9 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     if (onChange && !isEqual(generateConfig, mergedValue, newValue)) {
       onChange(
         newValue,
-        generateConfig.locale.format(locale.locale, newValue, formatList[0]),
+        newValue
+          ? generateConfig.locale.format(locale.locale, newValue, formatList[0])
+          : '',
       );
     }
   };
@@ -232,6 +244,21 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     />
   );
 
+  let clearNode: React.ReactNode;
+  if (allowClear && mergedValue) {
+    clearNode = (
+      <span
+        onClick={e => {
+          e.stopPropagation();
+          triggerChange(null);
+        }}
+        className={`${prefixCls}-clear`}
+      >
+        {clearIcon || <span className={`${prefixCls}-clear-btn`} />}
+      </span>
+    );
+  }
+
   return (
     <PanelContext.Provider
       value={{
@@ -244,16 +271,19 @@ function Picker<DateType>(props: PickerProps<DateType>) {
           popupElement={panel}
           prefixCls={prefixCls}
         >
-          <input
-            readOnly={!typing}
-            onMouseDown={onInputMouseDown}
-            onFocus={onInputFocus}
-            onBlur={onInputBlur}
-            value={textValue}
-            onChange={onInputChange}
-            onKeyDown={onInputKeyDown}
-            autoFocus={autoFocus}
-          />
+          <div className={`${prefixCls}-input`}>
+            <input
+              readOnly={!typing}
+              onMouseDown={onInputMouseDown}
+              onFocus={onInputFocus}
+              onBlur={onInputBlur}
+              value={textValue}
+              onChange={onInputChange}
+              onKeyDown={onInputKeyDown}
+              autoFocus={autoFocus}
+            />
+            {clearNode}
+          </div>
         </PickerTrigger>
       </div>
     </PanelContext.Provider>

@@ -187,6 +187,22 @@
     }
   }
 
+  // ======================== Input =========================
+  &-input {
+    position: relative;
+  }
+
+  &-clear {
+    position: absolute;
+    right: 4px;
+    top: 0;
+    cursor: pointer;
+
+    &-btn::after {
+      content: '×';
+    }
+  }
+
   // ======================= Dropdown =======================
   &-dropdown {
     position: absolute;
