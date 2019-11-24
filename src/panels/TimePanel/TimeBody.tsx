@@ -201,7 +201,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
 
   // 12 Hours
   let PMIndex = -1;
-  if (typeof PMIndex === 'boolean') {
+  if (typeof isPM === 'boolean') {
     PMIndex = isPM ? 1 : 0;
   }
 
