@@ -27,16 +27,20 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
     onKeyDown: event =>
       createKeyDownHandler(event, {
         onLeftRight: diff => {
-          onSelect(generateConfig.addYear(value, diff));
+          onSelect(generateConfig.addYear(value || viewDate, diff));
         },
         onCtrlLeftRight: diff => {
-          onSelect(generateConfig.addYear(value, diff * YEAR_DECADE_COUNT));
+          onSelect(
+            generateConfig.addYear(value || viewDate, diff * YEAR_DECADE_COUNT),
+          );
         },
         onUpDown: diff => {
-          onSelect(generateConfig.addYear(value, diff * YEAR_COL_COUNT));
+          onSelect(
+            generateConfig.addYear(value || viewDate, diff * YEAR_COL_COUNT),
+          );
         },
         onEnter: () => {
-          onPanelChange('month', value);
+          onPanelChange('month', value || viewDate);
         },
       }),
   };
@@ -58,7 +62,7 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
           onDecadeChange(1);
         }}
         onDecadeClick={() => {
-          onPanelChange('decade', value);
+          onPanelChange('decade', value || viewDate);
         }}
       />
       <YearBody

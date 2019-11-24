@@ -18,7 +18,7 @@ export interface DateBodyPassProps<DateType> {
 export interface DateBodyProps<DateType> extends DateBodyPassProps<DateType> {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
-  value: DateType;
+  value?: DateType | null;
   viewDate: DateType;
   locale: Locale;
   rowCount: number;

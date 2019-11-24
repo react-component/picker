@@ -6,7 +6,6 @@ import { GenerateConfig } from '../../generate';
 export interface MonthHeaderProps<DateType> {
   prefixCls: string;
   viewDate: DateType;
-  value: DateType;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
 

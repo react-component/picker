@@ -49,19 +49,26 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   const formatList = toArray(format);
 
   // Real value
-  const [innerValue, setInnerValue] = React.useState<DateType>(
-    () => value || generateConfig.getNow(),
+  const [innerValue, setInnerValue] = React.useState<DateType | null>(
+    () => ('value' in props ? value : generateConfig.getNow()) || null,
   );
-  const mergedValue = value || innerValue;
+  const mergedValue = ('value' in props ? value : innerValue) || null;
 
   // Selected value
-  const [selectedValue, setInternalSelectedValue] = React.useState<DateType>(
-    mergedValue,
-  );
+  const [
+    selectedValue,
+    setInternalSelectedValue,
+  ] = React.useState<DateType | null>(mergedValue);
 
   // Text
   const [textValue, setTextValue] = React.useState<string>(
-    generateConfig.locale.format(locale.locale, selectedValue, formatList[0]),
+    selectedValue
+      ? generateConfig.locale.format(
+          locale.locale,
+          selectedValue,
+          formatList[0],
+        )
+      : '',
   );
   const [typing, setTyping] = React.useState(false);
 
@@ -98,7 +105,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   };
 
   // =========================== Formatter ===========================
-  const setSelectedValue = (newDate: DateType) => {
+  const setSelectedValue = (newDate: DateType | null) => {
     setDateText(newDate);
     setInternalSelectedValue(newDate);
   };

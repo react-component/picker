@@ -6,7 +6,6 @@ import { DECADE_DISTANCE_COUNT } from '.';
 export interface YearHeaderProps<DateType> {
   prefixCls: string;
   viewDate: DateType;
-  value: DateType;
   generateConfig: GenerateConfig<DateType>;
 
   onPrevDecades: () => void;

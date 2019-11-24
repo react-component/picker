@@ -31,6 +31,7 @@ const countBoolean = (boolList: (boolean | undefined)[]) =>
 
 function TimePanel<DateType>(props: TimePanelProps<DateType>) {
   const {
+    generateConfig,
     format = 'HH:mm:ss',
     prefixCls,
     active,
@@ -70,7 +71,7 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
           }
         },
         onEnter: () => {
-          onSelect(value);
+          onSelect(value || generateConfig.getNow());
           setActiveColumnIndex(-1);
         },
       }),

@@ -5,7 +5,7 @@ import { GenerateConfig } from '../../generate';
 
 export interface TimeHeaderProps<DateType> {
   prefixCls: string;
-  value: DateType;
+  value?: DateType | null;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
   format: string;

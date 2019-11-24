@@ -12,10 +12,12 @@ export function isNullEqual<T>(value1: T, value2: T): boolean | undefined {
   return undefined;
 }
 
+type NullableDateType<DateType> = DateType | null | undefined;
+
 export function isSameMonth<DateType>(
   generateConfig: GenerateConfig<DateType>,
-  month1: DateType | null,
-  month2: DateType | null,
+  month1: NullableDateType<DateType>,
+  month2: NullableDateType<DateType>,
 ) {
   const equal = isNullEqual(month1, month2);
   if (typeof equal === 'boolean') {
@@ -30,8 +32,8 @@ export function isSameMonth<DateType>(
 
 export function isSameDate<DateType>(
   generateConfig: GenerateConfig<DateType>,
-  date1?: DateType | null,
-  date2?: DateType | null,
+  date1: NullableDateType<DateType>,
+  date2: NullableDateType<DateType>,
 ) {
   const equal = isNullEqual(date1, date2);
   if (typeof equal === 'boolean') {
@@ -47,8 +49,8 @@ export function isSameDate<DateType>(
 
 export function isSameTime<DateType>(
   generateConfig: GenerateConfig<DateType>,
-  time1?: DateType | null,
-  time2?: DateType | null,
+  time1: NullableDateType<DateType>,
+  time2: NullableDateType<DateType>,
 ) {
   const equal = isNullEqual(time1, time2);
   if (typeof equal === 'boolean') {
@@ -65,8 +67,8 @@ export function isSameTime<DateType>(
 export function isSameWeek<DateType>(
   generateConfig: GenerateConfig<DateType>,
   locale: string,
-  date1?: DateType | null,
-  date2?: DateType | null,
+  date1: NullableDateType<DateType>,
+  date2: NullableDateType<DateType>,
 ) {
   const equal = isNullEqual(date1, date2);
   if (typeof equal === 'boolean') {
@@ -81,8 +83,8 @@ export function isSameWeek<DateType>(
 
 export function isEqual<DateType>(
   generateConfig: GenerateConfig<DateType>,
-  value1?: DateType | null,
-  value2?: DateType | null,
+  value1: NullableDateType<DateType>,
+  value2: NullableDateType<DateType>,
 ) {
   return (
     isSameDate(generateConfig, value1, value2) &&

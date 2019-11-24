@@ -57,7 +57,7 @@ export interface PanelRefProps {
 export interface PanelSharedProps<DateType> {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
-  value: DateType;
+  value?: DateType | null;
   /**
    * @private Set another value in the panel to display ranged value style.
    * Panel only has one value, this is only style effect.

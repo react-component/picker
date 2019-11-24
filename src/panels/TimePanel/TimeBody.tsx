@@ -30,7 +30,7 @@ export interface TimeBodyProps<DateType> extends SharedTimeProps {
   prefixCls: string;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
-  value: DateType;
+  value?: DateType | null;
   onSelect: (value: DateType) => void;
   activeColumnIndex: number;
   operationRef: React.MutableRefObject<BodyOperationRef | undefined>;

@@ -66,8 +66,8 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   );
 
   // Inner value
-  const [innerValue, setInnerValue] = React.useState(
-    () => value || generateConfig.getNow(),
+  const [innerValue, setInnerValue] = React.useState(() =>
+    ('value' in props ? value : generateConfig.getNow()),
   );
 
   const mergedValue = 'value' in props ? value : innerValue;

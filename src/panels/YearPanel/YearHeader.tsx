@@ -6,7 +6,7 @@ import { YEAR_DECADE_COUNT } from '.';
 export interface YearHeaderProps<DateType> {
   prefixCls: string;
   viewDate: DateType;
-  value: DateType;
+  value?: DateType | null;
   generateConfig: GenerateConfig<DateType>;
 
   onPrevDecade: () => void;

@@ -39,16 +39,18 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
     onKeyDown: event =>
       createKeyDownHandler(event, {
         onLeftRight: diff => {
-          onSelect(generateConfig.addDate(value, diff));
+          onSelect(generateConfig.addDate(value || viewDate, diff));
         },
         onCtrlLeftRight: diff => {
-          onSelect(generateConfig.addYear(value, diff));
+          onSelect(generateConfig.addYear(value || viewDate, diff));
         },
         onUpDown: diff => {
-          onSelect(generateConfig.addDate(value, diff * WEEK_DAY_COUNT));
+          onSelect(
+            generateConfig.addDate(value || viewDate, diff * WEEK_DAY_COUNT),
+          );
         },
         onPageUpDown: diff => {
-          onSelect(generateConfig.addMonth(value, diff));
+          onSelect(generateConfig.addMonth(value || viewDate, diff));
         },
         ...keyboardConfig,
       }),
@@ -87,10 +89,10 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
           onMonthChange(1);
         }}
         onMonthClick={() => {
-          onPanelChange('month', value);
+          onPanelChange('month', value || viewDate);
         }}
         onYearClick={() => {
-          onPanelChange('year', value);
+          onPanelChange('year', value || viewDate);
         }}
       />
       <DateBody
