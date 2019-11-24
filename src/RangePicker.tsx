@@ -9,16 +9,17 @@ export interface RangePickerProps<DateType>
 }
 
 function RangePicker<DateType>(props: RangePickerProps<DateType>) {
-  const { value, generateConfig } = props;
+  const { prefixCls = 'rc-picker', value, generateConfig } = props;
 
   const [innerValue] = React.useState<[DateType | null, DateType | null]>(
     () => value || [generateConfig.getNow(), generateConfig.getNow()],
   );
 
   return (
-    <div>
-      <Picker {...props} value={innerValue[0]} />
-      <Picker {...props} value={innerValue[1]} />
+    <div className={`${prefixCls}-range`}>
+      <Picker {...props} prefixCls={prefixCls} value={innerValue[0]} />
+      ~
+      <Picker {...props} prefixCls={prefixCls} value={innerValue[1]} />
     </div>
   );
 }

@@ -275,7 +275,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
         operationRef,
       }}
     >
-      <div>
+      <div className={prefixCls}>
         <PickerTrigger
           visible={mergedOpen}
           popupElement={panel}

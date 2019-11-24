@@ -1,6 +1,8 @@
 @prefix-cls: rc-picker;
 
 .@{prefix-cls} {
+  display: inline;
+
   &-panel {
     border: 1px solid #666;
     background: rgb(255, 240, 255);
@@ -211,5 +213,12 @@
     &-hidden {
       display: none;
     }
+  }
+
+  // ========================================================
+  // =                     Range Picker                     =
+  // ========================================================
+  &-range {
+    display: inline-flex;
   }
 }
