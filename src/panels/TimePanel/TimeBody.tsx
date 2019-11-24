@@ -64,10 +64,32 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   }[] = [];
   const contentPrefixCls = `${prefixCls}-content`;
 
-  let isAM = false;
-  let hour = generateConfig.getHour(value);
-  const minute = generateConfig.getMinute(value);
-  const second = generateConfig.getSecond(value);
+  let isPM: boolean | undefined;
+  let hour = value ? generateConfig.getHour(value) : -1;
+  const minute = value ? generateConfig.getMinute(value) : -1;
+  const second = value ? generateConfig.getSecond(value) : -1;
+
+  const setTime = (
+    isNewPM: boolean | undefined,
+    newHour: number,
+    newMinute: number,
+    newSecond: number,
+  ) => {
+    let newDate = value || generateConfig.getNow();
+
+    const mergedHour = Math.max(0, newHour);
+    const mergedMinute = Math.max(0, newMinute);
+    const mergedSecond = Math.max(0, newSecond);
+
+    newDate = generateConfig.setSecond(newDate, mergedSecond);
+    newDate = generateConfig.setMinute(newDate, mergedMinute);
+    newDate = generateConfig.setHour(
+      newDate,
+      !use12Hours || !isNewPM ? mergedHour : mergedHour + 12,
+    );
+
+    return newDate;
+  };
 
   // ========================= Unit =========================
   const hours = generateUnits(
@@ -78,8 +100,8 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   );
 
   // Should additional logic to handle 12 hours
-  if (use12Hours) {
-    isAM = hour < 12;
+  if (use12Hours && hour !== -1) {
+    isPM = hour >= 12;
     hour %= 12;
     hours[0].label = '12';
   }
@@ -151,11 +173,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     hour,
     hours,
     num => {
-      let newHour = num;
-      if (use12Hours) {
-        newHour += (isAM ? 0 : 1) * 12;
-      }
-      onSelect(generateConfig.setHour(value, newHour));
+      onSelect(setTime(isPM, num, minute, second));
     },
   );
 
@@ -166,7 +184,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     minute,
     minutes,
     num => {
-      onSelect(generateConfig.setMinute(value, num));
+      onSelect(setTime(isPM, hour, num, second));
     },
   );
 
@@ -177,18 +195,23 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     second,
     seconds,
     num => {
-      onSelect(generateConfig.setSecond(value, num));
+      onSelect(setTime(isPM, hour, minute, num));
     },
   );
 
   // 12 Hours
+  let PMIndex = -1;
+  if (typeof PMIndex === 'boolean') {
+    PMIndex = isPM ? 1 : 0;
+  }
+
   addColumnNode(
     use12Hours === true,
     <TimeUnitColumn key="12hours" prefixCls={prefixCls} />,
-    isAM ? 0 : 1,
+    PMIndex,
     [{ label: 'AM', value: 0 }, { label: 'PM', value: 1 }],
     num => {
-      onSelect(generateConfig.setHour(value, num * 12 + hour));
+      onSelect(setTime(!!num, hour, minute, second));
     },
   );
 

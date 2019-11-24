@@ -11,7 +11,7 @@ export interface MonthBodyProps<DateType> {
   prefixCls: string;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
-  value: DateType;
+  value: DateType | null;
   viewDate: DateType;
   onSelect: (value: DateType) => void;
 }

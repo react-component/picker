@@ -15,7 +15,7 @@ import { Locale, PanelMode, PanelRefProps, GetNextMode } from './interface';
 import { isEqual } from './utils/dateUtil';
 import PanelContext from './PanelContext';
 
-export interface PickerProps<DateType> {
+export interface PickerPanelProps<DateType> {
   className?: string;
   style?: React.CSSProperties;
   prefixCls?: string;
@@ -36,7 +36,7 @@ export interface PickerProps<DateType> {
   getNextMode?: GetNextMode;
 }
 
-function Picker<DateType>(props: PickerProps<DateType>) {
+function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
     className,
@@ -70,7 +70,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     () => value || generateConfig.getNow(),
   );
 
-  const mergedValue = value || innerValue || generateConfig.getNow();
+  const mergedValue = 'value' in props ? value : innerValue;
 
   // Panel control
   const getInternalNextMode = (
@@ -278,5 +278,5 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   );
 }
 
-export default Picker;
+export default PickerPanel;
 /* eslint-enable */
