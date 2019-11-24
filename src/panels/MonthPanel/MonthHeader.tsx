@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Header from '../Header';
 import { Locale } from '../../interface';
-import { GenerateConfig } from '../../utils/generateUtil';
+import { GenerateConfig } from '../../generate';
 
 export interface MonthHeaderProps<DateType> {
   prefixCls: string;

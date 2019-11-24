@@ -1,4 +1,4 @@
-import { GenerateConfig } from './generateUtil';
+import { GenerateConfig } from '../generate';
 
 export const WEEK_DAY_COUNT = 7;
 

@@ -1,4 +1,4 @@
-import { GenerateConfig } from './utils/generateUtil';
+import { GenerateConfig } from './generate';
 
 export interface Locale {
   locale: string;
@@ -58,6 +58,11 @@ export interface PanelSharedProps<DateType> {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
   value: DateType;
+  /**
+   * @private Set another value in the panel to display ranged value style.
+   * Panel only has one value, this is only style effect.
+   */
+  rangedValue?: DateType;
   viewDate: DateType;
   /** [Legacy] Set default display picker view date */
   defaultPickerValue?: DateType;

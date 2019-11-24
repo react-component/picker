@@ -10,7 +10,7 @@ import WeekPanel from './panels/WeekPanel';
 import MonthPanel from './panels/MonthPanel';
 import YearPanel from './panels/YearPanel';
 import DecadePanel from './panels/DecadePanel';
-import { GenerateConfig } from './utils/generateUtil';
+import { GenerateConfig } from './generate';
 import { Locale, PanelMode, PanelRefProps, GetNextMode } from './interface';
 import { isEqual } from './utils/dateUtil';
 import PanelContext from './PanelContext';

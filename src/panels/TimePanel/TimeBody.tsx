@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GenerateConfig } from '../../utils/generateUtil';
+import { GenerateConfig } from '../../generate';
 import { Locale } from '../../interface';
 import TimeUnitColumn, { Unit } from './TimeUnitColumn';
 import { leftPad } from '../../utils/miscUtil';

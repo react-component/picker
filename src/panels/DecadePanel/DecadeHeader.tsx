@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Header from '../Header';
-import { GenerateConfig } from '../../utils/generateUtil';
+import { GenerateConfig } from '../../generate';
 import { DECADE_DISTANCE_COUNT } from '.';
 
 export interface YearHeaderProps<DateType> {

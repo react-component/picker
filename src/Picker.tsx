@@ -3,7 +3,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import PickerPanel from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
-import { GenerateConfig } from './utils/generateUtil';
+import { GenerateConfig } from './generate';
 import { Locale, PanelMode, GetNextMode } from './interface';
 import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { GenerateConfig } from '../../utils/generateUtil';
+import { GenerateConfig } from '../../generate';
 import {
   WEEK_DAY_COUNT,
   getWeekStartDate,

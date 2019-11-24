@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { GenerateConfig } from '../../utils/generateUtil';
+import { GenerateConfig } from '../../generate';
 import { Locale } from '../../interface';
 import { isSameMonth } from '../../utils/dateUtil';
 

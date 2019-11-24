@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { GenerateConfig } from '../../utils/generateUtil';
+import { GenerateConfig } from '../../generate';
 import { DECADE_DISTANCE_COUNT, DECADE_UNIT_DIFF } from '.';
 
 const DECADE_COL_COUNT = 3;
