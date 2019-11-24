@@ -74,3 +74,8 @@ export interface PanelSharedProps<DateType> {
   onViewDateChange: (value: DateType) => void;
   onPanelChange: (mode: PanelMode, viewValue: DateType) => void;
 }
+
+export type GetNextMode = (
+  nextMode: PanelMode,
+  currentMode: PanelMode,
+) => PanelMode;

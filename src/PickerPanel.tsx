@@ -11,7 +11,7 @@ import MonthPanel from './panels/MonthPanel';
 import YearPanel from './panels/YearPanel';
 import DecadePanel from './panels/DecadePanel';
 import { GenerateConfig } from './utils/generateUtil';
-import { Locale, PanelMode, PanelRefProps } from './interface';
+import { Locale, PanelMode, PanelRefProps, GetNextMode } from './interface';
 import { isEqual } from './utils/dateUtil';
 import PanelContext from './PanelContext';
 
@@ -20,7 +20,7 @@ export interface PickerProps<DateType> {
   style?: React.CSSProperties;
   prefixCls?: string;
   generateConfig: GenerateConfig<DateType>;
-  value: DateType;
+  value?: DateType | null;
   /** [Legacy] Set default display picker view date */
   defaultPickerValue?: DateType;
   locale: Locale;
@@ -31,6 +31,9 @@ export interface PickerProps<DateType> {
   onChange?: (value: DateType) => void;
   onPanelChange?: (value: DateType, mode: PanelMode) => void;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+
+  /** @private Internal usage, do not use in production mode!!! */
+  getNextMode?: GetNextMode;
 }
 
 function Picker<DateType>(props: PickerProps<DateType>) {
@@ -44,6 +47,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     mode,
     tabIndex = 0,
     showTime,
+    getNextMode,
     onSelect,
     onChange,
     onPanelChange,
@@ -58,11 +62,25 @@ function Picker<DateType>(props: PickerProps<DateType>) {
 
   // View date control
   const [viewDate, setViewDate] = React.useState(
-    defaultPickerValue || value || generateConfig.getNow(),
+    () => defaultPickerValue || value || generateConfig.getNow(),
   );
 
+  // Inner value
+  const [innerValue, setInnerValue] = React.useState(
+    () => value || generateConfig.getNow(),
+  );
+
+  const mergedValue = value || innerValue || generateConfig.getNow();
+
   // Panel control
-  const getNextMode = (nextMode: PanelMode): PanelMode => {
+  const getInternalNextMode = (
+    nextMode: PanelMode,
+    currentMode: PanelMode,
+  ): PanelMode => {
+    if (getNextMode) {
+      return getNextMode(nextMode, currentMode);
+    }
+
     if (nextMode === 'date' && showTime) {
       return 'datetime';
     }
@@ -70,12 +88,12 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   };
 
   const [innerMode, setInnerMode] = React.useState<PanelMode>(
-    getNextMode('date'),
+    getInternalNextMode('date', mode || 'date'),
   );
   const mergedMode: PanelMode = mode || innerMode;
 
   const onInternalPanelChange = (newMode: PanelMode, viewValue: DateType) => {
-    const nextMode = getNextMode(newMode);
+    const nextMode = getInternalNextMode(newMode, mergedMode);
     setInnerMode(nextMode);
 
     if (onPanelChange) {
@@ -84,11 +102,13 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   };
 
   const triggerSelect = (date: DateType) => {
+    setInnerValue(date);
+
     if (onSelect) {
       onSelect(date);
     }
 
-    if (onChange && !isEqual(generateConfig, date, value)) {
+    if (onChange && !isEqual(generateConfig, date, mergedValue)) {
       onChange(date);
     }
   };
@@ -150,9 +170,11 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     operationRef: panelRef,
     prefixCls,
     viewDate,
+    value: mergedValue,
     onViewDateChange: setViewDate,
     onPanelChange: onInternalPanelChange,
   };
+  delete pickerProps.getNextMode;
   delete pickerProps.onSelect;
 
   switch (mergedMode) {

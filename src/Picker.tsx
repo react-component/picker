@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import PickerPanel from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
 import { GenerateConfig } from './utils/generateUtil';
-import { Locale, PanelMode } from './interface';
+import { Locale, PanelMode, GetNextMode } from './interface';
 import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
@@ -17,13 +17,16 @@ export interface PickerProps<DateType> {
   allowClear?: boolean;
   autoFocus?: boolean;
   showTime?: boolean | SharedTimeProps;
-  value?: DateType;
+  value?: DateType | null;
   open?: boolean;
   format?: string | string[];
   mode?: PanelMode;
   clearIcon?: React.ReactNode;
   onChange?: (value: DateType | null, dateString: string) => void;
   onOpenChange?: (open: boolean) => void;
+
+  /** @private Internal usage, do not use in production mode!!! */
+  getNextMode?: GetNextMode;
 }
 
 function Picker<DateType>(props: PickerProps<DateType>) {

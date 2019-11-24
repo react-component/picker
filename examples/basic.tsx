@@ -7,6 +7,7 @@ import zhCN from '../src/locale/zh_CN';
 import enUS from '../src/locale/en_US';
 import jaJP from '../src/locale/ja_JP';
 import '../assets/index.less';
+import { PanelMode } from '../src/interface';
 
 // const defaultValue = moment('2019-09-03 05:02:03');
 const defaultValue = moment('2019-11-28 01:02:03');
@@ -125,14 +126,28 @@ const generateConfig: GenerateConfig<Moment> = {
   },
 };
 
+const getMonthNextMode = (next: PanelMode): PanelMode => {
+  if (next === 'date') {
+    return 'month';
+  }
+  return next;
+};
+
+const getWeekNextMode = (next: PanelMode): PanelMode => {
+  if (next === 'date') {
+    return 'week';
+  }
+  return next;
+};
+
 export default () => {
-  const [value, setValue] = React.useState(defaultValue);
+  const [value, setValue] = React.useState<Moment | null>(defaultValue);
 
   const onSelect = (newValue: Moment) => {
     console.log('Select:', newValue);
   };
 
-  const onChange = (newValue: Moment, formatString?: string) => {
+  const onChange = (newValue: Moment | null, formatString?: string) => {
     console.log('Change:', newValue, formatString);
     setValue(newValue);
   };
@@ -146,9 +161,9 @@ export default () => {
 
   return (
     <div>
-      <h1>Value: {value.format('YYYY-MM-DD HH:mm:ss')}</h1>
+      <h1>Value: {value ? value.format('YYYY-MM-DD HH:mm:ss') : 'null'}</h1>
 
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
           <PickerPanel<Moment> {...sharedProps} locale={zhCN} />
@@ -164,13 +179,30 @@ export default () => {
         </div>
 
         <div style={{ margin: '0 8px' }}>
-          <h3>Week CN</h3>
-          <PickerPanel<Moment> {...sharedProps} locale={zhCN} mode="week" />
+          <h3>Week Picker CN</h3>
+          <PickerPanel<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            getNextMode={getWeekNextMode}
+          />
         </div>
 
         <div style={{ margin: '0 8px' }}>
-          <h3>Week US</h3>
-          <PickerPanel<Moment> {...sharedProps} locale={enUS} mode="week" />
+          <h3>Month Picker</h3>
+          <PickerPanel<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            getNextMode={getMonthNextMode}
+          />
+        </div>
+
+        <div style={{ margin: '0 8px' }}>
+          <h3>Week Picker US</h3>
+          <PickerPanel<Moment>
+            {...sharedProps}
+            locale={enUS}
+            getNextMode={getWeekNextMode}
+          />
         </div>
 
         <div style={{ margin: '0 8px' }}>
@@ -210,9 +242,9 @@ export default () => {
           <Picker<Moment>
             {...sharedProps}
             locale={zhCN}
-            mode="week"
             format="YYYY-Wo"
             allowClear
+            getNextMode={getWeekNextMode}
           />
         </div>
       </div>
