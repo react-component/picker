@@ -22,6 +22,7 @@ import { isEqual } from './utils/dateUtil';
 import PanelContext from './PanelContext';
 import { DateRender } from './panels/DatePanel/DateBody';
 import { PickerModeMap } from './utils/uiUtil';
+import { MonthCellRender } from './panels/MonthPanel/MonthBody';
 
 export interface PickerPanelProps<DateType> {
   prefixCls?: string;
@@ -48,6 +49,7 @@ export interface PickerPanelProps<DateType> {
 
   // Render
   dateRender?: DateRender<DateType>;
+  monthCellContentRender?: MonthCellRender<DateType>;
   renderExtraFooter?: (mode: PanelMode) => React.ReactNode;
 
   // Event
@@ -94,7 +96,8 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const [innerValue, setInnerValue] = React.useState(() => {
     if (value !== undefined) {
       return value;
-    } if (defaultValue !== undefined) {
+    }
+    if (defaultValue !== undefined) {
       return defaultValue;
     }
     return null;
@@ -124,7 +127,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     const nextMode = getInternalNextMode(newMode);
     setInnerMode(nextMode);
 
-    if (onPanelChange) {
+    if (onPanelChange && mergedMode !== nextMode) {
       onPanelChange(viewValue, nextMode);
     }
   };

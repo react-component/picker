@@ -7,6 +7,11 @@ import { isSameMonth } from '../../utils/dateUtil';
 export const MONTH_COL_COUNT = 3;
 const MONTH_ROW_COUNT = 4;
 
+export type MonthCellRender<DateType> = (
+  currentDate: DateType,
+  locale: Locale,
+) => React.ReactNode;
+
 export interface MonthBodyProps<DateType> {
   prefixCls: string;
   locale: Locale;
@@ -14,6 +19,7 @@ export interface MonthBodyProps<DateType> {
   value?: DateType | null;
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
+  monthCellContentRender?: MonthCellRender<DateType>;
   onSelect: (value: DateType) => void;
 }
 
@@ -24,6 +30,7 @@ function MonthBody<DateType>({
   viewDate,
   generateConfig,
   disabledDate,
+  monthCellContentRender,
   onSelect,
 }: MonthBodyProps<DateType>) {
   const monthPrefixCls = `${prefixCls}-cell`;
@@ -64,15 +71,19 @@ function MonthBody<DateType>({
             onSelect(monthDate);
           }}
         >
-          <div className={`${monthPrefixCls}-inner`}>
-            {locale.monthFormat
-              ? generateConfig.locale.format(
-                  locale.locale,
-                  monthDate,
-                  locale.monthFormat,
-                )
-              : monthsLocale[diffMonth]}
-          </div>
+          {monthCellContentRender ? (
+            monthCellContentRender(monthDate, locale)
+          ) : (
+            <div className={`${monthPrefixCls}-inner`}>
+              {locale.monthFormat
+                ? generateConfig.locale.format(
+                    locale.locale,
+                    monthDate,
+                    locale.monthFormat,
+                  )
+                : monthsLocale[diffMonth]}
+            </div>
+          )}
         </td>,
       );
     }
