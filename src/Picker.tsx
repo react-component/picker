@@ -24,6 +24,7 @@ export interface PickerProps<DateType> {
   defaultValue?: NullableDateType<DateType>;
   /** [Legacy] Set default display picker view date */
   defaultPickerValue?: DateType;
+  disabled?: boolean;
   open?: boolean;
   format?: string | string[];
   mode?: PanelMode;
@@ -51,6 +52,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     defaultValue,
     open,
     clearIcon,
+    disabled,
     onChange,
     onOpenChange,
   } = props;
@@ -99,7 +101,12 @@ function Picker<DateType>(props: PickerProps<DateType>) {
 
   // Trigger
   const [innerOpen, setInnerOpen] = React.useState<boolean>(false);
-  const mergedOpen = typeof open === 'boolean' ? open : innerOpen;
+  let mergedOpen: boolean;
+  if (disabled) {
+    mergedOpen = false;
+  } else {
+    mergedOpen = typeof open === 'boolean' ? open : innerOpen;
+  }
 
   // Operation ref
   const operationRef: React.MutableRefObject<ContextOperationRefProps | null> = React.useRef<
@@ -277,7 +284,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   );
 
   let clearNode: React.ReactNode;
-  if (allowClear && mergedValue) {
+  if (allowClear && mergedValue && !disabled) {
     clearNode = (
       <span
         onClick={e => {
@@ -297,7 +304,12 @@ function Picker<DateType>(props: PickerProps<DateType>) {
         operationRef,
       }}
     >
-      <div className={classNames(prefixCls, className)} style={style}>
+      <div
+        className={classNames(prefixCls, className, {
+          [`${prefixCls}-disabled`]: disabled,
+        })}
+        style={style}
+      >
         <PickerTrigger
           visible={mergedOpen}
           popupElement={panel}
@@ -305,6 +317,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
         >
           <div className={`${prefixCls}-input`}>
             <input
+              disabled={disabled}
               readOnly={!typing}
               onMouseDown={onInputMouseDown}
               onFocus={onInputFocus}

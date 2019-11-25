@@ -10,6 +10,7 @@ export interface YearBodyProps<DateType> {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
   viewDate: DateType;
+  disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;
 }
 
@@ -17,6 +18,7 @@ function YearBody<DateType>({
   prefixCls,
   viewDate,
   generateConfig,
+  disabledDate,
   onSelect,
 }: YearBodyProps<DateType>) {
   const yearPrefixCls = `${prefixCls}-cell`;
@@ -39,16 +41,21 @@ function YearBody<DateType>({
       const diffYear = i * YEAR_COL_COUNT + j;
       const yearDate = generateConfig.addYear(baseYear, diffYear);
       const currentYearNumber = generateConfig.getYear(yearDate);
+      const disabled = disabledDate && disabledDate(yearDate);
 
       row.push(
         <td
           key={j}
           className={classNames(yearPrefixCls, {
+            [`${yearPrefixCls}-disabled`]: disabled,
             [`${yearPrefixCls}-in-view`]:
               startYear <= currentYearNumber && currentYearNumber <= endYear,
             [`${yearPrefixCls}-selected`]: currentYearNumber === yearNumber,
           })}
           onClick={() => {
+            if (disabled) {
+              return;
+            }
             onSelect(yearDate);
           }}
         >

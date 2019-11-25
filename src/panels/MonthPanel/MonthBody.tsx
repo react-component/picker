@@ -13,6 +13,7 @@ export interface MonthBodyProps<DateType> {
   generateConfig: GenerateConfig<DateType>;
   value?: DateType | null;
   viewDate: DateType;
+  disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;
 }
 
@@ -22,6 +23,7 @@ function MonthBody<DateType>({
   value,
   viewDate,
   generateConfig,
+  disabledDate,
   onSelect,
 }: MonthBodyProps<DateType>) {
   const monthPrefixCls = `${prefixCls}-cell`;
@@ -41,11 +43,13 @@ function MonthBody<DateType>({
     for (let j = 0; j < MONTH_COL_COUNT; j += 1) {
       const diffMonth = i * MONTH_COL_COUNT + j;
       const monthDate = generateConfig.addMonth(startMonth, diffMonth);
+      const disabled = disabledDate && disabledDate(monthDate);
 
       row.push(
         <td
           key={j}
           className={classNames(monthPrefixCls, {
+            [`${monthPrefixCls}-disabled`]: disabled,
             [`${monthPrefixCls}-in-view`]: true,
             [`${monthPrefixCls}-selected`]: isSameMonth(
               generateConfig,
@@ -54,6 +58,9 @@ function MonthBody<DateType>({
             ),
           })}
           onClick={() => {
+            if (disabled) {
+              return;
+            }
             onSelect(monthDate);
           }}
         >

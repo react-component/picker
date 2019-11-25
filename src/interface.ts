@@ -69,6 +69,7 @@ export interface PanelSharedProps<DateType> {
   /** [Legacy] Set default display picker view date */
   defaultPickerValue?: DateType;
   locale: Locale;
+  disabledDate?: (date: DateType) => boolean;
 
   /**
    * Typescript can not handle generic type so we can not use `forwardRef` here.

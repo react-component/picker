@@ -16,6 +16,7 @@ export type DateRender<DateType> = (
 
 export interface DateBodyPassProps<DateType> {
   dateRender?: DateRender<DateType>;
+  disabledDate?: (date: DateType) => boolean;
 
   // Used for week panel
   prefixColumn?: (date: DateType) => React.ReactNode;
@@ -41,6 +42,7 @@ function DateBody<DateType>({
   rowCount,
   viewDate,
   value,
+  disabledDate,
   dateRender,
   onSelect,
 }: DateBodyProps<DateType>) {
@@ -79,13 +81,18 @@ function DateBody<DateType>({
 
     for (let x = 0; x < WEEK_DAY_COUNT; x += 1) {
       const currentDate = generateConfig.addDate(startWeekDate, x);
+      const disabled = disabledDate && disabledDate(currentDate);
       row.push(
         <td
           key={`${x}-${y}`}
           onClick={() => {
+            if (disabled) {
+              return;
+            }
             onSelect(currentDate);
           }}
           className={classNames(datePrefixCls, {
+            [`${datePrefixCls}-disabled`]: disabled,
             [`${datePrefixCls}-in-view`]: isSameMonth(
               generateConfig,
               currentDate,
