@@ -6,8 +6,19 @@ import momentGenerateConfig from '../src/generate/moment';
 import zhCN from '../src/locale/zh_CN';
 import '../assets/index.less';
 
-function dateRender(date: Moment) {
-  return <div style={{ width: 80, height: 80 }}>{date.date()}</div>;
+function dateRender(date: Moment, today: Moment) {
+  return (
+    <div
+      style={{
+        width: 80,
+        height: 80,
+        borderTop: '3px solid #CCC',
+        borderTopColor: date.isSame(today, 'date') ? 'blue' : '#CCC',
+      }}
+    >
+      {date.date()}
+    </div>
+  );
 }
 
 export default () => (
