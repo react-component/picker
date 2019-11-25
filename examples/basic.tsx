@@ -7,24 +7,9 @@ import zhCN from '../src/locale/zh_CN';
 import enUS from '../src/locale/en_US';
 import jaJP from '../src/locale/ja_JP';
 import '../assets/index.less';
-import { PanelMode } from '../src/interface';
 
 // const defaultValue = moment('2019-09-03 05:02:03');
 const defaultValue = moment('2019-11-28 01:02:03');
-
-const getMonthNextMode = (next: PanelMode): PanelMode => {
-  if (next === 'date') {
-    return 'month';
-  }
-  return next;
-};
-
-const getWeekNextMode = (next: PanelMode): PanelMode => {
-  if (next === 'date') {
-    return 'week';
-  }
-  return next;
-};
 
 export default () => {
   const [value, setValue] = React.useState<Moment | null>(defaultValue);
@@ -66,29 +51,17 @@ export default () => {
 
         <div style={{ margin: '0 8px' }}>
           <h3>Week Picker CN</h3>
-          <PickerPanel<Moment>
-            {...sharedProps}
-            locale={zhCN}
-            getNextMode={getWeekNextMode}
-          />
+          <PickerPanel<Moment> {...sharedProps} locale={zhCN} picker="week" />
         </div>
 
         <div style={{ margin: '0 8px' }}>
           <h3>Month Picker</h3>
-          <PickerPanel<Moment>
-            {...sharedProps}
-            locale={zhCN}
-            getNextMode={getMonthNextMode}
-          />
+          <PickerPanel<Moment> {...sharedProps} locale={zhCN} picker="month" />
         </div>
 
         <div style={{ margin: '0 8px' }}>
           <h3>Week Picker US</h3>
-          <PickerPanel<Moment>
-            {...sharedProps}
-            locale={enUS}
-            getNextMode={getWeekNextMode}
-          />
+          <PickerPanel<Moment> {...sharedProps} locale={enUS} picker="week" />
         </div>
 
         <div style={{ margin: '0 8px' }}>
@@ -126,6 +99,7 @@ export default () => {
             locale={zhCN}
             defaultPickerValue={defaultValue.clone().subtract(1, 'month')}
             showTime
+            showToday
             disabledTime={date => {
               if (date && date.isSame(defaultValue, 'date')) {
                 return {
@@ -143,7 +117,8 @@ export default () => {
             locale={zhCN}
             format="YYYY-Wo"
             allowClear
-            getNextMode={getWeekNextMode}
+            picker="week"
+            renderExtraFooter={() => 'I am footer!!!'}
           />
         </div>
       </div>

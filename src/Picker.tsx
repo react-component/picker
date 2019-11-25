@@ -1,25 +1,27 @@
 /**
  * Removed:
  *  - getCalendarContainer: use `getPopupContainer` instead
+ *
+ * New Feature:
+ *  - picker
+ *
+ * TODO:
+ *  Fixed click to auto select one value with disabled logic
+ *  RangePicker should disable date with range
+ *  showTime.defaultValue
  */
 
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
-import PickerPanel from './PickerPanel';
+import PickerPanel, { PickerPanelProps } from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
-import { GenerateConfig } from './generate';
-import { Locale, PanelMode, GetNextMode, NullableDateType } from './interface';
 import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
-import { SharedTimeProps, DisabledTimes } from './panels/TimePanel';
-import { DateRender } from './panels/DatePanel/DateBody';
 
-export interface PickerProps<DateType> {
-  prefixCls?: string;
-  style?: React.CSSProperties;
-  className?: string;
+export interface PickerProps<DateType>
+  extends Omit<PickerPanelProps<DateType>, 'onChange'> {
   dropdownClassName?: string;
   popupStyle?: React.CSSProperties;
   placeholder?: string;
@@ -27,27 +29,13 @@ export interface PickerProps<DateType> {
   autoFocus?: boolean;
   disabled?: boolean;
   open?: boolean;
-  mode?: PanelMode;
-
-  // Locale
-  generateConfig: GenerateConfig<DateType>;
-  locale: Locale;
 
   // Value
-  value?: NullableDateType<DateType>;
-  defaultValue?: NullableDateType<DateType>;
   format?: string | string[];
-  /** [Legacy] Set default display picker view date */
-  defaultPickerValue?: DateType;
-
-  // Time
-  showTime?: boolean | SharedTimeProps;
-  disabledTime?: (date: DateType | null) => DisabledTimes;
 
   // Render
   suffixIcon?: React.ReactNode;
   clearIcon?: React.ReactNode;
-  dateRender?: DateRender<DateType>;
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
 
   // Events
@@ -55,8 +43,6 @@ export interface PickerProps<DateType> {
   onOpenChange?: (open: boolean) => void;
 
   // Internal
-  /** @private Internal usage, do not use in production mode!!! */
-  getNextMode?: GetNextMode;
   /** @private Internal usage, do not use in production mode!!! */
   inputRef?: React.Ref<HTMLInputElement>;
 }

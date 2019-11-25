@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import Picker, { PickerProps } from './Picker';
-import { NullableDateType } from './interface';
+import { NullableDateType, DisabledTimes, DisabledTime } from './interface';
 import { toArray } from './utils/miscUtil';
 
 // TODO: 'before - 2010-11-11' or '2011-11-11 - forever'
@@ -10,12 +10,21 @@ type RangeValue<DateType> = [DateType | null, DateType | null] | null;
 export interface RangePickerProps<DateType>
   extends Omit<
     PickerProps<DateType>,
-    'value' | 'defaultValue' | 'defaultPickerValue' | 'onChange' | 'placeholder'
+    | 'value'
+    | 'defaultValue'
+    | 'defaultPickerValue'
+    | 'onChange'
+    | 'placeholder'
+    | 'disabledTime'
   > {
   value?: RangeValue<DateType>;
   defaultValue?: RangeValue<DateType>;
   defaultPickerValue?: [DateType, DateType];
   placeholder?: [string, string];
+  disabledTime?: (
+    date: DateType | null,
+    type: 'start' | 'end',
+  ) => DisabledTimes;
   onChange?: (
     value: RangeValue<DateType>,
     formatString: [string, string],
@@ -34,6 +43,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     generateConfig,
     placeholder,
     showTime,
+    disabledTime,
     format = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
     onChange,
   } = props;
@@ -89,7 +99,16 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     className: undefined,
     style: undefined,
     placeholder: undefined,
+    disabledTime: undefined,
   };
+
+  let disabledStartTime: DisabledTime<DateType> | undefined;
+  let disabledEndTime: DisabledTime<DateType> | undefined;
+
+  if (disabledTime) {
+    disabledStartTime = (date: DateType | null) => disabledTime(date, 'start');
+    disabledEndTime = (date: DateType | null) => disabledTime(date, 'end');
+  }
 
   return (
     <div className={classNames(`${prefixCls}-range`, className)} style={style}>
@@ -99,6 +118,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
         value={value1}
         placeholder={placeholder && placeholder[0]}
         defaultPickerValue={defaultPickerValue && defaultPickerValue[0]}
+        disabledTime={disabledStartTime}
         onChange={date => {
           onInternalChange([date, value2]);
         }}
@@ -110,6 +130,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
         value={value2}
         placeholder={placeholder && placeholder[1]}
         defaultPickerValue={defaultPickerValue && defaultPickerValue[1]}
+        disabledTime={disabledEndTime}
         onChange={date => {
           onInternalChange([value1, date]);
         }}

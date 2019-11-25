@@ -13,11 +13,19 @@ export interface TimeUnitColumnProps {
   units?: Unit[];
   value?: number;
   active?: boolean;
+  hideDisabledOptions?: boolean;
   onSelect?: (value: number) => void;
 }
 
 function TimeUnitColumn(props: TimeUnitColumnProps) {
-  const { prefixCls, units, onSelect, value, active } = props;
+  const {
+    prefixCls,
+    units,
+    onSelect,
+    value,
+    active,
+    hideDisabledOptions,
+  } = props;
   const cellPrefixCls = `${prefixCls}-cell`;
 
   const initRef = React.useRef(true);
@@ -42,26 +50,32 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
       ref={ulRef}
       style={{ position: 'relative' }}
     >
-      {units!.map(unit => (
-        <li
-          key={unit.value}
-          ref={element => {
-            liRefs.current.set(unit.value, element);
-          }}
-          className={classNames(cellPrefixCls, {
-            [`${cellPrefixCls}-disabled`]: unit.disabled,
-            [`${cellPrefixCls}-selected`]: value === unit.value,
-          })}
-          onClick={() => {
-            if (unit.disabled) {
-              return;
-            }
-            onSelect!(unit.value);
-          }}
-        >
-          <div className={`${cellPrefixCls}-inner`}>{unit.label}</div>
-        </li>
-      ))}
+      {units!.map(unit => {
+        if (hideDisabledOptions && unit.disabled) {
+          return null;
+        }
+
+        return (
+          <li
+            key={unit.value}
+            ref={element => {
+              liRefs.current.set(unit.value, element);
+            }}
+            className={classNames(cellPrefixCls, {
+              [`${cellPrefixCls}-disabled`]: unit.disabled,
+              [`${cellPrefixCls}-selected`]: value === unit.value,
+            })}
+            onClick={() => {
+              if (unit.disabled) {
+                return;
+              }
+              onSelect!(unit.value);
+            }}
+          >
+            <div className={`${cellPrefixCls}-inner`}>{unit.label}</div>
+          </li>
+        );
+      })}
     </ul>
   );
 }

@@ -11,31 +11,50 @@ import MonthPanel from './panels/MonthPanel';
 import YearPanel from './panels/YearPanel';
 import DecadePanel from './panels/DecadePanel';
 import { GenerateConfig } from './generate';
-import { Locale, PanelMode, PanelRefProps, GetNextMode } from './interface';
+import {
+  Locale,
+  PanelMode,
+  PanelRefProps,
+  PickerMode,
+  DisabledTime,
+} from './interface';
 import { isEqual } from './utils/dateUtil';
 import PanelContext from './PanelContext';
 import { DateRender } from './panels/DatePanel/DateBody';
+import { PickerModeMap } from './utils/uiUtil';
 
 export interface PickerPanelProps<DateType> {
+  prefixCls?: string;
   className?: string;
   style?: React.CSSProperties;
-  prefixCls?: string;
+  mode?: PanelMode;
+  picker?: PickerMode;
+  tabIndex?: number;
+
+  // Locale
+  locale: Locale;
   generateConfig: GenerateConfig<DateType>;
+
+  // Value
   value?: DateType | null;
+  defaultValue?: DateType;
   /** [Legacy] Set default display picker view date */
   defaultPickerValue?: DateType;
-  locale: Locale;
-  mode?: PanelMode;
+
+  // Time
   showTime?: boolean | SharedTimeProps;
-  tabIndex?: number;
+  disabledTime?: DisabledTime<DateType>;
+  showToday?: boolean;
+
+  // Render
   dateRender?: DateRender<DateType>;
+  renderExtraFooter?: (mode: PanelMode) => React.ReactNode;
+
+  // Event
   onSelect?: (value: DateType) => void;
   onChange?: (value: DateType) => void;
   onPanelChange?: (value: DateType, mode: PanelMode) => void;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
-
-  /** @private Internal usage, do not use in production mode!!! */
-  getNextMode?: GetNextMode;
 }
 
 function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
@@ -43,13 +62,17 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     prefixCls = 'rc-picker',
     className,
     style,
+    locale,
     generateConfig,
     value,
+    defaultValue,
     defaultPickerValue,
     mode,
+    picker,
     tabIndex = 0,
     showTime,
-    getNextMode,
+    showToday,
+    renderExtraFooter,
     onSelect,
     onChange,
     onPanelChange,
@@ -68,19 +91,22 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   );
 
   // Inner value
-  const [innerValue, setInnerValue] = React.useState(() =>
-    ('value' in props ? value : generateConfig.getNow()),
-  );
+  const [innerValue, setInnerValue] = React.useState(() => {
+    if (value !== undefined) {
+      return value;
+    } if (defaultValue !== undefined) {
+      return defaultValue;
+    }
+    return null;
+  });
 
   const mergedValue = 'value' in props ? value : innerValue;
 
   // Panel control
-  const getInternalNextMode = (
-    nextMode: PanelMode,
-    currentMode: PanelMode,
-  ): PanelMode => {
+  const getInternalNextMode = (nextMode: PanelMode): PanelMode => {
+    const getNextMode = PickerModeMap[picker!];
     if (getNextMode) {
-      return getNextMode(nextMode, currentMode);
+      return getNextMode(nextMode);
     }
 
     if (nextMode === 'date' && showTime) {
@@ -90,12 +116,12 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   };
 
   const [innerMode, setInnerMode] = React.useState<PanelMode>(
-    getInternalNextMode('date', mode || 'date'),
+    getInternalNextMode('date'),
   );
   const mergedMode: PanelMode = mode || innerMode;
 
   const onInternalPanelChange = (newMode: PanelMode, viewValue: DateType) => {
-    const nextMode = getInternalNextMode(newMode, mergedMode);
+    const nextMode = getInternalNextMode(newMode);
     setInnerMode(nextMode);
 
     if (onPanelChange) {
@@ -176,7 +202,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onViewDateChange: setViewDate,
     onPanelChange: onInternalPanelChange,
   };
-  delete pickerProps.getNextMode;
   delete pickerProps.onSelect;
 
   switch (mergedMode) {
@@ -266,6 +291,30 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       );
   }
 
+  // ============================ Footer ============================
+  let extraFooter: React.ReactNode;
+  if (renderExtraFooter) {
+    extraFooter = (
+      <div className={`${prefixCls}-footer-extra`}>
+        {renderExtraFooter(mergedMode)}
+      </div>
+    );
+  }
+
+  let todayNode: React.ReactNode;
+  if (showToday) {
+    todayNode = (
+      <a
+        className={`${prefixCls}-today-btn`}
+        onClick={() => {
+          triggerSelect(generateConfig.getNow());
+        }}
+      >
+        {locale.today}
+      </a>
+    );
+  }
+
   return (
     <div
       tabIndex={tabIndex}
@@ -276,6 +325,12 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       onMouseDown={onMouseDown}
     >
       {panelNode}
+      {extraFooter || todayNode ? (
+        <div className={`${prefixCls}-footer`}>
+          {extraFooter}
+          {todayNode}
+        </div>
+      ) : null}
     </div>
   );
 }

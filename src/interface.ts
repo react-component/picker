@@ -48,6 +48,8 @@ export type PanelMode =
   | 'year'
   | 'decade';
 
+export type PickerMode = Exclude<PanelMode, 'time' | 'datetime' | 'decade'>;
+
 export interface PanelRefProps {
   onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => boolean;
   onBlur?: React.FocusEventHandler<HTMLElement>;
@@ -83,7 +85,10 @@ export interface PanelSharedProps<DateType> {
   onPanelChange: (mode: PanelMode, viewValue: DateType) => void;
 }
 
-export type GetNextMode = (
-  nextMode: PanelMode,
-  currentMode: PanelMode,
-) => PanelMode;
+export interface DisabledTimes {
+  disabledHours?: () => number[];
+  disabledMinutes?: (hour: number) => number[];
+  disabledSeconds?: (hour: number, minute: number) => number[];
+}
+
+export type DisabledTime<DateType> = (date: DateType | null) => DisabledTimes;

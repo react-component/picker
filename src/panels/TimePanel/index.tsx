@@ -2,14 +2,8 @@ import * as React from 'react';
 import classNames from 'classnames';
 import TimeHeader from './TimeHeader';
 import TimeBody, { BodyOperationRef } from './TimeBody';
-import { PanelSharedProps } from '../../interface';
+import { PanelSharedProps, DisabledTimes } from '../../interface';
 import { createKeyDownHandler } from '../../utils/uiUtil';
-
-export interface DisabledTimes {
-  disabledHours?: () => number[];
-  disabledMinutes?: (hour: number) => number[];
-  disabledSeconds?: (hour: number, minute: number) => number[];
-}
 
 export interface SharedTimeProps extends DisabledTimes {
   format?: string;
@@ -20,6 +14,7 @@ export interface SharedTimeProps extends DisabledTimes {
   hourStep?: number;
   minuteStep?: number;
   secondStep?: number;
+  hideDisabledOptions?: boolean;
 }
 
 export interface TimePanelProps<DateType>

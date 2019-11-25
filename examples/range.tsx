@@ -51,6 +51,17 @@ export default () => {
             value={undefined}
             locale={zhCN}
             placeholder={['start...', 'end...']}
+            showTime={{
+              hideDisabledOptions: true,
+            }}
+            disabledTime={(date, type) => {
+              if (type === 'start') {
+                return {
+                  disabledHours: () => [1, 2, 3, 4, 5, 6, 7],
+                };
+              }
+              return {};
+            }}
             defaultPickerValue={[defaultEndValue, defaultStartValue]}
           />
         </div>

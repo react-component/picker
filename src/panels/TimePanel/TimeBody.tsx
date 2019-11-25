@@ -53,6 +53,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     disabledHours,
     disabledMinutes,
     disabledSeconds,
+    hideDisabledOptions,
     onSelect,
   } = props;
 
@@ -158,6 +159,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
           active: activeColumnIndex === columns.length,
           onSelect: onColumnSelect,
           units,
+          hideDisabledOptions,
         }),
         onSelect: onColumnSelect,
         value: columnValue,

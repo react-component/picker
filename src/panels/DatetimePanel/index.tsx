@@ -2,16 +2,16 @@ import * as React from 'react';
 import classNames from 'classnames';
 import KeyCode from 'rc-util/lib/KeyCode';
 import DatePanel, { DatePanelProps } from '../DatePanel';
-import TimePanel, { TimePanelProps, DisabledTimes } from '../TimePanel';
+import TimePanel, { TimePanelProps } from '../TimePanel';
 import { tuple } from '../../utils/miscUtil';
-import { PanelRefProps } from '../../interface';
+import { PanelRefProps, DisabledTime } from '../../interface';
 
 export interface DatetimePanelProps<DateType>
   extends Omit<
     DatePanelProps<DateType> & TimePanelProps<DateType>,
     'disabledHours' | 'disabledMinutes' | 'disabledSeconds'
   > {
-  disabledTime?: (date: DateType | null) => DisabledTimes;
+  disabledTime?: DisabledTime<DateType>;
 }
 
 const ACTIVE_PANEL = tuple('date', 'time');

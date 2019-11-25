@@ -1,4 +1,5 @@
 import KeyCode from 'rc-util/lib/KeyCode';
+import { PanelMode, PickerMode } from '../interface';
 
 const scrollMap = new Map<string, number>();
 
@@ -124,3 +125,35 @@ export function createKeyDownHandler(
 
   return false;
 }
+
+// ====================== Mode ======================
+const getYearNextMode = (next: PanelMode): PanelMode => {
+  if (next === 'date') {
+    return 'month';
+  }
+  return next;
+};
+
+const getMonthNextMode = (next: PanelMode): PanelMode => {
+  if (next === 'date') {
+    return 'month';
+  }
+  return next;
+};
+
+const getWeekNextMode = (next: PanelMode): PanelMode => {
+  if (next === 'date') {
+    return 'week';
+  }
+  return next;
+};
+
+export const PickerModeMap: Record<
+  PickerMode,
+  ((next: PanelMode) => PanelMode) | null
+> = {
+  year: getYearNextMode,
+  month: getMonthNextMode,
+  week: getWeekNextMode,
+  date: null,
+};
