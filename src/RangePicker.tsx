@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classNames from 'classnames';
 import Picker, { PickerProps } from './Picker';
 import { NullableDateType } from './interface';
 import { toArray } from './utils/miscUtil';
@@ -23,6 +24,8 @@ export interface RangePickerProps<DateType>
 function RangePicker<DateType>(props: RangePickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
+    className,
+    style,
     value,
     defaultValue,
     defaultPickerValue,
@@ -81,10 +84,12 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     ...props,
     defaultValue: undefined,
     defaultPickerValue: undefined,
+    className: undefined,
+    style: undefined,
   };
 
   return (
-    <div className={`${prefixCls}-range`}>
+    <div className={classNames(`${prefixCls}-range`, className)} style={style}>
       <Picker<DateType>
         {...pickerProps}
         prefixCls={prefixCls}

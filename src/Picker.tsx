@@ -12,6 +12,8 @@ import { SharedTimeProps } from './panels/TimePanel';
 
 export interface PickerProps<DateType> {
   prefixCls?: string;
+  className?: string;
+  style?: React.CSSProperties;
   generateConfig: GenerateConfig<DateType>;
   locale: Locale;
   allowClear?: boolean;
@@ -35,6 +37,8 @@ export interface PickerProps<DateType> {
 function Picker<DateType>(props: PickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
+    className,
+    style,
     generateConfig,
     locale,
     allowClear,
@@ -247,9 +251,15 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   }, [mergedValue]);
 
   // ============================= Panel =============================
+  const panelProps = {
+    ...props,
+    className: undefined,
+    style: undefined,
+  };
+
   const panel = (
     <PickerPanel<DateType>
-      {...props}
+      {...panelProps}
       generateConfig={generateConfig}
       className={classNames({
         [`${prefixCls}-panel-focused`]: !typing,
@@ -285,7 +295,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
         operationRef,
       }}
     >
-      <div className={prefixCls}>
+      <div className={classNames(prefixCls, className)} style={style}>
         <PickerTrigger
           visible={mergedOpen}
           popupElement={panel}
