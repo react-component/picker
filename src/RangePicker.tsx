@@ -7,9 +7,13 @@ import { toArray } from './utils/miscUtil';
 type RangeValue<DateType> = [DateType | null, DateType | null] | null;
 
 export interface RangePickerProps<DateType>
-  extends Omit<PickerProps<DateType>, 'value' | 'defaultValue' | 'onChange'> {
+  extends Omit<
+    PickerProps<DateType>,
+    'value' | 'defaultValue' | 'defaultPickerValue' | 'onChange'
+  > {
   value?: RangeValue<DateType>;
   defaultValue?: RangeValue<DateType>;
+  defaultPickerValue?: [DateType, DateType];
   onChange?: (
     value: RangeValue<DateType>,
     formatString: [string, string],
@@ -21,6 +25,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     prefixCls = 'rc-picker',
     value,
     defaultValue,
+    defaultPickerValue,
     locale,
     generateConfig,
     showTime,
@@ -34,7 +39,8 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     () => {
       if (value !== undefined) {
         return value;
-      } if (defaultValue !== undefined) {
+      }
+      if (defaultValue !== undefined) {
         return defaultValue;
       }
       return null;
@@ -46,7 +52,8 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
   const value1 = mergedValue ? mergedValue[0] : null;
   const value2 = mergedValue ? mergedValue[1] : null;
 
-  const formatDate = (date: NullableDateType<DateType>) => (date
+  const formatDate = (date: NullableDateType<DateType>) =>
+    (date
       ? generateConfig.locale.format(locale.locale, date, formatList[0])
       : '');
 
@@ -73,6 +80,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
   const pickerProps = {
     ...props,
     defaultValue: undefined,
+    defaultPickerValue: undefined,
   };
 
   return (
@@ -81,6 +89,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
         {...pickerProps}
         prefixCls={prefixCls}
         value={value1}
+        defaultPickerValue={defaultPickerValue && defaultPickerValue[0]}
         onChange={date => {
           onInternalChange([date, value2]);
         }}
@@ -90,6 +99,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
         {...pickerProps}
         prefixCls={prefixCls}
         value={value2}
+        defaultPickerValue={defaultPickerValue && defaultPickerValue[1]}
         onChange={date => {
           onInternalChange([value1, date]);
         }}

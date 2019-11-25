@@ -19,6 +19,8 @@ export interface PickerProps<DateType> {
   showTime?: boolean | SharedTimeProps;
   value?: NullableDateType<DateType>;
   defaultValue?: NullableDateType<DateType>;
+  /** [Legacy] Set default display picker view date */
+  defaultPickerValue?: DateType;
   open?: boolean;
   format?: string | string[];
   mode?: PanelMode;
@@ -54,7 +56,8 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   const [innerValue, setInnerValue] = React.useState<DateType | null>(() => {
     if (value !== undefined) {
       return value;
-    } if (defaultValue !== undefined) {
+    }
+    if (defaultValue !== undefined) {
       return defaultValue;
     }
     return generateConfig.getNow();

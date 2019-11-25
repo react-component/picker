@@ -50,6 +50,7 @@ export default () => {
             {...sharedProps}
             value={undefined}
             locale={zhCN}
+            defaultPickerValue={[defaultEndValue, defaultStartValue]}
           />
         </div>
       </div>

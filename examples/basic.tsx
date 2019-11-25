@@ -121,7 +121,12 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Datetime</h3>
-          <Picker<Moment> {...sharedProps} locale={zhCN} showTime />
+          <Picker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            defaultPickerValue={defaultValue.clone().subtract(1, 'month')}
+            showTime
+          />
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Week</h3>
