@@ -14,6 +14,7 @@ import { GenerateConfig } from './generate';
 import { Locale, PanelMode, PanelRefProps, GetNextMode } from './interface';
 import { isEqual } from './utils/dateUtil';
 import PanelContext from './PanelContext';
+import { DateRender } from './panels/DatePanel/DateBody';
 
 export interface PickerPanelProps<DateType> {
   className?: string;
@@ -27,6 +28,7 @@ export interface PickerPanelProps<DateType> {
   mode?: PanelMode;
   showTime?: boolean | SharedTimeProps;
   tabIndex?: number;
+  dateRender?: DateRender<DateType>;
   onSelect?: (value: DateType) => void;
   onChange?: (value: DateType) => void;
   onPanelChange?: (value: DateType, mode: PanelMode) => void;

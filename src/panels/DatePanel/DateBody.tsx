@@ -103,9 +103,13 @@ function DateBody<DateType>({
             ),
           })}
         >
-          <div className={`${datePrefixCls}-inner`}>
-            {generateConfig.getDate(currentDate)}
-          </div>
+          {dateRender ? (
+            dateRender(currentDate, today)
+          ) : (
+            <div className={`${datePrefixCls}-inner`}>
+              {generateConfig.getDate(currentDate)}
+            </div>
+          )}
         </td>,
       );
     }

@@ -9,6 +9,7 @@ import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import { SharedTimeProps } from './panels/TimePanel';
+import { DateRender } from './panels/DatePanel/DateBody';
 
 export interface PickerProps<DateType> {
   prefixCls?: string;
@@ -27,6 +28,7 @@ export interface PickerProps<DateType> {
   format?: string | string[];
   mode?: PanelMode;
   clearIcon?: React.ReactNode;
+  dateRender?: DateRender<DateType>;
   onChange?: (value: DateType | null, dateString: string) => void;
   onOpenChange?: (open: boolean) => void;
 
