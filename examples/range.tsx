@@ -45,6 +45,16 @@ export default () => {
         </div>
 
         <div style={{ margin: '0 8px' }}>
+          <h3>Allow Empty</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            allowClear
+            allowEmpty={[true, true]}
+          />
+        </div>
+
+        <div style={{ margin: '0 8px' }}>
           <h3>Uncontrolled</h3>
           <RangePicker<Moment>
             {...sharedProps}
@@ -63,6 +73,10 @@ export default () => {
               return {};
             }}
             defaultPickerValue={[defaultEndValue, defaultStartValue]}
+            ranges={{
+              now: [null, moment()],
+            }}
+            allowClear
           />
         </div>
       </div>

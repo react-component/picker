@@ -1,6 +1,7 @@
 /**
  * Removed:
  *  - getCalendarContainer: use `getPopupContainer` instead
+ *  - onOk
  *
  * New Feature:
  *  - picker
@@ -9,6 +10,7 @@
  *  Fixed click to auto select one value with disabled logic
  *  RangePicker should disable date with range
  *  showTime.defaultValue
+ *  selectable
  */
 
 import * as React from 'react';

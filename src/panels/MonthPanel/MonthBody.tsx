@@ -19,7 +19,7 @@ export interface MonthBodyProps<DateType> {
   value?: DateType | null;
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
-  monthCellContentRender?: MonthCellRender<DateType>;
+  monthCellRender?: MonthCellRender<DateType>;
   onSelect: (value: DateType) => void;
 }
 
@@ -30,7 +30,7 @@ function MonthBody<DateType>({
   viewDate,
   generateConfig,
   disabledDate,
-  monthCellContentRender,
+  monthCellRender,
   onSelect,
 }: MonthBodyProps<DateType>) {
   const monthPrefixCls = `${prefixCls}-cell`;
@@ -71,8 +71,8 @@ function MonthBody<DateType>({
             onSelect(monthDate);
           }}
         >
-          {monthCellContentRender ? (
-            monthCellContentRender(monthDate, locale)
+          {monthCellRender ? (
+            monthCellRender(monthDate, locale)
           ) : (
             <div className={`${monthPrefixCls}-inner`}>
               {locale.monthFormat

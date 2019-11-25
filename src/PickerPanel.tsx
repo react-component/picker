@@ -23,6 +23,7 @@ import PanelContext from './PanelContext';
 import { DateRender } from './panels/DatePanel/DateBody';
 import { PickerModeMap } from './utils/uiUtil';
 import { MonthCellRender } from './panels/MonthPanel/MonthBody';
+import RangeContext from './RangeContext';
 
 export interface PickerPanelProps<DateType> {
   prefixCls?: string;
@@ -49,7 +50,7 @@ export interface PickerPanelProps<DateType> {
 
   // Render
   dateRender?: DateRender<DateType>;
-  monthCellContentRender?: MonthCellRender<DateType>;
+  monthCellRender?: MonthCellRender<DateType>;
   renderExtraFooter?: (mode: PanelMode) => React.ReactNode;
 
   // Event
@@ -82,6 +83,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   } = props;
 
   const { operationRef } = React.useContext(PanelContext);
+  const { extraFooterSelections } = React.useContext(RangeContext);
   const panelRef = React.useRef<PanelRefProps>({});
 
   // Handle init logic
@@ -318,6 +320,19 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     );
   }
 
+  let extraSelectionNode: React.ReactNode;
+  if (extraFooterSelections && extraFooterSelections.length) {
+    extraSelectionNode = (
+      <ul className={`${prefixCls}-ranges`}>
+        {extraFooterSelections.map(({ label, onClick }) => (
+          <li key={label} onClick={onClick}>
+            {label}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
   return (
     <div
       tabIndex={tabIndex}
@@ -328,9 +343,10 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       onMouseDown={onMouseDown}
     >
       {panelNode}
-      {extraFooter || todayNode ? (
+      {extraFooter || todayNode || extraSelectionNode ? (
         <div className={`${prefixCls}-footer`}>
           {extraFooter}
+          {extraSelectionNode}
           {todayNode}
         </div>
       ) : null}
