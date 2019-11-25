@@ -9,7 +9,14 @@ import {
 } from '../../utils/dateUtil';
 import { Locale } from '../../interface';
 
+export type DateRender<DateType> = (
+  currentDate: DateType,
+  today: DateType,
+) => React.ReactNode;
+
 export interface DateBodyPassProps<DateType> {
+  dateRender?: DateRender<DateType>;
+
   // Used for week panel
   prefixColumn?: (date: DateType) => React.ReactNode;
   rowClassName?: (date: DateType) => string;
@@ -34,6 +41,7 @@ function DateBody<DateType>({
   rowCount,
   viewDate,
   value,
+  dateRender,
   onSelect,
 }: DateBodyProps<DateType>) {
   const datePrefixCls = `${prefixCls}-cell`;
@@ -74,6 +82,9 @@ function DateBody<DateType>({
       row.push(
         <td
           key={`${x}-${y}`}
+          onClick={() => {
+            onSelect(currentDate);
+          }}
           className={classNames(datePrefixCls, {
             [`${datePrefixCls}-in-view`]: isSameMonth(
               generateConfig,
@@ -92,15 +103,9 @@ function DateBody<DateType>({
             ),
           })}
         >
-          <button
-            type="button"
-            tabIndex={-1}
-            onClick={() => {
-              onSelect(currentDate);
-            }}
-          >
+          <div className={`${datePrefixCls}-inner`}>
             {generateConfig.getDate(currentDate)}
-          </button>
+          </div>
         </td>,
       );
     }

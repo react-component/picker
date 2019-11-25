@@ -53,13 +53,11 @@ function MonthBody<DateType>({
               monthDate,
             ),
           })}
+          onClick={() => {
+            onSelect(monthDate);
+          }}
         >
-          <button
-            type="button"
-            onClick={() => {
-              onSelect(monthDate);
-            }}
-          >
+          <div className={`${monthPrefixCls}-inner`}>
             {locale.monthFormat
               ? generateConfig.locale.format(
                   locale.locale,
@@ -67,7 +65,7 @@ function MonthBody<DateType>({
                   locale.monthFormat,
                 )
               : monthsLocale[diffMonth]}
-          </button>
+          </div>
         </td>,
       );
     }

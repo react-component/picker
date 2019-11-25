@@ -52,17 +52,11 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
             [`${cellPrefixCls}-disabled`]: unit.disabled,
             [`${cellPrefixCls}-selected`]: value === unit.value,
           })}
+          onClick={() => {
+            onSelect!(unit.value);
+          }}
         >
-          <button
-            type="button"
-            tabIndex={-1}
-            disabled={unit.disabled}
-            onClick={() => {
-              onSelect!(unit.value);
-            }}
-          >
-            {unit.label}
-          </button>
+          <div className={`${cellPrefixCls}-inner`}>{unit.label}</div>
         </li>
       ))}
     </ul>

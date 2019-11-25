@@ -56,16 +56,13 @@ function YearBody<DateType>({
             [`${yearPrefixCls}-selected`]:
               startDecadeNumber === decadeYearNumber,
           })}
+          onClick={() => {
+            onSelect(generateConfig.setYear(viewDate, startDecadeNumber));
+          }}
         >
-          <button
-            type="button"
-            className={`${yearPrefixCls}-cell`}
-            onClick={() => {
-              onSelect(generateConfig.setYear(viewDate, startDecadeNumber));
-            }}
-          >
+          <div className={`${yearPrefixCls}-inner`}>
             {startDecadeNumber}-{endDecadeNumber}
-          </button>
+          </div>
         </td>,
       );
     }

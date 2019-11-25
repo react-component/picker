@@ -6,6 +6,8 @@
   &-panel {
     border: 1px solid #666;
     background: rgb(255, 240, 255);
+    display: inline-block;
+    vertical-align: top;
 
     &-focused {
       border-color: blue;
@@ -44,7 +46,7 @@
 
     // Content
     &-cell {
-      > button {
+      &-inner {
         color: #aaa;
         font-size: 12px;
         width: 100%;
@@ -66,14 +68,14 @@
         }
       }
 
-      &-in-view > button {
+      &-in-view > &-inner {
         color: #333;
       }
 
-      &-today > button {
+      &-today > &-inner {
         border: 1px solid blue;
       }
-      &-selected > button {
+      &-selected > &-inner {
         background: fade(blue, 20%);
       }
     }
@@ -105,15 +107,15 @@
       font-weight: bold;
     }
 
-    &-cell:hover > button,
-    &-cell-selected > button {
+    &-cell:hover > &-cell-inner,
+    &-cell-selected > &-cell-inner {
       background: transparent;
     }
   }
 
   // ====================== Date Panel ======================
   &-date-panel {
-    &-cell > button {
+    &-cell-inner {
       width: 20px;
     }
   }
@@ -149,7 +151,7 @@
         padding: 0;
         margin: 0;
 
-        > button {
+        .@{prefix-cls}-time-panel-cell-inner {
           color: #333;
           padding: 0 0 0 12px;
           margin: 0;

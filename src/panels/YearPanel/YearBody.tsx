@@ -48,16 +48,11 @@ function YearBody<DateType>({
               startYear <= currentYearNumber && currentYearNumber <= endYear,
             [`${yearPrefixCls}-selected`]: currentYearNumber === yearNumber,
           })}
+          onClick={() => {
+            onSelect(yearDate);
+          }}
         >
-          <button
-            type="button"
-            className={`${yearPrefixCls}-cell`}
-            onClick={() => {
-              onSelect(yearDate);
-            }}
-          >
-            {currentYearNumber}
-          </button>
+          <div className={`${yearPrefixCls}-inner`}>{currentYearNumber}</div>
         </td>,
       );
     }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import DateBody, { DateBodyPassProps } from './DateBody';
+import DateBody, { DateBodyPassProps, DateRender } from './DateBody';
 import DateHeader from './DateHeader';
 import { PanelSharedProps } from '../../interface';
 import { WEEK_DAY_COUNT } from '../../utils/dateUtil';
@@ -12,6 +12,7 @@ export interface DatePanelProps<DateType>
   extends PanelSharedProps<DateType>,
     DateBodyPassProps<DateType> {
   active?: boolean;
+  dateRender?: DateRender<DateType>;
 
   // Used for week panel
   panelName?: string;
