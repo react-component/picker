@@ -16,6 +16,7 @@
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
+import { AlignType } from 'rc-trigger/lib/interface';
 import PickerPanel, { PickerPanelProps } from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
 import { isEqual } from './utils/dateUtil';
@@ -25,7 +26,9 @@ import PanelContext, { ContextOperationRefProps } from './PanelContext';
 export interface PickerProps<DateType>
   extends Omit<PickerPanelProps<DateType>, 'onChange'> {
   dropdownClassName?: string;
+  dropdownAlign?: AlignType;
   popupStyle?: React.CSSProperties;
+  transitionName?: string;
   placeholder?: string;
   allowClear?: boolean;
   autoFocus?: boolean;
@@ -55,7 +58,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     style,
     className,
     dropdownClassName,
+    dropdownAlign,
     popupStyle,
+    transitionName,
     generateConfig,
     locale,
     allowClear,
@@ -334,7 +339,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
           popupStyle={popupStyle}
           prefixCls={prefixCls}
           dropdownClassName={dropdownClassName}
+          dropdownAlign={dropdownAlign}
           getPopupContainer={getPopupContainer}
+          transitionName={transitionName}
         >
           <div className={`${prefixCls}-input`}>
             <input

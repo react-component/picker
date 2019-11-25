@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Trigger from 'rc-trigger';
+import { AlignType } from 'rc-trigger/lib/interface';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -27,7 +28,9 @@ export interface PickerTriggerProps {
   popupStyle?: React.CSSProperties;
   children: React.ReactElement;
   dropdownClassName?: string;
+  transitionName?: string;
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
+  dropdownAlign?: AlignType;
 }
 
 function PickerTrigger({
@@ -36,6 +39,8 @@ function PickerTrigger({
   popupStyle,
   visible,
   dropdownClassName,
+  dropdownAlign,
+  transitionName,
   getPopupContainer,
   children,
 }: PickerTriggerProps) {
@@ -43,10 +48,14 @@ function PickerTrigger({
 
   return (
     <Trigger
+      showAction={[]}
+      hideAction={[]}
       popupPlacement="bottomLeft"
       builtinPlacements={BUILT_IN_PLACEMENTS}
       prefixCls={dropdownPrefixCls}
+      popupTransitionName={transitionName}
       popup={popupElement}
+      popupAlign={dropdownAlign}
       popupVisible={visible}
       popupClassName={dropdownClassName}
       popupStyle={popupStyle}
