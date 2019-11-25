@@ -10,11 +10,12 @@ type RangeValue<DateType> = [DateType | null, DateType | null] | null;
 export interface RangePickerProps<DateType>
   extends Omit<
     PickerProps<DateType>,
-    'value' | 'defaultValue' | 'defaultPickerValue' | 'onChange'
+    'value' | 'defaultValue' | 'defaultPickerValue' | 'onChange' | 'placeholder'
   > {
   value?: RangeValue<DateType>;
   defaultValue?: RangeValue<DateType>;
   defaultPickerValue?: [DateType, DateType];
+  placeholder?: [string, string];
   onChange?: (
     value: RangeValue<DateType>,
     formatString: [string, string],
@@ -31,6 +32,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     defaultPickerValue,
     locale,
     generateConfig,
+    placeholder,
     showTime,
     format = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
     onChange,
@@ -86,6 +88,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     defaultPickerValue: undefined,
     className: undefined,
     style: undefined,
+    placeholder: undefined,
   };
 
   return (
@@ -94,6 +97,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
         {...pickerProps}
         prefixCls={prefixCls}
         value={value1}
+        placeholder={placeholder && placeholder[0]}
         defaultPickerValue={defaultPickerValue && defaultPickerValue[0]}
         onChange={date => {
           onInternalChange([date, value2]);
@@ -104,6 +108,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
         {...pickerProps}
         prefixCls={prefixCls}
         value={value2}
+        placeholder={placeholder && placeholder[1]}
         defaultPickerValue={defaultPickerValue && defaultPickerValue[1]}
         onChange={date => {
           onInternalChange([value1, date]);

@@ -24,13 +24,19 @@ export interface PickerTriggerProps {
   prefixCls: string;
   visible: boolean;
   popupElement: React.ReactElement;
+  popupStyle?: React.CSSProperties;
   children: React.ReactElement;
+  dropdownClassName?: string;
+  getPopupContainer?: (node: HTMLElement) => HTMLElement;
 }
 
 function PickerTrigger({
   prefixCls,
   popupElement,
+  popupStyle,
   visible,
+  dropdownClassName,
+  getPopupContainer,
   children,
 }: PickerTriggerProps) {
   const dropdownPrefixCls = `${prefixCls}-dropdown`;
@@ -42,6 +48,9 @@ function PickerTrigger({
       prefixCls={dropdownPrefixCls}
       popup={popupElement}
       popupVisible={visible}
+      popupClassName={dropdownClassName}
+      popupStyle={popupStyle}
+      getPopupContainer={getPopupContainer}
     >
       {children}
     </Trigger>

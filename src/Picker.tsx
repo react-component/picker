@@ -1,3 +1,8 @@
+/**
+ * Removed:
+ *  - getCalendarContainer: use `getPopupContainer` instead
+ */
+
 import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
@@ -13,10 +18,13 @@ import { DateRender } from './panels/DatePanel/DateBody';
 
 export interface PickerProps<DateType> {
   prefixCls?: string;
-  className?: string;
   style?: React.CSSProperties;
+  className?: string;
+  dropdownClassName?: string;
+  popupStyle?: React.CSSProperties;
   generateConfig: GenerateConfig<DateType>;
   locale: Locale;
+  placeholder?: string;
   allowClear?: boolean;
   autoFocus?: boolean;
   showTime?: boolean | SharedTimeProps;
@@ -28,20 +36,26 @@ export interface PickerProps<DateType> {
   open?: boolean;
   format?: string | string[];
   mode?: PanelMode;
+  suffixIcon?: React.ReactNode;
   clearIcon?: React.ReactNode;
   dateRender?: DateRender<DateType>;
+  getPopupContainer?: (node: HTMLElement) => HTMLElement;
   onChange?: (value: DateType | null, dateString: string) => void;
   onOpenChange?: (open: boolean) => void;
 
   /** @private Internal usage, do not use in production mode!!! */
   getNextMode?: GetNextMode;
+  /** @private Internal usage, do not use in production mode!!! */
+  inputRef?: React.Ref<HTMLInputElement>;
 }
 
-function Picker<DateType>(props: PickerProps<DateType>) {
+function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
-    className,
     style,
+    className,
+    dropdownClassName,
+    popupStyle,
     generateConfig,
     locale,
     allowClear,
@@ -51,8 +65,12 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     value,
     defaultValue,
     open,
+    suffixIcon,
     clearIcon,
     disabled,
+    placeholder,
+    getPopupContainer,
+    inputRef,
     onChange,
     onOpenChange,
   } = props;
@@ -313,7 +331,10 @@ function Picker<DateType>(props: PickerProps<DateType>) {
         <PickerTrigger
           visible={mergedOpen}
           popupElement={panel}
+          popupStyle={popupStyle}
           prefixCls={prefixCls}
+          dropdownClassName={dropdownClassName}
+          getPopupContainer={getPopupContainer}
         >
           <div className={`${prefixCls}-input`}>
             <input
@@ -326,13 +347,37 @@ function Picker<DateType>(props: PickerProps<DateType>) {
               onChange={onInputChange}
               onKeyDown={onInputKeyDown}
               autoFocus={autoFocus}
+              placeholder={placeholder}
+              ref={inputRef}
             />
+            {suffixIcon}
             {clearNode}
           </div>
         </PickerTrigger>
       </div>
     </PanelContext.Provider>
   );
+}
+
+// Wrap with class component to enable pass generic with instance method
+class Picker<DateType> extends React.Component<PickerProps<DateType>> {
+  inputRef = React.createRef<HTMLInputElement>();
+
+  focus = () => {
+    if (this.inputRef.current) {
+      this.inputRef.current.focus();
+    }
+  };
+
+  blur = () => {
+    if (this.inputRef.current) {
+      this.inputRef.current.blur();
+    }
+  };
+
+  render() {
+    return <InnerPicker<DateType> {...this.props} inputRef={this.inputRef} />;
+  }
 }
 
 export default Picker;
