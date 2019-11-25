@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import PickerPanel from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
 import { GenerateConfig } from './generate';
-import { Locale, PanelMode, GetNextMode } from './interface';
+import { Locale, PanelMode, GetNextMode, NullableDateType } from './interface';
 import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
@@ -17,7 +17,8 @@ export interface PickerProps<DateType> {
   allowClear?: boolean;
   autoFocus?: boolean;
   showTime?: boolean | SharedTimeProps;
-  value?: DateType | null;
+  value?: NullableDateType<DateType>;
+  defaultValue?: NullableDateType<DateType>;
   open?: boolean;
   format?: string | string[];
   mode?: PanelMode;
@@ -39,6 +40,7 @@ function Picker<DateType>(props: PickerProps<DateType>) {
     showTime,
     format = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
     value,
+    defaultValue,
     open,
     clearIcon,
     onChange,
@@ -49,10 +51,15 @@ function Picker<DateType>(props: PickerProps<DateType>) {
   const formatList = toArray(format);
 
   // Real value
-  const [innerValue, setInnerValue] = React.useState<DateType | null>(
-    () => ('value' in props ? value : generateConfig.getNow()) || null,
-  );
-  const mergedValue = ('value' in props ? value : innerValue) || null;
+  const [innerValue, setInnerValue] = React.useState<DateType | null>(() => {
+    if (value !== undefined) {
+      return value;
+    } if (defaultValue !== undefined) {
+      return defaultValue;
+    }
+    return generateConfig.getNow();
+  });
+  const mergedValue = value !== undefined ? value : innerValue;
 
   // Selected value
   const [

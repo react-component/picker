@@ -22,6 +22,9 @@ export interface GenerateConfig<DateType> {
   setMinute: (value: DateType, minute: number) => DateType;
   setSecond: (value: DateType, second: number) => DateType;
 
+  // Compare
+  isAfter: (date1: DateType, date2: DateType) => boolean;
+
   locale: {
     getWeekFirstDay: (locale: string) => number;
     getWeek: (locale: string, value: DateType) => number;

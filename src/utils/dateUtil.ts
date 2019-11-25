@@ -1,4 +1,5 @@
 import { GenerateConfig } from '../generate';
+import { NullableDateType } from '../interface';
 
 export const WEEK_DAY_COUNT = 7;
 
@@ -11,8 +12,6 @@ export function isNullEqual<T>(value1: T, value2: T): boolean | undefined {
   }
   return undefined;
 }
-
-type NullableDateType<DateType> = DateType | null | undefined;
 
 export function isSameMonth<DateType>(
   generateConfig: GenerateConfig<DateType>,

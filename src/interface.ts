@@ -54,15 +54,17 @@ export interface PanelRefProps {
   onClose?: () => void;
 }
 
+export type NullableDateType<DateType> = DateType | null | undefined;
+
 export interface PanelSharedProps<DateType> {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
-  value?: DateType | null;
+  value?: NullableDateType<DateType>;
   /**
-   * @private Set another value in the panel to display ranged value style.
+   * @private Set displayed range value style.
    * Panel only has one value, this is only style effect.
    */
-  rangedValue?: DateType;
+  rangedValue?: [NullableDateType<DateType>, NullableDateType<DateType>];
   viewDate: DateType;
   /** [Legacy] Set default display picker view date */
   defaultPickerValue?: DateType;

@@ -72,6 +72,9 @@ const generateConfig: GenerateConfig<Moment> = {
     return clone;
   },
 
+  // Compare
+  isAfter: (date1, date2) => date1.isAfter(date2),
+
   locale: {
     getWeekFirstDay: locale => {
       const date = moment().locale(locale);
