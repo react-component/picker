@@ -126,6 +126,14 @@ export default () => {
             locale={zhCN}
             defaultPickerValue={defaultValue.clone().subtract(1, 'month')}
             showTime
+            disabledTime={date => {
+              if (date && date.isSame(defaultValue, 'date')) {
+                return {
+                  disabledHours: () => [1, 3, 5, 7, 9, 11],
+                };
+              }
+              return {};
+            }}
           />
         </div>
         <div style={{ margin: '0 8px' }}>

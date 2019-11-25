@@ -5,7 +5,13 @@ import TimeBody, { BodyOperationRef } from './TimeBody';
 import { PanelSharedProps } from '../../interface';
 import { createKeyDownHandler } from '../../utils/uiUtil';
 
-export interface SharedTimeProps {
+export interface DisabledTimes {
+  disabledHours?: () => number[];
+  disabledMinutes?: (hour: number) => number[];
+  disabledSeconds?: (hour: number, minute: number) => number[];
+}
+
+export interface SharedTimeProps extends DisabledTimes {
   format?: string;
   showHour?: boolean;
   showMinute?: boolean;
@@ -14,9 +20,6 @@ export interface SharedTimeProps {
   hourStep?: number;
   minuteStep?: number;
   secondStep?: number;
-  disabledHours?: () => number[];
-  disabledMinutes?: (hour: number) => number[];
-  disabledSeconds?: (hour: number, minute: number) => number[];
 }
 
 export interface TimePanelProps<DateType>

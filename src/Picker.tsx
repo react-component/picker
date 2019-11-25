@@ -13,7 +13,7 @@ import { Locale, PanelMode, GetNextMode, NullableDateType } from './interface';
 import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
-import { SharedTimeProps } from './panels/TimePanel';
+import { SharedTimeProps, DisabledTimes } from './panels/TimePanel';
 import { DateRender } from './panels/DatePanel/DateBody';
 
 export interface PickerProps<DateType> {
@@ -22,27 +22,39 @@ export interface PickerProps<DateType> {
   className?: string;
   dropdownClassName?: string;
   popupStyle?: React.CSSProperties;
-  generateConfig: GenerateConfig<DateType>;
-  locale: Locale;
   placeholder?: string;
   allowClear?: boolean;
   autoFocus?: boolean;
-  showTime?: boolean | SharedTimeProps;
-  value?: NullableDateType<DateType>;
-  defaultValue?: NullableDateType<DateType>;
-  /** [Legacy] Set default display picker view date */
-  defaultPickerValue?: DateType;
   disabled?: boolean;
   open?: boolean;
-  format?: string | string[];
   mode?: PanelMode;
+
+  // Locale
+  generateConfig: GenerateConfig<DateType>;
+  locale: Locale;
+
+  // Value
+  value?: NullableDateType<DateType>;
+  defaultValue?: NullableDateType<DateType>;
+  format?: string | string[];
+  /** [Legacy] Set default display picker view date */
+  defaultPickerValue?: DateType;
+
+  // Time
+  showTime?: boolean | SharedTimeProps;
+  disabledTime?: (date: DateType | null) => DisabledTimes;
+
+  // Render
   suffixIcon?: React.ReactNode;
   clearIcon?: React.ReactNode;
   dateRender?: DateRender<DateType>;
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
+
+  // Events
   onChange?: (value: DateType | null, dateString: string) => void;
   onOpenChange?: (open: boolean) => void;
 
+  // Internal
   /** @private Internal usage, do not use in production mode!!! */
   getNextMode?: GetNextMode;
   /** @private Internal usage, do not use in production mode!!! */

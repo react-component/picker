@@ -53,6 +53,9 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
             [`${cellPrefixCls}-selected`]: value === unit.value,
           })}
           onClick={() => {
+            if (unit.disabled) {
+              return;
+            }
             onSelect!(unit.value);
           }}
         >

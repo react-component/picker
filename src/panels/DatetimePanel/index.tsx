@@ -2,18 +2,23 @@ import * as React from 'react';
 import classNames from 'classnames';
 import KeyCode from 'rc-util/lib/KeyCode';
 import DatePanel, { DatePanelProps } from '../DatePanel';
-import TimePanel, { TimePanelProps } from '../TimePanel';
+import TimePanel, { TimePanelProps, DisabledTimes } from '../TimePanel';
 import { tuple } from '../../utils/miscUtil';
 import { PanelRefProps } from '../../interface';
 
-export type DatetimePanelProps<DateType> = DatePanelProps<DateType> &
-  TimePanelProps<DateType>;
+export interface DatetimePanelProps<DateType>
+  extends Omit<
+    DatePanelProps<DateType> & TimePanelProps<DateType>,
+    'disabledHours' | 'disabledMinutes' | 'disabledSeconds'
+  > {
+  disabledTime?: (date: DateType | null) => DisabledTimes;
+}
 
 const ACTIVE_PANEL = tuple('date', 'time');
 type ActivePanelType = typeof ACTIVE_PANEL[number];
 
 function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
-  const { prefixCls, operationRef } = props;
+  const { prefixCls, operationRef, value, disabledTime } = props;
   const panelPrefixCls = `${prefixCls}-datetime-panel`;
   const [activePanel, setActivePanel] = React.useState<ActivePanelType | null>(
     null,
@@ -73,6 +78,9 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
     onClose: onBlur,
   };
 
+  // ========================= Time =========================
+  const disabledTimes = disabledTime ? disabledTime(value || null) : {};
+
   return (
     <div
       className={classNames(panelPrefixCls, {
@@ -86,6 +94,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       />
       <TimePanel
         {...props}
+        {...disabledTimes}
         operationRef={timeOperationRef}
         active={activePanel === 'time'}
       />
