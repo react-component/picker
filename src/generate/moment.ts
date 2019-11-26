@@ -3,19 +3,6 @@ import { GenerateConfig } from '.';
 
 const generateConfig: GenerateConfig<Moment> = {
   // get
-  getFirstDateOfMonth: date => {
-    const clone = date.clone();
-    clone.date(1);
-    return clone;
-  },
-  getLastDateOfMonth: date => {
-    const clone = date.clone();
-    clone
-      .date(1)
-      .add(1, 'month')
-      .subtract(1, 'day');
-    return clone;
-  },
   getNow: () => moment(),
   getWeekDay: date => date.weekday(),
   getYear: date => date.year(),

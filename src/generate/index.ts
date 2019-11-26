@@ -1,7 +1,5 @@
 export interface GenerateConfig<DateType> {
   // Get
-  getFirstDateOfMonth: (value: DateType) => DateType;
-  getLastDateOfMonth: (value: DateType) => DateType;
   getWeekDay: (value: DateType) => number;
   getSecond: (value: DateType) => number;
   getMinute: (value: DateType) => number;
