@@ -232,21 +232,30 @@ describe('Basic', () => {
         name: 'date',
         yearBtn: '.rc-picker-date-panel-year-btn',
         finalPanel: 'DatePanel',
-        picker: undefined,
+        finalMode: 'date',
+      },
+      {
+        name: 'date',
+        yearBtn: '.rc-picker-date-panel-year-btn',
+        finalPanel: 'DatetimePanel',
+        finalMode: 'datetime',
+        showTime: true,
       },
       {
         name: 'week',
         yearBtn: '.rc-picker-week-panel-year-btn',
         finalPanel: 'WeekPanel',
+        finalMode: 'week',
         picker: 'week',
       },
-    ].forEach(({ name, yearBtn, finalPanel, picker }) => {
+    ].forEach(({ name, finalMode, yearBtn, finalPanel, picker, showTime }) => {
       it(name, () => {
         const onChange = jest.fn();
         const onPanelChange = jest.fn();
         const wrapper = mount(
           <MomentPicker
             picker={picker as any}
+            showTime={showTime}
             onChange={onChange}
             onPanelChange={onPanelChange}
           />,
@@ -285,7 +294,7 @@ describe('Basic', () => {
 
         // Select month
         wrapper.selectCell('Aug');
-        expectPanelChange('2019-08-03', name as any);
+        expectPanelChange('2019-08-03', finalMode as any);
 
         // Select date
         wrapper.selectCell('18');
@@ -296,6 +305,30 @@ describe('Basic', () => {
         wrapper.closePicker();
         expect(isSame(onChange.mock.calls[0][0], '2019-08-18')).toBeTruthy();
       });
+    });
+
+    it('time', () => {
+      const onChange = jest.fn();
+      const wrapper = mount(<MomentPicker picker="time" onChange={onChange} />);
+      wrapper.openPicker();
+
+      function selectColumn(colIndex: number, rowIndex: number) {
+        wrapper
+          .find('ul')
+          .at(colIndex)
+          .find('li')
+          .at(rowIndex)
+          .simulate('click');
+      }
+
+      selectColumn(0, 13);
+      selectColumn(1, 22);
+      selectColumn(2, 33);
+
+      wrapper.closePicker();
+      expect(
+        isSame(onChange.mock.calls[0][0], '1990-09-03 13:22:33', 'second'),
+      ).toBeTruthy();
     });
   });
 });

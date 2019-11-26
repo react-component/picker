@@ -26,12 +26,12 @@ import { PickerModeMap } from './utils/uiUtil';
 import { MonthCellRender } from './panels/MonthPanel/MonthBody';
 import RangeContext from './RangeContext';
 
-export interface PickerPanelProps<DateType> {
+export interface PickerPanelBaseProps<DateType> {
   prefixCls?: string;
   className?: string;
   style?: React.CSSProperties;
   mode?: PanelMode;
-  picker?: PickerMode;
+  picker?: Exclude<PickerMode, 'time'>;
   tabIndex?: number;
 
   // Locale
@@ -62,6 +62,24 @@ export interface PickerPanelProps<DateType> {
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 }
 
+export interface PickerPanelTimeProps<DateType>
+  extends Omit<PickerPanelBaseProps<DateType>, 'showTime' | 'picker'>,
+    SharedTimeProps<DateType> {
+  picker: 'time';
+}
+
+export type PickerPanelProps<DateType> =
+  | PickerPanelBaseProps<DateType>
+  | PickerPanelTimeProps<DateType>;
+
+interface MergedPickerPanelProps<DateType>
+  extends Omit<
+    PickerPanelBaseProps<DateType> & PickerPanelTimeProps<DateType>,
+    'picker'
+  > {
+  picker?: PickerMode;
+}
+
 function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
@@ -82,7 +100,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onChange,
     onPanelChange,
     onMouseDown,
-  } = props;
+  } = props as MergedPickerPanelProps<DateType>;
 
   const { operationRef } = React.useContext(PanelContext);
   const { extraFooterSelections } = React.useContext(RangeContext);
@@ -122,9 +140,12 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     return nextMode;
   };
 
-  const [innerMode, setInnerMode] = React.useState<PanelMode>(
-    getInternalNextMode('date'),
-  );
+  const [innerMode, setInnerMode] = React.useState<PanelMode>(() => {
+    if (picker === 'time') {
+      return 'time';
+    }
+    return getInternalNextMode('date');
+  });
   const mergedMode: PanelMode = mode || innerMode;
 
   const onInternalPanelChange = (newMode: PanelMode, viewValue: DateType) => {
@@ -211,7 +232,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   let panelNode: React.ReactNode;
 
   const pickerProps = {
-    ...props,
+    ...(props as MergedPickerPanelProps<DateType>),
     operationRef: panelRef,
     prefixCls,
     viewDate,
@@ -289,7 +310,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
           {...pickerProps}
           {...(typeof showTime === 'object' ? showTime : null)}
           onSelect={date => {
-            onInternalPanelChange('date', date);
             setViewDate(date);
             triggerSelect(date);
           }}

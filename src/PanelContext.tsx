@@ -7,6 +7,8 @@ export type ContextOperationRefProps = {
 
 export interface PanelContextProps {
   operationRef?: React.MutableRefObject<ContextOperationRefProps | null>;
+  /** Only work with time panel */
+  hideHeader?: boolean;
 }
 
 const PanelContext = React.createContext<PanelContextProps>({});

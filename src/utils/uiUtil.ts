@@ -155,5 +155,6 @@ export const PickerModeMap: Record<
   year: getYearNextMode,
   month: getMonthNextMode,
   week: getWeekNextMode,
+  time: null,
   date: null,
 };

@@ -2,6 +2,7 @@ import * as React from 'react';
 import Header from '../Header';
 import { Locale } from '../../interface';
 import { GenerateConfig } from '../../generate';
+import PanelContext from '../../PanelContext';
 
 export interface TimeHeaderProps<DateType> {
   prefixCls: string;
@@ -12,10 +13,11 @@ export interface TimeHeaderProps<DateType> {
 }
 
 function TimeHeader<DateType>(props: TimeHeaderProps<DateType>) {
+  const { hideHeader } = React.useContext(PanelContext);
   const { prefixCls, generateConfig, locale, value, format } = props;
   const headerPrefixCls = `${prefixCls}-header`;
 
-  return (
+  return hideHeader ? null : (
     <Header prefixCls={headerPrefixCls}>
       {value
         ? generateConfig.locale.format(locale.locale, value, format)

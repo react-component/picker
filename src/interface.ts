@@ -48,7 +48,7 @@ export type PanelMode =
   | 'year'
   | 'decade';
 
-export type PickerMode = Exclude<PanelMode, 'time' | 'datetime' | 'decade'>;
+export type PickerMode = Exclude<PanelMode, 'datetime' | 'decade'>;
 
 export interface PanelRefProps {
   onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => boolean;

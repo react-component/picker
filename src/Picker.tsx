@@ -20,6 +20,7 @@ import PickerTrigger from './PickerTrigger';
 import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
+import { SharedTimeProps } from './panels/TimePanel';
 
 export interface PickerProps<DateType>
   extends Omit<PickerPanelProps<DateType>, 'onChange'> {
@@ -54,6 +55,11 @@ export interface PickerProps<DateType>
   inputRef?: React.Ref<HTMLInputElement>;
 }
 
+interface InternalPickerProps<DateType> extends PickerProps<DateType> {
+  showTime?: boolean | SharedTimeProps<DateType>;
+  use12Hours?: boolean;
+}
+
 function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
@@ -69,7 +75,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     allowClear,
     autoFocus,
     showTime,
-    format = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
+    picker,
+    format,
+    use12Hours,
     value,
     defaultValue,
     open,
@@ -83,10 +91,16 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onOpenChange,
     onFocus,
     onBlur,
-  } = props;
+  } = props as InternalPickerProps<DateType>;
 
   // ============================= State =============================
-  const formatList = toArray(format);
+  let mergedFormat = format;
+  if (!mergedFormat && picker === 'time') {
+    mergedFormat = use12Hours ? 'hh:mm:ss a' : 'HH:mm:ss';
+  } else if (!mergedFormat) {
+    mergedFormat = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
+  }
+  const formatList = toArray(mergedFormat);
 
   // Real value
   const [innerValue, setInnerValue] = React.useState<DateType | null>(() => {
@@ -314,7 +328,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   // ============================= Panel =============================
   const panelProps = {
-    ...props,
+    // Remove `picker` & `format` here since TimePicker is little different with other panel
+    ...(props as Omit<InternalPickerProps<DateType>, 'picker' | 'format'>),
     className: undefined,
     style: undefined,
   };
@@ -355,6 +370,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     <PanelContext.Provider
       value={{
         operationRef,
+        hideHeader: picker === 'time',
       }}
     >
       <div
