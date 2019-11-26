@@ -98,7 +98,10 @@ export default () => {
             {...sharedProps}
             locale={zhCN}
             defaultPickerValue={defaultValue.clone().subtract(1, 'month')}
-            showTime
+            showTime={{
+              showSecond: false,
+              defaultValue: moment('11:28:39', 'HH:mm:ss'),
+            }}
             showToday
             disabledTime={date => {
               if (date && date.isSame(defaultValue, 'date')) {

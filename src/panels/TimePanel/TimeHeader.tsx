@@ -17,7 +17,9 @@ function TimeHeader<DateType>(props: TimeHeaderProps<DateType>) {
 
   return (
     <Header prefixCls={headerPrefixCls}>
-      {value ? generateConfig.locale.format(locale.locale, value, format) : ''}
+      {value
+        ? generateConfig.locale.format(locale.locale, value, format)
+        : '\u00A0'}
     </Header>
   );
 }

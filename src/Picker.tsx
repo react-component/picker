@@ -10,7 +10,6 @@
  *
  * TODO:
  *  Fixed click to auto select one value with disabled logic
- *  showTime.defaultValue
  */
 
 import * as React from 'react';

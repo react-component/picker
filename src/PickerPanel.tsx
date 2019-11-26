@@ -44,7 +44,7 @@ export interface PickerPanelProps<DateType> {
   defaultPickerValue?: DateType;
 
   // Time
-  showTime?: boolean | SharedTimeProps;
+  showTime?: boolean | SharedTimeProps<DateType>;
   disabledTime?: DisabledTime<DateType>;
   showToday?: boolean;
   disabledDate?: (date: DateType) => boolean;
@@ -208,6 +208,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onViewDateChange: setViewDate,
     onPanelChange: onInternalPanelChange,
   };
+  delete pickerProps.onChange;
   delete pickerProps.onSelect;
 
   switch (mergedMode) {
