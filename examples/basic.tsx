@@ -115,6 +115,10 @@ export default () => {
           />
         </div>
         <div style={{ margin: '0 8px' }}>
+          <h3>Uncontrolled Datetime</h3>
+          <Picker<Moment> generateConfig={momentGenerateConfig} locale={zhCN} />
+        </div>
+        <div style={{ margin: '0 8px' }}>
           <h3>Week</h3>
           <Picker<Moment>
             {...sharedProps}

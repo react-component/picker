@@ -96,7 +96,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     if (defaultValue !== undefined) {
       return defaultValue;
     }
-    return generateConfig.getNow();
+    return null;
   });
   const mergedValue = value !== undefined ? value : innerValue;
 
@@ -201,6 +201,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     if (!isSameTextDate(textValue, newValue)) {
       setDateText(newValue);
     }
+
+    setInnerValue(newValue);
 
     if (onChange && !isEqual(generateConfig, mergedValue, newValue)) {
       onChange(

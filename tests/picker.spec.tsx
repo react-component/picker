@@ -212,4 +212,17 @@ describe('Basic', () => {
       expect(wrapper.find('.rc-picker-focused').length).toBeFalsy();
     });
   });
+
+  it('block native mouseDown in panel to prevent focus changed', () => {
+    const wrapper = mount(<MomentPicker />);
+    wrapper.openPicker();
+
+    const preventDefault = jest.fn();
+    wrapper
+      .find('td')
+      .first()
+      .simulate('mouseDown', { preventDefault });
+
+    expect(preventDefault).toHaveBeenCalled();
+  });
 });

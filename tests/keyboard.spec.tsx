@@ -75,6 +75,17 @@ describe('Keyboard', () => {
     expect(wrapper.isOpen()).toBeTruthy();
   });
 
+  it('not change focus to panel', () => {
+    const wrapper = mount(<MomentPicker />);
+    wrapper.openPicker();
+
+    // Not change focus
+    wrapper.keyDown(KeyCode.B);
+    expect(wrapper.isOpen()).toBeTruthy();
+
+    expect(wrapper.find('.rc-picker-panel-focused').length).toBeFalsy();
+  });
+
   it('Tab into Panel and back to input', () => {
     const wrapper = mount(<MomentPicker />);
     wrapper.openPicker();
