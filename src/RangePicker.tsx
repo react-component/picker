@@ -43,6 +43,7 @@ export interface RangePickerProps<DateType>
   >;
   separator?: string;
   allowEmpty?: [boolean, boolean];
+  selectable?: [boolean, boolean];
   onChange?: (
     value: RangeValue<DateType>,
     formatString: [string, string],
@@ -70,11 +71,18 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     ranges,
     format = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
     allowEmpty,
+    selectable,
+    disabled,
     onChange,
     onCalendarChange,
   } = props;
 
   const formatList = toArray(format);
+  const mergedSelectable = React.useMemo<
+    [boolean | undefined, boolean | undefined]
+  >(() => [selectable && selectable[0], selectable && selectable[1]], [
+    selectable,
+  ]);
 
   // ============================= Values =============================
   const [innerValue, setInnerValue] = React.useState<RangeValue<DateType>>(
@@ -152,6 +160,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     if (
       startDate &&
       endDate &&
+      !isSameDate(generateConfig, startDate, endDate) &&
       generateConfig.isAfter(startDate, endDate) &&
       changedByStartTime
     ) {
@@ -214,6 +223,19 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   // End date should disabled before start date
   const { disabledDate } = pickerProps;
+
+  const disabledStartDate = (date: DateType) => {
+    let mergedDisabled = disabledDate ? disabledDate(date) : false;
+
+    if (mergedSelectable[1] === false && value2) {
+      mergedDisabled =
+        !isSameDate(generateConfig, date, value2) &&
+        generateConfig.isAfter(date, value2);
+    }
+
+    return mergedDisabled;
+  };
+
   const disabledEndDate = (date: DateType) => {
     let mergedDisabled = disabledDate ? disabledDate(date) : false;
 
@@ -245,6 +267,8 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
           placeholder={placeholder && placeholder[0]}
           defaultPickerValue={defaultPickerValue && defaultPickerValue[0]}
           disabledTime={disabledStartTime}
+          disabled={disabled || mergedSelectable[0] === false}
+          disabledDate={disabledStartDate}
           onChange={date => {
             onInternalChange([date, value2], true);
           }}
@@ -258,6 +282,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
           placeholder={placeholder && placeholder[1]}
           defaultPickerValue={defaultPickerValue && defaultPickerValue[1]}
           disabledTime={disabledEndTime}
+          disabled={disabled || mergedSelectable[1] === false}
           disabledDate={disabledEndDate}
           onChange={date => {
             onInternalChange([value1, date], false);

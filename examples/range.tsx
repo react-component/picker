@@ -50,7 +50,7 @@ export default () => {
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
-          <RangePicker<Moment> {...sharedProps} locale={zhCN} />
+          <RangePicker<Moment> {...sharedProps} locale={zhCN} allowClear />
         </div>
 
         <div style={{ margin: '0 8px' }}>
@@ -60,6 +60,7 @@ export default () => {
             locale={zhCN}
             allowClear
             allowEmpty={[true, true]}
+            selectable={[true, false]}
           />
         </div>
 

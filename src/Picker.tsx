@@ -5,13 +5,12 @@
  *
  * New Feature:
  *  - picker
+ *  - allowEmpty
+ *  - selectable
  *
  * TODO:
  *  Fixed click to auto select one value with disabled logic
- *  RangePicker should disable date with range
  *  showTime.defaultValue
- *  selectable
- *  inputReadOnly
  */
 
 import * as React from 'react';
@@ -35,6 +34,8 @@ export interface PickerProps<DateType>
   autoFocus?: boolean;
   disabled?: boolean;
   open?: boolean;
+  /** Make input readOnly to avoid popup keyboard in mobile */
+  inputReadOnly?: boolean;
 
   // Value
   format?: string | string[];
@@ -64,6 +65,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     transitionName,
     generateConfig,
     locale,
+    inputReadOnly,
     allowClear,
     autoFocus,
     showTime,
@@ -347,7 +349,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
           <div className={`${prefixCls}-input`}>
             <input
               disabled={disabled}
-              readOnly={!typing}
+              readOnly={inputReadOnly || !typing}
               onMouseDown={onInputMouseDown}
               onFocus={onInputFocus}
               onBlur={onInputBlur}
