@@ -8,8 +8,7 @@
  *  - allowEmpty
  *  - selectable
  *
- * TODO:
- *  Fixed click to auto select one value with disabled logic
+ * Tips: Should add faq about `datetime` mode with `defaultValue`
  */
 
 import * as React from 'react';

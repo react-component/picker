@@ -12,7 +12,7 @@ export interface YearHeaderProps<DateType> {
   onNextDecades: () => void;
 }
 
-function YearHeader<DateType>(props: YearHeaderProps<DateType>) {
+function DecadeHeader<DateType>(props: YearHeaderProps<DateType>) {
   const {
     prefixCls,
     generateConfig,
@@ -38,4 +38,4 @@ function YearHeader<DateType>(props: YearHeaderProps<DateType>) {
   );
 }
 
-export default YearHeader;
+export default DecadeHeader;

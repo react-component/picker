@@ -13,6 +13,7 @@ export interface DatetimePanelProps<DateType>
   > {
   disabledTime?: DisabledTime<DateType>;
   showTime?: boolean | SharedTimeProps<DateType>;
+  defaultValue?: DateType;
 }
 
 const ACTIVE_PANEL = tuple('date', 'time');
@@ -24,6 +25,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
     operationRef,
     generateConfig,
     value,
+    defaultValue,
     disabledTime,
     showTime,
     onSelect,
@@ -94,6 +96,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
     let selectedDate = date;
 
     if (source === 'date' && !value && timeProps.defaultValue) {
+      // Date with time defaultValue
       selectedDate = generateConfig.setHour(
         selectedDate,
         generateConfig.getHour(timeProps.defaultValue),
@@ -105,6 +108,19 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       selectedDate = generateConfig.setSecond(
         selectedDate,
         generateConfig.getSecond(timeProps.defaultValue),
+      );
+    } else if (source === 'time' && !value && defaultValue) {
+      selectedDate = generateConfig.setYear(
+        selectedDate,
+        generateConfig.getYear(defaultValue),
+      );
+      selectedDate = generateConfig.setMonth(
+        selectedDate,
+        generateConfig.getMonth(defaultValue),
+      );
+      selectedDate = generateConfig.setDate(
+        selectedDate,
+        generateConfig.getDate(defaultValue),
       );
     }
 

@@ -14,7 +14,7 @@ export interface YearBodyProps<DateType> {
   onSelect: (value: DateType) => void;
 }
 
-function YearBody<DateType>({
+function DecadeBody<DateType>({
   prefixCls,
   viewDate,
   generateConfig,
@@ -85,4 +85,4 @@ function YearBody<DateType>({
   );
 }
 
-export default YearBody;
+export default DecadeBody;
