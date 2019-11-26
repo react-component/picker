@@ -1,34 +1,9 @@
 import React from 'react';
-import { Moment } from 'moment';
 import MockDate from 'mockdate';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import KeyCode from 'rc-util/lib/KeyCode';
-import Picker, { PickerProps } from '../src';
-import momentGenerateConfig from '../src/generate/moment';
-import enUS from '../src/locale/en_US';
 import { PanelMode } from '../src/interface';
-import { mount, getMoment, isSame } from './util/commonUtil';
-
-interface MomentPickerProps
-  extends Omit<PickerProps<Moment>, 'locale' | 'generateConfig'> {
-  locale?: PickerProps<Moment>['locale'];
-  generateConfig?: PickerProps<Moment>['generateConfig'];
-}
-
-class MomentPicker extends React.Component<MomentPickerProps> {
-  pickerRef = React.createRef<Picker<Moment>>();
-
-  render() {
-    return (
-      <Picker<Moment>
-        generateConfig={momentGenerateConfig}
-        locale={enUS}
-        ref={this.pickerRef}
-        {...this.props}
-      />
-    );
-  }
-}
+import { mount, getMoment, isSame, MomentPicker } from './util/commonUtil';
 
 describe('Basic', () => {
   beforeAll(() => {
@@ -170,9 +145,7 @@ describe('Basic', () => {
 
     expect(wrapper.find('input').prop('value')).toEqual('2000-01-01');
     expect(onChange).not.toHaveBeenCalled();
-    wrapper.find('input').simulate('keyDown', {
-      which: KeyCode.ENTER,
-    });
+    wrapper.keyDown(KeyCode.ENTER);
     expect(isSame(onChange.mock.calls[0][0], '2000-01-01')).toBeTruthy();
     onChange.mockReset();
 
