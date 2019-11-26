@@ -123,6 +123,11 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     );
   };
 
+  // Operation ref
+  const operationRef: React.MutableRefObject<ContextOperationRefProps | null> = React.useRef<
+    ContextOperationRefProps
+  >(null);
+
   // Trigger
   const [innerOpen, setInnerOpen] = React.useState<boolean>(false);
   let mergedOpen: boolean;
@@ -132,10 +137,18 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     mergedOpen = typeof open === 'boolean' ? open : innerOpen;
   }
 
-  // Operation ref
-  const operationRef: React.MutableRefObject<ContextOperationRefProps | null> = React.useRef<
-    ContextOperationRefProps
-  >(null);
+  const triggerOpen = (newOpen: boolean) => {
+    if (mergedOpen !== newOpen) {
+      setInnerOpen(newOpen);
+      if (onOpenChange) {
+        onOpenChange(newOpen);
+      }
+
+      if (!newOpen && operationRef.current && operationRef.current.onClose) {
+        operationRef.current.onClose();
+      }
+    }
+  };
 
   // ============================= Value =============================
   const isSameTextDate = (text: string, date: DateType | null) => {
@@ -158,7 +171,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   };
 
   const onInputMouseDown: React.MouseEventHandler<HTMLInputElement> = () => {
-    setInnerOpen(true);
+    triggerOpen(true);
     setTyping(true);
   };
 
@@ -177,17 +190,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   };
 
   // ============================ Trigger ============================
-  const triggerOpen = (newOpen: boolean) => {
-    setInnerOpen(newOpen);
-    if (onOpenChange) {
-      onOpenChange(newOpen);
-    }
-
-    if (!newOpen && operationRef.current && operationRef.current.onClose) {
-      operationRef.current.onClose();
-    }
-  };
-
   const triggerChange = (newValue: DateType | null) => {
     if (!isSameTextDate(textValue, newValue)) {
       setDateText(newValue);
@@ -264,22 +266,30 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   };
 
   const onInputBlur: React.FocusEventHandler<HTMLInputElement> = () => {
-    setInnerOpen(false);
+    triggerOpen(false);
     setInnerValue(selectedValue);
     triggerChange(selectedValue);
   };
 
   // ============================= Sync ==============================
+  // Close should sync back with text value
+  React.useEffect(() => {
+    if (!mergedOpen && !isSameTextDate(textValue, mergedValue)) {
+      setDateText(mergedValue);
+    }
+  }, [mergedOpen]);
+
+  // Sync innerValue with control mode
   React.useEffect(() => {
     if (!isEqual(generateConfig, mergedValue, innerValue)) {
       // Sync inner & select value
       setInnerValue(mergedValue);
       setSelectedValue(mergedValue);
+    }
 
-      // Sync text
-      if (!isSameTextDate(textValue, mergedValue)) {
-        setDateText(mergedValue);
-      }
+    // Sync text
+    if (!isSameTextDate(textValue, mergedValue)) {
+      setDateText(mergedValue);
     }
   }, [mergedValue]);
 

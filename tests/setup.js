@@ -12,6 +12,30 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
   },
   isOpen() {
     const openDiv = this.find('.rc-picker-dropdown').hostNodes();
-    return openDiv && !openDiv.hasClass('rc-picker-dropdown-hidden');
+    return (
+      openDiv &&
+      openDiv.length &&
+      !openDiv.hasClass('rc-picker-dropdown-hidden')
+    );
+  },
+  selectDate(date) {
+    let match = false;
+
+    this.find('td').forEach(td => {
+      if (
+        td.text() === String(date) &&
+        td.hasClass('rc-picker-date-panel-cell-in-view')
+      ) {
+        match = true;
+        td.simulate('click');
+      }
+    });
+
+    if (!match) {
+      throw new Error('Date not match in picker panel.');
+    }
+  },
+  clearValue() {
+    this.find('.rc-picker-clear-btn').simulate('click');
   },
 });
