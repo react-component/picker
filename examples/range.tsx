@@ -25,10 +25,19 @@ export default () => {
     setValue(newValue);
   };
 
+  const onCalendarChange = (
+    newValue: [Moment | null, Moment | null] | null,
+    formatStrings?: string[],
+  ) => {
+    console.log('Calendar Change:', newValue, formatStrings);
+    setValue(newValue);
+  };
+
   const sharedProps = {
     generateConfig: momentGenerateConfig,
     value,
     onChange,
+    onCalendarChange,
   };
 
   return (

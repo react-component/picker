@@ -11,6 +11,7 @@
  *  RangePicker should disable date with range
  *  showTime.defaultValue
  *  selectable
+ *  inputReadOnly
  */
 
 import * as React from 'react';
@@ -270,7 +271,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   // ============================= Sync ==============================
   React.useEffect(() => {
-    if (mergedValue && !isEqual(generateConfig, mergedValue, innerValue)) {
+    if (!isEqual(generateConfig, mergedValue, innerValue)) {
       // Sync inner & select value
       setInnerValue(mergedValue);
       setSelectedValue(mergedValue);

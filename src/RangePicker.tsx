@@ -97,13 +97,21 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
       ? generateConfig.locale.format(locale.locale, date, formatList[0])
       : '');
 
-  const onInternalChange = (values: NullableDateType<DateType>[]) => {
-    let startDate: DateType | null = values[0] || null;
+  const onInternalChange = (
+    values: NullableDateType<DateType>[],
+    changedByStartTime: boolean,
+  ) => {
+    const startDate: DateType | null = values[0] || null;
     let endDate: DateType | null = values[1] || null;
 
-    if (startDate && endDate && generateConfig.isAfter(startDate, endDate)) {
-      startDate = values[1] || null;
-      endDate = values[0] || null;
+    // If user change start time is after end time, should reset end time to null
+    if (
+      startDate &&
+      endDate &&
+      generateConfig.isAfter(startDate, endDate) &&
+      changedByStartTime
+    ) {
+      endDate = null;
     }
 
     setInnerValue([startDate, endDate]);
@@ -154,6 +162,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
         const rangedValue = ranges[label];
         onInternalChange(
           typeof rangedValue === 'function' ? rangedValue() : rangedValue,
+          false,
         );
       },
     }));
@@ -170,7 +179,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
           defaultPickerValue={defaultPickerValue && defaultPickerValue[0]}
           disabledTime={disabledStartTime}
           onChange={date => {
-            onInternalChange([date, value2]);
+            onInternalChange([date, value2], true);
           }}
         />
       </RangeContext.Provider>
@@ -184,7 +193,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
           defaultPickerValue={defaultPickerValue && defaultPickerValue[1]}
           disabledTime={disabledEndTime}
           onChange={date => {
-            onInternalChange([value1, date]);
+            onInternalChange([value1, date], false);
           }}
         />
       </RangeContext.Provider>
