@@ -25,23 +25,43 @@ function Header({
   return (
     <div className={prefixCls}>
       {onSuperPrev && (
-        <button type="button" onClick={onSuperPrev} tabIndex={-1}>
+        <button
+          type="button"
+          onClick={onSuperPrev}
+          tabIndex={-1}
+          className={`${prefixCls}-super-prev-btn`}
+        >
           {'\u00AB'}
         </button>
       )}
       {onPrev && (
-        <button type="button" onClick={onPrev} tabIndex={-1}>
+        <button
+          type="button"
+          onClick={onPrev}
+          tabIndex={-1}
+          className={`${prefixCls}-prev-btn`}
+        >
           {'\u2039'}
         </button>
       )}
       <div className={`${prefixCls}-view`}>{children}</div>
       {onNext && (
-        <button type="button" onClick={onNext} tabIndex={-1}>
+        <button
+          type="button"
+          onClick={onNext}
+          tabIndex={-1}
+          className={`${prefixCls}-next-btn`}
+        >
           {'\u203A'}
         </button>
       )}
       {onSuperNext && (
-        <button type="button" onClick={onSuperNext} tabIndex={-1}>
+        <button
+          type="button"
+          onClick={onSuperNext}
+          tabIndex={-1}
+          className={`${prefixCls}-super-next-btn`}
+        >
           {'\u00BB'}
         </button>
       )}

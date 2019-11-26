@@ -99,7 +99,7 @@ describe('Basic', () => {
       const onChange = jest.fn();
       const wrapper = mount(<MomentPicker onChange={onChange} />);
       wrapper.openPicker();
-      wrapper.selectDate(11);
+      wrapper.selectCell(11);
       wrapper.closePicker();
 
       expect(isSame(onChange.mock.calls[0][0], '1990-09-11')).toBeTruthy();
@@ -114,7 +114,7 @@ describe('Basic', () => {
       );
 
       wrapper.openPicker();
-      wrapper.selectDate(3);
+      wrapper.selectCell(3);
       wrapper.closePicker();
       wrapper.update();
 
@@ -224,5 +224,78 @@ describe('Basic', () => {
       .simulate('mouseDown', { preventDefault });
 
     expect(preventDefault).toHaveBeenCalled();
+  });
+
+  describe('full steps', () => {
+    [
+      {
+        name: 'date',
+        yearBtn: '.rc-picker-date-panel-year-btn',
+        finalPanel: 'DatePanel',
+        picker: undefined,
+      },
+      {
+        name: 'week',
+        yearBtn: '.rc-picker-week-panel-year-btn',
+        finalPanel: 'WeekPanel',
+        picker: 'week',
+      },
+    ].forEach(({ name, yearBtn, finalPanel, picker }) => {
+      it(name, () => {
+        const onChange = jest.fn();
+        const onPanelChange = jest.fn();
+        const wrapper = mount(
+          <MomentPicker
+            picker={picker as any}
+            onChange={onChange}
+            onPanelChange={onPanelChange}
+          />,
+        );
+
+        wrapper.openPicker();
+
+        function expectPanelChange(dateStr: string, mode: PanelMode) {
+          expect(isSame(onPanelChange.mock.calls[0][0], dateStr)).toBeTruthy();
+          expect(onPanelChange.mock.calls[0][1]).toEqual(mode);
+          onPanelChange.mockReset();
+        }
+
+        // Year
+        onPanelChange.mockReset();
+        wrapper.find(yearBtn).simulate('click');
+        expectPanelChange('1990-09-03', 'year');
+
+        // Decade
+        onPanelChange.mockReset();
+        wrapper.find('.rc-picker-year-panel-decade-btn').simulate('click');
+        expectPanelChange('1990-09-03', 'decade');
+
+        // Next page
+        wrapper
+          .find('.rc-picker-year-panel-header-super-next-btn')
+          .simulate('click');
+
+        // Select decade
+        wrapper.selectCell('2010-2019');
+        expectPanelChange('2010-09-03', 'year');
+
+        // Select year
+        wrapper.selectCell('2019');
+        expectPanelChange('2019-09-03', 'month');
+
+        // Select month
+        wrapper.selectCell('Aug');
+        expectPanelChange('2019-08-03', name as any);
+
+        // Select date
+        wrapper.selectCell('18');
+        expect(onPanelChange).not.toHaveBeenCalled();
+
+        expect(wrapper.find(finalPanel).length).toBeTruthy();
+
+        wrapper.closePicker();
+        expect(isSame(onChange.mock.calls[0][0], '2019-08-18')).toBeTruthy();
+      });
+    });
   });
 });

@@ -36,7 +36,12 @@ function YearHeader<DateType>(props: YearHeaderProps<DateType>) {
       onSuperPrev={onPrevDecade}
       onSuperNext={onNextDecade}
     >
-      <button type="button" key="year" onClick={onDecadeClick}>
+      <button
+        type="button"
+        key="year"
+        onClick={onDecadeClick}
+        className={`${prefixCls}-decade-btn`}
+      >
         {startYear}-{endYear}
       </button>
     </Header>

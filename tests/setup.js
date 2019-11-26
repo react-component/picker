@@ -19,13 +19,13 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
       !openDiv.hasClass('rc-picker-dropdown-hidden')
     );
   },
-  selectDate(date) {
+  selectCell(text) {
     let match = false;
 
     this.find('td').forEach(td => {
       if (
-        td.text() === String(date) &&
-        td.hasClass('rc-picker-date-panel-cell-in-view')
+        td.text() === String(text) &&
+        td.props().className.includes('-in-view')
       ) {
         match = true;
         td.simulate('click');
@@ -33,7 +33,7 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
     });
 
     if (!match) {
-      throw new Error('Date not match in picker panel.');
+      throw new Error('Cell not match in picker panel.');
     }
   },
   clearValue() {

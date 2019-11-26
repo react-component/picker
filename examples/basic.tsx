@@ -42,6 +42,16 @@ export default () => {
         </div>
 
         <div style={{ margin: '0 8px' }}>
+          <h3>Uncontrolled</h3>
+          <PickerPanel<Moment>
+            generateConfig={momentGenerateConfig}
+            locale={zhCN}
+            onChange={onChange}
+            defaultValue={moment('2000-01-01', 'YYYY-MM-DD')}
+          />
+        </div>
+
+        <div style={{ margin: '0 8px' }}>
           <h3>1 Month earlier</h3>
           <PickerPanel<Moment>
             {...sharedProps}

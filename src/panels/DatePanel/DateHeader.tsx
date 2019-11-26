@@ -43,12 +43,24 @@ function DateHeader<DateType>(props: DateHeaderProps<DateType>) {
 
   // =================== Month & Year ===================
   const yearNode: React.ReactNode = (
-    <button type="button" key="year" onClick={onYearClick} tabIndex={-1}>
+    <button
+      type="button"
+      key="year"
+      onClick={onYearClick}
+      tabIndex={-1}
+      className={`${prefixCls}-year-btn`}
+    >
       {generateConfig.locale.format(locale.locale, viewDate, locale.yearFormat)}
     </button>
   );
   const monthNode: React.ReactNode = (
-    <button type="button" key="month" onClick={onMonthClick} tabIndex={-1}>
+    <button
+      type="button"
+      key="month"
+      onClick={onMonthClick}
+      tabIndex={-1}
+      className={`${prefixCls}-month-btn`}
+    >
       {locale.monthFormat
         ? generateConfig.locale.format(
             locale.locale,

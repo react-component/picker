@@ -90,11 +90,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   // Handle init logic
   const initRef = React.useRef(true);
 
-  // View date control
-  const [viewDate, setViewDate] = React.useState(
-    () => defaultPickerValue || value || generateConfig.getNow(),
-  );
-
   // Inner value
   const [innerValue, setInnerValue] = React.useState(() => {
     if (value !== undefined) {
@@ -106,7 +101,12 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     return null;
   });
 
-  const mergedValue = 'value' in props ? value : innerValue;
+  const mergedValue = value !== undefined ? value : innerValue;
+
+  // View date control
+  const [viewDate, setViewDate] = React.useState(
+    () => defaultPickerValue || mergedValue || generateConfig.getNow(),
+  );
 
   // Panel control
   const getInternalNextMode = (nextMode: PanelMode): PanelMode => {

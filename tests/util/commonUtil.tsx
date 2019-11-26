@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount as originMount, ReactWrapper } from 'enzyme';
 import moment, { Moment, unitOfTime } from 'moment';
-import Picker, { PickerProps } from '../../src';
+import Picker, { PickerProps, PickerPanel, PickerPanelProps } from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
 import enUS from '../../src/locale/en_US';
 
@@ -13,7 +13,7 @@ export const mount = originMount as (
   openPicker: () => void;
   closePicker: () => void;
   isOpen: () => boolean;
-  selectDate: (date: number) => void;
+  selectCell: (text: number | string) => void;
   clearValue: () => void;
   keyDown: (which: number, info?: object) => void;
 };
@@ -63,3 +63,17 @@ export class MomentPicker extends React.Component<MomentPickerProps> {
     );
   }
 }
+
+export interface MomentPickerPanelProps
+  extends Omit<PickerPanelProps<Moment>, 'locale' | 'generateConfig'> {
+  locale?: PickerProps<Moment>['locale'];
+  generateConfig?: PickerProps<Moment>['generateConfig'];
+}
+
+export const MomentPickerPanel = (props: MomentPickerPanelProps) => (
+  <PickerPanel<Moment>
+    generateConfig={momentGenerateConfig}
+    locale={enUS}
+    {...props}
+  />
+);
