@@ -3,6 +3,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import KeyCode from 'rc-util/lib/KeyCode';
+import warning from 'rc-util/lib/warning';
 import TimePanel, { SharedTimeProps } from './panels/TimePanel';
 import DatetimePanel from './panels/DatetimePanel';
 import DatePanel from './panels/DatePanel';
@@ -165,7 +166,17 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       }
       return panelRef.current.onKeyDown(e);
     }
-    return false;
+
+    /* istanbul ignore next */
+    /* eslint-disable no-lone-blocks */
+    {
+      warning(
+        false,
+        'Panel not correct handle keyDown event. Please help to fire issue about this.',
+      );
+      return false;
+    }
+    /* eslint-enable no-lone-blocks */
   };
 
   const onInternalBlur: React.FocusEventHandler<HTMLElement> = e => {

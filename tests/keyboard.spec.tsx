@@ -1,7 +1,13 @@
 import React from 'react';
 import MockDate from 'mockdate';
 import KeyCode from 'rc-util/lib/KeyCode';
-import { mount, getMoment, isSame, MomentPicker } from './util/commonUtil';
+import {
+  mount,
+  getMoment,
+  isSame,
+  MomentPicker,
+  MomentPickerPanel,
+} from './util/commonUtil';
 
 describe('Keyboard', () => {
   beforeAll(() => {
@@ -45,6 +51,11 @@ describe('Keyboard', () => {
     wrapper.keyDown(KeyCode.RIGHT);
     expect(isSame(onSelect.mock.calls[0][0], '1990-09-03')).toBeTruthy();
     expect(onChange).not.toHaveBeenCalled();
+
+    // Other key
+    onSelect.mockReset();
+    wrapper.keyDown(KeyCode.B);
+    expect(onSelect).not.toHaveBeenCalled();
 
     // Double RIGHT
     wrapper.keyDown(KeyCode.RIGHT);
@@ -99,20 +110,49 @@ describe('Keyboard', () => {
     expect(wrapper.find('.rc-picker-panel-focused').length).toBeFalsy();
   });
 
-  it('datetime Tab control', () => {
-    const wrapper = mount(<MomentPicker showTime />);
-    wrapper.openPicker();
+  describe('datetime Tab control', () => {
+    it('Picker', () => {
+      const wrapper = mount(<MomentPicker showTime />);
+      wrapper.openPicker();
 
-    // Focus Panel
-    wrapper.keyDown(KeyCode.TAB);
-    expect(wrapper.find('.rc-picker-panel-focused').length).toBeTruthy();
+      // Focus Panel
+      wrapper.keyDown(KeyCode.TAB);
+      expect(wrapper.find('.rc-picker-panel-focused').length).toBeTruthy();
 
-    // Focus Date Panel
-    wrapper.keyDown(KeyCode.TAB);
-    expect(wrapper.find('.rc-picker-date-panel-active').length).toBeTruthy();
+      // Focus Date Panel
+      wrapper.keyDown(KeyCode.TAB);
+      expect(wrapper.find('.rc-picker-date-panel-active').length).toBeTruthy();
 
-    // Focus Time Panel
-    wrapper.keyDown(KeyCode.TAB);
-    expect(wrapper.find('.rc-picker-time-panel-active').length).toBeTruthy();
+      // Focus Time Panel
+      wrapper.keyDown(KeyCode.TAB);
+      expect(wrapper.find('.rc-picker-time-panel-active').length).toBeTruthy();
+
+      // Close should not focus
+      wrapper.closePicker();
+      expect(wrapper.find('.rc-picker-time-panel-active').length).toBeFalsy();
+    });
+
+    it('PickerPanel', () => {
+      const wrapper = mount(<MomentPickerPanel showTime />);
+
+      // Focus Panel
+      wrapper.find('.rc-picker-panel').simulate('focus');
+
+      // Focus Date Panel
+      wrapper
+        .find('.rc-picker-panel')
+        .simulate('keyDown', { which: KeyCode.TAB });
+      expect(wrapper.find('.rc-picker-date-panel-active').length).toBeTruthy();
+
+      // Focus Time Panel
+      wrapper
+        .find('.rc-picker-panel')
+        .simulate('keyDown', { which: KeyCode.TAB });
+      expect(wrapper.find('.rc-picker-time-panel-active').length).toBeTruthy();
+
+      // Close should not focus
+      wrapper.find('.rc-picker-panel').simulate('blur');
+      expect(wrapper.find('.rc-picker-time-panel-active').length).toBeFalsy();
+    });
   });
 });
