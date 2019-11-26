@@ -1,10 +1,18 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount as originMount, ReactWrapper } from 'enzyme';
 import { Moment } from 'moment';
 import Picker, { PickerProps } from '../src';
 import momentGenerateConfig from '../src/generate/moment';
 import enUS from '../src/locale/en_US';
 import { PanelMode } from '../src/interface';
+
+const mount = originMount as (
+  ...args: Parameters<typeof originMount>
+) => ReactWrapper & {
+  openPicker: () => void;
+  closePicker: () => void;
+  isOpen: () => boolean;
+};
 
 interface MomentPicker
   extends Omit<PickerProps<Moment>, 'locale' | 'generateConfig'> {
@@ -62,6 +70,24 @@ describe('Basic', () => {
           expect(wrapper.find(componentName).length).toBeTruthy();
         });
       });
+    });
+  });
+
+  describe('open', () => {
+    it('should work', () => {
+      const wrapper = mount(<MomentPicker />);
+      wrapper.openPicker();
+      expect(wrapper.isOpen()).toBeTruthy();
+      wrapper.closePicker();
+      expect(wrapper.isOpen()).toBeFalsy();
+    });
+
+    it('controlled', () => {
+      const wrapper = mount(<MomentPicker open />);
+      expect(wrapper.isOpen()).toBeTruthy();
+
+      wrapper.setProps({ open: false });
+      expect(wrapper.isOpen()).toBeFalsy();
     });
   });
 });
