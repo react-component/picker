@@ -1,6 +1,7 @@
 import React from 'react';
 import { Moment } from 'moment';
 import MockDate from 'mockdate';
+import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import KeyCode from 'rc-util/lib/KeyCode';
 import Picker, { PickerProps } from '../src';
 import momentGenerateConfig from '../src/generate/moment';
@@ -8,19 +9,26 @@ import enUS from '../src/locale/en_US';
 import { PanelMode } from '../src/interface';
 import { mount, getMoment, isSame } from './util/commonUtil';
 
-interface MomentPicker
+interface MomentPickerProps
   extends Omit<PickerProps<Moment>, 'locale' | 'generateConfig'> {
   locale?: PickerProps<Moment>['locale'];
   generateConfig?: PickerProps<Moment>['generateConfig'];
 }
 
-const MomentPicker = (props: MomentPicker) => (
-  <Picker<Moment>
-    generateConfig={momentGenerateConfig}
-    locale={enUS}
-    {...props}
-  />
-);
+class MomentPicker extends React.Component<MomentPickerProps> {
+  pickerRef = React.createRef<Picker<Moment>>();
+
+  render() {
+    return (
+      <Picker<Moment>
+        generateConfig={momentGenerateConfig}
+        locale={enUS}
+        ref={this.pickerRef}
+        {...this.props}
+      />
+    );
+  }
+}
 
 describe('Basic', () => {
   beforeAll(() => {
@@ -170,5 +178,65 @@ describe('Basic', () => {
 
     wrapper.clearValue();
     expect(onChange).toHaveBeenCalledWith(null, '');
+  });
+
+  describe('focus test', () => {
+    let domMock: ReturnType<typeof spyElementPrototypes>;
+    let focused = false;
+    let blurred = false;
+
+    beforeAll(() => {
+      domMock = spyElementPrototypes(HTMLElement, {
+        focus: () => {
+          focused = true;
+        },
+        blur: () => {
+          blurred = true;
+        },
+      });
+    });
+
+    beforeEach(() => {
+      focused = false;
+      blurred = false;
+    });
+
+    afterAll(() => {
+      domMock.mockRestore();
+    });
+
+    it('function call', () => {
+      const ref = React.createRef<MomentPicker>();
+      mount(
+        <div>
+          <MomentPicker ref={ref} />
+        </div>,
+      );
+
+      ref.current!.pickerRef.current!.focus();
+      expect(focused).toBeTruthy();
+
+      ref.current!.pickerRef.current!.blur();
+      expect(blurred).toBeTruthy();
+    });
+
+    it('style', () => {
+      const onFocus = jest.fn();
+      const onBlur = jest.fn();
+
+      const wrapper = mount(
+        <div>
+          <MomentPicker onFocus={onFocus} onBlur={onBlur} />
+        </div>,
+      );
+
+      wrapper.find('input').simulate('focus');
+      expect(onFocus).toHaveBeenCalled();
+      expect(wrapper.find('.rc-picker-focused').length).toBeTruthy();
+
+      wrapper.find('input').simulate('blur');
+      expect(onBlur).toHaveBeenCalled();
+      expect(wrapper.find('.rc-picker-focused').length).toBeFalsy();
+    });
   });
 });

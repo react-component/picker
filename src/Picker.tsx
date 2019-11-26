@@ -46,6 +46,8 @@ export interface PickerProps<DateType>
   // Events
   onChange?: (value: DateType | null, dateString: string) => void;
   onOpenChange?: (open: boolean) => void;
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
 
   // Internal
   /** @private Internal usage, do not use in production mode!!! */
@@ -79,6 +81,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     inputRef,
     onChange,
     onOpenChange,
+    onFocus,
+    onBlur,
   } = props;
 
   // ============================= State =============================
@@ -149,6 +153,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       }
     }
   };
+
+  // Focus
+  const [focused, setFocused] = React.useState(false);
 
   // ============================= Value =============================
   const isSameTextDate = (text: string, date: DateType | null) => {
@@ -261,14 +268,24 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
-  const onInputFocus = () => {
+  const onInputFocus: React.FocusEventHandler<HTMLInputElement> = e => {
     setTyping(true);
+    setFocused(true);
+
+    if (onFocus) {
+      onFocus(e);
+    }
   };
 
-  const onInputBlur: React.FocusEventHandler<HTMLInputElement> = () => {
+  const onInputBlur: React.FocusEventHandler<HTMLInputElement> = e => {
     triggerOpen(false);
     setInnerValue(selectedValue);
     triggerChange(selectedValue);
+    setFocused(false);
+
+    if (onBlur) {
+      onBlur(e);
+    }
   };
 
   // ============================= Sync ==============================
@@ -341,6 +358,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       <div
         className={classNames(prefixCls, className, {
           [`${prefixCls}-disabled`]: disabled,
+          [`${prefixCls}-focused`]: focused,
         })}
         style={style}
       >

@@ -13,6 +13,7 @@ const defaultValue = moment('2019-11-28 01:02:03');
 
 export default () => {
   const [value, setValue] = React.useState<Moment | null>(defaultValue);
+  const weekRef = React.useRef<Picker<Moment>>(null);
 
   const onSelect = (newValue: Moment) => {
     console.log('Select:', newValue);
@@ -122,7 +123,19 @@ export default () => {
             allowClear
             picker="week"
             renderExtraFooter={() => 'I am footer!!!'}
+            ref={weekRef}
           />
+
+          <button
+            type="button"
+            onClick={() => {
+              if (weekRef.current) {
+                weekRef.current.focus();
+              }
+            }}
+          >
+            Focus
+          </button>
         </div>
       </div>
     </div>
