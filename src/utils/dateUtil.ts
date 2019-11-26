@@ -91,6 +91,22 @@ export function isEqual<DateType>(
   );
 }
 
+export function isInRange<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  startDate: DateType,
+  endDate: DateType,
+  current: DateType,
+) {
+  if (!startDate || !endDate) {
+    return false;
+  }
+
+  return (
+    generateConfig.isAfter(current, startDate) &&
+    generateConfig.isAfter(endDate, current)
+  );
+}
+
 export function getWeekStartDate<DateType>(
   locale: string,
   generateConfig: GenerateConfig<DateType>,

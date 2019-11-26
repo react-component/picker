@@ -6,8 +6,10 @@ import {
   getWeekStartDate,
   isSameDate,
   isSameMonth,
+  isInRange,
 } from '../../utils/dateUtil';
-import { Locale } from '../../interface';
+import { Locale, NullableDateType } from '../../interface';
+import RangeContext from '../../RangeContext';
 
 export type DateRender<DateType> = (
   currentDate: DateType,
@@ -30,6 +32,7 @@ export interface DateBodyProps<DateType> extends DateBodyPassProps<DateType> {
   viewDate: DateType;
   locale: Locale;
   rowCount: number;
+  rangedValue?: [NullableDateType<DateType>, NullableDateType<DateType>];
   onSelect: (value: DateType) => void;
 }
 
@@ -46,6 +49,8 @@ function DateBody<DateType>({
   dateRender,
   onSelect,
 }: DateBodyProps<DateType>) {
+  const { rangedValue } = React.useContext(RangeContext);
+
   const datePrefixCls = `${prefixCls}-cell`;
   const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale.locale);
   const today = generateConfig.getNow();
@@ -97,6 +102,12 @@ function DateBody<DateType>({
               generateConfig,
               currentDate,
               viewDate,
+            ),
+            [`${datePrefixCls}-in-range`]: isInRange(
+              generateConfig,
+              rangedValue && rangedValue[0],
+              rangedValue && rangedValue[1],
+              currentDate,
             ),
             [`${datePrefixCls}-today`]: isSameDate(
               generateConfig,

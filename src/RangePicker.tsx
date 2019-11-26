@@ -76,6 +76,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   const formatList = toArray(format);
 
+  // ============================= Values =============================
   const [innerValue, setInnerValue] = React.useState<RangeValue<DateType>>(
     () => {
       if (value !== undefined) {
@@ -90,9 +91,51 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   const mergedValue = value !== undefined ? value : innerValue;
 
-  const value1 = mergedValue ? mergedValue[0] : null;
-  const value2 = mergedValue ? mergedValue[1] : null;
+  // Get picker value, should order this internally
+  const [value1, value2] = React.useMemo(() => {
+    let val1 = mergedValue ? mergedValue[0] : null;
+    let val2 = mergedValue ? mergedValue[1] : null;
 
+    // Exchange
+    if (val1 && val2 && generateConfig.isAfter(val1, val2)) {
+      const tmp = val1;
+      val1 = val2;
+      val2 = tmp;
+    }
+
+    return [val1, val2];
+  }, [mergedValue]);
+
+  // Select value: used for click to update ranged value
+  const [selectedValues, setSelectedValues] = React.useState<
+    [DateType, DateType] | undefined
+  >(undefined);
+
+  React.useEffect(() => {
+    if (value1 && value2) {
+      setSelectedValues([value1, value2]);
+    } else {
+      setSelectedValues(undefined);
+    }
+  }, [value1, value2]);
+
+  const onStartSelect = (date: DateType) => {
+    if (value2) {
+      setSelectedValues([date, value2]);
+    } else {
+      setSelectedValues(undefined);
+    }
+  };
+
+  const onEndSelect = (date: DateType) => {
+    if (value1) {
+      setSelectedValues([value1, date]);
+    } else {
+      setSelectedValues(undefined);
+    }
+  };
+
+  // ============================= Change =============================
   const formatDate = (date: NullableDateType<DateType>) =>
     (date
       ? generateConfig.locale.format(locale.locale, date, formatList[0])
@@ -185,8 +228,16 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
   };
 
   return (
-    <div className={classNames(`${prefixCls}-range`, className)} style={style}>
-      <RangeContext.Provider value={{ extraFooterSelections }}>
+    <RangeContext.Provider
+      value={{
+        extraFooterSelections,
+        rangedValue: selectedValues,
+      }}
+    >
+      <div
+        className={classNames(`${prefixCls}-range`, className)}
+        style={style}
+      >
         <Picker<DateType>
           {...pickerProps}
           prefixCls={prefixCls}
@@ -197,10 +248,9 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
           onChange={date => {
             onInternalChange([date, value2], true);
           }}
+          onSelect={onStartSelect}
         />
-      </RangeContext.Provider>
-      {separator}
-      <RangeContext.Provider value={{ extraFooterSelections }}>
+        {separator}
         <Picker<DateType>
           {...pickerProps}
           prefixCls={prefixCls}
@@ -212,9 +262,10 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
           onChange={date => {
             onInternalChange([value1, date], false);
           }}
+          onSelect={onEndSelect}
         />
-      </RangeContext.Provider>
-    </div>
+      </div>
+    </RangeContext.Provider>
   );
 }
 

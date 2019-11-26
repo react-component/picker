@@ -62,11 +62,6 @@ export interface PanelSharedProps<DateType> {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
   value?: NullableDateType<DateType>;
-  /**
-   * @private Set displayed range value style.
-   * Panel only has one value, this is only style effect.
-   */
-  rangedValue?: [NullableDateType<DateType>, NullableDateType<DateType>];
   viewDate: DateType;
   /** [Legacy] Set default display picker view date */
   defaultPickerValue?: DateType;

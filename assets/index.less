@@ -75,7 +75,7 @@
         transition: background 0.3s, border 0.3s;
 
         &:hover {
-          background: fade(blue, 10%);
+          background: fade(blue, 30%)!important;
         }
       }
 
@@ -83,6 +83,9 @@
         color: #333;
       }
 
+      &-in-range > &-inner {
+        background: fade(blue, 5%);
+      }
       &-today > &-inner {
         border: 1px solid blue;
       }
