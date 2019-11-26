@@ -4,6 +4,7 @@ import Picker, { PickerProps } from './Picker';
 import { NullableDateType, DisabledTimes, DisabledTime } from './interface';
 import { toArray } from './utils/miscUtil';
 import RangeContext from './RangeContext';
+import { isSameDate } from './utils/dateUtil';
 
 type RangeValue<DateType> = [DateType | null, DateType | null] | null;
 
@@ -168,6 +169,21 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     }));
   }
 
+  // End date should disabled before start date
+  const { disabledDate } = pickerProps;
+  const disabledEndDate = (date: DateType) => {
+    let mergedDisabled = disabledDate ? disabledDate(date) : false;
+
+    if (!mergedDisabled && value1) {
+      // Can be the same date
+      mergedDisabled =
+        !isSameDate(generateConfig, value1, date) &&
+        generateConfig.isAfter(value1, date);
+    }
+
+    return mergedDisabled;
+  };
+
   return (
     <div className={classNames(`${prefixCls}-range`, className)} style={style}>
       <RangeContext.Provider value={{ extraFooterSelections }}>
@@ -192,6 +208,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
           placeholder={placeholder && placeholder[1]}
           defaultPickerValue={defaultPickerValue && defaultPickerValue[1]}
           disabledTime={disabledEndTime}
+          disabledDate={disabledEndDate}
           onChange={date => {
             onInternalChange([value1, date], false);
           }}

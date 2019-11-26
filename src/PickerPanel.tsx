@@ -47,6 +47,7 @@ export interface PickerPanelProps<DateType> {
   showTime?: boolean | SharedTimeProps;
   disabledTime?: DisabledTime<DateType>;
   showToday?: boolean;
+  disabledDate?: (date: DateType) => boolean;
 
   // Render
   dateRender?: DateRender<DateType>;
