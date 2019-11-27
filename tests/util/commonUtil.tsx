@@ -26,7 +26,7 @@ export type Wrapper = ReactWrapper & {
   openPicker: (index?: number) => void;
   closePicker: (index?: number) => void;
   isOpen: () => boolean;
-  selectCell: (text: number | string, index?: number) => void;
+  selectCell: (text: number | string, index?: number) => Wrapper;
   clearValue: (index?: number) => void;
   keyDown: (which: number, info?: object) => void;
 };

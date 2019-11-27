@@ -60,6 +60,7 @@ type OmitPickerProps<Props> = Omit<
   | 'defaultValue'
   | 'defaultPickerValue'
   | 'onChange'
+  | 'onSelect'
   | 'placeholder'
   | 'disabledTime'
   | 'showToday'
