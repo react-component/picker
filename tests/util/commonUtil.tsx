@@ -37,7 +37,7 @@ export const mount = originMount as (
 ) => Wrapper;
 
 export function getMoment(str: string): Moment {
-  const formatList = [FULL_FORMAT, 'YYYY-MM-DD', 'HH:mm:ss'];
+  const formatList = [FULL_FORMAT, 'YYYY-MM-DD', 'HH:mm:ss', 'YYYY'];
   for (let i = 0; i < formatList.length; i += 1) {
     const date = moment(str, formatList[i], true);
     if (date.isValid()) {

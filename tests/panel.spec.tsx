@@ -204,6 +204,25 @@ describe('Panel', () => {
         '1990-1999',
       );
     });
+
+    it('decade', () => {
+      const wrapper = mount(
+        <MomentPickerPanel
+          defaultValue={getMoment('1990-09-03')}
+          mode="decade"
+        />,
+      );
+
+      wrapper.clickButton('super-prev');
+      expect(
+        wrapper.find('.rc-picker-decade-panel-header-view').text(),
+      ).toEqual('1800-1899');
+
+      wrapper.clickButton('super-next');
+      expect(
+        wrapper.find('.rc-picker-decade-panel-header-view').text(),
+      ).toEqual('1900-1999');
+    });
   });
 
   // This test is safe to remove
@@ -309,6 +328,23 @@ describe('Panel', () => {
       expect(onSelect).not.toHaveBeenCalled();
 
       wrapper.selectCell(1993);
+      expect(onSelect).toHaveBeenCalled();
+    });
+
+    it('decade', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(
+        <MomentPickerPanel
+          mode="decade"
+          onSelect={onSelect}
+          disabledDate={date => date.year() === 1900}
+        />,
+      );
+
+      wrapper.selectCell('1900-1909');
+      expect(onSelect).not.toHaveBeenCalled();
+
+      wrapper.selectCell('1910-1919');
       expect(onSelect).toHaveBeenCalled();
     });
   });

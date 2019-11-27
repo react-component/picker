@@ -345,5 +345,30 @@ describe('Keyboard', () => {
       panelKeyDown(wrapper, KeyCode.DOWN);
       expect(isSame(onSelect.mock.calls[0][0], '2002-09-03')).toBeTruthy();
     });
+
+    it('decade', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(
+        <MomentPickerPanel
+          mode="decade"
+          defaultValue={getMoment('1990-09-03')}
+          onSelect={onSelect}
+        />,
+      );
+
+      // Left
+      panelKeyDown(wrapper, KeyCode.LEFT);
+      expect(isSame(onSelect.mock.calls[0][0], '1980', 'year')).toBeTruthy();
+
+      // Control + Right
+      onSelect.mockReset();
+      panelKeyDown(wrapper, KeyCode.RIGHT, { ctrlKey: true });
+      expect(isSame(onSelect.mock.calls[0][0], '2080', 'year')).toBeTruthy();
+
+      // Down
+      onSelect.mockReset();
+      panelKeyDown(wrapper, KeyCode.DOWN);
+      expect(isSame(onSelect.mock.calls[0][0], '2110', 'year')).toBeTruthy();
+    });
   });
 });
