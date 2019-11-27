@@ -59,4 +59,34 @@ describe('Panel', () => {
       expect(onChange).not.toHaveBeenCalled();
     });
   });
+
+  describe('Panel switch by picker', () => {
+    it('year', () => {
+      const wrapper = mount(<MomentPickerPanel picker="year" />);
+      wrapper.find('.rc-picker-year-panel-decade-btn').simulate('click');
+      expect(wrapper.find('.rc-picker-decade-panel').length).toBeTruthy();
+
+      wrapper.selectCell('1990-1999');
+      expect(wrapper.find('.rc-picker-year-panel').length).toBeTruthy();
+
+      wrapper.selectCell('1999');
+      expect(wrapper.find('.rc-picker-year-panel').length).toBeTruthy();
+    });
+
+    it('month', () => {
+      const wrapper = mount(<MomentPickerPanel picker="month" />);
+      wrapper.find('.rc-picker-month-panel-year-btn').simulate('click');
+      wrapper.find('.rc-picker-year-panel-decade-btn').simulate('click');
+      expect(wrapper.find('.rc-picker-decade-panel').length).toBeTruthy();
+
+      wrapper.selectCell('1990-1999');
+      expect(wrapper.find('.rc-picker-year-panel').length).toBeTruthy();
+
+      wrapper.selectCell('1999');
+      expect(wrapper.find('.rc-picker-month-panel').length).toBeTruthy();
+
+      wrapper.selectCell('Aug');
+      expect(wrapper.find('.rc-picker-month-panel').length).toBeTruthy();
+    });
+  });
 });
