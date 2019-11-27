@@ -11,8 +11,10 @@ import {
 } from './util/commonUtil';
 
 describe('Keyboard', () => {
-  function panelKeyDown(wrapper: Wrapper, keyCode: number) {
-    wrapper.find('.rc-picker-panel').simulate('keyDown', { which: keyCode });
+  function panelKeyDown(wrapper: Wrapper, keyCode: number, info?: object) {
+    wrapper
+      .find('.rc-picker-panel')
+      .simulate('keyDown', { which: keyCode, ...info });
   }
 
   beforeAll(() => {
@@ -290,5 +292,33 @@ describe('Keyboard', () => {
     expect(
       isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second'),
     ).toBeTruthy();
+  });
+
+  describe('arrow trigger onSelect', () => {
+    // Same as 'open to select' test. But with other panel
+    it('month', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(
+        <MomentPickerPanel
+          picker="month"
+          defaultValue={getMoment('1990-09-03')}
+          onSelect={onSelect}
+        />,
+      );
+
+      // Left
+      panelKeyDown(wrapper, KeyCode.LEFT);
+      expect(isSame(onSelect.mock.calls[0][0], '1990-08-03')).toBeTruthy();
+
+      // Control + Right
+      onSelect.mockReset();
+      panelKeyDown(wrapper, KeyCode.RIGHT, { ctrlKey: true });
+      expect(isSame(onSelect.mock.calls[0][0], '1991-08-03')).toBeTruthy();
+
+      // Down
+      onSelect.mockReset();
+      panelKeyDown(wrapper, KeyCode.DOWN);
+      expect(isSame(onSelect.mock.calls[0][0], '1991-11-03')).toBeTruthy();
+    });
   });
 });

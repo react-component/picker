@@ -166,6 +166,25 @@ describe('Panel', () => {
         'Sep1990',
       );
     });
+
+    it('month', () => {
+      const wrapper = mount(
+        <MomentPickerPanel
+          defaultValue={getMoment('1990-09-03')}
+          picker="month"
+        />,
+      );
+
+      wrapper.clickButton('super-prev');
+      expect(wrapper.find('.rc-picker-month-panel-header-view').text()).toEqual(
+        '1989',
+      );
+
+      wrapper.clickButton('super-next');
+      expect(wrapper.find('.rc-picker-month-panel-header-view').text()).toEqual(
+        '1990',
+      );
+    });
   });
 
   // This test is safe to remove
@@ -214,29 +233,48 @@ describe('Panel', () => {
     ).toBeTruthy();
   });
 
-  it('time should not trigger onSelect when disabled', () => {
-    const onSelect = jest.fn();
-    const wrapper = mount(
-      <MomentPickerPanel
-        mode="time"
-        onSelect={onSelect}
-        disabledHours={() => [0]}
-      />,
-    );
+  describe('not trigger onSelect when cell disabled', () => {
+    it('time', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(
+        <MomentPickerPanel
+          mode="time"
+          onSelect={onSelect}
+          disabledHours={() => [0]}
+        />,
+      );
 
-    // Disabled
-    wrapper
-      .find('li')
-      .first()
-      .simulate('click');
-    expect(onSelect).not.toHaveBeenCalled();
+      // Disabled
+      wrapper
+        .find('li')
+        .first()
+        .simulate('click');
+      expect(onSelect).not.toHaveBeenCalled();
 
-    // Enabled
-    wrapper
-      .find('li')
-      .at(1)
-      .simulate('click');
-    expect(onSelect).toHaveBeenCalled();
+      // Enabled
+      wrapper
+        .find('li')
+        .at(1)
+        .simulate('click');
+      expect(onSelect).toHaveBeenCalled();
+    });
+
+    it('month', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(
+        <MomentPickerPanel
+          picker="month"
+          onSelect={onSelect}
+          disabledDate={date => date.month() === 0}
+        />,
+      );
+
+      wrapper.selectCell('Jan');
+      expect(onSelect).not.toHaveBeenCalled();
+
+      wrapper.selectCell('Feb');
+      expect(onSelect).toHaveBeenCalled();
+    });
   });
 
   it('time with use12Hours', () => {
