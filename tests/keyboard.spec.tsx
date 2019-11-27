@@ -164,27 +164,71 @@ describe('Keyboard', () => {
           .simulate('keyDown', { which: keyCode });
       }
 
-      it('Tab', () => {
-        const wrapper = mount(<MomentPickerPanel showTime />);
+      describe('switch panels', () => {
+        [
+          {
+            name: 'Tab switch first',
+            operate: (wrapper: Wrapper) => {
+              panelKeyDown(wrapper, KeyCode.TAB);
+            },
+          },
+          {
+            name: 'Arrow switch first',
+            operate: (wrapper: Wrapper) => {
+              // Nothing happen
+              panelKeyDown(wrapper, KeyCode.A);
 
-        // Focus Panel
-        wrapper.find('.rc-picker-panel').simulate('focus');
+              // Switch
+              panelKeyDown(wrapper, KeyCode.DOWN);
+            },
+          },
+        ].forEach(({ name, operate }) => {
+          it(name, () => {
+            const onSelect = jest.fn();
+            const wrapper = mount(
+              <MomentPickerPanel onSelect={onSelect} showTime />,
+            );
 
-        // Focus Date Panel
-        panelKeyDown(wrapper, KeyCode.TAB);
-        expect(
-          wrapper.find('.rc-picker-date-panel-active').length,
-        ).toBeTruthy();
+            // Focus Panel
+            wrapper.find('.rc-picker-panel').simulate('focus');
 
-        // Focus Time Panel
-        panelKeyDown(wrapper, KeyCode.TAB);
-        expect(
-          wrapper.find('.rc-picker-time-panel-active').length,
-        ).toBeTruthy();
+            // Focus Date Panel
+            operate(wrapper);
+            expect(
+              wrapper.find('.rc-picker-date-panel-active').length,
+            ).toBeTruthy();
 
-        // Close should not focus
-        wrapper.find('.rc-picker-panel').simulate('blur');
-        expect(wrapper.find('.rc-picker-time-panel-active').length).toBeFalsy();
+            // Select
+            panelKeyDown(wrapper, KeyCode.DOWN);
+            expect(
+              isSame(onSelect.mock.calls[0][0], '1990-09-10'),
+            ).toBeTruthy();
+
+            // Focus Time Panel
+            panelKeyDown(wrapper, KeyCode.TAB);
+            expect(
+              wrapper.find('.rc-picker-time-panel-active').length,
+            ).toBeTruthy();
+
+            // Select
+            onSelect.mockReset();
+            panelKeyDown(wrapper, KeyCode.RIGHT);
+            panelKeyDown(wrapper, KeyCode.DOWN);
+            expect(
+              isSame(
+                onSelect.mock.calls[0][0],
+                '1990-09-10 01:00:00',
+                'second',
+              ),
+            ).toBeTruthy();
+
+            // Close should not focus
+            wrapper.find('.rc-picker-panel').simulate('blur');
+            expect(
+              wrapper.find('.rc-picker-time-panel-active').length,
+            ).toBeFalsy();
+          });
+        });
       });
 
       it('Enter to next view', () => {

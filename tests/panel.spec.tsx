@@ -167,4 +167,40 @@ describe('Panel', () => {
       );
     });
   });
+
+  // This test is safe to remove
+  it('showtime', () => {
+    const onSelect = jest.fn();
+    const wrapper = mount(
+      <MomentPickerPanel
+        showTime={{
+          showSecond: false,
+          defaultValue: getMoment('2001-01-02 01:03:07'),
+        }}
+        defaultValue={getMoment('2001-01-02 01:03:07')}
+        value={null}
+        onSelect={onSelect}
+      />,
+    );
+
+    expect(wrapper.find('.rc-picker-time-panel-column')).toHaveLength(2);
+
+    // Click on date
+    wrapper.selectCell(5);
+    expect(
+      isSame(onSelect.mock.calls[0][0], '1990-09-05 01:03:07'),
+    ).toBeTruthy();
+
+    // Click on time
+    onSelect.mockReset();
+    wrapper
+      .find('ul')
+      .first()
+      .find('li')
+      .at(11)
+      .simulate('click');
+    expect(
+      isSame(onSelect.mock.calls[0][0], '2001-01-02 11:00:00'),
+    ).toBeTruthy();
+  });
 });

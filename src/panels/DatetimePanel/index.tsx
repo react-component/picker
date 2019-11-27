@@ -56,6 +56,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
 
   operationRef.current = {
     onKeyDown: event => {
+      // Switch active panel
       if (event.which === KeyCode.TAB) {
         const nextActivePanel = getNextActive(event.shiftKey ? -1 : 1);
         setActivePanel(nextActivePanel);
@@ -66,6 +67,8 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
 
         return true;
       }
+
+      // Operate on current active panel
       if (activePanel) {
         const ref =
           activePanel === 'date' ? dateOperationRef : timeOperationRef;
@@ -76,6 +79,8 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
 
         return true;
       }
+
+      // Switch first active panel if operate without panel
       if (
         [KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN].includes(
           event.which,
