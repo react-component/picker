@@ -15,15 +15,18 @@ import * as React from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import { AlignType } from 'rc-trigger/lib/interface';
-import PickerPanel, { PickerPanelProps } from './PickerPanel';
+import PickerPanel, {
+  PickerPanelBaseProps,
+  PickerPanelDateProps,
+  PickerPanelTimeProps,
+} from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
 import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
-import { SharedTimeProps } from './panels/TimePanel';
+import { PickerMode } from './interface';
 
-export interface PickerProps<DateType>
-  extends Omit<PickerPanelProps<DateType>, 'onChange'> {
+export interface PickerSharedProps<DateType> {
   dropdownClassName?: string;
   dropdownAlign?: AlignType;
   popupStyle?: React.CSSProperties;
@@ -55,9 +58,31 @@ export interface PickerProps<DateType>
   inputRef?: React.Ref<HTMLInputElement>;
 }
 
-interface InternalPickerProps<DateType> extends PickerProps<DateType> {
-  showTime?: boolean | SharedTimeProps<DateType>;
-  use12Hours?: boolean;
+export interface PickerBaseProps<DateType>
+  extends PickerSharedProps<DateType>,
+    Omit<PickerPanelBaseProps<DateType>, 'onChange'> {}
+
+export interface PickerDateProps<DateType>
+  extends PickerSharedProps<DateType>,
+    Omit<PickerPanelDateProps<DateType>, 'onChange'> {}
+
+export interface PickerTimeProps<DateType>
+  extends PickerSharedProps<DateType>,
+    Omit<PickerPanelTimeProps<DateType>, 'onChange' | 'format'> {}
+
+export type PickerProps<DateType> =
+  | PickerBaseProps<DateType>
+  | PickerDateProps<DateType>
+  | PickerTimeProps<DateType>;
+
+interface MergedPickerProps<DateType>
+  extends Omit<
+    PickerBaseProps<DateType> &
+      PickerDateProps<DateType> &
+      PickerTimeProps<DateType>,
+    'picker'
+  > {
+  picker?: PickerMode;
 }
 
 function InnerPicker<DateType>(props: PickerProps<DateType>) {
@@ -91,7 +116,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onOpenChange,
     onFocus,
     onBlur,
-  } = props as InternalPickerProps<DateType>;
+  } = props as MergedPickerProps<DateType>;
 
   // ============================= State =============================
   let mergedFormat = format;
@@ -329,7 +354,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   // ============================= Panel =============================
   const panelProps = {
     // Remove `picker` & `format` here since TimePicker is little different with other panel
-    ...(props as Omit<InternalPickerProps<DateType>, 'picker' | 'format'>),
+    ...(props as Omit<MergedPickerProps<DateType>, 'picker' | 'format'>),
     className: undefined,
     style: undefined,
   };
