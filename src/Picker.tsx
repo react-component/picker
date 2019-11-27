@@ -25,6 +25,7 @@ import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import { PickerMode } from './interface';
+import { getDefaultFormat } from './utils/uiUtil';
 
 export interface PickerSharedProps<DateType> {
   dropdownClassName?: string;
@@ -119,31 +120,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   } = props as MergedPickerProps<DateType>;
 
   // ============================= State =============================
-  let mergedFormat = format;
-  if (!mergedFormat) {
-    switch (picker) {
-      case 'time':
-        mergedFormat = use12Hours ? 'hh:mm:ss a' : 'HH:mm:ss';
-        break;
-
-      case 'week':
-        mergedFormat = 'YYYY-Wo';
-        break;
-
-      case 'month':
-        mergedFormat = 'YYYY-MM';
-        break;
-
-      case 'year':
-        mergedFormat = 'YYYY';
-        break;
-
-      default:
-        mergedFormat = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
-    }
-  }
-
-  const formatList = toArray(mergedFormat);
+  const formatList = toArray(
+    getDefaultFormat(format, picker, showTime, use12Hours),
+  );
 
   // Real value
   const [innerValue, setInnerValue] = React.useState<DateType | null>(() => {

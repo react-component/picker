@@ -104,5 +104,30 @@ describe('Range', () => {
         '1990-09-14',
       ]);
     });
+
+    it('exchanged value should re-order', () => {
+      const wrapper = mount(
+        <MomentRangePicker
+          defaultValue={[getMoment('1990-09-03'), getMoment('1989-11-28')]}
+        />,
+      );
+
+      matchValues(wrapper, '1989-11-28', '1990-09-03');
+    });
+
+    it('Reset when startDate is after endDate', () => {
+      const onChange = jest.fn();
+      const wrapper = mount(<MomentRangePicker onChange={onChange} />);
+
+      wrapper.openPicker(1);
+      wrapper.selectCell(7, 1);
+      wrapper.closePicker(1);
+
+      wrapper.openPicker(0);
+      wrapper.selectCell(23, 0);
+      wrapper.closePicker(0);
+      expect(onChange).not.toHaveBeenCalled();
+      matchValues(wrapper, '1990-09-23', '');
+    });
   });
 });

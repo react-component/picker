@@ -26,18 +26,16 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
   selectCell(text, index = 0) {
     let match = false;
 
-    this.find('div.rc-picker-panel')
-      .at(index)
-      .find('td')
-      .forEach(td => {
-        if (
-          td.text() === String(text) &&
-          td.props().className.includes('-in-view')
-        ) {
-          match = true;
-          td.simulate('click');
-        }
-      });
+    const panel = index ? this.find('InnerPicker').at(index) : this;
+    panel.find('td').forEach(td => {
+      if (
+        td.text() === String(text) &&
+        td.props().className.includes('-in-view')
+      ) {
+        match = true;
+        td.simulate('click');
+      }
+    });
 
     if (!match) {
       throw new Error('Cell not match in picker panel.');

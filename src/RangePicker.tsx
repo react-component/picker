@@ -14,6 +14,7 @@ import {
 import { toArray } from './utils/miscUtil';
 import RangeContext from './RangeContext';
 import { isSameDate } from './utils/dateUtil';
+import { getDefaultFormat } from './utils/uiUtil';
 
 type RangeValue<DateType> = [DateType | null, DateType | null] | null;
 
@@ -100,13 +101,15 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     defaultValue,
     defaultPickerValue,
     separator = '~',
+    picker,
     locale,
     generateConfig,
     placeholder,
     showTime,
+    use12Hours,
     disabledTime,
     ranges,
-    format = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD',
+    format,
     allowEmpty,
     selectable,
     disabled,
@@ -114,7 +117,10 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     onCalendarChange,
   } = props as MergedRangePickerProps<DateType>;
 
-  const formatList = toArray(format);
+  const formatList = toArray(
+    getDefaultFormat(format, picker, showTime, use12Hours),
+  );
+
   const mergedSelectable = React.useMemo<
     [boolean | undefined, boolean | undefined]
   >(() => [selectable && selectable[0], selectable && selectable[1]], [
@@ -151,7 +157,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     return [val1, val2];
   }, [mergedValue]);
 
-  // Select value: used for click to update ranged value
+  // Select value: used for click to update ranged value. Must set in pair
   const [selectedValues, setSelectedValues] = React.useState<
     [DateType, DateType] | undefined
   >(undefined);

@@ -126,6 +126,40 @@ export function createKeyDownHandler(
   return false;
 }
 
+// ===================== Format =====================
+export function getDefaultFormat(
+  format: string | string[] | undefined,
+  picker: PickerMode | undefined,
+  showTime: boolean | object | undefined,
+  use12Hours: boolean | undefined,
+) {
+  let mergedFormat = format;
+  if (!mergedFormat) {
+    switch (picker) {
+      case 'time':
+        mergedFormat = use12Hours ? 'hh:mm:ss a' : 'HH:mm:ss';
+        break;
+
+      case 'week':
+        mergedFormat = 'YYYY-Wo';
+        break;
+
+      case 'month':
+        mergedFormat = 'YYYY-MM';
+        break;
+
+      case 'year':
+        mergedFormat = 'YYYY';
+        break;
+
+      default:
+        mergedFormat = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
+    }
+  }
+
+  return mergedFormat;
+}
+
 // ====================== Mode ======================
 const getYearNextMode = (next: PanelMode): PanelMode => {
   if (next === 'month' || next === 'date') {
