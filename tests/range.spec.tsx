@@ -9,6 +9,21 @@ import {
 } from './util/commonUtil';
 
 describe('Range', () => {
+  function matchValues(wrapper: Wrapper, value1: string, value2: string) {
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .props().value,
+    ).toEqual(value1);
+    expect(
+      wrapper
+        .find('input')
+        .last()
+        .props().value,
+    ).toEqual(value2);
+  }
+
   beforeAll(() => {
     MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
   });
@@ -18,21 +33,6 @@ describe('Range', () => {
   });
 
   describe('value', () => {
-    function matchValues(wrapper: Wrapper, value1: string, value2: string) {
-      expect(
-        wrapper
-          .find('input')
-          .first()
-          .props().value,
-      ).toEqual(value1);
-      expect(
-        wrapper
-          .find('input')
-          .last()
-          .props().value,
-      ).toEqual(value2);
-    }
-
     it('defaultValue', () => {
       const wrapper = mount(
         <MomentRangePicker
@@ -104,30 +104,58 @@ describe('Range', () => {
         '1990-09-14',
       ]);
     });
+  });
 
-    it('exchanged value should re-order', () => {
-      const wrapper = mount(
-        <MomentRangePicker
-          defaultValue={[getMoment('1990-09-03'), getMoment('1989-11-28')]}
-        />,
-      );
+  it('exchanged value should re-order', () => {
+    const wrapper = mount(
+      <MomentRangePicker
+        defaultValue={[getMoment('1990-09-03'), getMoment('1989-11-28')]}
+      />,
+    );
 
-      matchValues(wrapper, '1989-11-28', '1990-09-03');
-    });
+    matchValues(wrapper, '1989-11-28', '1990-09-03');
+  });
 
-    it('Reset when startDate is after endDate', () => {
-      const onChange = jest.fn();
-      const wrapper = mount(<MomentRangePicker onChange={onChange} />);
+  it('Reset when startDate is after endDate', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(<MomentRangePicker onChange={onChange} />);
 
-      wrapper.openPicker(1);
-      wrapper.selectCell(7, 1);
-      wrapper.closePicker(1);
+    wrapper.openPicker(1);
+    wrapper.selectCell(7, 1);
+    wrapper.closePicker(1);
 
-      wrapper.openPicker(0);
-      wrapper.selectCell(23, 0);
-      wrapper.closePicker(0);
-      expect(onChange).not.toHaveBeenCalled();
-      matchValues(wrapper, '1990-09-23', '');
-    });
+    wrapper.openPicker(0);
+    wrapper.selectCell(23, 0);
+    wrapper.closePicker(0);
+    expect(onChange).not.toHaveBeenCalled();
+    matchValues(wrapper, '1990-09-23', '');
+  });
+
+  it('allowEmpty', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <MomentRangePicker
+        onChange={onChange}
+        allowEmpty={[false, true]}
+        allowClear
+      />,
+    );
+
+    wrapper.openPicker();
+    wrapper.selectCell(11);
+    wrapper.closePicker();
+    expect(onChange).toHaveBeenCalledWith(
+      [expect.anything(), null],
+      ['1990-09-11', ''],
+    );
+
+    wrapper.clearValue();
+    onChange.mockReset();
+
+    // Not allow empty with startDate
+    wrapper.openPicker(1);
+    wrapper.selectCell(23, 1);
+    wrapper.closePicker(1);
+    expect(onChange).not.toHaveBeenCalled();
   });
 });

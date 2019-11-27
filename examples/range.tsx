@@ -30,7 +30,6 @@ export default () => {
     formatStrings?: string[],
   ) => {
     console.log('Calendar Change:', newValue, formatStrings);
-    setValue(newValue);
   };
 
   const sharedProps = {

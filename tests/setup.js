@@ -41,8 +41,11 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
       throw new Error('Cell not match in picker panel.');
     }
   },
-  clearValue() {
-    this.find('.rc-picker-clear-btn').simulate('click');
+  clearValue(index = 0) {
+    this.find('Picker')
+      .at(index)
+      .find('.rc-picker-clear-btn')
+      .simulate('click');
   },
   keyDown(which, info = {}) {
     this.find('input').simulate('keydown', { ...info, which });

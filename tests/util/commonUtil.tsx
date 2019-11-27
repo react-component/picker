@@ -27,7 +27,7 @@ export type Wrapper = ReactWrapper & {
   closePicker: (index?: number) => void;
   isOpen: () => boolean;
   selectCell: (text: number | string, index?: number) => void;
-  clearValue: () => void;
+  clearValue: (index?: number) => void;
   keyDown: (which: number, info?: object) => void;
 };
 
@@ -110,9 +110,9 @@ export type MomentRangePickerProps =
   | InjectDefaultProps<RangePickerTimeProps<Moment>>;
 
 export const MomentRangePicker = (props: MomentRangePickerProps) => (
-    <RangePicker<Moment>
-      generateConfig={momentGenerateConfig}
-      locale={enUS}
-      {...props}
-    />
-  );
+  <RangePicker<Moment>
+    generateConfig={momentGenerateConfig}
+    locale={enUS}
+    {...props}
+  />
+);
