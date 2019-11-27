@@ -152,6 +152,14 @@ export default () => {
           </button>
         </div>
         <div style={{ margin: '0 8px' }}>
+          <h3>Week</h3>
+          <Picker<Moment>
+            generateConfig={momentGenerateConfig}
+            locale={zhCN}
+            picker="week"
+          />
+        </div>
+        <div style={{ margin: '0 8px' }}>
           <h3>Time</h3>
           <Picker<Moment> {...sharedProps} locale={zhCN} picker="time" />
         </div>
@@ -163,6 +171,10 @@ export default () => {
             picker="time"
             use12Hours
           />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Year</h3>
+          <Picker<Moment> {...sharedProps} locale={zhCN} picker="year" />
         </div>
       </div>
     </div>
