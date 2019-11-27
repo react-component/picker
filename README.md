@@ -1,4 +1,4 @@
-# rc-footer 🐾
+# rc-picker
 
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
@@ -7,18 +7,18 @@
 [![david devDeps][david-dev-image]][david-dev-url]
 [![npm download][download-image]][download-url]
 
-[npm-image]: http://img.shields.io/npm/v/rc-footer.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/rc-footer
-[travis-image]: https://img.shields.io/travis/com/react-component/footer.svg?style=flat-square
-[travis-url]: https://travis-ci.com/react-component/footer
-[codecov-image]: https://img.shields.io/codecov/c/github/react-component/footer/master.svg?style=flat-square
-[codecov-url]: https://codecov.io/gh/react-component/footer/branch/master
-[david-image]: https://david-dm.org/react-component/footer/status.svg?style=flat-square
-[david-dev-url]: https://david-dm.org/react-component/footer?type=dev
-[david-dev-image]: https://david-dm.org/react-component/footer/dev-status.svg?style=flat-square
-[david-url]: https://david-dm.org/react-component/footer
-[download-image]: https://img.shields.io/npm/dm/rc-footer.svg?style=flat-square
-[download-url]: https://npmjs.org/package/rc-footer
+[npm-image]: http://img.shields.io/npm/v/rc-picker.svg?style=flat-square
+[npm-url]: http://npmjs.org/package/rc-picker
+[travis-image]: https://img.shields.io/travis/com/react-component/picker.svg?style=flat-square
+[travis-url]: https://travis-ci.com/react-component/picker
+[codecov-image]: https://img.shields.io/codecov/c/github/react-component/picker/master.svg?style=flat-square
+[codecov-url]: https://codecov.io/gh/react-component/picker/branch/master
+[david-image]: https://david-dm.org/react-component/picker/status.svg?style=flat-square
+[david-dev-url]: https://david-dm.org/react-component/picker?type=dev
+[david-dev-image]: https://david-dm.org/react-component/picker/dev-status.svg?style=flat-square
+[david-url]: https://david-dm.org/react-component/picker
+[download-image]: https://img.shields.io/npm/dm/rc-picker.svg?style=flat-square
+[download-url]: https://npmjs.org/package/rc-picker
 
 Pretty Footer react component used in [ant.design](https://ant.design).
 
@@ -26,11 +26,11 @@ Pretty Footer react component used in [ant.design](https://ant.design).
 
 ## Live Demo
 
-https://react-component.github.io/footer/
+https://react-component.github.io/picker/
 
 ## Install
 
-[![rc-footer](https://nodei.co/npm/rc-footer.png)](https://npmjs.org/package/rc-footer)
+[![rc-picker](https://nodei.co/npm/rc-picker.png)](https://npmjs.org/package/rc-picker)
 
 ## Usage
 
@@ -104,4 +104,4 @@ npm start
 
 ## License
 
-rc-footer is released under the MIT license.
+rc-picker is released under the MIT license.
