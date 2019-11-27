@@ -2,7 +2,7 @@ import React from 'react';
 import MockDate from 'mockdate';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import KeyCode from 'rc-util/lib/KeyCode';
-import { PanelMode } from '../src/interface';
+import { PanelMode, PickerMode } from '../src/interface';
 import { mount, getMoment, isSame, MomentPicker } from './util/commonUtil';
 
 describe('Basic', () => {
@@ -29,6 +29,10 @@ describe('Basic', () => {
         componentNames: ['MonthPanel', 'MonthHeader', 'MonthBody'],
       },
       {
+        mode: 'week',
+        componentNames: ['WeekPanel'],
+      },
+      {
         mode: 'date',
         componentNames: ['DatePanel', 'DateHeader', 'DateBody'],
       },
@@ -51,6 +55,40 @@ describe('Basic', () => {
     modeList.forEach(({ mode, componentNames }) => {
       it(mode, () => {
         const wrapper = mount(<MomentPicker mode={mode} open />);
+        componentNames.forEach(componentName => {
+          expect(wrapper.find(componentName).length).toBeTruthy();
+        });
+      });
+    });
+  });
+
+  describe('picker', () => {
+    const modeList: { picker: PickerMode; componentNames: string[] }[] = [
+      {
+        picker: 'year',
+        componentNames: ['YearPanel', 'YearHeader', 'YearBody'],
+      },
+      {
+        picker: 'month',
+        componentNames: ['MonthPanel', 'MonthHeader', 'MonthBody'],
+      },
+      {
+        picker: 'week',
+        componentNames: ['WeekPanel'],
+      },
+      {
+        picker: 'date',
+        componentNames: ['DatePanel', 'DateHeader', 'DateBody'],
+      },
+      {
+        picker: 'time',
+        componentNames: ['TimePanel', 'TimeHeader', 'TimeBody'],
+      },
+    ];
+
+    modeList.forEach(({ picker, componentNames }) => {
+      it(picker, () => {
+        const wrapper = mount(<MomentPicker picker={picker as any} open />);
         componentNames.forEach(componentName => {
           expect(wrapper.find(componentName).length).toBeTruthy();
         });
@@ -132,25 +170,49 @@ describe('Basic', () => {
     });
   });
 
-  it('typing to change value', () => {
-    const onChange = jest.fn();
-    const wrapper = mount(<MomentPicker onChange={onChange} allowClear />);
-    wrapper.openPicker();
-    wrapper.find('input').simulate('focus');
-    wrapper.find('input').simulate('change', {
-      target: {
-        value: '2000-01-01',
-      },
+  describe('typing to change value', () => {
+    [
+      { name: 'basic', value: '2000-11-11' },
+      { name: 'week', picker: 'week', value: '2000-45th' },
+    ].forEach(({ name, picker, value }) => {
+      it(name, () => {
+        const onChange = jest.fn();
+        const wrapper = mount(
+          <MomentPicker
+            onChange={onChange}
+            picker={picker as any}
+            allowClear
+          />,
+        );
+        wrapper.openPicker();
+        wrapper.find('input').simulate('focus');
+
+        // Invalidate value
+        wrapper.find('input').simulate('change', {
+          target: {
+            value: 'abc',
+          },
+        });
+
+        // Validate value
+        wrapper.find('input').simulate('change', {
+          target: {
+            value,
+          },
+        });
+
+        expect(wrapper.find('input').prop('value')).toEqual(value);
+        expect(onChange).not.toHaveBeenCalled();
+        wrapper.keyDown(KeyCode.ENTER);
+        expect(
+          isSame(onChange.mock.calls[0][0], '2000-11-11', picker as any),
+        ).toBeTruthy();
+        onChange.mockReset();
+
+        wrapper.clearValue();
+        expect(onChange).toHaveBeenCalledWith(null, '');
+      });
     });
-
-    expect(wrapper.find('input').prop('value')).toEqual('2000-01-01');
-    expect(onChange).not.toHaveBeenCalled();
-    wrapper.keyDown(KeyCode.ENTER);
-    expect(isSame(onChange.mock.calls[0][0], '2000-01-01')).toBeTruthy();
-    onChange.mockReset();
-
-    wrapper.clearValue();
-    expect(onChange).toHaveBeenCalledWith(null, '');
   });
 
   describe('focus test', () => {
@@ -330,5 +392,43 @@ describe('Basic', () => {
         isSame(onChange.mock.calls[0][0], '1990-09-03 13:22:33', 'second'),
       ).toBeTruthy();
     });
+  });
+
+  it('renderExtraFooter', () => {
+    const renderExtraFooter = jest.fn(mode => <div>{mode}</div>);
+    const wrapper = mount(
+      <MomentPicker renderExtraFooter={renderExtraFooter} />,
+    );
+
+    function matchFooter(mode: string) {
+      expect(wrapper.find('.rc-picker-footer').text()).toEqual(mode);
+      expect(
+        renderExtraFooter.mock.calls[
+          renderExtraFooter.mock.calls.length - 1
+        ][0],
+      ).toEqual(mode);
+    }
+
+    // Date
+    wrapper.openPicker();
+    matchFooter('date');
+
+    // Month
+    wrapper.find('.rc-picker-date-panel-month-btn').simulate('click');
+    wrapper.update();
+    matchFooter('month');
+
+    // Year
+    wrapper.find('.rc-picker-month-panel-year-btn').simulate('click');
+    wrapper.update();
+    matchFooter('year');
+  });
+
+  it('showToday', () => {
+    const onSelect = jest.fn();
+    const wrapper = mount(<MomentPicker onSelect={onSelect} showToday />);
+    wrapper.openPicker();
+    wrapper.find('.rc-picker-today-btn').simulate('click');
+    expect(isSame(onSelect.mock.calls[0][0], '1990-09-03')).toBeTruthy();
   });
 });

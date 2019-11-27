@@ -26,12 +26,11 @@ import { PickerModeMap } from './utils/uiUtil';
 import { MonthCellRender } from './panels/MonthPanel/MonthBody';
 import RangeContext from './RangeContext';
 
-export interface PickerPanelBaseProps<DateType> {
+export interface PickerPanelSharedProps<DateType> {
   prefixCls?: string;
   className?: string;
   style?: React.CSSProperties;
   mode?: PanelMode;
-  picker?: Exclude<PickerMode, 'time'>;
   tabIndex?: number;
 
   // Locale
@@ -44,9 +43,7 @@ export interface PickerPanelBaseProps<DateType> {
   /** [Legacy] Set default display picker view date */
   defaultPickerValue?: DateType;
 
-  // Time
-  showTime?: boolean | SharedTimeProps<DateType>;
-  disabledTime?: DisabledTime<DateType>;
+  // Date
   showToday?: boolean;
   disabledDate?: (date: DateType) => boolean;
 
@@ -62,19 +59,36 @@ export interface PickerPanelBaseProps<DateType> {
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 }
 
+export interface PickerPanelBaseProps<DateType>
+  extends PickerPanelSharedProps<DateType> {
+  picker: Exclude<PickerMode, 'date' | 'time'>;
+}
+
+export interface PickerPanelDateProps<DateType>
+  extends PickerPanelSharedProps<DateType> {
+  picker?: 'date';
+
+  // Time
+  showTime?: boolean | SharedTimeProps<DateType>;
+  disabledTime?: DisabledTime<DateType>;
+}
+
 export interface PickerPanelTimeProps<DateType>
-  extends Omit<PickerPanelBaseProps<DateType>, 'showTime' | 'picker'>,
+  extends PickerPanelSharedProps<DateType>,
     SharedTimeProps<DateType> {
   picker: 'time';
 }
 
 export type PickerPanelProps<DateType> =
   | PickerPanelBaseProps<DateType>
+  | PickerPanelDateProps<DateType>
   | PickerPanelTimeProps<DateType>;
 
 interface MergedPickerPanelProps<DateType>
   extends Omit<
-    PickerPanelBaseProps<DateType> & PickerPanelTimeProps<DateType>,
+    PickerPanelBaseProps<DateType> &
+      PickerPanelDateProps<DateType> &
+      PickerPanelTimeProps<DateType>,
     'picker'
   > {
   picker?: PickerMode;

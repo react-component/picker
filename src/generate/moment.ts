@@ -1,4 +1,5 @@
 import moment, { Moment } from 'moment';
+import { noteOnce } from 'rc-util/lib/warning';
 import { GenerateConfig } from '.';
 
 const generateConfig: GenerateConfig<Moment> = {
@@ -86,20 +87,44 @@ const generateConfig: GenerateConfig<Moment> = {
       return clone.format(format);
     },
     parse: (locale, text, formats) => {
+      const fallbackFormatList: string[] = [];
+
       for (let i = 0; i < formats.length; i += 1) {
         let format = formats[i];
-        let strictMode = true;
+        let formatText = text;
 
         if (format.includes('o')) {
-          format = format.replace(/o/g, '');
-          strictMode = false;
+          const matchFormat = format.match(/[YyMmDdHhSsWw]+/g);
+          const matchText = formatText.match(/\d+/g);
+
+          if (matchFormat && matchText) {
+            format = matchFormat.join('');
+            formatText = matchText.join('');
+          } else {
+            fallbackFormatList.push(format.replace(/o/g, ''));
+          }
         }
 
-        const date = moment(text, format, locale, strictMode);
+        const date = moment(formatText, format, locale, true);
         if (date.isValid()) {
           return date;
         }
       }
+
+      // Fallback to fuzzy matching, this should always not reach match or need fire a issue
+      for (let i = 0; i < fallbackFormatList.length; i += 1) {
+        const date = moment(text, fallbackFormatList[i], locale, false);
+
+        /* istanbul ignore next */
+        if (date.isValid()) {
+          noteOnce(
+            false,
+            'Not match any format strictly and fallback to fuzzy match. Please help to fire a issue about this.',
+          );
+          return date;
+        }
+      }
+
       return null;
     },
   },

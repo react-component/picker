@@ -1,9 +1,19 @@
 import React from 'react';
 import { mount as originMount, ReactWrapper } from 'enzyme';
 import moment, { Moment, unitOfTime } from 'moment';
-import Picker, { PickerProps, PickerPanel, PickerPanelProps } from '../../src';
+import Picker, { PickerProps, PickerPanel } from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
 import enUS from '../../src/locale/en_US';
+import {
+  PickerBaseProps,
+  PickerDateProps,
+  PickerTimeProps,
+} from '../../src/Picker';
+import {
+  PickerPanelBaseProps,
+  PickerPanelDateProps,
+  PickerPanelTimeProps,
+} from '../../src/PickerPanel';
 
 const FULL_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
@@ -43,11 +53,18 @@ export function isSame(
   );
 }
 
-export interface MomentPickerProps
-  extends Omit<PickerProps<Moment>, 'locale' | 'generateConfig'> {
+interface MomentDefaultProps {
   locale?: PickerProps<Moment>['locale'];
   generateConfig?: PickerProps<Moment>['generateConfig'];
 }
+
+type InjectDefaultProps<Props> = Omit<Props, 'locale' | 'generateConfig'> &
+  MomentDefaultProps;
+
+export type MomentPickerProps =
+  | InjectDefaultProps<PickerBaseProps<Moment>>
+  | InjectDefaultProps<PickerDateProps<Moment>>
+  | InjectDefaultProps<PickerTimeProps<Moment>>;
 
 export class MomentPicker extends React.Component<MomentPickerProps> {
   pickerRef = React.createRef<Picker<Moment>>();
@@ -64,11 +81,10 @@ export class MomentPicker extends React.Component<MomentPickerProps> {
   }
 }
 
-export interface MomentPickerPanelProps
-  extends Omit<PickerPanelProps<Moment>, 'locale' | 'generateConfig'> {
-  locale?: PickerProps<Moment>['locale'];
-  generateConfig?: PickerProps<Moment>['generateConfig'];
-}
+export type MomentPickerPanelProps =
+  | InjectDefaultProps<PickerPanelBaseProps<Moment>>
+  | InjectDefaultProps<PickerPanelDateProps<Moment>>
+  | InjectDefaultProps<PickerPanelTimeProps<Moment>>;
 
 export const MomentPickerPanel = (props: MomentPickerPanelProps) => (
   <PickerPanel<Moment>
