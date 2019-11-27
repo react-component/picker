@@ -120,11 +120,29 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   // ============================= State =============================
   let mergedFormat = format;
-  if (!mergedFormat && picker === 'time') {
-    mergedFormat = use12Hours ? 'hh:mm:ss a' : 'HH:mm:ss';
-  } else if (!mergedFormat) {
-    mergedFormat = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
+  if (!mergedFormat) {
+    switch (picker) {
+      case 'time':
+        mergedFormat = use12Hours ? 'hh:mm:ss a' : 'HH:mm:ss';
+        break;
+
+      case 'week':
+        mergedFormat = 'YYYY-Wo';
+        break;
+
+      case 'month':
+        mergedFormat = 'YYYY-MM';
+        break;
+
+      case 'year':
+        mergedFormat = 'YYYY';
+        break;
+
+      default:
+        mergedFormat = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
+    }
   }
+
   const formatList = toArray(mergedFormat);
 
   // Real value

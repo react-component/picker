@@ -128,8 +128,8 @@ export function createKeyDownHandler(
 
 // ====================== Mode ======================
 const getYearNextMode = (next: PanelMode): PanelMode => {
-  if (next === 'date') {
-    return 'month';
+  if (next === 'month' || next === 'date') {
+    return 'year';
   }
   return next;
 };
