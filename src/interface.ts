@@ -15,7 +15,7 @@ export interface Locale {
   ok: string;
   timeSelect: string;
   dateSelect: string;
-  weekSelect: string;
+  weekSelect?: string;
   clear: string;
   month: string;
   year: string;
