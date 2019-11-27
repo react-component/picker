@@ -11,6 +11,10 @@ import {
 } from './util/commonUtil';
 
 describe('Keyboard', () => {
+  function panelKeyDown(wrapper: Wrapper, keyCode: number) {
+    wrapper.find('.rc-picker-panel').simulate('keyDown', { which: keyCode });
+  }
+
   beforeAll(() => {
     MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
   });
@@ -158,12 +162,6 @@ describe('Keyboard', () => {
     });
 
     describe('PickerPanel', () => {
-      function panelKeyDown(wrapper: Wrapper, keyCode: number) {
-        wrapper
-          .find('.rc-picker-panel')
-          .simulate('keyDown', { which: keyCode });
-      }
-
       describe('switch panels', () => {
         [
           {
@@ -212,12 +210,41 @@ describe('Keyboard', () => {
 
             // Select
             onSelect.mockReset();
-            panelKeyDown(wrapper, KeyCode.RIGHT);
+            panelKeyDown(wrapper, KeyCode.UP);
             panelKeyDown(wrapper, KeyCode.DOWN);
             expect(
               isSame(
                 onSelect.mock.calls[0][0],
                 '1990-09-10 01:00:00',
+                'second',
+              ),
+            ).toBeTruthy();
+
+            // Next column select
+            onSelect.mockReset();
+            panelKeyDown(wrapper, KeyCode.RIGHT);
+            panelKeyDown(wrapper, KeyCode.UP);
+            expect(
+              isSame(
+                onSelect.mock.calls[0][0],
+                '1990-09-10 01:59:00',
+                'second',
+              ),
+            ).toBeTruthy();
+
+            // Enter to exit column edit
+            onSelect.mockReset();
+            expect(
+              wrapper.find('.rc-picker-time-panel-column-active').length,
+            ).toBeTruthy();
+            panelKeyDown(wrapper, KeyCode.ENTER);
+            expect(
+              wrapper.find('.rc-picker-time-panel-column-active').length,
+            ).toBeFalsy();
+            expect(
+              isSame(
+                onSelect.mock.calls[0][0],
+                '1990-09-10 01:59:00',
                 'second',
               ),
             ).toBeTruthy();
@@ -252,5 +279,16 @@ describe('Keyboard', () => {
         expect(wrapper.find('.rc-picker-date-panel').length).toBeTruthy();
       });
     });
+  });
+
+  it('time enter will trigger onSelect', () => {
+    const onSelect = jest.fn();
+    const wrapper = mount(
+      <MomentPickerPanel picker="time" onSelect={onSelect} />,
+    );
+    panelKeyDown(wrapper, KeyCode.ENTER);
+    expect(
+      isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second'),
+    ).toBeTruthy();
   });
 });

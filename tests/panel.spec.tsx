@@ -174,8 +174,10 @@ describe('Panel', () => {
     const wrapper = mount(
       <MomentPickerPanel
         showTime={{
+          hideDisabledOptions: true,
           showSecond: false,
           defaultValue: getMoment('2001-01-02 01:03:07'),
+          disabledHours: () => [0, 1, 2, 3],
         }}
         defaultValue={getMoment('2001-01-02 01:03:07')}
         value={null}
@@ -184,6 +186,14 @@ describe('Panel', () => {
     );
 
     expect(wrapper.find('.rc-picker-time-panel-column')).toHaveLength(2);
+    expect(
+      wrapper
+        .find('.rc-picker-time-panel-column')
+        .first()
+        .find('li')
+        .first()
+        .text(),
+    ).toEqual('04');
 
     // Click on date
     wrapper.selectCell(5);
@@ -202,5 +212,30 @@ describe('Panel', () => {
     expect(
       isSame(onSelect.mock.calls[0][0], '2001-01-02 11:00:00'),
     ).toBeTruthy();
+  });
+
+  it('time should not trigger onSelect when disabled', () => {
+    const onSelect = jest.fn();
+    const wrapper = mount(
+      <MomentPickerPanel
+        mode="time"
+        onSelect={onSelect}
+        disabledHours={() => [0]}
+      />,
+    );
+
+    // Disabled
+    wrapper
+      .find('li')
+      .first()
+      .simulate('click');
+    expect(onSelect).not.toHaveBeenCalled();
+
+    // Enabled
+    wrapper
+      .find('li')
+      .at(1)
+      .simulate('click');
+    expect(onSelect).toHaveBeenCalled();
   });
 });
