@@ -1,5 +1,6 @@
 import React from 'react';
 import MockDate from 'mockdate';
+import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { mount, getMoment, isSame, MomentPickerPanel } from './util/commonUtil';
 
 describe('Panel', () => {
@@ -87,6 +88,55 @@ describe('Panel', () => {
 
       wrapper.selectCell('Aug');
       expect(wrapper.find('.rc-picker-month-panel').length).toBeTruthy();
+    });
+  });
+
+  describe('time click to scroll', () => {
+    let domSpy: ReturnType<typeof spyElementPrototypes>;
+    const requestAnimationFrameSpy = jest.spyOn(
+      global,
+      'requestAnimationFrame' as any,
+    );
+
+    beforeEach(() => {
+      let scrollTop = 90;
+
+      domSpy = spyElementPrototypes(HTMLElement, {
+        scrollTop: {
+          get: () => scrollTop,
+          set: ((_: Function, value: number) => {
+            scrollTop = value;
+          }) as any,
+        },
+      });
+    });
+    afterEach(() => {
+      domSpy.mockRestore();
+    });
+
+    it('scroll', () => {
+      jest.useFakeTimers();
+      const wrapper = mount(<MomentPickerPanel mode="time" />);
+
+      // Multiple times should only one work
+      wrapper
+        .find('ul')
+        .first()
+        .find('li')
+        .at(3)
+        .simulate('click');
+
+      wrapper
+        .find('ul')
+        .first()
+        .find('li')
+        .at(11)
+        .simulate('click');
+      jest.runAllTimers();
+
+      expect(requestAnimationFrameSpy).toHaveBeenCalled();
+
+      jest.useRealTimers();
     });
   });
 });

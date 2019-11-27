@@ -1,3 +1,11 @@
+global.requestAnimationFrame = callback => {
+  global.setTimeout(callback, 0);
+};
+
+global.cancelAnimationFrame = id => {
+  global.clearTimeout(id);
+};
+
 const Enzyme = require('enzyme');
 const Adapter = require('enzyme-adapter-react-16');
 
