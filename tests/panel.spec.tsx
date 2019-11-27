@@ -238,4 +238,39 @@ describe('Panel', () => {
       .simulate('click');
     expect(onSelect).toHaveBeenCalled();
   });
+
+  it('time with use12Hours', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <MomentPickerPanel
+        picker="time"
+        defaultValue={getMoment('2000-01-01 00:01:02')}
+        use12Hours
+        onChange={onChange}
+      />,
+    );
+
+    wrapper
+      .find('.rc-picker-time-panel-column')
+      .last()
+      .find('li')
+      .last()
+      .simulate('click');
+    expect(
+      isSame(onChange.mock.calls[0][0], '2000-01-01 12:01:02', 'second'),
+    ).toBeTruthy();
+  });
+
+  it('time disabled columns', () => {
+    const wrapper = mount(
+      <MomentPickerPanel
+        mode="time"
+        disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7]}
+        disabledMinutes={() => [2, 4, 6, 8, 10]}
+        disabledSeconds={() => [10, 20, 30, 40, 50]}
+      />,
+    );
+
+    expect(wrapper.render()).toMatchSnapshot();
+  });
 });
