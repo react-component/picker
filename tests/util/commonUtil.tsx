@@ -47,10 +47,14 @@ export function getMoment(str: string): Moment {
 }
 
 export function isSame(
-  date: Moment,
+  date: Moment | null,
   dateStr: string,
   type: unitOfTime.StartOf = 'date',
 ) {
+  if (!date) {
+    return false;
+  }
+
   if (date.isSame(getMoment(dateStr), type)) {
     return true;
   }
