@@ -29,6 +29,7 @@ export type Wrapper = ReactWrapper & {
   selectCell: (text: number | string, index?: number) => Wrapper;
   clearValue: (index?: number) => void;
   keyDown: (which: number, info?: object) => void;
+  clickButton: (type: 'prev' | 'next' | 'super-prev' | 'super-next') => Wrapper;
 };
 
 export const mount = originMount as (

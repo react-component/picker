@@ -139,4 +139,32 @@ describe('Panel', () => {
       jest.useRealTimers();
     });
   });
+
+  describe('click to switch', () => {
+    it('date', () => {
+      const wrapper = mount(
+        <MomentPickerPanel defaultValue={getMoment('1990-09-03')} />,
+      );
+
+      wrapper.clickButton('prev');
+      expect(wrapper.find('.rc-picker-date-panel-header-view').text()).toEqual(
+        'Aug1990',
+      );
+
+      wrapper.clickButton('next');
+      expect(wrapper.find('.rc-picker-date-panel-header-view').text()).toEqual(
+        'Sep1990',
+      );
+
+      wrapper.clickButton('super-prev');
+      expect(wrapper.find('.rc-picker-date-panel-header-view').text()).toEqual(
+        'Sep1989',
+      );
+
+      wrapper.clickButton('super-next');
+      expect(wrapper.find('.rc-picker-date-panel-header-view').text()).toEqual(
+        'Sep1990',
+      );
+    });
+  });
 });

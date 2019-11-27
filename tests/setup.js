@@ -51,6 +51,18 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
 
     return matchCell;
   },
+  clickButton(type) {
+    let matchBtn;
+    this.find('button').forEach(btn => {
+      if (btn.props().className.includes(`-header-${type}-btn`)) {
+        matchBtn = btn;
+      }
+    });
+
+    matchBtn.simulate('click');
+
+    return matchBtn;
+  },
   clearValue(index = 0) {
     this.find('Picker')
       .at(index)
