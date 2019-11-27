@@ -7,6 +7,7 @@ import {
   isSame,
   MomentPicker,
   MomentPickerPanel,
+  Wrapper,
 } from './util/commonUtil';
 
 describe('Keyboard', () => {
@@ -49,6 +50,30 @@ describe('Keyboard', () => {
     // RIGHT
     onSelect.mockReset();
     wrapper.keyDown(KeyCode.RIGHT);
+    expect(isSame(onSelect.mock.calls[0][0], '1990-09-03')).toBeTruthy();
+    expect(onChange).not.toHaveBeenCalled();
+
+    // Control + Left
+    onSelect.mockReset();
+    wrapper.keyDown(KeyCode.LEFT, { ctrlKey: true });
+    expect(isSame(onSelect.mock.calls[0][0], '1989-09-03')).toBeTruthy();
+    expect(onChange).not.toHaveBeenCalled();
+
+    // Control + RIGHT
+    onSelect.mockReset();
+    wrapper.keyDown(KeyCode.RIGHT, { ctrlKey: true });
+    expect(isSame(onSelect.mock.calls[0][0], '1990-09-03')).toBeTruthy();
+    expect(onChange).not.toHaveBeenCalled();
+
+    // PageUp
+    onSelect.mockReset();
+    wrapper.keyDown(KeyCode.PAGE_UP);
+    expect(isSame(onSelect.mock.calls[0][0], '1990-08-03')).toBeTruthy();
+    expect(onChange).not.toHaveBeenCalled();
+
+    // PageDown
+    onSelect.mockReset();
+    wrapper.keyDown(KeyCode.PAGE_DOWN);
     expect(isSame(onSelect.mock.calls[0][0], '1990-09-03')).toBeTruthy();
     expect(onChange).not.toHaveBeenCalled();
 
@@ -132,27 +157,56 @@ describe('Keyboard', () => {
       expect(wrapper.find('.rc-picker-time-panel-active').length).toBeFalsy();
     });
 
-    it('PickerPanel', () => {
-      const wrapper = mount(<MomentPickerPanel showTime />);
+    describe('PickerPanel', () => {
+      function panelKeyDown(wrapper: Wrapper, keyCode: number) {
+        wrapper
+          .find('.rc-picker-panel')
+          .simulate('keyDown', { which: keyCode });
+      }
 
-      // Focus Panel
-      wrapper.find('.rc-picker-panel').simulate('focus');
+      it('Tab', () => {
+        const wrapper = mount(<MomentPickerPanel showTime />);
 
-      // Focus Date Panel
-      wrapper
-        .find('.rc-picker-panel')
-        .simulate('keyDown', { which: KeyCode.TAB });
-      expect(wrapper.find('.rc-picker-date-panel-active').length).toBeTruthy();
+        // Focus Panel
+        wrapper.find('.rc-picker-panel').simulate('focus');
 
-      // Focus Time Panel
-      wrapper
-        .find('.rc-picker-panel')
-        .simulate('keyDown', { which: KeyCode.TAB });
-      expect(wrapper.find('.rc-picker-time-panel-active').length).toBeTruthy();
+        // Focus Date Panel
+        panelKeyDown(wrapper, KeyCode.TAB);
+        expect(
+          wrapper.find('.rc-picker-date-panel-active').length,
+        ).toBeTruthy();
 
-      // Close should not focus
-      wrapper.find('.rc-picker-panel').simulate('blur');
-      expect(wrapper.find('.rc-picker-time-panel-active').length).toBeFalsy();
+        // Focus Time Panel
+        panelKeyDown(wrapper, KeyCode.TAB);
+        expect(
+          wrapper.find('.rc-picker-time-panel-active').length,
+        ).toBeTruthy();
+
+        // Close should not focus
+        wrapper.find('.rc-picker-panel').simulate('blur');
+        expect(wrapper.find('.rc-picker-time-panel-active').length).toBeFalsy();
+      });
+
+      it('Enter to next view', () => {
+        const wrapper = mount(<MomentPickerPanel />);
+        wrapper.find('.rc-picker-date-panel-year-btn').simulate('click');
+        wrapper.find('.rc-picker-year-panel-decade-btn').simulate('click');
+
+        // Decade
+        expect(wrapper.find('.rc-picker-decade-panel').length).toBeTruthy();
+
+        // Year
+        panelKeyDown(wrapper, KeyCode.ENTER);
+        expect(wrapper.find('.rc-picker-year-panel').length).toBeTruthy();
+
+        // Month
+        panelKeyDown(wrapper, KeyCode.ENTER);
+        expect(wrapper.find('.rc-picker-month-panel').length).toBeTruthy();
+
+        // Date
+        panelKeyDown(wrapper, KeyCode.ENTER);
+        expect(wrapper.find('.rc-picker-date-panel').length).toBeTruthy();
+      });
     });
   });
 });

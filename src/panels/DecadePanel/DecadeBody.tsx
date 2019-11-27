@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { GenerateConfig } from '../../generate';
 import { DECADE_DISTANCE_COUNT, DECADE_UNIT_DIFF } from '.';
 
-const DECADE_COL_COUNT = 3;
+export const DECADE_COL_COUNT = 3;
 const DECADE_ROW_COUNT = 4;
 
 export interface YearBodyProps<DateType> {

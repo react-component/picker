@@ -1,6 +1,6 @@
 import * as React from 'react';
 import DecadeHeader from './DecadeHeader';
-import DecadeBody from './DecadeBody';
+import DecadeBody, { DECADE_COL_COUNT } from './DecadeBody';
 import { PanelSharedProps } from '../../interface';
 import { createKeyDownHandler } from '../../utils/uiUtil';
 
@@ -20,25 +20,31 @@ function DecadePanel<DateType>(props: DecadePanelProps<DateType>) {
     onPanelChange,
   } = props;
 
-  const panelPrefixCls = `${prefixCls}-year-panel`;
+  const panelPrefixCls = `${prefixCls}-decade-panel`;
 
   // ======================= Keyboard =======================
   operationRef.current = {
     onKeyDown: event =>
       createKeyDownHandler(event, {
         onLeftRight: diff => {
-          console.log('>>>>', diff);
           onSelect(generateConfig.addYear(viewDate, diff * DECADE_UNIT_DIFF));
         },
-        // onCtrlLeftRight: diff => {
-        //   onSelect(generateConfig.addYear(value, diff * YEAR_DECADE_COUNT));
-        // },
-        // onUpDown: diff => {
-        //   onSelect(generateConfig.addYear(value, diff * YEAR_COL_COUNT));
-        // },
-        // onEnter: () => {
-        //   onSelect(viewDate);
-        // },
+        onCtrlLeftRight: diff => {
+          onSelect(
+            generateConfig.addYear(viewDate, diff * DECADE_DISTANCE_COUNT),
+          );
+        },
+        onUpDown: diff => {
+          onSelect(
+            generateConfig.addYear(
+              viewDate,
+              diff * DECADE_UNIT_DIFF * DECADE_COL_COUNT,
+            ),
+          );
+        },
+        onEnter: () => {
+          onPanelChange('year', viewDate);
+        },
       }),
   };
 

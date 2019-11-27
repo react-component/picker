@@ -76,7 +76,9 @@ export function createKeyDownHandler(
         onLeftRight(-1);
         return true;
       }
+      /* istanbul ignore next */
       break;
+
     case KeyCode.RIGHT:
       if (ctrlKey || metaKey) {
         if (onCtrlLeftRight) {
@@ -87,6 +89,7 @@ export function createKeyDownHandler(
         onLeftRight(1);
         return true;
       }
+      /* istanbul ignore next */
       break;
 
     case KeyCode.UP:
@@ -94,12 +97,15 @@ export function createKeyDownHandler(
         onUpDown(-1);
         return true;
       }
+      /* istanbul ignore next */
       break;
+
     case KeyCode.DOWN:
       if (onUpDown) {
         onUpDown(1);
         return true;
       }
+      /* istanbul ignore next */
       break;
 
     case KeyCode.PAGE_UP:
@@ -107,12 +113,15 @@ export function createKeyDownHandler(
         onPageUpDown(-1);
         return true;
       }
+      /* istanbul ignore next */
       break;
+
     case KeyCode.PAGE_DOWN:
       if (onPageUpDown) {
         onPageUpDown(1);
         return true;
       }
+      /* istanbul ignore next */
       break;
 
     case KeyCode.ENTER:
@@ -120,6 +129,7 @@ export function createKeyDownHandler(
         onEnter();
         return true;
       }
+      /* istanbul ignore next */
       break;
   }
 

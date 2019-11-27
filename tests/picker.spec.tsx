@@ -343,7 +343,7 @@ describe('Basic', () => {
 
         // Next page
         wrapper
-          .find('.rc-picker-year-panel-header-super-next-btn')
+          .find('.rc-picker-decade-panel-header-super-next-btn')
           .simulate('click');
 
         // Select decade

@@ -1,3 +1,4 @@
+import { noteOnce } from 'rc-util/lib/warning';
 import { GenerateConfig } from '../generate';
 import { NullableDateType } from '../interface';
 
@@ -122,5 +123,13 @@ export function getWeekStartDate<DateType>(
     }
   }
 
-  return value;
+  /* istanbul ignore next */
+  /* eslint-disable no-lone-blocks */
+  {
+    noteOnce(
+      false,
+      'Not find week start date. Please check your `generateConfig`. If using default `generateConfig`, please help to fire a issue.',
+    );
+    return value;
+  }
 }

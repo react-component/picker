@@ -264,6 +264,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
           {...pickerProps}
           onSelect={date => {
             setViewDate(date);
+            triggerSelect(date);
           }}
         />
       );
