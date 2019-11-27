@@ -1,7 +1,16 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import Picker, { PickerProps } from './Picker';
-import { NullableDateType, DisabledTimes, DisabledTime } from './interface';
+import Picker, {
+  PickerBaseProps,
+  PickerDateProps,
+  PickerTimeProps,
+} from './Picker';
+import {
+  NullableDateType,
+  DisabledTimes,
+  DisabledTime,
+  PickerMode,
+} from './interface';
 import { toArray } from './utils/miscUtil';
 import RangeContext from './RangeContext';
 import { isSameDate } from './utils/dateUtil';
@@ -11,23 +20,13 @@ type RangeValue<DateType> = [DateType | null, DateType | null] | null;
 function canTriggerChange<DateType>(
   dates: [DateType | null, DateType | null],
   allowEmpty?: [boolean, boolean],
-) {
+): boolean {
   const passStart = dates[0] || (allowEmpty && allowEmpty[0]);
   const passEnd = dates[1] || (allowEmpty && allowEmpty[1]);
-  return passStart && passEnd;
+  return !!(passStart && passEnd);
 }
 
-export interface RangePickerProps<DateType>
-  extends Omit<
-    PickerProps<DateType>,
-    | 'value'
-    | 'defaultValue'
-    | 'defaultPickerValue'
-    | 'onChange'
-    | 'placeholder'
-    | 'disabledTime'
-    | 'showToday'
-  > {
+export interface RangePickerSharedProps<DateType> {
   value?: RangeValue<DateType>;
   defaultValue?: RangeValue<DateType>;
   defaultPickerValue?: [DateType, DateType];
@@ -54,6 +53,44 @@ export interface RangePickerProps<DateType>
   ) => void;
 }
 
+type OmitPickerProps<Props> = Omit<
+  Props,
+  | 'value'
+  | 'defaultValue'
+  | 'defaultPickerValue'
+  | 'onChange'
+  | 'placeholder'
+  | 'disabledTime'
+  | 'showToday'
+>;
+
+export interface RangePickerBaseProps<DateType>
+  extends RangePickerSharedProps<DateType>,
+    OmitPickerProps<PickerBaseProps<DateType>> {}
+
+export interface RangePickerDateProps<DateType>
+  extends RangePickerSharedProps<DateType>,
+    OmitPickerProps<PickerDateProps<DateType>> {}
+
+export interface RangePickerTimeProps<DateType>
+  extends RangePickerSharedProps<DateType>,
+    OmitPickerProps<PickerTimeProps<DateType>> {}
+
+export type RangePickerProps<DateType> =
+  | RangePickerBaseProps<DateType>
+  | RangePickerDateProps<DateType>
+  | RangePickerTimeProps<DateType>;
+
+interface MergedRangePickerProps<DateType>
+  extends Omit<
+    RangePickerBaseProps<DateType> &
+      RangePickerDateProps<DateType> &
+      RangePickerTimeProps<DateType>,
+    'picker'
+  > {
+  picker?: PickerMode;
+}
+
 function RangePicker<DateType>(props: RangePickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
@@ -75,7 +112,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     disabled,
     onChange,
     onCalendarChange,
-  } = props;
+  } = props as MergedRangePickerProps<DateType>;
 
   const formatList = toArray(format);
   const mergedSelectable = React.useMemo<
@@ -266,7 +303,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
           value={value1}
           placeholder={placeholder && placeholder[0]}
           defaultPickerValue={defaultPickerValue && defaultPickerValue[0]}
-          disabledTime={disabledStartTime}
+          {...{ disabledTime: disabledStartTime }} // Fix ts define
           disabled={disabled || mergedSelectable[0] === false}
           disabledDate={disabledStartDate}
           onChange={date => {
@@ -281,7 +318,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
           value={value2}
           placeholder={placeholder && placeholder[1]}
           defaultPickerValue={defaultPickerValue && defaultPickerValue[1]}
-          disabledTime={disabledEndTime}
+          {...{ disabledTime: disabledEndTime }} // Fix ts define
           disabled={disabled || mergedSelectable[1] === false}
           disabledDate={disabledEndDate}
           onChange={date => {

@@ -14,19 +14,26 @@ import {
   PickerPanelDateProps,
   PickerPanelTimeProps,
 } from '../../src/PickerPanel';
+import RangePicker, {
+  RangePickerBaseProps,
+  RangePickerDateProps,
+  RangePickerTimeProps,
+} from '../../src/RangePicker';
 
 const FULL_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
-export const mount = originMount as (
-  ...args: Parameters<typeof originMount>
-) => ReactWrapper & {
-  openPicker: () => void;
-  closePicker: () => void;
+export type Wrapper = ReactWrapper & {
+  openPicker: (index?: number) => void;
+  closePicker: (index?: number) => void;
   isOpen: () => boolean;
-  selectCell: (text: number | string) => void;
+  selectCell: (text: number | string, index?: number) => void;
   clearValue: () => void;
   keyDown: (which: number, info?: object) => void;
 };
+
+export const mount = originMount as (
+  ...args: Parameters<typeof originMount>
+) => Wrapper;
 
 export function getMoment(str: string): Moment {
   const formatList = [FULL_FORMAT, 'YYYY-MM-DD'];
@@ -61,6 +68,7 @@ interface MomentDefaultProps {
 type InjectDefaultProps<Props> = Omit<Props, 'locale' | 'generateConfig'> &
   MomentDefaultProps;
 
+// Moment Picker
 export type MomentPickerProps =
   | InjectDefaultProps<PickerBaseProps<Moment>>
   | InjectDefaultProps<PickerDateProps<Moment>>
@@ -81,6 +89,7 @@ export class MomentPicker extends React.Component<MomentPickerProps> {
   }
 }
 
+// Moment Panel Picker
 export type MomentPickerPanelProps =
   | InjectDefaultProps<PickerPanelBaseProps<Moment>>
   | InjectDefaultProps<PickerPanelDateProps<Moment>>
@@ -93,3 +102,17 @@ export const MomentPickerPanel = (props: MomentPickerPanelProps) => (
     {...props}
   />
 );
+
+// Moment Range Picker
+export type MomentRangePickerProps =
+  | InjectDefaultProps<RangePickerBaseProps<Moment>>
+  | InjectDefaultProps<RangePickerDateProps<Moment>>
+  | InjectDefaultProps<RangePickerTimeProps<Moment>>;
+
+export const MomentRangePicker = (props: MomentRangePickerProps) => (
+    <RangePicker<Moment>
+      generateConfig={momentGenerateConfig}
+      locale={enUS}
+      {...props}
+    />
+  );

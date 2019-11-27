@@ -4,12 +4,16 @@ const Adapter = require('enzyme-adapter-react-16');
 Enzyme.configure({ adapter: new Adapter() });
 
 Object.assign(Enzyme.ReactWrapper.prototype, {
-  openPicker() {
-    this.find('input').simulate('mousedown');
-    this.find('input').simulate('focus');
+  openPicker(index = 0) {
+    this.find('input')
+      .at(index)
+      .simulate('mousedown')
+      .simulate('focus');
   },
-  closePicker() {
-    this.find('input').simulate('blur');
+  closePicker(index = 0) {
+    this.find('input')
+      .at(index)
+      .simulate('blur');
   },
   isOpen() {
     const openDiv = this.find('.rc-picker-dropdown').hostNodes();
@@ -19,18 +23,21 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
       !openDiv.hasClass('rc-picker-dropdown-hidden')
     );
   },
-  selectCell(text) {
+  selectCell(text, index = 0) {
     let match = false;
 
-    this.find('td').forEach(td => {
-      if (
-        td.text() === String(text) &&
-        td.props().className.includes('-in-view')
-      ) {
-        match = true;
-        td.simulate('click');
-      }
-    });
+    this.find('div.rc-picker-panel')
+      .at(index)
+      .find('td')
+      .forEach(td => {
+        if (
+          td.text() === String(text) &&
+          td.props().className.includes('-in-view')
+        ) {
+          match = true;
+          td.simulate('click');
+        }
+      });
 
     if (!match) {
       throw new Error('Cell not match in picker panel.');
