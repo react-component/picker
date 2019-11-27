@@ -140,7 +140,7 @@ describe('Panel', () => {
     });
   });
 
-  describe('click to switch', () => {
+  describe('click button to switch', () => {
     it('date', () => {
       const wrapper = mount(
         <MomentPickerPanel defaultValue={getMoment('1990-09-03')} />,
@@ -183,6 +183,25 @@ describe('Panel', () => {
       wrapper.clickButton('super-next');
       expect(wrapper.find('.rc-picker-month-panel-header-view').text()).toEqual(
         '1990',
+      );
+    });
+
+    it('year', () => {
+      const wrapper = mount(
+        <MomentPickerPanel
+          defaultValue={getMoment('1990-09-03')}
+          picker="year"
+        />,
+      );
+
+      wrapper.clickButton('super-prev');
+      expect(wrapper.find('.rc-picker-year-panel-header-view').text()).toEqual(
+        '1980-1989',
+      );
+
+      wrapper.clickButton('super-next');
+      expect(wrapper.find('.rc-picker-year-panel-header-view').text()).toEqual(
+        '1990-1999',
       );
     });
   });
@@ -273,6 +292,23 @@ describe('Panel', () => {
       expect(onSelect).not.toHaveBeenCalled();
 
       wrapper.selectCell('Feb');
+      expect(onSelect).toHaveBeenCalled();
+    });
+
+    it('year', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(
+        <MomentPickerPanel
+          picker="year"
+          onSelect={onSelect}
+          disabledDate={date => date.year() === 1990}
+        />,
+      );
+
+      wrapper.selectCell(1990);
+      expect(onSelect).not.toHaveBeenCalled();
+
+      wrapper.selectCell(1993);
       expect(onSelect).toHaveBeenCalled();
     });
   });
