@@ -92,9 +92,11 @@ function MonthBody<DateType>({
   }
 
   return (
-    <table>
-      <tbody>{rows}</tbody>
-    </table>
+    <div className={`${prefixCls}-body`}>
+      <table className={`${prefixCls}-content`}>
+        <tbody>{rows}</tbody>
+      </table>
+    </div>
   );
 }
 

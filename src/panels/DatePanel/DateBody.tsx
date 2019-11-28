@@ -143,12 +143,14 @@ function DateBody<DateType>({
   }
 
   return (
-    <table className={`${prefixCls}-content`}>
-      <thead>
-        <tr>{headerCells}</tr>
-      </thead>
-      <tbody>{rows}</tbody>
-    </table>
+    <div className={`${prefixCls}-body`}>
+      <table className={`${prefixCls}-content`}>
+        <thead>
+          <tr>{headerCells}</tr>
+        </thead>
+        <tbody>{rows}</tbody>
+      </table>
+    </div>
   );
 }
 
