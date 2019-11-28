@@ -424,12 +424,22 @@ describe('Basic', () => {
     matchFooter('year');
   });
 
-  it('showToday', () => {
-    const onSelect = jest.fn();
-    const wrapper = mount(<MomentPicker onSelect={onSelect} showToday />);
-    wrapper.openPicker();
-    wrapper.find('.rc-picker-today-btn').simulate('click');
-    expect(isSame(onSelect.mock.calls[0][0], '1990-09-03')).toBeTruthy();
+  describe('showToday', () => {
+    it('only works on date', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(<MomentPicker onSelect={onSelect} showToday />);
+      wrapper.openPicker();
+      wrapper.find('.rc-picker-today-btn').simulate('click');
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03')).toBeTruthy();
+    });
+
+    ['decade', 'year', 'month', 'week'].forEach(name => {
+      it(`not works on ${name}`, () => {
+        const wrapper = mount(<MomentPicker picker={name as any} showToday />);
+        wrapper.openPicker();
+        expect(wrapper.find('.rc-picker-today-btn').length).toBeFalsy();
+      });
+    });
   });
 
   it('icon', () => {
