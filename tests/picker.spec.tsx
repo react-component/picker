@@ -431,4 +431,17 @@ describe('Basic', () => {
     wrapper.find('.rc-picker-today-btn').simulate('click');
     expect(isSame(onSelect.mock.calls[0][0], '1990-09-03')).toBeTruthy();
   });
+
+  it('icon', () => {
+    const wrapper = mount(
+      <MomentPicker
+        defaultValue={getMoment('1990-09-03')}
+        suffixIcon={<span className="suffix-icon" />}
+        clearIcon={<span className="suffix-icon" />}
+        allowClear
+      />,
+    );
+
+    expect(wrapper.find('.rc-picker-input').render()).toMatchSnapshot();
+  });
 });

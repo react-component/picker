@@ -377,6 +377,11 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     />
   );
 
+  let suffixNode: React.ReactNode;
+  if (suffixIcon) {
+    suffixNode = <span className={`${prefixCls}-suffix`}>{suffixIcon}</span>;
+  }
+
   let clearNode: React.ReactNode;
   if (allowClear && mergedValue && !disabled) {
     clearNode = (
@@ -430,7 +435,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               placeholder={placeholder}
               ref={inputRef}
             />
-            {suffixIcon}
+            {suffixNode}
             {clearNode}
           </div>
         </PickerTrigger>
