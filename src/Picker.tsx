@@ -46,6 +46,10 @@ export interface PickerSharedProps<DateType> {
   // Render
   suffixIcon?: React.ReactNode;
   clearIcon?: React.ReactNode;
+  prevIcon?: React.ReactNode;
+  nextIcon?: React.ReactNode;
+  superPrevIcon?: React.ReactNode;
+  superNextIcon?: React.ReactNode;
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
 
   // Events

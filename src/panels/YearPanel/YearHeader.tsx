@@ -32,6 +32,7 @@ function YearHeader<DateType>(props: YearHeaderProps<DateType>) {
 
   return (
     <Header
+      {...props}
       prefixCls={headerPrefixCls}
       onSuperPrev={onPrevDecade}
       onSuperNext={onNextDecade}

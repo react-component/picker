@@ -2,6 +2,13 @@ import * as React from 'react';
 
 export interface HeaderProps {
   prefixCls: string;
+
+  // Icons
+  prevIcon?: React.ReactNode;
+  nextIcon?: React.ReactNode;
+  superPrevIcon?: React.ReactNode;
+  superNextIcon?: React.ReactNode;
+
   /** Last one step */
   onPrev?: () => void;
   /** Next one step */
@@ -16,6 +23,10 @@ export interface HeaderProps {
 
 function Header({
   prefixCls,
+  prevIcon = '\u2039',
+  nextIcon = '\u203A',
+  superPrevIcon = '\u00AB',
+  superNextIcon = '\u00BB',
   onSuperPrev,
   onSuperNext,
   onPrev,
@@ -31,7 +42,7 @@ function Header({
           tabIndex={-1}
           className={`${prefixCls}-super-prev-btn`}
         >
-          {'\u00AB'}
+          {superPrevIcon}
         </button>
       )}
       {onPrev && (
@@ -41,7 +52,7 @@ function Header({
           tabIndex={-1}
           className={`${prefixCls}-prev-btn`}
         >
-          {'\u2039'}
+          {prevIcon}
         </button>
       )}
       <div className={`${prefixCls}-view`}>{children}</div>
@@ -52,7 +63,7 @@ function Header({
           tabIndex={-1}
           className={`${prefixCls}-next-btn`}
         >
-          {'\u203A'}
+          {nextIcon}
         </button>
       )}
       {onSuperNext && (
@@ -62,7 +73,7 @@ function Header({
           tabIndex={-1}
           className={`${prefixCls}-super-next-btn`}
         >
-          {'\u00BB'}
+          {superNextIcon}
         </button>
       )}
     </div>

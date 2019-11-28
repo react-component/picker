@@ -68,6 +68,11 @@ export interface PanelSharedProps<DateType> {
   locale: Locale;
   disabledDate?: (date: DateType) => boolean;
 
+  prevIcon?: React.ReactNode;
+  nextIcon?: React.ReactNode;
+  superPrevIcon?: React.ReactNode;
+  superNextIcon?: React.ReactNode;
+
   /**
    * Typescript can not handle generic type so we can not use `forwardRef` here.
    * Thus, move ref into operationRef.

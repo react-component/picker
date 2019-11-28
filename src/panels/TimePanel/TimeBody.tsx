@@ -26,7 +26,7 @@ export interface BodyOperationRef {
   onUpDown: (diff: number) => void;
 }
 
-export interface TimeBodyProps<DateType> extends SharedTimeProps {
+export interface TimeBodyProps<DateType> extends SharedTimeProps<DateType> {
   prefixCls: string;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
