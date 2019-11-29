@@ -171,31 +171,19 @@ function InternalRangePicker<DateType>(
 
   // Select value: used for click to update ranged value. Must set in pair
   const [selectedValues, setSelectedValues] = React.useState<
-    [DateType, DateType] | undefined
+    [DateType | null, DateType | null] | undefined
   >(undefined);
 
   React.useEffect(() => {
-    if (value1 && value2) {
-      setSelectedValues([value1, value2]);
-    } else {
-      setSelectedValues(undefined);
-    }
+    setSelectedValues([value1, value2]);
   }, [value1, value2]);
 
   const onStartSelect = (date: DateType) => {
-    if (value2) {
-      setSelectedValues([date, value2]);
-    } else {
-      setSelectedValues(undefined);
-    }
+    setSelectedValues([date, value2]);
   };
 
   const onEndSelect = (date: DateType) => {
-    if (value1) {
-      setSelectedValues([value1, date]);
-    } else {
-      setSelectedValues(undefined);
-    }
+    setSelectedValues([value1, date]);
   };
 
   // ============================= Change =============================

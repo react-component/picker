@@ -8,7 +8,7 @@ import {
   isSameMonth,
   isInRange,
 } from '../../utils/dateUtil';
-import { Locale, NullableDateType } from '../../interface';
+import { Locale } from '../../interface';
 import RangeContext from '../../RangeContext';
 
 export type DateRender<DateType> = (
@@ -32,7 +32,6 @@ export interface DateBodyProps<DateType> extends DateBodyPassProps<DateType> {
   viewDate: DateType;
   locale: Locale;
   rowCount: number;
-  rangedValue?: [NullableDateType<DateType>, NullableDateType<DateType>];
   onSelect: (value: DateType) => void;
 }
 

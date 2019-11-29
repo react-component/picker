@@ -92,6 +92,7 @@ export function isEqual<DateType>(
   );
 }
 
+/** Between in date but not equal of date */
 export function isInRange<DateType>(
   generateConfig: GenerateConfig<DateType>,
   startDate: DateType,
@@ -103,6 +104,8 @@ export function isInRange<DateType>(
   }
 
   return (
+    !isSameDate(generateConfig, startDate, current) &&
+    !isSameDate(generateConfig, endDate, current) &&
     generateConfig.isAfter(current, startDate) &&
     generateConfig.isAfter(endDate, current)
   );
