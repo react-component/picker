@@ -213,7 +213,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   // =========================== Formatter ===========================
   const setSelectedValue = (newDate: DateType | null) => {
-    setDateText(newDate);
+    if (!isSameTextDate(textValue, newDate)) {
+      setDateText(newDate);
+    }
     setInternalSelectedValue(newDate);
   };
 
@@ -238,10 +240,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   // ============================ Trigger ============================
   const triggerChange = (newValue: DateType | null) => {
-    if (!isSameTextDate(textValue, newValue)) {
-      setDateText(newValue);
-    }
-
+    setSelectedValue(newValue);
     setInnerValue(newValue);
 
     if (onChange && !isEqual(generateConfig, mergedValue, newValue)) {

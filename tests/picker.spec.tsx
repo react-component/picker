@@ -172,9 +172,18 @@ describe('Basic', () => {
 
   describe('typing to change value', () => {
     [
-      { name: 'basic', value: '2000-11-11' },
-      { name: 'week', picker: 'week', value: '2000-45th' },
-    ].forEach(({ name, picker, value }) => {
+      {
+        name: 'basic',
+        value: '2000-11-11',
+        selected: '.rc-picker-date-panel-cell-selected',
+      },
+      {
+        name: 'week',
+        picker: 'week',
+        value: '2000-45th',
+        selected: '.rc-picker-week-panel-row-selected',
+      },
+    ].forEach(({ name, picker, value, selected }) => {
       it(name, () => {
         const onChange = jest.fn();
         const wrapper = mount(
@@ -207,10 +216,14 @@ describe('Basic', () => {
         expect(
           isSame(onChange.mock.calls[0][0], '2000-11-11', picker as any),
         ).toBeTruthy();
+        expect(wrapper.find(selected).length).toBeTruthy();
         onChange.mockReset();
 
         wrapper.clearValue();
         expect(onChange).toHaveBeenCalledWith(null, '');
+
+        wrapper.openPicker();
+        expect(wrapper.find(selected).length).toBeFalsy();
       });
     });
   });

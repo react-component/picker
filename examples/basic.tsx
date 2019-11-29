@@ -104,6 +104,14 @@ export default () => {
           <Picker<Moment> {...sharedProps} locale={zhCN} />
         </div>
         <div style={{ margin: '0 8px' }}>
+          <h3>Uncontrolled</h3>
+          <Picker<Moment>
+            generateConfig={momentGenerateConfig}
+            locale={zhCN}
+            allowClear
+          />
+        </div>
+        <div style={{ margin: '0 8px' }}>
           <h3>Datetime</h3>
           <Picker<Moment>
             {...sharedProps}
