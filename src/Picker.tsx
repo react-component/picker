@@ -25,7 +25,7 @@ import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import { PickerMode } from './interface';
-import { getDefaultFormat } from './utils/uiUtil';
+import { getDefaultFormat, getInputSize } from './utils/uiUtil';
 
 export interface PickerSharedProps<DateType> {
   dropdownClassName?: string;
@@ -433,6 +433,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               autoFocus={autoFocus}
               placeholder={placeholder}
               ref={inputRef}
+              size={getInputSize(picker, formatList[0])}
             />
             {suffixNode}
             {clearNode}

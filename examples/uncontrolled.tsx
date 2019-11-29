@@ -14,7 +14,15 @@ export default () => (
         locale={zhCN}
         picker="week"
         allowClear
+        style={{ width: 300 }}
       />
+      <Picker<Moment>
+        generateConfig={momentGenerateConfig}
+        locale={zhCN}
+        picker="week"
+        allowClear
+      />
+      <button type="button">233</button>
     </div>
   </div>
 );

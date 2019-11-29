@@ -147,6 +147,11 @@ export function getDefaultFormat(
   return mergedFormat;
 }
 
+export function getInputSize(picker: PickerMode | undefined, format: string) {
+  const defaultSize = picker === 'time' ? 9 : 11;
+  return Math.max(defaultSize, format.length + 2);
+}
+
 // ====================== Mode ======================
 const getYearNextMode = (next: PanelMode): PanelMode => {
   if (next === 'month' || next === 'date') {
