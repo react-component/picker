@@ -149,7 +149,7 @@ export function getDefaultFormat(
 
 export function getInputSize(picker: PickerMode | undefined, format: string) {
   const defaultSize = picker === 'time' ? 8 : 10;
-  return Math.max(defaultSize, format.length);
+  return Math.max(defaultSize, format.length) + 2;
 }
 
 // ====================== Mode ======================
