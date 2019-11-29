@@ -41,7 +41,7 @@ export interface RangePickerSharedProps<DateType> {
     | Exclude<RangeValue<DateType>, null>
     | (() => Exclude<RangeValue<DateType>, null>)
   >;
-  separator?: string;
+  separator?: React.ReactNode;
   allowEmpty?: [boolean, boolean];
   selectable?: [boolean, boolean];
   onChange?: (

@@ -109,6 +109,16 @@ function DateBody<DateType>({
               rangedValue && rangedValue[1],
               currentDate,
             ),
+            [`${datePrefixCls}-range-start`]: isSameDate(
+              generateConfig,
+              rangedValue && rangedValue[0],
+              currentDate,
+            ),
+            [`${datePrefixCls}-range-end`]: isSameDate(
+              generateConfig,
+              rangedValue && rangedValue[1],
+              currentDate,
+            ),
             [`${datePrefixCls}-today`]: isSameDate(
               generateConfig,
               today,
