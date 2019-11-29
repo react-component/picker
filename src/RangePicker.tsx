@@ -97,7 +97,7 @@ interface MergedRangePickerProps<DateType>
 
 function InternalRangePicker<DateType>(
   props: RangePickerProps<DateType> & {
-    pickerRef: React.Ref<Picker>;
+    pickerRef: React.Ref<Picker<DateType>>;
   },
 ) {
   const {
@@ -126,7 +126,7 @@ function InternalRangePicker<DateType>(
     onFocus,
     onBlur,
   } = props as MergedRangePickerProps<DateType> & {
-    pickerRef: React.Ref<Picker>;
+    pickerRef: React.Ref<Picker<DateType>>;
   };
 
   const formatList = toArray(
@@ -360,7 +360,7 @@ function InternalRangePicker<DateType>(
 class RangePicker<DateType> extends React.Component<
   RangePickerProps<DateType>
 > {
-  pickerRef = React.createRef<HTMLInputElement>();
+  pickerRef = React.createRef<Picker<DateType>>();
 
   focus = () => {
     if (this.pickerRef.current) {
