@@ -25,3 +25,22 @@ exports[`Basic icon 1`] = `
   </span>
 </div>
 `;
+
+exports[`Basic pass data- & aria- & role 1`] = `
+<div
+  class="rc-picker"
+>
+  <div
+    class="rc-picker-input"
+  >
+    <input
+      aria-label="3334"
+      data-test="233"
+      readonly=""
+      role="search"
+      size="12"
+      value=""
+    />
+  </div>
+</div>
+`;

@@ -1,3 +1,9 @@
+/**
+ * TODO:
+ *  - Highlight range when hover the ranges value
+ *  - Click ranges value will go to the related panel
+ */
+
 import * as React from 'react';
 import classNames from 'classnames';
 import Picker, {

@@ -22,7 +22,7 @@ import PickerPanel, {
 } from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
 import { isEqual } from './utils/dateUtil';
-import { toArray } from './utils/miscUtil';
+import getDataOrAriaProps, { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import { PickerMode } from './interface';
 import {
@@ -31,7 +31,7 @@ import {
   addGlobalMouseDownEvent,
 } from './utils/uiUtil';
 
-export interface PickerSharedProps<DateType> {
+export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   dropdownClassName?: string;
   dropdownAlign?: AlignType;
   popupStyle?: React.CSSProperties;
@@ -65,6 +65,9 @@ export interface PickerSharedProps<DateType> {
   // Internal
   /** @private Internal usage, do not use in production mode!!! */
   inputRef?: React.Ref<HTMLInputElement>;
+
+  // WAI-ARIA
+  role?: string;
 }
 
 export interface PickerBaseProps<DateType>
@@ -481,6 +484,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               placeholder={placeholder}
               ref={inputRef}
               size={getInputSize(picker, formatList[0])}
+              {...getDataOrAriaProps(props)}
             />
             {suffixNode}
             {clearNode}

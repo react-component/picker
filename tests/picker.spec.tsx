@@ -494,4 +494,12 @@ describe('Basic', () => {
       isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second'),
     ).toBeTruthy();
   });
+
+  it('pass data- & aria- & role', () => {
+    const wrapper = mount(
+      <MomentPicker data-test="233" aria-label="3334" role="search" />,
+    );
+
+    expect(wrapper.render()).toMatchSnapshot();
+  });
 });
