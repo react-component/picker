@@ -2,6 +2,7 @@ import * as React from 'react';
 import Header from '../Header';
 import { Locale } from '../../interface';
 import { GenerateConfig } from '../../generate';
+import PanelContext from '../../PanelContext';
 
 export interface DateHeaderProps<DateType> {
   prefixCls: string;
@@ -31,6 +32,12 @@ function DateHeader<DateType>(props: DateHeaderProps<DateType>) {
     onYearClick,
     onMonthClick,
   } = props;
+
+  const { hideHeader } = React.useContext(PanelContext);
+  if (hideHeader) {
+    return null;
+  }
+
   const headerPrefixCls = `${prefixCls}-header`;
 
   const monthsLocale: string[] =

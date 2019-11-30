@@ -73,15 +73,18 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
 
 export interface PickerBaseProps<DateType>
   extends PickerSharedProps<DateType>,
-    Omit<PickerPanelBaseProps<DateType>, 'onChange'> {}
+    Omit<PickerPanelBaseProps<DateType>, 'onChange' | 'hideHeader'> {}
 
 export interface PickerDateProps<DateType>
   extends PickerSharedProps<DateType>,
-    Omit<PickerPanelDateProps<DateType>, 'onChange'> {}
+    Omit<PickerPanelDateProps<DateType>, 'onChange' | 'hideHeader'> {}
 
 export interface PickerTimeProps<DateType>
   extends PickerSharedProps<DateType>,
-    Omit<PickerPanelTimeProps<DateType>, 'onChange' | 'format'> {}
+    Omit<
+      PickerPanelTimeProps<DateType>,
+      'onChange' | 'format' | 'hideHeader'
+    > {}
 
 export type PickerProps<DateType> =
   | PickerBaseProps<DateType>

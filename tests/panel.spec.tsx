@@ -389,4 +389,15 @@ describe('Panel', () => {
 
     errSpy.mockRestore();
   });
+
+  describe('hideHeader', () => {
+    ['decade', 'year', 'month', 'date', 'time'].forEach(mode => {
+      it(mode, () => {
+        const wrapper = mount(
+          <MomentPickerPanel mode={mode as any} hideHeader />,
+        );
+        expect(wrapper.find('.rc-picker-header')).toHaveLength(0);
+      });
+    });
+  });
 });

@@ -58,6 +58,9 @@ export interface PickerPanelSharedProps<DateType> {
   onChange?: (value: DateType) => void;
   onPanelChange?: OnPanelChange<DateType>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+
+  /** @private This is internal usage. Do not use in your production env */
+  hideHeader?: boolean;
 }
 
 export interface PickerPanelBaseProps<DateType>
@@ -112,6 +115,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     showTime,
     showToday,
     renderExtraFooter,
+    hideHeader,
     onSelect,
     onChange,
     onPanelChange,
@@ -130,9 +134,10 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   }
 
   // ============================ State =============================
-  const { operationRef, panelRef: panelDivRef } = React.useContext(
-    PanelContext,
-  );
+
+  const panelContext = React.useContext(PanelContext);
+  const { operationRef, panelRef: panelDivRef } = panelContext;
+
   const { extraFooterSelections } = React.useContext(RangeContext);
   const panelRef = React.useRef<PanelRefProps>({});
 
@@ -413,24 +418,32 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   }
 
   return (
-    <div
-      tabIndex={tabIndex}
-      className={classNames(`${prefixCls}-panel`, className)}
-      style={style}
-      onKeyDown={onInternalKeyDown}
-      onBlur={onInternalBlur}
-      onMouseDown={onMouseDown}
-      ref={panelDivRef}
+    <PanelContext.Provider
+      value={{
+        ...panelContext,
+        hideHeader:
+          'hideHeader' in props ? hideHeader : panelContext.hideHeader,
+      }}
     >
-      {panelNode}
-      {extraFooter || todayNode || extraSelectionNode ? (
-        <div className={`${prefixCls}-footer`}>
-          {extraFooter}
-          {extraSelectionNode}
-          {todayNode}
-        </div>
-      ) : null}
-    </div>
+      <div
+        tabIndex={tabIndex}
+        className={classNames(`${prefixCls}-panel`, className)}
+        style={style}
+        onKeyDown={onInternalKeyDown}
+        onBlur={onInternalBlur}
+        onMouseDown={onMouseDown}
+        ref={panelDivRef}
+      >
+        {panelNode}
+        {extraFooter || todayNode || extraSelectionNode ? (
+          <div className={`${prefixCls}-footer`}>
+            {extraFooter}
+            {extraSelectionNode}
+            {todayNode}
+          </div>
+        ) : null}
+      </div>
+    </PanelContext.Provider>
   );
 }
 
