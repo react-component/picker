@@ -15,6 +15,7 @@ import { toArray } from './utils/miscUtil';
 import RangeContext from './RangeContext';
 import { isSameDate } from './utils/dateUtil';
 import { getDefaultFormat } from './utils/uiUtil';
+import { SharedTimeProps } from './panels/TimePanel';
 
 type RangeValue<DateType> = [DateType | null, DateType | null] | null;
 
@@ -41,7 +42,7 @@ export interface RangePickerSharedProps<DateType> {
     | Exclude<RangeValue<DateType>, null>
     | (() => Exclude<RangeValue<DateType>, null>)
   >;
-  separator?: string;
+  separator?: React.ReactNode;
   allowEmpty?: [boolean, boolean];
   selectable?: [boolean, boolean];
   onChange?: (
@@ -52,6 +53,8 @@ export interface RangePickerSharedProps<DateType> {
     value: RangeValue<DateType>,
     formatString: [string, string],
   ) => void;
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
 
 type OmitPickerProps<Props> = Omit<
@@ -64,6 +67,7 @@ type OmitPickerProps<Props> = Omit<
   | 'placeholder'
   | 'disabledTime'
   | 'showToday'
+  | 'showTime'
 >;
 
 export interface RangePickerBaseProps<DateType>
@@ -72,7 +76,13 @@ export interface RangePickerBaseProps<DateType>
 
 export interface RangePickerDateProps<DateType>
   extends RangePickerSharedProps<DateType>,
-    OmitPickerProps<PickerDateProps<DateType>> {}
+    OmitPickerProps<PickerDateProps<DateType>> {
+  showTime?:
+    | boolean
+    | (Omit<SharedTimeProps<DateType>, 'defaultValue'> & {
+        defaultValue?: DateType[];
+      });
+}
 
 export interface RangePickerTimeProps<DateType>
   extends RangePickerSharedProps<DateType>,
@@ -93,7 +103,11 @@ interface MergedRangePickerProps<DateType>
   picker?: PickerMode;
 }
 
-function RangePicker<DateType>(props: RangePickerProps<DateType>) {
+function InternalRangePicker<DateType>(
+  props: RangePickerProps<DateType> & {
+    pickerRef: React.Ref<Picker<DateType>>;
+  },
+) {
   const {
     prefixCls = 'rc-picker',
     className,
@@ -103,6 +117,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     defaultPickerValue,
     separator = '~',
     picker,
+    pickerRef,
     locale,
     generateConfig,
     placeholder,
@@ -116,11 +131,25 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     disabled,
     onChange,
     onCalendarChange,
-  } = props as MergedRangePickerProps<DateType>;
+    onFocus,
+    onBlur,
+  } = props as MergedRangePickerProps<DateType> & {
+    pickerRef: React.Ref<Picker<DateType>>;
+  };
 
   const formatList = toArray(
     getDefaultFormat(format, picker, showTime, use12Hours),
   );
+
+  const [startShowTime, endShowTime] = React.useMemo(() => {
+    if (showTime && typeof showTime === 'object' && showTime.defaultValue) {
+      return [
+        { ...showTime, defaultValue: showTime.defaultValue[0] },
+        { ...showTime, defaultValue: showTime.defaultValue[1] },
+      ];
+    }
+    return [showTime, showTime];
+  }, [showTime]);
 
   const mergedSelectable = React.useMemo<
     [boolean | undefined, boolean | undefined]
@@ -160,38 +189,28 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   // Select value: used for click to update ranged value. Must set in pair
   const [selectedValues, setSelectedValues] = React.useState<
-    [DateType, DateType] | undefined
+    [DateType | null, DateType | null] | undefined
   >(undefined);
 
   React.useEffect(() => {
-    if (value1 && value2) {
-      setSelectedValues([value1, value2]);
-    } else {
-      setSelectedValues(undefined);
-    }
+    setSelectedValues([value1, value2]);
   }, [value1, value2]);
 
   const onStartSelect = (date: DateType) => {
-    if (value2) {
-      setSelectedValues([date, value2]);
-    } else {
-      setSelectedValues(undefined);
-    }
+    setSelectedValues([date, value2]);
   };
 
   const onEndSelect = (date: DateType) => {
-    if (value1) {
-      setSelectedValues([value1, date]);
-    } else {
-      setSelectedValues(undefined);
-    }
+    setSelectedValues([value1, date]);
   };
 
   // ============================= Change =============================
-  const formatDate = (date: NullableDateType<DateType>) =>
-    (date
-      ? generateConfig.locale.format(locale.locale, date, formatList[0])
-      : '');
+  const formatDate = (date: NullableDateType<DateType>) => {
+    if (date) {
+      return generateConfig.locale.format(locale.locale, date, formatList[0]);
+    }
+    return '';
+  };
 
   const onInternalChange = (
     values: NullableDateType<DateType>[],
@@ -306,17 +325,20 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
       >
         <Picker<DateType>
           {...pickerProps}
+          ref={pickerRef}
           prefixCls={prefixCls}
           value={value1}
           placeholder={placeholder && placeholder[0]}
           defaultPickerValue={defaultPickerValue && defaultPickerValue[0]}
-          {...{ disabledTime: disabledStartTime }} // Fix ts define
+          {...{ disabledTime: disabledStartTime, showTime: startShowTime }} // Fix ts define
           disabled={disabled || mergedSelectable[0] === false}
           disabledDate={disabledStartDate}
           onChange={date => {
             onInternalChange([date, value2], true);
           }}
           onSelect={onStartSelect}
+          onFocus={onFocus}
+          onBlur={onBlur}
         />
         {separator}
         <Picker<DateType>
@@ -325,17 +347,47 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
           value={value2}
           placeholder={placeholder && placeholder[1]}
           defaultPickerValue={defaultPickerValue && defaultPickerValue[1]}
-          {...{ disabledTime: disabledEndTime }} // Fix ts define
+          {...{ disabledTime: disabledEndTime, showTime: endShowTime }} // Fix ts define
           disabled={disabled || mergedSelectable[1] === false}
           disabledDate={disabledEndDate}
           onChange={date => {
             onInternalChange([value1, date], false);
           }}
           onSelect={onEndSelect}
+          onFocus={onFocus}
+          onBlur={onBlur}
         />
       </div>
     </RangeContext.Provider>
   );
+}
+
+// Wrap with class component to enable pass generic with instance method
+class RangePicker<DateType> extends React.Component<
+  RangePickerProps<DateType>
+> {
+  pickerRef = React.createRef<Picker<DateType>>();
+
+  focus = () => {
+    if (this.pickerRef.current) {
+      this.pickerRef.current.focus();
+    }
+  };
+
+  blur = () => {
+    if (this.pickerRef.current) {
+      this.pickerRef.current.blur();
+    }
+  };
+
+  render() {
+    return (
+      <InternalRangePicker<DateType>
+        {...this.props}
+        pickerRef={this.pickerRef}
+      />
+    );
+  }
 }
 
 export default RangePicker;

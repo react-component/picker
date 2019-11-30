@@ -2,12 +2,14 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { GenerateConfig } from '../../generate';
 import { YEAR_DECADE_COUNT } from '.';
+import { Locale } from '../../interface';
 
 export const YEAR_COL_COUNT = 3;
 const YEAR_ROW_COUNT = 4;
 
 export interface YearBodyProps<DateType> {
   prefixCls: string;
+  locale: Locale;
   generateConfig: GenerateConfig<DateType>;
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
@@ -17,6 +19,7 @@ export interface YearBodyProps<DateType> {
 function YearBody<DateType>({
   prefixCls,
   viewDate,
+  locale,
   generateConfig,
   disabledDate,
   onSelect,
@@ -46,6 +49,7 @@ function YearBody<DateType>({
       row.push(
         <td
           key={j}
+          title={generateConfig.locale.format(locale.locale, yearDate, 'YYYY')}
           className={classNames(yearPrefixCls, {
             [`${yearPrefixCls}-disabled`]: disabled,
             [`${yearPrefixCls}-in-view`]:
@@ -68,9 +72,11 @@ function YearBody<DateType>({
   }
 
   return (
-    <table>
-      <tbody>{rows}</tbody>
-    </table>
+    <div className={`${prefixCls}-body`}>
+      <table className={`${prefixCls}-content`}>
+        <tbody>{rows}</tbody>
+      </table>
+    </div>
   );
 }
 

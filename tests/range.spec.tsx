@@ -1,5 +1,6 @@
 import React from 'react';
 import MockDate from 'mockdate';
+import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { Moment } from 'moment';
 import {
   mount,
@@ -384,5 +385,66 @@ describe('Range', () => {
     expect(isSame(disabledTime.mock.calls[0][0], '1990-09-03')).toBeTruthy();
     expect(disabledTime.mock.calls[0][1]).toEqual('end');
     wrapper.closePicker(1);
+  });
+
+  describe('focus test', () => {
+    let domMock: ReturnType<typeof spyElementPrototypes>;
+    let focused = false;
+    let blurred = false;
+
+    beforeAll(() => {
+      domMock = spyElementPrototypes(HTMLElement, {
+        focus: () => {
+          focused = true;
+        },
+        blur: () => {
+          blurred = true;
+        },
+      });
+    });
+
+    beforeEach(() => {
+      focused = false;
+      blurred = false;
+    });
+
+    afterAll(() => {
+      domMock.mockRestore();
+    });
+
+    it('function call', () => {
+      const ref = React.createRef<MomentRangePicker>();
+      mount(
+        <div>
+          <MomentRangePicker ref={ref} />
+        </div>,
+      );
+
+      ref.current!.rangePickerRef.current!.focus();
+      expect(focused).toBeTruthy();
+
+      ref.current!.rangePickerRef.current!.blur();
+      expect(blurred).toBeTruthy();
+    });
+
+    it('not crash with showTime defaultValue', () => {
+      const wrapper = mount(
+        <MomentRangePicker
+          showTime={{
+            defaultValue: [getMoment('01:02:03'), getMoment('05:06:07')],
+          }}
+        />,
+      );
+
+      wrapper.openPicker();
+      wrapper.selectCell(13);
+      wrapper.closePicker();
+
+      wrapper.openPicker(1);
+      wrapper.selectCell(23, 1);
+      wrapper.closePicker(1);
+
+      matchValues(wrapper, '1990-09-13 01:02:03', '1990-09-23 05:06:07');
+    });
   });
 });

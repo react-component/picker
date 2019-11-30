@@ -25,7 +25,7 @@ import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import { PickerMode } from './interface';
-import { getDefaultFormat } from './utils/uiUtil';
+import { getDefaultFormat, getInputSize } from './utils/uiUtil';
 
 export interface PickerSharedProps<DateType> {
   dropdownClassName?: string;
@@ -213,7 +213,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   // =========================== Formatter ===========================
   const setSelectedValue = (newDate: DateType | null) => {
-    setDateText(newDate);
+    if (!isSameTextDate(textValue, newDate)) {
+      setDateText(newDate);
+    }
     setInternalSelectedValue(newDate);
   };
 
@@ -238,10 +240,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   // ============================ Trigger ============================
   const triggerChange = (newValue: DateType | null) => {
-    if (!isSameTextDate(textValue, newValue)) {
-      setDateText(newValue);
-    }
-
+    setSelectedValue(newValue);
     setInnerValue(newValue);
 
     if (onChange && !isEqual(generateConfig, mergedValue, newValue)) {
@@ -377,6 +376,11 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     />
   );
 
+  let suffixNode: React.ReactNode;
+  if (suffixIcon) {
+    suffixNode = <span className={`${prefixCls}-suffix`}>{suffixIcon}</span>;
+  }
+
   let clearNode: React.ReactNode;
   if (allowClear && mergedValue && !disabled) {
     clearNode = (
@@ -429,8 +433,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               autoFocus={autoFocus}
               placeholder={placeholder}
               ref={inputRef}
+              size={getInputSize(picker, formatList[0])}
             />
-            {suffixIcon}
+            {suffixNode}
             {clearNode}
           </div>
         </PickerTrigger>

@@ -1,7 +1,7 @@
 @prefix-cls: rc-picker;
 
 .@{prefix-cls} {
-  display: inline;
+  display: inline-flex;
 
   &-panel {
     border: 1px solid #666;
@@ -75,7 +75,7 @@
         transition: background 0.3s, border 0.3s;
 
         &:hover {
-          background: fade(blue, 30%)!important;
+          background: fade(blue, 30%) !important;
         }
       }
 
@@ -221,6 +221,12 @@
   // ======================== Input =========================
   &-input {
     position: relative;
+    display: inline-flex;
+    width: 100%;
+
+    > input {
+      width: 100%;
+    }
   }
 
   &-clear {

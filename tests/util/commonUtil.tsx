@@ -114,10 +114,17 @@ export type MomentRangePickerProps =
   | InjectDefaultProps<RangePickerDateProps<Moment>>
   | InjectDefaultProps<RangePickerTimeProps<Moment>>;
 
-export const MomentRangePicker = (props: MomentRangePickerProps) => (
-  <RangePicker<Moment>
-    generateConfig={momentGenerateConfig}
-    locale={enUS}
-    {...props}
-  />
-);
+export class MomentRangePicker extends React.Component<MomentRangePickerProps> {
+  rangePickerRef = React.createRef<RangePicker<Moment>>();
+
+  render() {
+    return (
+      <RangePicker<Moment>
+        generateConfig={momentGenerateConfig}
+        locale={enUS}
+        ref={this.rangePickerRef}
+        {...this.props}
+      />
+    );
+  }
+}

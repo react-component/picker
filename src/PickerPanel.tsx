@@ -45,7 +45,6 @@ export interface PickerPanelSharedProps<DateType> {
   defaultPickerValue?: DateType;
 
   // Date
-  showToday?: boolean;
   disabledDate?: (date: DateType) => boolean;
 
   // Render
@@ -68,6 +67,7 @@ export interface PickerPanelBaseProps<DateType>
 export interface PickerPanelDateProps<DateType>
   extends PickerPanelSharedProps<DateType> {
   picker?: 'date';
+  showToday?: boolean;
 
   // Time
   showTime?: boolean | SharedTimeProps<DateType>;
@@ -106,7 +106,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     defaultValue,
     defaultPickerValue,
     mode,
-    picker,
+    picker = 'date',
     tabIndex = 0,
     showTime,
     showToday,
@@ -356,7 +356,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   }
 
   let todayNode: React.ReactNode;
-  if (showToday) {
+  if (showToday && mergedMode === 'date' && picker === 'date') {
     todayNode = (
       <a
         className={`${prefixCls}-today-btn`}
