@@ -118,6 +118,18 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onMouseDown,
   } = props as MergedPickerPanelProps<DateType>;
 
+  if (process.env.NODE_ENV !== 'production') {
+    warning(
+      !value || generateConfig.isValidate(value),
+      'Invalidate date pass to `value`.',
+    );
+    warning(
+      !value || generateConfig.isValidate(value),
+      'Invalidate date pass to `defaultValue`.',
+    );
+  }
+
+  // ============================ State =============================
   const { operationRef, panelRef: panelDivRef } = React.useContext(
     PanelContext,
   );

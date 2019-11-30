@@ -1,5 +1,7 @@
 import React from 'react';
 import MockDate from 'mockdate';
+import moment from 'moment';
+import { resetWarned } from 'rc-util/lib/warning';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { mount, getMoment, isSame, MomentPickerPanel } from './util/commonUtil';
 
@@ -368,5 +370,23 @@ describe('Panel', () => {
     );
 
     expect(wrapper.render()).toMatchSnapshot();
+  });
+
+  it('warning with invalidate value', () => {
+    resetWarned();
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    const invalidateDate = moment('notValidate', 'YYYY', true);
+    mount(<MomentPickerPanel value={invalidateDate} />);
+    expect(errSpy).toHaveBeenCalledWith(
+      'Warning: Invalidate date pass to `value`.',
+    );
+
+    mount(<MomentPickerPanel defaultValue={invalidateDate} />);
+    expect(errSpy).toHaveBeenCalledWith(
+      'Warning: Invalidate date pass to `defaultValue`.',
+    );
+
+    errSpy.mockRestore();
   });
 });

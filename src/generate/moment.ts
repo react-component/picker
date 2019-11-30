@@ -62,6 +62,7 @@ const generateConfig: GenerateConfig<Moment> = {
 
   // Compare
   isAfter: (date1, date2) => date1.isAfter(date2),
+  isValidate: date => date.isValid(),
 
   locale: {
     getWeekFirstDay: locale => {
