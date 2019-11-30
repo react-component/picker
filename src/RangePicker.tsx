@@ -10,6 +10,7 @@ import {
   DisabledTimes,
   DisabledTime,
   PickerMode,
+  PanelMode,
 } from './interface';
 import { toArray } from './utils/miscUtil';
 import RangeContext from './RangeContext';
@@ -45,6 +46,7 @@ export interface RangePickerSharedProps<DateType> {
   separator?: React.ReactNode;
   allowEmpty?: [boolean, boolean];
   selectable?: [boolean, boolean];
+  mode?: [PanelMode, PanelMode];
   onChange?: (
     value: RangeValue<DateType>,
     formatString: [string, string],
@@ -68,6 +70,7 @@ type OmitPickerProps<Props> = Omit<
   | 'disabledTime'
   | 'showToday'
   | 'showTime'
+  | 'mode'
 >;
 
 export interface RangePickerBaseProps<DateType>
@@ -116,6 +119,7 @@ function InternalRangePicker<DateType>(
     defaultValue,
     defaultPickerValue,
     separator = '~',
+    mode,
     picker,
     pickerRef,
     locale,
@@ -331,6 +335,7 @@ function InternalRangePicker<DateType>(
           placeholder={placeholder && placeholder[0]}
           defaultPickerValue={defaultPickerValue && defaultPickerValue[0]}
           {...{ disabledTime: disabledStartTime, showTime: startShowTime }} // Fix ts define
+          mode={mode && mode[0]}
           disabled={disabled || mergedSelectable[0] === false}
           disabledDate={disabledStartDate}
           onChange={date => {
@@ -348,6 +353,7 @@ function InternalRangePicker<DateType>(
           placeholder={placeholder && placeholder[1]}
           defaultPickerValue={defaultPickerValue && defaultPickerValue[1]}
           {...{ disabledTime: disabledEndTime, showTime: endShowTime }} // Fix ts define
+          mode={mode && mode[1]}
           disabled={disabled || mergedSelectable[1] === false}
           disabledDate={disabledEndDate}
           onChange={date => {

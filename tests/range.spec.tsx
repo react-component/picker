@@ -447,4 +447,13 @@ describe('Range', () => {
       matchValues(wrapper, '1990-09-13 01:02:03', '1990-09-23 05:06:07');
     });
   });
+
+  it('mode is array', () => {
+    const wrapper = mount(<MomentRangePicker mode={['year', 'month']} />);
+    wrapper.openPicker();
+    expect(wrapper.find('.rc-picker-year-panel')).toHaveLength(1);
+
+    wrapper.openPicker(1);
+    expect(wrapper.find('.rc-picker-month-panel')).toHaveLength(1);
+  });
 });
