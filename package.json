@@ -1,6 +1,6 @@
 {
   "name": "rc-picker",
-  "version": "0.0.1-alpha.14",
+  "version": "0.0.1-alpha.13",
   "description": "React date & time picker",
   "keywords": [
     "react",
@@ -30,7 +30,7 @@
     "build": "father doc build --storybook",
     "compile": "father build && lessc assets/index.less assets/index.css",
     "gh-pages": "npm run build && father doc deploy",
-    "prepublishOnly": "npm run compile && np --yolo --no-publish && npm run gh-pages",
+    "prepublishOnly": "npm run compile && np --yolo --no-publish",
     "lint": "eslint src/ --ext .ts,.tsx,.jsx,.js,.md",
     "prettier": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "test": "father test",
