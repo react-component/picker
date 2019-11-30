@@ -18,9 +18,7 @@ describe('Panel', () => {
         <MomentPickerPanel defaultValue={getMoment('2000-01-01')} />,
       );
 
-      expect(
-        wrapper.find('.rc-picker-date-panel-cell-selected').text(),
-      ).toEqual('1');
+      expect(wrapper.find('.rc-picker-cell-selected').text()).toEqual('1');
     });
 
     it('controlled', () => {
@@ -64,7 +62,7 @@ describe('Panel', () => {
   describe('Panel switch by picker', () => {
     it('year', () => {
       const wrapper = mount(<MomentPickerPanel picker="year" />);
-      wrapper.find('.rc-picker-year-panel-decade-btn').simulate('click');
+      wrapper.find('.rc-picker-decade-btn').simulate('click');
       expect(wrapper.find('.rc-picker-decade-panel').length).toBeTruthy();
 
       wrapper.selectCell('1990-1999');
@@ -76,8 +74,8 @@ describe('Panel', () => {
 
     it('month', () => {
       const wrapper = mount(<MomentPickerPanel picker="month" />);
-      wrapper.find('.rc-picker-month-panel-year-btn').simulate('click');
-      wrapper.find('.rc-picker-year-panel-decade-btn').simulate('click');
+      wrapper.find('.rc-picker-year-btn').simulate('click');
+      wrapper.find('.rc-picker-decade-btn').simulate('click');
       expect(wrapper.find('.rc-picker-decade-panel').length).toBeTruthy();
 
       wrapper.selectCell('1990-1999');
@@ -147,24 +145,16 @@ describe('Panel', () => {
       );
 
       wrapper.clickButton('prev');
-      expect(wrapper.find('.rc-picker-date-panel-header-view').text()).toEqual(
-        'Aug1990',
-      );
+      expect(wrapper.find('.rc-picker-header-view').text()).toEqual('Aug1990');
 
       wrapper.clickButton('next');
-      expect(wrapper.find('.rc-picker-date-panel-header-view').text()).toEqual(
-        'Sep1990',
-      );
+      expect(wrapper.find('.rc-picker-header-view').text()).toEqual('Sep1990');
 
       wrapper.clickButton('super-prev');
-      expect(wrapper.find('.rc-picker-date-panel-header-view').text()).toEqual(
-        'Sep1989',
-      );
+      expect(wrapper.find('.rc-picker-header-view').text()).toEqual('Sep1989');
 
       wrapper.clickButton('super-next');
-      expect(wrapper.find('.rc-picker-date-panel-header-view').text()).toEqual(
-        'Sep1990',
-      );
+      expect(wrapper.find('.rc-picker-header-view').text()).toEqual('Sep1990');
     });
 
     it('month', () => {
@@ -176,14 +166,10 @@ describe('Panel', () => {
       );
 
       wrapper.clickButton('super-prev');
-      expect(wrapper.find('.rc-picker-month-panel-header-view').text()).toEqual(
-        '1989',
-      );
+      expect(wrapper.find('.rc-picker-header-view').text()).toEqual('1989');
 
       wrapper.clickButton('super-next');
-      expect(wrapper.find('.rc-picker-month-panel-header-view').text()).toEqual(
-        '1990',
-      );
+      expect(wrapper.find('.rc-picker-header-view').text()).toEqual('1990');
     });
 
     it('year', () => {
@@ -195,12 +181,12 @@ describe('Panel', () => {
       );
 
       wrapper.clickButton('super-prev');
-      expect(wrapper.find('.rc-picker-year-panel-header-view').text()).toEqual(
+      expect(wrapper.find('.rc-picker-header-view').text()).toEqual(
         '1980-1989',
       );
 
       wrapper.clickButton('super-next');
-      expect(wrapper.find('.rc-picker-year-panel-header-view').text()).toEqual(
+      expect(wrapper.find('.rc-picker-header-view').text()).toEqual(
         '1990-1999',
       );
     });
@@ -214,14 +200,14 @@ describe('Panel', () => {
       );
 
       wrapper.clickButton('super-prev');
-      expect(
-        wrapper.find('.rc-picker-decade-panel-header-view').text(),
-      ).toEqual('1800-1899');
+      expect(wrapper.find('.rc-picker-header-view').text()).toEqual(
+        '1800-1899',
+      );
 
       wrapper.clickButton('super-next');
-      expect(
-        wrapper.find('.rc-picker-decade-panel-header-view').text(),
-      ).toEqual('1900-1999');
+      expect(wrapper.find('.rc-picker-header-view').text()).toEqual(
+        '1900-1999',
+      );
     });
   });
 

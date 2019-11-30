@@ -54,7 +54,7 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
     <div className={panelPrefixCls}>
       <YearHeader
         {...props}
-        prefixCls={panelPrefixCls}
+        prefixCls={prefixCls}
         onPrevDecade={() => {
           onDecadeChange(-1);
         }}
@@ -67,7 +67,7 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
       />
       <YearBody
         {...props}
-        prefixCls={panelPrefixCls}
+        prefixCls={prefixCls}
         onSelect={date => {
           onPanelChange('month', date);
           onSelect(date);

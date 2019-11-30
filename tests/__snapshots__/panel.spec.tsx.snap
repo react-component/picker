@@ -9,16 +9,16 @@ exports[`Panel time disabled columns 1`] = `
     class="rc-picker-time-panel"
   >
     <div
-      class="rc-picker-time-panel-header"
+      class="rc-picker-header"
     >
       <div
-        class="rc-picker-time-panel-header-view"
+        class="rc-picker-header-view"
       >
          
       </div>
     </div>
     <div
-      class="rc-picker-time-panel-content"
+      class="rc-picker-content"
     >
       <ul
         class="rc-picker-time-panel-column"

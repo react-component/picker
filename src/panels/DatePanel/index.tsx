@@ -73,7 +73,7 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
     >
       <DateHeader
         {...props}
-        prefixCls={panelPrefixCls}
+        prefixCls={prefixCls}
         value={value}
         viewDate={viewDate}
         // View Operation
@@ -98,7 +98,7 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
       />
       <DateBody
         {...props}
-        prefixCls={panelPrefixCls}
+        prefixCls={prefixCls}
         value={value}
         viewDate={viewDate}
         rowCount={DATE_ROW_COUNT}

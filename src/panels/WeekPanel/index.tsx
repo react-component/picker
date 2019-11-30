@@ -10,7 +10,7 @@ function WeekPanel<DateType>(props: WeekPanelProps<DateType>) {
   const { prefixCls, generateConfig, locale, value } = props;
 
   // Render additional column
-  const cellPrefixCls = `${prefixCls}-week-panel-cell`;
+  const cellPrefixCls = `${prefixCls}-cell`;
   const prefixColumn = (date: DateType) => (
     <td
       key="week"

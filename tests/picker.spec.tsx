@@ -193,7 +193,7 @@ describe('Basic', () => {
       {
         name: 'basic',
         value: '2000-11-11',
-        selected: '.rc-picker-date-panel-cell-selected',
+        selected: '.rc-picker-cell-selected',
       },
       {
         name: 'week',
@@ -323,20 +323,20 @@ describe('Basic', () => {
     [
       {
         name: 'date',
-        yearBtn: '.rc-picker-date-panel-year-btn',
+        yearBtn: '.rc-picker-year-btn',
         finalPanel: 'DatePanel',
         finalMode: 'date',
       },
       {
         name: 'date',
-        yearBtn: '.rc-picker-date-panel-year-btn',
+        yearBtn: '.rc-picker-year-btn',
         finalPanel: 'DatetimePanel',
         finalMode: 'datetime',
         showTime: true,
       },
       {
         name: 'week',
-        yearBtn: '.rc-picker-week-panel-year-btn',
+        yearBtn: '.rc-picker-year-btn',
         finalPanel: 'WeekPanel',
         finalMode: 'week',
         picker: 'week',
@@ -369,13 +369,11 @@ describe('Basic', () => {
 
         // Decade
         onPanelChange.mockReset();
-        wrapper.find('.rc-picker-year-panel-decade-btn').simulate('click');
+        wrapper.find('.rc-picker-decade-btn').simulate('click');
         expectPanelChange('1990-09-03', 'decade');
 
         // Next page
-        wrapper
-          .find('.rc-picker-decade-panel-header-super-next-btn')
-          .simulate('click');
+        wrapper.find('.rc-picker-header-super-next-btn').simulate('click');
 
         // Select decade
         wrapper.selectCell('2010-2019');
@@ -445,12 +443,12 @@ describe('Basic', () => {
     matchFooter('date');
 
     // Month
-    wrapper.find('.rc-picker-date-panel-month-btn').simulate('click');
+    wrapper.find('.rc-picker-month-btn').simulate('click');
     wrapper.update();
     matchFooter('month');
 
     // Year
-    wrapper.find('.rc-picker-month-panel-year-btn').simulate('click');
+    wrapper.find('.rc-picker-year-btn').simulate('click');
     wrapper.update();
     matchFooter('year');
   });

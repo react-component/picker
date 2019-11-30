@@ -262,8 +262,8 @@ describe('Keyboard', () => {
 
       it('Enter to next view', () => {
         const wrapper = mount(<MomentPickerPanel />);
-        wrapper.find('.rc-picker-date-panel-year-btn').simulate('click');
-        wrapper.find('.rc-picker-year-panel-decade-btn').simulate('click');
+        wrapper.find('.rc-picker-year-btn').simulate('click');
+        wrapper.find('.rc-picker-decade-btn').simulate('click');
 
         // Decade
         expect(wrapper.find('.rc-picker-decade-panel').length).toBeTruthy();

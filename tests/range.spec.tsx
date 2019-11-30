@@ -139,27 +139,21 @@ describe('Range', () => {
     // End date
     wrapper.openPicker(1);
     cellNode = wrapper.selectCell(11);
-    expect(
-      cellNode.hasClass('rc-picker-date-panel-cell-disabled'),
-    ).toBeTruthy();
+    expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeTruthy();
     wrapper.closePicker(1);
     expect(onChange).not.toHaveBeenCalled();
 
     // Click start origin disabled date
     wrapper.openPicker();
     cellNode = wrapper.selectCell(28);
-    expect(
-      cellNode.hasClass('rc-picker-date-panel-cell-disabled'),
-    ).toBeTruthy();
+    expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeTruthy();
     wrapper.closePicker();
     expect(onChange).not.toHaveBeenCalled();
 
     // Click end origin disabled date
     wrapper.openPicker(1);
     cellNode = wrapper.selectCell(28, 1);
-    expect(
-      cellNode.hasClass('rc-picker-date-panel-cell-disabled'),
-    ).toBeTruthy();
+    expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeTruthy();
     wrapper.closePicker(1);
     expect(onChange).not.toHaveBeenCalled();
   });
@@ -239,18 +233,14 @@ describe('Range', () => {
       // Disabled date
       wrapper.openPicker();
       cellNode = wrapper.selectCell(25);
-      expect(
-        cellNode.hasClass('rc-picker-date-panel-cell-disabled'),
-      ).toBeTruthy();
+      expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeTruthy();
       wrapper.closePicker();
       expect(onChange).not.toHaveBeenCalled();
 
       // Enabled date
       wrapper.openPicker();
       cellNode = wrapper.selectCell(7);
-      expect(
-        cellNode.hasClass('rc-picker-date-panel-cell-disabled'),
-      ).toBeFalsy();
+      expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeFalsy();
       wrapper.closePicker();
       expect(onChange).toHaveBeenCalledWith(
         [expect.anything(), expect.anything()],
@@ -323,7 +313,7 @@ describe('Range', () => {
       wrapper
         .find('PickerPanel')
         .first()
-        .find('.rc-picker-date-panel-header-view')
+        .find('.rc-picker-header-view')
         .text(),
     ).toEqual('Nov1989');
     wrapper.closePicker();
@@ -333,7 +323,7 @@ describe('Range', () => {
       wrapper
         .find('PickerPanel')
         .last()
-        .find('.rc-picker-date-panel-header-view')
+        .find('.rc-picker-header-view')
         .text(),
     ).toEqual('Sep1990');
     wrapper.closePicker(1);
@@ -489,7 +479,7 @@ describe('Range', () => {
 
       // First go to year panel
       wrapper.openPicker();
-      wrapper.find('.rc-picker-month-panel-year-btn').simulate('click');
+      wrapper.find('.rc-picker-year-btn').simulate('click');
       expect(isSame(onPanelChange.mock.calls[0][0][0], '1990-09-03'));
       expect(onPanelChange.mock.calls[0][1]).toEqual(['year', 'month']);
 
@@ -506,7 +496,7 @@ describe('Range', () => {
       wrapper
         .find('Picker')
         .last()
-        .find('.rc-picker-month-panel-year-btn')
+        .find('.rc-picker-year-btn')
         .simulate('click');
       onPanelChange.mockReset();
 

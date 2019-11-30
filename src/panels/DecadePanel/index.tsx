@@ -64,7 +64,7 @@ function DecadePanel<DateType>(props: DecadePanelProps<DateType>) {
     <div className={panelPrefixCls}>
       <DecadeHeader
         {...props}
-        prefixCls={panelPrefixCls}
+        prefixCls={prefixCls}
         onPrevDecades={() => {
           onDecadesChange(-1);
         }}
@@ -74,7 +74,7 @@ function DecadePanel<DateType>(props: DecadePanelProps<DateType>) {
       />
       <DecadeBody
         {...props}
-        prefixCls={panelPrefixCls}
+        prefixCls={prefixCls}
         onSelect={onInternalSelect}
       />
     </div>
