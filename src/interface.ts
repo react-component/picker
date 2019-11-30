@@ -92,3 +92,8 @@ export interface DisabledTimes {
 }
 
 export type DisabledTime<DateType> = (date: DateType | null) => DisabledTimes;
+
+export type OnPanelChange<DateType> = (
+  value: DateType,
+  mode: PanelMode,
+) => void;

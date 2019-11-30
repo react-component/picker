@@ -18,6 +18,7 @@ import {
   PanelRefProps,
   PickerMode,
   DisabledTime,
+  OnPanelChange,
 } from './interface';
 import { isEqual } from './utils/dateUtil';
 import PanelContext from './PanelContext';
@@ -55,7 +56,7 @@ export interface PickerPanelSharedProps<DateType> {
   // Event
   onSelect?: (value: DateType) => void;
   onChange?: (value: DateType) => void;
-  onPanelChange?: (value: DateType, mode: PanelMode) => void;
+  onPanelChange?: OnPanelChange<DateType>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 }
 

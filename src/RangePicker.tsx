@@ -11,6 +11,7 @@ import {
   DisabledTime,
   PickerMode,
   PanelMode,
+  OnPanelChange,
 } from './interface';
 import { toArray } from './utils/miscUtil';
 import RangeContext from './RangeContext';
@@ -18,10 +19,11 @@ import { isSameDate } from './utils/dateUtil';
 import { getDefaultFormat } from './utils/uiUtil';
 import { SharedTimeProps } from './panels/TimePanel';
 
-type RangeValue<DateType> = [DateType | null, DateType | null] | null;
+type EventValue<DateType> = DateType | null;
+type RangeValue<DateType> = [EventValue<DateType>, EventValue<DateType>] | null;
 
 function canTriggerChange<DateType>(
-  dates: [DateType | null, DateType | null],
+  dates: [EventValue<DateType>, EventValue<DateType>],
   allowEmpty?: [boolean, boolean],
 ): boolean {
   const passStart = dates[0] || (allowEmpty && allowEmpty[0]);
@@ -35,7 +37,7 @@ export interface RangePickerSharedProps<DateType> {
   defaultPickerValue?: [DateType, DateType];
   placeholder?: [string, string];
   disabledTime?: (
-    date: DateType | null,
+    date: EventValue<DateType>,
     type: 'start' | 'end',
   ) => DisabledTimes;
   ranges?: Record<
@@ -48,12 +50,16 @@ export interface RangePickerSharedProps<DateType> {
   selectable?: [boolean, boolean];
   mode?: [PanelMode, PanelMode];
   onChange?: (
-    value: RangeValue<DateType>,
+    values: RangeValue<DateType>,
     formatString: [string, string],
   ) => void;
   onCalendarChange?: (
-    value: RangeValue<DateType>,
+    values: RangeValue<DateType>,
     formatString: [string, string],
+  ) => void;
+  onPanelChange?: (
+    values: RangeValue<DateType>,
+    modes: [PanelMode, PanelMode],
   ) => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -64,13 +70,14 @@ type OmitPickerProps<Props> = Omit<
   | 'value'
   | 'defaultValue'
   | 'defaultPickerValue'
-  | 'onChange'
-  | 'onSelect'
   | 'placeholder'
   | 'disabledTime'
   | 'showToday'
   | 'showTime'
   | 'mode'
+  | 'onChange'
+  | 'onSelect'
+  | 'onPanelChange'
 >;
 
 export interface RangePickerBaseProps<DateType>
@@ -135,6 +142,7 @@ function InternalRangePicker<DateType>(
     disabled,
     onChange,
     onCalendarChange,
+    onPanelChange,
     onFocus,
     onBlur,
   } = props as MergedRangePickerProps<DateType> & {
@@ -248,6 +256,69 @@ function InternalRangePicker<DateType>(
     }
   };
 
+  // ============================== Mode ==============================
+
+  /**
+   * [Legacy] handle internal `onPanelChange`
+   */
+  const [innerModes, setInnerModes] = React.useState((): [
+    PanelMode,
+    PanelMode,
+  ] => {
+    if (mode) {
+      return mode;
+    }
+    if (picker) {
+      return [picker, picker];
+    }
+    return showTime ? ['datetime', 'datetime'] : ['date', 'date'];
+  });
+  const [onStartPanelChange, onEndPanelChange] = React.useMemo<
+    [OnPanelChange<DateType> | undefined, OnPanelChange<DateType> | undefined]
+  >(() => {
+    const onInternalPanelChange = (
+      newValue: DateType,
+      newMode: PanelMode,
+      source: 'start' | 'end',
+    ) => {
+      const values: [EventValue<DateType>, EventValue<DateType>] = [
+        ...(mergedValue || []),
+      ] as [EventValue<DateType>, EventValue<DateType>];
+      const modes: [PanelMode, PanelMode] = [...innerModes] as [
+        PanelMode,
+        PanelMode,
+      ];
+
+      if (source === 'start') {
+        values[0] = newValue;
+        modes[0] = newMode;
+      } else {
+        values[1] = newValue;
+        modes[1] = newMode;
+      }
+      setInnerModes(modes);
+
+      if (onPanelChange) {
+        onPanelChange(values, modes);
+      }
+    };
+
+    return [
+      (newVal: DateType, newMode: PanelMode) => {
+        onInternalPanelChange(newVal, newMode, 'start');
+      },
+      (newVal: DateType, newMode: PanelMode) => {
+        onInternalPanelChange(newVal, newMode, 'end');
+      },
+    ];
+  }, [onPanelChange, mode, picker]);
+
+  React.useEffect(() => {
+    if (mode) {
+      setInnerModes(mode);
+    }
+  }, [mode]);
+
   // ============================= Render =============================
   const pickerProps = {
     ...props,
@@ -257,6 +328,7 @@ function InternalRangePicker<DateType>(
     style: undefined,
     placeholder: undefined,
     disabledTime: undefined,
+    onPanelChange: undefined,
   };
 
   // Time
@@ -344,6 +416,7 @@ function InternalRangePicker<DateType>(
           onSelect={onStartSelect}
           onFocus={onFocus}
           onBlur={onBlur}
+          onPanelChange={onStartPanelChange}
         />
         {separator}
         <Picker<DateType>
@@ -362,6 +435,7 @@ function InternalRangePicker<DateType>(
           onSelect={onEndSelect}
           onFocus={onFocus}
           onBlur={onBlur}
+          onPanelChange={onEndPanelChange}
         />
       </div>
     </RangeContext.Provider>

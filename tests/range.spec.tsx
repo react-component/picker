@@ -456,4 +456,64 @@ describe('Range', () => {
     wrapper.openPicker(1);
     expect(wrapper.find('.rc-picker-month-panel')).toHaveLength(1);
   });
+
+  describe('onPanelChange is array args', () => {
+    it('mode', () => {
+      const onPanelChange = jest.fn();
+      const wrapper = mount(
+        <MomentRangePicker
+          mode={['month', 'year']}
+          onPanelChange={onPanelChange}
+        />,
+      );
+
+      wrapper.openPicker();
+      wrapper.selectCell('Feb');
+      expect(isSame(onPanelChange.mock.calls[0][0][0], '1990-02-03'));
+      expect(onPanelChange.mock.calls[0][1]).toEqual(['date', 'year']);
+
+      wrapper.closePicker();
+      onPanelChange.mockReset();
+
+      wrapper.openPicker(1);
+      wrapper.selectCell(1993, 1);
+      expect(isSame(onPanelChange.mock.calls[0][0][1], '1993-09-03'));
+      expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
+    });
+
+    it('picker', () => {
+      const onPanelChange = jest.fn();
+      const wrapper = mount(
+        <MomentRangePicker picker="month" onPanelChange={onPanelChange} />,
+      );
+
+      // First go to year panel
+      wrapper.openPicker();
+      wrapper.find('.rc-picker-month-panel-year-btn').simulate('click');
+      expect(isSame(onPanelChange.mock.calls[0][0][0], '1990-09-03'));
+      expect(onPanelChange.mock.calls[0][1]).toEqual(['year', 'month']);
+
+      // First nack to month panel
+      onPanelChange.mockReset();
+      wrapper.selectCell(1993);
+      expect(onPanelChange).toHaveBeenCalled();
+      expect(isSame(onPanelChange.mock.calls[0][0][0], '1993-09-03'));
+      expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
+
+      // Last go to year panel
+      wrapper.closePicker();
+      wrapper.openPicker(1);
+      wrapper
+        .find('Picker')
+        .last()
+        .find('.rc-picker-month-panel-year-btn')
+        .simulate('click');
+      onPanelChange.mockReset();
+
+      // Last nack to month panel
+      wrapper.selectCell(1998, 1);
+      expect(isSame(onPanelChange.mock.calls[0][0][1], '1998-09-03'));
+      expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
+    });
+  });
 });
