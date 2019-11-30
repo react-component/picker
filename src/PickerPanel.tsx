@@ -24,7 +24,7 @@ import PanelContext from './PanelContext';
 import { DateRender } from './panels/DatePanel/DateBody';
 import { PickerModeMap } from './utils/uiUtil';
 import { MonthCellRender } from './panels/MonthPanel/MonthBody';
-import RangeContext from './RangeContext';
+import RangeContext, { FooterSelection } from './RangeContext';
 
 export interface PickerPanelSharedProps<DateType> {
   prefixCls?: string;
@@ -372,10 +372,25 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   }
 
   let extraSelectionNode: React.ReactNode;
-  if (extraFooterSelections && extraFooterSelections.length) {
+  if ((extraFooterSelections && extraFooterSelections.length) || showTime) {
+    let mergedSelections: FooterSelection[] = [];
+
+    if (showTime) {
+      mergedSelections.push({
+        label: locale.now,
+        onClick: () => {
+          triggerSelect(generateConfig.getNow());
+        },
+      });
+    }
+
+    if (extraFooterSelections) {
+      mergedSelections = [...mergedSelections, ...extraFooterSelections];
+    }
+
     extraSelectionNode = (
       <ul className={`${prefixCls}-ranges`}>
-        {extraFooterSelections.map(({ label, onClick }) => (
+        {mergedSelections.map(({ label, onClick }) => (
           <li key={label} onClick={onClick}>
             {label}
           </li>

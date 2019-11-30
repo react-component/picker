@@ -485,4 +485,15 @@ describe('Basic', () => {
 
     expect(wrapper.find('.rc-picker-input').render()).toMatchSnapshot();
   });
+
+  it('datetime should display now', () => {
+    const onSelect = jest.fn();
+    const wrapper = mount(<MomentPicker onSelect={onSelect} showTime />);
+    wrapper.openPicker();
+    wrapper.find('.rc-picker-ranges > li').simulate('click');
+
+    expect(
+      isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second'),
+    ).toBeTruthy();
+  });
 });
