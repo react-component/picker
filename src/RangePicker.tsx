@@ -111,6 +111,7 @@ export interface RangePickerSharedProps<DateType> {
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   onOk?: (dates: RangeValue<DateType>) => void;
+  direction?: 'ltr' | 'rtl';
 }
 
 type OmitPickerProps<Props> = Omit<
@@ -212,6 +213,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     onBlur,
     onOk,
     components,
+    direction,
   } = props as MergedRangePickerProps<DateType>;
 
   const needConfirmButton: boolean =
@@ -932,6 +934,74 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   };
 
+  const startDatePicker = () => (
+    <div
+            className={classNames(`${prefixCls}-input`, {
+              [`${prefixCls}-input-active`]: activePickerIndex === 0,
+            })}
+            ref={startInputDivRef}
+          >
+            <input
+              disabled={mergedDisabled[0]}
+              readOnly={inputReadOnly || !startTyping}
+              value={startText}
+              onChange={e => {
+                triggerStartTextChange(e.target.value);
+              }}
+              autoFocus={autoFocus}
+              placeholder={getValue(placeholder, 0) || ''}
+              ref={startInputRef}
+              {...startInputProps}
+              {...inputSharedProps}
+            />
+          </div>
+  );
+
+  const endDatePicker = () => (
+    <div
+            className={classNames(`${prefixCls}-input`, {
+              [`${prefixCls}-input-active`]: activePickerIndex === 1,
+            })}
+            ref={endInputDivRef}
+          >
+            <input
+              disabled={mergedDisabled[1]}
+              readOnly={inputReadOnly || !endTyping}
+              value={endText}
+              onChange={e => {
+                triggerEndTextChange(e.target.value);
+              }}
+              placeholder={getValue(placeholder, 1) || ''}
+              ref={endInputRef}
+              {...endInputProps}
+              {...inputSharedProps}
+            />
+          </div>
+  );
+
+  const renderDatePickerByDirection = () => {
+    if (direction === 'rtl') {
+      return (
+        <div>
+          {endDatePicker()}
+           <div className={`${prefixCls}-range-separator`} ref={separatorRef}>
+            {separator}
+          </div>
+          {startDatePicker()}
+        </div>
+      );
+    }
+    return (
+      <div>
+        {startDatePicker()}
+         <div className={`${prefixCls}-range-separator`} ref={separatorRef}>
+            {separator}
+          </div>
+        {endDatePicker()}
+      </div>
+    );
+  };
+
   return (
     <PanelContext.Provider
       value={{
@@ -964,48 +1034,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           style={style}
           {...getDataOrAriaProps(props)}
         >
-          <div
-            className={classNames(`${prefixCls}-input`, {
-              [`${prefixCls}-input-active`]: activePickerIndex === 0,
-            })}
-            ref={startInputDivRef}
-          >
-            <input
-              disabled={mergedDisabled[0]}
-              readOnly={inputReadOnly || !startTyping}
-              value={startText}
-              onChange={e => {
-                triggerStartTextChange(e.target.value);
-              }}
-              autoFocus={autoFocus}
-              placeholder={getValue(placeholder, 0) || ''}
-              ref={startInputRef}
-              {...startInputProps}
-              {...inputSharedProps}
-            />
-          </div>
-          <div className={`${prefixCls}-range-separator`} ref={separatorRef}>
-            {separator}
-          </div>
-          <div
-            className={classNames(`${prefixCls}-input`, {
-              [`${prefixCls}-input-active`]: activePickerIndex === 1,
-            })}
-            ref={endInputDivRef}
-          >
-            <input
-              disabled={mergedDisabled[1]}
-              readOnly={inputReadOnly || !endTyping}
-              value={endText}
-              onChange={e => {
-                triggerEndTextChange(e.target.value);
-              }}
-              placeholder={getValue(placeholder, 1) || ''}
-              ref={endInputRef}
-              {...endInputProps}
-              {...inputSharedProps}
-            />
-          </div>
+        {renderDatePickerByDirection()}
+             
+          
           <div
             className={`${prefixCls}-active-bar`}
             style={{

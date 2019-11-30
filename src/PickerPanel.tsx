@@ -73,6 +73,8 @@ export interface PickerPanelSharedProps<DateType> {
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
   onOk?: (date: DateType) => void;
 
+  direction?: 'ltr' | 'rtl';
+
   /** @private This is internal usage. Do not use in your production env */
   hideHeader?: boolean;
   /** @private This is internal usage. Do not use in your production env */
@@ -144,6 +146,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onPickerValueChange,
     onOk,
     components,
+    direction,
   } = props as MergedPickerPanelProps<DateType>;
 
   const needConfirmButton: boolean =
@@ -478,6 +481,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
             rangedValue && rangedValue[0] && rangedValue[1],
           [`${prefixCls}-panel-has-range-hover`]:
             hoverRangedValue && hoverRangedValue[0] && hoverRangedValue[1],
+          [`${prefixCls}-panel-rtl`]: direction === 'rtl',
         })}
         style={style}
         onKeyDown={onInternalKeyDown}

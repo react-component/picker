@@ -20,6 +20,14 @@ const BUILT_IN_PLACEMENTS = {
       adjustY: 1,
     },
   },
+  bottomRight: {
+    points: ['tr', 'br'],
+    offset: [0, 4],
+    overflow: {
+      adjustX: 0,
+      adjustY: 1,
+    },
+  },
   topLeft: {
     points: ['bl', 'tl'],
     offset: [0, -4],
@@ -38,6 +46,8 @@ const BUILT_IN_PLACEMENTS = {
   },
 };
 
+type Placement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
+
 export interface PickerTriggerProps {
   prefixCls: string;
   visible: boolean;
@@ -49,6 +59,7 @@ export interface PickerTriggerProps {
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
   dropdownAlign?: AlignType;
   range?: boolean;
+  popupPlacement?: Placement;
 }
 
 function PickerTrigger({
@@ -62,6 +73,7 @@ function PickerTrigger({
   getPopupContainer,
   children,
   range,
+  popupPlacement,
 }: PickerTriggerProps) {
   const dropdownPrefixCls = `${prefixCls}-dropdown`;
 
@@ -69,7 +81,7 @@ function PickerTrigger({
     <Trigger
       showAction={[]}
       hideAction={[]}
-      popupPlacement="bottomLeft"
+      popupPlacement={popupPlacement}
       builtinPlacements={BUILT_IN_PLACEMENTS}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={transitionName}

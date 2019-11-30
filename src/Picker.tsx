@@ -85,6 +85,8 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   // WAI-ARIA
   role?: string;
   name?: string;
+
+  direction?: 'ltr' | 'rtl';
 }
 
 type OmitPanelProps<Props> = Omit<
@@ -158,6 +160,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onMouseLeave,
     onContextMenu,
     onClick,
+    direction,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -357,6 +360,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         locale={locale}
         tabIndex={-1}
         onChange={setSelectedValue}
+        direction={direction}
       />
     </div>
   );
@@ -394,6 +398,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       triggerOpen(false, true);
     }
   };
+  const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
 
   return (
     <PanelContext.Provider
@@ -414,11 +419,13 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         dropdownAlign={dropdownAlign}
         getPopupContainer={getPopupContainer}
         transitionName={transitionName}
+        popupPlacement={popupPlacement}
       >
         <div
           className={classNames(prefixCls, className, {
             [`${prefixCls}-disabled`]: disabled,
             [`${prefixCls}-focused`]: focused,
+            [`${prefixCls}-rtl`]: direction === 'rtl',
           })}
           style={style}
           onMouseDown={onMouseDown}
