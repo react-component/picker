@@ -20,10 +20,6 @@
 [download-image]: https://img.shields.io/npm/dm/rc-picker.svg?style=flat-square
 [download-url]: https://npmjs.org/package/rc-picker
 
-Pretty Footer react component used in [ant.design](https://ant.design).
-
-![](https://gw.alipayobjects.com/zos/antfincdn/z4ie3X8x6u/1cb23945-ec67-45a3-b521-f8da62e12255.png)
-
 ## Live Demo
 
 https://react-component.github.io/picker/
@@ -35,65 +31,121 @@ https://react-component.github.io/picker/
 ## Usage
 
 ```js
-import Footer from 'rc-footer';
-import 'rc-footer/assets/index.css'; // import 'rc-footer/asssets/index.less';
+import Picker from 'rc-picker';
+import 'rc-picker/assets/index.css';
 import { render } from 'react-dom';
 
 render(
-  <Footer
-    columns={[
-      {
-        icon: (
-          <img src="https://gw.alipayobjects.com/zos/rmsportal/XuVpGqBFxXplzvLjJBZB.svg" />
-        ),
-        title: '语雀',
-        url: 'https://yuque.com',
-        description: '知识创作与分享工具',
-        openExternal: true,
-      },
-    ]}
-    bottom="Made with ❤️ by AFX"
-  />,
+  <Picker />,
   mountNode,
 );
 ```
 
 ## API
 
-| Property         | Type                              | Default        | Description                              |
-| ---------------- | --------------------------------- | -------------- | ---------------------------------------- |
-| prefixCls        | string                            | rc-footer      |                                          |
-| className        | string                            | ''             | additional class name of footer          |
-| style            | React.CSSProperties               |                | style properties of footer               |
-| columns          | [Column](#Column) Array           | []             | columns data inside footer               |
-| bottom           | ReactNode                         |                | extra bottom area beneath footer columns |
-| theme            | 'light' \| 'dark'                 | 'dark'         | preset theme of footer                   |
-| backgroundColor  | string                            | '#000'         | background color of footer               |
-| columnLayout     | 'space-around' or 'space-between' | 'space-around' | justify-content value of columns element |
-| maxColumnsPerRow | number                            | -              | max count of columns for each row        |
+### rc-picker props
 
-### Column
+| Property          | Type                              | Default        | Description                              |
+| ----------------- | --------------------------------- | -------------- | ---------------------------------------- |
+| prefixCls         | String                            | rc-picker      | prefixCls of this component              |
+| className         | String                            | ''             | additional css class of root dom node    |
+| style             | React.CSSProperties               |                | additional style of root dom node        |
+| dropdownClassName | String                            | ''             | additional className applied to dropdown |
+| dropdownAlign     | Object:alignConfig of [dom-align](https://github.com/yiminghe/dom-align)|                | value will be merged into placement's dropdownAlign config |
+| popupStyle        | React.CSSProperties               |                | customize popup style                    |
+| transitionName    | String                            | ''             | css class for animation                  |
+| locale            | Object                            | import from 'rc-picker/lib/locale/en_US' |rc-picker locale|
+| inputReadOnly     | Boolean                           | false         | set input to read only                   |
+| allowClear        | Boolean                           | false         | whether show clear button                |
+| autoFocus         | Boolean                           | false         | whether auto focus                       |
+| showTime          | Boolean \| Object                 | [showTime options](#showTime-options) | to provide an additional time selection |
+| picker            | time \| date \| week \| month \| year |                | control which kind of panel should be shown |
+| format            | String \| String[] | depends on whether you set timePicker and your locale | use to format/parse date(without time) value to/from input. When an array is provided, all values are used for parsing and first value for display |
+| use12Hours        | Boolean                           | false          | 12 hours display mode                    |
+| value             | moment                            |                | current value like input's value         |
+| defaultValue      | moment                            |                | defaultValue like input's defaultValue   |
+| open              | Boolean                           | false          | current open state of picker. controlled prop |
+| suffixIcon        | ReactNode                         |                | The custom suffix icon                   |
+| clearIcon         | ReactNode                         |                | The custom clear icon                    |
+| prevIcon          | ReactNode                         |                | The custom prev icon                     |
+| nextIcon          | ReactNode                         |                | The custom next icon                     |
+| superPrevIcon     | ReactNode                         |                | The custom super prev icon               |
+| superNextIcon     | ReactNode                         |                | The custom super next icon               |
+| disabled          | Boolean                           | false          | whether the picker is disabled           |
+| placeholder       | String                            |                | picker input's placeholder               |
+| getPopupContainer | function(trigger)                 |                | to set the container of the floating layer, while the default is to create a div element in body |
+| onChange          | Function(date: moment, dateString: string) |                | a callback function, can be executed when the selected time is changing |
+| onOpenChange      | Function(open:boolean)            |                | called when open/close picker            |
+| onFocus           | (evnet:React.FocusEventHandler<HTMLInputElement>) => void |                | called like input's on focus |
+| onBlur            | (evnet:React.FocusEventHandler<HTMLInputElement>) => void |                | called like input's on blur |
 
-| Property  | Type                       | Default | Description                     |
-| --------- | -------------------------- | ------- | ------------------------------- |
-| icon      | ReactNode                  |         | icon that before column title   |
-| title     | ReactNode                  |         | title of column                 |
-| items     | [Item](#Column-Item) Array | []      | items data inside each column   |
-| className | string                     | ''      | additional class name of footer |
-| style     | React.CSSProperties        |         | style properties of footer      |
+### rc-picker/lib/PickerPanel props
 
-### Column Item
+| Property              | Type                 | Default    | Description                         |
+| --------------------- | -------------------- | ---------- | ----------------------------------- |
+| prefixCls             | String               | rc-picker  |  prefixCls of this component        |
+| className             | String               | ''         |  additional css class of root dom   |
+| style                 | React.CSSProperties  |            |  additional style of root dom node  |
+| locale                | Object               | import from 'rc-picker/lib/locale/en_US' | rc-picker locale  |
+| value                 | moment               |            | current value like input's value    |
+| defaultValue          | moment               |            | defaultValue like input's defaultValue |
+| defaultPickerValue    | moment               |            | Set default display picker view date |
+| mode                  | time \| datetime \| date \| week \| month \| year \| decade |           | control which kind of panel |
+| picker                | time \| date \| week \| month \| year |           | control which kind of panel |
+| tabIndex              | Number               | 0          | view [tabIndex](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) |
+| showTime              | Boolean \| Object    | [showTime options](#showTime-options) | to provide an additional time selection |
+| showToday             | Boolean              | false      | whether to show today button        |
+| disabledDate          | Function(date:moment) => Boolean |      | whether to disable select of current date |
+| dateRender            | Function(currentDate:moment, today:moment) => React.Node |      | custom rendering function for date cells |
+| monthCellRender       | Function(currentDate:moment, locale:Locale) => React.Node |      | Custom month cell render method |
+| renderExtraFooter     | (mode) => React.Node |            | extra footer                        |
+| onSelect              | Function(date: moment)|            | a callback function, can be executed when the selected time |
+| onPanelChange         | Function(value: moment, mode)|            | callback when picker panel mode is changed |
+| onMouseDown           | (evnet:React.MouseEventHandler<HTMLInputElement>) => void |            | callback when executed onMouseDown evnent |
 
-| Property      | Type                | Default | Description                                             |
-| ------------- | ------------------- | ------- | ------------------------------------------------------- |
-| icon          | ReactNode           |         | icon that before column title                           |
-| title         | ReactNode           |         | title of column                                         |
-| description   | ReactNode           |         | description of column, come after title                 |
-| url           | string              |         | link url of item title                                  |
-| openExternal  | boolean             | false   | link target would be `_blank` if `openExternal` is ture |
-| className     | string              | ''      | additional class name of footer                         |
-| style         | React.CSSProperties |         | style properties of footer                              |
-| LinkComponent | React.ReactType     | 'a'     | the link element to render item                         |
+### rc-picker/lib/RangePicker props
+
+| Property              | Type                 | Default    | Description                         |
+| --------------------- | -------------------- | ---------- | ----------------------------------- |
+| prefixCls             | String               | rc-picker  |  prefixCls of this component        |
+| className             | String               | ''         |  additional css class of root dom   |
+| style                 | React.CSSProperties  |            |  additional style of root dom node  |
+| locale                | Object               | import from 'rc-picker/lib/locale/en_US' | rc-picker locale  |
+| value                 | moment               |            | current value like input's value    |
+| defaultValue          | moment               |            | defaultValue like input's defaultValue |
+| defaultPickerValue    | moment               |            | Set default display picker view date |
+| separator             | String               | '~'        | set separator between inputs        |
+| picker                | time \| date \| week \| month \| year |           | control which kind of panel |
+| placeholder           | [String, String]     |            | placeholder of date input           |
+| showTime              | Boolean \| Object    | [showTime options](#showTime-options) | to provide an additional time selection |
+| use12Hours            | Boolean              | false      | 12 hours display mode               |
+| disabledTime          | Function(date: moment, type:'start'|'end'):Object |      | to specify the time that cannot be selected |
+| ranges                | { String \| [range: string]: moment[] } \| { [range: string]: () => moment[] } |      | preseted ranges for quick selection |
+| format                | String \| String[]| depends on whether you set timePicker and your locale | use to format/parse date(without time) value to/from input. When an array is provided, all values are used for parsing and first value for display |
+| allowEmpty            | [Boolean, Boolean]   |            | allow range picker clearing text     |
+| selectable            | [Boolean, Boolean]   |            | whether to selected picker           |
+| disabled              | Boolean              | false      | whether the range picker is disabled |
+| onChange              | Function(value:[moment], formatString: [string, string]) |                | a callback function, can be executed when the selected time is changing |
+| onCalendarChange      | Function(value:[moment], formatString: [string, string]) |                | a callback function, can be executed when the start time or the end time of the range is changing |
+
+
+### showTime-options
+
+| Property              | Type                       | Default | Description                         |
+| --------------------- | -------------------------- | ------- | ----------------------------------- |
+| format                | String                     |         | moment format                       |
+| showHour              | Boolean                    | true    | whether show hour                   | 
+| showMinute            | Boolean                    | true    | whether show minute                 |
+| showSecond            | Boolean                    | true    | whether show second                 |
+| use12Hours            | Boolean                    | false   | 12 hours display mode               |
+| hourStep              | Number                     | 1       | interval between hours in picker    |
+| minuteStep            | Number                     | 1       | interval between minutes in picker  |
+| secondStep            | Number                     | 1       | interval between seconds in picker  |
+| hideDisabledOptions   | Boolean                    | false   | whether hide disabled options       |
+| defaultValue          | moment                     | null    | default initial value               |   
+
+
+
 
 ## Development
 
