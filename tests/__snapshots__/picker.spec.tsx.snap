@@ -6,6 +6,7 @@ exports[`Basic icon 1`] = `
 >
   <input
     readonly=""
+    size="12"
     value="1990-09-03"
   />
   <span

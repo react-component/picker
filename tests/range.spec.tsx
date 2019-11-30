@@ -426,5 +426,25 @@ describe('Range', () => {
       ref.current!.rangePickerRef.current!.blur();
       expect(blurred).toBeTruthy();
     });
+
+    it('not crash with showTime defaultValue', () => {
+      const wrapper = mount(
+        <MomentRangePicker
+          showTime={{
+            defaultValue: [getMoment('01:02:03'), getMoment('05:06:07')],
+          }}
+        />,
+      );
+
+      wrapper.openPicker();
+      wrapper.selectCell(13);
+      wrapper.closePicker();
+
+      wrapper.openPicker(1);
+      wrapper.selectCell(23, 1);
+      wrapper.closePicker(1);
+
+      matchValues(wrapper, '1990-09-13 01:02:03', '1990-09-23 05:06:07');
+    });
   });
 });

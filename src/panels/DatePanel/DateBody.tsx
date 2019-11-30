@@ -89,6 +89,11 @@ function DateBody<DateType>({
       row.push(
         <td
           key={`${x}-${y}`}
+          title={generateConfig.locale.format(
+            locale.locale,
+            currentDate,
+            'YYYY-MM-DD',
+          )}
           onClick={() => {
             if (disabled) {
               return;

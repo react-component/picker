@@ -15,6 +15,7 @@ import { toArray } from './utils/miscUtil';
 import RangeContext from './RangeContext';
 import { isSameDate } from './utils/dateUtil';
 import { getDefaultFormat } from './utils/uiUtil';
+import { SharedTimeProps } from './panels/TimePanel';
 
 type RangeValue<DateType> = [DateType | null, DateType | null] | null;
 
@@ -66,6 +67,7 @@ type OmitPickerProps<Props> = Omit<
   | 'placeholder'
   | 'disabledTime'
   | 'showToday'
+  | 'showTime'
 >;
 
 export interface RangePickerBaseProps<DateType>
@@ -74,7 +76,13 @@ export interface RangePickerBaseProps<DateType>
 
 export interface RangePickerDateProps<DateType>
   extends RangePickerSharedProps<DateType>,
-    OmitPickerProps<PickerDateProps<DateType>> {}
+    OmitPickerProps<PickerDateProps<DateType>> {
+  showTime?:
+    | boolean
+    | (Omit<SharedTimeProps<DateType>, 'defaultValue'> & {
+        defaultValue?: DateType[];
+      });
+}
 
 export interface RangePickerTimeProps<DateType>
   extends RangePickerSharedProps<DateType>,
@@ -132,6 +140,16 @@ function InternalRangePicker<DateType>(
   const formatList = toArray(
     getDefaultFormat(format, picker, showTime, use12Hours),
   );
+
+  const [startShowTime, endShowTime] = React.useMemo(() => {
+    if (showTime && typeof showTime === 'object' && showTime.defaultValue) {
+      return [
+        { ...showTime, defaultValue: showTime.defaultValue[0] },
+        { ...showTime, defaultValue: showTime.defaultValue[1] },
+      ];
+    }
+    return [showTime, showTime];
+  }, [showTime]);
 
   const mergedSelectable = React.useMemo<
     [boolean | undefined, boolean | undefined]
@@ -312,7 +330,7 @@ function InternalRangePicker<DateType>(
           value={value1}
           placeholder={placeholder && placeholder[0]}
           defaultPickerValue={defaultPickerValue && defaultPickerValue[0]}
-          {...{ disabledTime: disabledStartTime }} // Fix ts define
+          {...{ disabledTime: disabledStartTime, showTime: startShowTime }} // Fix ts define
           disabled={disabled || mergedSelectable[0] === false}
           disabledDate={disabledStartDate}
           onChange={date => {
@@ -329,7 +347,7 @@ function InternalRangePicker<DateType>(
           value={value2}
           placeholder={placeholder && placeholder[1]}
           defaultPickerValue={defaultPickerValue && defaultPickerValue[1]}
-          {...{ disabledTime: disabledEndTime }} // Fix ts define
+          {...{ disabledTime: disabledEndTime, showTime: endShowTime }} // Fix ts define
           disabled={disabled || mergedSelectable[1] === false}
           disabledDate={disabledEndDate}
           onChange={date => {

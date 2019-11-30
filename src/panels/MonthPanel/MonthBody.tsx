@@ -55,6 +55,11 @@ function MonthBody<DateType>({
       row.push(
         <td
           key={j}
+          title={generateConfig.locale.format(
+            locale.locale,
+            monthDate,
+            'YYYY-MM',
+          )}
           className={classNames(monthPrefixCls, {
             [`${monthPrefixCls}-disabled`]: disabled,
             [`${monthPrefixCls}-in-view`]: true,
