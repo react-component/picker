@@ -982,23 +982,23 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const renderDatePickerByDirection = () => {
     if (direction === 'rtl') {
       return (
-        <div>
+        <React.Fragment>
           {endDatePicker()}
            <div className={`${prefixCls}-range-separator`} ref={separatorRef}>
             {separator}
           </div>
           {startDatePicker()}
-        </div>
+        </React.Fragment>
       );
     }
     return (
-      <div>
+      <React.Fragment>
         {startDatePicker()}
          <div className={`${prefixCls}-range-separator`} ref={separatorRef}>
             {separator}
           </div>
         {endDatePicker()}
-      </div>
+      </React.Fragment>
     );
   };
 
