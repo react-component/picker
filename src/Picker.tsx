@@ -68,6 +68,7 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
 
   // WAI-ARIA
   role?: string;
+  name?: string;
 }
 
 export interface PickerBaseProps<DateType>

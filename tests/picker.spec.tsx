@@ -502,4 +502,10 @@ describe('Basic', () => {
 
     expect(wrapper.render()).toMatchSnapshot();
   });
+
+  it('support name prop', () => {
+    const wrapper = mount(<MomentPicker name="bamboo" />);
+
+    expect(wrapper.find('input').props().name).toEqual('bamboo');
+  });
 });
