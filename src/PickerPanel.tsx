@@ -117,7 +117,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onMouseDown,
   } = props as MergedPickerPanelProps<DateType>;
 
-  const { operationRef } = React.useContext(PanelContext);
+  const { operationRef, panelRef: panelDivRef } = React.useContext(
+    PanelContext,
+  );
   const { extraFooterSelections } = React.useContext(RangeContext);
   const panelRef = React.useRef<PanelRefProps>({});
 
@@ -390,6 +392,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       onKeyDown={onInternalKeyDown}
       onBlur={onInternalBlur}
       onMouseDown={onMouseDown}
+      ref={panelDivRef}
     >
       {panelNode}
       {extraFooter || todayNode || extraSelectionNode ? (

@@ -9,6 +9,7 @@ export interface PanelContextProps {
   operationRef?: React.MutableRefObject<ContextOperationRefProps | null>;
   /** Only work with time panel */
   hideHeader?: boolean;
+  panelRef?: React.Ref<HTMLDivElement>;
 }
 
 const PanelContext = React.createContext<PanelContextProps>({});

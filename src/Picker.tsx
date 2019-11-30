@@ -25,7 +25,11 @@ import { isEqual } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import { PickerMode } from './interface';
-import { getDefaultFormat, getInputSize } from './utils/uiUtil';
+import {
+  getDefaultFormat,
+  getInputSize,
+  addGlobalClickEvent,
+} from './utils/uiUtil';
 
 export interface PickerSharedProps<DateType> {
   dropdownClassName?: string;
@@ -127,6 +131,10 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const formatList = toArray(
     getDefaultFormat(format, picker, showTime, use12Hours),
   );
+
+  // Panel ref
+  const panelDivRef = React.useRef<HTMLDivElement>(null);
+  const inputDivRef = React.useRef<HTMLDivElement>(null);
 
   // Real value
   const [innerValue, setInnerValue] = React.useState<DateType | null>(() => {
@@ -351,6 +359,22 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }
   }, [mergedValue]);
 
+  // Global click handler
+  React.useEffect(() =>
+    addGlobalClickEvent(({ target }: MouseEvent) => {
+      if (
+        mergedOpen &&
+        panelDivRef.current &&
+        !panelDivRef.current.contains(target as Node) &&
+        inputDivRef.current &&
+        !inputDivRef.current.contains(target as Node) &&
+        onOpenChange
+      ) {
+        onOpenChange(false);
+      }
+    }),
+  );
+
   // ============================= Panel =============================
   const panelProps = {
     // Remove `picker` & `format` here since TimePicker is little different with other panel
@@ -401,6 +425,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       value={{
         operationRef,
         hideHeader: picker === 'time',
+        panelRef: panelDivRef,
       }}
     >
       <div
@@ -420,7 +445,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
           getPopupContainer={getPopupContainer}
           transitionName={transitionName}
         >
-          <div className={`${prefixCls}-input`}>
+          <div className={`${prefixCls}-input`} ref={inputDivRef}>
             <input
               disabled={disabled}
               readOnly={inputReadOnly || !typing}
