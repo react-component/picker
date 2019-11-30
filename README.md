@@ -43,7 +43,7 @@ render(
 
 ## API
 
-### rc-picker props
+### Picker
 
 | Property          | Type                              | Default        | Description                              |
 | ----------------- | --------------------------------- | -------------- | ---------------------------------------- |
@@ -79,7 +79,7 @@ render(
 | onFocus           | (evnet:React.FocusEventHandler<HTMLInputElement>) => void |                | called like input's on focus |
 | onBlur            | (evnet:React.FocusEventHandler<HTMLInputElement>) => void |                | called like input's on blur |
 
-### rc-picker/lib/PickerPanel props
+### PickerPanel
 
 | Property              | Type                 | Default    | Description                         |
 | --------------------- | -------------------- | ---------- | ----------------------------------- |
@@ -103,7 +103,7 @@ render(
 | onPanelChange         | Function(value: moment, mode)|            | callback when picker panel mode is changed |
 | onMouseDown           | (evnet:React.MouseEventHandler<HTMLInputElement>) => void |            | callback when executed onMouseDown evnent |
 
-### rc-picker/lib/RangePicker props
+### RangePicker
 
 | Property              | Type                 | Default    | Description                         |
 | --------------------- | -------------------- | ---------- | ----------------------------------- |
@@ -118,6 +118,7 @@ render(
 | picker                | time \| date \| week \| month \| year |           | control which kind of panel |
 | placeholder           | [String, String]     |            | placeholder of date input           |
 | showTime              | Boolean \| Object    | [showTime options](#showTime-options) | to provide an additional time selection |
+| showTime.defaultValue | [moment, moment]     |            | to set default time of selected date |
 | use12Hours            | Boolean              | false      | 12 hours display mode               |
 | disabledTime          | Function(date: moment, type:'start'|'end'):Object |      | to specify the time that cannot be selected |
 | ranges                | { String \| [range: string]: moment[] } \| { [range: string]: () => moment[] } |      | preseted ranges for quick selection |
