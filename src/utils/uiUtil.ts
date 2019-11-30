@@ -164,7 +164,8 @@ export function addGlobalMouseDownEvent(callback: ClickEventHandler) {
     window.addEventListener
   ) {
     globalClickFunc = (e: MouseEvent) => {
-      clickCallbacks.forEach(queueFunc => {
+      // Clone a new list to avoid repeat trigger events
+      [...clickCallbacks].forEach(queueFunc => {
         queueFunc(e);
       });
     };
