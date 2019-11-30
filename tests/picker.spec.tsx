@@ -119,6 +119,20 @@ describe('Basic', () => {
       expect(wrapper.isOpen()).toBeFalsy();
     });
 
+    it('fixed open need repeat trigger onOpenChange', () => {
+      const onOpenChange = jest.fn();
+      mount(<MomentPicker onOpenChange={onOpenChange} open />);
+
+      for (let i = 0; i < 10; i += 1) {
+        const clickEvent = new Event('click');
+        Object.defineProperty(clickEvent, 'target', {
+          get: () => document.body,
+        });
+        window.dispatchEvent(clickEvent);
+        expect(onOpenChange).toHaveBeenCalledTimes(i + 1);
+      }
+    });
+
     it('disabled should not open', () => {
       const wrapper = mount(<MomentPicker open disabled />);
       expect(wrapper.isOpen()).toBeFalsy();
