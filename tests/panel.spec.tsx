@@ -427,6 +427,9 @@ describe('Picker.Panel', () => {
         expect(wrapper.find('.rc-picker-header')).toHaveLength(0);
       });
     });
+  it('should render correctly in rtl', () => {
+    const wrapper = mount(<MomentPickerPanel direction="rtl" />);
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   it('onOk to trigger', () => {
