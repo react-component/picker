@@ -14,9 +14,18 @@ export default () => (
         locale={zhCN}
         picker="week"
         allowClear
+        onOpenChange={open => {
+          console.log('1 =>', open);
+        }}
+      />
+      <Picker<Moment>
+        generateConfig={momentGenerateConfig}
+        locale={zhCN}
+        picker="week"
+        allowClear
         open
         onOpenChange={open => {
-          console.log('=>', open);
+          console.log('2 =>', open);
         }}
       />
       <button type="button">233</button>

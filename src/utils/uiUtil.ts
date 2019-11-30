@@ -157,7 +157,7 @@ type ClickEventHandler = (event: MouseEvent) => void;
 let globalClickFunc: ClickEventHandler | null = null;
 const clickCallbacks = new Set<ClickEventHandler>();
 
-export function addGlobalClickEvent(callback: ClickEventHandler) {
+export function addGlobalMouseDownEvent(callback: ClickEventHandler) {
   if (
     !globalClickFunc &&
     typeof window !== 'undefined' &&
@@ -168,7 +168,7 @@ export function addGlobalClickEvent(callback: ClickEventHandler) {
         queueFunc(e);
       });
     };
-    window.addEventListener('click', globalClickFunc);
+    window.addEventListener('mousedown', globalClickFunc);
   }
 
   clickCallbacks.add(callback);
@@ -176,7 +176,7 @@ export function addGlobalClickEvent(callback: ClickEventHandler) {
   return () => {
     clickCallbacks.delete(callback);
     if (clickCallbacks.size === 0) {
-      window.removeEventListener('click', globalClickFunc!);
+      window.removeEventListener('mousedown', globalClickFunc!);
       globalClickFunc = null;
     }
   };

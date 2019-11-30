@@ -28,7 +28,7 @@ import { PickerMode } from './interface';
 import {
   getDefaultFormat,
   getInputSize,
-  addGlobalClickEvent,
+  addGlobalMouseDownEvent,
 } from './utils/uiUtil';
 
 export interface PickerSharedProps<DateType> {
@@ -326,10 +326,25 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
-  const onInputBlur: React.FocusEventHandler<HTMLInputElement> = e => {
+  /**
+   * We will prevent blur to handle open event when user click outside,
+   * since this will repeat trigger `onOpenChange` event.
+   */
+  const preventBlurRef = React.useRef<boolean>(false);
+
+  const triggerClose = () => {
     triggerOpen(false);
     setInnerValue(selectedValue);
     triggerChange(selectedValue);
+  };
+
+  const onInputBlur: React.FocusEventHandler<HTMLInputElement> = e => {
+    if (preventBlurRef.current) {
+      preventBlurRef.current = false;
+      return;
+    }
+
+    triggerClose();
     setFocused(false);
 
     if (onBlur) {
@@ -361,7 +376,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   // Global click handler
   React.useEffect(() =>
-    addGlobalClickEvent(({ target }: MouseEvent) => {
+    addGlobalMouseDownEvent(({ target }: MouseEvent) => {
       if (
         mergedOpen &&
         panelDivRef.current &&
@@ -370,7 +385,13 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         !inputDivRef.current.contains(target as Node) &&
         onOpenChange
       ) {
-        onOpenChange(false);
+        preventBlurRef.current = true;
+        triggerClose();
+
+        // Always set back in case `onBlur` prevented by user
+        window.setTimeout(() => {
+          preventBlurRef.current = false;
+        }, 0);
       }
     }),
   );
