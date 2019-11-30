@@ -118,6 +118,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     suffixIcon,
     clearIcon,
     disabled,
+    disabledDate,
     placeholder,
     getPopupContainer,
     inputRef,
@@ -241,7 +242,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       text,
       formatList,
     );
-    if (inputDate) {
+    if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
       setSelectedValue(inputDate);
     }
   };

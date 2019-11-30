@@ -1,5 +1,6 @@
 import React from 'react';
 import MockDate from 'mockdate';
+import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { Moment } from 'moment';
 import {
@@ -505,5 +506,32 @@ describe('Range', () => {
       expect(isSame(onPanelChange.mock.calls[0][0][1], '1998-09-03'));
       expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
     });
+  });
+
+  it('type can not change before start time', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <MomentRangePicker
+        defaultValue={[getMoment('2000-01-15'), getMoment('2000-01-16')]}
+        onChange={onChange}
+      />,
+    );
+
+    wrapper
+      .find('input')
+      .last()
+      .simulate('change', {
+        target: {
+          value: '2000-01-11',
+        },
+      });
+    wrapper
+      .find('input')
+      .last()
+      .simulate('keyDown', {
+        which: KeyCode.ENTER,
+      });
+
+    expect(onChange).not.toHaveBeenCalled();
   });
 });
