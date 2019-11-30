@@ -31,78 +31,78 @@
     display: flex;
     flex-direction: column;
 
-    // Header
-    &-header {
-      display: flex;
-
-      > * {
-        flex: none;
-      }
-
-      &-view {
-        flex: auto;
-        text-align: center;
-
-        > button {
-          border: 0;
-          padding: 0;
-        }
-      }
-    }
-
-    // Content
-    &-cell {
-      color: #aaa;
-
-      &-disabled {
-        opacity: 0.2;
-      }
-
-      &-inner {
-        font-size: 12px;
-        width: 100%;
-        height: 20px;
-        line-height: 20px;
-        display: inline-block;
-        box-sizing: border-box;
-        border: 0;
-        padding: 0;
-        margin: 0;
-        background: transparent;
-        cursor: pointer;
-        outline: none;
-        border: none;
-        transition: background 0.3s, border 0.3s;
-
-        &:hover {
-          background: fade(blue, 30%) !important;
-        }
-      }
-
-      &-in-view {
-        color: #333;
-      }
-
-      &-in-range > &-inner {
-        background: fade(blue, 5%);
-      }
-      &-today > &-inner {
-        border: 1px solid blue;
-      }
-      &-selected > &-inner {
-        background: fade(blue, 20%);
-      }
-    }
-
     table {
       text-align: center;
+    }
+  }
+
+  // Header
+  &-header {
+    display: flex;
+
+    > * {
+      flex: none;
+    }
+
+    &-view {
+      flex: auto;
+      text-align: center;
+
+      > button {
+        border: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  // Content
+  &-cell {
+    color: #aaa;
+
+    &-disabled {
+      opacity: 0.2;
+    }
+
+    &-inner {
+      font-size: 12px;
+      width: 100%;
+      height: 20px;
+      line-height: 20px;
+      display: inline-block;
+      box-sizing: border-box;
+      border: 0;
+      padding: 0;
+      margin: 0;
+      background: transparent;
+      cursor: pointer;
+      outline: none;
+      border: none;
+      transition: background 0.3s, border 0.3s;
+
+      &:hover {
+        background: fade(blue, 30%) !important;
+      }
+    }
+
+    &-in-view {
+      color: #333;
+    }
+
+    &-in-range > &-inner {
+      background: fade(blue, 5%);
+    }
+    &-today > &-inner {
+      border: 1px solid blue;
+    }
+    &-selected > &-inner {
+      background: fade(blue, 20%);
     }
   }
 
   // ================== Year & Month Panel ==================
   &-year-panel,
   &-month-panel {
-    &-cell-inner {
+    .@{prefix-cls}-cell-inner {
       width: 80px;
     }
   }
@@ -111,38 +111,38 @@
   &-week-panel {
     &-row {
       &:hover {
-        .@{prefix-cls}-week-panel-cell {
+        .@{prefix-cls}-cell {
           background: red;
         }
       }
 
       &-selected {
-        .@{prefix-cls}-week-panel-cell {
+        .@{prefix-cls}-cell {
           background: rgba(0, 0, 255, 0.3);
         }
       }
     }
 
-    &-cell,
-    &-cell-inner {
+    .@{prefix-cls}-cell,
+    .@{prefix-cls}-cell-inner {
       width: 20px;
     }
 
-    &-cell-week {
+    .@{prefix-cls}-cell-week {
       font-size: 12px;
       color: #999;
       font-weight: bold;
     }
 
-    &-cell:hover > &-cell-inner,
-    &-cell-selected > &-cell-inner {
+    .@{prefix-cls}-cell:hover > .@{prefix-cls}-cell-inner,
+    .@{prefix-cls}-cell-selected > .@{prefix-cls}-cell-inner {
       background: transparent;
     }
   }
 
   // ====================== Date Panel ======================
   &-date-panel {
-    &-cell-inner {
+    .@{prefix-cls}-cell-inner {
       width: 20px;
     }
   }
@@ -151,7 +151,7 @@
   &-time-panel {
     width: auto;
 
-    &-content {
+    .@{prefix-cls}-content {
       display: flex;
       max-height: 200px;
     }
@@ -163,8 +163,10 @@
       margin: 0;
       padding: 0 0 180px 0;
       overflow-y: hidden;
+      overflow-x: hidden;
       width: 50px;
       transition: background 0.3s;
+      font-size: 12px;
 
       &-active {
         background: rgba(0, 0, 255, 0.1);

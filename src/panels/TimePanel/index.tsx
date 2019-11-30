@@ -86,10 +86,10 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
         [`${panelPrefixCls}-active`]: active,
       })}
     >
-      <TimeHeader {...props} format={format} prefixCls={panelPrefixCls} />
+      <TimeHeader {...props} format={format} prefixCls={prefixCls} />
       <TimeBody
         {...props}
-        prefixCls={panelPrefixCls}
+        prefixCls={prefixCls}
         activeColumnIndex={activeColumnIndex}
         operationRef={bodyOperationRef}
       />

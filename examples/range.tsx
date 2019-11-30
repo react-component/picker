@@ -51,6 +51,10 @@ export default () => {
           <h3>Basic</h3>
           <RangePicker<Moment> {...sharedProps} locale={zhCN} allowClear />
         </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Basic</h3>
+          <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="year" />
+        </div>
 
         <div style={{ margin: '0 8px' }}>
           <h3>Allow Empty</h3>

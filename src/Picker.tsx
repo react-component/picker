@@ -22,12 +22,16 @@ import PickerPanel, {
 } from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
 import { isEqual } from './utils/dateUtil';
-import { toArray } from './utils/miscUtil';
+import getDataOrAriaProps, { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import { PickerMode } from './interface';
-import { getDefaultFormat, getInputSize } from './utils/uiUtil';
+import {
+  getDefaultFormat,
+  getInputSize,
+  addGlobalMouseDownEvent,
+} from './utils/uiUtil';
 
-export interface PickerSharedProps<DateType> {
+export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   dropdownClassName?: string;
   dropdownAlign?: AlignType;
   popupStyle?: React.CSSProperties;
@@ -61,6 +65,10 @@ export interface PickerSharedProps<DateType> {
   // Internal
   /** @private Internal usage, do not use in production mode!!! */
   inputRef?: React.Ref<HTMLInputElement>;
+
+  // WAI-ARIA
+  role?: string;
+  name?: string;
 }
 
 export interface PickerBaseProps<DateType>
@@ -114,6 +122,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     suffixIcon,
     clearIcon,
     disabled,
+    disabledDate,
     placeholder,
     getPopupContainer,
     inputRef,
@@ -127,6 +136,10 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const formatList = toArray(
     getDefaultFormat(format, picker, showTime, use12Hours),
   );
+
+  // Panel ref
+  const panelDivRef = React.useRef<HTMLDivElement>(null);
+  const inputDivRef = React.useRef<HTMLDivElement>(null);
 
   // Real value
   const [innerValue, setInnerValue] = React.useState<DateType | null>(() => {
@@ -233,7 +246,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       text,
       formatList,
     );
-    if (inputDate) {
+    if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
       setSelectedValue(inputDate);
     }
   };
@@ -318,10 +331,25 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
-  const onInputBlur: React.FocusEventHandler<HTMLInputElement> = e => {
+  /**
+   * We will prevent blur to handle open event when user click outside,
+   * since this will repeat trigger `onOpenChange` event.
+   */
+  const preventBlurRef = React.useRef<boolean>(false);
+
+  const triggerClose = () => {
     triggerOpen(false);
     setInnerValue(selectedValue);
     triggerChange(selectedValue);
+  };
+
+  const onInputBlur: React.FocusEventHandler<HTMLInputElement> = e => {
+    if (preventBlurRef.current) {
+      preventBlurRef.current = false;
+      return;
+    }
+
+    triggerClose();
     setFocused(false);
 
     if (onBlur) {
@@ -350,6 +378,28 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       setDateText(mergedValue);
     }
   }, [mergedValue]);
+
+  // Global click handler
+  React.useEffect(() =>
+    addGlobalMouseDownEvent(({ target }: MouseEvent) => {
+      if (
+        mergedOpen &&
+        panelDivRef.current &&
+        !panelDivRef.current.contains(target as Node) &&
+        inputDivRef.current &&
+        !inputDivRef.current.contains(target as Node) &&
+        onOpenChange
+      ) {
+        preventBlurRef.current = true;
+        triggerClose();
+
+        // Always set back in case `onBlur` prevented by user
+        window.setTimeout(() => {
+          preventBlurRef.current = false;
+        }, 0);
+      }
+    }),
+  );
 
   // ============================= Panel =============================
   const panelProps = {
@@ -401,6 +451,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       value={{
         operationRef,
         hideHeader: picker === 'time',
+        panelRef: panelDivRef,
       }}
     >
       <div
@@ -420,7 +471,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
           getPopupContainer={getPopupContainer}
           transitionName={transitionName}
         >
-          <div className={`${prefixCls}-input`}>
+          <div className={`${prefixCls}-input`} ref={inputDivRef}>
             <input
               disabled={disabled}
               readOnly={inputReadOnly || !typing}
@@ -434,6 +485,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               placeholder={placeholder}
               ref={inputRef}
               size={getInputSize(picker, formatList[0])}
+              {...getDataOrAriaProps(props)}
             />
             {suffixNode}
             {clearNode}

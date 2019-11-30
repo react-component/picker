@@ -1,5 +1,6 @@
 import React from 'react';
 import MockDate from 'mockdate';
+import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { Moment } from 'moment';
 import {
@@ -139,27 +140,21 @@ describe('Range', () => {
     // End date
     wrapper.openPicker(1);
     cellNode = wrapper.selectCell(11);
-    expect(
-      cellNode.hasClass('rc-picker-date-panel-cell-disabled'),
-    ).toBeTruthy();
+    expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeTruthy();
     wrapper.closePicker(1);
     expect(onChange).not.toHaveBeenCalled();
 
     // Click start origin disabled date
     wrapper.openPicker();
     cellNode = wrapper.selectCell(28);
-    expect(
-      cellNode.hasClass('rc-picker-date-panel-cell-disabled'),
-    ).toBeTruthy();
+    expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeTruthy();
     wrapper.closePicker();
     expect(onChange).not.toHaveBeenCalled();
 
     // Click end origin disabled date
     wrapper.openPicker(1);
     cellNode = wrapper.selectCell(28, 1);
-    expect(
-      cellNode.hasClass('rc-picker-date-panel-cell-disabled'),
-    ).toBeTruthy();
+    expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeTruthy();
     wrapper.closePicker(1);
     expect(onChange).not.toHaveBeenCalled();
   });
@@ -239,18 +234,14 @@ describe('Range', () => {
       // Disabled date
       wrapper.openPicker();
       cellNode = wrapper.selectCell(25);
-      expect(
-        cellNode.hasClass('rc-picker-date-panel-cell-disabled'),
-      ).toBeTruthy();
+      expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeTruthy();
       wrapper.closePicker();
       expect(onChange).not.toHaveBeenCalled();
 
       // Enabled date
       wrapper.openPicker();
       cellNode = wrapper.selectCell(7);
-      expect(
-        cellNode.hasClass('rc-picker-date-panel-cell-disabled'),
-      ).toBeFalsy();
+      expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeFalsy();
       wrapper.closePicker();
       expect(onChange).toHaveBeenCalledWith(
         [expect.anything(), expect.anything()],
@@ -323,7 +314,7 @@ describe('Range', () => {
       wrapper
         .find('PickerPanel')
         .first()
-        .find('.rc-picker-date-panel-header-view')
+        .find('.rc-picker-header-view')
         .text(),
     ).toEqual('Nov1989');
     wrapper.closePicker();
@@ -333,7 +324,7 @@ describe('Range', () => {
       wrapper
         .find('PickerPanel')
         .last()
-        .find('.rc-picker-date-panel-header-view')
+        .find('.rc-picker-header-view')
         .text(),
     ).toEqual('Sep1990');
     wrapper.closePicker(1);
@@ -446,5 +437,101 @@ describe('Range', () => {
 
       matchValues(wrapper, '1990-09-13 01:02:03', '1990-09-23 05:06:07');
     });
+  });
+
+  it('mode is array', () => {
+    const wrapper = mount(<MomentRangePicker mode={['year', 'month']} />);
+    wrapper.openPicker();
+    expect(wrapper.find('.rc-picker-year-panel')).toHaveLength(1);
+
+    wrapper.openPicker(1);
+    expect(wrapper.find('.rc-picker-month-panel')).toHaveLength(1);
+  });
+
+  describe('onPanelChange is array args', () => {
+    it('mode', () => {
+      const onPanelChange = jest.fn();
+      const wrapper = mount(
+        <MomentRangePicker
+          mode={['month', 'year']}
+          onPanelChange={onPanelChange}
+        />,
+      );
+
+      wrapper.openPicker();
+      wrapper.selectCell('Feb');
+      expect(isSame(onPanelChange.mock.calls[0][0][0], '1990-02-03'));
+      expect(onPanelChange.mock.calls[0][1]).toEqual(['date', 'year']);
+
+      wrapper.closePicker();
+      onPanelChange.mockReset();
+
+      wrapper.openPicker(1);
+      wrapper.selectCell(1993, 1);
+      expect(isSame(onPanelChange.mock.calls[0][0][1], '1993-09-03'));
+      expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
+    });
+
+    it('picker', () => {
+      const onPanelChange = jest.fn();
+      const wrapper = mount(
+        <MomentRangePicker picker="month" onPanelChange={onPanelChange} />,
+      );
+
+      // First go to year panel
+      wrapper.openPicker();
+      wrapper.find('.rc-picker-year-btn').simulate('click');
+      expect(isSame(onPanelChange.mock.calls[0][0][0], '1990-09-03'));
+      expect(onPanelChange.mock.calls[0][1]).toEqual(['year', 'month']);
+
+      // First nack to month panel
+      onPanelChange.mockReset();
+      wrapper.selectCell(1993);
+      expect(onPanelChange).toHaveBeenCalled();
+      expect(isSame(onPanelChange.mock.calls[0][0][0], '1993-09-03'));
+      expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
+
+      // Last go to year panel
+      wrapper.closePicker();
+      wrapper.openPicker(1);
+      wrapper
+        .find('Picker')
+        .last()
+        .find('.rc-picker-year-btn')
+        .simulate('click');
+      onPanelChange.mockReset();
+
+      // Last nack to month panel
+      wrapper.selectCell(1998, 1);
+      expect(isSame(onPanelChange.mock.calls[0][0][1], '1998-09-03'));
+      expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
+    });
+  });
+
+  it('type can not change before start time', () => {
+    const onChange = jest.fn();
+    const wrapper = mount(
+      <MomentRangePicker
+        defaultValue={[getMoment('2000-01-15'), getMoment('2000-01-16')]}
+        onChange={onChange}
+      />,
+    );
+
+    wrapper
+      .find('input')
+      .last()
+      .simulate('change', {
+        target: {
+          value: '2000-01-11',
+        },
+      });
+    wrapper
+      .find('input')
+      .last()
+      .simulate('keyDown', {
+        which: KeyCode.ENTER,
+      });
+
+    expect(onChange).not.toHaveBeenCalled();
   });
 });

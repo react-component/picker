@@ -64,6 +64,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     onSelect: (diff: number) => void;
   }[] = [];
   const contentPrefixCls = `${prefixCls}-content`;
+  const columnPrefixCls = `${prefixCls}-time-panel`;
 
   let isPM: boolean | undefined;
   let hour = value ? generateConfig.getHour(value) : -1;
@@ -155,6 +156,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     if (condition !== false) {
       columns.push({
         node: React.cloneElement(node, {
+          prefixCls: columnPrefixCls,
           value: columnValue,
           active: activeColumnIndex === columns.length,
           onSelect: onColumnSelect,
@@ -169,20 +171,14 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   }
 
   // Hour
-  addColumnNode(
-    showHour,
-    <TimeUnitColumn key="hour" prefixCls={prefixCls} />,
-    hour,
-    hours,
-    num => {
-      onSelect(setTime(isPM, num, minute, second));
-    },
-  );
+  addColumnNode(showHour, <TimeUnitColumn key="hour" />, hour, hours, num => {
+    onSelect(setTime(isPM, num, minute, second));
+  });
 
   // Minute
   addColumnNode(
     showMinute,
-    <TimeUnitColumn key="minute" prefixCls={prefixCls} />,
+    <TimeUnitColumn key="minute" />,
     minute,
     minutes,
     num => {
@@ -193,7 +189,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   // Second
   addColumnNode(
     showSecond,
-    <TimeUnitColumn key="second" prefixCls={prefixCls} />,
+    <TimeUnitColumn key="second" />,
     second,
     seconds,
     num => {
@@ -209,7 +205,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
 
   addColumnNode(
     use12Hours === true,
-    <TimeUnitColumn key="12hours" prefixCls={prefixCls} />,
+    <TimeUnitColumn key="12hours" />,
     PMIndex,
     [{ label: 'AM', value: 0 }, { label: 'PM', value: 1 }],
     num => {

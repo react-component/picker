@@ -152,6 +152,37 @@ export function getInputSize(picker: PickerMode | undefined, format: string) {
   return Math.max(defaultSize, format.length) + 2;
 }
 
+// ===================== Window =====================
+type ClickEventHandler = (event: MouseEvent) => void;
+let globalClickFunc: ClickEventHandler | null = null;
+const clickCallbacks = new Set<ClickEventHandler>();
+
+export function addGlobalMouseDownEvent(callback: ClickEventHandler) {
+  if (
+    !globalClickFunc &&
+    typeof window !== 'undefined' &&
+    window.addEventListener
+  ) {
+    globalClickFunc = (e: MouseEvent) => {
+      // Clone a new list to avoid repeat trigger events
+      [...clickCallbacks].forEach(queueFunc => {
+        queueFunc(e);
+      });
+    };
+    window.addEventListener('mousedown', globalClickFunc);
+  }
+
+  clickCallbacks.add(callback);
+
+  return () => {
+    clickCallbacks.delete(callback);
+    if (clickCallbacks.size === 0) {
+      window.removeEventListener('mousedown', globalClickFunc!);
+      globalClickFunc = null;
+    }
+  };
+}
+
 // ====================== Mode ======================
 const getYearNextMode = (next: PanelMode): PanelMode => {
   if (next === 'month' || next === 'date') {

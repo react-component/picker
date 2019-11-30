@@ -9,7 +9,7 @@ export interface Unit {
 }
 
 export interface TimeUnitColumnProps {
-  prefixCls: string;
+  prefixCls?: string;
   units?: Unit[];
   value?: number;
   active?: boolean;

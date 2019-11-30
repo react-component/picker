@@ -18,13 +18,14 @@ import {
   PanelRefProps,
   PickerMode,
   DisabledTime,
+  OnPanelChange,
 } from './interface';
 import { isEqual } from './utils/dateUtil';
 import PanelContext from './PanelContext';
 import { DateRender } from './panels/DatePanel/DateBody';
 import { PickerModeMap } from './utils/uiUtil';
 import { MonthCellRender } from './panels/MonthPanel/MonthBody';
-import RangeContext from './RangeContext';
+import RangeContext, { FooterSelection } from './RangeContext';
 
 export interface PickerPanelSharedProps<DateType> {
   prefixCls?: string;
@@ -55,7 +56,7 @@ export interface PickerPanelSharedProps<DateType> {
   // Event
   onSelect?: (value: DateType) => void;
   onChange?: (value: DateType) => void;
-  onPanelChange?: (value: DateType, mode: PanelMode) => void;
+  onPanelChange?: OnPanelChange<DateType>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 }
 
@@ -117,7 +118,21 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onMouseDown,
   } = props as MergedPickerPanelProps<DateType>;
 
-  const { operationRef } = React.useContext(PanelContext);
+  if (process.env.NODE_ENV !== 'production') {
+    warning(
+      !value || generateConfig.isValidate(value),
+      'Invalidate date pass to `value`.',
+    );
+    warning(
+      !value || generateConfig.isValidate(value),
+      'Invalidate date pass to `defaultValue`.',
+    );
+  }
+
+  // ============================ State =============================
+  const { operationRef, panelRef: panelDivRef } = React.useContext(
+    PanelContext,
+  );
   const { extraFooterSelections } = React.useContext(RangeContext);
   const panelRef = React.useRef<PanelRefProps>({});
 
@@ -370,10 +385,25 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   }
 
   let extraSelectionNode: React.ReactNode;
-  if (extraFooterSelections && extraFooterSelections.length) {
+  if ((extraFooterSelections && extraFooterSelections.length) || showTime) {
+    let mergedSelections: FooterSelection[] = [];
+
+    if (showTime) {
+      mergedSelections.push({
+        label: locale.now,
+        onClick: () => {
+          triggerSelect(generateConfig.getNow());
+        },
+      });
+    }
+
+    if (extraFooterSelections) {
+      mergedSelections = [...mergedSelections, ...extraFooterSelections];
+    }
+
     extraSelectionNode = (
       <ul className={`${prefixCls}-ranges`}>
-        {extraFooterSelections.map(({ label, onClick }) => (
+        {mergedSelections.map(({ label, onClick }) => (
           <li key={label} onClick={onClick}>
             {label}
           </li>
@@ -390,6 +420,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       onKeyDown={onInternalKeyDown}
       onBlur={onInternalBlur}
       onMouseDown={onMouseDown}
+      ref={panelDivRef}
     >
       {panelNode}
       {extraFooter || todayNode || extraSelectionNode ? (
