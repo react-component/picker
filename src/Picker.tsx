@@ -61,6 +61,12 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   onOpenChange?: (open: boolean) => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseUp?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onContextMenu?: React.MouseEventHandler<HTMLDivElement>;
 
   // Internal
   /** @private Internal usage, do not use in production mode!!! */
@@ -133,6 +139,12 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onOpenChange,
     onFocus,
     onBlur,
+    onMouseDown,
+    onMouseUp,
+    onMouseEnter,
+    onMouseLeave,
+    onContextMenu,
+    onClick,
   } = props as MergedPickerProps<DateType>;
 
   // ============================= State =============================
@@ -463,6 +475,12 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
           [`${prefixCls}-focused`]: focused,
         })}
         style={style}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onContextMenu={onContextMenu}
+        onClick={onClick}
       >
         <PickerTrigger
           visible={mergedOpen}
