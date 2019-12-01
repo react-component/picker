@@ -39,6 +39,8 @@ export default () => {
     onCalendarChange,
   };
 
+  const rangePickerRef = React.useRef<RangePicker<Moment>>(null);
+
   return (
     <div>
       <h1>
@@ -49,7 +51,20 @@ export default () => {
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
-          <RangePicker<Moment> {...sharedProps} locale={zhCN} allowClear />
+          <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            allowClear
+            ref={rangePickerRef}
+          />
+          <button
+            type="button"
+            onClick={() => {
+              rangePickerRef.current!.focus();
+            }}
+          >
+            Focus!
+          </button>
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>

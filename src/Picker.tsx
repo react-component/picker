@@ -31,6 +31,12 @@ import {
   addGlobalMouseDownEvent,
 } from './utils/uiUtil';
 
+export interface PickerRefConfig {
+  focus: () => void;
+  blur: () => void;
+  open: () => void;
+}
+
 export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   dropdownClassName?: string;
   dropdownAlign?: AlignType;
@@ -70,7 +76,7 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
 
   // Internal
   /** @private Internal usage, do not use in production mode!!! */
-  inputRef?: React.Ref<HTMLInputElement>;
+  pickerRef?: React.MutableRefObject<PickerRefConfig>;
 
   // WAI-ARIA
   role?: string;
@@ -134,7 +140,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     disabledDate,
     placeholder,
     getPopupContainer,
-    inputRef,
+    pickerRef,
     onChange,
     onOpenChange,
     onFocus,
@@ -146,6 +152,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onContextMenu,
     onClick,
   } = props as MergedPickerProps<DateType>;
+
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   // ============================= State =============================
   const formatList = toArray(
@@ -416,6 +424,25 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }),
   );
 
+  // ============================ Private ============================
+  if (pickerRef) {
+    pickerRef.current = {
+      focus: () => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      },
+      blur: () => {
+        if (inputRef.current) {
+          inputRef.current.blur();
+        }
+      },
+      open: () => {
+        triggerOpen(true);
+      },
+    };
+  }
+
   // ============================= Panel =============================
   const panelProps = {
     // Remove `picker` & `format` here since TimePicker is little different with other panel
@@ -519,22 +546,33 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
 // Wrap with class component to enable pass generic with instance method
 class Picker<DateType> extends React.Component<PickerProps<DateType>> {
-  inputRef = React.createRef<HTMLInputElement>();
+  pickerRef = React.createRef<PickerRefConfig>();
 
   focus = () => {
-    if (this.inputRef.current) {
-      this.inputRef.current.focus();
+    if (this.pickerRef.current) {
+      this.pickerRef.current.focus();
     }
   };
 
   blur = () => {
-    if (this.inputRef.current) {
-      this.inputRef.current.blur();
+    if (this.pickerRef.current) {
+      this.pickerRef.current.blur();
+    }
+  };
+
+  open = () => {
+    if (this.pickerRef.current) {
+      this.pickerRef.current.open();
     }
   };
 
   render() {
-    return <InnerPicker<DateType> {...this.props} inputRef={this.inputRef} />;
+    return (
+      <InnerPicker<DateType>
+        {...this.props}
+        pickerRef={this.pickerRef as React.MutableRefObject<PickerRefConfig>}
+      />
+    );
   }
 }
 
