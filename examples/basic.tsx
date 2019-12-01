@@ -134,7 +134,12 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Uncontrolled Datetime</h3>
-          <Picker<Moment> generateConfig={momentGenerateConfig} locale={zhCN} />
+          <Picker<Moment>
+            format="YYYY-MM-DD HH:mm:ss"
+            generateConfig={momentGenerateConfig}
+            locale={enUS}
+            showTime
+          />
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Week</h3>
