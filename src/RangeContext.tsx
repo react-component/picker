@@ -13,6 +13,7 @@ interface RangeContextProps {
    * Panel only has one value, this is only style effect.
    */
   rangedValue?: [NullableDateType<any>, NullableDateType<any>];
+  inRange?: boolean;
 }
 
 const RangeContext = React.createContext<RangeContextProps>({});

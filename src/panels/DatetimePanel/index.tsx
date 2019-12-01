@@ -153,6 +153,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       />
       <TimePanel
         {...props}
+        format={undefined}
         {...timeProps}
         {...disabledTimes}
         defaultValue={undefined}

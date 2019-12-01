@@ -14,10 +14,14 @@ export interface TimeHeaderProps<DateType> {
 
 function TimeHeader<DateType>(props: TimeHeaderProps<DateType>) {
   const { hideHeader } = React.useContext(PanelContext);
+  if (hideHeader) {
+    return null;
+  }
+
   const { prefixCls, generateConfig, locale, value, format } = props;
   const headerPrefixCls = `${prefixCls}-header`;
 
-  return hideHeader ? null : (
+  return (
     <Header prefixCls={headerPrefixCls}>
       {value
         ? generateConfig.locale.format(locale.locale, value, format)

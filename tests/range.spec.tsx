@@ -1,5 +1,6 @@
 import React from 'react';
 import MockDate from 'mockdate';
+import { act } from 'react-dom/test-utils';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { Moment } from 'moment';
@@ -533,5 +534,32 @@ describe('Range', () => {
       });
 
     expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('should open last when first selected', () => {
+    jest.useFakeTimers();
+    const onOpenChange = jest.fn();
+    const wrapper = mount(<MomentRangePicker onOpenChange={onOpenChange} />);
+    expect(wrapper.find('PickerPanel')).toHaveLength(0);
+
+    wrapper.openPicker();
+    wrapper.selectCell(11);
+    expect(wrapper.find('PickerPanel')).toHaveLength(1);
+
+    // Should open second one
+    wrapper.closePicker();
+    expect(onOpenChange).toHaveBeenCalled();
+
+    act(() => {
+      jest.runAllTimers();
+    });
+    act(() => {
+      wrapper.update();
+    });
+    expect(wrapper.find('PickerPanel')).toHaveLength(2);
+
+    wrapper.unmount();
+
+    jest.useRealTimers();
   });
 });

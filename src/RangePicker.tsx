@@ -10,6 +10,7 @@ import Picker, {
   PickerBaseProps,
   PickerDateProps,
   PickerTimeProps,
+  PickerRefConfig,
 } from './Picker';
 import {
   NullableDateType,
@@ -121,7 +122,7 @@ interface MergedRangePickerProps<DateType>
 
 function InternalRangePicker<DateType>(
   props: RangePickerProps<DateType> & {
-    pickerRef: React.Ref<Picker<DateType>>;
+    pickerRef: React.Ref<PickerRefConfig>;
   },
 ) {
   const {
@@ -152,7 +153,7 @@ function InternalRangePicker<DateType>(
     onFocus,
     onBlur,
   } = props as MergedRangePickerProps<DateType> & {
-    pickerRef: React.Ref<Picker<DateType>>;
+    pickerRef: React.MutableRefObject<PickerRefConfig>;
   };
 
   const formatList = toArray(
@@ -262,8 +263,38 @@ function InternalRangePicker<DateType>(
     }
   };
 
-  // ============================== Mode ==============================
+  // ============================== Open ==============================
+  const startPickerRef = React.useRef<Picker<DateType>>(null);
+  const endPickerRef = React.useRef<Picker<DateType>>(null);
+  const lastOpenIdRef = React.useRef<number>();
 
+  const onStartOpenChange = (open: boolean) => {
+    if (!open && selectedValues && selectedValues[0]) {
+      lastOpenIdRef.current = window.setTimeout(() => {
+        if (endPickerRef.current) {
+          endPickerRef.current!.focus();
+          endPickerRef.current!.open();
+        }
+      }, 100);
+    }
+
+    if (props.onOpenChange) {
+      props.onOpenChange(open);
+    }
+  };
+
+  React.useEffect(
+    () => () => {
+      window.clearTimeout(lastOpenIdRef.current);
+    },
+    [],
+  );
+
+  if (pickerRef) {
+    pickerRef.current = startPickerRef.current as any;
+  }
+
+  // ============================== Mode ==============================
   /**
    * [Legacy] handle internal `onPanelChange`
    */
@@ -399,6 +430,7 @@ function InternalRangePicker<DateType>(
       value={{
         extraFooterSelections,
         rangedValue: selectedValues,
+        inRange: true,
       }}
     >
       <div
@@ -407,7 +439,7 @@ function InternalRangePicker<DateType>(
       >
         <Picker<DateType>
           {...pickerProps}
-          ref={pickerRef}
+          ref={startPickerRef}
           prefixCls={prefixCls}
           value={value1}
           placeholder={placeholder && placeholder[0]}
@@ -423,10 +455,12 @@ function InternalRangePicker<DateType>(
           onFocus={onFocus}
           onBlur={onBlur}
           onPanelChange={onStartPanelChange}
+          onOpenChange={onStartOpenChange}
         />
         {separator}
         <Picker<DateType>
           {...pickerProps}
+          ref={endPickerRef}
           prefixCls={prefixCls}
           value={value2}
           placeholder={placeholder && placeholder[1]}
@@ -452,7 +486,7 @@ function InternalRangePicker<DateType>(
 class RangePicker<DateType> extends React.Component<
   RangePickerProps<DateType>
 > {
-  pickerRef = React.createRef<Picker<DateType>>();
+  pickerRef = React.createRef<PickerRefConfig>();
 
   focus = () => {
     if (this.pickerRef.current) {
@@ -470,7 +504,7 @@ class RangePicker<DateType> extends React.Component<
     return (
       <InternalRangePicker<DateType>
         {...this.props}
-        pickerRef={this.pickerRef}
+        pickerRef={this.pickerRef as React.MutableRefObject<PickerRefConfig>}
       />
     );
   }
