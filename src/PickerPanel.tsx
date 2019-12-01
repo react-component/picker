@@ -138,7 +138,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const panelContext = React.useContext(PanelContext);
   const { operationRef, panelRef: panelDivRef } = panelContext;
 
-  const { extraFooterSelections } = React.useContext(RangeContext);
+  const { extraFooterSelections, inRange } = React.useContext(RangeContext);
   const panelRef = React.useRef<PanelRefProps>({});
 
   // Handle init logic
@@ -390,22 +390,20 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   }
 
   let extraSelectionNode: React.ReactNode;
-  if ((extraFooterSelections && extraFooterSelections.length) || showTime) {
-    let mergedSelections: FooterSelection[] = [];
+  let mergedSelections: FooterSelection[] = [];
 
-    if (showTime) {
-      mergedSelections.push({
-        label: locale.now,
-        onClick: () => {
-          triggerSelect(generateConfig.getNow());
-        },
-      });
-    }
+  if (extraFooterSelections && extraFooterSelections.length) {
+    mergedSelections = extraFooterSelections;
+  } else if (showTime && !inRange) {
+    mergedSelections.push({
+      label: locale.now,
+      onClick: () => {
+        triggerSelect(generateConfig.getNow());
+      },
+    });
+  }
 
-    if (extraFooterSelections) {
-      mergedSelections = [...mergedSelections, ...extraFooterSelections];
-    }
-
+  if (mergedSelections.length) {
     extraSelectionNode = (
       <ul className={`${prefixCls}-ranges`}>
         {mergedSelections.map(({ label, onClick }) => (

@@ -430,6 +430,7 @@ function InternalRangePicker<DateType>(
       value={{
         extraFooterSelections,
         rangedValue: selectedValues,
+        inRange: true,
       }}
     >
       <div
