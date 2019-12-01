@@ -269,7 +269,7 @@ function InternalRangePicker<DateType>(
   const lastOpenIdRef = React.useRef<number>();
 
   const onStartOpenChange = (open: boolean) => {
-    if (!open && innerValue && innerValue[0]) {
+    if (!open && selectedValues && selectedValues[0]) {
       lastOpenIdRef.current = window.setTimeout(() => {
         if (endPickerRef.current) {
           endPickerRef.current!.focus();
