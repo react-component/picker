@@ -29,9 +29,6 @@ exports[`Picker.Basic icon 1`] = `
 exports[`Picker.Basic pass data- & aria- & role 1`] = `
 <div
   class="rc-picker"
-exports[`Basic should render correctly in rtl 1`] = `
-<div
-  class="rc-picker rc-picker-rtl"
 >
   <div
     class="rc-picker-input"
@@ -41,6 +38,21 @@ exports[`Basic should render correctly in rtl 1`] = `
       data-test="233"
       readonly=""
       role="search"
+      size="12"
+      value=""
+    />
+  </div>
+</div>
+`;
+
+exports[`Basic should render correctly in rtl 1`] = `
+<div
+  class="rc-picker rc-picker-rtl"
+>
+  <div
+    class="rc-picker-input"
+  >
+    <input
       readonly=""
       size="12"
       value=""
