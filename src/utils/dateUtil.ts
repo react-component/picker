@@ -1,6 +1,6 @@
 import { noteOnce } from 'rc-util/lib/warning';
 import { GenerateConfig } from '../generate';
-import { NullableDateType } from '../interface';
+import { NullableDateType, PickerMode } from '../interface';
 
 export const WEEK_DAY_COUNT = 7;
 
@@ -134,5 +134,21 @@ export function getWeekStartDate<DateType>(
       'Not find week start date. Please check your `generateConfig`. If using default `generateConfig`, please help to fire a issue.',
     );
     return value;
+  }
+}
+
+export function getClosingViewDate<DateType>(
+  viewDate: DateType,
+  picker: PickerMode,
+  generateConfig: GenerateConfig<DateType>,
+  offset: number = 1,
+): DateType {
+  switch (picker) {
+    case 'year':
+      return generateConfig.addYear(viewDate, offset * 10);
+    case 'month':
+      return generateConfig.addYear(viewDate, offset);
+    default:
+      return generateConfig.addMonth(viewDate, offset);
   }
 }

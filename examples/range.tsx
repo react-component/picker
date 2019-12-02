@@ -58,6 +58,33 @@ export default () => {
             allowClear
             ref={rangePickerRef}
             open
+          />
+          {/* <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            allowClear
+            ref={rangePickerRef}
+            picker="month"
+            open
+          />
+          <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            allowClear
+            ref={rangePickerRef}
+            picker="year"
+            open
+          /> */}
+        </div>
+
+        {/* <div style={{ margin: '0 8px' }}>
+          <h3>Basic</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            allowClear
+            ref={rangePickerRef}
+            open
             // style={{ width: 500 }}
           />
           <button
@@ -68,7 +95,7 @@ export default () => {
           >
             Focus!
           </button>
-        </div>
+        </div> */}
         {/* <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
           <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="year" />

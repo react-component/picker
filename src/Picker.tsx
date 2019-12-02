@@ -82,20 +82,22 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   name?: string;
 }
 
+type OmitPanelProps<Props> = Omit<
+  Props,
+  'onChange' | 'hideHeader' | 'pickerValue' | 'onPickerValueChange'
+>;
+
 export interface PickerBaseProps<DateType>
   extends PickerSharedProps<DateType>,
-    Omit<PickerPanelBaseProps<DateType>, 'onChange' | 'hideHeader'> {}
+    OmitPanelProps<PickerPanelBaseProps<DateType>> {}
 
 export interface PickerDateProps<DateType>
   extends PickerSharedProps<DateType>,
-    Omit<PickerPanelDateProps<DateType>, 'onChange' | 'hideHeader'> {}
+    OmitPanelProps<PickerPanelDateProps<DateType>> {}
 
 export interface PickerTimeProps<DateType>
   extends PickerSharedProps<DateType>,
-    Omit<
-      PickerPanelTimeProps<DateType>,
-      'onChange' | 'format' | 'hideHeader'
-    > {}
+    Omit<OmitPanelProps<PickerPanelTimeProps<DateType>>, 'format'> {}
 
 export type PickerProps<DateType> =
   | PickerBaseProps<DateType>
@@ -315,6 +317,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     ...(props as Omit<MergedPickerProps<DateType>, 'picker' | 'format'>),
     className: undefined,
     style: undefined,
+    pickerValue: undefined,
+    onPickerValueChange: undefined,
   };
 
   const panel = (

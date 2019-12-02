@@ -1,11 +1,13 @@
 @prefix-cls: rc-picker;
 
+@background-color: rgb(255, 240, 255);
+
 .@{prefix-cls} {
   display: inline-flex;
 
   &-panel {
     border: 1px solid #666;
-    background: rgb(255, 240, 255);
+    background: @background-color;
     display: inline-block;
     vertical-align: top;
 
@@ -252,11 +254,39 @@
     }
 
     // Panel
+    @arrow-size: 10px;
     .@{prefix-cls}-range-arrow {
       position: absolute;
-      width: 10px;
-      height: 10px;
-      background: blue;
+      width: @arrow-size;
+      height: @arrow-size;
+      z-index: 1;
+      transform: rotate(-45deg);
+      top: @arrow-size / 2 + 1px;
+      left: @arrow-size;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        box-sizing: border-box;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      &::before {
+        width: @arrow-size;
+        height: @arrow-size;
+        border: @arrow-size / 2 solid blue;
+        border-color: blue blue transparent transparent;
+      }
+      &::after {
+        width: @arrow-size - 2px;
+        height: @arrow-size - 2px;
+        border: (@arrow-size - 2px) / 2 solid blue;
+        border-color: @background-color @background-color transparent
+          transparent;
+      }
     }
 
     .@{prefix-cls}-panel {

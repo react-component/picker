@@ -44,6 +44,8 @@ export interface PickerPanelSharedProps<DateType> {
   value?: DateType | null;
   defaultValue?: DateType;
   /** [Legacy] Set default display picker view date */
+  pickerValue?: DateType;
+  /** [Legacy] Set default display picker view date */
   defaultPickerValue?: DateType;
 
   // Date
@@ -62,6 +64,8 @@ export interface PickerPanelSharedProps<DateType> {
 
   /** @private This is internal usage. Do not use in your production env */
   hideHeader?: boolean;
+  /** @private This is internal usage. Do not use in your production env */
+  onPickerValueChange?: (date: DateType) => void;
 }
 
 export interface PickerPanelBaseProps<DateType>
@@ -109,6 +113,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     generateConfig,
     value,
     defaultValue,
+    pickerValue,
     defaultPickerValue,
     mode,
     picker = 'date',
@@ -121,6 +126,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onChange,
     onPanelChange,
     onMouseDown,
+    onPickerValueChange,
   } = props as MergedPickerPanelProps<DateType>;
 
   if (process.env.NODE_ENV !== 'production') {
@@ -139,7 +145,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const panelContext = React.useContext(PanelContext);
   const { operationRef, panelRef: panelDivRef } = panelContext;
 
-  const { extraFooterSelections, inRange } = React.useContext(RangeContext);
+  const { extraFooterSelections, inRange, startPanel } = React.useContext(
+    RangeContext,
+  );
   const panelRef = React.useRef<PanelRefProps>({});
 
   // Handle init logic
@@ -159,11 +167,22 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const mergedValue = value !== undefined ? value : innerValue;
 
   // View date control
-  const [viewDate, setViewDate] = useMergedState<DateType | null, DateType>({
+  const [viewDate, setInnerViewDate] = useMergedState<
+    DateType | null,
+    DateType
+  >({
+    value: pickerValue,
     defaultValue: defaultPickerValue || mergedValue,
     defaultStateValue: null,
     postState: date => date || generateConfig.getNow(),
   });
+
+  const setViewDate = (date: DateType) => {
+    setInnerViewDate(date);
+    if (onPickerValueChange) {
+      onPickerValueChange(date);
+    }
+  };
 
   // Panel control
   const getInternalNextMode = (nextMode: PanelMode): PanelMode => {
@@ -424,6 +443,8 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         ...panelContext,
         hideHeader:
           'hideHeader' in props ? hideHeader : panelContext.hideHeader,
+        hidePrevBtn: inRange && !startPanel,
+        hideNextBtn: inRange && startPanel,
       }}
     >
       <div

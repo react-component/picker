@@ -15,10 +15,12 @@ import usePickerInput from './hooks/usePickerInput';
 import getDataOrAriaProps, { toArray } from './utils/miscUtil';
 import { getDefaultFormat, getInputSize } from './utils/uiUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
-import { isEqual } from './utils/dateUtil';
+import { isEqual, getClosingViewDate } from './utils/dateUtil';
 import useValueTexts from './hooks/useValueTexts';
 import useTextValueMapping from './hooks/useTextValueMapping';
 import { GenerateConfig } from './generate';
+import { PickerPanelProps } from '.';
+import RangeContext from './RangeContext';
 
 type EventValue<DateType> = DateType | null;
 type RangeValue<DateType> = [EventValue<DateType>, EventValue<DateType>] | null;
@@ -30,12 +32,12 @@ function getIndexValue<T>(
   return values ? values[index] : null;
 }
 
-function updateRangeValue<DateType>(
-  values: RangeValue<DateType>,
-  value: DateType,
+function updateRangeValue<T>(
+  values: [T | null, T | null] | null,
+  value: T,
   index: number,
-) {
-  const newValues: RangeValue<DateType> = [
+): [T | null, T | null] | null {
+  const newValues: [T | null, T | null] = [
     getIndexValue(values, 0),
     getIndexValue(values, 1),
   ];
@@ -112,6 +114,8 @@ type OmitPickerProps<Props> = Omit<
   | 'onChange'
   | 'onSelect'
   | 'onPanelChange'
+  | 'pickerValue'
+  | 'onPickerValueChange'
 >;
 
 export interface RangePickerBaseProps<DateType>
@@ -163,12 +167,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     autoFocus,
     disabled,
     format,
-    picker,
+    picker = 'date',
     showTime,
     use12Hours,
     separator = '~',
     value,
     defaultValue,
+    defaultPickerValue,
     open,
     defaultOpen,
     disabledDate,
@@ -177,8 +182,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     clearIcon,
     pickerRef,
     inputReadOnly,
+    mode,
     onChange,
     onOpenChange,
+    onPanelChange,
     onFocus,
     onBlur,
   } = props as MergedRangePickerProps<DateType>;
@@ -449,54 +456,105 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     };
   }
 
-  // ============================= Panel =============================
-  const panelProps = {
-    ...(props as any),
-    className: undefined,
-    style: undefined,
-  };
+  // =========================== View Date ===========================
+  const [viewDates, setViewDates] = useMergedState<
+    RangeValue<DateType>,
+    [DateType, DateType]
+  >({
+    defaultValue: defaultPickerValue || mergedValue,
+    defaultStateValue: null,
+    postState: postViewDates =>
+      postViewDates || [generateConfig.getNow(), generateConfig.getNow()],
+  });
 
-  const panel = (
+  // ============================= Panel =============================
+  // const [mergedMode, setMode] = useMergedState<[PanelMode, PanelMode]>({
+  //   value: mode,
+  //   defaultStateValue: [picker, picker],
+  // });
+
+  // const triggerPanelChange = (date: DateType, newMode: PanelMode) => {
+  //   setMode(
+  //     updateRangeValue<PanelMode>(mergedMode, newMode, 0) as [
+  //       PanelMode,
+  //       PanelMode,
+  //     ],
+  //   );
+  // };
+
+  function renderPanel(
+    startPanel?: boolean,
+    panelProps: Partial<PickerPanelProps<DateType>> = {},
+  ) {
+    return (
+      <RangeContext.Provider
+        value={{
+          inRange: true,
+          startPanel,
+        }}
+      >
+        <PickerPanel<DateType>
+          {...(props as any)}
+          {...panelProps}
+          generateConfig={generateConfig}
+          style={undefined}
+          className={classNames({
+            [`${prefixCls}-panel-focused`]: !startTyping && !endTyping,
+          })}
+          value={getIndexValue(selectedValue, activePickerIndex)}
+          locale={locale}
+          tabIndex={-1}
+          onMouseDown={e => {
+            e.preventDefault();
+          }}
+          onChange={date => {
+            setSelectedValue(
+              updateRangeValue(selectedValue, date, activePickerIndex),
+            );
+          }}
+        />
+      </RangeContext.Provider>
+    );
+  }
+
+  function renderPanels() {
+    if (picker !== 'time' && !showTime) {
+      const viewDate = viewDates[activePickerIndex];
+      const nextViewDate = getClosingViewDate(viewDate, picker, generateConfig);
+
+      return (
+        <>
+          {renderPanel(true, {
+            pickerValue: viewDate,
+            onPickerValueChange: newViewDate => {
+              setViewDates(
+                updateRangeValue(viewDates, newViewDate, activePickerIndex),
+              );
+            },
+          })}
+          {renderPanel(false, {
+            pickerValue: nextViewDate,
+            onPickerValueChange: newViewDate => {
+              setViewDates(
+                updateRangeValue(
+                  viewDates,
+                  getClosingViewDate(newViewDate, picker, generateConfig, -1),
+                  activePickerIndex,
+                ),
+              );
+            },
+          })}
+        </>
+      );
+    }
+    return renderPanel();
+  }
+
+  const rangePanel = (
     <div style={{ minWidth: popupMinWidth }}>
       <div className={`${prefixCls}-range-arrow`} />
 
-      <PickerPanel<DateType>
-        {...panelProps}
-        generateConfig={generateConfig}
-        className={classNames({
-          [`${prefixCls}-panel-focused`]: !startTyping && !endTyping,
-        })}
-        value={getIndexValue(selectedValue, activePickerIndex)}
-        locale={locale}
-        tabIndex={-1}
-        onMouseDown={e => {
-          e.preventDefault();
-        }}
-        onChange={date => {
-          setSelectedValue(
-            updateRangeValue(selectedValue, date, activePickerIndex),
-          );
-        }}
-      />
-
-      <PickerPanel<DateType>
-        {...panelProps}
-        generateConfig={generateConfig}
-        className={classNames({
-          [`${prefixCls}-panel-focused`]: !startTyping && !endTyping,
-        })}
-        value={getIndexValue(selectedValue, activePickerIndex)}
-        locale={locale}
-        tabIndex={-1}
-        onMouseDown={e => {
-          e.preventDefault();
-        }}
-        onChange={date => {
-          setSelectedValue(
-            updateRangeValue(selectedValue, date, activePickerIndex),
-          );
-        }}
-      />
+      {renderPanels()}
     </div>
   );
 
@@ -535,7 +593,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     >
       <PickerTrigger
         visible={mergedOpen}
-        popupElement={panel}
+        popupElement={rangePanel}
         popupStyle={popupStyle}
         prefixCls={prefixCls}
         dropdownClassName={dropdownClassName}

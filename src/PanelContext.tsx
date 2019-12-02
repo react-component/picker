@@ -10,6 +10,8 @@ export interface PanelContextProps {
   /** Only work with time panel */
   hideHeader?: boolean;
   panelRef?: React.Ref<HTMLDivElement>;
+  hidePrevBtn?: boolean;
+  hideNextBtn?: boolean;
 }
 
 const PanelContext = React.createContext<PanelContextProps>({});
