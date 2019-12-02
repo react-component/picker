@@ -212,7 +212,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
   >(null);
 
   // Open
-  const [mergedOpen, triggerOpen] = useMergedState({
+  const [mergedOpen, triggerInnerOpen] = useMergedState({
     value: open,
     defaultValue: defaultOpen,
     defaultStateValue: false,
@@ -261,17 +261,22 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   };
 
+  const triggerOpen = (newOpen: boolean, index: 0 | 1) => {
+    if (newOpen) {
+      setActivePickerIndex(index);
+      triggerInnerOpen(newOpen);
+    } else if (activePickerIndex === index) {
+      triggerInnerOpen(newOpen);
+      triggerChange(selectedValue);
+    }
+  };
+
   const forwardKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (mergedOpen && operationRef.current && operationRef.current.onKeyDown) {
       // Let popup panel handle keyboard
       return operationRef.current.onKeyDown(e);
     }
     return false;
-  };
-
-  const triggerClose = () => {
-    triggerOpen(false);
-    triggerChange(selectedValue);
   };
 
   // ============================= Text ==============================
@@ -314,8 +319,6 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   // ============================= Input =============================
   const sharedInputHookProps = {
-    triggerOpen,
-    triggerClose,
     forwardKeyDown,
     onSubmit: () => {
       triggerChange(selectedValue);
@@ -351,6 +354,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
       setActivePickerIndex(0);
       passOnFocus(e);
     },
+    triggerOpen: newOpen => triggerOpen(newOpen, 0),
   });
 
   const [
@@ -371,6 +375,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
       setActivePickerIndex(1);
       passOnFocus(e);
     },
+    triggerOpen: newOpen => triggerOpen(newOpen, 1),
   });
 
   // ============================= Sync ==============================

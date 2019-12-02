@@ -183,7 +183,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   >(null);
 
   // Open
-  const [mergedOpen, triggerOpen] = useMergedState({
+  const [mergedOpen, triggerInnerOpen] = useMergedState({
     value: open,
     defaultValue: defaultOpen,
     defaultStateValue: false,
@@ -214,17 +214,19 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
+  const triggerOpen = (newOpen: boolean) => {
+    triggerInnerOpen(newOpen);
+    if (!newOpen) {
+      triggerChange(selectedValue);
+    }
+  };
+
   const forwardKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (mergedOpen && operationRef.current && operationRef.current.onKeyDown) {
       // Let popup panel handle keyboard
       return operationRef.current.onKeyDown(e);
     }
     return false;
-  };
-
-  const triggerClose = () => {
-    triggerOpen(false);
-    triggerChange(selectedValue);
   };
 
   // ============================= Text ==============================
@@ -252,7 +254,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const [inputProps, { focused, typing }] = usePickerInput({
     open: mergedOpen,
     triggerOpen,
-    triggerClose,
     forwardKeyDown,
     isClickOutside: target =>
       !!(
