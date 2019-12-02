@@ -26,6 +26,7 @@ import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import { PickerMode } from './interface';
 import { getDefaultFormat, getInputSize } from './utils/uiUtil';
 import usePickerInput from './hooks/usePickerInput';
+import useTextValueMapping from './hooks/useTextValueMapping';
 
 export interface PickerRefConfig {
   focus: () => void;
@@ -180,26 +181,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     setInternalSelectedValue,
   ] = React.useState<DateType | null>(mergedValue);
 
-  // Text
-  const [textValue, setTextValue] = React.useState<string>(
-    selectedValue
-      ? generateConfig.locale.format(
-          locale.locale,
-          selectedValue,
-          formatList[0],
-        )
-      : '',
-  );
-
-  /** Similar as `setTextValue` but accept `DateType` and convert into string */
-  const setDateText = (date: DateType | null) => {
-    setTextValue(
-      date === null
-        ? ''
-        : generateConfig.locale.format(locale.locale, date, formatList[0]),
-    );
-  };
-
   // Operation ref
   const operationRef: React.MutableRefObject<ContextOperationRefProps | null> = React.useRef<
     ContextOperationRefProps
@@ -232,40 +213,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
-  // ============================= Value =============================
-  const isSameTextDate = (text: string, date: DateType | null) => {
-    if (date === null) {
-      return !text;
-    }
-
-    const inputDate = generateConfig.locale.parse(
-      locale.locale,
-      text,
-      formatList,
-    );
-    return isEqual(generateConfig, inputDate, date);
-  };
-
   // =========================== Formatter ===========================
   const setSelectedValue = (newDate: DateType | null) => {
-    if (!isSameTextDate(textValue, newDate)) {
-      setDateText(newDate);
-    }
     setInternalSelectedValue(newDate);
-  };
-
-  const onInputChange: React.ChangeEventHandler<HTMLInputElement> = e => {
-    const text = e.target.value;
-    setTextValue(text);
-
-    const inputDate = generateConfig.locale.parse(
-      locale.locale,
-      text,
-      formatList,
-    );
-    if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
-      setSelectedValue(inputDate);
-    }
   };
 
   // ============================ Trigger ============================
@@ -297,6 +247,31 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     triggerChange(selectedValue);
   };
 
+  // ============================= Text ==============================
+  const valueTexts = React.useMemo<string[]>(() => {
+    if (!selectedValue) {
+      return [''];
+    }
+    return formatList.map(subFormat =>
+      generateConfig.locale.format(locale.locale, selectedValue, subFormat),
+    );
+  }, [selectedValue]);
+
+  const [text, setText, resetText] = useTextValueMapping({
+    valueTexts,
+    onTextChange: newText => {
+      const inputDate = generateConfig.locale.parse(
+        locale.locale,
+        newText,
+        formatList,
+      );
+      if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
+        setSelectedValue(inputDate);
+      }
+    },
+  });
+
+  // ============================= Input =============================
   const [inputProps, { focused, typing }] = usePickerInput({
     open: mergedOpen,
     triggerOpen,
@@ -324,8 +299,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   // ============================= Sync ==============================
   // Close should sync back with text value
   React.useEffect(() => {
-    if (!mergedOpen && !isSameTextDate(textValue, mergedValue)) {
-      setDateText(mergedValue);
+    if (!mergedOpen) {
+      resetText();
     }
   }, [mergedOpen]);
 
@@ -335,11 +310,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       // Sync inner & select value
       setInnerValue(mergedValue);
       setSelectedValue(mergedValue);
-    }
-
-    // Sync text
-    if (!isSameTextDate(textValue, mergedValue)) {
-      setDateText(mergedValue);
     }
   }, [mergedValue]);
 
@@ -442,7 +412,10 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
             <input
               disabled={disabled}
               readOnly={inputReadOnly || !typing}
-              onChange={onInputChange}
+              value={text}
+              onChange={e => {
+                setText(e.target.value);
+              }}
               autoFocus={autoFocus}
               placeholder={placeholder}
               ref={inputRef}
