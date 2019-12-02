@@ -33,7 +33,6 @@ import useValueTexts from './hooks/useValueTexts';
 export interface PickerRefConfig {
   focus: () => void;
   blur: () => void;
-  open: () => void;
 }
 
 export interface PickerSharedProps<DateType> extends React.AriaAttributes {
@@ -301,9 +300,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
           inputRef.current.blur();
         }
       },
-      open: () => {
-        triggerOpen(true);
-      },
     };
   }
 
@@ -418,12 +414,6 @@ class Picker<DateType> extends React.Component<PickerProps<DateType>> {
   blur = () => {
     if (this.pickerRef.current) {
       this.pickerRef.current.blur();
-    }
-  };
-
-  open = () => {
-    if (this.pickerRef.current) {
-      this.pickerRef.current.open();
     }
   };
 

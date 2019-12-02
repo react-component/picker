@@ -1,7 +1,12 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { DisabledTimes, PanelMode, PickerMode } from './interface';
-import { PickerBaseProps, PickerDateProps, PickerTimeProps } from './Picker';
+import {
+  PickerBaseProps,
+  PickerDateProps,
+  PickerTimeProps,
+  PickerRefConfig,
+} from './Picker';
 import { SharedTimeProps } from './panels/TimePanel';
 import useMergedState from './hooks/useMergeState';
 import PickerTrigger from './PickerTrigger';
@@ -9,7 +14,7 @@ import PickerPanel from './PickerPanel';
 import usePickerInput from './hooks/usePickerInput';
 import getDataOrAriaProps, { toArray } from './utils/miscUtil';
 import { getDefaultFormat, getInputSize } from './utils/uiUtil';
-import { ContextOperationRefProps } from './PanelContext';
+import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import { isEqual } from './utils/dateUtil';
 import useValueTexts from './hooks/useValueTexts';
 import useTextValueMapping from './hooks/useTextValueMapping';
@@ -142,7 +147,7 @@ interface MergedRangePickerProps<DateType>
   picker?: PickerMode;
 }
 
-function RangePicker<DateType>(props: RangePickerProps<DateType>) {
+function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
     style,
@@ -170,6 +175,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
     allowClear,
     suffixIcon,
     clearIcon,
+    pickerRef,
     inputReadOnly,
     onChange,
     onOpenChange,
@@ -246,6 +252,7 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
       (!isEqual(generateConfig, getIndexValue(mergedValue, 0), startValue) ||
         !isEqual(generateConfig, getIndexValue(mergedValue, 1), endValue))
     ) {
+      console.warn('trigger change!!!!');
       onChange(values, [
         startValue
           ? generateConfig.locale.format(
@@ -393,7 +400,23 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
   }, [mergedValue]);
 
   // ============================ Private ============================
-  // TODO: pickerRef
+  if (pickerRef) {
+    pickerRef.current = {
+      focus: () => {
+        if (startInputRef.current) {
+          startInputRef.current.focus();
+        }
+      },
+      blur: () => {
+        if (startInputRef.current) {
+          startInputRef.current.blur();
+        }
+        if (endInputRef.current) {
+          endInputRef.current.blur();
+        }
+      },
+    };
+  }
 
   // ============================= Panel =============================
   const panelProps = {
@@ -449,53 +472,89 @@ function RangePicker<DateType>(props: RangePickerProps<DateType>) {
   };
 
   return (
-    <PickerTrigger
-      visible={mergedOpen}
-      popupElement={panel}
-      popupStyle={popupStyle}
-      prefixCls={prefixCls}
-      dropdownClassName={dropdownClassName}
-      dropdownAlign={dropdownAlign}
-      getPopupContainer={getPopupContainer}
-      transitionName={transitionName}
+    <PanelContext.Provider
+      value={{
+        operationRef,
+        hideHeader: picker === 'time',
+        panelRef: panelDivRef,
+      }}
     >
-      <div
-        className={classNames(`${prefixCls}-range`, className, {
-          [`${prefixCls}-range-disabled`]: disabled,
-          [`${prefixCls}-range-focused`]: startFocused || endFocused,
-        })}
-        style={style}
-        {...getDataOrAriaProps(props)}
+      <PickerTrigger
+        visible={mergedOpen}
+        popupElement={panel}
+        popupStyle={popupStyle}
+        prefixCls={prefixCls}
+        dropdownClassName={dropdownClassName}
+        dropdownAlign={dropdownAlign}
+        getPopupContainer={getPopupContainer}
+        transitionName={transitionName}
       >
-        <div className={`${prefixCls}-input`} ref={startInputDivRef}>
-          <input
-            readOnly={inputReadOnly || !startTyping}
-            value={startText}
-            onChange={triggerStartTextChange}
-            autoFocus={autoFocus}
-            placeholder={getIndexValue(placeholder, 0) || ''}
-            ref={startInputRef}
-            {...startInputProps}
-            {...inputSharedProps}
-          />
+        <div
+          className={classNames(`${prefixCls}-range`, className, {
+            [`${prefixCls}-range-disabled`]: disabled,
+            [`${prefixCls}-range-focused`]: startFocused || endFocused,
+          })}
+          style={style}
+          {...getDataOrAriaProps(props)}
+        >
+          <div className={`${prefixCls}-input`} ref={startInputDivRef}>
+            <input
+              readOnly={inputReadOnly || !startTyping}
+              value={startText}
+              onChange={triggerStartTextChange}
+              autoFocus={autoFocus}
+              placeholder={getIndexValue(placeholder, 0) || ''}
+              ref={startInputRef}
+              {...startInputProps}
+              {...inputSharedProps}
+            />
+          </div>
+          {separator}
+          <div className={`${prefixCls}-input`} ref={startInputDivRef}>
+            <input
+              readOnly={inputReadOnly || !startTyping}
+              value={endText}
+              onChange={triggerEndTextChange}
+              placeholder={getIndexValue(placeholder, 1) || ''}
+              ref={endInputRef}
+              {...endInputProps}
+              {...inputSharedProps}
+            />
+          </div>
+          {suffixNode}
+          {clearNode}
         </div>
-        {separator}
-        <div className={`${prefixCls}-input`} ref={startInputDivRef}>
-          <input
-            readOnly={inputReadOnly || !startTyping}
-            value={endText}
-            onChange={triggerEndTextChange}
-            placeholder={getIndexValue(placeholder, 1) || ''}
-            ref={endInputRef}
-            {...endInputProps}
-            {...inputSharedProps}
-          />
-        </div>
-        {suffixNode}
-        {clearNode}
-      </div>
-    </PickerTrigger>
+      </PickerTrigger>
+    </PanelContext.Provider>
   );
+}
+
+// Wrap with class component to enable pass generic with instance method
+class RangePicker<DateType> extends React.Component<
+  RangePickerProps<DateType>
+> {
+  pickerRef = React.createRef<PickerRefConfig>();
+
+  focus = () => {
+    if (this.pickerRef.current) {
+      this.pickerRef.current.focus();
+    }
+  };
+
+  blur = () => {
+    if (this.pickerRef.current) {
+      this.pickerRef.current.blur();
+    }
+  };
+
+  render() {
+    return (
+      <InnerRangePicker<DateType>
+        {...this.props}
+        pickerRef={this.pickerRef as React.MutableRefObject<PickerRefConfig>}
+      />
+    );
+  }
 }
 
 export default RangePicker;

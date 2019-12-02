@@ -49,7 +49,7 @@ export default () => {
       </h1>
 
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {/* <div style={{ margin: '0 8px' }}>
+        <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
           <RangePicker<Moment>
             {...sharedProps}
@@ -65,7 +65,7 @@ export default () => {
           >
             Focus!
           </button>
-        </div> */}
+        </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
           <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="year" />
