@@ -14,6 +14,19 @@ export function isNullEqual<T>(value1: T, value2: T): boolean | undefined {
   return undefined;
 }
 
+export function isSameYear<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  year1: NullableDateType<DateType>,
+  year2: NullableDateType<DateType>,
+) {
+  const equal = isNullEqual(year1, year2);
+  if (typeof equal === 'boolean') {
+    return equal;
+  }
+
+  return generateConfig.getYear(year1!) === generateConfig.getYear(year2!);
+}
+
 export function isSameMonth<DateType>(
   generateConfig: GenerateConfig<DateType>,
   month1: NullableDateType<DateType>,
@@ -25,7 +38,7 @@ export function isSameMonth<DateType>(
   }
 
   return (
-    generateConfig.getYear(month1!) === generateConfig.getYear(month2!) &&
+    isSameYear(generateConfig, month1, month2) &&
     generateConfig.getMonth(month1!) === generateConfig.getMonth(month2!)
   );
 }

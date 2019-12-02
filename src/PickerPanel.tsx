@@ -277,7 +277,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   // ============================ Effect ============================
   React.useEffect(() => {
     if (value && !initRef.current) {
-      setViewDate(value);
+      setInnerViewDate(value);
     }
   }, [value]);
 

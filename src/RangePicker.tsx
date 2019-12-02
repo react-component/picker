@@ -15,7 +15,13 @@ import usePickerInput from './hooks/usePickerInput';
 import getDataOrAriaProps, { toArray } from './utils/miscUtil';
 import { getDefaultFormat, getInputSize } from './utils/uiUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
-import { isEqual, getClosingViewDate } from './utils/dateUtil';
+import {
+  isEqual,
+  getClosingViewDate,
+  isSameDate,
+  isSameMonth,
+  isSameYear,
+} from './utils/dateUtil';
 import useValueTexts from './hooks/useValueTexts';
 import useTextValueMapping from './hooks/useTextValueMapping';
 import { GenerateConfig } from './generate';
@@ -32,9 +38,11 @@ function getIndexValue<T>(
   return values ? values[index] : null;
 }
 
+type UpdateValue<T> = (prev: T) => T;
+
 function updateRangeValue<T>(
   values: [T | null, T | null] | null,
-  value: T,
+  value: T | UpdateValue<T>,
   index: number,
 ): [T | null, T | null] | null {
   const newValues: [T | null, T | null] = [
@@ -42,7 +50,10 @@ function updateRangeValue<T>(
     getIndexValue(values, 1),
   ];
 
-  newValues[index] = value;
+  newValues[index] =
+    typeof value === 'function'
+      ? (value as UpdateValue<T | null>)(newValues[index])
+      : value;
 
   if (!newValues[0] && !newValues[1]) {
     return null;
@@ -305,6 +316,47 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     return false;
   };
 
+  // =========================== View Date ===========================
+  /**
+   * End view date is use right panel by default.
+   * But when they in same month (date picker) or year (month picker), will both use left panel.
+   */
+  function getEndViewDate(viewDate: DateType) {
+    let compareFunc: (
+      generateConfig: GenerateConfig<DateType>,
+      date1: DateType | null,
+      date2: DateType | null,
+    ) => boolean = isSameMonth;
+
+    if (picker === 'month') {
+      compareFunc = isSameYear;
+    }
+
+    if (
+      compareFunc(
+        generateConfig,
+        getIndexValue(mergedValue, 0),
+        getIndexValue(mergedValue, 1),
+      )
+    ) {
+      return viewDate;
+    }
+    return getClosingViewDate(viewDate, picker, generateConfig, -1);
+  }
+
+  // Config view panel
+  const [viewDates, setViewDates] = useMergedState<
+    RangeValue<DateType>,
+    [DateType, DateType]
+  >({
+    defaultValue:
+      defaultPickerValue ||
+      updateRangeValue(mergedValue, viewDate => getEndViewDate(viewDate), 1),
+    defaultStateValue: null,
+    postState: postViewDates =>
+      postViewDates || [generateConfig.getNow(), generateConfig.getNow()],
+  });
+
   // ============================= Text ==============================
   const sharedTextHooksProps = {
     formatList,
@@ -330,6 +382,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     );
     if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
       setSelectedValue(updateRangeValue(selectedValue, inputDate, index));
+      setViewDates(updateRangeValue(viewDates, inputDate, index));
     }
   };
 
@@ -456,18 +509,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     };
   }
 
-  // =========================== View Date ===========================
-  const [viewDates, setViewDates] = useMergedState<
-    RangeValue<DateType>,
-    [DateType, DateType]
-  >({
-    defaultValue: defaultPickerValue || mergedValue,
-    defaultStateValue: null,
-    postState: postViewDates =>
-      postViewDates || [generateConfig.getNow(), generateConfig.getNow()],
-  });
-
-  // ============================= Panel =============================
+  // ============================= Modes =============================
   // const [mergedMode, setMode] = useMergedState<[PanelMode, PanelMode]>({
   //   value: mode,
   //   defaultStateValue: [picker, picker],
@@ -481,6 +523,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   //     ],
   //   );
   // };
+  // ============================= Panel =============================
 
   function renderPanel(
     startPanel?: boolean,
