@@ -5,11 +5,13 @@ export default function useMergedState<T>({
   defaultValue,
   defaultStateValue,
   onChange,
+  postState,
 }: {
   value?: T;
   defaultValue?: T;
   defaultStateValue: T;
   onChange?: (value: T, prevValue: T) => void;
+  postState?: (value: T) => T;
 }): [T, (value: T) => void] {
   const [innerValue, setInnerValue] = React.useState<T>(() => {
     if (value !== undefined) {
@@ -21,12 +23,15 @@ export default function useMergedState<T>({
     return defaultStateValue;
   });
 
-  const mergedValue = value !== undefined ? value : innerValue;
+  let mergedValue = value !== undefined ? value : innerValue;
+  if (postState) {
+    mergedValue = postState(mergedValue);
+  }
 
   function triggerChange(newValue: T) {
     setInnerValue(newValue);
 
-    if (onChange) {
+    if (mergedValue !== newValue && onChange) {
       onChange(newValue, mergedValue);
     }
   }

@@ -27,6 +27,8 @@ import { PickerMode } from './interface';
 import { getDefaultFormat, getInputSize } from './utils/uiUtil';
 import usePickerInput from './hooks/usePickerInput';
 import useTextValueMapping from './hooks/useTextValueMapping';
+import useMergedState from './hooks/useMergeState';
+import useValueTexts from './hooks/useValueTexts';
 
 export interface PickerRefConfig {
   focus: () => void;
@@ -164,45 +166,29 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const inputDivRef = React.useRef<HTMLDivElement>(null);
 
   // Real value
-  const [innerValue, setInnerValue] = React.useState<DateType | null>(() => {
-    if (value !== undefined) {
-      return value;
-    }
-    if (defaultValue !== undefined) {
-      return defaultValue;
-    }
-    return null;
+  const [mergedValue, setInnerValue] = useMergedState({
+    value,
+    defaultValue,
+    defaultStateValue: null,
   });
-  const mergedValue = value !== undefined ? value : innerValue;
 
   // Selected value
-  const [
-    selectedValue,
-    setInternalSelectedValue,
-  ] = React.useState<DateType | null>(mergedValue);
+  const [selectedValue, setSelectedValue] = React.useState<DateType | null>(
+    mergedValue,
+  );
 
   // Operation ref
   const operationRef: React.MutableRefObject<ContextOperationRefProps | null> = React.useRef<
     ContextOperationRefProps
   >(null);
 
-  // Trigger
-  const [innerOpen, setInnerOpen] = React.useState<boolean>(() => {
-    if (defaultOpen !== undefined) {
-      return defaultOpen;
-    }
-    return false;
-  });
-  let mergedOpen: boolean;
-  if (disabled) {
-    mergedOpen = false;
-  } else {
-    mergedOpen = typeof open === 'boolean' ? open : innerOpen;
-  }
-
-  const triggerOpen = (newOpen: boolean) => {
-    if (mergedOpen !== newOpen) {
-      setInnerOpen(newOpen);
+  // Open
+  const [mergedOpen, triggerOpen] = useMergedState({
+    value: open,
+    defaultValue: defaultOpen,
+    defaultStateValue: false,
+    postState: postOpen => (disabled ? false : postOpen),
+    onChange: newOpen => {
       if (onOpenChange) {
         onOpenChange(newOpen);
       }
@@ -210,13 +196,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       if (!newOpen && operationRef.current && operationRef.current.onClose) {
         operationRef.current.onClose();
       }
-    }
-  };
-
-  // =========================== Formatter ===========================
-  const setSelectedValue = (newDate: DateType | null) => {
-    setInternalSelectedValue(newDate);
-  };
+    },
+  });
 
   // ============================ Trigger ============================
   const triggerChange = (newValue: DateType | null) => {
@@ -243,21 +224,17 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   const triggerClose = () => {
     triggerOpen(false);
-    setInnerValue(selectedValue);
     triggerChange(selectedValue);
   };
 
   // ============================= Text ==============================
-  const valueTexts = React.useMemo<string[]>(() => {
-    if (!selectedValue) {
-      return [''];
-    }
-    return formatList.map(subFormat =>
-      generateConfig.locale.format(locale.locale, selectedValue, subFormat),
-    );
-  }, [selectedValue]);
+  const valueTexts = useValueTexts(selectedValue, {
+    formatList,
+    generateConfig,
+    locale,
+  });
 
-  const [text, setText, resetText] = useTextValueMapping({
+  const [text, triggerTextChange] = useTextValueMapping({
     valueTexts,
     onTextChange: newText => {
       const inputDate = generateConfig.locale.parse(
@@ -300,17 +277,14 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   // Close should sync back with text value
   React.useEffect(() => {
     if (!mergedOpen) {
-      resetText();
+      setSelectedValue(mergedValue);
     }
   }, [mergedOpen]);
 
   // Sync innerValue with control mode
   React.useEffect(() => {
-    if (!isEqual(generateConfig, mergedValue, innerValue)) {
-      // Sync inner & select value
-      setInnerValue(mergedValue);
-      setSelectedValue(mergedValue);
-    }
+    // Sync select value
+    setSelectedValue(mergedValue);
   }, [mergedValue]);
 
   // ============================ Private ============================
@@ -413,9 +387,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               disabled={disabled}
               readOnly={inputReadOnly || !typing}
               value={text}
-              onChange={e => {
-                setText(e.target.value);
-              }}
+              onChange={triggerTextChange}
               autoFocus={autoFocus}
               placeholder={placeholder}
               ref={inputRef}
