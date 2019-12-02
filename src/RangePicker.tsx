@@ -252,7 +252,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       (!isEqual(generateConfig, getIndexValue(mergedValue, 0), startValue) ||
         !isEqual(generateConfig, getIndexValue(mergedValue, 1), endValue))
     ) {
-      console.warn('trigger change!!!!');
       onChange(values, [
         startValue
           ? generateConfig.locale.format(
@@ -268,13 +267,19 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   };
 
-  const triggerOpen = (newOpen: boolean, index: 0 | 1) => {
+  const triggerOpen = (
+    newOpen: boolean,
+    index: 0 | 1,
+    preventChangeEvent: boolean = false,
+  ) => {
     if (newOpen) {
       setActivePickerIndex(index);
       triggerInnerOpen(newOpen);
     } else if (activePickerIndex === index) {
       triggerInnerOpen(newOpen);
-      triggerChange(selectedValue);
+      if (!preventChangeEvent) {
+        triggerChange(selectedValue);
+      }
     }
   };
 
@@ -314,12 +319,18 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   };
 
-  const [startText, triggerStartTextChange] = useTextValueMapping<DateType>({
+  const [
+    startText,
+    triggerStartTextChange,
+    resetStartText,
+  ] = useTextValueMapping<DateType>({
     valueTexts: startValueTexts,
     onTextChange: newText => onTextChange(newText, 0),
   });
 
-  const [endText, triggerEndTextChange] = useTextValueMapping<DateType>({
+  const [endText, triggerEndTextChange, resetEndText] = useTextValueMapping<
+    DateType
+  >({
     valueTexts: endValueTexts,
     onTextChange: newText => onTextChange(newText, 1),
   });
@@ -327,13 +338,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   // ============================= Input =============================
   const sharedInputHookProps = {
     forwardKeyDown,
-    onSubmit: () => {
-      triggerChange(selectedValue);
-    },
-    onCancel: () => {
-      triggerChange(mergedValue);
-      setSelectedValue(mergedValue);
-    },
     onBlur,
   };
 
@@ -362,6 +366,16 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       passOnFocus(e);
     },
     triggerOpen: newOpen => triggerOpen(newOpen, 0),
+    onSubmit: () => {
+      triggerChange(selectedValue);
+      triggerOpen(false, 0, true);
+      resetStartText();
+    },
+    onCancel: () => {
+      triggerOpen(false, 0, true);
+      setSelectedValue(mergedValue);
+      resetStartText();
+    },
   });
 
   const [
@@ -383,6 +397,16 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       passOnFocus(e);
     },
     triggerOpen: newOpen => triggerOpen(newOpen, 1),
+    onSubmit: () => {
+      triggerChange(selectedValue);
+      triggerOpen(false, 1, true);
+      resetEndText();
+    },
+    onCancel: () => {
+      triggerOpen(false, 1, true);
+      setSelectedValue(mergedValue);
+      resetEndText();
+    },
   });
 
   // ============================= Sync ==============================

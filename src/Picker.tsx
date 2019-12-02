@@ -213,9 +213,12 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
-  const triggerOpen = (newOpen: boolean) => {
+  const triggerOpen = (
+    newOpen: boolean,
+    preventChangeEvent: boolean = false,
+  ) => {
     triggerInnerOpen(newOpen);
-    if (!newOpen) {
+    if (!newOpen && !preventChangeEvent) {
       triggerChange(selectedValue);
     }
   };
@@ -235,7 +238,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     locale,
   });
 
-  const [text, triggerTextChange] = useTextValueMapping({
+  const [text, triggerTextChange, resetText] = useTextValueMapping({
     valueTexts,
     onTextChange: newText => {
       const inputDate = generateConfig.locale.parse(
@@ -264,10 +267,13 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       ),
     onSubmit: () => {
       triggerChange(selectedValue);
+      triggerOpen(false, true);
+      resetText();
     },
     onCancel: () => {
-      triggerChange(mergedValue);
+      triggerOpen(false, true);
       setSelectedValue(mergedValue);
+      resetText();
     },
     onFocus,
     onBlur,

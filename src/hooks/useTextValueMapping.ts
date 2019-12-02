@@ -7,7 +7,7 @@ export default function useTextValueMapping<ValueType>({
   /** Must useMemo, to assume that `valueTexts` only match on the first change */
   valueTexts: string[];
   onTextChange: (text: string) => void;
-}): [string, React.ChangeEventHandler<HTMLInputElement>] {
+}): [string, React.ChangeEventHandler<HTMLInputElement>, () => void] {
   const [text, setInnerText] = React.useState('');
 
   function triggerTextChange({
@@ -17,11 +17,15 @@ export default function useTextValueMapping<ValueType>({
     onTextChange(value);
   }
 
+  function resetText() {
+    setInnerText(valueTexts[0]);
+  }
+
   React.useEffect(() => {
     if (valueTexts.every(valText => valText !== text)) {
-      setInnerText(valueTexts[0]);
+      resetText();
     }
   }, [valueTexts.join('||')]);
 
-  return [text, triggerTextChange];
+  return [text, triggerTextChange, resetText];
 }

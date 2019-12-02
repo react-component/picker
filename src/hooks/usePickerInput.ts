@@ -45,7 +45,6 @@ export default function usePickerInput({
             triggerOpen(true);
           } else {
             onSubmit();
-            triggerOpen(false);
             setTyping(true);
           }
           return;
@@ -65,7 +64,6 @@ export default function usePickerInput({
         }
 
         case KeyCode.ESC: {
-          triggerOpen(false);
           setTyping(true);
           onCancel();
           return;
