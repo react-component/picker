@@ -160,8 +160,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
 
   // View date control
   const [viewDate, setViewDate] = useMergedState<DateType | null, DateType>({
-    value: mergedValue,
-    defaultValue: defaultPickerValue,
+    defaultValue: defaultPickerValue || mergedValue,
     defaultStateValue: null,
     postState: date => date || generateConfig.getNow(),
   });

@@ -245,9 +245,22 @@
   // ======================= Dropdown =======================
   &-dropdown {
     position: absolute;
+    box-shadow: 0 0 1px red;
 
     &-hidden {
       display: none;
+    }
+
+    // Panel
+    .@{prefix-cls}-range-arrow {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: blue;
+    }
+
+    .@{prefix-cls}-panel {
+      margin: 10px 0;
     }
   }
 

@@ -458,6 +458,27 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   const panel = (
     <div style={{ minWidth: popupMinWidth }}>
+      <div className={`${prefixCls}-range-arrow`} />
+
+      <PickerPanel<DateType>
+        {...panelProps}
+        generateConfig={generateConfig}
+        className={classNames({
+          [`${prefixCls}-panel-focused`]: !startTyping && !endTyping,
+        })}
+        value={getIndexValue(selectedValue, activePickerIndex)}
+        locale={locale}
+        tabIndex={-1}
+        onMouseDown={e => {
+          e.preventDefault();
+        }}
+        onChange={date => {
+          setSelectedValue(
+            updateRangeValue(selectedValue, date, activePickerIndex),
+          );
+        }}
+      />
+
       <PickerPanel<DateType>
         {...panelProps}
         generateConfig={generateConfig}
