@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export default function useMergedState<T>({
+export default function useMergedState<T, R = T>({
   value,
   defaultValue,
   defaultStateValue,
@@ -12,7 +12,7 @@ export default function useMergedState<T>({
   defaultStateValue: T;
   onChange?: (value: T, prevValue: T) => void;
   postState?: (value: T) => T;
-}): [T, (value: T) => void] {
+}): [R, (value: T) => void] {
   const [innerValue, setInnerValue] = React.useState<T>(() => {
     if (value !== undefined) {
       return value;

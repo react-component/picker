@@ -183,6 +183,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     onBlur,
   } = props as MergedRangePickerProps<DateType>;
 
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const panelDivRef = React.useRef<HTMLDivElement>(null);
+  const startInputDivRef = React.useRef<HTMLDivElement>(null);
+  const endInputDivRef = React.useRef<HTMLDivElement>(null);
   const startInputRef = React.useRef<HTMLInputElement>(null);
   const endInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -193,11 +197,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   // Active picker
   const [activePickerIndex, setActivePickerIndex] = React.useState<0 | 1>(0);
-
-  // Panel ref
-  const panelDivRef = React.useRef<HTMLDivElement>(null);
-  const startInputDivRef = React.useRef<HTMLDivElement>(null);
-  const endInputDivRef = React.useRef<HTMLDivElement>(null);
 
   // Real value
   const [mergedValue, setInnerValue] = useMergedState({
@@ -236,6 +235,14 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   const startOpen = mergedOpen && activePickerIndex === 0;
   const endOpen = mergedOpen && activePickerIndex === 1;
+
+  // Popup min width
+  const [popupMinWidth, setPopupMinWidth] = React.useState(0);
+  React.useEffect(() => {
+    if (!mergedOpen && containerRef.current) {
+      setPopupMinWidth(containerRef.current.offsetWidth);
+    }
+  }, [mergedOpen]);
 
   // ============================ Trigger ============================
   const triggerChange = (newValue: RangeValue<DateType>) => {
@@ -450,24 +457,26 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   };
 
   const panel = (
-    <PickerPanel<DateType>
-      {...panelProps}
-      generateConfig={generateConfig}
-      className={classNames({
-        [`${prefixCls}-panel-focused`]: !startTyping && !endTyping,
-      })}
-      value={getIndexValue(selectedValue, activePickerIndex)}
-      locale={locale}
-      tabIndex={-1}
-      onMouseDown={e => {
-        e.preventDefault();
-      }}
-      onChange={date => {
-        setSelectedValue(
-          updateRangeValue(selectedValue, date, activePickerIndex),
-        );
-      }}
-    />
+    <div style={{ minWidth: popupMinWidth }}>
+      <PickerPanel<DateType>
+        {...panelProps}
+        generateConfig={generateConfig}
+        className={classNames({
+          [`${prefixCls}-panel-focused`]: !startTyping && !endTyping,
+        })}
+        value={getIndexValue(selectedValue, activePickerIndex)}
+        locale={locale}
+        tabIndex={-1}
+        onMouseDown={e => {
+          e.preventDefault();
+        }}
+        onChange={date => {
+          setSelectedValue(
+            updateRangeValue(selectedValue, date, activePickerIndex),
+          );
+        }}
+      />
+    </div>
   );
 
   let suffixNode: React.ReactNode;
@@ -514,6 +523,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         transitionName={transitionName}
       >
         <div
+          ref={containerRef}
           className={classNames(`${prefixCls}-range`, className, {
             [`${prefixCls}-range-disabled`]: disabled,
             [`${prefixCls}-range-focused`]: startFocused || endFocused,

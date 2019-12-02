@@ -26,6 +26,7 @@ import { DateRender } from './panels/DatePanel/DateBody';
 import { PickerModeMap } from './utils/uiUtil';
 import { MonthCellRender } from './panels/MonthPanel/MonthBody';
 import RangeContext, { FooterSelection } from './RangeContext';
+import useMergedState from './hooks/useMergeState';
 
 export interface PickerPanelSharedProps<DateType> {
   prefixCls?: string;
@@ -158,9 +159,12 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const mergedValue = value !== undefined ? value : innerValue;
 
   // View date control
-  const [viewDate, setViewDate] = React.useState(
-    () => defaultPickerValue || mergedValue || generateConfig.getNow(),
-  );
+  const [viewDate, setViewDate] = useMergedState<DateType | null, DateType>({
+    value: mergedValue,
+    defaultValue: defaultPickerValue,
+    defaultStateValue: null,
+    postState: date => date || generateConfig.getNow(),
+  });
 
   // Panel control
   const getInternalNextMode = (nextMode: PanelMode): PanelMode => {
