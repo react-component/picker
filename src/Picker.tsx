@@ -12,7 +12,6 @@
  */
 
 import * as React from 'react';
-import KeyCode from 'rc-util/lib/KeyCode';
 import classNames from 'classnames';
 import { AlignType } from 'rc-trigger/lib/interface';
 import PickerPanel, {
@@ -25,11 +24,8 @@ import { isEqual } from './utils/dateUtil';
 import getDataOrAriaProps, { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import { PickerMode } from './interface';
-import {
-  getDefaultFormat,
-  getInputSize,
-  addGlobalMouseDownEvent,
-} from './utils/uiUtil';
+import { getDefaultFormat, getInputSize } from './utils/uiUtil';
+import usePickerInput from './hooks/usePickerInput';
 
 export interface PickerRefConfig {
   focus: () => void;
@@ -47,6 +43,7 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   autoFocus?: boolean;
   disabled?: boolean;
   open?: boolean;
+  defaultOpen?: boolean;
   /** Make input readOnly to avoid popup keyboard in mobile */
   inputReadOnly?: boolean;
 
@@ -134,6 +131,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     value,
     defaultValue,
     open,
+    defaultOpen,
     suffixIcon,
     clearIcon,
     disabled,
@@ -192,7 +190,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         )
       : '',
   );
-  const [typing, setTyping] = React.useState(false);
 
   /** Similar as `setTextValue` but accept `DateType` and convert into string */
   const setDateText = (date: DateType | null) => {
@@ -209,7 +206,12 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   >(null);
 
   // Trigger
-  const [innerOpen, setInnerOpen] = React.useState<boolean>(false);
+  const [innerOpen, setInnerOpen] = React.useState<boolean>(() => {
+    if (defaultOpen !== undefined) {
+      return defaultOpen;
+    }
+    return false;
+  });
   let mergedOpen: boolean;
   if (disabled) {
     mergedOpen = false;
@@ -229,9 +231,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       }
     }
   };
-
-  // Focus
-  const [focused, setFocused] = React.useState(false);
 
   // ============================= Value =============================
   const isSameTextDate = (text: string, date: DateType | null) => {
@@ -253,11 +252,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       setDateText(newDate);
     }
     setInternalSelectedValue(newDate);
-  };
-
-  const onInputMouseDown: React.MouseEventHandler<HTMLInputElement> = () => {
-    triggerOpen(true);
-    setTyping(true);
   };
 
   const onInputChange: React.ChangeEventHandler<HTMLInputElement> = e => {
@@ -290,75 +284,12 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   };
 
   const forwardKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
-    if (
-      !typing &&
-      mergedOpen &&
-      operationRef.current &&
-      operationRef.current.onKeyDown
-    ) {
+    if (mergedOpen && operationRef.current && operationRef.current.onKeyDown) {
       // Let popup panel handle keyboard
       return operationRef.current.onKeyDown(e);
     }
     return false;
   };
-
-  const onInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = e => {
-    switch (e.which) {
-      case KeyCode.ENTER: {
-        if (!mergedOpen) {
-          triggerOpen(true);
-        } else {
-          triggerChange(selectedValue);
-          triggerOpen(false);
-          setTyping(true);
-        }
-        return;
-      }
-
-      case KeyCode.TAB: {
-        if (typing && mergedOpen && !e.shiftKey) {
-          setTyping(false);
-          e.preventDefault();
-        } else if (!typing && mergedOpen) {
-          if (!forwardKeyDown(e) && e.shiftKey) {
-            setTyping(true);
-            e.preventDefault();
-          }
-        }
-        return;
-      }
-
-      case KeyCode.ESC: {
-        triggerChange(mergedValue);
-        setSelectedValue(mergedValue);
-        triggerOpen(false);
-        setTyping(true);
-        return;
-      }
-    }
-
-    if (!mergedOpen && ![KeyCode.SHIFT].includes(e.which)) {
-      triggerOpen(true);
-    } else {
-      // Let popup panel handle keyboard
-      forwardKeyDown(e);
-    }
-  };
-
-  const onInputFocus: React.FocusEventHandler<HTMLInputElement> = e => {
-    setTyping(true);
-    setFocused(true);
-
-    if (onFocus) {
-      onFocus(e);
-    }
-  };
-
-  /**
-   * We will prevent blur to handle open event when user click outside,
-   * since this will repeat trigger `onOpenChange` event.
-   */
-  const preventBlurRef = React.useRef<boolean>(false);
 
   const triggerClose = () => {
     triggerOpen(false);
@@ -366,19 +297,29 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     triggerChange(selectedValue);
   };
 
-  const onInputBlur: React.FocusEventHandler<HTMLInputElement> = e => {
-    if (preventBlurRef.current) {
-      preventBlurRef.current = false;
-      return;
-    }
-
-    triggerClose();
-    setFocused(false);
-
-    if (onBlur) {
-      onBlur(e);
-    }
-  };
+  const [inputProps, { focused, typing }] = usePickerInput({
+    open: mergedOpen,
+    triggerOpen,
+    triggerClose,
+    forwardKeyDown,
+    isClickOutside: target =>
+      !!(
+        panelDivRef.current &&
+        !panelDivRef.current.contains(target as Node) &&
+        inputDivRef.current &&
+        !inputDivRef.current.contains(target as Node) &&
+        onOpenChange
+      ),
+    onSubmit: () => {
+      triggerChange(selectedValue);
+    },
+    onCancel: () => {
+      triggerChange(mergedValue);
+      setSelectedValue(mergedValue);
+    },
+    onFocus,
+    onBlur,
+  });
 
   // ============================= Sync ==============================
   // Close should sync back with text value
@@ -401,28 +342,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       setDateText(mergedValue);
     }
   }, [mergedValue]);
-
-  // Global click handler
-  React.useEffect(() =>
-    addGlobalMouseDownEvent(({ target }: MouseEvent) => {
-      if (
-        mergedOpen &&
-        panelDivRef.current &&
-        !panelDivRef.current.contains(target as Node) &&
-        inputDivRef.current &&
-        !inputDivRef.current.contains(target as Node) &&
-        onOpenChange
-      ) {
-        preventBlurRef.current = true;
-        triggerClose();
-
-        // Always set back in case `onBlur` prevented by user
-        window.setTimeout(() => {
-          preventBlurRef.current = false;
-        }, 0);
-      }
-    }),
-  );
 
   // ============================ Private ============================
   if (pickerRef) {
@@ -523,15 +442,11 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
             <input
               disabled={disabled}
               readOnly={inputReadOnly || !typing}
-              onMouseDown={onInputMouseDown}
-              onFocus={onInputFocus}
-              onBlur={onInputBlur}
-              value={textValue}
               onChange={onInputChange}
-              onKeyDown={onInputKeyDown}
               autoFocus={autoFocus}
               placeholder={placeholder}
               ref={inputRef}
+              {...inputProps}
               size={getInputSize(picker, formatList[0])}
               {...getDataOrAriaProps(props)}
             />
