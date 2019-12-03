@@ -77,6 +77,14 @@ function reorderValues<DateType>(
   return values;
 }
 
+function canValueTrigger<DateType>(
+  value: EventValue<DateType>,
+  index: number,
+  allowEmpty?: [boolean, boolean] | null,
+): boolean {
+  return !!(value || (allowEmpty && allowEmpty[index]));
+}
+
 export interface RangePickerSharedProps<DateType> {
   value?: RangeValue<DateType>;
   defaultValue?: RangeValue<DateType>;
@@ -175,6 +183,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     locale,
     placeholder,
     autoFocus,
+    allowEmpty,
     disabled,
     format,
     picker = 'date',
@@ -325,36 +334,70 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }, [mergedOpen]);
 
   // ============================ Trigger ============================
-  const triggerChange = (newValue: RangeValue<DateType>) => {
+  let triggerOpen: (
+    newOpen: boolean,
+    index: 0 | 1,
+    preventChangeEvent?: boolean,
+  ) => void;
+
+  const triggerChange = (
+    newValue: RangeValue<DateType>,
+    forceInput: boolean = true,
+  ) => {
     const values = reorderValues(newValue, generateConfig);
 
     setSelectedValue(values);
-    setInnerValue(values);
 
     const startValue = getIndexValue(values, 0);
     const endValue = getIndexValue(values, 1);
 
-    if (
-      onChange &&
-      (!isEqual(generateConfig, getIndexValue(mergedValue, 0), startValue) ||
-        !isEqual(generateConfig, getIndexValue(mergedValue, 1), endValue))
-    ) {
-      onChange(values, [
-        startValue
-          ? generateConfig.locale.format(
-              locale.locale,
-              startValue,
-              formatList[0],
-            )
-          : '',
-        endValue
-          ? generateConfig.locale.format(locale.locale, endValue, formatList[0])
-          : '',
-      ]);
+    const canStartValueTrigger = canValueTrigger(startValue, 0, allowEmpty);
+    const canEndValueTrigger = canValueTrigger(endValue, 1, allowEmpty);
+
+    const canTrigger =
+      values === null || (canStartValueTrigger && canEndValueTrigger);
+
+    if (canTrigger) {
+      // Trigger onChange only when value is validate
+      setInnerValue(values);
+
+      if (
+        onChange &&
+        (!isEqual(generateConfig, getIndexValue(mergedValue, 0), startValue) ||
+          !isEqual(generateConfig, getIndexValue(mergedValue, 1), endValue))
+      ) {
+        onChange(values, [
+          startValue
+            ? generateConfig.locale.format(
+                locale.locale,
+                startValue,
+                formatList[0],
+              )
+            : '',
+          endValue
+            ? generateConfig.locale.format(
+                locale.locale,
+                endValue,
+                formatList[0],
+              )
+            : '',
+        ]);
+      }
+    } else if (forceInput) {
+      // Open miss value panel to force user input
+      const missingValueIndex = canStartValueTrigger ? 1 : 0;
+      triggerOpen(true, missingValueIndex);
+
+      // Delay to focus to avoid input blur trigger expired selectedValues
+      setTimeout(() => {
+        if (endInputRef.current) {
+          endInputRef.current.focus();
+        }
+      }, 0);
     }
   };
 
-  const triggerOpen = (
+  triggerOpen = (
     newOpen: boolean,
     index: 0 | 1,
     preventChangeEvent: boolean = false,
@@ -536,7 +579,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             e.preventDefault();
           }}
           onSelect={date => {
-            setSelectedValue(
+            // triggerChange will also update selected values
+            triggerChange(
               updateRangeValue(selectedValue, date, activePickerIndex),
             );
           }}
