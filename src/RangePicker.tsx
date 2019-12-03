@@ -390,8 +390,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
       // Delay to focus to avoid input blur trigger expired selectedValues
       setTimeout(() => {
-        if (endInputRef.current) {
-          endInputRef.current.focus();
+        const inputRef = [startInputRef, endInputRef][missingValueIndex];
+        if (inputRef.current) {
+          inputRef.current.focus();
         }
       }, 0);
     }
