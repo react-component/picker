@@ -4,6 +4,7 @@ import RangePicker from '../src/RangePicker';
 import momentGenerateConfig from '../src/generate/moment';
 import zhCN from '../src/locale/zh_CN';
 import '../assets/index.less';
+import './common.less';
 
 const defaultStartValue = moment('2019-09-03 05:02:03');
 const defaultEndValue = moment('2019-11-28 01:02:03');
@@ -43,12 +44,30 @@ export default () => {
 
   return (
     <div>
-      <h1>
+      <h2>
         Value:{' '}
         {value ? `${formatDate(value[0])} ~ ${formatDate(value[1])}` : 'null'}
-      </h1>
+      </h2>
 
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Basic</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            allowClear
+            ref={rangePickerRef}
+          />
+          <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            allowClear
+            ref={rangePickerRef}
+            showTime
+          />
+        </div>
+
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
           <RangePicker<Moment>
@@ -56,6 +75,7 @@ export default () => {
             locale={zhCN}
             allowClear
             ref={rangePickerRef}
+            // style={{ width: 500 }}
           />
           <button
             type="button"
@@ -78,7 +98,25 @@ export default () => {
             locale={zhCN}
             allowClear
             allowEmpty={[true, true]}
-            selectable={[true, false]}
+          />
+        </div>
+
+        <div style={{ margin: '0 8px' }}>
+          <h3>Start disabled</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            allowClear
+            disabled={[true, false]}
+          />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>End disabled</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            allowClear
+            disabled={[false, true]}
           />
         </div>
 

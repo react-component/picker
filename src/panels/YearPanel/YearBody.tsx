@@ -2,7 +2,8 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { GenerateConfig } from '../../generate';
 import { YEAR_DECADE_COUNT } from '.';
-import { Locale } from '../../interface';
+import { Locale, NullableDateType } from '../../interface';
+import PanelContext from '../../PanelContext';
 
 export const YEAR_COL_COUNT = 3;
 const YEAR_ROW_COUNT = 4;
@@ -11,6 +12,7 @@ export interface YearBodyProps<DateType> {
   prefixCls: string;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
+  value: NullableDateType<DateType>;
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;
@@ -18,15 +20,19 @@ export interface YearBodyProps<DateType> {
 
 function YearBody<DateType>({
   prefixCls,
+  value,
   viewDate,
   locale,
   generateConfig,
   disabledDate,
   onSelect,
 }: YearBodyProps<DateType>) {
+  const { onDateMouseEnter, onDateMouseLeave } = React.useContext(PanelContext);
+
   const yearPrefixCls = `${prefixCls}-cell`;
   const rows: React.ReactNode[] = [];
 
+  const valueYearNumber = value ? generateConfig.getYear(value) : null;
   const yearNumber = generateConfig.getYear(viewDate);
   const startYear =
     Math.floor(yearNumber / YEAR_DECADE_COUNT) * YEAR_DECADE_COUNT;
@@ -54,13 +60,23 @@ function YearBody<DateType>({
             [`${yearPrefixCls}-disabled`]: disabled,
             [`${yearPrefixCls}-in-view`]:
               startYear <= currentYearNumber && currentYearNumber <= endYear,
-            [`${yearPrefixCls}-selected`]: currentYearNumber === yearNumber,
+            [`${yearPrefixCls}-selected`]:
+              currentYearNumber === valueYearNumber,
           })}
           onClick={() => {
-            if (disabled) {
-              return;
+            if (!disabled) {
+              onSelect(yearDate);
             }
-            onSelect(yearDate);
+          }}
+          onMouseEnter={() => {
+            if (!disabled && onDateMouseEnter) {
+              onDateMouseEnter(yearDate);
+            }
+          }}
+          onMouseLeave={() => {
+            if (!disabled && onDateMouseLeave) {
+              onDateMouseLeave(yearDate);
+            }
           }}
         >
           <div className={`${yearPrefixCls}-inner`}>{currentYearNumber}</div>

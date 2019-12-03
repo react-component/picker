@@ -39,14 +39,7 @@ export interface Locale {
   shortMonths?: string[];
 }
 
-export type PanelMode =
-  | 'time'
-  | 'datetime'
-  | 'date'
-  | 'week'
-  | 'month'
-  | 'year'
-  | 'decade';
+export type PanelMode = 'time' | 'date' | 'week' | 'month' | 'year' | 'decade';
 
 export type PickerMode = Exclude<PanelMode, 'datetime' | 'decade'>;
 
@@ -97,3 +90,8 @@ export type OnPanelChange<DateType> = (
   value: DateType,
   mode: PanelMode,
 ) => void;
+
+export type EventValue<DateType> = DateType | null;
+export type RangeValue<DateType> =
+  | [EventValue<DateType>, EventValue<DateType>]
+  | null;

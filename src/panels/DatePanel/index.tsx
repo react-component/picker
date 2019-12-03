@@ -90,10 +90,10 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
           onMonthChange(1);
         }}
         onMonthClick={() => {
-          onPanelChange('month', value || viewDate);
+          onPanelChange('month', viewDate);
         }}
         onYearClick={() => {
-          onPanelChange('year', value || viewDate);
+          onPanelChange('year', viewDate);
         }}
       />
       <DateBody

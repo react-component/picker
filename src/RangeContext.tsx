@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NullableDateType } from './interface';
+import { NullableDateType, RangeValue } from './interface';
 
 export interface FooterSelection {
   label: string;
@@ -13,7 +13,9 @@ interface RangeContextProps {
    * Panel only has one value, this is only style effect.
    */
   rangedValue?: [NullableDateType<any>, NullableDateType<any>];
+  hoverRangedValue?: RangeValue<any>;
   inRange?: boolean;
+  panelPosition?: 'left' | 'right' | false;
 }
 
 const RangeContext = React.createContext<RangeContextProps>({});

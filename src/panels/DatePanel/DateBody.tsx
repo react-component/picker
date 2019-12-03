@@ -10,6 +10,7 @@ import {
 } from '../../utils/dateUtil';
 import { Locale } from '../../interface';
 import RangeContext from '../../RangeContext';
+import PanelContext from '../../PanelContext';
 
 export type DateRender<DateType> = (
   currentDate: DateType,
@@ -48,7 +49,8 @@ function DateBody<DateType>({
   dateRender,
   onSelect,
 }: DateBodyProps<DateType>) {
-  const { rangedValue } = React.useContext(RangeContext);
+  const { rangedValue, hoverRangedValue } = React.useContext(RangeContext);
+  const { onDateMouseEnter, onDateMouseLeave } = React.useContext(PanelContext);
 
   const datePrefixCls = `${prefixCls}-cell`;
   const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale.locale);
@@ -95,10 +97,19 @@ function DateBody<DateType>({
             'YYYY-MM-DD',
           )}
           onClick={() => {
-            if (disabled) {
-              return;
+            if (!disabled) {
+              onSelect(currentDate);
             }
-            onSelect(currentDate);
+          }}
+          onMouseEnter={() => {
+            if (!disabled && onDateMouseEnter) {
+              onDateMouseEnter(currentDate);
+            }
+          }}
+          onMouseLeave={() => {
+            if (!disabled && onDateMouseLeave) {
+              onDateMouseLeave(currentDate);
+            }
           }}
           className={classNames(datePrefixCls, {
             [`${datePrefixCls}-disabled`]: disabled,
@@ -121,6 +132,22 @@ function DateBody<DateType>({
             [`${datePrefixCls}-range-end`]: isSameDate(
               generateConfig,
               rangedValue && rangedValue[1],
+              currentDate,
+            ),
+            [`${datePrefixCls}-range-hover`]: isInRange(
+              generateConfig,
+              hoverRangedValue && hoverRangedValue[0],
+              hoverRangedValue && hoverRangedValue[1],
+              currentDate,
+            ),
+            [`${datePrefixCls}-range-hover-start`]: isSameDate(
+              generateConfig,
+              hoverRangedValue && hoverRangedValue[0],
+              currentDate,
+            ),
+            [`${datePrefixCls}-range-hover-end`]: isSameDate(
+              generateConfig,
+              hoverRangedValue && hoverRangedValue[1],
               currentDate,
             ),
             [`${datePrefixCls}-today`]: isSameDate(

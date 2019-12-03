@@ -1,4 +1,9 @@
 import * as React from 'react';
+import PanelContext from '../PanelContext';
+
+const HIDDEN_STYLE: React.CSSProperties = {
+  visibility: 'hidden',
+};
 
 export interface HeaderProps {
   prefixCls: string;
@@ -33,6 +38,8 @@ function Header({
   onNext,
   children,
 }: HeaderProps) {
+  const { hideNextBtn, hidePrevBtn } = React.useContext(PanelContext);
+
   return (
     <div className={prefixCls}>
       {onSuperPrev && (
@@ -41,6 +48,7 @@ function Header({
           onClick={onSuperPrev}
           tabIndex={-1}
           className={`${prefixCls}-super-prev-btn`}
+          style={hidePrevBtn ? HIDDEN_STYLE : {}}
         >
           {superPrevIcon}
         </button>
@@ -51,6 +59,7 @@ function Header({
           onClick={onPrev}
           tabIndex={-1}
           className={`${prefixCls}-prev-btn`}
+          style={hidePrevBtn ? HIDDEN_STYLE : {}}
         >
           {prevIcon}
         </button>
@@ -62,6 +71,7 @@ function Header({
           onClick={onNext}
           tabIndex={-1}
           className={`${prefixCls}-next-btn`}
+          style={hideNextBtn ? HIDDEN_STYLE : {}}
         >
           {nextIcon}
         </button>
@@ -72,6 +82,7 @@ function Header({
           onClick={onSuperNext}
           tabIndex={-1}
           className={`${prefixCls}-super-next-btn`}
+          style={hideNextBtn ? HIDDEN_STYLE : {}}
         >
           {superNextIcon}
         </button>
