@@ -40,11 +40,11 @@ function getIndexValue<T>(
 
 type UpdateValue<T> = (prev: T) => T;
 
-function updateRangeValue<T>(
+function updateRangeValue<T, R = [T | null, T | null] | null>(
   values: [T | null, T | null] | null,
   value: T | UpdateValue<T>,
   index: number,
-): [T | null, T | null] | null {
+): R {
   const newValues: [T | null, T | null] = [
     getIndexValue(values, 0),
     getIndexValue(values, 1),
@@ -56,10 +56,10 @@ function updateRangeValue<T>(
       : value;
 
   if (!newValues[0] && !newValues[1]) {
-    return null;
+    return (null as unknown) as R;
   }
 
-  return newValues;
+  return (newValues as unknown) as R;
 }
 
 function reorderValues<DateType>(
@@ -208,7 +208,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const startInputRef = React.useRef<HTMLInputElement>(null);
   const endInputRef = React.useRef<HTMLInputElement>(null);
 
-  // ======================== State ========================
+  // ============================= Misc ==============================
   const formatList = toArray(
     getDefaultFormat(format, picker, showTime, use12Hours),
   );
@@ -216,7 +216,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   // Active picker
   const [activePickerIndex, setActivePickerIndex] = React.useState<0 | 1>(0);
 
-  // Real value
+  // Operation ref
+  const operationRef: React.MutableRefObject<ContextOperationRefProps | null> = React.useRef<
+    ContextOperationRefProps
+  >(null);
+
+  // ============================= Value =============================
   const [mergedValue, setInnerValue] = useMergedState({
     value,
     defaultValue,
@@ -224,17 +229,74 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     postState: values => reorderValues(values, generateConfig),
   });
 
-  // Selected value
+  // =========================== View Date ===========================
+  /**
+   * End view date is use right panel by default.
+   * But when they in same month (date picker) or year (month picker), will both use left panel.
+   */
+  function getEndViewDate(viewDate: DateType, values: RangeValue<DateType>) {
+    let compareFunc: (
+      generateConfig: GenerateConfig<DateType>,
+      date1: DateType | null,
+      date2: DateType | null,
+    ) => boolean = isSameMonth;
+
+    if (picker === 'month') {
+      compareFunc = isSameYear;
+    }
+
+    if (
+      compareFunc(
+        generateConfig,
+        getIndexValue(values, 0),
+        getIndexValue(values, 1),
+      )
+    ) {
+      return viewDate;
+    }
+    return getClosingViewDate(viewDate, picker, generateConfig, -1);
+  }
+
+  // Config view panel
+  const [viewDates, setViewDates] = useMergedState<
+    RangeValue<DateType>,
+    [DateType, DateType]
+  >({
+    defaultValue:
+      defaultPickerValue ||
+      updateRangeValue(
+        mergedValue,
+        (viewDate: DateType) => getEndViewDate(viewDate, mergedValue),
+        1,
+      ),
+    defaultStateValue: null,
+    postState: postViewDates =>
+      postViewDates || [generateConfig.getNow(), generateConfig.getNow()],
+  });
+
+  // ========================= Select Values =========================
   const [selectedValue, setSelectedValue] = React.useState<
     RangeValue<DateType>
   >(mergedValue);
 
-  // Operation ref
-  const operationRef: React.MutableRefObject<ContextOperationRefProps | null> = React.useRef<
-    ContextOperationRefProps
-  >(null);
+  // ============================= Modes =============================
+  const [mergedModes, setInnerModes] = useMergedState<[PanelMode, PanelMode]>({
+    value: mode,
+    defaultStateValue: [picker, picker],
+  });
 
-  // Open
+  const triggerModesChange = (
+    modes: [PanelMode, PanelMode],
+    values: RangeValue<DateType>,
+  ) => {
+    setInnerModes(modes);
+
+    if (onPanelChange) {
+      onPanelChange(values, modes);
+    }
+  };
+
+  // ============================= Open ==============================
   const [mergedOpen, triggerInnerOpen] = useMergedState({
     value: open,
     defaultValue: defaultOpen,
@@ -254,6 +316,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const startOpen = mergedOpen && activePickerIndex === 0;
   const endOpen = mergedOpen && activePickerIndex === 1;
 
+  // ============================= Popup =============================
   // Popup min width
   const [popupMinWidth, setPopupMinWidth] = React.useState(0);
   React.useEffect(() => {
@@ -315,47 +378,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
     return false;
   };
-
-  // =========================== View Date ===========================
-  /**
-   * End view date is use right panel by default.
-   * But when they in same month (date picker) or year (month picker), will both use left panel.
-   */
-  function getEndViewDate(viewDate: DateType) {
-    let compareFunc: (
-      generateConfig: GenerateConfig<DateType>,
-      date1: DateType | null,
-      date2: DateType | null,
-    ) => boolean = isSameMonth;
-
-    if (picker === 'month') {
-      compareFunc = isSameYear;
-    }
-
-    if (
-      compareFunc(
-        generateConfig,
-        getIndexValue(mergedValue, 0),
-        getIndexValue(mergedValue, 1),
-      )
-    ) {
-      return viewDate;
-    }
-    return getClosingViewDate(viewDate, picker, generateConfig, -1);
-  }
-
-  // Config view panel
-  const [viewDates, setViewDates] = useMergedState<
-    RangeValue<DateType>,
-    [DateType, DateType]
-  >({
-    defaultValue:
-      defaultPickerValue ||
-      updateRangeValue(mergedValue, viewDate => getEndViewDate(viewDate), 1),
-    defaultStateValue: null,
-    postState: postViewDates =>
-      postViewDates || [generateConfig.getNow(), generateConfig.getNow()],
-  });
 
   // ============================= Text ==============================
   const sharedTextHooksProps = {
@@ -509,20 +531,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     };
   }
 
-  // ============================= Modes =============================
-  // const [mergedMode, setMode] = useMergedState<[PanelMode, PanelMode]>({
-  //   value: mode,
-  //   defaultStateValue: [picker, picker],
-  // });
-
-  // const triggerPanelChange = (date: DateType, newMode: PanelMode) => {
-  //   setMode(
-  //     updateRangeValue<PanelMode>(mergedMode, newMode, 0) as [
-  //       PanelMode,
-  //       PanelMode,
-  //     ],
-  //   );
-  // };
   // ============================= Panel =============================
 
   function renderPanel(
@@ -539,6 +547,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         <PickerPanel<DateType>
           {...(props as any)}
           {...panelProps}
+          mode={mergedModes[activePickerIndex]}
           generateConfig={generateConfig}
           style={undefined}
           className={classNames({
@@ -555,6 +564,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               updateRangeValue(selectedValue, date, activePickerIndex),
             );
           }}
+          onPanelChange={(date, newMode) => {
+            triggerModesChange(
+              updateRangeValue(mergedModes, newMode, activePickerIndex),
+              updateRangeValue(selectedValue, date, activePickerIndex),
+            );
+          }}
         />
       </RangeContext.Provider>
     );
@@ -564,6 +579,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     if (picker !== 'time' && !showTime) {
       const viewDate = viewDates[activePickerIndex];
       const nextViewDate = getClosingViewDate(viewDate, picker, generateConfig);
+      const currentMode = mergedModes[activePickerIndex];
 
       return (
         <>
@@ -575,18 +591,19 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               );
             },
           })}
-          {renderPanel(false, {
-            pickerValue: nextViewDate,
-            onPickerValueChange: newViewDate => {
-              setViewDates(
-                updateRangeValue(
-                  viewDates,
-                  getClosingViewDate(newViewDate, picker, generateConfig, -1),
-                  activePickerIndex,
-                ),
-              );
-            },
-          })}
+          {currentMode === picker &&
+            renderPanel(false, {
+              pickerValue: nextViewDate,
+              onPickerValueChange: newViewDate => {
+                setViewDates(
+                  updateRangeValue(
+                    viewDates,
+                    getClosingViewDate(newViewDate, picker, generateConfig, -1),
+                    activePickerIndex,
+                  ),
+                );
+              },
+            })}
         </>
       );
     }
