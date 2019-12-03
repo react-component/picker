@@ -8,8 +8,8 @@ export default function useMergedState<T, R = T>({
   postState,
 }: {
   value?: T;
-  defaultValue?: T;
-  defaultStateValue: T;
+  defaultValue?: T | (() => T);
+  defaultStateValue: T | (() => T);
   onChange?: (value: T, prevValue: T) => void;
   postState?: (value: T) => T;
 }): [R, (value: T) => void] {
@@ -18,9 +18,13 @@ export default function useMergedState<T, R = T>({
       return value;
     }
     if (defaultValue !== undefined) {
-      return defaultValue;
+      return typeof defaultValue === 'function'
+        ? (defaultValue as any)()
+        : defaultValue;
     }
-    return defaultStateValue;
+    return typeof defaultStateValue === 'function'
+      ? (defaultStateValue as any)()
+      : defaultStateValue;
   });
 
   let mergedValue = value !== undefined ? value : innerValue;
@@ -36,5 +40,5 @@ export default function useMergedState<T, R = T>({
     }
   }
 
-  return [mergedValue, triggerChange];
+  return [(mergedValue as unknown) as R, triggerChange];
 }

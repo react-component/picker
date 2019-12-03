@@ -54,10 +54,17 @@ export default () => {
           <h3>Basic</h3>
           <RangePicker<Moment>
             {...sharedProps}
+            value={undefined}
             locale={zhCN}
             allowClear
             ref={rangePickerRef}
-            open
+            // open
+          />
+          <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            allowClear
+            ref={rangePickerRef}
           />
           {/* <RangePicker<Moment>
             {...sharedProps}

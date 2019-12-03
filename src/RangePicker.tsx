@@ -261,7 +261,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     RangeValue<DateType>,
     [DateType, DateType]
   >({
-    defaultValue:
+    defaultValue: () =>
       defaultPickerValue ||
       updateRangeValue(
         mergedValue,
