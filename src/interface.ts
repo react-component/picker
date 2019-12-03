@@ -92,4 +92,6 @@ export type OnPanelChange<DateType> = (
 ) => void;
 
 export type EventValue<DateType> = DateType | null;
-export type RangeValue<DateType> = [EventValue<DateType>, EventValue<DateType>] | null;
+export type RangeValue<DateType> =
+  | [EventValue<DateType>, EventValue<DateType>]
+  | null;

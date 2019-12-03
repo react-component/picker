@@ -16,6 +16,7 @@ export default function useRangeDisabled<DateType>(
       return true;
     }
 
-    if (startDate) {}
+    if (startDate) {
+    }
   }
 }
