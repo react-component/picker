@@ -113,10 +113,10 @@
     }
 
     &-range-hover-start::after {
-      border-left: 1px solid green!important;
+      border-left: 1px solid green !important;
     }
     &-range-hover-end::after {
-      border-right: 1px solid green!important;
+      border-right: 1px solid green !important;
     }
 
     &-today > &-inner {
@@ -292,6 +292,8 @@
       transform: rotate(-45deg);
       top: @arrow-size / 2 + 1px;
       left: @arrow-size;
+      margin-left: 10px;
+      transition: left 0.3s;
 
       &::before,
       &::after {
@@ -329,5 +331,20 @@
   &-range {
     display: inline-flex;
     position: relative;
+
+    .@{prefix-cls}-active-bar {
+      background: green;
+      bottom: 0;
+      height: 3px;
+      pointer-events: none;
+      transition: all 0.3s;
+      opacity: 0;
+    }
+
+    &-focused {
+      .@{prefix-cls}-active-bar {
+        opacity: 1;
+      }
+    }
   }
 }

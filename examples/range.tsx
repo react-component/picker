@@ -65,6 +65,7 @@ export default () => {
             allowClear
             ref={rangePickerRef}
             showTime
+            style={{ width: 700 }}
           />
         </div>
 

@@ -209,6 +209,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const panelDivRef = React.useRef<HTMLDivElement>(null);
   const startInputDivRef = React.useRef<HTMLDivElement>(null);
   const endInputDivRef = React.useRef<HTMLDivElement>(null);
+  const separatorRef = React.useRef<HTMLDivElement>(null);
   const startInputRef = React.useRef<HTMLInputElement>(null);
   const endInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -707,7 +708,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       const showDoublePanel = currentMode === picker;
 
       return (
-        <>
+        <div className={`${prefixCls}-range-panels`} ref={panelDivRef}>
           {renderPanel(showDoublePanel ? 'left' : false, {
             pickerValue: viewDate,
             onPickerValueChange: (newViewDate: DateType) => {
@@ -729,15 +730,22 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
                 );
               },
             })}
-        </>
+        </div>
       );
     }
     return renderPanel();
   }
 
+  let arrowLeft: number = 0;
+  if (activePickerIndex && startInputDivRef.current && separatorRef.current) {
+    // Arrow offset
+    arrowLeft =
+      startInputDivRef.current.offsetWidth + separatorRef.current.offsetWidth;
+  }
+
   const rangePanel = (
     <div style={{ minWidth: popupMinWidth }}>
-      <div className={`${prefixCls}-range-arrow`} />
+      <div className={`${prefixCls}-range-arrow`} style={{ left: arrowLeft }} />
 
       {renderPanels()}
     </div>
@@ -780,12 +788,26 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     size: getInputSize(picker, formatList[0]),
   };
 
+  let activeBarLeft: number = 0;
+  let activeBarWidth: number = 0;
+  if (
+    startInputDivRef.current &&
+    endInputDivRef.current &&
+    separatorRef.current
+  ) {
+    if (activePickerIndex === 0) {
+      activeBarWidth = startInputDivRef.current.offsetWidth;
+    } else {
+      activeBarLeft = arrowLeft;
+      activeBarWidth = endInputDivRef.current.offsetWidth;
+    }
+  }
+
   return (
     <PanelContext.Provider
       value={{
         operationRef,
         hideHeader: picker === 'time',
-        panelRef: panelDivRef,
         onDateMouseEnter,
         onDateMouseLeave,
       }}
@@ -828,12 +850,14 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               {...inputSharedProps}
             />
           </div>
-          {separator}
+          <div className={`${prefixCls}-range-separator`} ref={separatorRef}>
+            {separator}
+          </div>
           <div
             className={classNames(`${prefixCls}-input`, {
               [`${prefixCls}-input-active`]: activePickerIndex === 1,
             })}
-            ref={startInputDivRef}
+            ref={endInputDivRef}
           >
             <input
               disabled={mergedDisabled[1]}
@@ -846,6 +870,14 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               {...inputSharedProps}
             />
           </div>
+          <div
+            className={`${prefixCls}-active-bar`}
+            style={{
+              left: activeBarLeft,
+              width: activeBarWidth,
+              position: 'absolute',
+            }}
+          />
           {suffixNode}
           {clearNode}
         </div>
