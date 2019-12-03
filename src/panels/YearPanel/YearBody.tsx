@@ -12,7 +12,7 @@ export interface YearBodyProps<DateType> {
   prefixCls: string;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
-  value: NullableDateType<DateType>;
+  value?: NullableDateType<DateType>;
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;
