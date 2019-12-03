@@ -11,6 +11,7 @@ export interface YearBodyProps<DateType> {
   prefixCls: string;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
+  value: DateType;
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;
@@ -18,6 +19,7 @@ export interface YearBodyProps<DateType> {
 
 function YearBody<DateType>({
   prefixCls,
+  value,
   viewDate,
   locale,
   generateConfig,
@@ -27,6 +29,7 @@ function YearBody<DateType>({
   const yearPrefixCls = `${prefixCls}-cell`;
   const rows: React.ReactNode[] = [];
 
+  const valueYearNumber = value ? generateConfig.getYear(value) : null;
   const yearNumber = generateConfig.getYear(viewDate);
   const startYear =
     Math.floor(yearNumber / YEAR_DECADE_COUNT) * YEAR_DECADE_COUNT;
@@ -54,7 +57,8 @@ function YearBody<DateType>({
             [`${yearPrefixCls}-disabled`]: disabled,
             [`${yearPrefixCls}-in-view`]:
               startYear <= currentYearNumber && currentYearNumber <= endYear,
-            [`${yearPrefixCls}-selected`]: currentYearNumber === yearNumber,
+            [`${yearPrefixCls}-selected`]:
+              currentYearNumber === valueYearNumber,
           })}
           onClick={() => {
             if (disabled) {

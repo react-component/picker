@@ -624,8 +624,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
       const showDoublePanel = currentMode === picker;
 
-      console.log('=>', viewDate);
-
       return (
         <>
           {renderPanel(showDoublePanel ? 'left' : false, {
