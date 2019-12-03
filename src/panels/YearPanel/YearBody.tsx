@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { GenerateConfig } from '../../generate';
 import { YEAR_DECADE_COUNT } from '.';
-import { Locale } from '../../interface';
+import { Locale, NullableDateType } from '../../interface';
 
 export const YEAR_COL_COUNT = 3;
 const YEAR_ROW_COUNT = 4;
@@ -11,7 +11,7 @@ export interface YearBodyProps<DateType> {
   prefixCls: string;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
-  value: DateType;
+  value: NullableDateType<DateType>;
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;

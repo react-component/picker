@@ -98,6 +98,15 @@ export default () => {
             locale={zhCN}
             allowClear
             allowEmpty={[true, true]}
+          />
+        </div>
+
+        <div style={{ margin: '0 8px' }}>
+          <h3>Selectable</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            allowClear
             selectable={[true, false]}
           />
         </div>

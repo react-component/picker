@@ -1,6 +1,12 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { DisabledTimes, PanelMode, PickerMode } from './interface';
+import {
+  DisabledTimes,
+  PanelMode,
+  PickerMode,
+  RangeValue,
+  EventValue,
+} from './interface';
 import {
   PickerBaseProps,
   PickerDateProps,
@@ -12,7 +18,11 @@ import useMergedState from './hooks/useMergeState';
 import PickerTrigger from './PickerTrigger';
 import PickerPanel from './PickerPanel';
 import usePickerInput from './hooks/usePickerInput';
-import getDataOrAriaProps, { toArray } from './utils/miscUtil';
+import getDataOrAriaProps, {
+  toArray,
+  getValue,
+  updateValues,
+} from './utils/miscUtil';
 import { getDefaultFormat, getInputSize } from './utils/uiUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import {
@@ -26,40 +36,6 @@ import useTextValueMapping from './hooks/useTextValueMapping';
 import { GenerateConfig } from './generate';
 import { PickerPanelProps } from '.';
 import RangeContext from './RangeContext';
-
-type EventValue<DateType> = DateType | null;
-type RangeValue<DateType> = [EventValue<DateType>, EventValue<DateType>] | null;
-
-function getIndexValue<T>(
-  values: null | undefined | [T | null, T | null],
-  index: number,
-): T | null {
-  return values ? values[index] : null;
-}
-
-type UpdateValue<T> = (prev: T) => T;
-
-function updateRangeValue<T, R = [T | null, T | null] | null>(
-  values: [T | null, T | null] | null,
-  value: T | UpdateValue<T>,
-  index: number,
-): R {
-  const newValues: [T | null, T | null] = [
-    getIndexValue(values, 0),
-    getIndexValue(values, 1),
-  ];
-
-  newValues[index] =
-    typeof value === 'function'
-      ? (value as UpdateValue<T | null>)(newValues[index])
-      : value;
-
-  if (!newValues[0] && !newValues[1]) {
-    return (null as unknown) as R;
-  }
-
-  return (newValues as unknown) as R;
-}
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -183,7 +159,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     locale,
     placeholder,
     autoFocus,
-    allowEmpty,
     disabled,
     format,
     picker = 'date',
@@ -196,6 +171,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     open,
     defaultOpen,
     disabledDate,
+    selectable,
+    allowEmpty,
     allowClear,
     suffixIcon,
     clearIcon,
@@ -253,13 +230,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       compareFunc = isSameYear;
     }
 
-    if (
-      compareFunc(
-        generateConfig,
-        getIndexValue(values, 0),
-        getIndexValue(values, 1),
-      )
-    ) {
+    if (compareFunc(generateConfig, getValue(values, 0), getValue(values, 1))) {
       return viewDate;
     }
     return getClosingViewDate(viewDate, picker, generateConfig, -1);
@@ -272,7 +243,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   >({
     defaultValue: () =>
       defaultPickerValue ||
-      updateRangeValue(
+      updateValues(
         mergedValue,
         (viewDate: DateType) => getEndViewDate(viewDate, mergedValue),
         1,
@@ -348,8 +319,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
     setSelectedValue(values);
 
-    const startValue = getIndexValue(values, 0);
-    const endValue = getIndexValue(values, 1);
+    const startValue = getValue(values, 0);
+    const endValue = getValue(values, 1);
 
     const canStartValueTrigger = canValueTrigger(startValue, 0, allowEmpty);
     const canEndValueTrigger = canValueTrigger(endValue, 1, allowEmpty);
@@ -364,8 +335,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
       if (
         onChange &&
-        (!isEqual(generateConfig, getIndexValue(mergedValue, 0), startValue) ||
-          !isEqual(generateConfig, getIndexValue(mergedValue, 1), endValue))
+        (!isEqual(generateConfig, getValue(mergedValue, 0), startValue) ||
+          !isEqual(generateConfig, getValue(mergedValue, 1), endValue))
       ) {
         onChange(values, [
           startValue
@@ -437,12 +408,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   };
 
   const startValueTexts = useValueTexts<DateType>(
-    getIndexValue(selectedValue, 0),
+    getValue(selectedValue, 0),
     sharedTextHooksProps,
   );
 
   const endValueTexts = useValueTexts<DateType>(
-    getIndexValue(selectedValue, 1),
+    getValue(selectedValue, 1),
     sharedTextHooksProps,
   );
 
@@ -453,8 +424,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       formatList,
     );
     if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
-      setSelectedValue(updateRangeValue(selectedValue, inputDate, index));
-      setViewDates(updateRangeValue(viewDates, inputDate, index));
+      setSelectedValue(updateValues(selectedValue, inputDate, index));
+      setViewDates(updateValues(viewDates, inputDate, index));
     }
   };
 
@@ -580,18 +551,14 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           className={classNames({
             [`${prefixCls}-panel-focused`]: !startTyping && !endTyping,
           })}
-          value={getIndexValue(selectedValue, activePickerIndex)}
+          value={getValue(selectedValue, activePickerIndex)}
           locale={locale}
           tabIndex={-1}
           onMouseDown={e => {
             e.preventDefault();
           }}
           onSelect={date => {
-            const values = updateRangeValue(
-              selectedValue,
-              date,
-              activePickerIndex,
-            );
+            const values = updateValues(selectedValue, date, activePickerIndex);
 
             if (picker === 'date' && showTime) {
               setSelectedValue(values);
@@ -602,11 +569,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           }}
           onPanelChange={(date, newMode) => {
             triggerModesChange(
-              updateRangeValue(mergedModes, newMode, activePickerIndex),
-              updateRangeValue(selectedValue, date, activePickerIndex),
+              updateValues(mergedModes, newMode, activePickerIndex),
+              updateValues(selectedValue, date, activePickerIndex),
             );
 
-            setViewDates(updateRangeValue(viewDates, date, activePickerIndex));
+            setViewDates(updateValues(viewDates, date, activePickerIndex));
           }}
           onChange={undefined}
           defaultValue={undefined}
@@ -630,7 +597,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             pickerValue: viewDate,
             onPickerValueChange: (newViewDate: DateType) => {
               setViewDates(
-                updateRangeValue(viewDates, newViewDate, activePickerIndex),
+                updateValues(viewDates, newViewDate, activePickerIndex),
               );
             },
           })}
@@ -639,7 +606,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               pickerValue: nextViewDate,
               onPickerValueChange: newViewDate => {
                 setViewDates(
-                  updateRangeValue(
+                  updateValues(
                     viewDates,
                     getClosingViewDate(newViewDate, picker, generateConfig, -1),
                     activePickerIndex,
@@ -682,7 +649,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }
 
   const inputSharedProps = {
-    disabled,
     size: getInputSize(picker, formatList[0]),
   };
 
@@ -715,11 +681,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         >
           <div className={`${prefixCls}-input`} ref={startInputDivRef}>
             <input
+              disabled={disabled || getValue(selectable, 0) === false}
               readOnly={inputReadOnly || !startTyping}
               value={startText}
               onChange={triggerStartTextChange}
               autoFocus={autoFocus}
-              placeholder={getIndexValue(placeholder, 0) || ''}
+              placeholder={getValue(placeholder, 0) || ''}
               ref={startInputRef}
               {...startInputProps}
               {...inputSharedProps}
@@ -728,10 +695,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           {separator}
           <div className={`${prefixCls}-input`} ref={startInputDivRef}>
             <input
+              disabled={disabled || getValue(selectable, 1) === false}
               readOnly={inputReadOnly || !startTyping}
               value={endText}
               onChange={triggerEndTextChange}
-              placeholder={getIndexValue(placeholder, 1) || ''}
+              placeholder={getValue(placeholder, 1) || ''}
               ref={endInputRef}
               {...endInputProps}
               {...inputSharedProps}
