@@ -35,6 +35,7 @@
 
     table {
       text-align: center;
+      border-collapse: collapse;
     }
   }
 
@@ -93,9 +94,36 @@
     &-in-range > &-inner {
       background: fade(blue, 5%);
     }
+    &-range-hover-start,
+    &-range-hover-end,
+    &-range-hover {
+      position: relative;
+      &::after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border: 1px solid green;
+        border-left: 0;
+        border-right: 0;
+        pointer-events: none;
+      }
+    }
+
+    &-range-hover-start::after {
+      border-left: 1px solid green!important;
+    }
+    &-range-hover-end::after {
+      border-right: 1px solid green!important;
+    }
+
     &-today > &-inner {
       border: 1px solid blue;
     }
+    &-range-start > &-inner,
+    &-range-end > &-inner,
     &-selected > &-inner {
       background: fade(blue, 20%);
     }

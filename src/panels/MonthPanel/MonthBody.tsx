@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { GenerateConfig } from '../../generate';
 import { Locale } from '../../interface';
 import { isSameMonth } from '../../utils/dateUtil';
+import PanelContext from '../../PanelContext';
 
 export const MONTH_COL_COUNT = 3;
 const MONTH_ROW_COUNT = 4;
@@ -33,6 +34,8 @@ function MonthBody<DateType>({
   monthCellRender,
   onSelect,
 }: MonthBodyProps<DateType>) {
+  const { onDateMouseEnter, onDateMouseLeave } = React.useContext(PanelContext);
+
   const monthPrefixCls = `${prefixCls}-cell`;
   const rows: React.ReactNode[] = [];
 
@@ -70,10 +73,19 @@ function MonthBody<DateType>({
             ),
           })}
           onClick={() => {
-            if (disabled) {
-              return;
+            if (!disabled) {
+              onSelect(monthDate);
             }
-            onSelect(monthDate);
+          }}
+          onMouseEnter={() => {
+            if (!disabled && onDateMouseEnter) {
+              onDateMouseEnter(monthDate);
+            }
+          }}
+          onMouseLeave={() => {
+            if (!disabled && onDateMouseLeave) {
+              onDateMouseLeave(monthDate);
+            }
           }}
         >
           {monthCellRender ? (

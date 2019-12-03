@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { GenerateConfig } from '../../generate';
 import { YEAR_DECADE_COUNT } from '.';
 import { Locale, NullableDateType } from '../../interface';
+import PanelContext from '../../PanelContext';
 
 export const YEAR_COL_COUNT = 3;
 const YEAR_ROW_COUNT = 4;
@@ -26,6 +27,8 @@ function YearBody<DateType>({
   disabledDate,
   onSelect,
 }: YearBodyProps<DateType>) {
+  const { onDateMouseEnter, onDateMouseLeave } = React.useContext(PanelContext);
+
   const yearPrefixCls = `${prefixCls}-cell`;
   const rows: React.ReactNode[] = [];
 
@@ -61,10 +64,19 @@ function YearBody<DateType>({
               currentYearNumber === valueYearNumber,
           })}
           onClick={() => {
-            if (disabled) {
-              return;
+            if (!disabled) {
+              onSelect(yearDate);
             }
-            onSelect(yearDate);
+          }}
+          onMouseEnter={() => {
+            if (!disabled && onDateMouseEnter) {
+              onDateMouseEnter(yearDate);
+            }
+          }}
+          onMouseLeave={() => {
+            if (!disabled && onDateMouseLeave) {
+              onDateMouseLeave(yearDate);
+            }
           }}
         >
           <div className={`${yearPrefixCls}-inner`}>{currentYearNumber}</div>

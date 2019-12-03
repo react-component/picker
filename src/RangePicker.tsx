@@ -293,6 +293,18 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     },
   });
 
+  // ========================== Hover Range ==========================
+  const [hoverRangedValue, setHoverRangedValue] = React.useState<
+    RangeValue<DateType>
+  >(null);
+
+  const onDateMouseEnter = (date: DateType) => {
+    setHoverRangedValue(updateValues(selectedValue, date, activePickerIndex));
+  };
+  const onDateMouseLeave = () => {
+    setHoverRangedValue(updateValues(selectedValue, null, activePickerIndex));
+  };
+
   // ============================= Modes =============================
   const [mergedModes, setInnerModes] = useMergedState<[PanelMode, PanelMode]>({
     value: mode,
@@ -591,11 +603,18 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     panelPosition: 'left' | 'right' | false = false,
     panelProps: Partial<PickerPanelProps<DateType>> = {},
   ) {
+    let panelHoverRangedValue: RangeValue<DateType> = null;
+    if (hoverRangedValue && hoverRangedValue[0] && hoverRangedValue[1]) {
+      panelHoverRangedValue = hoverRangedValue;
+    }
+
     return (
       <RangeContext.Provider
         value={{
           inRange: true,
           panelPosition,
+          rangedValue: selectedValue,
+          hoverRangedValue: panelHoverRangedValue,
         }}
       >
         <PickerPanel<DateType>
@@ -730,6 +749,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         operationRef,
         hideHeader: picker === 'time',
         panelRef: panelDivRef,
+        onDateMouseEnter,
+        onDateMouseLeave,
       }}
     >
       <PickerTrigger
