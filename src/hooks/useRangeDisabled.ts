@@ -17,6 +17,9 @@ export default function useRangeDisabled<DateType>(
     }
 
     if (startDate) {
+      // return generateConfig.
     }
+
+    return false;
   }
 }

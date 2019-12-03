@@ -56,9 +56,23 @@ function reorderValues<DateType>(
 function canValueTrigger<DateType>(
   value: EventValue<DateType>,
   index: number,
+  disabledList: [boolean, boolean],
   allowEmpty?: [boolean, boolean] | null,
 ): boolean {
-  return !!(value || (allowEmpty && allowEmpty[index]));
+  if (value) {
+    return true;
+  }
+
+  if (allowEmpty && allowEmpty[index]) {
+    return true;
+  }
+
+  // If another one is disabled, this can be trigger
+  if (disabledList[(index + 1) % 2]) {
+    return true;
+  }
+
+  return false;
 }
 
 export interface RangePickerSharedProps<DateType> {
@@ -66,6 +80,7 @@ export interface RangePickerSharedProps<DateType> {
   defaultValue?: RangeValue<DateType>;
   defaultPickerValue?: [DateType, DateType];
   placeholder?: [string, string];
+  disabled?: boolean | [boolean, boolean];
   disabledTime?: (
     date: EventValue<DateType>,
     type: 'start' | 'end',
@@ -77,7 +92,6 @@ export interface RangePickerSharedProps<DateType> {
   >;
   separator?: React.ReactNode;
   allowEmpty?: [boolean, boolean];
-  selectable?: [boolean, boolean];
   mode?: [PanelMode, PanelMode];
   onChange?: (
     values: RangeValue<DateType>,
@@ -101,6 +115,7 @@ type OmitPickerProps<Props> = Omit<
   | 'defaultValue'
   | 'defaultPickerValue'
   | 'placeholder'
+  | 'disabled'
   | 'disabledTime'
   | 'showToday'
   | 'showTime'
@@ -171,7 +186,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     open,
     defaultOpen,
     disabledDate,
-    selectable,
     allowEmpty,
     allowClear,
     suffixIcon,
@@ -206,8 +220,16 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     ContextOperationRefProps
   >(null);
 
+  const mergedDisabled = React.useMemo<[boolean, boolean]>(() => {
+    if (Array.isArray(disabled)) {
+      return disabled;
+    }
+
+    return [disabled || false, disabled || false];
+  }, [disabled]);
+
   // ============================= Value =============================
-  const [mergedValue, setInnerValue] = useMergedState({
+  const [mergedValue, setInnerValue] = useMergedState<RangeValue<DateType>>({
     value,
     defaultValue,
     defaultStateValue: null,
@@ -254,9 +276,18 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   });
 
   // ========================= Select Values =========================
-  const [selectedValue, setSelectedValue] = React.useState<
-    RangeValue<DateType>
-  >(mergedValue);
+  const [selectedValue, setSelectedValue] = useMergedState({
+    defaultStateValue: mergedValue,
+    postState: values => {
+      let postValues = values;
+      for (let i = 0; i < 2; i += 1) {
+        if (mergedDisabled[i] && !getValue(postValues, i)) {
+          postValues = updateValues(postValues, generateConfig.getNow(), i);
+        }
+      }
+      return postValues;
+    },
+  });
 
   // ============================= Modes =============================
   const [mergedModes, setInnerModes] = useMergedState<[PanelMode, PanelMode]>({
@@ -280,7 +311,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     value: open,
     defaultValue: defaultOpen,
     defaultStateValue: false,
-    postState: postOpen => (disabled ? false : postOpen),
+    postState: postOpen =>
+      mergedDisabled[activePickerIndex] ? false : postOpen,
     onChange: newOpen => {
       if (onOpenChange) {
         onOpenChange(newOpen);
@@ -322,8 +354,18 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     const startValue = getValue(values, 0);
     const endValue = getValue(values, 1);
 
-    const canStartValueTrigger = canValueTrigger(startValue, 0, allowEmpty);
-    const canEndValueTrigger = canValueTrigger(endValue, 1, allowEmpty);
+    const canStartValueTrigger = canValueTrigger(
+      startValue,
+      0,
+      mergedDisabled,
+      allowEmpty,
+    );
+    const canEndValueTrigger = canValueTrigger(
+      endValue,
+      1,
+      mergedDisabled,
+      allowEmpty,
+    );
 
     const canTrigger =
       values === null || (canStartValueTrigger && canEndValueTrigger);
@@ -634,12 +676,25 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }
 
   let clearNode: React.ReactNode;
-  if (allowClear && mergedValue && !disabled) {
+  if (
+    allowClear &&
+    ((getValue(mergedValue, 0) && !mergedDisabled[0]) ||
+      (getValue(mergedValue, 1) && !mergedDisabled[1]))
+  ) {
     clearNode = (
       <span
         onClick={e => {
           e.stopPropagation();
-          triggerChange(null);
+          let values = mergedValue;
+
+          if (!mergedDisabled[0]) {
+            values = updateValues(values, null, 0);
+          }
+          if (!mergedDisabled[1]) {
+            values = updateValues(values, null, 1);
+          }
+
+          triggerChange(values, false);
         }}
         className={`${prefixCls}-clear`}
       >
@@ -673,7 +728,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         <div
           ref={containerRef}
           className={classNames(`${prefixCls}-range`, className, {
-            [`${prefixCls}-range-disabled`]: disabled,
+            [`${prefixCls}-range-disabled`]:
+              mergedDisabled[0] && mergedDisabled[1],
             [`${prefixCls}-range-focused`]: startFocused || endFocused,
           })}
           style={style}
@@ -681,7 +737,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         >
           <div className={`${prefixCls}-input`} ref={startInputDivRef}>
             <input
-              disabled={disabled || getValue(selectable, 0) === false}
+              disabled={mergedDisabled[0]}
               readOnly={inputReadOnly || !startTyping}
               value={startText}
               onChange={triggerStartTextChange}
@@ -695,7 +751,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           {separator}
           <div className={`${prefixCls}-input`} ref={startInputDivRef}>
             <input
-              disabled={disabled || getValue(selectable, 1) === false}
+              disabled={mergedDisabled[1]}
               readOnly={inputReadOnly || !startTyping}
               value={endText}
               onChange={triggerEndTextChange}
