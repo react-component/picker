@@ -39,7 +39,7 @@ export default function getDataOrAriaProps(props: any) {
 }
 
 export function getValue<T>(
-  values: null | undefined | [T | null, T | null],
+  values: null | undefined | (T | null)[],
   index: number,
 ): T | null {
   return values ? values[index] : null;

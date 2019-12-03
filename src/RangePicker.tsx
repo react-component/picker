@@ -129,6 +129,13 @@ type OmitPickerProps<Props> = Omit<
   | 'onPickerValueChange'
 >;
 
+type RangeShowTimeObject<DateType> = Omit<
+  SharedTimeProps<DateType>,
+  'defaultValue'
+> & {
+  defaultValue?: DateType[];
+};
+
 export interface RangePickerBaseProps<DateType>
   extends RangePickerSharedProps<DateType>,
     OmitPickerProps<PickerBaseProps<DateType>> {}
@@ -136,11 +143,7 @@ export interface RangePickerBaseProps<DateType>
 export interface RangePickerDateProps<DateType>
   extends RangePickerSharedProps<DateType>,
     OmitPickerProps<PickerDateProps<DateType>> {
-  showTime?:
-    | boolean
-    | (Omit<SharedTimeProps<DateType>, 'defaultValue'> & {
-        defaultValue?: DateType[];
-      });
+  showTime?: boolean | RangeShowTimeObject<DateType>;
 }
 
 export interface RangePickerTimeProps<DateType>
@@ -624,16 +627,21 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       panelHoverRangedValue = hoverRangedValue;
     }
 
-    const panelShowTime = showTime;
+    const panelShowTime:
+      | boolean
+      | SharedTimeProps<DateType>
+      | undefined = showTime;
     if (
       panelShowTime &&
       typeof panelShowTime === 'object' &&
       panelShowTime.defaultValue
     ) {
-      panelShowTime.defaultValue = getValue(
-        panelShowTime.defaultValue,
-        activePickerIndex,
-      );
+      const timeDefaultValues: DateType[] = (showTime as RangeShowTimeObject<
+        DateType
+      >).defaultValue!;
+
+      panelShowTime.defaultValue =
+        getValue(timeDefaultValues, activePickerIndex) || undefined;
     }
 
     return (
