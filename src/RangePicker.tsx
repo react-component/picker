@@ -773,7 +773,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           style={style}
           {...getDataOrAriaProps(props)}
         >
-          <div className={`${prefixCls}-input`} ref={startInputDivRef}>
+          <div
+            className={classNames(`${prefixCls}-input`, {
+              [`${prefixCls}-input-active`]: activePickerIndex === 0,
+            })}
+            ref={startInputDivRef}
+          >
             <input
               disabled={mergedDisabled[0]}
               readOnly={inputReadOnly || !startTyping}
@@ -787,7 +792,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             />
           </div>
           {separator}
-          <div className={`${prefixCls}-input`} ref={startInputDivRef}>
+          <div
+            className={classNames(`${prefixCls}-input`, {
+              [`${prefixCls}-input-active`]: activePickerIndex === 1,
+            })}
+            ref={startInputDivRef}
+          >
             <input
               disabled={mergedDisabled[1]}
               readOnly={inputReadOnly || !endTyping}
