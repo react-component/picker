@@ -587,10 +587,18 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             e.preventDefault();
           }}
           onSelect={date => {
-            // triggerChange will also update selected values
-            triggerChange(
-              updateRangeValue(selectedValue, date, activePickerIndex),
+            const values = updateRangeValue(
+              selectedValue,
+              date,
+              activePickerIndex,
             );
+
+            if (picker === 'date' && showTime) {
+              setSelectedValue(values);
+            } else {
+              // triggerChange will also update selected values
+              triggerChange(values);
+            }
           }}
           onPanelChange={(date, newMode) => {
             triggerModesChange(
@@ -601,6 +609,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             setViewDates(updateRangeValue(viewDates, date, activePickerIndex));
           }}
           onChange={undefined}
+          defaultValue={undefined}
+          defaultPickerValue={undefined}
         />
       </RangeContext.Provider>
     );
@@ -613,6 +623,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       const currentMode = mergedModes[activePickerIndex];
 
       const showDoublePanel = currentMode === picker;
+
+      console.log('=>', viewDate);
 
       return (
         <>

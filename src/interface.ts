@@ -39,14 +39,7 @@ export interface Locale {
   shortMonths?: string[];
 }
 
-export type PanelMode =
-  | 'time'
-  | 'datetime'
-  | 'date'
-  | 'week'
-  | 'month'
-  | 'year'
-  | 'decade';
+export type PanelMode = 'time' | 'date' | 'week' | 'month' | 'year' | 'decade';
 
 export type PickerMode = Exclude<PanelMode, 'datetime' | 'decade'>;
 

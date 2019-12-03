@@ -198,9 +198,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       return getNextMode(nextMode);
     }
 
-    if (nextMode === 'date' && showTime) {
-      return 'datetime';
-    }
     return nextMode;
   };
 
@@ -210,7 +207,16 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     }
     return getInternalNextMode('date');
   });
+
   const mergedMode: PanelMode = mode || innerMode;
+
+  // const mergedMode: PanelMode = React.useMemo(() => {
+  //   const newMode = mode || innerMode;
+  //   if (newMode === 'date' && showTime) {
+  //     return 'datetime';
+  //   }
+  //   return newMode;
+  // }, [mode || innerMode]);
 
   const onInternalPanelChange = (newMode: PanelMode, viewValue: DateType) => {
     const nextMode = getInternalNextMode(newMode);
@@ -361,18 +367,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       );
       break;
 
-    case 'datetime':
-      panelNode = (
-        <DatetimePanel
-          {...pickerProps}
-          onSelect={date => {
-            setViewDate(date);
-            triggerSelect(date);
-          }}
-        />
-      );
-      break;
-
     case 'time':
       delete pickerProps.showTime;
       panelNode = (
@@ -388,15 +382,27 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       break;
 
     default:
-      panelNode = (
-        <DatePanel<DateType>
-          {...pickerProps}
-          onSelect={date => {
-            setViewDate(date);
-            triggerSelect(date);
-          }}
-        />
-      );
+      if (showTime) {
+        panelNode = (
+          <DatetimePanel
+            {...pickerProps}
+            onSelect={date => {
+              setViewDate(date);
+              triggerSelect(date);
+            }}
+          />
+        );
+      } else {
+        panelNode = (
+          <DatePanel<DateType>
+            {...pickerProps}
+            onSelect={date => {
+              setViewDate(date);
+              triggerSelect(date);
+            }}
+          />
+        );
+      }
   }
 
   // ============================ Footer ============================
