@@ -360,6 +360,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     if (canTrigger) {
       // Trigger onChange only when value is validate
       setInnerValue(values);
+      triggerOpen(false, activePickerIndex, true);
 
       if (
         onChange &&
@@ -386,6 +387,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     } else if (forceInput) {
       // Open miss value panel to force user input
       const missingValueIndex = canStartValueTrigger ? 1 : 0;
+
+      // Same index means user choice to close picker
+      if (missingValueIndex === activePickerIndex) {
+        return;
+      }
+
       triggerOpen(true, missingValueIndex);
 
       // Delay to focus to avoid input blur trigger expired selectedValues
