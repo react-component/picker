@@ -30,6 +30,7 @@ import {
   getClosingViewDate,
   isSameMonth,
   isSameYear,
+  isSameDate,
 } from './utils/dateUtil';
 import useValueTexts from './hooks/useValueTexts';
 import useTextValueMapping from './hooks/useTextValueMapping';
@@ -604,7 +605,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     panelProps: Partial<PickerPanelProps<DateType>> = {},
   ) {
     let panelHoverRangedValue: RangeValue<DateType> = null;
-    if (hoverRangedValue && hoverRangedValue[0] && hoverRangedValue[1]) {
+    if (
+      hoverRangedValue &&
+      hoverRangedValue[0] &&
+      hoverRangedValue[1] &&
+      !isSameDate(generateConfig, hoverRangedValue[0], hoverRangedValue[1]) &&
+      generateConfig.isAfter(hoverRangedValue[1], hoverRangedValue[0])
+    ) {
       panelHoverRangedValue = hoverRangedValue;
     }
 
