@@ -18,7 +18,6 @@ import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import {
   isEqual,
   getClosingViewDate,
-  isSameDate,
   isSameMonth,
   isSameYear,
 } from './utils/dateUtil';
@@ -425,77 +424,54 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   });
 
   // ============================= Input =============================
-  const sharedInputHookProps = {
+  const getSharedInputHookProps = (
+    index: 0 | 1,
+    inputDivRef: React.RefObject<HTMLDivElement>,
+    resetText: () => void,
+  ) => ({
     forwardKeyDown,
     onBlur,
-  };
-
-  const passOnFocus: React.FocusEventHandler<HTMLInputElement> = e => {
-    if (onFocus) {
-      onFocus(e);
-    }
-  };
+    isClickOutside: (target: EventTarget | null) =>
+      !!(
+        panelDivRef.current &&
+        !panelDivRef.current.contains(target as Node) &&
+        inputDivRef.current &&
+        !inputDivRef.current.contains(target as Node) &&
+        onOpenChange
+      ),
+    onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
+      setActivePickerIndex(index);
+      if (onFocus) {
+        onFocus(e);
+      }
+    },
+    triggerOpen: (newOpen: boolean) => triggerOpen(newOpen, index),
+    onSubmit: () => {
+      triggerChange(selectedValue);
+      triggerOpen(false, index, true);
+      resetText();
+    },
+    onCancel: () => {
+      triggerOpen(false, index, true);
+      setSelectedValue(mergedValue);
+      resetText();
+    },
+  });
 
   const [
     startInputProps,
     { focused: startFocused, typing: startTyping },
   ] = usePickerInput({
-    ...sharedInputHookProps,
+    ...getSharedInputHookProps(0, startInputDivRef, resetStartText),
     open: startOpen,
-    isClickOutside: (target: EventTarget | null) =>
-      !!(
-        panelDivRef.current &&
-        !panelDivRef.current.contains(target as Node) &&
-        startInputDivRef.current &&
-        !startInputDivRef.current.contains(target as Node) &&
-        onOpenChange
-      ),
-    onFocus: e => {
-      setActivePickerIndex(0);
-      passOnFocus(e);
-    },
-    triggerOpen: newOpen => triggerOpen(newOpen, 0),
-    onSubmit: () => {
-      triggerChange(selectedValue);
-      triggerOpen(false, 0, true);
-      resetStartText();
-    },
-    onCancel: () => {
-      triggerOpen(false, 0, true);
-      setSelectedValue(mergedValue);
-      resetStartText();
-    },
   });
 
   const [
     endInputProps,
     { focused: endFocused, typing: endTyping },
   ] = usePickerInput({
-    ...sharedInputHookProps,
+    ...getSharedInputHookProps(1, endInputDivRef, resetEndText),
     open: endOpen,
-    isClickOutside: (target: EventTarget | null) =>
-      !!(
-        panelDivRef.current &&
-        !panelDivRef.current.contains(target as Node) &&
-        endInputDivRef.current &&
-        !endInputDivRef.current.contains(target as Node) &&
-        onOpenChange
-      ),
-    onFocus: e => {
-      setActivePickerIndex(1);
-      passOnFocus(e);
-    },
-    triggerOpen: newOpen => triggerOpen(newOpen, 1),
-    onSubmit: () => {
-      triggerChange(selectedValue);
-      triggerOpen(false, 1, true);
-      resetEndText();
-    },
-    onCancel: () => {
-      triggerOpen(false, 1, true);
-      setSelectedValue(mergedValue);
-      resetEndText();
-    },
   });
 
   // ============================= Sync ==============================
@@ -534,14 +510,14 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   // ============================= Panel =============================
 
   function renderPanel(
-    startPanel?: boolean,
+    panelPosition: 'left' | 'right' | false = false,
     panelProps: Partial<PickerPanelProps<DateType>> = {},
   ) {
     return (
       <RangeContext.Provider
         value={{
           inRange: true,
-          startPanel,
+          panelPosition,
         }}
       >
         <PickerPanel<DateType>
@@ -569,6 +545,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               updateRangeValue(mergedModes, newMode, activePickerIndex),
               updateRangeValue(selectedValue, date, activePickerIndex),
             );
+
+            setViewDates(updateRangeValue(viewDates, date, activePickerIndex));
           }}
         />
       </RangeContext.Provider>
@@ -581,18 +559,20 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       const nextViewDate = getClosingViewDate(viewDate, picker, generateConfig);
       const currentMode = mergedModes[activePickerIndex];
 
+      const showDoublePanel = currentMode === picker;
+
       return (
         <>
-          {renderPanel(true, {
+          {renderPanel(showDoublePanel ? 'left' : false, {
             pickerValue: viewDate,
-            onPickerValueChange: newViewDate => {
+            onPickerValueChange: (newViewDate: DateType) => {
               setViewDates(
                 updateRangeValue(viewDates, newViewDate, activePickerIndex),
               );
             },
           })}
-          {currentMode === picker &&
-            renderPanel(false, {
+          {showDoublePanel &&
+            renderPanel('right', {
               pickerValue: nextViewDate,
               onPickerValueChange: newViewDate => {
                 setViewDates(

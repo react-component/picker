@@ -145,7 +145,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const panelContext = React.useContext(PanelContext);
   const { operationRef, panelRef: panelDivRef } = panelContext;
 
-  const { extraFooterSelections, inRange, startPanel } = React.useContext(
+  const { extraFooterSelections, inRange, panelPosition } = React.useContext(
     RangeContext,
   );
   const panelRef = React.useRef<PanelRefProps>({});
@@ -443,8 +443,8 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         ...panelContext,
         hideHeader:
           'hideHeader' in props ? hideHeader : panelContext.hideHeader,
-        hidePrevBtn: inRange && !startPanel,
-        hideNextBtn: inRange && startPanel,
+        hidePrevBtn: inRange && panelPosition === 'right',
+        hideNextBtn: inRange && panelPosition === 'left',
       }}
     >
       <div

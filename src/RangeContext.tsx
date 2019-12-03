@@ -14,7 +14,7 @@ interface RangeContextProps {
    */
   rangedValue?: [NullableDateType<any>, NullableDateType<any>];
   inRange?: boolean;
-  startPanel?: boolean;
+  panelPosition?: 'left' | 'right' | false;
 }
 
 const RangeContext = React.createContext<RangeContextProps>({});
