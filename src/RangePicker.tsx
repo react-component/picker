@@ -535,7 +535,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           onMouseDown={e => {
             e.preventDefault();
           }}
-          onChange={date => {
+          onSelect={date => {
             setSelectedValue(
               updateRangeValue(selectedValue, date, activePickerIndex),
             );
@@ -548,6 +548,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
             setViewDates(updateRangeValue(viewDates, date, activePickerIndex));
           }}
+          onChange={undefined}
         />
       </RangeContext.Provider>
     );

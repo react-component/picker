@@ -1,5 +1,12 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 
+/**
+ * Logic:
+ *  When `mode` === `picker`,
+ *  click will trigger `onSelect` (if value changed trigger `onChange` also).
+ *  Panel change will not trigger `onSelect` but trigger `onPanelChange`
+ */
+
 import * as React from 'react';
 import classNames from 'classnames';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -214,15 +221,20 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     }
   };
 
-  const triggerSelect = (date: DateType) => {
-    setInnerValue(date);
+  const triggerSelect = (
+    date: DateType,
+    forceTriggerSelect: boolean = false,
+  ) => {
+    if (mergedMode === picker || forceTriggerSelect) {
+      setInnerValue(date);
 
-    if (onSelect) {
-      onSelect(date);
-    }
+      if (onSelect) {
+        onSelect(date);
+      }
 
-    if (onChange && !isEqual(generateConfig, date, mergedValue)) {
-      onChange(date);
+      if (onChange && !isEqual(generateConfig, date, mergedValue)) {
+        onChange(date);
+      }
     }
   };
 
@@ -403,7 +415,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       <a
         className={`${prefixCls}-today-btn`}
         onClick={() => {
-          triggerSelect(generateConfig.getNow());
+          triggerSelect(generateConfig.getNow(), true);
         }}
       >
         {locale.today}
@@ -420,7 +432,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     mergedSelections.push({
       label: locale.now,
       onClick: () => {
-        triggerSelect(generateConfig.getNow());
+        triggerSelect(generateConfig.getNow(), true);
       },
     });
   }
