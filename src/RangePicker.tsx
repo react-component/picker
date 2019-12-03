@@ -624,6 +624,18 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       panelHoverRangedValue = hoverRangedValue;
     }
 
+    const panelShowTime = showTime;
+    if (
+      panelShowTime &&
+      typeof panelShowTime === 'object' &&
+      panelShowTime.defaultValue
+    ) {
+      panelShowTime.defaultValue = getValue(
+        panelShowTime.defaultValue,
+        activePickerIndex,
+      );
+    }
+
     return (
       <RangeContext.Provider
         value={{
@@ -636,6 +648,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         <PickerPanel<DateType>
           {...(props as any)}
           {...panelProps}
+          showTime={panelShowTime}
           mode={mergedModes[activePickerIndex]}
           generateConfig={generateConfig}
           style={undefined}
