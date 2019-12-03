@@ -36,6 +36,7 @@ import useTextValueMapping from './hooks/useTextValueMapping';
 import { GenerateConfig } from './generate';
 import { PickerPanelProps } from '.';
 import RangeContext from './RangeContext';
+import useRangeDisabled from './hooks/useRangeDisabled';
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -272,7 +273,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       ),
     defaultStateValue: null,
     postState: postViewDates =>
-      postViewDates || [generateConfig.getNow(), generateConfig.getNow()],
+      postViewDates || [
+        getValue(mergedValue, 0) || generateConfig.getNow(),
+        getValue(mergedValue, 0) || generateConfig.getNow(),
+      ],
   });
 
   // ========================= Select Values =========================
@@ -305,6 +309,14 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       onPanelChange(values, modes);
     }
   };
+
+  // ========================= Disable Date ==========================
+  const [disabledStartDate, disabledEndDate] = useRangeDisabled({
+    selectedValue,
+    disabled: mergedDisabled,
+    disabledDate,
+    generateConfig,
+  });
 
   // ============================= Open ==============================
   const [mergedOpen, triggerInnerOpen] = useMergedState({
@@ -465,7 +477,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       newText,
       formatList,
     );
-    if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
+
+    const disabledFunc = index === 0 ? disabledStartDate : disabledEndDate;
+
+    if (inputDate && !disabledFunc(inputDate)) {
       setSelectedValue(updateValues(selectedValue, inputDate, index));
       setViewDates(updateValues(viewDates, inputDate, index));
     }
@@ -572,7 +587,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }
 
   // ============================= Panel =============================
-
   function renderPanel(
     panelPosition: 'left' | 'right' | false = false,
     panelProps: Partial<PickerPanelProps<DateType>> = {},
@@ -590,6 +604,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           mode={mergedModes[activePickerIndex]}
           generateConfig={generateConfig}
           style={undefined}
+          disabledDate={
+            activePickerIndex === 0 ? disabledStartDate : disabledEndDate
+          }
           className={classNames({
             [`${prefixCls}-panel-focused`]: !startTyping && !endTyping,
           })}
@@ -752,7 +769,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           <div className={`${prefixCls}-input`} ref={startInputDivRef}>
             <input
               disabled={mergedDisabled[1]}
-              readOnly={inputReadOnly || !startTyping}
+              readOnly={inputReadOnly || !endTyping}
               value={endText}
               onChange={triggerEndTextChange}
               placeholder={getValue(placeholder, 1) || ''}

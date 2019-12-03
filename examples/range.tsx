@@ -102,12 +102,21 @@ export default () => {
         </div>
 
         <div style={{ margin: '0 8px' }}>
-          <h3>Part disabled</h3>
+          <h3>Start disabled</h3>
           <RangePicker<Moment>
             {...sharedProps}
             locale={zhCN}
             allowClear
             disabled={[true, false]}
+          />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>End disabled</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            allowClear
+            disabled={[false, true]}
           />
         </div>
 
