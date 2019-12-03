@@ -372,12 +372,21 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     newValue: RangeValue<DateType>,
     forceInput: boolean = true,
   ) => {
-    const values = reorderValues(newValue, generateConfig);
+    let values = newValue;
+    const startValue = getValue(values, 0);
+    let endValue = getValue(values, 1);
+
+    if (
+      startValue &&
+      endValue &&
+      !isSameDate(generateConfig, startValue, endValue) &&
+      generateConfig.isAfter(startValue, endValue)
+    ) {
+      values = [startValue, null];
+      endValue = null;
+    }
 
     setSelectedValue(values);
-
-    const startValue = getValue(values, 0);
-    const endValue = getValue(values, 1);
 
     const canStartValueTrigger = canValueTrigger(
       startValue,
