@@ -733,7 +733,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         </div>
       );
     }
-    return renderPanel();
+    return (
+      <div className={`${prefixCls}-panel-container`} ref={panelDivRef}>
+        {renderPanel()}
+      </div>
+    );
   }
 
   let arrowLeft: number = 0;
