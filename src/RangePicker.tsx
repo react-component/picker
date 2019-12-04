@@ -708,7 +708,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       const showDoublePanel = currentMode === picker;
 
       return (
-        <div className={`${prefixCls}-range-panels`} ref={panelDivRef}>
+        <div className={`${prefixCls}-panel-container`} ref={panelDivRef}>
           {renderPanel(showDoublePanel ? 'left' : false, {
             pickerValue: viewDate,
             onPickerValueChange: (newViewDate: DateType) => {
@@ -824,10 +824,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       >
         <div
           ref={containerRef}
-          className={classNames(`${prefixCls}-range`, className, {
-            [`${prefixCls}-range-disabled`]:
-              mergedDisabled[0] && mergedDisabled[1],
-            [`${prefixCls}-range-focused`]: startFocused || endFocused,
+          className={classNames(prefixCls, `${prefixCls}-range`, className, {
+            [`${prefixCls}-disabled`]: mergedDisabled[0] && mergedDisabled[1],
+            [`${prefixCls}-focused`]: startFocused || endFocused,
           })}
           style={style}
           {...getDataOrAriaProps(props)}

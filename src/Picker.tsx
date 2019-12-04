@@ -322,20 +322,22 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   };
 
   const panel = (
-    <PickerPanel<DateType>
-      {...panelProps}
-      generateConfig={generateConfig}
-      className={classNames({
-        [`${prefixCls}-panel-focused`]: !typing,
-      })}
-      value={selectedValue}
-      locale={locale}
-      tabIndex={-1}
-      onMouseDown={e => {
-        e.preventDefault();
-      }}
-      onChange={setSelectedValue}
-    />
+    <div className={`${prefixCls}-panel-container`}>
+      <PickerPanel<DateType>
+        {...panelProps}
+        generateConfig={generateConfig}
+        className={classNames({
+          [`${prefixCls}-panel-focused`]: !typing,
+        })}
+        value={selectedValue}
+        locale={locale}
+        tabIndex={-1}
+        onMouseDown={e => {
+          e.preventDefault();
+        }}
+        onChange={setSelectedValue}
+      />
+    </div>
   );
 
   let suffixNode: React.ReactNode;
