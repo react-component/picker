@@ -825,6 +825,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         dropdownAlign={dropdownAlign}
         getPopupContainer={getPopupContainer}
         transitionName={transitionName}
+        range
       >
         <div
           ref={containerRef}

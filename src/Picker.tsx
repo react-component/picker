@@ -368,28 +368,28 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         panelRef: panelDivRef,
       }}
     >
-      <div
-        className={classNames(prefixCls, className, {
-          [`${prefixCls}-disabled`]: disabled,
-          [`${prefixCls}-focused`]: focused,
-        })}
-        style={style}
-        onMouseDown={onMouseDown}
-        onMouseUp={onMouseUp}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-        onContextMenu={onContextMenu}
-        onClick={onClick}
+      <PickerTrigger
+        visible={mergedOpen}
+        popupElement={panel}
+        popupStyle={popupStyle}
+        prefixCls={prefixCls}
+        dropdownClassName={dropdownClassName}
+        dropdownAlign={dropdownAlign}
+        getPopupContainer={getPopupContainer}
+        transitionName={transitionName}
       >
-        <PickerTrigger
-          visible={mergedOpen}
-          popupElement={panel}
-          popupStyle={popupStyle}
-          prefixCls={prefixCls}
-          dropdownClassName={dropdownClassName}
-          dropdownAlign={dropdownAlign}
-          getPopupContainer={getPopupContainer}
-          transitionName={transitionName}
+        <div
+          className={classNames(prefixCls, className, {
+            [`${prefixCls}-disabled`]: disabled,
+            [`${prefixCls}-focused`]: focused,
+          })}
+          style={style}
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+          onContextMenu={onContextMenu}
+          onClick={onClick}
         >
           <div className={`${prefixCls}-input`} ref={inputDivRef}>
             <input
@@ -407,8 +407,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
             {suffixNode}
             {clearNode}
           </div>
-        </PickerTrigger>
-      </div>
+        </div>
+      </PickerTrigger>
     </PanelContext.Provider>
   );
 }
