@@ -416,7 +416,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   }
 
   let todayNode: React.ReactNode;
-  if (showToday && mergedMode === 'date' && picker === 'date') {
+  if (showToday && mergedMode === 'date' && picker === 'date' && !showTime) {
     todayNode = (
       <a
         className={`${prefixCls}-today-btn`}

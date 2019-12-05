@@ -284,13 +284,25 @@
 
     // Panel
     @arrow-size: 10px;
+
+    &-placement-topLeft {
+      .@{prefix-cls}-range-arrow {
+        bottom: @arrow-size / 2 + 1px;
+        transform: rotate(135deg);
+      }
+    }
+    &-placement-bottomLeft {
+      .@{prefix-cls}-range-arrow {
+        top: @arrow-size / 2 + 1px;
+        transform: rotate(-45deg);
+      }
+    }
+
     .@{prefix-cls}-range-arrow {
       position: absolute;
       width: @arrow-size;
       height: @arrow-size;
       z-index: 1;
-      transform: rotate(-45deg);
-      top: @arrow-size / 2 + 1px;
       left: @arrow-size;
       margin-left: 10px;
       transition: left 0.3s;
@@ -332,6 +344,10 @@
     display: inline-flex;
     position: relative;
 
+    &-wrapper {
+      display: flex;
+    }
+
     .@{prefix-cls}-active-bar {
       background: green;
       bottom: 0;
@@ -346,5 +362,11 @@
         opacity: 1;
       }
     }
+  }
+
+  &-panel-container {
+    display: inline-block;
+    vertical-align: top;
+    transition: margin 0.3s;
   }
 }

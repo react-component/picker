@@ -702,7 +702,26 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     );
   }
 
+  let arrowLeft: number = 0;
+  let panelLeft: number = 0;
+  if (
+    activePickerIndex &&
+    startInputDivRef.current &&
+    separatorRef.current &&
+    panelDivRef.current
+  ) {
+    // Arrow offset
+    arrowLeft =
+      startInputDivRef.current.offsetWidth + separatorRef.current.offsetWidth;
+
+    if (arrowLeft > panelDivRef.current.offsetWidth) {
+      panelLeft = arrowLeft;
+    }
+  }
+
   function renderPanels() {
+    let panels: React.ReactNode;
+
     if (picker !== 'time' && !showTime) {
       const viewDate = viewDates[activePickerIndex];
       const nextViewDate = getClosingViewDate(viewDate, picker, generateConfig);
@@ -710,16 +729,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
       const showDoublePanel = currentMode === picker;
 
-      return (
-        <div className={`${prefixCls}-panel-container`} ref={panelDivRef}>
-          {renderPanel(showDoublePanel ? 'left' : false, {
-            pickerValue: viewDate,
-            onPickerValueChange: (newViewDate: DateType) => {
-              setViewDates(
-                updateValues(viewDates, newViewDate, activePickerIndex),
-              );
-            },
-          })}
+      panels = (
+        <>
+          {}
           {showDoublePanel &&
             renderPanel('right', {
               pickerValue: nextViewDate,
@@ -733,25 +745,27 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
                 );
               },
             })}
-        </div>
+        </>
       );
+    } else {
+      panels = renderPanel();
     }
     return (
-      <div className={`${prefixCls}-panel-container`} ref={panelDivRef}>
-        {renderPanel()}
+      <div
+        className={`${prefixCls}-panel-container`}
+        style={{ marginLeft: panelLeft }}
+        ref={panelDivRef}
+      >
+        {panels}
       </div>
     );
   }
 
-  let arrowLeft: number = 0;
-  if (activePickerIndex && startInputDivRef.current && separatorRef.current) {
-    // Arrow offset
-    arrowLeft =
-      startInputDivRef.current.offsetWidth + separatorRef.current.offsetWidth;
-  }
-
   const rangePanel = (
-    <div style={{ minWidth: popupMinWidth }}>
+    <div
+      className={`${prefixCls}-range-wrapper`}
+      style={{ minWidth: popupMinWidth }}
+    >
       <div className={`${prefixCls}-range-arrow`} style={{ left: arrowLeft }} />
 
       {renderPanels()}

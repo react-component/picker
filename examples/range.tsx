@@ -49,7 +49,7 @@ export default () => {
         {value ? `${formatDate(value[0])} ~ ${formatDate(value[1])}` : 'null'}
       </h2>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', paddingTop: 600 }}>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
           <RangePicker<Moment>
