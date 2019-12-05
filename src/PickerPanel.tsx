@@ -152,9 +152,13 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const panelContext = React.useContext(PanelContext);
   const { operationRef, panelRef: panelDivRef } = panelContext;
 
-  const { extraFooterSelections, inRange, panelPosition } = React.useContext(
-    RangeContext,
-  );
+  const {
+    extraFooterSelections,
+    inRange,
+    panelPosition,
+    rangedValue,
+    hoverRangedValue,
+  } = React.useContext(RangeContext);
   const panelRef = React.useRef<PanelRefProps>({});
 
   // Handle init logic
@@ -467,7 +471,12 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     >
       <div
         tabIndex={tabIndex}
-        className={classNames(`${prefixCls}-panel`, className)}
+        className={classNames(`${prefixCls}-panel`, className, {
+          [`${prefixCls}-panel-has-range`]:
+            rangedValue && rangedValue[0] && rangedValue[1],
+          [`${prefixCls}-panel-has-range-hover`]:
+            hoverRangedValue && hoverRangedValue[0] && hoverRangedValue[1],
+        })}
         style={style}
         onKeyDown={onInternalKeyDown}
         onBlur={onInternalBlur}

@@ -714,7 +714,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     arrowLeft =
       startInputDivRef.current.offsetWidth + separatorRef.current.offsetWidth;
 
-    if (arrowLeft > panelDivRef.current.offsetWidth) {
+    if (
+      panelDivRef.current.offsetWidth &&
+      arrowLeft > panelDivRef.current.offsetWidth
+    ) {
       panelLeft = arrowLeft;
     }
   }
@@ -731,7 +734,14 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
       panels = (
         <>
-          {}
+          {renderPanel(showDoublePanel ? 'left' : false, {
+            pickerValue: viewDate,
+            onPickerValueChange: newViewDate => {
+              setViewDates(
+                updateValues(viewDates, newViewDate, activePickerIndex),
+              );
+            },
+          })}
           {showDoublePanel &&
             renderPanel('right', {
               pickerValue: nextViewDate,
