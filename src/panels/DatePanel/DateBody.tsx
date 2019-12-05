@@ -6,10 +6,11 @@ import {
   getWeekStartDate,
   isSameDate,
   isSameMonth,
-  isInRange,
 } from '../../utils/dateUtil';
 import { Locale } from '../../interface';
 import RangeContext from '../../RangeContext';
+import PanelContext from '../../PanelContext';
+import useCellClassName from '../../hooks/useCellClassName';
 
 export type DateRender<DateType> = (
   currentDate: DateType,
@@ -48,7 +49,8 @@ function DateBody<DateType>({
   dateRender,
   onSelect,
 }: DateBodyProps<DateType>) {
-  const { rangedValue } = React.useContext(RangeContext);
+  const { rangedValue, hoverRangedValue } = React.useContext(RangeContext);
+  const { onDateMouseEnter, onDateMouseLeave } = React.useContext(PanelContext);
 
   const datePrefixCls = `${prefixCls}-cell`;
   const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale.locale);
@@ -74,6 +76,16 @@ function DateBody<DateType>({
   // =============================== Date ===============================
   const rows: React.ReactNode[] = [];
   const startDate = getWeekStartDate(locale.locale, generateConfig, viewDate);
+  const getCellClassName = useCellClassName({
+    cellPrefixCls: datePrefixCls,
+    today,
+    value,
+    generateConfig,
+    rangedValue: prefixColumn ? null : rangedValue,
+    hoverRangedValue: prefixColumn ? null : hoverRangedValue,
+    isSameCell: (current, target) =>
+      isSameDate(generateConfig, current, target),
+  });
 
   for (let y = 0; y < rowCount; y += 1) {
     const row: React.ReactNode[] = [];
@@ -95,10 +107,19 @@ function DateBody<DateType>({
             'YYYY-MM-DD',
           )}
           onClick={() => {
-            if (disabled) {
-              return;
+            if (!disabled) {
+              onSelect(currentDate);
             }
-            onSelect(currentDate);
+          }}
+          onMouseEnter={() => {
+            if (!disabled && onDateMouseEnter) {
+              onDateMouseEnter(currentDate);
+            }
+          }}
+          onMouseLeave={() => {
+            if (!disabled && onDateMouseLeave) {
+              onDateMouseLeave(currentDate);
+            }
           }}
           className={classNames(datePrefixCls, {
             [`${datePrefixCls}-disabled`]: disabled,
@@ -107,32 +128,8 @@ function DateBody<DateType>({
               currentDate,
               viewDate,
             ),
-            [`${datePrefixCls}-in-range`]: isInRange(
-              generateConfig,
-              rangedValue && rangedValue[0],
-              rangedValue && rangedValue[1],
-              currentDate,
-            ),
-            [`${datePrefixCls}-range-start`]: isSameDate(
-              generateConfig,
-              rangedValue && rangedValue[0],
-              currentDate,
-            ),
-            [`${datePrefixCls}-range-end`]: isSameDate(
-              generateConfig,
-              rangedValue && rangedValue[1],
-              currentDate,
-            ),
-            [`${datePrefixCls}-today`]: isSameDate(
-              generateConfig,
-              today,
-              currentDate,
-            ),
-            [`${datePrefixCls}-selected`]: isSameDate(
-              generateConfig,
-              value,
-              currentDate,
-            ),
+
+            ...getCellClassName(currentDate),
           })}
         >
           {dateRender ? (

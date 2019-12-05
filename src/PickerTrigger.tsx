@@ -1,4 +1,5 @@
 import * as React from 'react';
+import classNames from 'classnames';
 import Trigger from 'rc-trigger';
 import { AlignType } from 'rc-trigger/lib/interface';
 
@@ -47,6 +48,7 @@ export interface PickerTriggerProps {
   transitionName?: string;
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
   dropdownAlign?: AlignType;
+  range?: boolean;
 }
 
 function PickerTrigger({
@@ -59,6 +61,7 @@ function PickerTrigger({
   transitionName,
   getPopupContainer,
   children,
+  range,
 }: PickerTriggerProps) {
   const dropdownPrefixCls = `${prefixCls}-dropdown`;
 
@@ -73,7 +76,9 @@ function PickerTrigger({
       popup={popupElement}
       popupAlign={dropdownAlign}
       popupVisible={visible}
-      popupClassName={dropdownClassName}
+      popupClassName={classNames(dropdownClassName, {
+        [`${dropdownPrefixCls}-range`]: range,
+      })}
       popupStyle={popupStyle}
       getPopupContainer={getPopupContainer}
     >

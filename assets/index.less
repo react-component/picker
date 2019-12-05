@@ -1,11 +1,13 @@
 @prefix-cls: rc-picker;
 
+@background-color: rgb(255, 240, 255);
+
 .@{prefix-cls} {
   display: inline-flex;
 
   &-panel {
     border: 1px solid #666;
-    background: rgb(255, 240, 255);
+    background: @background-color;
     display: inline-block;
     vertical-align: top;
 
@@ -33,6 +35,7 @@
 
     table {
       text-align: center;
+      border-collapse: collapse;
     }
   }
 
@@ -91,9 +94,36 @@
     &-in-range > &-inner {
       background: fade(blue, 5%);
     }
+    &-range-hover-start,
+    &-range-hover-end,
+    &-range-hover {
+      position: relative;
+      &::after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border: 1px solid green;
+        border-left: 0;
+        border-right: 0;
+        pointer-events: none;
+      }
+    }
+
+    &-range-hover-start::after {
+      border-left: 1px solid green !important;
+    }
+    &-range-hover-end::after {
+      border-right: 1px solid green !important;
+    }
+
     &-today > &-inner {
       border: 1px solid blue;
     }
+    &-range-start > &-inner,
+    &-range-end > &-inner,
     &-selected > &-inner {
       background: fade(blue, 20%);
     }
@@ -179,6 +209,7 @@
       > li {
         padding: 0;
         margin: 0;
+        cursor: pointer;
 
         .@{prefix-cls}-time-panel-cell-inner {
           color: #333;
@@ -245,10 +276,64 @@
   // ======================= Dropdown =======================
   &-dropdown {
     position: absolute;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 1px red;
 
     &-hidden {
       display: none;
+    }
+
+    // Panel
+    @arrow-size: 10px;
+
+    &-placement-topLeft {
+      .@{prefix-cls}-range-arrow {
+        bottom: @arrow-size / 2 + 1px;
+        transform: rotate(135deg);
+      }
+    }
+    &-placement-bottomLeft {
+      .@{prefix-cls}-range-arrow {
+        top: @arrow-size / 2 + 1px;
+        transform: rotate(-45deg);
+      }
+    }
+
+    .@{prefix-cls}-range-arrow {
+      position: absolute;
+      width: @arrow-size;
+      height: @arrow-size;
+      z-index: 1;
+      left: @arrow-size;
+      margin-left: 10px;
+      transition: left 0.3s;
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        box-sizing: border-box;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      &::before {
+        width: @arrow-size;
+        height: @arrow-size;
+        border: @arrow-size / 2 solid blue;
+        border-color: blue blue transparent transparent;
+      }
+      &::after {
+        width: @arrow-size - 2px;
+        height: @arrow-size - 2px;
+        border: (@arrow-size - 2px) / 2 solid blue;
+        border-color: @background-color @background-color transparent
+          transparent;
+      }
+    }
+
+    .@{prefix-cls}-panel {
+      margin: 10px 0;
     }
   }
 
@@ -257,5 +342,31 @@
   // ========================================================
   &-range {
     display: inline-flex;
+    position: relative;
+
+    &-wrapper {
+      display: flex;
+    }
+
+    .@{prefix-cls}-active-bar {
+      background: green;
+      bottom: 0;
+      height: 3px;
+      pointer-events: none;
+      transition: all 0.3s;
+      opacity: 0;
+    }
+
+    &.@{prefix-cls}-focused {
+      .@{prefix-cls}-active-bar {
+        opacity: 1;
+      }
+    }
+  }
+
+  &-panel-container {
+    display: inline-block;
+    vertical-align: top;
+    transition: margin 0.3s;
   }
 }

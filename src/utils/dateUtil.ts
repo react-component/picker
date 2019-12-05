@@ -1,6 +1,6 @@
 import { noteOnce } from 'rc-util/lib/warning';
 import { GenerateConfig } from '../generate';
-import { NullableDateType } from '../interface';
+import { NullableDateType, PickerMode } from '../interface';
 
 export const WEEK_DAY_COUNT = 7;
 
@@ -14,6 +14,19 @@ export function isNullEqual<T>(value1: T, value2: T): boolean | undefined {
   return undefined;
 }
 
+export function isSameYear<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  year1: NullableDateType<DateType>,
+  year2: NullableDateType<DateType>,
+) {
+  const equal = isNullEqual(year1, year2);
+  if (typeof equal === 'boolean') {
+    return equal;
+  }
+
+  return generateConfig.getYear(year1!) === generateConfig.getYear(year2!);
+}
+
 export function isSameMonth<DateType>(
   generateConfig: GenerateConfig<DateType>,
   month1: NullableDateType<DateType>,
@@ -25,7 +38,7 @@ export function isSameMonth<DateType>(
   }
 
   return (
-    generateConfig.getYear(month1!) === generateConfig.getYear(month2!) &&
+    isSameYear(generateConfig, month1, month2) &&
     generateConfig.getMonth(month1!) === generateConfig.getMonth(month2!)
   );
 }
@@ -95,11 +108,11 @@ export function isEqual<DateType>(
 /** Between in date but not equal of date */
 export function isInRange<DateType>(
   generateConfig: GenerateConfig<DateType>,
-  startDate: DateType,
-  endDate: DateType,
-  current: DateType,
+  startDate: NullableDateType<DateType>,
+  endDate: NullableDateType<DateType>,
+  current: NullableDateType<DateType>,
 ) {
-  if (!startDate || !endDate) {
+  if (!startDate || !endDate || !current) {
     return false;
   }
 
@@ -134,5 +147,21 @@ export function getWeekStartDate<DateType>(
       'Not find week start date. Please check your `generateConfig`. If using default `generateConfig`, please help to fire a issue.',
     );
     return value;
+  }
+}
+
+export function getClosingViewDate<DateType>(
+  viewDate: DateType,
+  picker: PickerMode,
+  generateConfig: GenerateConfig<DateType>,
+  offset: number = 1,
+): DateType {
+  switch (picker) {
+    case 'year':
+      return generateConfig.addYear(viewDate, offset * 10);
+    case 'month':
+      return generateConfig.addYear(viewDate, offset);
+    default:
+      return generateConfig.addMonth(viewDate, offset);
   }
 }

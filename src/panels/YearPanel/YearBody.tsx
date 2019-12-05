@@ -2,7 +2,11 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { GenerateConfig } from '../../generate';
 import { YEAR_DECADE_COUNT } from '.';
-import { Locale } from '../../interface';
+import { Locale, NullableDateType } from '../../interface';
+import PanelContext from '../../PanelContext';
+import useCellClassName from '../../hooks/useCellClassName';
+import { isSameYear } from '../../utils/dateUtil';
+import RangeContext from '../../RangeContext';
 
 export const YEAR_COL_COUNT = 3;
 const YEAR_ROW_COUNT = 4;
@@ -11,6 +15,7 @@ export interface YearBodyProps<DateType> {
   prefixCls: string;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
+  value?: NullableDateType<DateType>;
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;
@@ -18,14 +23,29 @@ export interface YearBodyProps<DateType> {
 
 function YearBody<DateType>({
   prefixCls,
+  value,
   viewDate,
   locale,
   generateConfig,
   disabledDate,
   onSelect,
 }: YearBodyProps<DateType>) {
+  const { rangedValue, hoverRangedValue } = React.useContext(RangeContext);
+  const { onDateMouseEnter, onDateMouseLeave } = React.useContext(PanelContext);
+
   const yearPrefixCls = `${prefixCls}-cell`;
+
+  // =============================== Year ===============================
   const rows: React.ReactNode[] = [];
+  const getCellClassName = useCellClassName<DateType>({
+    cellPrefixCls: yearPrefixCls,
+    value,
+    generateConfig,
+    rangedValue,
+    hoverRangedValue,
+    isSameCell: (current, target) =>
+      isSameYear(generateConfig, current, target),
+  });
 
   const yearNumber = generateConfig.getYear(viewDate);
   const startYear =
@@ -54,13 +74,22 @@ function YearBody<DateType>({
             [`${yearPrefixCls}-disabled`]: disabled,
             [`${yearPrefixCls}-in-view`]:
               startYear <= currentYearNumber && currentYearNumber <= endYear,
-            [`${yearPrefixCls}-selected`]: currentYearNumber === yearNumber,
+            ...getCellClassName(yearDate),
           })}
           onClick={() => {
-            if (disabled) {
-              return;
+            if (!disabled) {
+              onSelect(yearDate);
             }
-            onSelect(yearDate);
+          }}
+          onMouseEnter={() => {
+            if (!disabled && onDateMouseEnter) {
+              onDateMouseEnter(yearDate);
+            }
+          }}
+          onMouseLeave={() => {
+            if (!disabled && onDateMouseLeave) {
+              onDateMouseLeave(yearDate);
+            }
           }}
         >
           <div className={`${yearPrefixCls}-inner`}>{currentYearNumber}</div>
