@@ -6,11 +6,11 @@ import {
   getWeekStartDate,
   isSameDate,
   isSameMonth,
-  isInRange,
 } from '../../utils/dateUtil';
 import { Locale } from '../../interface';
 import RangeContext from '../../RangeContext';
 import PanelContext from '../../PanelContext';
+import useCellClassName from '../../hooks/useCellClassName';
 
 export type DateRender<DateType> = (
   currentDate: DateType,
@@ -76,6 +76,16 @@ function DateBody<DateType>({
   // =============================== Date ===============================
   const rows: React.ReactNode[] = [];
   const startDate = getWeekStartDate(locale.locale, generateConfig, viewDate);
+  const getCellClassName = useCellClassName({
+    cellPrefixCls: datePrefixCls,
+    today,
+    value,
+    generateConfig,
+    rangedValue,
+    hoverRangedValue,
+    isSameCell: (current, target) =>
+      isSameDate(generateConfig, current, target),
+  });
 
   for (let y = 0; y < rowCount; y += 1) {
     const row: React.ReactNode[] = [];
@@ -118,48 +128,8 @@ function DateBody<DateType>({
               currentDate,
               viewDate,
             ),
-            [`${datePrefixCls}-in-range`]: isInRange(
-              generateConfig,
-              rangedValue && rangedValue[0],
-              rangedValue && rangedValue[1],
-              currentDate,
-            ),
-            [`${datePrefixCls}-range-start`]: isSameDate(
-              generateConfig,
-              rangedValue && rangedValue[0],
-              currentDate,
-            ),
-            [`${datePrefixCls}-range-end`]: isSameDate(
-              generateConfig,
-              rangedValue && rangedValue[1],
-              currentDate,
-            ),
-            [`${datePrefixCls}-range-hover`]: isInRange(
-              generateConfig,
-              hoverRangedValue && hoverRangedValue[0],
-              hoverRangedValue && hoverRangedValue[1],
-              currentDate,
-            ),
-            [`${datePrefixCls}-range-hover-start`]: isSameDate(
-              generateConfig,
-              hoverRangedValue && hoverRangedValue[0],
-              currentDate,
-            ),
-            [`${datePrefixCls}-range-hover-end`]: isSameDate(
-              generateConfig,
-              hoverRangedValue && hoverRangedValue[1],
-              currentDate,
-            ),
-            [`${datePrefixCls}-today`]: isSameDate(
-              generateConfig,
-              today,
-              currentDate,
-            ),
-            [`${datePrefixCls}-selected`]: isSameDate(
-              generateConfig,
-              value,
-              currentDate,
-            ),
+
+            ...getCellClassName(currentDate),
           })}
         >
           {dateRender ? (

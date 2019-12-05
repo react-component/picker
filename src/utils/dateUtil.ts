@@ -108,11 +108,11 @@ export function isEqual<DateType>(
 /** Between in date but not equal of date */
 export function isInRange<DateType>(
   generateConfig: GenerateConfig<DateType>,
-  startDate: DateType,
-  endDate: DateType,
-  current: DateType,
+  startDate: NullableDateType<DateType>,
+  endDate: NullableDateType<DateType>,
+  current: NullableDateType<DateType>,
 ) {
-  if (!startDate || !endDate) {
+  if (!startDate || !endDate || !current) {
     return false;
   }
 
