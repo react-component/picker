@@ -22,19 +22,21 @@ function dateRender(date: Moment, today: Moment) {
 }
 
 export default () => (
-  <div>
-    <PickerPanel<Moment>
-      locale={zhCN}
-      generateConfig={momentGenerateConfig}
-      dateRender={dateRender}
-    />
-
-    <br />
-
-    <Picker<Moment>
-      locale={zhCN}
-      generateConfig={momentGenerateConfig}
-      dateRender={dateRender}
-    />
+  <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+    <div>
+      <PickerPanel<Moment>
+        locale={zhCN}
+        // picker="month"
+        generateConfig={momentGenerateConfig}
+        dateRender={dateRender}
+      />
+    </div>
+    <div>
+      <Picker<Moment>
+        locale={zhCN}
+        generateConfig={momentGenerateConfig}
+        dateRender={dateRender}
+      />
+    </div>
   </div>
 );

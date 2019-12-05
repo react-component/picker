@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import Picker from '../src';
+import PickerPanel from '../src/PickerPanel';
 import momentGenerateConfig from '../src/generate/moment';
 import zhCN from '../src/locale/zh_CN';
 import '../assets/index.less';
@@ -10,10 +11,42 @@ interface DateRangeState {
   startValue: Moment | null;
   endValue: Moment | null;
   endOpen: boolean;
+  initValue: Moment;
 }
+type PanelMode =
+  | 'time'
+  | 'datetime'
+  | 'date'
+  | 'week'
+  | 'month'
+  | 'year'
+  | 'decade';
 
-class DateRange extends React.Component<{}, DateRangeState> {
+const now = moment();
+
+function disabledDate(current: Moment) {
+  // Can not select days before today
+  return (
+    current &&
+    current <
+      moment()
+        .subtract(1, 'days')
+        .endOf('day')
+  );
+}
+function changePanelCallBack(value: Moment, mode: PanelMode) {
+  console.log(value, mode);
+}
+class Customize extends React.Component<{}, DateRangeState> {
+  poupContainerRef: React.RefObject<HTMLDivElement>;
+
+  constructor(props: {}) {
+    super(props);
+    this.poupContainerRef = React.createRef();
+  }
+
   state: DateRangeState = {
+    initValue: now,
     startValue: null,
     endValue: null,
     endOpen: false,
@@ -61,14 +94,107 @@ class DateRange extends React.Component<{}, DateRangeState> {
     this.setState({ endOpen: open });
   };
 
+  handleSelect = (value: Moment) => {
+    console.log('selected:', value);
+    this.setState({
+      initValue: value,
+    });
+  };
+
+  handleSelectMonth = (value: Moment) => {
+    console.log('month-calendar select', value && value.format('YYYY/MM'));
+  };
+
+  getPopupContainer = (node: HTMLElement) => {
+    console.log(node, 2333);
+    return this.poupContainerRef.current;
+  };
+
+  monthCellRender = (date: Moment) => (
+    <div
+      style={{
+        width: 60,
+        height: 40,
+        borderTop: '3px solid #CCC',
+      }}
+    >
+      {date.month() + 1}
+    </div>
+  );
+
   render() {
-    const { startValue, endValue, endOpen } = this.state;
+    const { startValue, endValue, endOpen, initValue } = this.state;
     console.log('->', endOpen);
     return (
       <div>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+          }}
+        >
+          <div>
+            <h3>custom icon</h3>
+            <Picker
+              generateConfig={momentGenerateConfig}
+              locale={zhCN}
+              getPopupContainer={this.getPopupContainer}
+              // format="YYYY/MM/DD"
+              format={['YYYY-MM-DD', 'YYYY/MM/DD']}
+              allowClear
+              clearIcon={<span>X</span>}
+              suffixIcon={<span>O</span>}
+              prevIcon={<span>&lt;</span>}
+              nextIcon={<span>&gt;</span>}
+              superPrevIcon={<span>&lt;&lt;</span>}
+              superNextIcon={<span>&gt;&gt;</span>}
+              placeholder="please select"
+              // inputReadOnly
+              style={{ width: 200, height: 28 }}
+            />
+            <div ref={this.poupContainerRef} />
+          </div>
+          <div>
+            <h3>renderExtraFooter</h3>
+            <PickerPanel
+              generateConfig={momentGenerateConfig}
+              locale={zhCN}
+              showToday
+              disabledDate={disabledDate}
+              onSelect={this.handleSelect}
+              value={initValue}
+              onPanelChange={changePanelCallBack}
+              renderExtraFooter={(mode: PanelMode) => (
+                <div>{mode} extra footer</div>
+              )}
+            />
+          </div>
+          <div>
+            <h3>month picker</h3>
+            <PickerPanel
+              generateConfig={momentGenerateConfig}
+              locale={zhCN}
+              picker="month"
+              defaultValue={now}
+              onSelect={this.handleSelectMonth}
+              renderExtraFooter={() => <div>extra footer</div>}
+            />
+          </div>
+          <div>
+            <h3>monthCellRender</h3>
+            <PickerPanel
+              generateConfig={momentGenerateConfig}
+              locale={zhCN}
+              picker="month"
+              monthCellRender={this.monthCellRender}
+            />
+          </div>
+        </div>
         <Picker
           generateConfig={momentGenerateConfig}
           locale={zhCN}
+          defaultValue={now}
           disabledDate={this.disabledStartDate}
           showTime
           format="YYYY-MM-DD HH:mm:ss"
@@ -96,4 +222,4 @@ class DateRange extends React.Component<{}, DateRangeState> {
   }
 }
 
-export default DateRange;
+export default Customize;
