@@ -380,6 +380,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     const startValue = getValue(values, 0);
     let endValue = getValue(values, 1);
 
+    // Clean up end date when start date is after end date
     if (
       startValue &&
       endValue &&
@@ -388,6 +389,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     ) {
       values = [startValue, null];
       endValue = null;
+
+      setViewDates(updateValues(viewDates, startValue, 1));
     }
 
     setSelectedValue(values);

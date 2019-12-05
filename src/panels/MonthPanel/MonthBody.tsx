@@ -4,6 +4,8 @@ import { GenerateConfig } from '../../generate';
 import { Locale } from '../../interface';
 import { isSameMonth } from '../../utils/dateUtil';
 import PanelContext from '../../PanelContext';
+import RangeContext from '../../RangeContext';
+import useCellClassName from '../../hooks/useCellClassName';
 
 export const MONTH_COL_COUNT = 3;
 const MONTH_ROW_COUNT = 4;
@@ -34,10 +36,22 @@ function MonthBody<DateType>({
   monthCellRender,
   onSelect,
 }: MonthBodyProps<DateType>) {
+  const { rangedValue, hoverRangedValue } = React.useContext(RangeContext);
   const { onDateMouseEnter, onDateMouseLeave } = React.useContext(PanelContext);
 
   const monthPrefixCls = `${prefixCls}-cell`;
+
+  // =============================== Month ===============================
   const rows: React.ReactNode[] = [];
+  const getCellClassName = useCellClassName({
+    cellPrefixCls: monthPrefixCls,
+    value,
+    generateConfig,
+    rangedValue,
+    hoverRangedValue,
+    isSameCell: (current, target) =>
+      isSameMonth(generateConfig, current, target),
+  });
 
   const monthsLocale: string[] =
     locale.shortMonths ||
@@ -71,6 +85,7 @@ function MonthBody<DateType>({
               value,
               monthDate,
             ),
+            ...getCellClassName(monthDate),
           })}
           onClick={() => {
             if (!disabled) {

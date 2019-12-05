@@ -19,8 +19,8 @@ export default function useCellClassName<DateType>({
   ) => boolean;
   rangedValue?: RangeValue<DateType>;
   hoverRangedValue?: RangeValue<DateType>;
-  today?: DateType;
-  value?: DateType;
+  today?: NullableDateType<DateType>;
+  value?: NullableDateType<DateType>;
 }) {
   function getClassName(currentDate: DateType) {
     return {

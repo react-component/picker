@@ -4,6 +4,9 @@ import { GenerateConfig } from '../../generate';
 import { YEAR_DECADE_COUNT } from '.';
 import { Locale, NullableDateType } from '../../interface';
 import PanelContext from '../../PanelContext';
+import useCellClassName from '../../hooks/useCellClassName';
+import { isSameYear } from '../../utils/dateUtil';
+import RangeContext from '../../RangeContext';
 
 export const YEAR_COL_COUNT = 3;
 const YEAR_ROW_COUNT = 4;
@@ -27,12 +30,23 @@ function YearBody<DateType>({
   disabledDate,
   onSelect,
 }: YearBodyProps<DateType>) {
+  const { rangedValue, hoverRangedValue } = React.useContext(RangeContext);
   const { onDateMouseEnter, onDateMouseLeave } = React.useContext(PanelContext);
 
   const yearPrefixCls = `${prefixCls}-cell`;
-  const rows: React.ReactNode[] = [];
 
-  const valueYearNumber = value ? generateConfig.getYear(value) : null;
+  // =============================== Year ===============================
+  const rows: React.ReactNode[] = [];
+  const getCellClassName = useCellClassName<DateType>({
+    cellPrefixCls: yearPrefixCls,
+    value,
+    generateConfig,
+    rangedValue,
+    hoverRangedValue,
+    isSameCell: (current, target) =>
+      isSameYear(generateConfig, current, target),
+  });
+
   const yearNumber = generateConfig.getYear(viewDate);
   const startYear =
     Math.floor(yearNumber / YEAR_DECADE_COUNT) * YEAR_DECADE_COUNT;
@@ -60,8 +74,7 @@ function YearBody<DateType>({
             [`${yearPrefixCls}-disabled`]: disabled,
             [`${yearPrefixCls}-in-view`]:
               startYear <= currentYearNumber && currentYearNumber <= endYear,
-            [`${yearPrefixCls}-selected`]:
-              currentYearNumber === valueYearNumber,
+            ...getCellClassName(yearDate),
           })}
           onClick={() => {
             if (!disabled) {

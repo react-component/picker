@@ -81,8 +81,8 @@ function DateBody<DateType>({
     today,
     value,
     generateConfig,
-    rangedValue,
-    hoverRangedValue,
+    rangedValue: prefixColumn ? null : rangedValue,
+    hoverRangedValue: prefixColumn ? null : hoverRangedValue,
     isSameCell: (current, target) =>
       isSameDate(generateConfig, current, target),
   });

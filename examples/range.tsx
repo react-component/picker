@@ -70,7 +70,7 @@ export default () => {
         </div>
 
         <div style={{ margin: '0 8px' }}>
-          <h3>Basic</h3>
+          <h3>Focus</h3>
           <RangePicker<Moment>
             {...sharedProps}
             locale={zhCN}
@@ -87,9 +87,20 @@ export default () => {
             Focus!
           </button>
         </div>
+
         <div style={{ margin: '0 8px' }}>
-          <h3>Basic</h3>
+          <h3>Year</h3>
           <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="year" />
+        </div>
+
+        <div style={{ margin: '0 8px' }}>
+          <h3>Month</h3>
+          <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="month" />
+        </div>
+
+        <div style={{ margin: '0 8px' }}>
+          <h3>Week</h3>
+          <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="week" />
         </div>
 
         <div style={{ margin: '0 8px' }}>
