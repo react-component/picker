@@ -31,25 +31,31 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
       !openDiv.hasClass('rc-picker-dropdown-hidden')
     );
   },
-  selectCell(text, index = 0) {
+  findCell(text, index = 0) {
     let matchCell;
 
-    const panel = index ? this.find('InnerPicker').at(index) : this;
-    panel.find('td').forEach(td => {
-      if (
-        td.text() === String(text) &&
-        td.props().className.includes('-in-view')
-      ) {
-        matchCell = td;
-        td.simulate('click');
-      }
-    });
-
+    this.find('table')
+      .at(index)
+      .find('td')
+      .forEach(td => {
+        if (
+          td.text() === String(text) &&
+          td.props().className.includes('-in-view')
+        ) {
+          matchCell = td;
+        }
+      });
     if (!matchCell) {
       throw new Error('Cell not match in picker panel.');
     }
 
     return matchCell;
+  },
+  selectCell(text, index = 0) {
+    const td = this.findCell(text, index);
+    td.simulate('click');
+
+    return td;
   },
   clickButton(type) {
     let matchBtn;
@@ -63,11 +69,8 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
 
     return matchBtn;
   },
-  clearValue(index = 0) {
-    this.find('Picker')
-      .at(index)
-      .find('.rc-picker-clear-btn')
-      .simulate('click');
+  clearValue() {
+    this.find('.rc-picker-clear-btn').simulate('click');
   },
   keyDown(which, info = {}) {
     this.find('input').simulate('keydown', { ...info, which });

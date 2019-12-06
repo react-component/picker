@@ -5,7 +5,7 @@ import { resetWarned } from 'rc-util/lib/warning';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { mount, getMoment, isSame, MomentPickerPanel } from './util/commonUtil';
 
-describe('Panel', () => {
+describe('Picker.Panel', () => {
   beforeAll(() => {
     MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
   });
@@ -116,7 +116,7 @@ describe('Panel', () => {
 
     it('scroll', () => {
       jest.useFakeTimers();
-      const wrapper = mount(<MomentPickerPanel mode="time" />);
+      const wrapper = mount(<MomentPickerPanel picker="time" />);
 
       // Multiple times should only one work
       wrapper
@@ -264,7 +264,7 @@ describe('Panel', () => {
       const onSelect = jest.fn();
       const wrapper = mount(
         <MomentPickerPanel
-          mode="time"
+          picker="time"
           onSelect={onSelect}
           disabledHours={() => [0]}
         />,
@@ -320,20 +320,20 @@ describe('Panel', () => {
     });
 
     it('decade', () => {
-      const onSelect = jest.fn();
+      const onPanelChange = jest.fn();
       const wrapper = mount(
         <MomentPickerPanel
           mode="decade"
-          onSelect={onSelect}
+          onPanelChange={onPanelChange}
           disabledDate={date => date.year() === 1900}
         />,
       );
 
       wrapper.selectCell('1900-1909');
-      expect(onSelect).not.toHaveBeenCalled();
+      expect(onPanelChange).not.toHaveBeenCalled();
 
       wrapper.selectCell('1910-1919');
-      expect(onSelect).toHaveBeenCalled();
+      expect(onPanelChange).toHaveBeenCalled();
     });
   });
 

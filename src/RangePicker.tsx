@@ -191,6 +191,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     open,
     defaultOpen,
     disabledDate,
+    disabledTime,
+    ranges,
     allowEmpty,
     allowClear,
     suffixIcon,
@@ -201,6 +203,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     onChange,
     onOpenChange,
     onPanelChange,
+    onCalendarChange,
     onFocus,
     onBlur,
   } = props as MergedRangePickerProps<DateType>;
@@ -277,11 +280,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         1,
       ),
     defaultStateValue: null,
-    postState: postViewDates =>
-      postViewDates || [
-        getValue(mergedValue, 0) || generateConfig.getNow(),
-        getValue(mergedValue, 0) || generateConfig.getNow(),
-      ],
+    postState: postViewDates => {
+      let startViewDate: DateType | null =
+        getValue(postViewDates, 0) || getValue(mergedValue, 0);
+      let endViewDate: DateType | null =
+        getValue(postViewDates, 1) || getValue(mergedValue, 1);
+
+      startViewDate = startViewDate || endViewDate || generateConfig.getNow();
+      endViewDate = endViewDate || startViewDate || generateConfig.getNow();
+
+      return [startViewDate, endViewDate];
+    },
   });
 
   // ========================= Select Values =========================
@@ -290,7 +299,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     postState: values => {
       let postValues = values;
       for (let i = 0; i < 2; i += 1) {
-        if (mergedDisabled[i] && !getValue(postValues, i)) {
+        if (
+          mergedDisabled[i] &&
+          !getValue(postValues, i) &&
+          !getValue(allowEmpty, i)
+        ) {
           postValues = updateValues(postValues, generateConfig.getNow(), i);
         }
       }
@@ -395,6 +408,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
     setSelectedValue(values);
 
+    const startStr = startValue
+      ? generateConfig.locale.format(locale.locale, startValue, formatList[0])
+      : '';
+    const endStr = endValue
+      ? generateConfig.locale.format(locale.locale, endValue, formatList[0])
+      : '';
+
+    if (onCalendarChange) {
+      onCalendarChange(values, [startStr, endStr]);
+    }
+
     const canStartValueTrigger = canValueTrigger(
       startValue,
       0,
@@ -421,22 +445,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         (!isEqual(generateConfig, getValue(mergedValue, 0), startValue) ||
           !isEqual(generateConfig, getValue(mergedValue, 1), endValue))
       ) {
-        onChange(values, [
-          startValue
-            ? generateConfig.locale.format(
-                locale.locale,
-                startValue,
-                formatList[0],
-              )
-            : '',
-          endValue
-            ? generateConfig.locale.format(
-                locale.locale,
-                endValue,
-                formatList[0],
-              )
-            : '',
-        ]);
+        onChange(values, [startStr, endStr]);
       }
     } else if (forceInput) {
       // Open miss value panel to force user input
@@ -592,6 +601,21 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   // Sync innerValue with control mode
   React.useEffect(() => {
+    if (
+      isEqual(
+        generateConfig,
+        getValue(mergedValue, 0),
+        getValue(selectedValue, 0),
+      ) &&
+      isEqual(
+        generateConfig,
+        getValue(mergedValue, 1),
+        getValue(selectedValue, 1),
+      )
+    ) {
+      return;
+    }
+
     // Sync select value
     setSelectedValue(mergedValue);
   }, [mergedValue]);
@@ -631,21 +655,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       panelHoverRangedValue = hoverRangedValue;
     }
 
-    const panelShowTime:
+    let panelShowTime:
       | boolean
       | SharedTimeProps<DateType>
       | undefined = showTime;
-    if (
-      panelShowTime &&
-      typeof panelShowTime === 'object' &&
-      panelShowTime.defaultValue
-    ) {
-      const timeDefaultValues: DateType[] = (showTime as RangeShowTimeObject<
-        DateType
-      >).defaultValue!;
-
-      panelShowTime.defaultValue =
-        getValue(timeDefaultValues, activePickerIndex) || undefined;
+    if (showTime && typeof showTime === 'object' && showTime.defaultValue) {
+      const timeDefaultValues: DateType[] = showTime.defaultValue!;
+      panelShowTime = {
+        ...showTime,
+        defaultValue:
+          getValue(timeDefaultValues, activePickerIndex) || undefined,
+      };
     }
 
     return (
@@ -667,15 +687,21 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           disabledDate={
             activePickerIndex === 0 ? disabledStartDate : disabledEndDate
           }
+          disabledTime={date => {
+            if (disabledTime) {
+              return disabledTime(
+                date,
+                activePickerIndex === 0 ? 'start' : 'end',
+              );
+            }
+            return false;
+          }}
           className={classNames({
             [`${prefixCls}-panel-focused`]: !startTyping && !endTyping,
           })}
           value={getValue(selectedValue, activePickerIndex)}
           locale={locale}
           tabIndex={-1}
-          onMouseDown={e => {
-            e.preventDefault();
-          }}
           onSelect={date => {
             const values = updateValues(selectedValue, date, activePickerIndex);
 
@@ -760,13 +786,44 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     } else {
       panels = renderPanel();
     }
+
+    let rangesNode: React.ReactNode;
+    if (ranges) {
+      const rangeList = Object.keys(ranges);
+
+      rangesNode = (
+        <ul className={`${prefixCls}-ranges`}>
+          {rangeList.map(label => {
+            const range = ranges[label];
+
+            return (
+              <li
+                key={label}
+                onClick={() => {
+                  const newValues = Array.isArray(range) ? range : range();
+                  triggerChange(newValues);
+                }}
+              >
+                {label}
+              </li>
+            );
+          })}
+        </ul>
+      );
+    }
+
     return (
       <div
         className={`${prefixCls}-panel-container`}
         style={{ marginLeft: panelLeft }}
         ref={panelDivRef}
+        onMouseDown={e => {
+          e.preventDefault();
+        }}
       >
-        {panels}
+        <div className={`${prefixCls}-panels`}>{panels}</div>
+
+        {rangesNode}
       </div>
     );
   }

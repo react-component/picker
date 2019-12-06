@@ -10,7 +10,7 @@ import {
   Wrapper,
 } from './util/commonUtil';
 
-describe('Keyboard', () => {
+describe('Picker.Keyboard', () => {
   function panelKeyDown(wrapper: Wrapper, keyCode: number, info?: object) {
     wrapper
       .find('.rc-picker-panel')
@@ -347,28 +347,37 @@ describe('Keyboard', () => {
     });
 
     it('decade', () => {
-      const onSelect = jest.fn();
+      const onPanelChange = jest.fn();
       const wrapper = mount(
         <MomentPickerPanel
           mode="decade"
           defaultValue={getMoment('1990-09-03')}
-          onSelect={onSelect}
+          onPanelChange={onPanelChange}
         />,
       );
 
       // Left
       panelKeyDown(wrapper, KeyCode.LEFT);
-      expect(isSame(onSelect.mock.calls[0][0], '1980', 'year')).toBeTruthy();
+      panelKeyDown(wrapper, KeyCode.ENTER);
+      expect(
+        isSame(onPanelChange.mock.calls[0][0], '1980', 'year'),
+      ).toBeTruthy();
 
       // Control + Right
-      onSelect.mockReset();
+      onPanelChange.mockReset();
       panelKeyDown(wrapper, KeyCode.RIGHT, { ctrlKey: true });
-      expect(isSame(onSelect.mock.calls[0][0], '2080', 'year')).toBeTruthy();
+      panelKeyDown(wrapper, KeyCode.ENTER);
+      expect(
+        isSame(onPanelChange.mock.calls[0][0], '2080', 'year'),
+      ).toBeTruthy();
 
       // Down
-      onSelect.mockReset();
+      onPanelChange.mockReset();
       panelKeyDown(wrapper, KeyCode.DOWN);
-      expect(isSame(onSelect.mock.calls[0][0], '2110', 'year')).toBeTruthy();
+      panelKeyDown(wrapper, KeyCode.ENTER);
+      expect(
+        isSame(onPanelChange.mock.calls[0][0], '2110', 'year'),
+      ).toBeTruthy();
     });
   });
 });

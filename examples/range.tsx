@@ -58,6 +58,7 @@ export default () => {
             locale={zhCN}
             allowClear
             ref={rangePickerRef}
+            defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
           />
           <RangePicker<Moment>
             {...sharedProps}
@@ -139,22 +140,8 @@ export default () => {
             value={undefined}
             locale={zhCN}
             placeholder={['start...', 'end...']}
-            showTime={{
-              hideDisabledOptions: true,
-            }}
-            disabledTime={(date, type) => {
-              if (type === 'start') {
-                return {
-                  disabledHours: () => [1, 2, 3, 4, 5, 6, 7],
-                };
-              }
-              return {};
-            }}
-            defaultPickerValue={[defaultEndValue, defaultStartValue]}
-            ranges={{
-              now: [null, moment()],
-            }}
-            allowClear
+            disabled={[false, true]}
+            allowEmpty={[false, true]}
           />
         </div>
       </div>

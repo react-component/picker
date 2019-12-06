@@ -1,11 +1,12 @@
 import React from 'react';
 import MockDate from 'mockdate';
+import { act } from 'react-dom/test-utils';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { PanelMode, PickerMode } from '../src/interface';
 import { mount, getMoment, isSame, MomentPicker } from './util/commonUtil';
 
-describe('Basic', () => {
+describe('Picker.Basic', () => {
   beforeAll(() => {
     MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
   });
@@ -37,17 +38,7 @@ describe('Basic', () => {
         componentNames: ['DatePanel', 'DateHeader', 'DateBody'],
       },
       {
-        mode: 'datetime',
-        componentNames: [
-          'DatetimePanel',
-          'DateHeader',
-          'DateBody',
-          'TimeHeader',
-          'TimeBody',
-        ],
-      },
-      {
-        mode: 'time',
+        mode: 'time' as any,
         componentNames: ['TimePanel', 'TimeHeader', 'TimeBody'],
       },
     ];
@@ -129,11 +120,15 @@ describe('Basic', () => {
         Object.defineProperty(clickEvent, 'target', {
           get: () => document.body,
         });
-        window.dispatchEvent(clickEvent);
-        wrapper.find('input').simulate('blur');
+        act(() => {
+          window.dispatchEvent(clickEvent);
+          wrapper.find('input').simulate('blur');
+        });
         expect(onOpenChange).toHaveBeenCalledTimes(i + 1);
       }
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       jest.useRealTimers();
     });
 
@@ -331,7 +326,7 @@ describe('Basic', () => {
         name: 'date',
         yearBtn: '.rc-picker-year-btn',
         finalPanel: 'DatetimePanel',
-        finalMode: 'datetime',
+        finalMode: 'date',
         showTime: true,
       },
       {
@@ -488,7 +483,7 @@ describe('Basic', () => {
     const onSelect = jest.fn();
     const wrapper = mount(<MomentPicker onSelect={onSelect} showTime />);
     wrapper.openPicker();
-    wrapper.find('.rc-picker-ranges > li').simulate('click');
+    wrapper.find('.rc-picker-now > a').simulate('click');
 
     expect(
       isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second'),

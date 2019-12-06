@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Panel time disabled columns 1`] = `
+exports[`Picker.Panel time disabled columns 1`] = `
 <div
   class="rc-picker-panel"
   tabindex="0"

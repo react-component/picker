@@ -4,7 +4,33 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import DatePanel, { DatePanelProps } from '../DatePanel';
 import TimePanel, { SharedTimeProps } from '../TimePanel';
 import { tuple } from '../../utils/miscUtil';
-import { PanelRefProps, DisabledTime } from '../../interface';
+import { PanelRefProps, DisabledTime, NullableDateType } from '../../interface';
+import { GenerateConfig } from '../../generate';
+
+function setTime<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  date: DateType,
+  defaultDate: NullableDateType<DateType>,
+) {
+  if (!defaultDate) {
+    return date;
+  }
+
+  let newDate = date;
+  newDate = generateConfig.setHour(
+    newDate,
+    generateConfig.getHour(defaultDate),
+  );
+  newDate = generateConfig.setMinute(
+    newDate,
+    generateConfig.getMinute(defaultDate),
+  );
+  newDate = generateConfig.setSecond(
+    newDate,
+    generateConfig.getSecond(defaultDate),
+  );
+  return newDate;
+}
 
 export interface DatetimePanelProps<DateType>
   extends Omit<
@@ -148,7 +174,16 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         operationRef={dateOperationRef}
         active={activePanel === 'date'}
         onSelect={date => {
-          onInternalSelect(date, 'date');
+          onInternalSelect(
+            setTime(
+              generateConfig,
+              date,
+              showTime && typeof showTime === 'object'
+                ? showTime.defaultValue
+                : null,
+            ),
+            'date',
+          );
         }}
       />
       <TimePanel
