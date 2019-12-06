@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { GenerateConfig } from '../../generate';
-import { Locale } from '../../interface';
+import { Locale, OnSelect } from '../../interface';
 import TimeUnitColumn, { Unit } from './TimeUnitColumn';
 import { leftPad } from '../../utils/miscUtil';
 import { SharedTimeProps } from '.';
@@ -31,7 +31,7 @@ export interface TimeBodyProps<DateType> extends SharedTimeProps<DateType> {
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
   value?: DateType | null;
-  onSelect: (value: DateType) => void;
+  onSelect: OnSelect<DateType>;
   activeColumnIndex: number;
   operationRef: React.MutableRefObject<BodyOperationRef | undefined>;
 }
@@ -172,7 +172,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
 
   // Hour
   addColumnNode(showHour, <TimeUnitColumn key="hour" />, hour, hours, num => {
-    onSelect(setTime(isPM, num, minute, second));
+    onSelect(setTime(isPM, num, minute, second), 'mouse');
   });
 
   // Minute
@@ -182,7 +182,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     minute,
     minutes,
     num => {
-      onSelect(setTime(isPM, hour, num, second));
+      onSelect(setTime(isPM, hour, num, second), 'mouse');
     },
   );
 
@@ -193,7 +193,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     second,
     seconds,
     num => {
-      onSelect(setTime(isPM, hour, minute, num));
+      onSelect(setTime(isPM, hour, minute, num), 'mouse');
     },
   );
 
@@ -209,7 +209,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     PMIndex,
     [{ label: 'AM', value: 0 }, { label: 'PM', value: 1 }],
     num => {
-      onSelect(setTime(!!num, hour, minute, second));
+      onSelect(setTime(!!num, hour, minute, second), 'mouse');
     },
   );
 

@@ -51,6 +51,11 @@ export interface PanelRefProps {
 
 export type NullableDateType<DateType> = DateType | null | undefined;
 
+export type OnSelect<DateType> = (
+  value: DateType,
+  type: 'key' | 'mouse',
+) => void;
+
 export interface PanelSharedProps<DateType> {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
@@ -73,7 +78,7 @@ export interface PanelSharedProps<DateType> {
    */
   operationRef: React.MutableRefObject<PanelRefProps>;
 
-  onSelect: (value: DateType) => void;
+  onSelect: OnSelect<DateType>;
   onViewDateChange: (value: DateType) => void;
   onPanelChange: (mode: PanelMode, viewValue: DateType) => void;
 }

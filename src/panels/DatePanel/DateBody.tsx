@@ -7,7 +7,7 @@ import {
   isSameDate,
   isSameMonth,
 } from '../../utils/dateUtil';
-import { Locale } from '../../interface';
+import { Locale, OnSelect } from '../../interface';
 import RangeContext from '../../RangeContext';
 import PanelContext from '../../PanelContext';
 import useCellClassName from '../../hooks/useCellClassName';
@@ -33,7 +33,7 @@ export interface DateBodyProps<DateType> extends DateBodyPassProps<DateType> {
   viewDate: DateType;
   locale: Locale;
   rowCount: number;
-  onSelect: (value: DateType) => void;
+  onSelect: OnSelect<DateType>;
 }
 
 function DateBody<DateType>({
@@ -108,7 +108,7 @@ function DateBody<DateType>({
           )}
           onClick={() => {
             if (!disabled) {
-              onSelect(currentDate);
+              onSelect(currentDate, 'mouse');
             }
           }}
           onMouseEnter={() => {

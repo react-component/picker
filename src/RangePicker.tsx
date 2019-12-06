@@ -686,6 +686,16 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           panelPosition,
           rangedValue: selectedValue,
           hoverRangedValue: panelHoverRangedValue,
+          onSelect: date => {
+            const values = updateValues(selectedValue, date, activePickerIndex);
+
+            if (picker === 'date' && showTime) {
+              setSelectedValue(values);
+            } else {
+              // triggerChange will also update selected values
+              triggerChange(values);
+            }
+          },
         }}
       >
         <PickerPanel<DateType>
@@ -713,16 +723,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           value={getValue(selectedValue, activePickerIndex)}
           locale={locale}
           tabIndex={-1}
-          onSelect={date => {
-            const values = updateValues(selectedValue, date, activePickerIndex);
-
-            if (picker === 'date' && showTime) {
-              setSelectedValue(values);
-            } else {
-              // triggerChange will also update selected values
-              triggerChange(values);
-            }
-          }}
           onPanelChange={(date, newMode) => {
             triggerModesChange(
               updateValues(mergedModes, newMode, activePickerIndex),
@@ -731,6 +731,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
             setViewDates(updateValues(viewDates, date, activePickerIndex));
           }}
+          onSelect={undefined}
           onChange={undefined}
           defaultValue={undefined}
           defaultPickerValue={undefined}

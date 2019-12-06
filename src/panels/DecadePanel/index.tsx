@@ -27,11 +27,15 @@ function DecadePanel<DateType>(props: DecadePanelProps<DateType>) {
     onKeyDown: event =>
       createKeyDownHandler(event, {
         onLeftRight: diff => {
-          onSelect(generateConfig.addYear(viewDate, diff * DECADE_UNIT_DIFF));
+          onSelect(
+            generateConfig.addYear(viewDate, diff * DECADE_UNIT_DIFF),
+            'key',
+          );
         },
         onCtrlLeftRight: diff => {
           onSelect(
             generateConfig.addYear(viewDate, diff * DECADE_DISTANCE_COUNT),
+            'key',
           );
         },
         onUpDown: diff => {
@@ -40,6 +44,7 @@ function DecadePanel<DateType>(props: DecadePanelProps<DateType>) {
               viewDate,
               diff * DECADE_UNIT_DIFF * DECADE_COL_COUNT,
             ),
+            'key',
           );
         },
         onEnter: () => {
@@ -56,7 +61,7 @@ function DecadePanel<DateType>(props: DecadePanelProps<DateType>) {
   };
 
   const onInternalSelect = (date: DateType) => {
-    onSelect(date);
+    onSelect(date, 'mouse');
     onPanelChange('year', date);
   };
 

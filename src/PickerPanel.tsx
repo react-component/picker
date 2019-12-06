@@ -157,6 +157,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     panelPosition,
     rangedValue,
     hoverRangedValue,
+    onSelect: onContextSelect,
   } = React.useContext(RangeContext);
   const panelRef = React.useRef<PanelRefProps>({});
 
@@ -224,10 +225,15 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
 
   const triggerSelect = (
     date: DateType,
+    type: 'key' | 'mouse',
     forceTriggerSelect: boolean = false,
   ) => {
     if (mergedMode === picker || forceTriggerSelect) {
       setInnerValue(date);
+
+      if (onContextSelect) {
+        onContextSelect(date, type);
+      }
 
       if (onSelect) {
         onSelect(date);
@@ -318,9 +324,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       panelNode = (
         <DecadePanel<DateType>
           {...pickerProps}
-          onSelect={date => {
+          onSelect={(date, type) => {
             setViewDate(date);
-            triggerSelect(date);
+            triggerSelect(date, type);
           }}
         />
       );
@@ -330,9 +336,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       panelNode = (
         <YearPanel<DateType>
           {...pickerProps}
-          onSelect={date => {
+          onSelect={(date, type) => {
             setViewDate(date);
-            triggerSelect(date);
+            triggerSelect(date, type);
           }}
         />
       );
@@ -342,9 +348,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       panelNode = (
         <MonthPanel<DateType>
           {...pickerProps}
-          onSelect={date => {
+          onSelect={(date, type) => {
             setViewDate(date);
-            triggerSelect(date);
+            triggerSelect(date, type);
           }}
         />
       );
@@ -354,9 +360,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       panelNode = (
         <WeekPanel
           {...pickerProps}
-          onSelect={date => {
+          onSelect={(date, type) => {
             setViewDate(date);
-            triggerSelect(date);
+            triggerSelect(date, type);
           }}
         />
       );
@@ -368,9 +374,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         <TimePanel<DateType>
           {...pickerProps}
           {...(typeof showTime === 'object' ? showTime : null)}
-          onSelect={date => {
+          onSelect={(date, type) => {
             setViewDate(date);
-            triggerSelect(date);
+            triggerSelect(date, type);
           }}
         />
       );
@@ -381,9 +387,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         panelNode = (
           <DatetimePanel
             {...pickerProps}
-            onSelect={date => {
+            onSelect={(date, type) => {
               setViewDate(date);
-              triggerSelect(date);
+              triggerSelect(date, type);
             }}
           />
         );
@@ -391,9 +397,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         panelNode = (
           <DatePanel<DateType>
             {...pickerProps}
-            onSelect={date => {
+            onSelect={(date, type) => {
               setViewDate(date);
-              triggerSelect(date);
+              triggerSelect(date, type);
             }}
           />
         );
@@ -419,7 +425,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         <a
           className={`${prefixCls}-now-btn`}
           onClick={() => {
-            triggerSelect(generateConfig.getNow(), true);
+            triggerSelect(generateConfig.getNow(), 'mouse', true);
           }}
         >
           {locale.now}
@@ -431,7 +437,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       <a
         className={`${prefixCls}-today-btn`}
         onClick={() => {
-          triggerSelect(generateConfig.getNow(), true);
+          triggerSelect(generateConfig.getNow(), 'mouse', true);
         }}
       >
         {locale.today}

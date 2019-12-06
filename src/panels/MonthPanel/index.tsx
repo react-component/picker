@@ -27,14 +27,15 @@ function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
     onKeyDown: event =>
       createKeyDownHandler(event, {
         onLeftRight: diff => {
-          onSelect(generateConfig.addMonth(value || viewDate, diff));
+          onSelect(generateConfig.addMonth(value || viewDate, diff), 'key');
         },
         onCtrlLeftRight: diff => {
-          onSelect(generateConfig.addYear(value || viewDate, diff));
+          onSelect(generateConfig.addYear(value || viewDate, diff), 'key');
         },
         onUpDown: diff => {
           onSelect(
             generateConfig.addMonth(value || viewDate, diff * MONTH_COL_COUNT),
+            'key',
           );
         },
         onEnter: () => {
@@ -67,7 +68,7 @@ function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
         {...props}
         prefixCls={prefixCls}
         onSelect={date => {
-          onSelect(date);
+          onSelect(date, 'mouse');
           onPanelChange('date', date);
         }}
       />

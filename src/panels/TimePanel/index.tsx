@@ -70,7 +70,7 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
           }
         },
         onEnter: () => {
-          onSelect(value || generateConfig.getNow());
+          onSelect(value || generateConfig.getNow(), 'key');
           setActiveColumnIndex(-1);
         },
       }),

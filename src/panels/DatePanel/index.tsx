@@ -40,18 +40,19 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
     onKeyDown: event =>
       createKeyDownHandler(event, {
         onLeftRight: diff => {
-          onSelect(generateConfig.addDate(value || viewDate, diff));
+          onSelect(generateConfig.addDate(value || viewDate, diff), 'key');
         },
         onCtrlLeftRight: diff => {
-          onSelect(generateConfig.addYear(value || viewDate, diff));
+          onSelect(generateConfig.addYear(value || viewDate, diff), 'key');
         },
         onUpDown: diff => {
           onSelect(
             generateConfig.addDate(value || viewDate, diff * WEEK_DAY_COUNT),
+            'key',
           );
         },
         onPageUpDown: diff => {
-          onSelect(generateConfig.addMonth(value || viewDate, diff));
+          onSelect(generateConfig.addMonth(value || viewDate, diff), 'key');
         },
         ...keyboardConfig,
       }),
