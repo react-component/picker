@@ -14,6 +14,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { AlignType } from 'rc-trigger/lib/interface';
+import { warning } from 'rc-util/lib/warning';
 import PickerPanel, {
   PickerPanelBaseProps,
   PickerPanelDateProps,
@@ -230,7 +231,16 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       // Let popup panel handle keyboard
       return operationRef.current.onKeyDown(e);
     }
-    return false;
+
+    /* istanbul ignore next */
+    /* eslint-disable no-lone-blocks */
+    {
+      warning(
+        false,
+        'Picker not correct forward KeyDown operation. Please help to fire issue about this.',
+      );
+      return false;
+    }
   };
 
   // ============================= Text ==============================

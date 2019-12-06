@@ -250,19 +250,16 @@ describe('Picker.Range', () => {
       );
     });
 
-    it('allowEmpty with disabled', () => {
-      const onChange = jest.fn();
-      const wrapper = mount(
-        <MomentRangePicker
-          disabled={[false, true]}
-          allowEmpty={[false, true]}
-          onChange={onChange}
-        />,
+    it('null value with disabled', () => {
+      const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      mount(
+        <MomentRangePicker disabled={[false, true]} value={[null, null]} />,
       );
 
-      wrapper.openPicker();
-      wrapper.selectCell(11);
-      expect(onChange.mock.calls[0][1]).toEqual(['1990-09-11', '']);
+      expect(errSpy).toHaveBeenCalledWith(
+        'Warning: `disabled` should not set with empty `value`. You should set `allowEmpty` or `value` instead.',
+      );
+      errSpy.mockReset();
     });
   });
 
@@ -569,6 +566,7 @@ describe('Picker.Range', () => {
 
     // Select to active next
     wrapper.selectCell(11);
+    jest.runAllTimers();
     expect(
       wrapper
         .find('.rc-picker-input')
@@ -618,5 +616,18 @@ describe('Picker.Range', () => {
         ).toBeFalsy();
       });
     });
+  });
+
+  it('should close when user focus out', () => {
+    const wrapper = mount(<MomentRangePicker />);
+    wrapper.openPicker();
+    wrapper.selectCell(11);
+    expect(wrapper.isOpen()).toBeTruthy();
+
+    wrapper
+      .find('input')
+      .last()
+      .simulate('blur');
+    expect(wrapper.isOpen()).toBeFalsy();
   });
 });

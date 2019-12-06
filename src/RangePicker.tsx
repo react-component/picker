@@ -1,5 +1,6 @@
 import * as React from 'react';
 import classNames from 'classnames';
+import warning from 'rc-util/lib/warning';
 import {
   DisabledTimes,
   PanelMode,
@@ -66,11 +67,6 @@ function canValueTrigger<DateType>(
   }
 
   if (allowEmpty && allowEmpty[index]) {
-    return true;
-  }
-
-  // If another one is disabled, this can be trigger
-  if (disabledList[(index + 1) % 2]) {
     return true;
   }
 
@@ -619,6 +615,21 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     // Sync select value
     setSelectedValue(mergedValue);
   }, [mergedValue]);
+
+  // ============================ Warning ============================
+  if (process.env.NODE_ENV !== 'production') {
+    if (
+      value &&
+      Array.isArray(disabled) &&
+      ((getValue(disabled, 0) && !getValue(value, 0)) ||
+        (getValue(disabled, 1) && !getValue(value, 1)))
+    ) {
+      warning(
+        false,
+        '`disabled` should not set with empty `value`. You should set `allowEmpty` or `value` instead.',
+      );
+    }
+  }
 
   // ============================ Private ============================
   if (pickerRef) {
