@@ -561,7 +561,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     triggerOpen: (newOpen: boolean) => triggerOpen(newOpen, index),
     onSubmit: () => {
       triggerChange(selectedValue);
-      triggerOpen(false, index, true);
       resetText();
     },
     onCancel: () => {
@@ -589,6 +588,23 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   // ============================= Sync ==============================
   // Close should sync back with text value
+  const startStr =
+    mergedValue && mergedValue[0]
+      ? generateConfig.locale.format(
+          locale.locale,
+          mergedValue[0],
+          'YYYYMMDDHHmmss',
+        )
+      : '';
+  const endStr =
+    mergedValue && mergedValue[1]
+      ? generateConfig.locale.format(
+          locale.locale,
+          mergedValue[1],
+          'YYYYMMDDHHmmss',
+        )
+      : '';
+
   React.useEffect(() => {
     if (!mergedOpen) {
       setSelectedValue(mergedValue);
@@ -597,24 +613,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   // Sync innerValue with control mode
   React.useEffect(() => {
-    if (
-      isEqual(
-        generateConfig,
-        getValue(mergedValue, 0),
-        getValue(selectedValue, 0),
-      ) &&
-      isEqual(
-        generateConfig,
-        getValue(mergedValue, 1),
-        getValue(selectedValue, 1),
-      )
-    ) {
-      return;
-    }
-
-    // Sync select value
     setSelectedValue(mergedValue);
-  }, [mergedValue]);
+  }, [startStr, endStr]);
 
   // ============================ Warning ============================
   if (process.env.NODE_ENV !== 'production') {
@@ -679,6 +679,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       };
     }
 
+    const onContextSelect = (date: DateType, type: 'key' | 'mouse') => {
+      const values = updateValues(selectedValue, date, activePickerIndex);
+
+      if (type === 'key' || (picker === 'date' && showTime)) {
+        setSelectedValue(values);
+      } else {
+        // triggerChange will also update selected values
+        triggerChange(values);
+      }
+    };
+
     return (
       <RangeContext.Provider
         value={{
@@ -686,16 +697,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           panelPosition,
           rangedValue: selectedValue,
           hoverRangedValue: panelHoverRangedValue,
-          onSelect: date => {
-            const values = updateValues(selectedValue, date, activePickerIndex);
-
-            if (picker === 'date' && showTime) {
-              setSelectedValue(values);
-            } else {
-              // triggerChange will also update selected values
-              triggerChange(values);
-            }
-          },
+          onSelect: onContextSelect,
         }}
       >
         <PickerPanel<DateType>
@@ -718,7 +720,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             return false;
           }}
           className={classNames({
-            [`${prefixCls}-panel-focused`]: !startTyping && !endTyping,
+            [`${prefixCls}-panel-focused`]:
+              activePickerIndex === 0 ? !startTyping : !endTyping,
           })}
           value={getValue(selectedValue, activePickerIndex)}
           locale={locale}
