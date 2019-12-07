@@ -104,6 +104,7 @@ export interface RangePickerSharedProps<DateType> {
   ) => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onOk?: () => void;
 
   /** @private Internal usage. Do not use in your production env */
   components?: {
@@ -206,6 +207,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     onCalendarChange,
     onFocus,
     onBlur,
+    onOk,
     components,
   } = props as MergedRangePickerProps<DateType>;
 
@@ -831,13 +833,16 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           })}
 
           {showTime && (
-            <li
-              className={`${prefixCls}-ok`}
-              onClick={() => {
-                triggerChange(selectedValue);
-              }}
-            >
-              <Button disabled={!getValue(selectedValue, activePickerIndex)}>
+            <li className={`${prefixCls}-ok`}>
+              <Button
+                disabled={!getValue(selectedValue, activePickerIndex)}
+                onClick={() => {
+                  triggerChange(selectedValue);
+                  if (onOk) {
+                    onOk();
+                  }
+                }}
+              >
                 {locale.ok}
               </Button>
             </li>

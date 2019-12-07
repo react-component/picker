@@ -714,8 +714,13 @@ describe('Picker.Range', () => {
 
   it('datetime display ok button', () => {
     const onCalendarChange = jest.fn();
+    const onOk = jest.fn();
     const wrapper = mount(
-      <MomentRangePicker showTime onCalendarChange={onCalendarChange} />,
+      <MomentRangePicker
+        showTime
+        onCalendarChange={onCalendarChange}
+        onOk={onOk}
+      />,
     );
     wrapper.openPicker();
 
@@ -725,10 +730,11 @@ describe('Picker.Range', () => {
     // Trigger when valued
     onCalendarChange.mockReset();
     wrapper.selectCell(11);
-    wrapper.find('.rc-picker-ok').simulate('click');
+    wrapper.find('.rc-picker-ok button').simulate('click');
     expect(onCalendarChange).toHaveBeenCalledWith(
       [expect.anything(), null],
       ['1990-09-11 00:00:00', ''],
     );
+    expect(onOk).toHaveBeenCalled();
   });
 });
