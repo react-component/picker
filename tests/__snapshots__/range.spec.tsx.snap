@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Picker.Range icon 1`] = `
+<div
+  class="rc-picker rc-picker-range"
+>
+  <div
+    class="rc-picker-input rc-picker-input-active"
+  >
+    <input
+      placeholder=""
+      readonly=""
+      size="12"
+      value="1990-09-03"
+    />
+  </div>
+  <div
+    class="rc-picker-range-separator"
+  >
+    ~
+  </div>
+  <div
+    class="rc-picker-input"
+  >
+    <input
+      placeholder=""
+      readonly=""
+      size="12"
+      value="1990-09-03"
+    />
+  </div>
+  <div
+    class="rc-picker-active-bar"
+    style="left: 0px; width: 0px; position: absolute;"
+  />
+  <span
+    class="rc-picker-suffix"
+  >
+    <span
+      class="suffix-icon"
+    />
+  </span>
+  <span
+    class="rc-picker-clear"
+  >
+    <span
+      class="suffix-icon"
+    />
+  </span>
+</div>
+`;

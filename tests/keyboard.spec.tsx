@@ -1,5 +1,6 @@
 import React from 'react';
 import MockDate from 'mockdate';
+import { act } from 'react-dom/test-utils';
 import KeyCode from 'rc-util/lib/KeyCode';
 import {
   mount,
@@ -8,6 +9,7 @@ import {
   MomentPicker,
   MomentPickerPanel,
   Wrapper,
+  MomentRangePicker,
 } from './util/commonUtil';
 
 describe('Picker.Keyboard', () => {
@@ -378,6 +380,87 @@ describe('Picker.Keyboard', () => {
       expect(
         isSame(onPanelChange.mock.calls[0][0], '2110', 'year'),
       ).toBeTruthy();
+    });
+  });
+
+  describe('range picker', () => {
+    it('full step', () => {
+      jest.useFakeTimers();
+      const onCalendarChange = jest.fn();
+      const onChange = jest.fn();
+      const wrapper = mount(
+        <MomentRangePicker
+          onCalendarChange={onCalendarChange}
+          onChange={onChange}
+        />,
+      );
+
+      // Start Date
+      wrapper.openPicker();
+      wrapper
+        .find('input')
+        .first()
+        .simulate('change', { target: { value: '1990-01-01' } });
+      wrapper.keyDown(KeyCode.TAB);
+      wrapper.keyDown(KeyCode.DOWN);
+      wrapper.keyDown(KeyCode.ENTER);
+      expect(onCalendarChange.mock.calls[0][1]).toEqual(['1990-01-08', '']);
+      expect(onChange).not.toHaveBeenCalled();
+
+      // End Date
+      act(() => {
+        jest.runAllTimers();
+      });
+      expect(
+        wrapper
+          .find('.rc-picker-input')
+          .last()
+          .hasClass('rc-picker-input-active'),
+      ).toBeTruthy();
+      onCalendarChange.mockReset();
+
+      wrapper
+        .find('input')
+        .last()
+        .simulate('change', { target: { value: '2000-01-01' } });
+      wrapper.keyDown(KeyCode.TAB, {}, 1);
+      wrapper.keyDown(KeyCode.DOWN, {}, 1);
+      wrapper.keyDown(KeyCode.ENTER, {}, 1);
+      expect(onCalendarChange.mock.calls[0][1]).toEqual([
+        '1990-01-08',
+        '2000-01-08',
+      ]);
+      expect(onChange.mock.calls[0][1]).toEqual(['1990-01-08', '2000-01-08']);
+
+      jest.useRealTimers();
+    });
+
+    it('full step', () => {
+      const onCalendarChange = jest.fn();
+      const onChange = jest.fn();
+      const onFocus = jest.fn();
+      const wrapper = mount(
+        <MomentRangePicker
+          onFocus={onFocus}
+          onCalendarChange={onCalendarChange}
+          onChange={onChange}
+        />,
+      );
+
+      wrapper.openPicker();
+      expect(onFocus).toHaveBeenCalled();
+
+      wrapper
+        .find('input')
+        .first()
+        .simulate('change', { target: { value: '2000-01-01' } });
+      wrapper.keyDown(KeyCode.ESC);
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .props().value,
+      ).toEqual('');
     });
   });
 });

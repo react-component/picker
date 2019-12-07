@@ -20,5 +20,11 @@ describe('Picker.Util', () => {
         getMoment('1989-11-28'),
       ),
     ).toBeTruthy();
+
+    expect(
+      isSameTime(momentGenerateConfig, null, getMoment('1989-11-28')),
+    ).toBeFalsy();
+
+    expect(isSameTime(momentGenerateConfig, null, null)).toBeTruthy();
   });
 });

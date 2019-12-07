@@ -72,7 +72,9 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
   clearValue() {
     this.find('.rc-picker-clear-btn').simulate('click');
   },
-  keyDown(which, info = {}) {
-    this.find('input').simulate('keydown', { ...info, which });
+  keyDown(which, info = {}, index = 0) {
+    this.find('input')
+      .at(index)
+      .simulate('keydown', { ...info, which });
   },
 });

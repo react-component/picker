@@ -1,5 +1,6 @@
 import React from 'react';
 import MockDate from 'mockdate';
+import { act } from 'react-dom/test-utils';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { Moment } from 'moment';
@@ -629,5 +630,105 @@ describe('Picker.Range', () => {
       .last()
       .simulate('blur');
     expect(wrapper.isOpen()).toBeFalsy();
+  });
+
+  it('icon', () => {
+    const wrapper = mount(
+      <MomentRangePicker
+        defaultValue={[getMoment('1990-09-03'), getMoment('1990-09-03')]}
+        suffixIcon={<span className="suffix-icon" />}
+        clearIcon={<span className="suffix-icon" />}
+        allowClear
+      />,
+    );
+
+    expect(wrapper.render()).toMatchSnapshot();
+  });
+
+  it('block native mouseDown in panel to prevent focus changed', () => {
+    const wrapper = mount(<MomentRangePicker />);
+    wrapper.openPicker();
+
+    const preventDefault = jest.fn();
+    wrapper
+      .find('td')
+      .first()
+      .simulate('mouseDown', { preventDefault });
+
+    expect(preventDefault).toHaveBeenCalled();
+  });
+
+  describe('arrow position', () => {
+    let domMock: ReturnType<typeof spyElementPrototypes>;
+
+    beforeAll(() => {
+      domMock = spyElementPrototypes(HTMLElement, {
+        offsetWidth: {
+          get: () => 100,
+        },
+      });
+    });
+
+    afterAll(() => {
+      domMock.mockRestore();
+    });
+
+    it('end date arrow should move panel left', () => {
+      const wrapper = mount(<MomentRangePicker />);
+      wrapper.openPicker(1);
+      wrapper.update();
+      expect(
+        wrapper.find('.rc-picker-panel-container').props().style?.marginLeft,
+      ).toEqual(200);
+    });
+  });
+
+  it('fixed open need repeat trigger onOpenChange', () => {
+    jest.useFakeTimers();
+    const onOpenChange = jest.fn();
+    const wrapper = mount(
+      <MomentRangePicker onOpenChange={onOpenChange} open />,
+    );
+
+    for (let i = 0; i < 10; i += 1) {
+      const clickEvent = new Event('mousedown');
+      Object.defineProperty(clickEvent, 'target', {
+        get: () => document.body,
+      });
+      act(() => {
+        window.dispatchEvent(clickEvent);
+        wrapper
+          .find('input')
+          .first()
+          .simulate('blur');
+      });
+
+      // Maybe not good since onOpenChange trigger twice
+      expect(onOpenChange).toHaveBeenCalledTimes((i + 1) * 2);
+    }
+    act(() => {
+      jest.runAllTimers();
+    });
+    jest.useRealTimers();
+  });
+
+  it('datetime display ok button', () => {
+    const onCalendarChange = jest.fn();
+    const wrapper = mount(
+      <MomentRangePicker showTime onCalendarChange={onCalendarChange} />,
+    );
+    wrapper.openPicker();
+
+    // Not trigger when not value
+    expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
+
+    // Trigger when valued
+    onCalendarChange.mockReset();
+    wrapper.selectCell(11);
+    wrapper.find('.rc-picker-ok').simulate('click');
+    expect(onCalendarChange).toHaveBeenCalledWith(
+      [expect.anything(), null],
+      ['1990-09-11 00:00:00', ''],
+    );
   });
 });

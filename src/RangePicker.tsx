@@ -59,7 +59,6 @@ function reorderValues<DateType>(
 function canValueTrigger<DateType>(
   value: EventValue<DateType>,
   index: number,
-  disabledList: [boolean, boolean],
   allowEmpty?: [boolean, boolean] | null,
 ): boolean {
   if (value) {
@@ -105,6 +104,11 @@ export interface RangePickerSharedProps<DateType> {
   ) => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
+
+  /** @private Internal usage. Do not use in your production env */
+  components?: {
+    button: React.ComponentType;
+  };
 }
 
 type OmitPickerProps<Props> = Omit<
@@ -202,6 +206,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     onCalendarChange,
     onFocus,
     onBlur,
+    components,
   } = props as MergedRangePickerProps<DateType>;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -415,18 +420,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       onCalendarChange(values, [startStr, endStr]);
     }
 
-    const canStartValueTrigger = canValueTrigger(
-      startValue,
-      0,
-      mergedDisabled,
-      allowEmpty,
-    );
-    const canEndValueTrigger = canValueTrigger(
-      endValue,
-      1,
-      mergedDisabled,
-      allowEmpty,
-    );
+    const canStartValueTrigger = canValueTrigger(startValue, 0, allowEmpty);
+    const canEndValueTrigger = canValueTrigger(endValue, 1, allowEmpty);
 
     const canTrigger =
       values === null || (canStartValueTrigger && canEndValueTrigger);
@@ -485,7 +480,16 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       // Let popup panel handle keyboard
       return operationRef.current.onKeyDown(e);
     }
-    return false;
+
+    /* istanbul ignore next */
+    /* eslint-disable no-lone-blocks */
+    {
+      warning(
+        false,
+        'Picker not correct forward KeyDown operation. Please help to fire issue about this.',
+      );
+      return false;
+    }
   };
 
   // ============================= Text ==============================
@@ -803,13 +807,15 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
 
     let rangesNode: React.ReactNode;
-    if (ranges) {
-      const rangeList = Object.keys(ranges);
+    if (ranges || showTime) {
+      const mergedRanges = ranges || {};
+      const rangeList = Object.keys(mergedRanges);
+      const Button = (components && components.button) || 'button';
 
       rangesNode = (
         <ul className={`${prefixCls}-ranges`}>
           {rangeList.map(label => {
-            const range = ranges[label];
+            const range = mergedRanges[label];
 
             return (
               <li
@@ -823,6 +829,19 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               </li>
             );
           })}
+
+          {showTime && (
+            <li
+              className={`${prefixCls}-ok`}
+              onClick={() => {
+                triggerChange(selectedValue);
+              }}
+            >
+              <Button disabled={!getValue(selectedValue, activePickerIndex)}>
+                {locale.ok}
+              </Button>
+            </li>
+          )}
         </ul>
       );
     }
@@ -854,6 +873,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     </div>
   );
 
+  // ============================= Icons =============================
   let suffixNode: React.ReactNode;
   if (suffixIcon) {
     suffixNode = <span className={`${prefixCls}-suffix`}>{suffixIcon}</span>;
