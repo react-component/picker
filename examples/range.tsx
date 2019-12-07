@@ -142,6 +142,7 @@ export default () => {
             placeholder={['start...', 'end...']}
             disabled={[false, true]}
             allowEmpty={[false, true]}
+            renderExtraFooter={() => <div>extra footer</div>}
           />
         </div>
       </div>

@@ -39,6 +39,7 @@ import { GenerateConfig } from './generate';
 import { PickerPanelProps } from '.';
 import RangeContext from './RangeContext';
 import useRangeDisabled from './hooks/useRangeDisabled';
+import getExtraFooter from './utils/getExtraFooter';
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -201,6 +202,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     pickerRef,
     inputReadOnly,
     mode,
+    renderExtraFooter,
     onChange,
     onOpenChange,
     onPanelChange,
@@ -771,6 +773,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   function renderPanels() {
     let panels: React.ReactNode;
+    const extraNode = getExtraFooter(
+      prefixCls,
+      mergedModes[activePickerIndex],
+      renderExtraFooter,
+    );
 
     if (picker !== 'time' && !showTime) {
       const viewDate = viewDates[activePickerIndex];
@@ -861,7 +868,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         }}
       >
         <div className={`${prefixCls}-panels`}>{panels}</div>
-
+        {extraNode}
         {rangesNode}
       </div>
     );
@@ -931,6 +938,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   }
 
+  // ============================ Return =============================
   return (
     <PanelContext.Provider
       value={{

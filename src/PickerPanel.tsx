@@ -34,6 +34,7 @@ import { PickerModeMap } from './utils/uiUtil';
 import { MonthCellRender } from './panels/MonthPanel/MonthBody';
 import RangeContext from './RangeContext';
 import useMergedState from './hooks/useMergeState';
+import getExtraFooter from './utils/getExtraFooter';
 
 export interface PickerPanelSharedProps<DateType> {
   prefixCls?: string;
@@ -407,14 +408,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   }
 
   // ============================ Footer ============================
-  let extraFooter: React.ReactNode;
-  if (renderExtraFooter) {
-    extraFooter = (
-      <div className={`${prefixCls}-footer-extra`}>
-        {renderExtraFooter(mergedMode)}
-      </div>
-    );
-  }
+  const extraFooter: React.ReactNode = inRange
+    ? null
+    : getExtraFooter(prefixCls, mergedMode, renderExtraFooter);
 
   let nowNode: React.ReactNode;
   let todayNode: React.ReactNode;
