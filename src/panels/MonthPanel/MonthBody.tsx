@@ -51,6 +51,8 @@ function MonthBody<DateType>({
     hoverRangedValue,
     isSameCell: (current, target) =>
       isSameMonth(generateConfig, current, target),
+    isInView: () => true,
+    offsetCell: (date, offset) => generateConfig.addMonth(date, offset),
   });
 
   const monthsLocale: string[] =
@@ -79,7 +81,6 @@ function MonthBody<DateType>({
           )}
           className={classNames(monthPrefixCls, {
             [`${monthPrefixCls}-disabled`]: disabled,
-            [`${monthPrefixCls}-in-view`]: true,
             [`${monthPrefixCls}-selected`]: isSameMonth(
               generateConfig,
               value,

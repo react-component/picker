@@ -36,17 +36,6 @@ function YearBody<DateType>({
   const yearPrefixCls = `${prefixCls}-cell`;
 
   // =============================== Year ===============================
-  const rows: React.ReactNode[] = [];
-  const getCellClassName = useCellClassName<DateType>({
-    cellPrefixCls: yearPrefixCls,
-    value,
-    generateConfig,
-    rangedValue,
-    hoverRangedValue,
-    isSameCell: (current, target) =>
-      isSameYear(generateConfig, current, target),
-  });
-
   const yearNumber = generateConfig.getYear(viewDate);
   const startYear =
     Math.floor(yearNumber / YEAR_DECADE_COUNT) * YEAR_DECADE_COUNT;
@@ -56,6 +45,22 @@ function YearBody<DateType>({
     startYear -
       Math.ceil((YEAR_COL_COUNT * YEAR_ROW_COUNT - YEAR_DECADE_COUNT) / 2),
   );
+
+  const rows: React.ReactNode[] = [];
+  const getCellClassName = useCellClassName<DateType>({
+    cellPrefixCls: yearPrefixCls,
+    value,
+    generateConfig,
+    rangedValue,
+    hoverRangedValue,
+    isSameCell: (current, target) =>
+      isSameYear(generateConfig, current, target),
+    isInView: date => {
+      const currentYearNumber = generateConfig.getYear(date);
+      return startYear <= currentYearNumber && currentYearNumber <= endYear;
+    },
+    offsetCell: (date, offset) => generateConfig.addYear(date, offset),
+  });
 
   for (let i = 0; i < YEAR_ROW_COUNT; i += 1) {
     const row: React.ReactNode[] = [];
@@ -72,8 +77,6 @@ function YearBody<DateType>({
           title={generateConfig.locale.format(locale.locale, yearDate, 'YYYY')}
           className={classNames(yearPrefixCls, {
             [`${yearPrefixCls}-disabled`]: disabled,
-            [`${yearPrefixCls}-in-view`]:
-              startYear <= currentYearNumber && currentYearNumber <= endYear,
             ...getCellClassName(yearDate),
           })}
           onClick={() => {

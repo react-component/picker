@@ -85,6 +85,8 @@ function DateBody<DateType>({
     hoverRangedValue: prefixColumn ? null : hoverRangedValue,
     isSameCell: (current, target) =>
       isSameDate(generateConfig, current, target),
+    isInView: date => isSameMonth(generateConfig, date, viewDate),
+    offsetCell: (date, offset) => generateConfig.addDate(date, offset),
   });
 
   for (let y = 0; y < rowCount; y += 1) {
@@ -123,11 +125,6 @@ function DateBody<DateType>({
           }}
           className={classNames(datePrefixCls, {
             [`${datePrefixCls}-disabled`]: disabled,
-            [`${datePrefixCls}-in-view`]: isSameMonth(
-              generateConfig,
-              currentDate,
-              viewDate,
-            ),
 
             ...getCellClassName(currentDate),
           })}

@@ -617,6 +617,30 @@ describe('Picker.Range', () => {
         ).toBeFalsy();
       });
     });
+
+    it('range edge className', () => {
+      const wrapper = mount(
+        <MomentRangePicker
+          value={[getMoment('1990-09-20'), getMoment('1990-09-20')]}
+        />,
+      );
+
+      // End edge
+      wrapper.openPicker();
+      wrapper.findCell(10).simulate('mouseEnter');
+      expect(
+        wrapper.findCell(19).hasClass('rc-picker-cell-range-hover-edge-end'),
+      ).toBeTruthy();
+      wrapper.findCell(10).simulate('mouseOut');
+
+      // Start edge
+      wrapper.openPicker(1);
+      wrapper.findCell(28).simulate('mouseEnter');
+      expect(
+        wrapper.findCell(21).hasClass('rc-picker-cell-range-hover-edge-start'),
+      ).toBeTruthy();
+      wrapper.findCell(28).simulate('mouseOut');
+    });
   });
 
   it('should close when user focus out', () => {
