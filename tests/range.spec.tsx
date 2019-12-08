@@ -740,6 +740,40 @@ describe('Picker.Range', () => {
     });
   });
 
+  it('focus to next input not to onOpenChange', () => {
+    jest.useFakeTimers();
+
+    const onOpenChange = jest.fn();
+    const wrapper = mount(<MomentRangePicker onOpenChange={onOpenChange} />);
+    wrapper.openPicker();
+    onOpenChange.mockReset();
+
+    const clickEvent = new Event('mousedown');
+    Object.defineProperty(clickEvent, 'target', {
+      get: () =>
+        wrapper
+          .find('input')
+          .last()
+          .instance(),
+    });
+    act(() => {
+      window.dispatchEvent(clickEvent);
+      wrapper
+        .find('input')
+        .first()
+        .simulate('blur');
+      wrapper
+        .find('input')
+        .last()
+        .simulate('focus');
+      jest.runAllTimers();
+    });
+
+    expect(onOpenChange).not.toHaveBeenCalled();
+
+    jest.useRealTimers();
+  });
+
   it('fixed open need repeat trigger onOpenChange', () => {
     jest.useFakeTimers();
     const onOpenChange = jest.fn();
