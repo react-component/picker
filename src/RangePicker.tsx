@@ -616,8 +616,15 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   React.useEffect(() => {
     if (!mergedOpen) {
       setSelectedValue(mergedValue);
+
+      if (!startValueTexts.length || startValueTexts[0] === '') {
+        triggerStartTextChange('');
+      }
+      if (!endValueTexts.length || endValueTexts[0] === '') {
+        triggerEndTextChange('');
+      }
     }
-  }, [mergedOpen]);
+  }, [mergedOpen, startValueTexts, endValueTexts]);
 
   // Sync innerValue with control mode
   React.useEffect(() => {
@@ -978,7 +985,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               disabled={mergedDisabled[0]}
               readOnly={inputReadOnly || !startTyping}
               value={startText}
-              onChange={triggerStartTextChange}
+              onChange={e => {
+                triggerStartTextChange(e.target.value);
+              }}
               autoFocus={autoFocus}
               placeholder={getValue(placeholder, 0) || ''}
               ref={startInputRef}
@@ -999,7 +1008,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               disabled={mergedDisabled[1]}
               readOnly={inputReadOnly || !endTyping}
               value={endText}
-              onChange={triggerEndTextChange}
+              onChange={e => {
+                triggerEndTextChange(e.target.value);
+              }}
               placeholder={getValue(placeholder, 1) || ''}
               ref={endInputRef}
               {...endInputProps}

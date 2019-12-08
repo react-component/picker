@@ -503,4 +503,16 @@ describe('Picker.Basic', () => {
 
     expect(wrapper.find('input').props().name).toEqual('bamboo');
   });
+
+  it('blur should reset invalidate text', () => {
+    const wrapper = mount(<MomentPicker />);
+    wrapper.openPicker();
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: 'Invalidate',
+      },
+    });
+    wrapper.closePicker();
+    expect(wrapper.find('input').props().value).toEqual('');
+  });
 });

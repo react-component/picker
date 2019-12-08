@@ -7,12 +7,10 @@ export default function useTextValueMapping<ValueType>({
   /** Must useMemo, to assume that `valueTexts` only match on the first change */
   valueTexts: string[];
   onTextChange: (text: string) => void;
-}): [string, React.ChangeEventHandler<HTMLInputElement>, () => void] {
+}): [string, (text: string) => void, () => void] {
   const [text, setInnerText] = React.useState('');
 
-  function triggerTextChange({
-    target: { value },
-  }: React.ChangeEvent<HTMLInputElement>) {
+  function triggerTextChange(value: string) {
     setInnerText(value);
     onTextChange(value);
   }

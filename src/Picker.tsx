@@ -201,6 +201,27 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     },
   });
 
+  // ============================= Text ==============================
+  const valueTexts = useValueTexts(selectedValue, {
+    formatList,
+    generateConfig,
+    locale,
+  });
+
+  const [text, triggerTextChange, resetText] = useTextValueMapping({
+    valueTexts,
+    onTextChange: newText => {
+      const inputDate = generateConfig.locale.parse(
+        locale.locale,
+        newText,
+        formatList,
+      );
+      if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
+        setSelectedValue(inputDate);
+      }
+    },
+  });
+
   // ============================ Trigger ============================
   const triggerChange = (newValue: DateType | null) => {
     setSelectedValue(newValue);
@@ -243,27 +264,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
-  // ============================= Text ==============================
-  const valueTexts = useValueTexts(selectedValue, {
-    formatList,
-    generateConfig,
-    locale,
-  });
-
-  const [text, triggerTextChange, resetText] = useTextValueMapping({
-    valueTexts,
-    onTextChange: newText => {
-      const inputDate = generateConfig.locale.parse(
-        locale.locale,
-        newText,
-        formatList,
-      );
-      if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
-        setSelectedValue(inputDate);
-      }
-    },
-  });
-
   // ============================= Input =============================
   const [inputProps, { focused, typing }] = usePickerInput({
     open: mergedOpen,
@@ -296,8 +296,12 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   React.useEffect(() => {
     if (!mergedOpen) {
       setSelectedValue(mergedValue);
+
+      if (!valueTexts.length || valueTexts[0] === '') {
+        triggerTextChange('');
+      }
     }
-  }, [mergedOpen]);
+  }, [mergedOpen, valueTexts]);
 
   // Sync innerValue with control mode
   React.useEffect(() => {
@@ -406,7 +410,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               disabled={disabled}
               readOnly={inputReadOnly || !typing}
               value={text}
-              onChange={triggerTextChange}
+              onChange={e => {
+                triggerTextChange(e.target.value);
+              }}
               autoFocus={autoFocus}
               placeholder={placeholder}
               ref={inputRef}
