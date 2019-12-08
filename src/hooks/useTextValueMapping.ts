@@ -9,6 +9,8 @@ export default function useTextValueMapping<ValueType>({
   onTextChange: (text: string) => void;
 }): [string, (text: string) => void, () => void] {
   const [text, setInnerText] = React.useState('');
+  const valueTextsRef = React.useRef<string[]>([]);
+  valueTextsRef.current = valueTexts;
 
   function triggerTextChange(value: string) {
     setInnerText(value);
@@ -16,7 +18,7 @@ export default function useTextValueMapping<ValueType>({
   }
 
   function resetText() {
-    setInnerText(valueTexts[0]);
+    setInnerText(valueTextsRef.current[0]);
   }
 
   React.useEffect(() => {
