@@ -702,7 +702,8 @@ describe('Picker.Range', () => {
       wrapper.openPicker(1);
       wrapper.update();
       expect(
-        wrapper.find('.rc-picker-panel-container').props().style?.marginLeft,
+        (wrapper.find('.rc-picker-panel-container').props() as any).style
+          .marginLeft,
       ).toEqual(200);
     });
   });
@@ -777,6 +778,11 @@ describe('Picker.Range', () => {
 
     wrapper.update();
     expect(wrapper.isOpen()).toBeFalsy();
-    expect(wrapper.find('input').first().props().value).toEqual('');
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .props().value,
+    ).toEqual('');
   });
 });
