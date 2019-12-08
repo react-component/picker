@@ -550,6 +550,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     inputDivRef: React.RefObject<HTMLDivElement>,
     resetText: () => void,
   ) => ({
+    blurToCancel: !!(picker === 'date' && showTime),
     forwardKeyDown,
     onBlur,
     isClickOutside: (target: EventTarget | null) =>
@@ -557,8 +558,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         panelDivRef.current &&
         !panelDivRef.current.contains(target as Node) &&
         inputDivRef.current &&
-        !inputDivRef.current.contains(target as Node) &&
-        onOpenChange
+        !inputDivRef.current.contains(target as Node)
       ),
     onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
       setActivePickerIndex(index);

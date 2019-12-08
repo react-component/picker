@@ -7,6 +7,7 @@ export default function usePickerInput({
   isClickOutside,
   triggerOpen,
   forwardKeyDown,
+  blurToCancel,
   onSubmit,
   onCancel,
   onFocus,
@@ -16,6 +17,7 @@ export default function usePickerInput({
   isClickOutside: (clickElement: EventTarget | null) => boolean;
   triggerOpen: (open: boolean) => void;
   forwardKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => boolean;
+  blurToCancel?: boolean;
   onSubmit: () => void;
   onCancel: () => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
@@ -107,7 +109,12 @@ export default function usePickerInput({
     addGlobalMouseDownEvent(({ target }: MouseEvent) => {
       if (open && isClickOutside(target)) {
         preventBlurRef.current = true;
-        triggerOpen(false);
+
+        if (blurToCancel) {
+          onCancel();
+        } else {
+          triggerOpen(false);
+        }
 
         // Always set back in case `onBlur` prevented by user
         window.setTimeout(() => {

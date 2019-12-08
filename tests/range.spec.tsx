@@ -761,4 +761,22 @@ describe('Picker.Range', () => {
     );
     expect(onOk).toHaveBeenCalled();
   });
+
+  it('datetime will reset by blur', () => {
+    const wrapper = mount(<MomentRangePicker showTime />);
+    wrapper.openPicker();
+    wrapper.selectCell(11);
+
+    const clickEvent = new Event('mousedown');
+    Object.defineProperty(clickEvent, 'target', {
+      get: () => document.body,
+    });
+    act(() => {
+      window.dispatchEvent(clickEvent);
+    });
+
+    wrapper.update();
+    expect(wrapper.isOpen()).toBeFalsy();
+    expect(wrapper.find('input').first().props().value).toEqual('');
+  });
 });
