@@ -34,6 +34,10 @@ export default function usePickerInput({
    * since this will repeat trigger `onOpenChange` event.
    */
   const preventBlurRef = React.useRef<boolean>(false);
+  const cancelRef = React.useRef({
+    onCancel,
+  });
+  cancelRef.current.onCancel = onCancel;
 
   const inputProps: React.DOMAttributes<HTMLInputElement> = {
     onMouseDown: () => {
@@ -98,7 +102,7 @@ export default function usePickerInput({
       if (blurToCancel) {
         setTimeout(() => {
           if (isClickOutside(document.activeElement)) {
-            onCancel();
+            cancelRef.current.onCancel();
           }
         }, 0);
       } else {
