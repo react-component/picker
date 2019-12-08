@@ -110,6 +110,7 @@ export interface RangePickerSharedProps<DateType> {
   /** @private Internal usage. Do not use in your production env */
   components?: {
     button: React.ComponentType;
+    rangeItem: React.ComponentType;
   };
 }
 
@@ -827,6 +828,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       const mergedRanges = ranges || {};
       const rangeList = Object.keys(mergedRanges);
       const Button = (components && components.button) || 'button';
+      const RangeItem = (components && components.rangeItem) || 'span';
 
       rangesNode = (
         <ul className={`${prefixCls}-ranges`}>
@@ -834,14 +836,15 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             const range = mergedRanges[label];
 
             return (
-              <li
-                key={label}
-                onClick={() => {
-                  const newValues = Array.isArray(range) ? range : range();
-                  triggerChange(newValues);
-                }}
-              >
-                {label}
+              <li key={label}>
+                <RangeItem
+                  onClick={() => {
+                    const newValues = Array.isArray(range) ? range : range();
+                    triggerChange(newValues);
+                  }}
+                >
+                  {label}
+                </RangeItem>
               </li>
             );
           })}

@@ -280,7 +280,7 @@ describe('Picker.Range', () => {
     let testNode;
 
     // Basic
-    testNode = wrapper.find('.rc-picker-ranges li').first();
+    testNode = wrapper.find('.rc-picker-ranges li span').first();
     expect(testNode.text()).toEqual('test');
     testNode.simulate('click');
     expect(onChange).toHaveBeenCalledWith(
@@ -289,7 +289,7 @@ describe('Picker.Range', () => {
     );
 
     // Function
-    testNode = wrapper.find('.rc-picker-ranges li').last();
+    testNode = wrapper.find('.rc-picker-ranges li span').last();
     expect(testNode.text()).toEqual('func');
     testNode.simulate('click');
     expect(onChange).toHaveBeenCalledWith(
