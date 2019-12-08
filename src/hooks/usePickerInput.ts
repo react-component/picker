@@ -96,7 +96,11 @@ export default function usePickerInput({
       }
 
       if (blurToCancel) {
-        onCancel();
+        setTimeout(() => {
+          if (isClickOutside(document.activeElement)) {
+            onCancel();
+          }
+        }, 0);
       } else {
         triggerOpen(false);
       }

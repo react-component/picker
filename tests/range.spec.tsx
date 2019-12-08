@@ -830,10 +830,16 @@ describe('Picker.Range', () => {
   });
 
   it('datetime will reset by blur', () => {
+    jest.useFakeTimers();
+
     const wrapper = mount(<MomentRangePicker showTime />);
     wrapper.openPicker();
     wrapper.selectCell(11);
     wrapper.closePicker();
+    act(() => {
+      jest.runAllTimers();
+    });
+    wrapper.update();
 
     expect(wrapper.isOpen()).toBeFalsy();
     expect(
@@ -842,5 +848,7 @@ describe('Picker.Range', () => {
         .first()
         .props().value,
     ).toEqual('');
+
+    jest.useRealTimers();
   });
 });
