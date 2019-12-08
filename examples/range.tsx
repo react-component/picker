@@ -67,6 +67,9 @@ export default () => {
             ref={rangePickerRef}
             showTime
             style={{ width: 700 }}
+            ranges={{
+              ranges: [moment(), moment().add(10, 'day')],
+            }}
           />
         </div>
 

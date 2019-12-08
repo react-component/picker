@@ -676,7 +676,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       hoverRangedValue &&
       hoverRangedValue[0] &&
       hoverRangedValue[1] &&
-      !isSameDate(generateConfig, hoverRangedValue[0], hoverRangedValue[1]) &&
       generateConfig.isAfter(hoverRangedValue[1], hoverRangedValue[0])
     ) {
       panelHoverRangedValue = hoverRangedValue;
@@ -834,13 +833,22 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         <ul className={`${prefixCls}-ranges`}>
           {rangeList.map(label => {
             const range = mergedRanges[label];
+            const rangeValues = Array.isArray(range) ? range : range();
 
             return (
               <li key={label}>
                 <RangeItem
                   onClick={() => {
-                    const newValues = Array.isArray(range) ? range : range();
+                    const newValues = rangeValues;
                     triggerChange(newValues);
+                  }}
+                  onMouseEnter={() => {
+                    setHoverRangedValue(rangeValues);
+                  }}
+                  onMouseLeave={() => {
+                    setHoverRangedValue(
+                      updateValues(selectedValue, null, activePickerIndex),
+                    );
                   }}
                 >
                   {label}

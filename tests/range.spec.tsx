@@ -264,38 +264,73 @@ describe('Picker.Range', () => {
     });
   });
 
-  it('ranges', () => {
-    const onChange = jest.fn();
-    const wrapper = mount(
-      <MomentRangePicker
-        ranges={{
-          test: [getMoment('1989-11-28'), getMoment('1990-09-03')],
-          func: () => [getMoment('2000-01-01'), getMoment('2010-11-11')],
-        }}
-        onChange={onChange}
-      />,
-    );
+  describe('ranges', () => {
+    it('work', () => {
+      const onChange = jest.fn();
+      const wrapper = mount(
+        <MomentRangePicker
+          ranges={{
+            test: [getMoment('1989-11-28'), getMoment('1990-09-03')],
+            func: () => [getMoment('2000-01-01'), getMoment('2010-11-11')],
+          }}
+          onChange={onChange}
+        />,
+      );
 
-    wrapper.openPicker();
-    let testNode;
+      wrapper.openPicker();
+      let testNode;
 
-    // Basic
-    testNode = wrapper.find('.rc-picker-ranges li span').first();
-    expect(testNode.text()).toEqual('test');
-    testNode.simulate('click');
-    expect(onChange).toHaveBeenCalledWith(
-      [expect.anything(), expect.anything()],
-      ['1989-11-28', '1990-09-03'],
-    );
+      // Basic
+      testNode = wrapper.find('.rc-picker-ranges li span').first();
+      expect(testNode.text()).toEqual('test');
+      testNode.simulate('click');
+      expect(onChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['1989-11-28', '1990-09-03'],
+      );
 
-    // Function
-    testNode = wrapper.find('.rc-picker-ranges li span').last();
-    expect(testNode.text()).toEqual('func');
-    testNode.simulate('click');
-    expect(onChange).toHaveBeenCalledWith(
-      [expect.anything(), expect.anything()],
-      ['2000-01-01', '2010-11-11'],
-    );
+      // Function
+      testNode = wrapper.find('.rc-picker-ranges li span').last();
+      expect(testNode.text()).toEqual('func');
+      testNode.simulate('click');
+      expect(onChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['2000-01-01', '2010-11-11'],
+      );
+    });
+
+    it('hover className', () => {
+      const wrapper = mount(
+        <MomentRangePicker
+          ranges={{
+            now: [getMoment('1990-09-11'), getMoment('1990-09-13')],
+          }}
+        />,
+      );
+
+      wrapper.openPicker();
+      wrapper.find('.rc-picker-ranges li span').simulate('mouseEnter');
+      expect(
+        wrapper.findCell(11).hasClass('rc-picker-cell-range-hover-start'),
+      ).toBeTruthy();
+      expect(
+        wrapper.findCell(12).hasClass('rc-picker-cell-range-hover'),
+      ).toBeTruthy();
+      expect(
+        wrapper.findCell(13).hasClass('rc-picker-cell-range-hover-end'),
+      ).toBeTruthy();
+
+      wrapper.find('.rc-picker-ranges li span').simulate('mouseLeave');
+      expect(
+        wrapper.findCell(11).hasClass('rc-picker-cell-range-hover-start'),
+      ).toBeFalsy();
+      expect(
+        wrapper.findCell(12).hasClass('rc-picker-cell-range-hover'),
+      ).toBeFalsy();
+      expect(
+        wrapper.findCell(13).hasClass('rc-picker-cell-range-hover-end'),
+      ).toBeFalsy();
+    });
   });
 
   it('placeholder', () => {
