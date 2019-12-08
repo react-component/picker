@@ -317,6 +317,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     },
   });
 
+  const [rangeHoverValue, setRangeHoverValue] = React.useState<
+    RangeValue<DateType>
+  >(null);
+
   // ========================== Hover Range ==========================
   const [hoverRangedValue, setHoverRangedValue] = React.useState<
     RangeValue<DateType>
@@ -710,7 +714,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         value={{
           inRange: true,
           panelPosition,
-          rangedValue: selectedValue,
+          rangedValue: rangeHoverValue || selectedValue,
           hoverRangedValue: panelHoverRangedValue,
           onSelect: onContextSelect,
         }}
@@ -843,12 +847,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
                     triggerChange(newValues);
                   }}
                   onMouseEnter={() => {
-                    setHoverRangedValue(rangeValues);
+                    setRangeHoverValue(rangeValues);
                   }}
                   onMouseLeave={() => {
-                    setHoverRangedValue(
-                      updateValues(selectedValue, null, activePickerIndex),
-                    );
+                    setRangeHoverValue(null);
                   }}
                 >
                   {label}
