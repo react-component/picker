@@ -113,7 +113,7 @@ describe('Picker.Basic', () => {
     it('fixed open need repeat trigger onOpenChange', () => {
       jest.useFakeTimers();
       const onOpenChange = jest.fn();
-      const wrapper = mount(<MomentPicker onOpenChange={onOpenChange} open />);
+      mount(<MomentPicker onOpenChange={onOpenChange} open />);
 
       for (let i = 0; i < 10; i += 1) {
         const clickEvent = new Event('mousedown');
@@ -122,7 +122,6 @@ describe('Picker.Basic', () => {
         });
         act(() => {
           window.dispatchEvent(clickEvent);
-          wrapper.find('input').simulate('blur');
         });
         expect(onOpenChange).toHaveBeenCalledTimes(i + 1);
       }

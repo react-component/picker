@@ -1,9 +1,9 @@
 import React from 'react';
 import { Moment } from 'moment';
-import Picker from '../src/Picker';
 import momentGenerateConfig from '../src/generate/moment';
 import zhCN from '../src/locale/zh_CN';
 import '../assets/index.less';
+import Picker, { RangePicker } from '../src';
 
 export default () => (
   <div>
@@ -26,6 +26,16 @@ export default () => (
         open
         onOpenChange={open => {
           console.log('2 =>', open);
+        }}
+      />
+      <RangePicker<Moment>
+        generateConfig={momentGenerateConfig}
+        locale={zhCN}
+        picker="week"
+        allowClear
+        open
+        onOpenChange={open => {
+          console.log('3 =>', open);
         }}
       />
       <button type="button">233</button>

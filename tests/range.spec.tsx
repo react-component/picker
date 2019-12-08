@@ -478,11 +478,8 @@ describe('Picker.Range', () => {
 
       wrapper.openPicker();
       wrapper.selectCell(13);
-      wrapper.closePicker();
-
-      wrapper.openPicker(1);
+      wrapper.find('.rc-picker-ok button').simulate('click');
       wrapper.selectCell(23);
-      wrapper.closePicker(1);
 
       matchValues(wrapper, '1990-09-13 01:02:03', '1990-09-23 05:06:07');
     });
@@ -802,16 +799,8 @@ describe('Picker.Range', () => {
     const wrapper = mount(<MomentRangePicker showTime />);
     wrapper.openPicker();
     wrapper.selectCell(11);
+    wrapper.closePicker();
 
-    const clickEvent = new Event('mousedown');
-    Object.defineProperty(clickEvent, 'target', {
-      get: () => document.body,
-    });
-    act(() => {
-      window.dispatchEvent(clickEvent);
-    });
-
-    wrapper.update();
     expect(wrapper.isOpen()).toBeFalsy();
     expect(
       wrapper

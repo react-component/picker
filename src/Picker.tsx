@@ -274,8 +274,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         panelDivRef.current &&
         !panelDivRef.current.contains(target as Node) &&
         inputDivRef.current &&
-        !inputDivRef.current.contains(target as Node) &&
-        onOpenChange
+        !inputDivRef.current.contains(target as Node)
       ),
     onSubmit: () => {
       triggerChange(selectedValue);

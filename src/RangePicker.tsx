@@ -397,8 +397,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   const triggerChange = (
     newValue: RangeValue<DateType>,
-    forceInput: boolean = true,
+    config: {
+      source?: 'open';
+      forceInput?: boolean;
+    } = {},
   ) => {
+    const { forceInput = true, source } = config;
+
     let values = newValue;
     const startValue = getValue(values, 0);
     let endValue = getValue(values, 1);
@@ -438,7 +443,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     if (canTrigger) {
       // Trigger onChange only when value is validate
       setInnerValue(values);
-      triggerOpen(false, activePickerIndex, true);
+      if (source !== 'open') {
+        triggerOpen(false, activePickerIndex, true);
+      }
 
       if (
         onChange &&
@@ -456,7 +463,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         return;
       }
 
-      triggerOpen(true, missingValueIndex);
+      if (source !== 'open') {
+        triggerOpen(true, missingValueIndex);
+      }
 
       // Delay to focus to avoid input blur trigger expired selectedValues
       setTimeout(() => {
@@ -479,7 +488,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     } else if (activePickerIndex === index) {
       triggerInnerOpen(newOpen);
       if (!preventChangeEvent) {
-        triggerChange(selectedValue);
+        triggerChange(selectedValue, { source: 'open' });
       }
     }
   };
@@ -550,11 +559,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   });
 
   // ============================= Input =============================
-  const getSharedInputHookProps = (
-    index: 0 | 1,
-    inputDivRef: React.RefObject<HTMLDivElement>,
-    resetText: () => void,
-  ) => ({
+  const getSharedInputHookProps = (index: 0 | 1, resetText: () => void) => ({
     blurToCancel: !!(picker === 'date' && showTime),
     forwardKeyDown,
     onBlur,
@@ -562,8 +567,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       !!(
         panelDivRef.current &&
         !panelDivRef.current.contains(target as Node) &&
-        inputDivRef.current &&
-        !inputDivRef.current.contains(target as Node)
+        startInputDivRef.current &&
+        !startInputDivRef.current.contains(target as Node) &&
+        endInputDivRef.current &&
+        !endInputDivRef.current.contains(target as Node)
       ),
     onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
       setActivePickerIndex(index);
@@ -587,7 +594,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     startInputProps,
     { focused: startFocused, typing: startTyping },
   ] = usePickerInput({
-    ...getSharedInputHookProps(0, startInputDivRef, resetStartText),
+    ...getSharedInputHookProps(0, resetStartText),
     open: startOpen,
   });
 
@@ -595,7 +602,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     endInputProps,
     { focused: endFocused, typing: endTyping },
   ] = usePickerInput({
-    ...getSharedInputHookProps(1, endInputDivRef, resetEndText),
+    ...getSharedInputHookProps(1, resetEndText),
     open: endOpen,
   });
 
@@ -930,7 +937,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             values = updateValues(values, null, 1);
           }
 
-          triggerChange(values, false);
+          triggerChange(values, { forceInput: false });
         }}
         className={`${prefixCls}-clear`}
       >

@@ -95,7 +95,11 @@ export default function usePickerInput({
         return;
       }
 
-      triggerOpen(false);
+      if (blurToCancel) {
+        onCancel();
+      } else {
+        triggerOpen(false);
+      }
       setFocused(false);
 
       if (onBlur) {
@@ -107,19 +111,17 @@ export default function usePickerInput({
   // Global click handler
   React.useEffect(() =>
     addGlobalMouseDownEvent(({ target }: MouseEvent) => {
-      if (open && isClickOutside(target)) {
-        preventBlurRef.current = true;
+      if (open) {
+        if (!isClickOutside(target)) {
+          preventBlurRef.current = true;
 
-        if (blurToCancel) {
-          onCancel();
-        } else {
+          // Always set back in case `onBlur` prevented by user
+          window.setTimeout(() => {
+            preventBlurRef.current = false;
+          }, 0);
+        } else if (!focused) {
           triggerOpen(false);
         }
-
-        // Always set back in case `onBlur` prevented by user
-        window.setTimeout(() => {
-          preventBlurRef.current = false;
-        }, 0);
       }
     }),
   );
