@@ -26,13 +26,7 @@ import getDataOrAriaProps, {
 } from './utils/miscUtil';
 import { getDefaultFormat, getInputSize } from './utils/uiUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
-import {
-  isEqual,
-  getClosingViewDate,
-  isSameMonth,
-  isSameYear,
-  isSameDate,
-} from './utils/dateUtil';
+import { isEqual, getClosingViewDate, isSameDate } from './utils/dateUtil';
 import useValueTexts from './hooks/useValueTexts';
 import useTextValueMapping from './hooks/useTextValueMapping';
 import { GenerateConfig } from './generate';
@@ -40,6 +34,7 @@ import { PickerPanelProps } from '.';
 import RangeContext from './RangeContext';
 import useRangeDisabled from './hooks/useRangeDisabled';
 import getExtraFooter from './utils/getExtraFooter';
+import useRangeViewDates from './hooks/useRangeViewDates';
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -252,51 +247,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   });
 
   // =========================== View Date ===========================
-  /**
-   * End view date is use right panel by default.
-   * But when they in same month (date picker) or year (month picker), will both use left panel.
-   */
-  function getEndViewDate(viewDate: DateType, values: RangeValue<DateType>) {
-    let compareFunc: (
-      generateConfig: GenerateConfig<DateType>,
-      date1: DateType | null,
-      date2: DateType | null,
-    ) => boolean = isSameMonth;
-
-    if (picker === 'month') {
-      compareFunc = isSameYear;
-    }
-
-    if (compareFunc(generateConfig, getValue(values, 0), getValue(values, 1))) {
-      return viewDate;
-    }
-    return getClosingViewDate(viewDate, picker, generateConfig, -1);
-  }
-
   // Config view panel
-  const [viewDates, setViewDates] = useMergedState<
-    RangeValue<DateType>,
-    [DateType, DateType]
-  >({
-    defaultValue: () =>
-      defaultPickerValue ||
-      updateValues(
-        mergedValue,
-        (viewDate: DateType) => getEndViewDate(viewDate, mergedValue),
-        1,
-      ),
-    defaultStateValue: null,
-    postState: postViewDates => {
-      let startViewDate: DateType | null =
-        getValue(postViewDates, 0) || getValue(mergedValue, 0);
-      let endViewDate: DateType | null =
-        getValue(postViewDates, 1) || getValue(mergedValue, 1);
-
-      startViewDate = startViewDate || endViewDate || generateConfig.getNow();
-      endViewDate = endViewDate || startViewDate || generateConfig.getNow();
-
-      return [startViewDate, endViewDate];
-    },
+  const [getViewDate, setViewDate] = useRangeViewDates({
+    values: mergedValue,
+    picker,
+    defaultDates: defaultPickerValue,
+    generateConfig,
   });
 
   // ========================= Select Values =========================
@@ -418,7 +374,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       values = [startValue, null];
       endValue = null;
 
-      setViewDates(updateValues(viewDates, startValue, 1));
+      // TODO: setViewDates1(updateValues(viewDates1, startValue, 1));
     }
 
     setSelectedValue(values);
@@ -490,6 +446,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       if (!preventChangeEvent) {
         triggerChange(selectedValue, { source: 'open' });
       }
+      setViewDate(null, index);
     }
   };
 
@@ -538,7 +495,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
     if (inputDate && !disabledFunc(inputDate)) {
       setSelectedValue(updateValues(selectedValue, inputDate, index));
-      setViewDates(updateValues(viewDates, inputDate, index));
+      setViewDate(inputDate, index);
     }
   };
 
@@ -758,7 +715,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               updateValues(selectedValue, date, activePickerIndex),
             );
 
-            setViewDates(updateValues(viewDates, date, activePickerIndex));
+            setViewDate(date, activePickerIndex);
           }}
           onSelect={undefined}
           onChange={undefined}
@@ -798,7 +755,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     );
 
     if (picker !== 'time' && !showTime) {
-      const viewDate = viewDates[activePickerIndex];
+      const viewDate = getViewDate(activePickerIndex);
       const nextViewDate = getClosingViewDate(viewDate, picker, generateConfig);
       const currentMode = mergedModes[activePickerIndex];
 
@@ -809,21 +766,16 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           {renderPanel(showDoublePanel ? 'left' : false, {
             pickerValue: viewDate,
             onPickerValueChange: newViewDate => {
-              setViewDates(
-                updateValues(viewDates, newViewDate, activePickerIndex),
-              );
+              setViewDate(newViewDate, activePickerIndex);
             },
           })}
           {showDoublePanel &&
             renderPanel('right', {
               pickerValue: nextViewDate,
               onPickerValueChange: newViewDate => {
-                setViewDates(
-                  updateValues(
-                    viewDates,
-                    getClosingViewDate(newViewDate, picker, generateConfig, -1),
-                    activePickerIndex,
-                  ),
+                setViewDate(
+                  getClosingViewDate(newViewDate, picker, generateConfig, -1),
+                  activePickerIndex,
                 );
               },
             })}

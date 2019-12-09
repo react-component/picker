@@ -237,13 +237,13 @@ describe('Picker.Range', () => {
 
       // Disabled date
       wrapper.openPicker();
-      cellNode = wrapper.selectCell(25, 1);
+      cellNode = wrapper.selectCell(25);
       expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeTruthy();
       expect(onChange).not.toHaveBeenCalled();
 
       // Enabled date
       wrapper.openPicker();
-      cellNode = wrapper.selectCell(7, 1);
+      cellNode = wrapper.selectCell(7);
       expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeFalsy();
       expect(onChange).toHaveBeenCalledWith(
         [expect.anything(), expect.anything()],

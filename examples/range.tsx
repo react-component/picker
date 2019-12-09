@@ -58,9 +58,10 @@ export default () => {
             locale={zhCN}
             allowClear
             ref={rangePickerRef}
-            defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+            disabled={[false, true]}
+            defaultValue={[null, moment('1990-09-22')]}
           />
-          <RangePicker<Moment>
+          {/* <RangePicker<Moment>
             {...sharedProps}
             locale={zhCN}
             allowClear
@@ -70,10 +71,10 @@ export default () => {
             ranges={{
               ranges: [moment(), moment().add(10, 'day')],
             }}
-          />
+          /> */}
         </div>
 
-        <div style={{ margin: '0 8px' }}>
+        {/* <div style={{ margin: '0 8px' }}>
           <h3>Focus</h3>
           <RangePicker<Moment>
             {...sharedProps}
@@ -147,7 +148,7 @@ export default () => {
             allowEmpty={[false, true]}
             renderExtraFooter={() => <div>extra footer</div>}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
