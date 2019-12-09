@@ -308,7 +308,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   // ========================= Disable Date ==========================
   const [disabledStartDate, disabledEndDate] = useRangeDisabled({
+    picker,
     selectedValue,
+    locale,
     disabled: mergedDisabled,
     disabledDate,
     generateConfig,
