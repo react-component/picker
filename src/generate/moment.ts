@@ -39,12 +39,6 @@ const generateConfig: GenerateConfig<Moment> = {
     clone.month(month);
     return clone;
   },
-  setWeekDay: (date, day) => {
-    const clone = date.clone();
-    clone.locale('en_US');
-    clone.weekday(day);
-    return clone;
-  },
   setDate: (date, num) => {
     const clone = date.clone();
     clone.date(num);

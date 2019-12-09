@@ -16,7 +16,6 @@ export interface GenerateConfig<DateType> {
   setYear: (value: DateType, year: number) => DateType;
   setMonth: (value: DateType, month: number) => DateType;
   setDate: (value: DateType, date: number) => DateType;
-  setWeekDay: (value: DateType, day: number) => DateType;
   setHour: (value: DateType, hour: number) => DateType;
   setMinute: (value: DateType, minute: number) => DateType;
   setSecond: (value: DateType, second: number) => DateType;

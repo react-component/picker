@@ -11,6 +11,7 @@ import {
   MomentRangePicker,
   Wrapper,
 } from './util/commonUtil';
+import zhCN from '../src/locale/zh_CN';
 
 describe('Picker.Range', () => {
   function matchValues(wrapper: Wrapper, value1: string, value2: string) {
@@ -164,6 +165,19 @@ describe('Picker.Range', () => {
     cellNode = wrapper.selectCell(28);
     expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeTruthy();
     expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('week picker can not click before start week', () => {
+    const wrapper = mount(<MomentRangePicker picker="week" locale={zhCN} />);
+    wrapper.openPicker();
+    wrapper.selectCell(11);
+
+    expect(
+      wrapper.findCell(4).hasClass('rc-picker-cell-disabled'),
+    ).toBeTruthy();
+    expect(
+      wrapper.findCell(11).hasClass('rc-picker-cell-disabled'),
+    ).toBeFalsy();
   });
 
   it('Reset when startDate is after endDate', () => {

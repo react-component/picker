@@ -14,11 +14,6 @@ export default function useWeekDisabled<DateType>({
   const disabledCache = React.useMemo(() => new Map<string, boolean>(), [
     disabledDate,
   ]);
-  const firstDay = React.useMemo(
-    () => generateConfig.locale.getWeekFirstDay(locale.locale),
-    [locale.locale],
-  );
-
   function disabledWeekDate(date: DateType): boolean {
     const weekStr = generateConfig.locale.format(
       locale.locale,
@@ -27,28 +22,28 @@ export default function useWeekDisabled<DateType>({
     );
 
     if (!disabledCache.has(weekStr)) {
-      const weekDay = generateConfig.getWeekDay(date);
-      let weekStartDate: DateType;
-
-      // Set start week date
-      if (weekDay < firstDay) {
-        weekStartDate = generateConfig.setWeekDay(
-          generateConfig.addDate(date, -7),
-          firstDay,
-        );
-      } else {
-        weekStartDate = generateConfig.setWeekDay(date, firstDay);
-      }
-
-      // Loop to find disabled status
       let disabled = false;
-      for (let i = 0; i < 7; i += 1) {
-        const currentDate = generateConfig.setWeekDay(weekStartDate, i);
-        if (disabledDate(currentDate)) {
-          disabled = true;
-          break;
+      const checkDisabled = (offset: 1 | -1) => {
+        for (let i = 0; i < 7; i += 1) {
+          const currentDate = generateConfig.addDate(date, i * offset);
+          const currentWeekStr = generateConfig.locale.format(
+            locale.locale,
+            currentDate,
+            'YYYY-WW',
+          );
+
+          if (currentWeekStr !== weekStr) {
+            break;
+          }
+
+          if (disabledDate(currentDate)) {
+            disabled = true;
+            break;
+          }
         }
-      }
+      };
+      checkDisabled(1);
+      checkDisabled(-1);
 
       disabledCache.set(weekStr, disabled);
     }

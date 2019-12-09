@@ -1,6 +1,6 @@
 import { noteOnce } from 'rc-util/lib/warning';
 import { GenerateConfig } from '../generate';
-import { NullableDateType, PickerMode, Locale } from '../interface';
+import { NullableDateType, PickerMode } from '../interface';
 
 export const WEEK_DAY_COUNT = 7;
 
@@ -106,23 +106,6 @@ export function isSameWeek<DateType>(
   return (
     generateConfig.locale.getWeek(locale, date1!) ===
     generateConfig.locale.getWeek(locale, date2!)
-  );
-}
-
-export function isSameWeekDay<DateType>(
-  generateConfig: GenerateConfig<DateType>,
-  week1: NullableDateType<DateType>,
-  week2: NullableDateType<DateType>,
-  locale: Locale,
-) {
-  const equal = isNullEqual(week1, week2);
-  if (typeof equal === 'boolean') {
-    return equal;
-  }
-
-  return (
-    generateConfig.locale.format(locale.locale, week1!, 'YYYY-WW') ===
-    generateConfig.locale.format(locale.locale, week2!, 'YYYY-WW')
   );
 }
 
