@@ -151,14 +151,17 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   // ============================ State =============================
 
   const panelContext = React.useContext(PanelContext);
-  const { operationRef, panelRef: panelDivRef } = panelContext;
+  const {
+    operationRef,
+    panelRef: panelDivRef,
+    onSelect: onContextSelect,
+  } = panelContext;
 
   const {
     inRange,
     panelPosition,
     rangedValue,
     hoverRangedValue,
-    onSelect: onContextSelect,
   } = React.useContext(RangeContext);
   const panelRef = React.useRef<PanelRefProps>({});
 

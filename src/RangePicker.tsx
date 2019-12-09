@@ -375,8 +375,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     ) {
       values = [startValue, null];
       endValue = null;
-
-      // TODO: setViewDates1(updateValues(viewDates1, startValue, 1));
     }
 
     setSelectedValue(values);
@@ -664,17 +662,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       };
     }
 
-    const onContextSelect = (date: DateType, type: 'key' | 'mouse') => {
-      const values = updateValues(selectedValue, date, activePickerIndex);
-
-      if (type === 'key' || (picker === 'date' && showTime)) {
-        setSelectedValue(values);
-      } else {
-        // triggerChange will also update selected values
-        triggerChange(values);
-      }
-    };
-
     return (
       <RangeContext.Provider
         value={{
@@ -682,7 +669,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           panelPosition,
           rangedValue: rangeHoverValue || selectedValue,
           hoverRangedValue: panelHoverRangedValue,
-          onSelect: onContextSelect,
         }}
       >
         <PickerPanel<DateType>
@@ -920,6 +906,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }
 
   // ============================ Return =============================
+  const onContextSelect = (date: DateType, type: 'key' | 'mouse') => {
+    const values = updateValues(selectedValue, date, activePickerIndex);
+
+    if (type === 'key' || (picker === 'date' && showTime)) {
+      setSelectedValue(values);
+    } else {
+      // triggerChange will also update selected values
+      triggerChange(values);
+    }
+  };
+
   return (
     <PanelContext.Provider
       value={{
@@ -927,6 +924,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         hideHeader: picker === 'time',
         onDateMouseEnter,
         onDateMouseLeave,
+        onSelect: onContextSelect,
       }}
     >
       <PickerTrigger

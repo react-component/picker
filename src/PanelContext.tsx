@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { OnSelect } from './interface';
 
 export type ContextOperationRefProps = {
   onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => boolean;
@@ -14,6 +15,7 @@ export interface PanelContextProps {
   hideNextBtn?: boolean;
   onDateMouseEnter?: (date: any) => void;
   onDateMouseLeave?: (date: any) => void;
+  onSelect?: OnSelect<any>;
 }
 
 const PanelContext = React.createContext<PanelContextProps>({});

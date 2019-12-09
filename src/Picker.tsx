@@ -130,7 +130,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     allowClear,
     autoFocus,
     showTime,
-    picker,
+    picker = 'date',
     format,
     use12Hours,
     value,
@@ -266,6 +266,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   // ============================= Input =============================
   const [inputProps, { focused, typing }] = usePickerInput({
+    blurToCancel: !!(picker === 'date' && showTime),
     open: mergedOpen,
     triggerOpen,
     forwardKeyDown,
@@ -373,12 +374,22 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     );
   }
 
+  // ============================ Return =============================
+  const onContextSelect = (date: DateType, type: 'key' | 'mouse') => {
+    if (type !== 'key' && (picker !== 'date' || !showTime)) {
+      // triggerChange will also update selected values
+      triggerChange(date);
+      triggerOpen(false, true);
+    }
+  };
+
   return (
     <PanelContext.Provider
       value={{
         operationRef,
         hideHeader: picker === 'time',
         panelRef: panelDivRef,
+        onSelect: onContextSelect,
       }}
     >
       <PickerTrigger

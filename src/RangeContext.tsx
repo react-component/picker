@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { NullableDateType, RangeValue, OnSelect } from './interface';
+import { NullableDateType, RangeValue } from './interface';
 
 interface RangeContextProps {
   /**
@@ -10,7 +10,6 @@ interface RangeContextProps {
   hoverRangedValue?: RangeValue<any>;
   inRange?: boolean;
   panelPosition?: 'left' | 'right' | false;
-  onSelect?: OnSelect<any>;
 }
 
 const RangeContext = React.createContext<RangeContextProps>({});
