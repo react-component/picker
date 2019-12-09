@@ -851,4 +851,122 @@ describe('Picker.Range', () => {
 
     jest.useRealTimers();
   });
+
+  describe('viewDate', () => {
+    function matchTitle(wrapper: Wrapper, title: string) {
+      expect(
+        wrapper
+          .find('.rc-picker-header-view')
+          .first()
+          .text(),
+      ).toEqual(title);
+    }
+
+    [
+      {
+        picker: 'year',
+        // Default picker value
+        defaultPickerValue: [getMoment('1990-09-03'), getMoment('2000-11-28')],
+        defaultPickerValueTitle: ['1990-1999', '2000-2009'],
+        // Closing value
+        closingValue: [getMoment('1989-09-03'), getMoment('1990-11-28')],
+        closingValueTitle: '1980-1989',
+        // Far away value
+        farValue: [getMoment('1989-09-03'), getMoment('2090-11-28')],
+        farValueTitle: ['1980-1989', '2080-2089'],
+      },
+      {
+        picker: 'month',
+        // Default picker value
+        defaultPickerValue: [getMoment('1990-09-03'), getMoment('2000-11-28')],
+        defaultPickerValueTitle: ['1990', '2000'],
+        // Closing value
+        closingValue: [getMoment('1989-09-03'), getMoment('1989-10-11')],
+        closingValueTitle: '1989',
+        // Far away value
+        farValue: [getMoment('1989-09-03'), getMoment('2000-10-11')],
+        farValueTitle: ['1989', '1999'],
+      },
+      {
+        picker: 'date',
+        // Default picker value
+        defaultPickerValue: [getMoment('1990-09-03'), getMoment('2000-11-28')],
+        defaultPickerValueTitle: ['Sep1990', 'Nov2000'],
+        // Closing value
+        closingValue: [getMoment('1989-09-03'), getMoment('1989-10-11')],
+        closingValueTitle: 'Sep1989',
+        // Far away value
+        farValue: [getMoment('1989-09-03'), getMoment('2000-10-11')],
+        farValueTitle: ['Sep1989', 'Sep2000'],
+      },
+    ].forEach(
+      ({
+        picker,
+        defaultPickerValue,
+        defaultPickerValueTitle,
+        closingValue,
+        closingValueTitle,
+        farValue,
+        farValueTitle,
+      }) => {
+        describe(picker, () => {
+          it('defaultPickerValue', () => {
+            const wrapper = mount(
+              <MomentRangePicker
+                picker={picker as any}
+                defaultPickerValue={defaultPickerValue as any}
+              />,
+            );
+
+            wrapper.openPicker();
+            matchTitle(wrapper, defaultPickerValueTitle[0]);
+            wrapper.openPicker(1);
+            matchTitle(wrapper, defaultPickerValueTitle[1]);
+          });
+
+          it('with closing value', () => {
+            const wrapper = mount(
+              <MomentRangePicker
+                picker={picker as any}
+                value={closingValue as any}
+              />,
+            );
+
+            wrapper.openPicker();
+            matchTitle(wrapper, closingValueTitle);
+            wrapper.openPicker(1);
+            matchTitle(wrapper, closingValueTitle);
+          });
+
+          it('with far value', () => {
+            const wrapper = mount(
+              <MomentRangePicker
+                picker={picker as any}
+                value={farValue as any}
+              />,
+            );
+
+            wrapper.openPicker();
+            matchTitle(wrapper, farValueTitle[0]);
+            wrapper.openPicker(1);
+            matchTitle(wrapper, farValueTitle[1]);
+          });
+
+          it('no end date', () => {
+            const wrapper = mount(
+              <MomentRangePicker
+                picker={picker as any}
+                value={[closingValue[0], null]}
+              />,
+            );
+
+            wrapper.openPicker();
+            matchTitle(wrapper, farValueTitle[0]);
+            wrapper.openPicker(1);
+            matchTitle(wrapper, farValueTitle[0]);
+          });
+        });
+      },
+    );
+  });
 });

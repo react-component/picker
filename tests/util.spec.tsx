@@ -1,6 +1,6 @@
 import momentGenerateConfig from '../src/generate/moment';
 import { toArray } from '../src/utils/miscUtil';
-import { isSameTime } from '../src/utils/dateUtil';
+import { isSameTime, isSameDecade } from '../src/utils/dateUtil';
 import { getMoment } from './util/commonUtil';
 
 describe('Picker.Util', () => {
@@ -26,5 +26,19 @@ describe('Picker.Util', () => {
     ).toBeFalsy();
 
     expect(isSameTime(momentGenerateConfig, null, null)).toBeTruthy();
+  });
+
+  it('isSameDecade', () => {
+    expect(isSameDecade(momentGenerateConfig, null, null)).toBeTruthy();
+    expect(
+      isSameDecade(momentGenerateConfig, getMoment('2000-01-02'), null),
+    ).toBeFalsy();
+    expect(
+      isSameDecade(
+        momentGenerateConfig,
+        getMoment('1995-01-01'),
+        getMoment('1999-01-01'),
+      ),
+    ).toBeTruthy();
   });
 });

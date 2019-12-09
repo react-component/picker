@@ -6,36 +6,42 @@ import {
   getClosingViewDate,
   isSameYear,
   isSameMonth,
-  isSameDate,
+  isSameDecade,
 } from '../utils/dateUtil';
 
-function isClosingViewDate<DateType>(
-  start: DateType | null,
-  end: DateType | null,
+function getStartEndDistance<DateType>(
+  startDate: DateType,
+  endDate: DateType,
   picker: PickerMode,
   generateConfig: GenerateConfig<DateType>,
-) {
-  // Skip when no compared
-  if (!start || !end) {
-    return true;
-  }
+): 'same' | 'closing' | 'far' {
+  const startNext = getClosingViewDate(startDate, picker, generateConfig, 1);
 
-  const startPrev = getClosingViewDate(start, picker, generateConfig, -1);
-  const startNext = getClosingViewDate(start, picker, generateConfig, 1);
-
-  function isSameCompare(compareFunc: (source: DateType | null) => boolean) {
-    return [startPrev, start, startNext].some(date => compareFunc(date));
+  function getDistance(
+    compareFunc: (start: DateType | null, end: DateType | null) => boolean,
+  ) {
+    if (compareFunc(startDate, endDate)) {
+      return 'same';
+    }
+    if (compareFunc(startNext, endDate)) {
+      return 'closing';
+    }
+    return 'far';
   }
 
   switch (picker) {
     case 'year':
-      return isSameCompare(source => isSameYear(generateConfig, source, end));
-
+      return getDistance((start, end) =>
+        isSameDecade(generateConfig, start, end),
+      );
     case 'month':
-      return isSameCompare(source => isSameMonth(generateConfig, source, end));
-
+      return getDistance((start, end) =>
+        isSameYear(generateConfig, start, end),
+      );
     default:
-      return isSameCompare(source => isSameDate(generateConfig, source, end));
+      return getDistance((start, end) =>
+        isSameMonth(generateConfig, start, end),
+      );
   }
 }
 
@@ -52,14 +58,24 @@ function getRangeViewDate<DateType>(
     return startDate;
   }
 
-  if (endDate) {
-    if (!isClosingViewDate(startDate, endDate, picker, generateConfig)) {
-      return getClosingViewDate(endDate, picker, generateConfig, -1);
+  if (startDate && endDate) {
+    const distance = getStartEndDistance(
+      startDate,
+      endDate,
+      picker,
+      generateConfig,
+    );
+    switch (distance) {
+      case 'same':
+        return startDate;
+      case 'closing':
+        return startDate;
+      default:
+        return getClosingViewDate(endDate, picker, generateConfig, -1);
     }
-    return endDate;
   }
 
-  return null;
+  return startDate;
 }
 
 export default function useRangeViewDates<DateType>({
