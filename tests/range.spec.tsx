@@ -653,7 +653,7 @@ describe('Picker.Range', () => {
     it('range edge className', () => {
       const wrapper = mount(
         <MomentRangePicker
-          value={[getMoment('1990-09-20'), getMoment('1990-09-20')]}
+          value={[getMoment('2019-12-20'), getMoment('2019-12-20')]}
         />,
       );
 
@@ -663,6 +663,9 @@ describe('Picker.Range', () => {
       expect(
         wrapper.findCell(19).hasClass('rc-picker-cell-range-hover-edge-end'),
       ).toBeTruthy();
+      expect(
+        wrapper.findCell(20).hasClass('rc-picker-cell-range-start-near-hover'),
+      ).toBeTruthy();
       wrapper.findCell(10).simulate('mouseOut');
 
       // Start edge
@@ -670,6 +673,9 @@ describe('Picker.Range', () => {
       wrapper.findCell(28).simulate('mouseEnter');
       expect(
         wrapper.findCell(21).hasClass('rc-picker-cell-range-hover-edge-start'),
+      ).toBeTruthy();
+      expect(
+        wrapper.findCell(20).hasClass('rc-picker-cell-range-end-near-hover'),
       ).toBeTruthy();
       wrapper.findCell(28).simulate('mouseOut');
     });
