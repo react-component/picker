@@ -233,6 +233,7 @@ describe('Picker.Basic', () => {
 
         wrapper.clearValue();
         expect(onChange).toHaveBeenCalledWith(null, '');
+        expect(wrapper.isOpen()).toBeFalsy();
 
         wrapper.openPicker();
         expect(wrapper.find(selected).length).toBeFalsy();

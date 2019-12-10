@@ -371,6 +371,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         onClick={e => {
           e.stopPropagation();
           triggerChange(null);
+          triggerOpen(false, true);
         }}
         className={`${prefixCls}-clear`}
       >
