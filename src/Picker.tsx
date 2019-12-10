@@ -401,6 +401,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         hideHeader: picker === 'time',
         panelRef: panelDivRef,
         onSelect: onContextSelect,
+        open: mergedOpen,
       }}
     >
       <PickerTrigger

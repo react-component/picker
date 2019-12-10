@@ -414,8 +414,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     const canTrigger =
       values === null || (canStartValueTrigger && canEndValueTrigger);
 
-    console.log('>>>', canTrigger);
-
     if (canTrigger) {
       // Trigger onChange only when value is validate
       setInnerValue(values);
@@ -942,6 +940,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         onDateMouseLeave,
         hideRanges: true,
         onSelect: onContextSelect,
+        open: mergedOpen,
       }}
     >
       <PickerTrigger

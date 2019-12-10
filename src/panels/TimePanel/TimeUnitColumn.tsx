@@ -1,6 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { scrollTo } from '../../utils/uiUtil';
+import PanelContext from '../../PanelContext';
 
 export interface Unit {
   label: React.ReactText;
@@ -27,20 +28,27 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
     hideDisabledOptions,
   } = props;
   const cellPrefixCls = `${prefixCls}-cell`;
+  const { open } = React.useContext(PanelContext);
 
-  const initRef = React.useRef(true);
   const ulRef = React.useRef<HTMLUListElement>(null);
   const liRefs = React.useRef<Map<number, HTMLElement | null>>(new Map());
 
   // `useLayoutEffect` here to avoid blink by duration is 0
   React.useLayoutEffect(() => {
     const li = liRefs.current.get(value!);
-    if (li) {
-      scrollTo(ulRef.current!, li.offsetTop, initRef.current ? 0 : 120);
+    if (li && open !== false) {
+      scrollTo(ulRef.current!, li.offsetTop, 120);
     }
-
-    initRef.current = false;
   }, [value]);
+
+  React.useLayoutEffect(() => {
+    if (open) {
+      const li = liRefs.current.get(value!);
+      if (li) {
+        scrollTo(ulRef.current!, li.offsetTop, 0);
+      }
+    }
+  }, [open]);
 
   return (
     <ul

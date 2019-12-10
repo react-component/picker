@@ -1,25 +1,37 @@
 import KeyCode from 'rc-util/lib/KeyCode';
 import { PanelMode, PickerMode } from '../interface';
 
+const scrollIds = new Map<HTMLElement, number>();
+
 /* eslint-disable no-param-reassign */
 export function scrollTo(element: HTMLElement, to: number, duration: number) {
+  if (scrollIds.get(element)) {
+    cancelAnimationFrame(scrollIds.get(element)!);
+  }
+
   // jump to target if duration zero
   if (duration <= 0) {
-    requestAnimationFrame(() => {
-      element.scrollTop = to;
-    });
+    scrollIds.set(
+      element,
+      requestAnimationFrame(() => {
+        element.scrollTop = to;
+      }),
+    );
 
     return;
   }
   const difference = to - element.scrollTop;
   const perTick = (difference / duration) * 10;
 
-  requestAnimationFrame(() => {
-    element.scrollTop += perTick;
-    if (element.scrollTop !== to) {
-      scrollTo(element, to, duration - 10);
-    }
-  });
+  scrollIds.set(
+    element,
+    requestAnimationFrame(() => {
+      element.scrollTop += perTick;
+      if (element.scrollTop !== to) {
+        scrollTo(element, to, duration - 10);
+      }
+    }),
+  );
 }
 /* eslint-enable */
 

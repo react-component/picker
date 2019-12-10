@@ -92,51 +92,56 @@ describe('Picker.Panel', () => {
   });
 
   describe('time click to scroll', () => {
-    let domSpy: ReturnType<typeof spyElementPrototypes>;
-    const requestAnimationFrameSpy = jest.spyOn(
-      global,
-      'requestAnimationFrame' as any,
-    );
+    [true, false].forEach(bool => {
+      it(`spy requestAnimationFrame: ${bool}`, () => {
+        let scrollTop = 90;
+        const domSpy = spyElementPrototypes(HTMLElement, {
+          scrollTop: {
+            get: () => scrollTop,
+            set: ((_: Function, value: number) => {
+              scrollTop = value;
+            }) as any,
+          },
+        });
 
-    beforeEach(() => {
-      let scrollTop = 90;
+        let requestAnimationFrameSpy = jest.spyOn(
+          global,
+          'requestAnimationFrame' as any,
+        );
 
-      domSpy = spyElementPrototypes(HTMLElement, {
-        scrollTop: {
-          get: () => scrollTop,
-          set: ((_: Function, value: number) => {
-            scrollTop = value;
-          }) as any,
-        },
+        // Spy to trigger 2 way of test for checking case cover
+        if (bool) {
+          requestAnimationFrameSpy = requestAnimationFrameSpy.mockImplementation(
+            window.setTimeout as any,
+          );
+        }
+
+        jest.useFakeTimers();
+        const wrapper = mount(<MomentPickerPanel picker="time" />);
+
+        // Multiple times should only one work
+        wrapper
+          .find('ul')
+          .first()
+          .find('li')
+          .at(3)
+          .simulate('click');
+
+        wrapper
+          .find('ul')
+          .first()
+          .find('li')
+          .at(11)
+          .simulate('click');
+        jest.runAllTimers();
+
+        expect(requestAnimationFrameSpy).toHaveBeenCalled();
+
+        jest.useRealTimers();
+
+        domSpy.mockRestore();
+        requestAnimationFrameSpy.mockRestore();
       });
-    });
-    afterEach(() => {
-      domSpy.mockRestore();
-    });
-
-    it('scroll', () => {
-      jest.useFakeTimers();
-      const wrapper = mount(<MomentPickerPanel picker="time" />);
-
-      // Multiple times should only one work
-      wrapper
-        .find('ul')
-        .first()
-        .find('li')
-        .at(3)
-        .simulate('click');
-
-      wrapper
-        .find('ul')
-        .first()
-        .find('li')
-        .at(11)
-        .simulate('click');
-      jest.runAllTimers();
-
-      expect(requestAnimationFrameSpy).toHaveBeenCalled();
-
-      jest.useRealTimers();
     });
   });
 

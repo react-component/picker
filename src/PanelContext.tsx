@@ -17,6 +17,7 @@ export interface PanelContextProps {
   onDateMouseLeave?: (date: any) => void;
   onSelect?: OnSelect<any>;
   hideRanges?: boolean;
+  open?: boolean;
 }
 
 const PanelContext = React.createContext<PanelContextProps>({});
