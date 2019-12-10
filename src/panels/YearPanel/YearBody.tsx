@@ -47,6 +47,12 @@ function YearBody<DateType>({
   );
 
   const rows: React.ReactNode[] = [];
+
+  const isInView = (date: DateType) => {
+    const currentYearNumber = generateConfig.getYear(date);
+    return startYear <= currentYearNumber && currentYearNumber <= endYear;
+  };
+
   const getCellClassName = useCellClassName<DateType>({
     cellPrefixCls: yearPrefixCls,
     value,
@@ -55,10 +61,7 @@ function YearBody<DateType>({
     hoverRangedValue,
     isSameCell: (current, target) =>
       isSameYear(generateConfig, current, target),
-    isInView: date => {
-      const currentYearNumber = generateConfig.getYear(date);
-      return startYear <= currentYearNumber && currentYearNumber <= endYear;
-    },
+    isInView,
     offsetCell: (date, offset) => generateConfig.addYear(date, offset),
   });
 

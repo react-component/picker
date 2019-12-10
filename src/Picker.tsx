@@ -25,7 +25,11 @@ import { isEqual } from './utils/dateUtil';
 import getDataOrAriaProps, { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import { PickerMode } from './interface';
-import { getDefaultFormat, getInputSize } from './utils/uiUtil';
+import {
+  getDefaultFormat,
+  getInputSize,
+  elementsContains,
+} from './utils/uiUtil';
 import usePickerInput from './hooks/usePickerInput';
 import useTextValueMapping from './hooks/useTextValueMapping';
 import useMergedState from './hooks/useMergeState';
@@ -274,11 +278,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     triggerOpen,
     forwardKeyDown,
     isClickOutside: target =>
-      !!(
-        panelDivRef.current &&
-        !panelDivRef.current.contains(target as Node) &&
-        inputDivRef.current &&
-        !inputDivRef.current.contains(target as Node)
+      !elementsContains(
+        [panelDivRef.current, inputDivRef.current],
+        target as HTMLElement,
       ),
     onSubmit: () => {
       triggerChange(selectedValue);

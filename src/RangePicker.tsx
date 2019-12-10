@@ -24,7 +24,11 @@ import getDataOrAriaProps, {
   getValue,
   updateValues,
 } from './utils/miscUtil';
-import { getDefaultFormat, getInputSize } from './utils/uiUtil';
+import {
+  getDefaultFormat,
+  getInputSize,
+  elementsContains,
+} from './utils/uiUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import { isEqual, getClosingViewDate, isSameDate } from './utils/dateUtil';
 import useValueTexts from './hooks/useValueTexts';
@@ -520,13 +524,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     forwardKeyDown,
     onBlur,
     isClickOutside: (target: EventTarget | null) =>
-      !!(
-        panelDivRef.current &&
-        !panelDivRef.current.contains(target as Node) &&
-        startInputDivRef.current &&
-        !startInputDivRef.current.contains(target as Node) &&
-        endInputDivRef.current &&
-        !endInputDivRef.current.contains(target as Node)
+      !elementsContains(
+        [panelDivRef.current, startInputDivRef.current, endInputDivRef.current],
+        target as HTMLElement,
       ),
     onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
       setActivePickerIndex(index);

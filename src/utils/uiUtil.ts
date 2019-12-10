@@ -215,3 +215,10 @@ export const PickerModeMap: Record<
   time: null,
   date: null,
 };
+
+export function elementsContains(
+  elements: (HTMLElement | undefined | null)[],
+  target: HTMLElement,
+) {
+  return elements.some(ele => ele && ele.contains(target));
+}
