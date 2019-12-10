@@ -53,7 +53,7 @@ export type NullableDateType<DateType> = DateType | null | undefined;
 
 export type OnSelect<DateType> = (
   value: DateType,
-  type: 'key' | 'mouse',
+  type: 'key' | 'mouse' | 'submit',
 ) => void;
 
 export interface PanelSharedProps<DateType> {

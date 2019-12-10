@@ -69,11 +69,17 @@ export interface PickerPanelSharedProps<DateType> {
   onChange?: (value: DateType) => void;
   onPanelChange?: OnPanelChange<DateType>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+  onOk?: () => void;
 
   /** @private This is internal usage. Do not use in your production env */
   hideHeader?: boolean;
   /** @private This is internal usage. Do not use in your production env */
   onPickerValueChange?: (date: DateType) => void;
+
+  /** @private Internal usage. Do not use in your production env */
+  components?: {
+    button: React.ComponentType;
+  };
 }
 
 export interface PickerPanelBaseProps<DateType>
@@ -135,6 +141,8 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onPanelChange,
     onMouseDown,
     onPickerValueChange,
+    onOk,
+    components,
   } = props as MergedPickerPanelProps<DateType>;
 
   if (process.env.NODE_ENV !== 'production') {
@@ -229,18 +237,18 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
 
   const triggerSelect = (
     date: DateType,
-    type: 'key' | 'mouse',
+    type: 'key' | 'mouse' | 'submit',
     forceTriggerSelect: boolean = false,
   ) => {
     if (mergedMode === picker || forceTriggerSelect) {
       setInnerValue(date);
 
-      if (onContextSelect) {
-        onContextSelect(date, type);
-      }
-
       if (onSelect) {
         onSelect(date);
+      }
+
+      if (onContextSelect) {
+        onContextSelect(date, type);
       }
 
       if (onChange && !isEqual(generateConfig, date, mergedValue)) {
@@ -418,17 +426,35 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   let nowNode: React.ReactNode;
   let todayNode: React.ReactNode;
 
-  if (showTime && !inRange) {
+  if ((mergedMode === 'date' && showTime) || mergedMode === 'time') {
+    const Button = components ? components.button : 'button';
+
     nowNode = (
       <div className={`${prefixCls}-now`}>
         <a
           className={`${prefixCls}-now-btn`}
           onClick={() => {
-            triggerSelect(generateConfig.getNow(), 'mouse', true);
+            triggerSelect(generateConfig.getNow(), 'submit', true);
           }}
         >
           {locale.now}
         </a>
+
+        <div className={`${prefixCls}-ok`}>
+          <Button
+            disabled={!value}
+            onClick={() => {
+              if (value) {
+                triggerSelect(value, 'submit', true);
+                if (onOk) {
+                  onOk();
+                }
+              }
+            }}
+          >
+            {locale.ok}
+          </Button>
+        </div>
       </div>
     );
   } else if (showToday && mergedMode === 'date' && picker === 'date') {

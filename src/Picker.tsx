@@ -81,6 +81,11 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   // WAI-ARIA
   role?: string;
   name?: string;
+
+  /** @private Internal usage. Do not use in your production env */
+  components?: {
+    button: React.ComponentType;
+  };
 }
 
 type OmitPanelProps<Props> = Omit<
@@ -157,6 +162,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const needConfirmButton: boolean =
+    (picker === 'date' && !!showTime) || picker === 'time';
 
   // ============================= State =============================
   const formatList = toArray(
@@ -266,7 +274,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   // ============================= Input =============================
   const [inputProps, { focused, typing }] = usePickerInput({
-    blurToCancel: !!(picker === 'date' && showTime),
+    blurToCancel: needConfirmButton,
     open: mergedOpen,
     triggerOpen,
     forwardKeyDown,
@@ -375,8 +383,11 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   }
 
   // ============================ Return =============================
-  const onContextSelect = (date: DateType, type: 'key' | 'mouse') => {
-    if (type !== 'key' && (picker !== 'date' || !showTime)) {
+  const onContextSelect = (
+    date: DateType,
+    type: 'key' | 'mouse' | 'submit',
+  ) => {
+    if (type === 'submit' || (type !== 'key' && !needConfirmButton)) {
       // triggerChange will also update selected values
       triggerChange(date);
       triggerOpen(false, true);
