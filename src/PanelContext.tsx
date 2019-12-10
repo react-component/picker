@@ -16,6 +16,7 @@ export interface PanelContextProps {
   onDateMouseEnter?: (date: any) => void;
   onDateMouseLeave?: (date: any) => void;
   onSelect?: OnSelect<any>;
+  hideRanges?: boolean;
 }
 
 const PanelContext = React.createContext<PanelContextProps>({});

@@ -6,8 +6,8 @@ export interface RangesProps {
   rangeList?: RangeList;
   components?: Components;
   needConfirmButton: boolean;
-  onNow?: null | (() => void);
-  onOk?: null | (() => void);
+  onNow?: null | (() => void) | false;
+  onOk?: null | (() => void) | false;
   okDisabled?: boolean;
   locale: Locale;
 }

@@ -166,6 +166,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     operationRef,
     panelRef: panelDivRef,
     onSelect: onContextSelect,
+    hideRanges,
   } = panelContext;
 
   const {
@@ -419,7 +420,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   let extraFooter: React.ReactNode;
   let rangesNode: React.ReactNode;
 
-  if (!onContextSelect) {
+  if (!hideRanges) {
     extraFooter = getExtraFooter(prefixCls, mergedMode, renderExtraFooter);
     rangesNode = getRanges({
       prefixCls,
@@ -427,6 +428,11 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       needConfirmButton,
       okDisabled: !mergedValue,
       locale,
+      onNow:
+        needConfirmButton &&
+        (() => {
+          triggerSelect(generateConfig.getNow(), 'submit');
+        }),
       onOk: () => {
         if (mergedValue) {
           triggerSelect(mergedValue, 'submit', true);

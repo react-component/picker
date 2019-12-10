@@ -915,6 +915,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         hideHeader: picker === 'time',
         onDateMouseEnter,
         onDateMouseLeave,
+        hideRanges: true,
         onSelect: onContextSelect,
       }}
     >

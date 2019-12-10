@@ -24,14 +24,12 @@ import PickerTrigger from './PickerTrigger';
 import { isEqual } from './utils/dateUtil';
 import getDataOrAriaProps, { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
-import { PickerMode, PanelMode } from './interface';
+import { PickerMode } from './interface';
 import { getDefaultFormat, getInputSize } from './utils/uiUtil';
 import usePickerInput from './hooks/usePickerInput';
 import useTextValueMapping from './hooks/useTextValueMapping';
 import useMergedState from './hooks/useMergeState';
 import useValueTexts from './hooks/useValueTexts';
-import getExtraFooter from './utils/getExtraFooter';
-import getRanges from './utils/getRanges';
 
 export interface PickerRefConfig {
   focus: () => void;
@@ -138,7 +136,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     value,
     defaultValue,
     open,
-    mode,
     defaultOpen,
     suffixIcon,
     clearIcon,
@@ -147,21 +144,16 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     placeholder,
     getPopupContainer,
     pickerRef,
-    renderExtraFooter,
     onChange,
     onOpenChange,
     onFocus,
     onBlur,
-    onPanelChange,
     onMouseDown,
     onMouseUp,
     onMouseEnter,
     onMouseLeave,
     onContextMenu,
     onClick,
-    onSelect,
-    onOk,
-    components,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -232,20 +224,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       }
     },
   });
-
-  // ============================= Modes =============================
-  const [mergedMode, setInnerMode] = useMergedState<PanelMode>({
-    value: mode,
-    defaultStateValue: picker,
-  });
-
-  const triggerModeChange = (newValue: DateType, newMode: PanelMode) => {
-    setInnerMode(newMode);
-
-    if (onPanelChange) {
-      onPanelChange(newValue, newMode);
-    }
-  };
 
   // ============================ Trigger ============================
   const triggerChange = (newValue: DateType | null) => {
@@ -360,34 +338,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onPickerValueChange: undefined,
   };
 
-  const extraNode = getExtraFooter(prefixCls, mergedMode, renderExtraFooter);
-
-  const rangesNode = getRanges({
-    prefixCls,
-    components,
-    needConfirmButton,
-    okDisabled: !selectedValue,
-    locale,
-    onNow: () => {
-      const now = generateConfig.getNow();
-      if (onSelect) {
-        onSelect(now);
-      }
-      triggerChange(now);
-      triggerOpen(false, true);
-    },
-    onOk: () => {
-      if (selectedValue) {
-        triggerChange(selectedValue);
-        triggerOpen(false, true);
-
-        if (onOk) {
-          onOk(selectedValue!);
-        }
-      }
-    },
-  });
-
   const panel = (
     <div
       className={`${prefixCls}-panel-container`}
@@ -404,14 +354,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         value={selectedValue}
         locale={locale}
         tabIndex={-1}
-        mode={mergedMode}
         onChange={setSelectedValue}
-        onPanelChange={triggerModeChange}
       />
-      <div className={`${prefixCls}-footer`}>
-        {extraNode}
-        {rangesNode}
-      </div>
     </div>
   );
 

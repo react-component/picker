@@ -44,6 +44,8 @@ export default () => {
             generateConfig={momentGenerateConfig}
             locale={zhCN}
             allowClear
+            showToday
+            renderExtraFooter={() => 'extra'}
           />
         </div>
         <div style={{ margin: '0 8px' }}>
