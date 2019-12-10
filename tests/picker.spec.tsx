@@ -387,7 +387,9 @@ describe('Picker.Basic', () => {
 
         expect(wrapper.find(finalPanel).length).toBeTruthy();
 
-        wrapper.confirmOK();
+        if (showTime) {
+          wrapper.confirmOK();
+        }
         wrapper.closePicker();
         expect(isSame(onChange.mock.calls[0][0], '2019-08-18')).toBeTruthy();
       });
@@ -395,7 +397,10 @@ describe('Picker.Basic', () => {
 
     it('time', () => {
       const onChange = jest.fn();
-      const wrapper = mount(<MomentPicker picker="time" onChange={onChange} />);
+      const onOk = jest.fn();
+      const wrapper = mount(
+        <MomentPicker picker="time" onChange={onChange} onOk={onOk} />,
+      );
       wrapper.openPicker();
 
       function selectColumn(colIndex: number, rowIndex: number) {
@@ -411,7 +416,9 @@ describe('Picker.Basic', () => {
       selectColumn(1, 22);
       selectColumn(2, 33);
 
+      expect(onOk).not.toHaveBeenCalled();
       wrapper.confirmOK();
+      expect(onOk).toHaveBeenCalled();
       expect(
         isSame(onChange.mock.calls[0][0], '1990-09-03 13:22:33', 'second'),
       ).toBeTruthy();

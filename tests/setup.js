@@ -24,10 +24,7 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
       .simulate('blur');
   },
   confirmOK() {
-    const okBtn = this.find('.rc-picker-ok > *');
-    if (okBtn.length) {
-      okBtn.simulate('click');
-    }
+    this.find('.rc-picker-ok > *').simulate('click');
   },
   isOpen() {
     const openDiv = this.find('.rc-picker-dropdown').hostNodes();

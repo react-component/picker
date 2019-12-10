@@ -75,14 +75,23 @@ export default () => {
 
         <div style={{ margin: '0 8px' }}>
           <h3>Time</h3>
-          <PickerPanel<Moment> {...sharedProps} locale={jaJP} mode="time" />
+          <PickerPanel<Moment> {...sharedProps} locale={jaJP} picker="time" />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Uncontrolled</h3>
+          <PickerPanel<Moment>
+            {...sharedProps}
+            locale={jaJP}
+            value={undefined}
+            picker="time"
+          />
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Time AM/PM</h3>
           <PickerPanel<Moment>
             {...sharedProps}
             locale={jaJP}
-            mode="time"
+            picker="time"
             showTime={{
               use12Hours: true,
               showSecond: false,

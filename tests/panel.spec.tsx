@@ -400,4 +400,19 @@ describe('Picker.Panel', () => {
       });
     });
   });
+
+  it('onOk to trigger', () => {
+    const onOk = jest.fn();
+    const wrapper = mount(<MomentPickerPanel picker="time" onOk={onOk} />);
+    wrapper
+      .find('.rc-picker-time-panel-column')
+      .first()
+      .find('.rc-picker-time-panel-cell')
+      .at(3)
+      .simulate('click');
+
+    expect(onOk).not.toHaveBeenCalled();
+    wrapper.confirmOK();
+    expect(isSame(onOk.mock.calls[0][0], '1990-09-03 03:00:00')).toBeTruthy();
+  });
 });

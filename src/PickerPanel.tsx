@@ -178,18 +178,12 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   // Handle init logic
   const initRef = React.useRef(true);
 
-  // Inner value
-  const [innerValue, setInnerValue] = React.useState(() => {
-    if (value !== undefined) {
-      return value;
-    }
-    if (defaultValue !== undefined) {
-      return defaultValue;
-    }
-    return null;
+  // Value
+  const [mergedValue, setInnerValue] = useMergedState({
+    value,
+    defaultValue,
+    defaultStateValue: null,
   });
-
-  const mergedValue = value !== undefined ? value : innerValue;
 
   // View date control
   const [viewDate, setInnerViewDate] = useMergedState<
@@ -429,13 +423,13 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     rangesNode = getRanges({
       prefixCls,
       needConfirmButton,
-      okDisabled: !value,
+      okDisabled: !mergedValue,
       locale,
       onOk: () => {
-        if (value) {
-          triggerSelect(value, 'submit', true);
+        if (mergedValue) {
+          triggerSelect(mergedValue, 'submit', true);
           if (onOk) {
-            onOk(value);
+            onOk(mergedValue);
           }
         }
       },
