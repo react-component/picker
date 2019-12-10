@@ -444,12 +444,16 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     if (newOpen) {
       setActivePickerIndex(index);
       triggerInnerOpen(newOpen);
+
+      // Open to reset view date
+      if (!mergedOpen) {
+        setViewDate(null, index);
+      }
     } else if (activePickerIndex === index) {
       triggerInnerOpen(newOpen);
       if (!preventChangeEvent) {
         triggerChange(selectedValue, { source: 'open' });
       }
-      setViewDate(null, index);
     }
   };
 
