@@ -661,6 +661,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   ) {
     let panelHoverRangedValue: RangeValue<DateType> = null;
     if (
+      mergedOpen &&
       hoverRangedValue &&
       hoverRangedValue[0] &&
       hoverRangedValue[1] &&
