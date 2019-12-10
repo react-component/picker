@@ -129,6 +129,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     defaultValue,
     pickerValue,
     defaultPickerValue,
+    disabledDate,
     mode,
     picker = 'date',
     tabIndex = 0,
@@ -325,6 +326,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     value: mergedValue,
     onViewDateChange: setViewDate,
     onPanelChange: onInternalPanelChange,
+    disabledDate: picker === mergedMode ? disabledDate : undefined,
   };
   delete pickerProps.onChange;
   delete pickerProps.onSelect;

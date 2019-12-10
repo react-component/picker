@@ -324,21 +324,44 @@ describe('Picker.Panel', () => {
       expect(onSelect).toHaveBeenCalled();
     });
 
-    it('decade', () => {
-      const onPanelChange = jest.fn();
-      const wrapper = mount(
-        <MomentPickerPanel
-          mode="decade"
-          onPanelChange={onPanelChange}
-          disabledDate={date => date.year() === 1900}
-        />,
-      );
+    describe('decade', () => {
+      it('mode', () => {
+        const onPanelChange = jest.fn();
+        const wrapper = mount(
+          <MomentPickerPanel
+            mode="decade"
+            onPanelChange={onPanelChange}
+            disabledDate={date => date.year() === 1900}
+          />,
+        );
 
-      wrapper.selectCell('1900-1909');
-      expect(onPanelChange).not.toHaveBeenCalled();
+        // no picker is decade, it means alway can click
+        wrapper.selectCell('1900-1909');
+        expect(onPanelChange).toHaveBeenCalled();
 
-      wrapper.selectCell('1910-1919');
-      expect(onPanelChange).toHaveBeenCalled();
+        onPanelChange.mockReset();
+        wrapper.selectCell('1910-1919');
+        expect(onPanelChange).toHaveBeenCalled();
+      });
+
+      // decade is not a picker, but we still test here in case will support
+      it('picker', () => {
+        const onPanelChange = jest.fn();
+        const wrapper = mount(
+          <MomentPickerPanel
+            picker={'decade' as any}
+            mode="decade"
+            onPanelChange={onPanelChange}
+            disabledDate={date => date.year() === 1900}
+          />,
+        );
+
+        wrapper.selectCell('1900-1909');
+        expect(onPanelChange).not.toHaveBeenCalled();
+
+        wrapper.selectCell('1910-1919');
+        expect(onPanelChange).toHaveBeenCalled();
+      });
     });
   });
 
