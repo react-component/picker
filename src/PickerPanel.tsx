@@ -69,7 +69,7 @@ export interface PickerPanelSharedProps<DateType> {
   onChange?: (value: DateType) => void;
   onPanelChange?: OnPanelChange<DateType>;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
-  onOk?: () => void;
+  onOk?: (date: DateType) => void;
 
   /** @private This is internal usage. Do not use in your production env */
   hideHeader?: boolean;
@@ -78,7 +78,8 @@ export interface PickerPanelSharedProps<DateType> {
 
   /** @private Internal usage. Do not use in your production env */
   components?: {
-    button: React.ComponentType;
+    button?: React.ComponentType | string;
+    rangeItem?: React.ComponentType | string;
   };
 }
 
@@ -142,8 +143,11 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onMouseDown,
     onPickerValueChange,
     onOk,
-    components,
+    components = {},
   } = props as MergedPickerPanelProps<DateType>;
+
+  const needConfirmButton: boolean =
+    (picker === 'date' && !!showTime) || picker === 'time';
 
   if (process.env.NODE_ENV !== 'production') {
     warning(
@@ -170,6 +174,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     panelPosition,
     rangedValue,
     hoverRangedValue,
+    rangeList = [],
   } = React.useContext(RangeContext);
   const panelRef = React.useRef<PanelRefProps>({});
 
@@ -423,39 +428,75 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     ? null
     : getExtraFooter(prefixCls, mergedMode, renderExtraFooter);
 
-  let nowNode: React.ReactNode;
+  let rangesNode: React.ReactNode;
   let todayNode: React.ReactNode;
 
-  if ((mergedMode === 'date' && showTime) || mergedMode === 'time') {
-    const Button = components ? components.button : 'button';
+  if (rangeList.length || needConfirmButton) {
+    let presetNode: React.ReactNode;
+    let okNode: React.ReactNode;
 
-    nowNode = (
-      <div className={`${prefixCls}-now`}>
-        <a
-          className={`${prefixCls}-now-btn`}
-          onClick={() => {
-            triggerSelect(generateConfig.getNow(), 'submit', true);
-          }}
-        >
-          {locale.now}
-        </a>
+    if (rangeList.length) {
+      const Item = (components.rangeItem || 'span') as any;
 
-        <div className={`${prefixCls}-ok`}>
+      presetNode = (
+        <>
+          {rangeList.map(({ label, onClick, onMouseEnter, onMouseLeave }) => (
+            <li key={label} className={`${prefixCls}-range`}>
+              <Item
+                onClick={onClick}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+              >
+                {label}
+              </Item>
+            </li>
+          ))}
+        </>
+      );
+    }
+
+    if (needConfirmButton) {
+      const Button = (components.button || 'button') as any;
+
+      if (!inRange && !presetNode) {
+        presetNode = (
+          <li className={`${prefixCls}-now`}>
+            <a
+              className={`${prefixCls}-now-btn`}
+              onClick={() => {
+                triggerSelect(generateConfig.getNow(), 'submit', true);
+              }}
+            >
+              {locale.now}
+            </a>
+          </li>
+        );
+      }
+
+      okNode = (
+        <li className={`${prefixCls}-ok`}>
           <Button
             disabled={!value}
             onClick={() => {
               if (value) {
                 triggerSelect(value, 'submit', true);
                 if (onOk) {
-                  onOk();
+                  onOk(value);
                 }
               }
             }}
           >
             {locale.ok}
           </Button>
-        </div>
-      </div>
+        </li>
+      );
+    }
+
+    rangesNode = (
+      <ul className={`${prefixCls}-ranges`}>
+        {presetNode}
+        {okNode}
+      </ul>
     );
   } else if (showToday && mergedMode === 'date' && picker === 'date') {
     todayNode = (
@@ -495,10 +536,10 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         ref={panelDivRef}
       >
         {panelNode}
-        {extraFooter || nowNode || todayNode ? (
+        {extraFooter || rangesNode || todayNode ? (
           <div className={`${prefixCls}-footer`}>
             {extraFooter}
-            {nowNode}
+            {rangesNode}
             {todayNode}
           </div>
         ) : null}

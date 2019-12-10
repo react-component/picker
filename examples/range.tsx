@@ -70,6 +70,9 @@ export default () => {
             ranges={{
               ranges: [moment(), moment().add(10, 'day')],
             }}
+            onOk={dates => {
+              console.log('OK!!!', dates);
+            }}
           />
         </div>
 

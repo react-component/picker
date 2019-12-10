@@ -100,13 +100,7 @@ export interface RangePickerSharedProps<DateType> {
   ) => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
-  onOk?: () => void;
-
-  /** @private Internal usage. Do not use in your production env */
-  components?: {
-    button: React.ComponentType;
-    rangeItem: React.ComponentType;
-  };
+  onOk?: (dates: RangeValue<DateType>) => void;
 }
 
 type OmitPickerProps<Props> = Omit<
@@ -125,6 +119,7 @@ type OmitPickerProps<Props> = Omit<
   | 'onPanelChange'
   | 'pickerValue'
   | 'onPickerValueChange'
+  | 'onOk'
 >;
 
 type RangeShowTimeObject<DateType> = Omit<
@@ -206,8 +201,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     onFocus,
     onBlur,
     onOk,
-    components,
   } = props as MergedRangePickerProps<DateType>;
+
+  const needConfirmButton: boolean =
+    (picker === 'date' && !!showTime) || picker === 'time';
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const panelDivRef = React.useRef<HTMLDivElement>(null);
@@ -467,6 +464,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   };
 
+  const onInternalOk = (date: DateType) => {
+    if (onOk) {
+      onOk(updateValues(selectedValue, date, activePickerIndex));
+    }
+  };
+
   // ============================= Text ==============================
   const sharedTextHooksProps = {
     formatList,
@@ -517,7 +520,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   // ============================= Input =============================
   const getSharedInputHookProps = (index: 0 | 1, resetText: () => void) => ({
-    blurToCancel: !!(picker === 'date' && showTime),
+    blurToCancel: needConfirmButton,
     forwardKeyDown,
     onBlur,
     isClickOutside: (target: EventTarget | null) =>
@@ -634,6 +637,27 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     };
   }
 
+  // ============================ Ranges =============================
+  const rangeLabels = Object.keys(ranges || {});
+
+  const rangeList = rangeLabels.map(label => {
+    const range = ranges![label];
+    const newValues = typeof range === 'function' ? range() : range;
+
+    return {
+      label,
+      onClick: () => {
+        triggerChange(newValues);
+      },
+      onMouseEnter: () => {
+        setRangeHoverValue(newValues);
+      },
+      onMouseLeave: () => {
+        setRangeHoverValue(null);
+      },
+    };
+  });
+
   // ============================= Panel =============================
   function renderPanel(
     panelPosition: 'left' | 'right' | false = false,
@@ -669,6 +693,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           panelPosition,
           rangedValue: rangeHoverValue || selectedValue,
           hoverRangedValue: panelHoverRangedValue,
+          rangeList,
         }}
       >
         <PickerPanel<DateType>
@@ -705,6 +730,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
             setViewDate(date, activePickerIndex);
           }}
+          onOk={onInternalOk}
           onSelect={undefined}
           onChange={undefined}
           defaultValue={undefined}
@@ -773,58 +799,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       panels = renderPanel();
     }
 
-    let rangesNode: React.ReactNode;
-    if (ranges || showTime) {
-      const mergedRanges = ranges || {};
-      const rangeList = Object.keys(mergedRanges);
-      const Button = (components && components.button) || 'button';
-      const RangeItem = (components && components.rangeItem) || 'span';
-
-      rangesNode = (
-        <ul className={`${prefixCls}-ranges`}>
-          {rangeList.map(label => {
-            const range = mergedRanges[label];
-            const rangeValues = Array.isArray(range) ? range : range();
-
-            return (
-              <li key={label}>
-                <RangeItem
-                  onClick={() => {
-                    const newValues = rangeValues;
-                    triggerChange(newValues);
-                  }}
-                  onMouseEnter={() => {
-                    setRangeHoverValue(rangeValues);
-                  }}
-                  onMouseLeave={() => {
-                    setRangeHoverValue(null);
-                  }}
-                >
-                  {label}
-                </RangeItem>
-              </li>
-            );
-          })}
-
-          {showTime && (
-            <li className={`${prefixCls}-ok`}>
-              <Button
-                disabled={!getValue(selectedValue, activePickerIndex)}
-                onClick={() => {
-                  triggerChange(selectedValue);
-                  if (onOk) {
-                    onOk();
-                  }
-                }}
-              >
-                {locale.ok}
-              </Button>
-            </li>
-          )}
-        </ul>
-      );
-    }
-
     return (
       <div
         className={`${prefixCls}-panel-container`}
@@ -836,7 +810,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       >
         <div className={`${prefixCls}-panels`}>{panels}</div>
         {extraNode}
-        {rangesNode}
       </div>
     );
   }
@@ -906,14 +879,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }
 
   // ============================ Return =============================
-  const onContextSelect = (date: DateType, type: 'key' | 'mouse') => {
+  const onContextSelect = (
+    date: DateType,
+    type: 'key' | 'mouse' | 'submit',
+  ) => {
     const values = updateValues(selectedValue, date, activePickerIndex);
 
-    if (type === 'key' || (picker === 'date' && showTime)) {
-      setSelectedValue(values);
-    } else {
+    if (type === 'submit' || (type !== 'key' && !needConfirmButton)) {
       // triggerChange will also update selected values
       triggerChange(values);
+    } else {
+      setSelectedValue(values);
     }
   };
 

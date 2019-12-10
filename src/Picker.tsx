@@ -81,11 +81,6 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   // WAI-ARIA
   role?: string;
   name?: string;
-
-  /** @private Internal usage. Do not use in your production env */
-  components?: {
-    button: React.ComponentType;
-  };
 }
 
 type OmitPanelProps<Props> = Omit<

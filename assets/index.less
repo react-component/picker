@@ -16,13 +16,6 @@
     }
   }
 
-  &-ranges {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
   // ===================== Shared Panel =====================
   &-decade-panel,
   &-year-panel,
@@ -129,9 +122,15 @@
     }
   }
 
-  &-now {
-    text-align: left;
+  &-ranges {
+    margin: 0;
+    padding: 0;
     overflow: hidden;
+    list-style: none;
+
+    > li {
+      display: inline-block;
+    }
   }
 
   &-ok {
@@ -377,9 +376,5 @@
     display: inline-block;
     vertical-align: top;
     transition: margin 0.3s;
-  }
-
-  &-ranges {
-    background: red;
   }
 }
