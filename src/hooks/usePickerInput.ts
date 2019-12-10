@@ -90,7 +90,7 @@ export default function usePickerInput({
     },
 
     onBlur: e => {
-      if (preventBlurRef.current) {
+      if (preventBlurRef.current || !isClickOutside(document.activeElement)) {
         preventBlurRef.current = false;
         return;
       }
