@@ -853,7 +853,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   const rangePanel = (
     <div
-      className={`${prefixCls}-range-wrapper`}
+      className={classNames(
+        `${prefixCls}-range-wrapper`,
+        `${prefixCls}-${picker}-range-wrapper`,
+      )}
       style={{ minWidth: popupMinWidth }}
     >
       <div className={`${prefixCls}-range-arrow`} style={{ left: arrowLeft }} />
