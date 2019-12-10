@@ -23,6 +23,7 @@ import RangePicker, {
 const FULL_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
 export type Wrapper = ReactWrapper & {
+  confirmOK: () => void;
   openPicker: (index?: number) => void;
   closePicker: (index?: number) => void;
   isOpen: () => boolean;

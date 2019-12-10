@@ -322,7 +322,7 @@ describe('Picker.Basic', () => {
         finalMode: 'date',
       },
       {
-        name: 'date',
+        name: 'datetime',
         yearBtn: '.rc-picker-year-btn',
         finalPanel: 'DatetimePanel',
         finalMode: 'date',
@@ -387,6 +387,7 @@ describe('Picker.Basic', () => {
 
         expect(wrapper.find(finalPanel).length).toBeTruthy();
 
+        wrapper.confirmOK();
         wrapper.closePicker();
         expect(isSame(onChange.mock.calls[0][0], '2019-08-18')).toBeTruthy();
       });
@@ -410,7 +411,7 @@ describe('Picker.Basic', () => {
       selectColumn(1, 22);
       selectColumn(2, 33);
 
-      wrapper.closePicker();
+      wrapper.confirmOK();
       expect(
         isSame(onChange.mock.calls[0][0], '1990-09-03 13:22:33', 'second'),
       ).toBeTruthy();

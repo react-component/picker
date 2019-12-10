@@ -278,7 +278,7 @@ describe('Picker.Range', () => {
     });
   });
 
-  describe.only('ranges', () => {
+  describe('ranges', () => {
     it('work', () => {
       const onChange = jest.fn();
       const wrapper = mount(
@@ -313,7 +313,7 @@ describe('Picker.Range', () => {
       );
     });
 
-    it.only('hover className', () => {
+    it('hover className', () => {
       const wrapper = mount(
         <MomentRangePicker
           ranges={{
@@ -323,8 +323,7 @@ describe('Picker.Range', () => {
       );
 
       wrapper.openPicker();
-      console.log('=>', wrapper.debug());
-      wrapper.find('.rc-picker-preset').simulate('mouseEnter');
+      wrapper.find('.rc-picker-preset > *').simulate('mouseEnter');
       expect(
         wrapper.findCell(11).hasClass('rc-picker-cell-range-start'),
       ).toBeTruthy();
@@ -335,7 +334,7 @@ describe('Picker.Range', () => {
         wrapper.findCell(13).hasClass('rc-picker-cell-range-end'),
       ).toBeTruthy();
 
-      wrapper.find('.rc-picker-preset').simulate('mouseLeave');
+      wrapper.find('.rc-picker-preset > *').simulate('mouseLeave');
       expect(
         wrapper.findCell(11).hasClass('rc-picker-cell-range-start'),
       ).toBeFalsy();

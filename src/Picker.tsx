@@ -159,6 +159,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onMouseLeave,
     onContextMenu,
     onClick,
+    onSelect,
     onOk,
   } = props as MergedPickerProps<DateType>;
 
@@ -365,6 +366,14 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     needConfirmButton,
     okDisabled: !selectedValue,
     locale,
+    onNow: () => {
+      const now = generateConfig.getNow();
+      if (onSelect) {
+        onSelect(now);
+      }
+      triggerChange(now);
+      triggerOpen(false, true);
+    },
     onOk: () => {
       if (selectedValue) {
         triggerChange(selectedValue);
@@ -397,7 +406,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         onChange={setSelectedValue}
         onPanelChange={triggerModeChange}
       />
-      <div className={`${prefixCls}-picker-footer`}>
+      <div className={`${prefixCls}-footer`}>
         {extraNode}
         {rangesNode}
       </div>

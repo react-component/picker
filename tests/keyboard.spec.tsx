@@ -145,6 +145,8 @@ describe('Picker.Keyboard', () => {
 
   describe('datetime Tab control', () => {
     it('Picker', () => {
+      jest.useFakeTimers();
+
       const wrapper = mount(<MomentPicker showTime />);
       wrapper.openPicker();
 
@@ -162,7 +164,13 @@ describe('Picker.Keyboard', () => {
 
       // Close should not focus
       wrapper.closePicker();
+      act(() => {
+        jest.runAllTimers();
+      });
+      wrapper.update();
       expect(wrapper.find('.rc-picker-time-panel-active').length).toBeFalsy();
+
+      jest.useRealTimers();
     });
 
     describe('PickerPanel', () => {
