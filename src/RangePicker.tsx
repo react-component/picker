@@ -60,6 +60,7 @@ function reorderValues<DateType>(
 function canValueTrigger<DateType>(
   value: EventValue<DateType>,
   index: number,
+  disabled: [boolean, boolean],
   allowEmpty?: [boolean, boolean] | null,
 ): boolean {
   if (value) {
@@ -67,6 +68,10 @@ function canValueTrigger<DateType>(
   }
 
   if (allowEmpty && allowEmpty[index]) {
+    return true;
+  }
+
+  if (disabled[(index + 1) % 2]) {
     return true;
   }
 
@@ -393,11 +398,23 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       onCalendarChange(values, [startStr, endStr]);
     }
 
-    const canStartValueTrigger = canValueTrigger(startValue, 0, allowEmpty);
-    const canEndValueTrigger = canValueTrigger(endValue, 1, allowEmpty);
+    const canStartValueTrigger = canValueTrigger(
+      startValue,
+      0,
+      mergedDisabled,
+      allowEmpty,
+    );
+    const canEndValueTrigger = canValueTrigger(
+      endValue,
+      1,
+      mergedDisabled,
+      allowEmpty,
+    );
 
     const canTrigger =
       values === null || (canStartValueTrigger && canEndValueTrigger);
+
+    console.log('>>>', canTrigger);
 
     if (canTrigger) {
       // Trigger onChange only when value is validate

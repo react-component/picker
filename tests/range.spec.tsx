@@ -276,6 +276,21 @@ describe('Picker.Range', () => {
       );
       errSpy.mockReset();
     });
+
+    it('clear should trigger change', () => {
+      const onChange = jest.fn();
+      const wrapper = mount(
+        <MomentRangePicker
+          disabled={[false, true]}
+          defaultValue={[getMoment('1990-01-01'), getMoment('2000-11-11')]}
+          onChange={onChange}
+          allowClear
+        />,
+      );
+
+      wrapper.clearValue();
+      expect(onChange.mock.calls[0][1]).toEqual(['', '2000-11-11']);
+    });
   });
 
   describe('ranges', () => {
