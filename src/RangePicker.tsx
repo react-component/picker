@@ -34,6 +34,7 @@ import { PickerPanelProps } from '.';
 import RangeContext from './RangeContext';
 import useRangeDisabled from './hooks/useRangeDisabled';
 import getExtraFooter from './utils/getExtraFooter';
+import getRanges from './utils/getRanges';
 import useRangeViewDates from './hooks/useRangeViewDates';
 
 function reorderValues<DateType>(
@@ -464,12 +465,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   };
 
-  const onInternalOk = (date: DateType) => {
-    if (onOk) {
-      onOk(updateValues(selectedValue, date, activePickerIndex));
-    }
-  };
-
   // ============================= Text ==============================
   const sharedTextHooksProps = {
     formatList,
@@ -693,7 +688,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           panelPosition,
           rangedValue: rangeHoverValue || selectedValue,
           hoverRangedValue: panelHoverRangedValue,
-          rangeList,
         }}
       >
         <PickerPanel<DateType>
@@ -730,7 +724,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
             setViewDate(date, activePickerIndex);
           }}
-          onOk={onInternalOk}
+          onOk={null}
           onSelect={undefined}
           onChange={undefined}
           defaultValue={undefined}
@@ -767,6 +761,22 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       mergedModes[activePickerIndex],
       renderExtraFooter,
     );
+
+    const rangesNode = getRanges({
+      prefixCls,
+      needConfirmButton,
+      okDisabled: !getValue(selectedValue, activePickerIndex),
+      locale,
+      rangeList,
+      onOk: () => {
+        if (getValue(selectedValue, activePickerIndex)) {
+          triggerChange(selectedValue);
+          if (onOk) {
+            onOk(selectedValue);
+          }
+        }
+      },
+    });
 
     if (picker !== 'time' && !showTime) {
       const viewDate = getViewDate(activePickerIndex);
@@ -809,7 +819,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         }}
       >
         <div className={`${prefixCls}-panels`}>{panels}</div>
-        {extraNode}
+        <div className={`${prefixCls}-picker-footer`}>
+          {extraNode}
+          {rangesNode}
+        </div>
       </div>
     );
   }

@@ -100,3 +100,15 @@ export type EventValue<DateType> = DateType | null;
 export type RangeValue<DateType> =
   | [EventValue<DateType>, EventValue<DateType>]
   | null;
+
+export interface Components {
+  button?: React.ComponentType | string;
+  rangeItem?: React.ComponentType | string;
+}
+
+export type RangeList = {
+  label: string;
+  onClick: () => void;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+}[];

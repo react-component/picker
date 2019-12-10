@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NullableDateType, RangeValue } from './interface';
 
-interface RangeContextProps {
+export interface RangeContextProps {
   /**
    * Set displayed range value style.
    * Panel only has one value, this is only style effect.
@@ -10,12 +10,6 @@ interface RangeContextProps {
   hoverRangedValue?: RangeValue<any>;
   inRange?: boolean;
   panelPosition?: 'left' | 'right' | false;
-  rangeList?: {
-    label: string;
-    onClick: () => void;
-    onMouseEnter: () => void;
-    onMouseLeave: () => void;
-  }[];
 }
 
 const RangeContext = React.createContext<RangeContextProps>({});

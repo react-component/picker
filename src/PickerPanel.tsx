@@ -26,6 +26,7 @@ import {
   PickerMode,
   DisabledTime,
   OnPanelChange,
+  Components,
 } from './interface';
 import { isEqual } from './utils/dateUtil';
 import PanelContext from './PanelContext';
@@ -35,6 +36,7 @@ import { MonthCellRender } from './panels/MonthPanel/MonthBody';
 import RangeContext from './RangeContext';
 import useMergedState from './hooks/useMergeState';
 import getExtraFooter from './utils/getExtraFooter';
+import getRanges from './utils/getRanges';
 
 export interface PickerPanelSharedProps<DateType> {
   prefixCls?: string;
@@ -77,10 +79,7 @@ export interface PickerPanelSharedProps<DateType> {
   onPickerValueChange?: (date: DateType) => void;
 
   /** @private Internal usage. Do not use in your production env */
-  components?: {
-    button?: React.ComponentType | string;
-    rangeItem?: React.ComponentType | string;
-  };
+  components?: Components;
 }
 
 export interface PickerPanelBaseProps<DateType>
@@ -143,7 +142,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onMouseDown,
     onPickerValueChange,
     onOk,
-    components = {},
   } = props as MergedPickerPanelProps<DateType>;
 
   const needConfirmButton: boolean =
@@ -174,7 +172,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     panelPosition,
     rangedValue,
     hoverRangedValue,
-    rangeList = [],
   } = React.useContext(RangeContext);
   const panelRef = React.useRef<PanelRefProps>({});
 
@@ -424,81 +421,30 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   }
 
   // ============================ Footer ============================
-  const extraFooter: React.ReactNode = inRange
-    ? null
-    : getExtraFooter(prefixCls, mergedMode, renderExtraFooter);
-
+  let extraFooter: React.ReactNode;
   let rangesNode: React.ReactNode;
+
+  if (!onContextSelect) {
+    extraFooter = getExtraFooter(prefixCls, mergedMode, renderExtraFooter);
+    rangesNode = getRanges({
+      prefixCls,
+      needConfirmButton,
+      okDisabled: !value,
+      locale,
+      onOk: () => {
+        if (value) {
+          triggerSelect(value, 'submit', true);
+          if (onOk) {
+            onOk(value);
+          }
+        }
+      },
+    });
+  }
+
   let todayNode: React.ReactNode;
 
-  if (rangeList.length || needConfirmButton) {
-    let presetNode: React.ReactNode;
-    let okNode: React.ReactNode;
-
-    if (rangeList.length) {
-      const Item = (components.rangeItem || 'span') as any;
-
-      presetNode = (
-        <>
-          {rangeList.map(({ label, onClick, onMouseEnter, onMouseLeave }) => (
-            <li key={label} className={`${prefixCls}-range`}>
-              <Item
-                onClick={onClick}
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-              >
-                {label}
-              </Item>
-            </li>
-          ))}
-        </>
-      );
-    }
-
-    if (needConfirmButton) {
-      const Button = (components.button || 'button') as any;
-
-      if (!inRange && !presetNode) {
-        presetNode = (
-          <li className={`${prefixCls}-now`}>
-            <a
-              className={`${prefixCls}-now-btn`}
-              onClick={() => {
-                triggerSelect(generateConfig.getNow(), 'submit', true);
-              }}
-            >
-              {locale.now}
-            </a>
-          </li>
-        );
-      }
-
-      okNode = (
-        <li className={`${prefixCls}-ok`}>
-          <Button
-            disabled={!value}
-            onClick={() => {
-              if (value) {
-                triggerSelect(value, 'submit', true);
-                if (onOk) {
-                  onOk(value);
-                }
-              }
-            }}
-          >
-            {locale.ok}
-          </Button>
-        </li>
-      );
-    }
-
-    rangesNode = (
-      <ul className={`${prefixCls}-ranges`}>
-        {presetNode}
-        {okNode}
-      </ul>
-    );
-  } else if (showToday && mergedMode === 'date' && picker === 'date') {
+  if (showToday && mergedMode === 'date' && picker === 'date' && !showTime) {
     todayNode = (
       <a
         className={`${prefixCls}-today-btn`}

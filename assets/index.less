@@ -122,6 +122,11 @@
     }
   }
 
+  &-footer,
+  &-picker-footer {
+    background: green;
+  }
+
   &-ranges {
     margin: 0;
     padding: 0;
@@ -286,6 +291,10 @@
     position: absolute;
     box-shadow: 0 0 1px red;
 
+    &-range {
+      padding: 10px 0;
+    }
+
     &-hidden {
       display: none;
     }
@@ -338,10 +347,6 @@
         border-color: @background-color @background-color transparent
           transparent;
       }
-    }
-
-    .@{prefix-cls}-panel {
-      margin: 10px 0;
     }
   }
 
