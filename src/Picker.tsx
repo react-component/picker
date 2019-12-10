@@ -161,6 +161,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onClick,
     onSelect,
     onOk,
+    components,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -363,6 +364,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   const rangesNode = getRanges({
     prefixCls,
+    components,
     needConfirmButton,
     okDisabled: !selectedValue,
     locale,

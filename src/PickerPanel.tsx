@@ -142,6 +142,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onMouseDown,
     onPickerValueChange,
     onOk,
+    components,
   } = props as MergedPickerPanelProps<DateType>;
 
   const needConfirmButton: boolean =
@@ -422,6 +423,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     extraFooter = getExtraFooter(prefixCls, mergedMode, renderExtraFooter);
     rangesNode = getRanges({
       prefixCls,
+      components,
       needConfirmButton,
       okDisabled: !mergedValue,
       locale,

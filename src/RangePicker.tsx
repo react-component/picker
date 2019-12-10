@@ -202,6 +202,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     onFocus,
     onBlur,
     onOk,
+    components,
   } = props as MergedRangePickerProps<DateType>;
 
   const needConfirmButton: boolean =
@@ -764,6 +765,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
     const rangesNode = getRanges({
       prefixCls,
+      components,
       needConfirmButton,
       okDisabled: !getValue(selectedValue, activePickerIndex),
       locale,
@@ -819,7 +821,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         }}
       >
         <div className={`${prefixCls}-panels`}>{panels}</div>
-        <div className={`${prefixCls}-picker-footer`}>
+        <div className={`${prefixCls}-footer`}>
           {extraNode}
           {rangesNode}
         </div>

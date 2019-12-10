@@ -74,6 +74,16 @@ export default () => {
               console.log('OK!!!', dates);
             }}
           />
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            allowClear
+            picker="time"
+            ranges={{
+              test: [moment(), moment().add(1, 'hour')],
+            }}
+          />
         </div>
 
         <div style={{ margin: '0 8px' }}>
