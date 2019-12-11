@@ -877,7 +877,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   ) {
     clearNode = (
       <span
-        onClick={e => {
+        onMouseDown={e => {
+          e.preventDefault();
           e.stopPropagation();
           let values = mergedValue;
 

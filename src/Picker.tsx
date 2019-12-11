@@ -370,7 +370,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   if (allowClear && mergedValue && !disabled) {
     clearNode = (
       <span
-        onClick={e => {
+        onMouseDown={e => {
+          e.preventDefault();
           e.stopPropagation();
           triggerChange(null);
           triggerOpen(false, true);
