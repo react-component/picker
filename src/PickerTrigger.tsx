@@ -20,14 +20,6 @@ const BUILT_IN_PLACEMENTS = {
       adjustY: 1,
     },
   },
-  bottomRight: {
-    points: ['tr', 'br'],
-    offset: [0, 4],
-    overflow: {
-      adjustX: 0,
-      adjustY: 1,
-    },
-  },
   topLeft: {
     points: ['bl', 'tl'],
     offset: [0, -4],
