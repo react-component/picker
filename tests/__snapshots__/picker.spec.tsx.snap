@@ -45,7 +45,7 @@ exports[`Picker.Basic pass data- & aria- & role 1`] = `
 </div>
 `;
 
-exports[`Basic should render correctly in rtl 1`] = `
+exports[`Picker.Basic should render correctly in rtl 1`] = `
 <div
   class="rc-picker rc-picker-rtl"
 >

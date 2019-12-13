@@ -49,3 +49,39 @@ exports[`Picker.Range icon 1`] = `
   </span>
 </div>
 `;
+
+exports[`Picker.Range onPanelChange is array args should render correctly in rtl 1`] = `
+<div
+  class="rc-picker rc-picker-range rc-picker-rtl"
+>
+  <div
+    class="rc-picker-input rc-picker-input-active"
+  >
+    <input
+      placeholder=""
+      readonly=""
+      size="12"
+      value=""
+    />
+  </div>
+  <div
+    class="rc-picker-range-separator"
+  >
+    ~
+  </div>
+  <div
+    class="rc-picker-input"
+  >
+    <input
+      placeholder=""
+      readonly=""
+      size="12"
+      value=""
+    />
+  </div>
+  <div
+    class="rc-picker-active-bar"
+    style="right: 0px; width: 0px; position: absolute;"
+  />
+</div>
+`;
