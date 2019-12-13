@@ -777,6 +777,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   }
 
+  const arrowPositionStyle =
+    direction === 'rtl' ? { right: arrowLeft } : { left: arrowLeft };
+
   function renderPanels() {
     let panels: React.ReactNode;
     const extraNode = getExtraFooter(
@@ -808,25 +811,28 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       const currentMode = mergedModes[activePickerIndex];
 
       const showDoublePanel = currentMode === picker;
+      const leftPanel = renderPanel(showDoublePanel ? 'left' : false, {
+        pickerValue: viewDate,
+        onPickerValueChange: newViewDate => {
+          setViewDate(newViewDate, activePickerIndex);
+        },
+      });
+      const rightPanel = renderPanel('right', {
+        pickerValue: nextViewDate,
+        onPickerValueChange: newViewDate => {
+          setViewDate(
+            getClosingViewDate(newViewDate, picker, generateConfig, -1),
+            activePickerIndex,
+          );
+        },
+      });
 
       panels = (
         <>
-          {renderPanel(showDoublePanel ? 'left' : false, {
-            pickerValue: viewDate,
-            onPickerValueChange: newViewDate => {
-              setViewDate(newViewDate, activePickerIndex);
-            },
-          })}
-          {showDoublePanel &&
-            renderPanel('right', {
-              pickerValue: nextViewDate,
-              onPickerValueChange: newViewDate => {
-                setViewDate(
-                  getClosingViewDate(newViewDate, picker, generateConfig, -1),
-                  activePickerIndex,
-                );
-              },
-            })}
+          {direction === 'rtl' ? rightPanel : leftPanel}
+          {direction === 'rtl'
+            ? showDoublePanel && leftPanel
+            : showDoublePanel && rightPanel}
         </>
       );
     } else {
@@ -859,7 +865,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       )}
       style={{ minWidth: popupMinWidth }}
     >
-      <div className={`${prefixCls}-range-arrow`} style={{ left: arrowLeft }} />
+      <div className={`${prefixCls}-range-arrow`} style={arrowPositionStyle} />
 
       {renderPanels()}
     </div>
@@ -918,7 +924,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       activeBarWidth = endInputDivRef.current.offsetWidth;
     }
   }
-
+  const activeBarPositionStyle =
+    direction === 'rtl' ? { right: activeBarLeft } : { left: activeBarLeft };
   // ============================ Return =============================
   const onContextSelect = (
     date: DateType,
@@ -932,74 +939,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     } else {
       setSelectedValue(values);
     }
-  };
-
-  const startDatePicker = () => (
-    <div
-            className={classNames(`${prefixCls}-input`, {
-              [`${prefixCls}-input-active`]: activePickerIndex === 0,
-            })}
-            ref={startInputDivRef}
-          >
-            <input
-              disabled={mergedDisabled[0]}
-              readOnly={inputReadOnly || !startTyping}
-              value={startText}
-              onChange={e => {
-                triggerStartTextChange(e.target.value);
-              }}
-              autoFocus={autoFocus}
-              placeholder={getValue(placeholder, 0) || ''}
-              ref={startInputRef}
-              {...startInputProps}
-              {...inputSharedProps}
-            />
-          </div>
-  );
-
-  const endDatePicker = () => (
-    <div
-            className={classNames(`${prefixCls}-input`, {
-              [`${prefixCls}-input-active`]: activePickerIndex === 1,
-            })}
-            ref={endInputDivRef}
-          >
-            <input
-              disabled={mergedDisabled[1]}
-              readOnly={inputReadOnly || !endTyping}
-              value={endText}
-              onChange={e => {
-                triggerEndTextChange(e.target.value);
-              }}
-              placeholder={getValue(placeholder, 1) || ''}
-              ref={endInputRef}
-              {...endInputProps}
-              {...inputSharedProps}
-            />
-          </div>
-  );
-
-  const renderDatePickerByDirection = () => {
-    if (direction === 'rtl') {
-      return (
-        <React.Fragment>
-          {endDatePicker()}
-           <div className={`${prefixCls}-range-separator`} ref={separatorRef}>
-            {separator}
-          </div>
-          {startDatePicker()}
-        </React.Fragment>
-      );
-    }
-    return (
-      <React.Fragment>
-        {startDatePicker()}
-         <div className={`${prefixCls}-range-separator`} ref={separatorRef}>
-            {separator}
-          </div>
-        {endDatePicker()}
-      </React.Fragment>
-    );
   };
 
   return (
@@ -1024,23 +963,64 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         getPopupContainer={getPopupContainer}
         transitionName={transitionName}
         range
+        direction={direction}
       >
         <div
           ref={containerRef}
           className={classNames(prefixCls, `${prefixCls}-range`, className, {
             [`${prefixCls}-disabled`]: mergedDisabled[0] && mergedDisabled[1],
             [`${prefixCls}-focused`]: startFocused || endFocused,
+            [`${prefixCls}-rtl`]: direction === 'rtl',
           })}
           style={style}
           {...getDataOrAriaProps(props)}
         >
-        {renderDatePickerByDirection()}
-             
-          
+          <div
+            className={classNames(`${prefixCls}-input`, {
+              [`${prefixCls}-input-active`]: activePickerIndex === 0,
+            })}
+            ref={startInputDivRef}
+          >
+            <input
+              disabled={mergedDisabled[0]}
+              readOnly={inputReadOnly || !startTyping}
+              value={startText}
+              onChange={e => {
+                triggerStartTextChange(e.target.value);
+              }}
+              autoFocus={autoFocus}
+              placeholder={getValue(placeholder, 0) || ''}
+              ref={startInputRef}
+              {...startInputProps}
+              {...inputSharedProps}
+            />
+          </div>
+          <div className={`${prefixCls}-range-separator`} ref={separatorRef}>
+            {separator}
+          </div>
+          <div
+            className={classNames(`${prefixCls}-input`, {
+              [`${prefixCls}-input-active`]: activePickerIndex === 1,
+            })}
+            ref={endInputDivRef}
+          >
+            <input
+              disabled={mergedDisabled[1]}
+              readOnly={inputReadOnly || !endTyping}
+              value={endText}
+              onChange={e => {
+                triggerEndTextChange(e.target.value);
+              }}
+              placeholder={getValue(placeholder, 1) || ''}
+              ref={endInputRef}
+              {...endInputProps}
+              {...inputSharedProps}
+            />
+          </div>
           <div
             className={`${prefixCls}-active-bar`}
             style={{
-              left: activeBarLeft,
+              ...activeBarPositionStyle,
               width: activeBarWidth,
               position: 'absolute',
             }}

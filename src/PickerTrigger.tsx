@@ -52,6 +52,7 @@ export interface PickerTriggerProps {
   dropdownAlign?: AlignType;
   range?: boolean;
   popupPlacement?: Placement;
+  direction?: 'ltr' | 'rtl';
 }
 
 function PickerTrigger({
@@ -66,6 +67,7 @@ function PickerTrigger({
   children,
   range,
   popupPlacement,
+  direction,
 }: PickerTriggerProps) {
   const dropdownPrefixCls = `${prefixCls}-dropdown`;
 
@@ -73,7 +75,7 @@ function PickerTrigger({
     <Trigger
       showAction={[]}
       hideAction={[]}
-      popupPlacement={popupPlacement}
+      popupPlacement={popupPlacement || 'bottomLeft'}
       builtinPlacements={BUILT_IN_PLACEMENTS}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={transitionName}
@@ -82,6 +84,7 @@ function PickerTrigger({
       popupVisible={visible}
       popupClassName={classNames(dropdownClassName, {
         [`${dropdownPrefixCls}-range`]: range,
+        [`${dropdownPrefixCls}-rtl`]: direction === 'rtl',
       })}
       popupStyle={popupStyle}
       getPopupContainer={getPopupContainer}

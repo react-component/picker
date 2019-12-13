@@ -5,12 +5,13 @@
 .@{prefix-cls} {
   display: inline-flex;
 
-  &-focused {
-    border: 1px solid blue;
   &-rtl {
     direction: rtl;
   }
 
+  &-focused {
+    border: 1px solid blue;
+  }
   &-panel {
     border: 1px solid #666;
     background: @background-color;
@@ -285,6 +286,10 @@
     display: inline-flex;
     width: 100%;
 
+    .@{prefix-cls}-rtl & {
+      text-align: right;
+    }
+
     > input {
       width: 100%;
     }
@@ -322,13 +327,15 @@
     // Panel
     @arrow-size: 10px;
 
-    &-placement-topLeft {
+    &-placement-topLeft,
+    &-placement-topRight {
       .@{prefix-cls}-range-arrow {
         bottom: @arrow-size / 2 + 1px;
         transform: rotate(135deg);
       }
     }
-    &-placement-bottomLeft {
+    &-placement-bottomLeft,
+    &-placement-bottomright {
       .@{prefix-cls}-range-arrow {
         top: @arrow-size / 2 + 1px;
         transform: rotate(-45deg);
@@ -342,7 +349,14 @@
       z-index: 1;
       left: @arrow-size;
       margin-left: 10px;
-      transition: left 0.3s;
+      transition: all 0.3s;
+
+      .@{prefix-cls}-dropdown-rtl& {
+        right: @arrow-size;
+        left: auto;
+        margin-left: 0;
+        margin-right: 10px;
+      }
 
       &::before,
       &::after {
@@ -352,6 +366,12 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+
+        .@{prefix-cls}-dropdown-rtl& {
+          right: 50%;
+          left: auto;
+          transform: translate(50%, -50%);
+        }
       }
 
       &::before {

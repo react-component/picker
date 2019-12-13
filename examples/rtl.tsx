@@ -9,11 +9,15 @@ import enUS from '../src/locale/en_US';
 import jaJP from '../src/locale/ja_JP';
 import '../assets/index.less';
 
-// const defaultValue = moment('2019-09-03 05:02:03');
 const defaultValue = moment('2019-11-28 01:02:03');
+
+function formatDate(date: Moment | null) {
+  return date ? date.format('YYYY-MM-DD HH:mm:ss') : 'null';
+}
 
 export default () => {
   const [value, setValue] = React.useState<Moment | null>(defaultValue);
+
   const weekRef = React.useRef<Picker<Moment>>(null);
 
   const onSelect = (newValue: Moment) => {
@@ -33,9 +37,14 @@ export default () => {
     direction: 'rtl',
   };
 
+  const rangePickerRef = React.useRef<RangePicker<Moment>>(null);
+
   return (
-    <div>
-      <h1>Value: {value ? value.format('YYYY-MM-DD HH:mm:ss') : 'null'}</h1>
+    <div dir="rtl">
+      <h2>
+        Value:{' '}
+        {value ? `${formatDate(value[0])} ~ ${formatDate(value[1])}` : 'null'}
+      </h2>
 
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
@@ -193,8 +202,11 @@ export default () => {
           <h3>Basic RangePicker</h3>
           <RangePicker<Moment>
             {...sharedProps}
+            value={undefined}
             locale={zhCN}
             allowClear
+            ref={rangePickerRef}
+            defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
             placeholder={['start...', 'end...']}
           />
         </div>

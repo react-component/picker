@@ -420,6 +420,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         getPopupContainer={getPopupContainer}
         transitionName={transitionName}
         popupPlacement={popupPlacement}
+        direction={direction}
       >
         <div
           className={classNames(prefixCls, className, {
