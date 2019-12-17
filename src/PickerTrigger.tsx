@@ -71,11 +71,18 @@ function PickerTrigger({
 }: PickerTriggerProps) {
   const dropdownPrefixCls = `${prefixCls}-dropdown`;
 
+  const getPopupPlacement = () => {
+    if (popupPlacement !== undefined) {
+      return popupPlacement;
+    }
+    return direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
+  };
+
   return (
     <Trigger
       showAction={[]}
       hideAction={[]}
-      popupPlacement={popupPlacement || 'bottomLeft'}
+      popupPlacement={getPopupPlacement()}
       builtinPlacements={BUILT_IN_PLACEMENTS}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={transitionName}
