@@ -720,6 +720,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           mode={mergedModes[activePickerIndex]}
           generateConfig={generateConfig}
           style={undefined}
+          direction={direction}
           disabledDate={
             activePickerIndex === 0 ? disabledStartDate : disabledEndDate
           }
