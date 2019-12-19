@@ -226,10 +226,16 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     return getInternalNextMode('date');
   });
 
+  // Save panel is changed from which panel
+  const [sourceMode, setSourceMode] = React.useState<PanelMode>(
+    () => innerMode,
+  );
+
   const mergedMode: PanelMode = mode || innerMode;
 
   const onInternalPanelChange = (newMode: PanelMode, viewValue: DateType) => {
     const nextMode = getInternalNextMode(newMode);
+    setSourceMode(mergedMode);
     setInnerMode(nextMode);
 
     if (onPanelChange && mergedMode !== nextMode) {
@@ -328,6 +334,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     viewDate,
     value: mergedValue,
     onViewDateChange: setViewDate,
+    sourceMode,
     onPanelChange: onInternalPanelChange,
     disabledDate: picker === mergedMode ? disabledDate : undefined,
   };

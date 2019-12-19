@@ -398,6 +398,14 @@ describe('Picker.Basic', () => {
       });
     });
 
+    it('date -> year -> date', () => {
+      const wrapper = mount(<MomentPicker />);
+      wrapper.openPicker();
+      wrapper.find('.rc-picker-year-btn').simulate('click');
+      wrapper.selectCell(1990);
+      expect(wrapper.find('DatePanel')).toHaveLength(1);
+    });
+
     it('time', () => {
       const onChange = jest.fn();
       const onOk = jest.fn();
