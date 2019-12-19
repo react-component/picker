@@ -82,24 +82,9 @@ const generateConfig: GenerateConfig<Dayjs> = {
     format: (locale, date, format) =>
       date.locale(parseLocale(locale)).format(format),
     parse: (locale, text, formats) => {
-      const fallbackFormatList: string[] = [];
-
       for (let i = 0; i < formats.length; i += 1) {
-        let format = formats[i];
-        let formatText = text;
-
-        if (format.includes('o')) {
-          const matchFormat = format.match(/[YyMmDdHhSsWw]+/g);
-          const matchText = formatText.match(/\d+/g);
-
-          if (matchFormat && matchText) {
-            format = matchFormat.join('');
-            formatText = matchText.join('');
-          } else {
-            fallbackFormatList.push(format.replace(/o/g, ''));
-          }
-        }
-
+        const format = formats[i];
+        const formatText = text;
         const date = dayjs(formatText, format, parseLocale(locale));
         if (date.isValid()) {
           return date;
