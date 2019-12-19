@@ -153,6 +153,23 @@ describe('Picker.Generate', () => {
         ).toEqual('1周');
       });
 
+      it('Parse format faild', () => {
+        expect(
+          generateConfig.locale.parse(
+            'en_US',
+            'invalid string',
+            ['invalid string'],
+          ),
+        ).toEqual(null);
+        expect(
+          generateConfig.locale.parse(
+            'en_US',
+            'invalid string',
+            ['invalid string-Wo'],
+          ),
+        ).toEqual(null);
+      });
+
       it('getShortWeekDays', () => {
         expect(generateConfig.locale.getShortWeekDays('zh_CN')).toEqual([
           '日',
