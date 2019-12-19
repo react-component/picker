@@ -106,19 +106,11 @@ const generateConfig: GenerateConfig<Dayjs> = {
         }
       }
 
-      // Fallback to fuzzy matching, this should always not reach match or need fire a issue
-      for (let i = 0; i < fallbackFormatList.length; i += 1) {
-        const date = dayjs(text, fallbackFormatList[i], parseLocale(locale));
-
-        /* istanbul ignore next */
-        if (date.isValid()) {
-          noteOnce(
-            false,
-            'Not match any format strictly and fallback to fuzzy match. Please help to fire a issue about this.',
-          );
-          return date;
-        }
-      }
+      /* istanbul ignore next */
+      noteOnce(
+        false,
+        'Not match any format. Please help to fire a issue about this.',
+      );
 
       return null;
     },
