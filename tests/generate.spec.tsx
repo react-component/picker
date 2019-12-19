@@ -121,6 +121,68 @@ describe('Picker.Generate', () => {
         });
       });
 
+      it('getShortWeekDays', () => {
+        expect(generateConfig.locale.getShortWeekDays('zh_CN')).toEqual([
+          '日',
+          '一',
+          '二',
+          '三',
+          '四',
+          '五',
+          '六',
+        ]);
+        expect(generateConfig.locale.getShortWeekDays('en_US')).toEqual([
+          'Su',
+          'Mo',
+          'Tu',
+          'We',
+          'Th',
+          'Fr',
+          'Sa',
+        ]);
+      });
+
+      it('getShortMonths', () => {
+        expect(generateConfig.locale.getShortMonths('zh_CN')).toEqual([
+          '1月',
+          '2月',
+          '3月',
+          '4月',
+          '5月',
+          '6月',
+          '7月',
+          '8月',
+          '9月',
+          '10月',
+          '11月',
+          '12月',
+        ]);
+        expect(generateConfig.locale.getShortMonths('en_US')).toEqual([
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec',
+        ]);
+      });
+
+      it('getWeek', () => {
+        expect(
+          generateConfig.locale.getWeek(
+            'zh_CN',
+            generateConfig.locale.parse('zh_CN', '2019-12-08', [
+              'YYYY-MM-DD',
+            ])!,
+          ),
+        ).toEqual(49);
+
       describe('locale', () => {
         it('parse', () => {
           ['2000-01-02', '02/01/2000'].forEach(str => {
