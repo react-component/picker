@@ -1,10 +1,12 @@
 import * as React from 'react';
 import YearHeader from './YearHeader';
 import YearBody, { YEAR_COL_COUNT } from './YearBody';
-import { PanelSharedProps } from '../../interface';
+import { PanelSharedProps, PanelMode } from '../../interface';
 import { createKeyDownHandler } from '../../utils/uiUtil';
 
-export type YearPanelProps<DateType> = PanelSharedProps<DateType>;
+export interface YearPanelProps<DateType> extends PanelSharedProps<DateType> {
+  sourceMode: PanelMode;
+}
 
 export const YEAR_DECADE_COUNT = 10;
 
@@ -16,6 +18,7 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
     generateConfig,
     value,
     viewDate,
+    sourceMode,
     onSelect,
     onPanelChange,
   } = props;
@@ -42,7 +45,10 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
           );
         },
         onEnter: () => {
-          onPanelChange('month', value || viewDate);
+          onPanelChange(
+            sourceMode === 'date' ? 'date' : 'month',
+            value || viewDate,
+          );
         },
       }),
   };
@@ -71,7 +77,7 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
         {...props}
         prefixCls={prefixCls}
         onSelect={date => {
-          onPanelChange('month', date);
+          onPanelChange(sourceMode === 'date' ? 'date' : 'month', date);
           onSelect(date, 'mouse');
         }}
       />
