@@ -63,10 +63,11 @@ const generateConfig: GenerateConfig<Dayjs> = {
   isValidate: date => date.isValid(),
 
   locale: {
-    getWeekFirstDay: locale => {
-      const date = dayjs().locale(parseLocale(locale));
-      return date.localeData().firstDayOfWeek();
-    },
+    getWeekFirstDay: locale =>
+      dayjs()
+        .locale(parseLocale(locale))
+        .localeData()
+        .firstDayOfWeek(),
     getWeek: (locale, date) => date.locale(parseLocale(locale)).week(),
     getShortWeekDays: locale =>
       dayjs()
