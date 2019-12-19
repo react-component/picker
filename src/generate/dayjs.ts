@@ -18,7 +18,7 @@ dayjs.extend((o, c) => {
   const proto = c.prototype;
   const oldFormat = proto.format;
   proto.format = function f(formatStr: string) {
-    const str = formatStr.replace('Wo', 'wo');
+    const str = (formatStr || '').replace('Wo', 'wo');
     return oldFormat.bind(this)(str);
   };
 });
@@ -35,6 +35,14 @@ const parseLocale = (locale: string) => {
   const mapLocale = localeMap[locale];
   return mapLocale || locale.split('_')[0];
 };
+
+const parseNoMatchNotice = () => {
+  /* istanbul ignore next */
+  noteOnce(
+    false,
+    'Not match any format. Please help to fire a issue about this.',
+  );
+}
 
 const generateConfig: GenerateConfig<Dayjs> = {
   // get
@@ -82,21 +90,30 @@ const generateConfig: GenerateConfig<Dayjs> = {
     format: (locale, date, format) =>
       date.locale(parseLocale(locale)).format(format),
     parse: (locale, text, formats) => {
+      const localeStr = parseLocale(locale)
       for (let i = 0; i < formats.length; i += 1) {
         const format = formats[i];
         const formatText = text;
-        const date = dayjs(formatText, format, parseLocale(locale));
+        if (format.indexOf('Wo') > -1) { // parse Wo
+          const year = formatText.split('-')[0]
+          const weekStr = formatText.split('-')[1]
+          const firstWeek = dayjs(year, 'YYYY').startOf('year').locale(localeStr)
+          for (let j = 0; j <= 52; j += 1) {
+            const nextWeek = firstWeek.add(j, 'week')
+            if (nextWeek.format('Wo') === weekStr) {
+              return nextWeek
+            }
+          }
+          parseNoMatchNotice()
+          return null;
+        }
+        const date = dayjs(formatText, format).locale(localeStr);
         if (date.isValid()) {
           return date;
         }
       }
 
-      /* istanbul ignore next */
-      noteOnce(
-        false,
-        'Not match any format. Please help to fire a issue about this.',
-      );
-
+      parseNoMatchNotice()
       return null;
     },
   },

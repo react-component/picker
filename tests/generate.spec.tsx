@@ -119,6 +119,24 @@ describe('Picker.Generate', () => {
             ),
           ).toEqual(6);
         });
+
+
+        it('Parse format Wo', () => {
+          expect(
+            generateConfig.locale.parse(
+              'en_US',
+              '2012-51st',
+              ['YYYY-Wo'],
+            )?.format('Wo'),
+          ).toEqual('51st');
+          expect(
+            generateConfig.locale.parse(
+              'zh_CN',
+              '2012-1周',
+              ['YYYY-Wo'],
+            )?.format('Wo'),
+          ).toEqual('1周');
+        });
       });
 
       it('getShortWeekDays', () => {
