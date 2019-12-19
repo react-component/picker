@@ -17,7 +17,7 @@ dayjs.extend((o, c) => {
   // todo support Wo (ISO week)
   const proto = c.prototype;
   const oldFormat = proto.format;
-  proto.format = function(formatStr: string) {
+  proto.format = function f(formatStr: string) {
     const str = formatStr.replace('Wo', 'wo');
     return oldFormat.bind(this)(str);
   };
