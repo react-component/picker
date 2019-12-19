@@ -152,7 +152,7 @@ export default () => {
           <Picker<Moment>
             {...sharedProps}
             locale={zhCN}
-            format="YYYY-Wo"
+            format="gggg-Wo"
             allowClear
             picker="week"
             renderExtraFooter={() => 'I am footer!!!'}
