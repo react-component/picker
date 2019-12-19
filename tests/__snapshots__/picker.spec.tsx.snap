@@ -44,3 +44,19 @@ exports[`Picker.Basic pass data- & aria- & role 1`] = `
   </div>
 </div>
 `;
+
+exports[`Picker.Basic should render correctly in rtl 1`] = `
+<div
+  class="rc-picker rc-picker-rtl"
+>
+  <div
+    class="rc-picker-input"
+  >
+    <input
+      readonly=""
+      size="12"
+      value=""
+    />
+  </div>
+</div>
+`;

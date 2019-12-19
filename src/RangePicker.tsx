@@ -111,6 +111,7 @@ export interface RangePickerSharedProps<DateType> {
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   onOk?: (dates: RangeValue<DateType>) => void;
+  direction?: 'ltr' | 'rtl';
 }
 
 type OmitPickerProps<Props> = Omit<
@@ -212,6 +213,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     onBlur,
     onOk,
     components,
+    direction,
   } = props as MergedRangePickerProps<DateType>;
 
   const needConfirmButton: boolean =
@@ -718,6 +720,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           mode={mergedModes[activePickerIndex]}
           generateConfig={generateConfig}
           style={undefined}
+          direction={direction}
           disabledDate={
             activePickerIndex === 0 ? disabledStartDate : disabledEndDate
           }
@@ -775,6 +778,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   }
 
+  const arrowPositionStyle =
+    direction === 'rtl' ? { right: arrowLeft } : { left: arrowLeft };
+
   function renderPanels() {
     let panels: React.ReactNode;
     const extraNode = getExtraFooter(
@@ -806,25 +812,28 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       const currentMode = mergedModes[activePickerIndex];
 
       const showDoublePanel = currentMode === picker;
+      const leftPanel = renderPanel(showDoublePanel ? 'left' : false, {
+        pickerValue: viewDate,
+        onPickerValueChange: newViewDate => {
+          setViewDate(newViewDate, activePickerIndex);
+        },
+      });
+      const rightPanel = renderPanel('right', {
+        pickerValue: nextViewDate,
+        onPickerValueChange: newViewDate => {
+          setViewDate(
+            getClosingViewDate(newViewDate, picker, generateConfig, -1),
+            activePickerIndex,
+          );
+        },
+      });
 
       panels = (
         <>
-          {renderPanel(showDoublePanel ? 'left' : false, {
-            pickerValue: viewDate,
-            onPickerValueChange: newViewDate => {
-              setViewDate(newViewDate, activePickerIndex);
-            },
-          })}
-          {showDoublePanel &&
-            renderPanel('right', {
-              pickerValue: nextViewDate,
-              onPickerValueChange: newViewDate => {
-                setViewDate(
-                  getClosingViewDate(newViewDate, picker, generateConfig, -1),
-                  activePickerIndex,
-                );
-              },
-            })}
+          {direction === 'rtl' ? rightPanel : leftPanel}
+          {direction === 'rtl'
+            ? showDoublePanel && leftPanel
+            : showDoublePanel && rightPanel}
         </>
       );
     } else {
@@ -857,7 +866,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       )}
       style={{ minWidth: popupMinWidth }}
     >
-      <div className={`${prefixCls}-range-arrow`} style={{ left: arrowLeft }} />
+      <div className={`${prefixCls}-range-arrow`} style={arrowPositionStyle} />
 
       {renderPanels()}
     </div>
@@ -916,7 +925,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       activeBarWidth = endInputDivRef.current.offsetWidth;
     }
   }
-
+  const activeBarPositionStyle =
+    direction === 'rtl' ? { right: activeBarLeft } : { left: activeBarLeft };
   // ============================ Return =============================
   const onContextSelect = (
     date: DateType,
@@ -954,12 +964,14 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         getPopupContainer={getPopupContainer}
         transitionName={transitionName}
         range
+        direction={direction}
       >
         <div
           ref={containerRef}
           className={classNames(prefixCls, `${prefixCls}-range`, className, {
             [`${prefixCls}-disabled`]: mergedDisabled[0] && mergedDisabled[1],
             [`${prefixCls}-focused`]: startFocused || endFocused,
+            [`${prefixCls}-rtl`]: direction === 'rtl',
           })}
           style={style}
           {...getDataOrAriaProps(props)}
@@ -1009,7 +1021,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           <div
             className={`${prefixCls}-active-bar`}
             style={{
-              left: activeBarLeft,
+              ...activeBarPositionStyle,
               width: activeBarWidth,
               position: 'absolute',
             }}

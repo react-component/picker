@@ -418,6 +418,11 @@ describe('Picker.Panel', () => {
     errSpy.mockRestore();
   });
 
+  it('should render correctly in rtl', () => {
+    const wrapper = mount(<MomentPickerPanel direction="rtl" />);
+    expect(wrapper.render()).toMatchSnapshot();
+  });
+
   describe('hideHeader', () => {
     ['decade', 'year', 'month', 'date', 'time'].forEach(mode => {
       it(mode, () => {

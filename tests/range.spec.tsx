@@ -583,6 +583,11 @@ describe('Picker.Range', () => {
       expect(isSame(onPanelChange.mock.calls[0][0][1], '1998-09-03'));
       expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
     });
+
+    it('should render correctly in rtl', () => {
+      const wrapper = mount(<MomentRangePicker direction="rtl" />);
+      expect(wrapper.render()).toMatchSnapshot();
+    });
   });
 
   it('type can not change before start time', () => {

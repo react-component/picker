@@ -523,4 +523,9 @@ describe('Picker.Basic', () => {
     wrapper.closePicker();
     expect(wrapper.find('input').props().value).toEqual('');
   });
+
+  it('should render correctly in rtl', () => {
+    const wrapper = mount(<MomentPicker direction="rtl" allowClear />);
+    expect(wrapper.render()).toMatchSnapshot();
+  });
 });

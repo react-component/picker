@@ -75,6 +75,7 @@ render(<Picker />, mountNode);
 | onOpenChange      | Function(open:boolean)                                                   |                                                       | called when open/close picker                                                                                                                      |
 | onFocus           | (evnet:React.FocusEventHandler<HTMLInputElement>) => void                |                                                       | called like input's on focus                                                                                                                       |
 | onBlur            | (evnet:React.FocusEventHandler<HTMLInputElement>) => void                |                                                       | called like input's on blur                                                                                                                        |
+| direction         | String: ltr or rtl                                                       |                                                       | Layout direction of picker component, it supports RTL direction too.                                                                               |
 
 ### PickerPanel
 
@@ -99,6 +100,7 @@ render(<Picker />, mountNode);
 | onSelect           | Function(date: moment)                                      |                                          | a callback function, can be executed when the selected time                                   |
 | onPanelChange      | Function(value: moment, mode)                               |                                          | callback when picker panel mode is changed                                                    |
 | onMouseDown        | (evnet:React.MouseEventHandler<HTMLInputElement>) => void   |                                          | callback when executed onMouseDown evnent                                                     |
+| direction          | String: ltr or rtl                                          |                                          | Layout direction of picker component, it supports RTL direction too.                          |
 
 ### RangePicker
 
@@ -125,6 +127,7 @@ render(<Picker />, mountNode);
 | disabled              | Boolean                                                                        | false                                                 | whether the range picker is disabled                                                                                                               |
 | onChange              | Function(value:[moment], formatString: [string, string])                       |                                                       | a callback function, can be executed when the selected time is changing                                                                            |
 | onCalendarChange      | Function(value:[moment], formatString: [string, string])                       |                                                       | a callback function, can be executed when the start time or the end time of the range is changing                                                  |
+| direction             | String: ltr or rtl                                                             |                                                       | Layout direction of picker component, it supports RTL direction too.                                                                               |
 
 ### showTime-options
 

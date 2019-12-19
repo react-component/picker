@@ -38,6 +38,8 @@ const BUILT_IN_PLACEMENTS = {
   },
 };
 
+type Placement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
+
 export interface PickerTriggerProps {
   prefixCls: string;
   visible: boolean;
@@ -49,6 +51,8 @@ export interface PickerTriggerProps {
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
   dropdownAlign?: AlignType;
   range?: boolean;
+  popupPlacement?: Placement;
+  direction?: 'ltr' | 'rtl';
 }
 
 function PickerTrigger({
@@ -62,14 +66,23 @@ function PickerTrigger({
   getPopupContainer,
   children,
   range,
+  popupPlacement,
+  direction,
 }: PickerTriggerProps) {
   const dropdownPrefixCls = `${prefixCls}-dropdown`;
+
+  const getPopupPlacement = () => {
+    if (popupPlacement !== undefined) {
+      return popupPlacement;
+    }
+    return direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
+  };
 
   return (
     <Trigger
       showAction={[]}
       hideAction={[]}
-      popupPlacement="bottomLeft"
+      popupPlacement={getPopupPlacement()}
       builtinPlacements={BUILT_IN_PLACEMENTS}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={transitionName}
@@ -78,6 +91,7 @@ function PickerTrigger({
       popupVisible={visible}
       popupClassName={classNames(dropdownClassName, {
         [`${dropdownPrefixCls}-range`]: range,
+        [`${dropdownPrefixCls}-rtl`]: direction === 'rtl',
       })}
       popupStyle={popupStyle}
       getPopupContainer={getPopupContainer}
