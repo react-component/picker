@@ -140,7 +140,7 @@ export function getDefaultFormat(
         break;
 
       case 'week':
-        mergedFormat = 'YYYY-Wo';
+        mergedFormat = 'gggg-wo';
         break;
 
       case 'month':

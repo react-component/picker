@@ -83,7 +83,6 @@ export default () => {
           <Picker<Moment>
             {...sharedProps}
             locale={zhCN}
-            format="YYYY-Wo"
             allowClear
             picker="week"
             renderExtraFooter={() => 'I am footer!!!'}
@@ -105,7 +104,7 @@ export default () => {
           <h3>Week</h3>
           <Picker<Moment>
             generateConfig={momentGenerateConfig}
-            locale={zhCN}
+            locale={enUS}
             picker="week"
           />
         </div>

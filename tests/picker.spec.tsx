@@ -188,14 +188,16 @@ describe('Picker.Basic', () => {
         name: 'basic',
         value: '2000-11-11',
         selected: '.rc-picker-cell-selected',
+        matchDate: '2000-11-11',
       },
       {
         name: 'week',
         picker: 'week',
         value: '2000-45th',
+        matchDate: '2000-10-29',
         selected: '.rc-picker-week-panel-row-selected',
       },
-    ].forEach(({ name, picker, value, selected }) => {
+    ].forEach(({ name, picker, value, matchDate, selected }) => {
       it(name, () => {
         const onChange = jest.fn();
         const wrapper = mount(
@@ -226,7 +228,7 @@ describe('Picker.Basic', () => {
         expect(onChange).not.toHaveBeenCalled();
         wrapper.keyDown(KeyCode.ENTER);
         expect(
-          isSame(onChange.mock.calls[0][0], '2000-11-11', picker as any),
+          isSame(onChange.mock.calls[0][0], matchDate, picker as any),
         ).toBeTruthy();
         expect(wrapper.find(selected).length).toBeTruthy();
         onChange.mockReset();
@@ -527,5 +529,13 @@ describe('Picker.Basic', () => {
   it('should render correctly in rtl', () => {
     const wrapper = mount(<MomentPicker direction="rtl" allowClear />);
     expect(wrapper.render()).toMatchSnapshot();
+  });
+
+  it('week picker show correct year', () => {
+    const wrapper = mount(
+      <MomentPicker value={getMoment('2019-12-31')} picker="week" />,
+    );
+
+    expect(wrapper.find('input').prop('value')).toEqual('2020-1st');
   });
 });

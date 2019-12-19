@@ -94,9 +94,10 @@ const generateConfig: GenerateConfig<Moment> = {
         let format = formats[i];
         let formatText = text;
 
-        if (format.includes('o')) {
-          const matchFormat = format.match(/[YyMmDdHhSsWw]+/g);
-          const matchText = formatText.match(/\d+/g);
+        if (format.includes('wo') || format.includes('Wo')) {
+          format = format.replace(/wo/g, 'ww').replace(/Wo/g, 'WW');
+          const matchFormat = format.match(/[-YyMmDdHhSsWwGg]+/g);
+          const matchText = formatText.match(/[-\d]+/g);
 
           if (matchFormat && matchText) {
             format = matchFormat.join('');
