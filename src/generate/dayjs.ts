@@ -3,6 +3,7 @@ import { noteOnce } from 'rc-util/lib/warning';
 import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
+import weekYear from 'dayjs/plugin/weekYear';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { GenerateConfig } from '.';
@@ -12,6 +13,7 @@ dayjs.extend(advancedFormat);
 dayjs.extend(weekday);
 dayjs.extend(localeData);
 dayjs.extend(weekOfYear);
+dayjs.extend(weekYear);
 
 dayjs.extend((o, c) => {
   // todo support Wo (ISO week)
@@ -94,7 +96,7 @@ const generateConfig: GenerateConfig<Dayjs> = {
       for (let i = 0; i < formats.length; i += 1) {
         const format = formats[i];
         const formatText = text;
-        if (format.indexOf('Wo') > -1) { // parse Wo
+        if (format.includes('wo') || format.includes('Wo')) { // parse Wo
           const year = formatText.split('-')[0]
           const weekStr = formatText.split('-')[1]
           const firstWeek = dayjs(year, 'YYYY').startOf('year').locale(localeStr)
