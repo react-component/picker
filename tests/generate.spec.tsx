@@ -64,16 +64,40 @@ describe('Picker.Generate', () => {
         });
 
         describe('locale', () => {
-          it('parse', () => {
-            ['2000-01-02', '02/01/2000'].forEach(str => {
-              const date = generateConfig.locale.parse('en_US', str, [
-                'YYYY-MM-DD',
-                'DD/MM/YYYY',
-              ]);
+          describe('parse', () => {
+            it('basic', () => {
+              ['2000-01-02', '02/01/2000'].forEach(str => {
+                const date = generateConfig.locale.parse('en_US', str, [
+                  'YYYY-MM-DD',
+                  'DD/MM/YYYY',
+                ]);
+
+                expect(
+                  generateConfig.locale.format('en_US', date!, 'YYYY-MM-DD'),
+                ).toEqual('2000-01-02');
+              });
+            });
+
+            it('week', () => {
+              expect(
+                generateConfig.locale.format(
+                  'en_US',
+                  generateConfig.locale.parse('en_US', '2019-1st', [
+                    'gggg-wo',
+                  ])!,
+                  'gggg-wo',
+                ),
+              ).toEqual('2019-1st');
 
               expect(
-                generateConfig.locale.format('en_US', date!, 'YYYY-MM-DD'),
-              ).toEqual('2000-01-02');
+                generateConfig.locale.format(
+                  'zh_CN',
+                  generateConfig.locale.parse('zh_CN', '2019-45周', [
+                    'gggg-wo',
+                  ])!,
+                  'gggg-wo',
+                ),
+              ).toEqual('2019-45周');
             });
           });
 
