@@ -1,6 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import warning from 'rc-util/lib/warning';
+import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import {
   DisabledTimes,
   PanelMode,
@@ -15,7 +16,6 @@ import {
   PickerRefConfig,
 } from './Picker';
 import { SharedTimeProps } from './panels/TimePanel';
-import useMergedState from './hooks/useMergeState';
 import PickerTrigger from './PickerTrigger';
 import PickerPanel from './PickerPanel';
 import usePickerInput from './hooks/usePickerInput';
@@ -249,12 +249,14 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }, [disabled]);
 
   // ============================= Value =============================
-  const [mergedValue, setInnerValue] = useMergedState<RangeValue<DateType>>({
-    value,
-    defaultValue,
-    defaultStateValue: null,
-    postState: values => reorderValues(values, generateConfig),
-  });
+  const [mergedValue, setInnerValue] = useMergedState<RangeValue<DateType>>(
+    null,
+    {
+      value,
+      defaultValue,
+      postState: values => reorderValues(values, generateConfig),
+    },
+  );
 
   // =========================== View Date ===========================
   // Config view panel
@@ -266,8 +268,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   });
 
   // ========================= Select Values =========================
-  const [selectedValue, setSelectedValue] = useMergedState({
-    defaultStateValue: mergedValue,
+  const [selectedValue, setSelectedValue] = useMergedState(mergedValue, {
     postState: values => {
       let postValues = values;
       for (let i = 0; i < 2; i += 1) {
@@ -300,10 +301,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   };
 
   // ============================= Modes =============================
-  const [mergedModes, setInnerModes] = useMergedState<[PanelMode, PanelMode]>({
-    value: mode,
-    defaultStateValue: [picker, picker],
-  });
+  const [mergedModes, setInnerModes] = useMergedState<[PanelMode, PanelMode]>(
+    [picker, picker],
+    {
+      value: mode,
+    },
+  );
 
   const triggerModesChange = (
     modes: [PanelMode, PanelMode],
@@ -327,10 +330,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   });
 
   // ============================= Open ==============================
-  const [mergedOpen, triggerInnerOpen] = useMergedState({
+  const [mergedOpen, triggerInnerOpen] = useMergedState(false, {
     value: open,
     defaultValue: defaultOpen,
-    defaultStateValue: false,
     postState: postOpen =>
       mergedDisabled[activePickerIndex] ? false : postOpen,
     onChange: newOpen => {

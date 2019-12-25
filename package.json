@@ -42,7 +42,7 @@
     "dayjs": "^1.8.18",
     "moment": "^2.24.0",
     "rc-trigger": "^4.0.0-alpha.6",
-    "rc-util": "^4.15.7"
+    "rc-util": "^4.17.0"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.9",

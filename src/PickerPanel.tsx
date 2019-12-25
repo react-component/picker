@@ -11,6 +11,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import KeyCode from 'rc-util/lib/KeyCode';
 import warning from 'rc-util/lib/warning';
+import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import TimePanel, { SharedTimeProps } from './panels/TimePanel';
 import DatetimePanel from './panels/DatetimePanel';
 import DatePanel from './panels/DatePanel';
@@ -34,7 +35,6 @@ import { DateRender } from './panels/DatePanel/DateBody';
 import { PickerModeMap } from './utils/uiUtil';
 import { MonthCellRender } from './panels/MonthPanel/MonthBody';
 import RangeContext from './RangeContext';
-import useMergedState from './hooks/useMergeState';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
 
@@ -185,20 +185,18 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const initRef = React.useRef(true);
 
   // Value
-  const [mergedValue, setInnerValue] = useMergedState({
+  const [mergedValue, setInnerValue] = useMergedState(null, {
     value,
     defaultValue,
-    defaultStateValue: null,
   });
 
   // View date control
   const [viewDate, setInnerViewDate] = useMergedState<
     DateType | null,
     DateType
-  >({
+  >(null, {
     value: pickerValue,
     defaultValue: defaultPickerValue || mergedValue,
-    defaultStateValue: null,
     postState: date => date || generateConfig.getNow(),
   });
 

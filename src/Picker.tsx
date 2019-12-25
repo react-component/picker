@@ -15,6 +15,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { AlignType } from 'rc-trigger/lib/interface';
 import { warning } from 'rc-util/lib/warning';
+import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import PickerPanel, {
   PickerPanelBaseProps,
   PickerPanelDateProps,
@@ -32,7 +33,6 @@ import {
 } from './utils/uiUtil';
 import usePickerInput from './hooks/usePickerInput';
 import useTextValueMapping from './hooks/useTextValueMapping';
-import useMergedState from './hooks/useMergeState';
 import useValueTexts from './hooks/useValueTexts';
 
 export interface PickerRefConfig {
@@ -178,10 +178,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const inputDivRef = React.useRef<HTMLDivElement>(null);
 
   // Real value
-  const [mergedValue, setInnerValue] = useMergedState({
+  const [mergedValue, setInnerValue] = useMergedState(null, {
     value,
     defaultValue,
-    defaultStateValue: null,
   });
 
   // Selected value
@@ -195,10 +194,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   >(null);
 
   // Open
-  const [mergedOpen, triggerInnerOpen] = useMergedState({
+  const [mergedOpen, triggerInnerOpen] = useMergedState(false, {
     value: open,
     defaultValue: defaultOpen,
-    defaultStateValue: false,
     postState: postOpen => (disabled ? false : postOpen),
     onChange: newOpen => {
       if (onOpenChange) {
