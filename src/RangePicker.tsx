@@ -972,7 +972,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           ref={containerRef}
           className={classNames(prefixCls, `${prefixCls}-range`, className, {
             [`${prefixCls}-disabled`]: mergedDisabled[0] && mergedDisabled[1],
-            [`${prefixCls}-focused`]: startFocused || endFocused,
+            [`${prefixCls}-focused`]:
+              activePickerIndex === 0 ? startFocused : endFocused,
             [`${prefixCls}-rtl`]: direction === 'rtl',
           })}
           style={style}
