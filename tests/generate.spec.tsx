@@ -4,6 +4,7 @@ import dayjsGenerateConfig from '../src/generate/dayjs';
 import { getMoment } from './util/commonUtil';
 
 import 'dayjs/locale/zh-cn';
+import { GenerateConfig } from '../src/generate';
 
 describe('Picker.Generate', () => {
   beforeAll(() => {
@@ -14,10 +15,12 @@ describe('Picker.Generate', () => {
     MockDate.reset();
   });
 
-  [
+  const list: { name: string; generateConfig: GenerateConfig<any> }[] = [
     { name: 'moment', generateConfig: momentGenerateConfig },
     { name: 'dayjs', generateConfig: dayjsGenerateConfig },
-  ].forEach(({ name, generateConfig }) => {
+  ];
+
+  list.forEach(({ name, generateConfig }) => {
     describe(name, () => {
       it('get', () => {
         const now = generateConfig.getNow();
@@ -85,9 +88,7 @@ describe('Picker.Generate', () => {
             expect(
               generateConfig.locale.format(
                 'en_US',
-                generateConfig.locale.parse('en_US', '2019-1st', [
-                  'gggg-wo',
-                ])!,
+                generateConfig.locale.parse('en_US', '2019-1st', ['gggg-wo'])!,
                 'gggg-wo',
               ),
             ).toEqual('2019-1st');
@@ -95,9 +96,7 @@ describe('Picker.Generate', () => {
             expect(
               generateConfig.locale.format(
                 'zh_CN',
-                generateConfig.locale.parse('zh_CN', '2019-45周', [
-                  'gggg-wo',
-                ])!,
+                generateConfig.locale.parse('zh_CN', '2019-45周', ['gggg-wo'])!,
                 'gggg-wo',
               ),
             ).toEqual('2019-45周');
@@ -118,7 +117,7 @@ describe('Picker.Generate', () => {
             ).toEqual('2000-01-02');
           });
         });
-      })
+      });
 
       it('getWeekFirstDay', () => {
         expect(generateConfig.locale.getWeekFirstDay('en_US')).toEqual(0);
@@ -138,40 +137,32 @@ describe('Picker.Generate', () => {
 
       it('Parse format Wo', () => {
         expect(
-          generateConfig.locale.parse(
-            'en_US',
-            '2012-51st',
-            ['YYYY-Wo'],
-          )?.format('Wo'),
+          generateConfig.locale
+            .parse('en_US', '2012-51st', ['YYYY-Wo'])
+            ?.format('Wo'),
         ).toEqual('51st');
         expect(
-          generateConfig.locale.parse(
-            'zh_CN',
-            '2012-1周',
-            ['YYYY-Wo'],
-          )?.format('Wo'),
+          generateConfig.locale
+            .parse('zh_CN', '2012-1周', ['YYYY-Wo'])
+            ?.format('Wo'),
         ).toEqual('1周');
       });
 
       it('Parse format faild', () => {
         expect(
-          generateConfig.locale.parse(
-            'en_US',
+          generateConfig.locale.parse('en_US', 'invalid string', [
             'invalid string',
-            ['invalid string'],
-          ),
+          ]),
         ).toEqual(null);
         expect(
-          generateConfig.locale.parse(
-            'en_US',
-            'invalid string',
-            ['invalid string-Wo'],
-          ),
+          generateConfig.locale.parse('en_US', 'invalid string', [
+            'invalid string-Wo',
+          ]),
         ).toEqual(null);
       });
 
       it('getShortWeekDays', () => {
-        expect(generateConfig.locale.getShortWeekDays('zh_CN')).toEqual([
+        expect(generateConfig.locale.getShortWeekDays!('zh_CN')).toEqual([
           '日',
           '一',
           '二',
@@ -180,7 +171,7 @@ describe('Picker.Generate', () => {
           '五',
           '六',
         ]);
-        expect(generateConfig.locale.getShortWeekDays('en_US')).toEqual([
+        expect(generateConfig.locale.getShortWeekDays!('en_US')).toEqual([
           'Su',
           'Mo',
           'Tu',
@@ -192,7 +183,7 @@ describe('Picker.Generate', () => {
       });
 
       it('getShortMonths', () => {
-        expect(generateConfig.locale.getShortMonths('zh_CN')).toEqual([
+        expect(generateConfig.locale.getShortMonths!('zh_CN')).toEqual([
           '1月',
           '2月',
           '3月',
@@ -206,7 +197,7 @@ describe('Picker.Generate', () => {
           '11月',
           '12月',
         ]);
-        expect(generateConfig.locale.getShortMonths('en_US')).toEqual([
+        expect(generateConfig.locale.getShortMonths!('en_US')).toEqual([
           'Jan',
           'Feb',
           'Mar',
@@ -226,9 +217,7 @@ describe('Picker.Generate', () => {
         expect(
           generateConfig.locale.getWeek(
             'zh_CN',
-            generateConfig.locale.parse('zh_CN', '2019-12-08', [
-              'YYYY-MM-DD',
-            ])!,
+            generateConfig.locale.parse('zh_CN', '2019-12-08', ['YYYY-MM-DD'])!,
           ),
         ).toEqual(49);
       });
@@ -237,20 +226,27 @@ describe('Picker.Generate', () => {
         expect(
           generateConfig.locale.getWeek(
             'zh_CN',
-            generateConfig.locale.parse('zh_CN', '2019-12-08', [
-              'YYYY-MM-DD',
-            ])!,
+            generateConfig.locale.parse('zh_CN', '2019-12-08', ['YYYY-MM-DD'])!,
           ),
         ).toEqual(49);
         expect(
           generateConfig.locale.getWeek(
             'en_US',
-            generateConfig.locale.parse('en_US', '2019-12-08', [
-              'YYYY-MM-DD',
-            ])!,
+            generateConfig.locale.parse('en_US', '2019-12-08', ['YYYY-MM-DD'])!,
           ),
         ).toEqual(50);
       });
     });
+  });
+});
+
+describe('Generate:moment', () => {
+  it('getWeekDay', () => {
+    const now = momentGenerateConfig.getNow();
+    now.locale('zh-cn');
+    expect(now.locale()).toEqual('zh-cn');
+
+    momentGenerateConfig.getWeekDay(now);
+    expect(now.locale()).toEqual('zh-cn');
   });
 });
