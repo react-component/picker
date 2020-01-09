@@ -138,6 +138,29 @@ describe('Picker.Range', () => {
           .text(),
       ).toEqual('2000-2009');
     });
+
+    it('year with footer', () => {
+      const wrapper = mount(
+        <MomentRangePicker
+          renderExtraFooter={() => <p>footer</p>}
+          picker="year"
+        />,
+      );
+      wrapper.openPicker();
+      expect(wrapper.find('.rc-picker-footer').text()).toEqual('footer');
+      expect(
+        wrapper
+          .find('.rc-picker-header-view')
+          .first()
+          .text(),
+      ).toEqual('1990-1999');
+      expect(
+        wrapper
+          .find('.rc-picker-header-view')
+          .last()
+          .text(),
+      ).toEqual('2000-2009');
+    });
   });
 
   it('endDate can not click before startDate', () => {
