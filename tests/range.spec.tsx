@@ -124,6 +124,7 @@ describe('Picker.Range', () => {
     it('year', () => {
       const wrapper = mount(<MomentRangePicker picker="year" />);
       wrapper.openPicker();
+      expect(wrapper.exists('.rc-picker-footer')).toBeFalsy();
       expect(
         wrapper
           .find('.rc-picker-header-view')
