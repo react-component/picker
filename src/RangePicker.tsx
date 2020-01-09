@@ -852,10 +852,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         }}
       >
         <div className={`${prefixCls}-panels`}>{panels}</div>
-        <div className={`${prefixCls}-footer`}>
-          {extraNode}
-          {rangesNode}
-        </div>
+        {(extraNode || rangesNode) && (
+          <div className={`${prefixCls}-footer`}>
+            {extraNode}
+            {rangesNode}
+          </div>
+        )}
       </div>
     );
   }

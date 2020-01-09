@@ -124,6 +124,30 @@ describe('Picker.Range', () => {
     it('year', () => {
       const wrapper = mount(<MomentRangePicker picker="year" />);
       wrapper.openPicker();
+      expect(wrapper.exists('.rc-picker-footer')).toBeFalsy();
+      expect(
+        wrapper
+          .find('.rc-picker-header-view')
+          .first()
+          .text(),
+      ).toEqual('1990-1999');
+      expect(
+        wrapper
+          .find('.rc-picker-header-view')
+          .last()
+          .text(),
+      ).toEqual('2000-2009');
+    });
+
+    it('year with footer', () => {
+      const wrapper = mount(
+        <MomentRangePicker
+          renderExtraFooter={() => <p>footer</p>}
+          picker="year"
+        />,
+      );
+      wrapper.openPicker();
+      expect(wrapper.find('.rc-picker-footer').text()).toEqual('footer');
       expect(
         wrapper
           .find('.rc-picker-header-view')

@@ -44,6 +44,9 @@
     "rc-trigger": "^4.0.0-alpha.6",
     "rc-util": "^4.17.0"
   },
+  "engines": {
+    "node": ">=8.x"
+  },
   "devDependencies": {
     "@types/classnames": "^2.2.9",
     "@types/enzyme": "^3.10.3",
