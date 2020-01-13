@@ -308,6 +308,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     },
   );
 
+  React.useEffect(() => {
+    setInnerModes([picker, picker]);
+  }, [picker]);
+
   const triggerModesChange = (
     modes: [PanelMode, PanelMode],
     values: RangeValue<DateType>,

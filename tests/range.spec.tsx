@@ -1033,4 +1033,16 @@ describe('Picker.Range', () => {
       },
     );
   });
+
+  // https://github.com/ant-design/ant-design/issues/20868
+  it('change picker should reset mode', () => {
+    const wrapper = mount(<MomentRangePicker picker="date" />);
+    wrapper.openPicker();
+    expect(wrapper.find('DatePanel').length).toBeTruthy();
+
+    wrapper.setProps({ picker: 'month' });
+    wrapper.update();
+    expect(wrapper.find('DatePanel').length).toBeFalsy();
+    expect(wrapper.find('MonthPanel').length).toBeTruthy();
+  });
 });
