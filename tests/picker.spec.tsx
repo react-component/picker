@@ -546,4 +546,15 @@ describe('Picker.Basic', () => {
 
     expect(wrapper.find('input').prop('value')).toEqual('2020-1st');
   });
+
+  it('click outside should also focus', () => {
+    const wrapper = mount(<MomentPicker />);
+    const inputElement = (wrapper
+      .find('input')
+      .instance() as any) as HTMLInputElement;
+    inputElement.focus = jest.fn();
+
+    wrapper.find('.rc-picker').simulate('mouseUp');
+    expect(inputElement.focus).toHaveBeenCalled();
+  });
 });

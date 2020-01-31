@@ -272,6 +272,18 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
+  const onInternalMouseUp: React.MouseEventHandler<HTMLDivElement> = (
+    ...args
+  ) => {
+    if (onMouseUp) {
+      onMouseUp(...args);
+    }
+
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
   // ============================= Input =============================
   const [inputProps, { focused, typing }] = usePickerInput({
     blurToCancel: needConfirmButton,
@@ -428,7 +440,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
           })}
           style={style}
           onMouseDown={onMouseDown}
-          onMouseUp={onMouseUp}
+          onMouseUp={onInternalMouseUp}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
           onContextMenu={onContextMenu}
