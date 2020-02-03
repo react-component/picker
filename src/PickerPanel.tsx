@@ -171,6 +171,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     panelRef: panelDivRef,
     onSelect: onContextSelect,
     hideRanges,
+    defaultOpenValue,
   } = panelContext;
 
   const {
@@ -188,6 +189,12 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const [mergedValue, setInnerValue] = useMergedState(null, {
     value,
     defaultValue,
+    postState: val => {
+      if (!val && defaultOpenValue && picker === 'time') {
+        return defaultOpenValue;
+      }
+      return val;
+    },
   });
 
   // View date control
