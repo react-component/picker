@@ -14,7 +14,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { AlignType } from 'rc-trigger/lib/interface';
-import { warning } from 'rc-util/lib/warning';
+import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import PickerPanel, {
   PickerPanelBaseProps,
@@ -104,7 +104,14 @@ export interface PickerDateProps<DateType>
 
 export interface PickerTimeProps<DateType>
   extends PickerSharedProps<DateType>,
-    Omit<OmitPanelProps<PickerPanelTimeProps<DateType>>, 'format'> {}
+    Omit<OmitPanelProps<PickerPanelTimeProps<DateType>>, 'format'> {
+  picker: 'time';
+  /**
+   * @deprecated Please use `defaultValue` directly instead
+   * since `defaultOpenValue` will confuse user of current value status
+   */
+  defaultOpenValue?: DateType;
+}
 
 export type PickerProps<DateType> =
   | PickerBaseProps<DateType>
@@ -143,6 +150,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     defaultValue,
     open,
     defaultOpen,
+    defaultOpenValue,
     suffixIcon,
     clearIcon,
     disabled,
@@ -397,6 +405,14 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     );
   }
 
+  // ============================ Warning ============================
+  if (process.env.NODE_ENV !== 'production') {
+    warning(
+      !defaultOpenValue,
+      '`defaultOpenValue` may confuse user for the current value status. Please use `defaultValue` instead.',
+    );
+  }
+
   // ============================ Return =============================
   const onContextSelect = (
     date: DateType,
@@ -418,6 +434,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         panelRef: panelDivRef,
         onSelect: onContextSelect,
         open: mergedOpen,
+        defaultOpenValue,
       }}
     >
       <PickerTrigger

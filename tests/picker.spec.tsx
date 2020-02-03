@@ -3,6 +3,7 @@ import MockDate from 'mockdate';
 import { act } from 'react-dom/test-utils';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import KeyCode from 'rc-util/lib/KeyCode';
+import { resetWarned } from 'rc-util/lib/warning';
 import { PanelMode, PickerMode } from '../src/interface';
 import { mount, getMoment, isSame, MomentPicker } from './util/commonUtil';
 
@@ -556,5 +557,32 @@ describe('Picker.Basic', () => {
 
     wrapper.find('.rc-picker').simulate('mouseUp');
     expect(inputElement.focus).toHaveBeenCalled();
+  });
+
+  it('defaultOpenValue in timePicker', () => {
+    resetWarned();
+    const onChange = jest.fn();
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    const wrapper = mount(
+      <MomentPicker
+        picker="time"
+        defaultOpenValue={getMoment('2000-01-01 00:10:23')}
+        onChange={onChange}
+      />,
+    );
+
+    expect(errSpy).toHaveBeenCalledWith(
+      'Warning: `defaultOpenValue` may confuse user for the current value status. Please use `defaultValue` instead.',
+    );
+
+    wrapper.openPicker();
+    wrapper.find('.rc-picker-ok button').simulate('click');
+
+    expect(
+      isSame(onChange.mock.calls[0][0], '2000-01-01 00:10:23'),
+    ).toBeTruthy();
+
+    errSpy.mockRestore();
   });
 });

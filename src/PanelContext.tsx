@@ -18,6 +18,9 @@ export interface PanelContextProps {
   onSelect?: OnSelect<any>;
   hideRanges?: boolean;
   open?: boolean;
+
+  /** Only used for TimePicker and this is a deprecated prop */
+  defaultOpenValue?: any;
 }
 
 const PanelContext = React.createContext<PanelContextProps>({});
