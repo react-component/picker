@@ -471,4 +471,15 @@ describe('Picker.Keyboard', () => {
       ).toEqual('');
     });
   });
+
+  it('enter should prevent default to avoid form submit', () => {
+    const wrapper = mount(<MomentPicker />);
+    const preventDefault = jest.fn();
+    wrapper.find('input').simulate('keyDown', {
+      which: KeyCode.ENTER,
+      preventDefault,
+    });
+
+    expect(preventDefault).toHaveBeenCalled();
+  });
 });

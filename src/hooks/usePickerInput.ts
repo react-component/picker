@@ -49,6 +49,8 @@ export default function usePickerInput({
             onSubmit();
             setTyping(true);
           }
+
+          e.preventDefault();
           return;
         }
 
