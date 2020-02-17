@@ -557,6 +557,7 @@ describe('Picker.Basic', () => {
 
     wrapper.find('.rc-picker').simulate('mouseUp');
     expect(inputElement.focus).toHaveBeenCalled();
+    expect(wrapper.isOpen()).toBeTruthy();
   });
 
   it('defaultOpenValue in timePicker', () => {

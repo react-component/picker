@@ -289,6 +289,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
     if (inputRef.current) {
       inputRef.current.focus();
+      triggerOpen(true);
     }
   };
 
