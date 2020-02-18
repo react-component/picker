@@ -372,6 +372,7 @@ describe('Picker.Basic', () => {
 
         // Next page
         wrapper.find('.rc-picker-header-super-next-btn').simulate('click');
+        expectPanelChange('2090-09-03', 'decade');
 
         // Select decade
         wrapper.selectCell('2010-2019');

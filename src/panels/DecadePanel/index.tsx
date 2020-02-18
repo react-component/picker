@@ -55,9 +55,12 @@ function DecadePanel<DateType>(props: DecadePanelProps<DateType>) {
 
   // ==================== View Operation ====================
   const onDecadesChange = (diff: number) => {
-    onViewDateChange(
-      generateConfig.addYear(viewDate, diff * DECADE_DISTANCE_COUNT),
+    const newDate = generateConfig.addYear(
+      viewDate,
+      diff * DECADE_DISTANCE_COUNT,
     );
+    onViewDateChange(newDate);
+    onPanelChange(null, newDate);
   };
 
   const onInternalSelect = (date: DateType) => {

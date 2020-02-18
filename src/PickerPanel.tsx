@@ -241,8 +241,11 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     () => mergedMode,
   );
 
-  const onInternalPanelChange = (newMode: PanelMode, viewValue: DateType) => {
-    const nextMode = getInternalNextMode(newMode);
+  const onInternalPanelChange = (
+    newMode: PanelMode | null,
+    viewValue: DateType,
+  ) => {
+    const nextMode = getInternalNextMode(newMode || mergedMode);
     setSourceMode(mergedMode);
     setInnerMode(nextMode);
 

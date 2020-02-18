@@ -80,7 +80,7 @@ export interface PanelSharedProps<DateType> {
 
   onSelect: OnSelect<DateType>;
   onViewDateChange: (value: DateType) => void;
-  onPanelChange: (mode: PanelMode, viewValue: DateType) => void;
+  onPanelChange: (mode: PanelMode | null, viewValue: DateType) => void;
 }
 
 export interface DisabledTimes {

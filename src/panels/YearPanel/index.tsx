@@ -55,7 +55,9 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
 
   // ==================== View Operation ====================
   const onDecadeChange = (diff: number) => {
-    onViewDateChange(generateConfig.addYear(viewDate, diff * 10));
+    const newDate = generateConfig.addYear(viewDate, diff * 10);
+    onViewDateChange(newDate);
+    onPanelChange(null, newDate);
   };
 
   return (
