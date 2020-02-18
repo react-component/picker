@@ -246,7 +246,10 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     setSourceMode(mergedMode);
     setInnerMode(nextMode);
 
-    if (onPanelChange && mergedMode !== nextMode) {
+    if (
+      onPanelChange &&
+      (mergedMode !== nextMode || isEqual(generateConfig, viewDate, viewDate))
+    ) {
       onPanelChange(viewValue, nextMode);
     }
   };
