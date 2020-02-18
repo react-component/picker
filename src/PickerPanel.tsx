@@ -224,19 +224,22 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     return nextMode;
   };
 
-  const [innerMode, setInnerMode] = React.useState<PanelMode>(() => {
-    if (picker === 'time') {
-      return 'time';
-    }
-    return getInternalNextMode('date');
-  });
-
   // Save panel is changed from which panel
-  const [sourceMode, setSourceMode] = React.useState<PanelMode>(
-    () => innerMode,
+  const [mergedMode, setInnerMode] = useMergedState(
+    () => {
+      if (picker === 'time') {
+        return 'time';
+      }
+      return getInternalNextMode('date');
+    },
+    {
+      value: mode,
+    },
   );
 
-  const mergedMode: PanelMode = mode || innerMode;
+  const [sourceMode, setSourceMode] = React.useState<PanelMode>(
+    () => mergedMode,
+  );
 
   const onInternalPanelChange = (newMode: PanelMode, viewValue: DateType) => {
     const nextMode = getInternalNextMode(newMode);
