@@ -60,10 +60,14 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
 
   // ==================== View Operation ====================
   const onYearChange = (diff: number) => {
-    onViewDateChange(generateConfig.addYear(viewDate, diff));
+    const newDate = generateConfig.addYear(viewDate, diff);
+    onViewDateChange(newDate);
+    onPanelChange(null, newDate);
   };
   const onMonthChange = (diff: number) => {
-    onViewDateChange(generateConfig.addMonth(viewDate, diff));
+    const newDate = generateConfig.addMonth(viewDate, diff);
+    onViewDateChange(newDate);
+    onPanelChange(null, newDate);
   };
 
   return (
