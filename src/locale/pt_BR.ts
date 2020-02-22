@@ -9,7 +9,7 @@ const locale: Locale = {
   clear: 'Limpar',
   month: 'Mês',
   year: 'Ano',
-  timeSelect: 'Selecionar tempo',
+  timeSelect: 'Selecionar hora',
   dateSelect: 'Selecionar data',
   monthSelect: 'Escolher mês',
   yearSelect: 'Escolher ano',
