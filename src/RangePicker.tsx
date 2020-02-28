@@ -614,9 +614,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
       if (!startValueTexts.length || startValueTexts[0] === '') {
         triggerStartTextChange('');
+      } else if (!startValueTexts.includes(startText)) {
+        resetStartText();
       }
       if (!endValueTexts.length || endValueTexts[0] === '') {
         triggerEndTextChange('');
+      } else if (!endValueTexts.includes(endText)) {
+        resetEndText();
       }
     }
   }, [mergedOpen, startValueTexts, endValueTexts]);
