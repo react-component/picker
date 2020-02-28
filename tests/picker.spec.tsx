@@ -587,4 +587,21 @@ describe('Picker.Basic', () => {
 
     errSpy.mockRestore();
   });
+
+  it('close to reset', () => {
+    const wrapper = mount(
+      <MomentPicker defaultValue={getMoment('2000-01-01')} />,
+    );
+
+    wrapper.openPicker();
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: 'aaaaa',
+      },
+    });
+    expect(wrapper.find('input').props().value).toEqual('aaaaa');
+
+    wrapper.closePicker();
+    expect(wrapper.find('input').props().value).toEqual('2000-01-01');
+  });
 });
