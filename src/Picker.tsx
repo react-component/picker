@@ -326,6 +326,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
       if (!valueTexts.length || valueTexts[0] === '') {
         triggerTextChange('');
+      } else if (!valueTexts.includes(text)) {
+        resetText();
       }
     }
   }, [mergedOpen, valueTexts]);
