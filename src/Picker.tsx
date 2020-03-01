@@ -477,6 +477,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               autoFocus={autoFocus}
               placeholder={placeholder}
               ref={inputRef}
+              title={text}
               {...inputProps}
               size={getInputSize(picker, formatList[0])}
               {...getDataOrAriaProps(props)}

@@ -7,6 +7,7 @@ exports[`Picker.Basic icon 1`] = `
   <input
     readonly=""
     size="12"
+    title="1990-09-03"
     value="1990-09-03"
   />
   <span
@@ -39,6 +40,7 @@ exports[`Picker.Basic pass data- & aria- & role 1`] = `
       readonly=""
       role="search"
       size="12"
+      title=""
       value=""
     />
   </div>
@@ -55,6 +57,7 @@ exports[`Picker.Basic should render correctly in rtl 1`] = `
     <input
       readonly=""
       size="12"
+      title=""
       value=""
     />
   </div>
