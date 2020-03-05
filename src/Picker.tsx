@@ -332,6 +332,13 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }
   }, [mergedOpen, valueTexts]);
 
+  // Change picker should sync back with text value
+  React.useEffect(() => {
+    if (!mergedOpen) {
+      resetText();
+    }
+  }, [picker]);
+
   // Sync innerValue with control mode
   React.useEffect(() => {
     // Sync select value
