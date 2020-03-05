@@ -1,4 +1,5 @@
-import * as React from 'react';
+import shallowEqual from 'shallowequal';
+import useMemo from 'rc-util/lib/hooks/useMemo';
 import { GenerateConfig } from '../generate';
 import { Locale } from '../interface';
 
@@ -12,12 +13,16 @@ export default function useValueTexts<DateType>(
   value: DateType | null,
   { formatList, generateConfig, locale }: ValueTextConfig<DateType>,
 ) {
-  return React.useMemo<string[]>(() => {
-    if (!value) {
-      return [''];
-    }
-    return formatList.map(subFormat =>
-      generateConfig.locale.format(locale.locale, value, subFormat),
-    );
-  }, [value]);
+  return useMemo<string[]>(
+    () => {
+      if (!value) {
+        return [''];
+      }
+      return formatList.map(subFormat =>
+        generateConfig.locale.format(locale.locale, value, subFormat),
+      );
+    },
+    [value, formatList],
+    (prev, next) => prev[0] !== next[0] || !shallowEqual(prev[1], next[1]),
+  );
 }

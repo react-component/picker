@@ -604,4 +604,23 @@ describe('Picker.Basic', () => {
     wrapper.closePicker();
     expect(wrapper.find('input').props().value).toEqual('2000-01-01');
   });
+
+  it('switch picker should change format', () => {
+    const wrapper = mount(
+      <MomentPicker
+        picker="date"
+        showTime
+        defaultValue={getMoment('1999-09-03')}
+      />,
+    );
+    expect(wrapper.find('input').props().value).toEqual('1999-09-03 00:00:00');
+
+    [['date', '1999-09-03'], ['month', '1999-09'], ['year', '1999']].forEach(
+      ([picker, text]) => {
+        wrapper.setProps({ picker, showTime: false });
+        wrapper.update();
+        expect(wrapper.find('input').props().value).toEqual(text);
+      },
+    );
+  });
 });
