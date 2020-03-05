@@ -382,25 +382,31 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     const startValue = getValue(values, 0);
     let endValue = getValue(values, 1);
 
-    // Clean up end date when start date is after end date
     if (
       startValue &&
       endValue &&
-      !isSameDate(generateConfig, startValue, endValue) &&
       generateConfig.isAfter(startValue, endValue)
     ) {
-      values = [startValue, null];
-      endValue = null;
+      if (!isSameDate(generateConfig, startValue, endValue)) {
+        // Clean up end date when start date is after end date
+        values = [startValue, null];
+        endValue = null;
+      } else {
+        // Reorder when in same date
+        values = [endValue, startValue];
+      }
     }
 
     setSelectedValue(values);
 
-    const startStr = startValue
-      ? generateConfig.locale.format(locale.locale, startValue, formatList[0])
-      : '';
-    const endStr = endValue
-      ? generateConfig.locale.format(locale.locale, endValue, formatList[0])
-      : '';
+    const startStr =
+      values && values[0]
+        ? generateConfig.locale.format(locale.locale, values[0], formatList[0])
+        : '';
+    const endStr =
+      values && values[1]
+        ? generateConfig.locale.format(locale.locale, values[1], formatList[0])
+        : '';
 
     if (onCalendarChange) {
       onCalendarChange(values, [startStr, endStr]);
