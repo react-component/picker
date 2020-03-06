@@ -4,13 +4,7 @@ import { act } from 'react-dom/test-utils';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { Moment } from 'moment';
-import {
-  mount,
-  getMoment,
-  isSame,
-  MomentRangePicker,
-  Wrapper,
-} from './util/commonUtil';
+import { mount, getMoment, isSame, MomentRangePicker, Wrapper } from './util/commonUtil';
 import zhCN from '../src/locale/zh_CN';
 
 describe('Picker.Range', () => {
@@ -40,9 +34,7 @@ describe('Picker.Range', () => {
   describe('value', () => {
     it('defaultValue', () => {
       const wrapper = mount(
-        <MomentRangePicker
-          defaultValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
-        />,
+        <MomentRangePicker defaultValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]} />,
       );
 
       matchValues(wrapper, '1989-11-28', '1990-09-03');
@@ -50,9 +42,7 @@ describe('Picker.Range', () => {
 
     it('controlled', () => {
       const wrapper = mount(
-        <MomentRangePicker
-          value={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
-        />,
+        <MomentRangePicker value={[getMoment('1989-11-28'), getMoment('1990-09-03')]} />,
       );
 
       matchValues(wrapper, '1989-11-28', '1990-09-03');
@@ -69,10 +59,7 @@ describe('Picker.Range', () => {
       const onChange = jest.fn();
       const onCalendarChange = jest.fn();
       const wrapper = mount(
-        <MomentRangePicker
-          onChange={onChange}
-          onCalendarChange={onCalendarChange}
-        />,
+        <MomentRangePicker onChange={onChange} onCalendarChange={onCalendarChange} />,
       );
 
       // Start date
@@ -82,9 +69,7 @@ describe('Picker.Range', () => {
       wrapper.selectCell(13);
       expect(onChange).not.toHaveBeenCalled();
 
-      expect(
-        isSame(onCalendarChange.mock.calls[0][0][0], '1990-09-13'),
-      ).toBeTruthy();
+      expect(isSame(onCalendarChange.mock.calls[0][0][0], '1990-09-13')).toBeTruthy();
       expect(onCalendarChange.mock.calls[0][0][1]).toBeFalsy();
       expect(onCalendarChange.mock.calls[0][1]).toEqual(['1990-09-13', '']);
 
@@ -96,24 +81,15 @@ describe('Picker.Range', () => {
       expect(isSame(onChange.mock.calls[0][0][1], '1990-09-14')).toBeTruthy();
       expect(onChange.mock.calls[0][1]).toEqual(['1990-09-13', '1990-09-14']);
 
-      expect(
-        isSame(onCalendarChange.mock.calls[0][0][0], '1990-09-13'),
-      ).toBeTruthy();
-      expect(
-        isSame(onCalendarChange.mock.calls[0][0][1], '1990-09-14'),
-      ).toBeTruthy();
-      expect(onCalendarChange.mock.calls[0][1]).toEqual([
-        '1990-09-13',
-        '1990-09-14',
-      ]);
+      expect(isSame(onCalendarChange.mock.calls[0][0][0], '1990-09-13')).toBeTruthy();
+      expect(isSame(onCalendarChange.mock.calls[0][0][1], '1990-09-14')).toBeTruthy();
+      expect(onCalendarChange.mock.calls[0][1]).toEqual(['1990-09-13', '1990-09-14']);
     });
   });
 
   it('exchanged value should re-order', () => {
     const wrapper = mount(
-      <MomentRangePicker
-        defaultValue={[getMoment('1990-09-03'), getMoment('1989-11-28')]}
-      />,
+      <MomentRangePicker defaultValue={[getMoment('1990-09-03'), getMoment('1989-11-28')]} />,
     );
     wrapper.update();
 
@@ -141,10 +117,7 @@ describe('Picker.Range', () => {
 
     it('year with footer', () => {
       const wrapper = mount(
-        <MomentRangePicker
-          renderExtraFooter={() => <p>footer</p>}
-          picker="year"
-        />,
+        <MomentRangePicker renderExtraFooter={() => <p>footer</p>} picker="year" />,
       );
       wrapper.openPicker();
       expect(wrapper.find('.rc-picker-footer').text()).toEqual('footer');
@@ -196,12 +169,8 @@ describe('Picker.Range', () => {
     wrapper.openPicker();
     wrapper.selectCell(11);
 
-    expect(
-      wrapper.findCell(4).hasClass('rc-picker-cell-disabled'),
-    ).toBeTruthy();
-    expect(
-      wrapper.findCell(11).hasClass('rc-picker-cell-disabled'),
-    ).toBeFalsy();
+    expect(wrapper.findCell(4).hasClass('rc-picker-cell-disabled')).toBeTruthy();
+    expect(wrapper.findCell(11).hasClass('rc-picker-cell-disabled')).toBeFalsy();
   });
 
   it('Reset when startDate is after endDate', () => {
@@ -220,19 +189,12 @@ describe('Picker.Range', () => {
   it('allowEmpty', () => {
     const onChange = jest.fn();
     const wrapper = mount(
-      <MomentRangePicker
-        onChange={onChange}
-        allowEmpty={[false, true]}
-        allowClear
-      />,
+      <MomentRangePicker onChange={onChange} allowEmpty={[false, true]} allowClear />,
     );
 
     wrapper.openPicker();
     wrapper.selectCell(11);
-    expect(onChange).toHaveBeenCalledWith(
-      [expect.anything(), null],
-      ['1990-09-11', ''],
-    );
+    expect(onChange).toHaveBeenCalledWith([expect.anything(), null], ['1990-09-11', '']);
 
     wrapper.clearValue();
     onChange.mockReset();
@@ -291,9 +253,7 @@ describe('Picker.Range', () => {
 
     it('null value with disabled', () => {
       const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-      mount(
-        <MomentRangePicker disabled={[false, true]} value={[null, null]} />,
-      );
+      mount(<MomentRangePicker disabled={[false, true]} value={[null, null]} />);
 
       expect(errSpy).toHaveBeenCalledWith(
         'Warning: `disabled` should not set with empty `value`. You should set `allowEmpty` or `value` instead.',
@@ -363,33 +323,19 @@ describe('Picker.Range', () => {
 
       wrapper.openPicker();
       wrapper.find('.rc-picker-preset > *').simulate('mouseEnter');
-      expect(
-        wrapper.findCell(11).hasClass('rc-picker-cell-range-start'),
-      ).toBeTruthy();
-      expect(
-        wrapper.findCell(12).hasClass('rc-picker-cell-in-range'),
-      ).toBeTruthy();
-      expect(
-        wrapper.findCell(13).hasClass('rc-picker-cell-range-end'),
-      ).toBeTruthy();
+      expect(wrapper.findCell(11).hasClass('rc-picker-cell-range-start')).toBeTruthy();
+      expect(wrapper.findCell(12).hasClass('rc-picker-cell-in-range')).toBeTruthy();
+      expect(wrapper.findCell(13).hasClass('rc-picker-cell-range-end')).toBeTruthy();
 
       wrapper.find('.rc-picker-preset > *').simulate('mouseLeave');
-      expect(
-        wrapper.findCell(11).hasClass('rc-picker-cell-range-start'),
-      ).toBeFalsy();
-      expect(
-        wrapper.findCell(12).hasClass('rc-picker-cell-in-range'),
-      ).toBeFalsy();
-      expect(
-        wrapper.findCell(13).hasClass('rc-picker-cell-range-end'),
-      ).toBeFalsy();
+      expect(wrapper.findCell(11).hasClass('rc-picker-cell-range-start')).toBeFalsy();
+      expect(wrapper.findCell(12).hasClass('rc-picker-cell-in-range')).toBeFalsy();
+      expect(wrapper.findCell(13).hasClass('rc-picker-cell-range-end')).toBeFalsy();
     });
   });
 
   it('placeholder', () => {
-    const wrapper = mount(
-      <MomentRangePicker placeholder={['light', 'bamboo']} />,
-    );
+    const wrapper = mount(<MomentRangePicker placeholder={['light', 'bamboo']} />);
     expect(
       wrapper
         .find('input')
@@ -406,9 +352,7 @@ describe('Picker.Range', () => {
 
   it('defaultPickerValue', () => {
     const wrapper = mount(
-      <MomentRangePicker
-        defaultPickerValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
-      />,
+      <MomentRangePicker defaultPickerValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]} />,
     );
 
     wrapper.openPicker();
@@ -551,10 +495,7 @@ describe('Picker.Range', () => {
     it('mode', () => {
       const onPanelChange = jest.fn();
       const wrapper = mount(
-        <MomentRangePicker
-          mode={['month', 'year']}
-          onPanelChange={onPanelChange}
-        />,
+        <MomentRangePicker mode={['month', 'year']} onPanelChange={onPanelChange} />,
       );
 
       wrapper.openPicker();
@@ -573,9 +514,7 @@ describe('Picker.Range', () => {
 
     it('picker', () => {
       const onPanelChange = jest.fn();
-      const wrapper = mount(
-        <MomentRangePicker picker="month" onPanelChange={onPanelChange} />,
-      );
+      const wrapper = mount(<MomentRangePicker picker="month" onPanelChange={onPanelChange} />);
 
       // First go to year panel
       wrapper.openPicker();
@@ -684,57 +623,35 @@ describe('Picker.Range', () => {
         // Hover it
         wrapper.findCell(end).simulate('mouseEnter');
 
-        expect(
-          wrapper.findCell(start).hasClass('rc-picker-cell-range-hover-start'),
-        ).toBeTruthy();
-        expect(
-          wrapper.findCell(mid).hasClass('rc-picker-cell-range-hover'),
-        ).toBeTruthy();
-        expect(
-          wrapper.findCell(end).hasClass('rc-picker-cell-range-hover-end'),
-        ).toBeTruthy();
+        expect(wrapper.findCell(start).hasClass('rc-picker-cell-range-hover-start')).toBeTruthy();
+        expect(wrapper.findCell(mid).hasClass('rc-picker-cell-range-hover')).toBeTruthy();
+        expect(wrapper.findCell(end).hasClass('rc-picker-cell-range-hover-end')).toBeTruthy();
 
         // Leave
         wrapper.findCell(end).simulate('mouseLeave');
-        expect(
-          wrapper.findCell(start).hasClass('rc-picker-cell-range-hover-start'),
-        ).toBeFalsy();
-        expect(
-          wrapper.findCell(mid).hasClass('rc-picker-cell-range-hover'),
-        ).toBeFalsy();
-        expect(
-          wrapper.findCell(end).hasClass('rc-picker-cell-range-hover-end'),
-        ).toBeFalsy();
+        expect(wrapper.findCell(start).hasClass('rc-picker-cell-range-hover-start')).toBeFalsy();
+        expect(wrapper.findCell(mid).hasClass('rc-picker-cell-range-hover')).toBeFalsy();
+        expect(wrapper.findCell(end).hasClass('rc-picker-cell-range-hover-end')).toBeFalsy();
       });
     });
 
     it('range edge className', () => {
       const wrapper = mount(
-        <MomentRangePicker
-          value={[getMoment('2019-12-20'), getMoment('2019-12-20')]}
-        />,
+        <MomentRangePicker value={[getMoment('2019-12-20'), getMoment('2019-12-20')]} />,
       );
 
       // End edge
       wrapper.openPicker();
       wrapper.findCell(10).simulate('mouseEnter');
-      expect(
-        wrapper.findCell(19).hasClass('rc-picker-cell-range-hover-edge-end'),
-      ).toBeTruthy();
-      expect(
-        wrapper.findCell(20).hasClass('rc-picker-cell-range-start-near-hover'),
-      ).toBeTruthy();
+      expect(wrapper.findCell(19).hasClass('rc-picker-cell-range-hover-edge-end')).toBeTruthy();
+      expect(wrapper.findCell(20).hasClass('rc-picker-cell-range-start-near-hover')).toBeTruthy();
       wrapper.findCell(10).simulate('mouseOut');
 
       // Start edge
       wrapper.openPicker(1);
       wrapper.findCell(28).simulate('mouseEnter');
-      expect(
-        wrapper.findCell(21).hasClass('rc-picker-cell-range-hover-edge-start'),
-      ).toBeTruthy();
-      expect(
-        wrapper.findCell(20).hasClass('rc-picker-cell-range-end-near-hover'),
-      ).toBeTruthy();
+      expect(wrapper.findCell(21).hasClass('rc-picker-cell-range-hover-edge-start')).toBeTruthy();
+      expect(wrapper.findCell(20).hasClass('rc-picker-cell-range-end-near-hover')).toBeTruthy();
       wrapper.findCell(28).simulate('mouseOut');
     });
   });
@@ -797,10 +714,9 @@ describe('Picker.Range', () => {
       const wrapper = mount(<MomentRangePicker />);
       wrapper.openPicker(1);
       wrapper.update();
-      expect(
-        (wrapper.find('.rc-picker-panel-container').props() as any).style
-          .marginLeft,
-      ).toEqual(200);
+      expect((wrapper.find('.rc-picker-panel-container').props() as any).style.marginLeft).toEqual(
+        200,
+      );
     });
   });
 
@@ -841,9 +757,7 @@ describe('Picker.Range', () => {
   it('fixed open need repeat trigger onOpenChange', () => {
     jest.useFakeTimers();
     const onOpenChange = jest.fn();
-    const wrapper = mount(
-      <MomentRangePicker onOpenChange={onOpenChange} open />,
-    );
+    const wrapper = mount(<MomentRangePicker onOpenChange={onOpenChange} open />);
 
     for (let i = 0; i < 10; i += 1) {
       const clickEvent = new Event('mousedown');
@@ -871,11 +785,7 @@ describe('Picker.Range', () => {
     const onCalendarChange = jest.fn();
     const onOk = jest.fn();
     const wrapper = mount(
-      <MomentRangePicker
-        showTime
-        onCalendarChange={onCalendarChange}
-        onOk={onOk}
-      />,
+      <MomentRangePicker showTime onCalendarChange={onCalendarChange} onOk={onOk} />,
     );
     wrapper.openPicker();
 
@@ -990,10 +900,7 @@ describe('Picker.Range', () => {
 
           it('with closing value', () => {
             const wrapper = mount(
-              <MomentRangePicker
-                picker={picker as any}
-                value={closingValue as any}
-              />,
+              <MomentRangePicker picker={picker as any} value={closingValue as any} />,
             );
 
             wrapper.openPicker();
@@ -1004,10 +911,7 @@ describe('Picker.Range', () => {
 
           it('with far value', () => {
             const wrapper = mount(
-              <MomentRangePicker
-                picker={picker as any}
-                value={farValue as any}
-              />,
+              <MomentRangePicker picker={picker as any} value={farValue as any} />,
             );
 
             wrapper.openPicker();
@@ -1018,10 +922,7 @@ describe('Picker.Range', () => {
 
           it('no end date', () => {
             const wrapper = mount(
-              <MomentRangePicker
-                picker={picker as any}
-                value={[closingValue[0], null]}
-              />,
+              <MomentRangePicker picker={picker as any} value={[closingValue[0], null]} />,
             );
 
             wrapper.openPicker();
@@ -1075,44 +976,42 @@ describe('Picker.Range', () => {
         '1990-09-15 23:00:00',
       ]);
 
-      expect(
-        isSame(onChange.mock.calls[0][0][0], '1990-09-15 00:00:00'),
-      ).toBeTruthy();
-      expect(
-        isSame(onChange.mock.calls[0][0][1], '1990-09-15 23:00:00'),
-      ).toBeTruthy();
+      expect(isSame(onChange.mock.calls[0][0][0], '1990-09-15 00:00:00')).toBeTruthy();
+      expect(isSame(onChange.mock.calls[0][0][1], '1990-09-15 23:00:00')).toBeTruthy();
     });
 
-    it('not reorder when picker is time', () => {
-      const onChange = jest.fn();
+    function testOrderOnTime(order: boolean, start: string, end: string) {
+      it(`order: ${String(order)} when picker is time`, () => {
+        const onChange = jest.fn();
 
-      const wrapper = mount(
-        <MomentRangePicker onChange={onChange} picker="time" />,
-      );
-      wrapper.openPicker();
-      wrapper
-        .find('ul')
-        .first()
-        .find('li')
-        .last()
-        .simulate('click');
-      wrapper.find('.rc-picker-ok button').simulate('click');
+        const wrapper = mount(
+          <MomentRangePicker onChange={onChange} picker="time" order={order} />,
+        );
+        wrapper.openPicker();
+        wrapper
+          .find('ul')
+          .first()
+          .find('li')
+          .last()
+          .simulate('click');
+        wrapper.find('.rc-picker-ok button').simulate('click');
 
-      wrapper
-        .find('ul')
-        .first()
-        .find('li')
-        .at(2)
-        .simulate('click');
-      wrapper.find('.rc-picker-ok button').simulate('click');
+        wrapper
+          .find('ul')
+          .first()
+          .find('li')
+          .at(2)
+          .simulate('click');
+        wrapper.find('.rc-picker-ok button').simulate('click');
 
-      expect(onChange).toHaveBeenCalledWith(expect.anything(), [
-        '23:00:00',
-        '02:00:00',
-      ]);
+        expect(onChange).toHaveBeenCalledWith(expect.anything(), [start, end]);
 
-      expect(isSame(onChange.mock.calls[0][0][0], '23:00:00')).toBeTruthy();
-      expect(isSame(onChange.mock.calls[0][0][1], '02:00:00')).toBeTruthy();
-    });
+        expect(isSame(onChange.mock.calls[0][0][0], start)).toBeTruthy();
+        expect(isSame(onChange.mock.calls[0][0][1], end)).toBeTruthy();
+      });
+    }
+
+    testOrderOnTime(false, '23:00:00', '02:00:00');
+    testOrderOnTime(true, '02:00:00', '23:00:00');
   });
 });
