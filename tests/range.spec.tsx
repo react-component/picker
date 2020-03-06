@@ -1046,39 +1046,73 @@ describe('Picker.Range', () => {
     expect(wrapper.find('MonthPanel').length).toBeTruthy();
   });
 
-  it('datetime should reorder in onChange if start is after end in same date', () => {
-    const onChange = jest.fn();
+  describe('reorder onChange logic', () => {
+    it('datetime should reorder in onChange if start is after end in same date', () => {
+      const onChange = jest.fn();
 
-    const wrapper = mount(<MomentRangePicker onChange={onChange} showTime />);
-    wrapper.openPicker();
-    wrapper.selectCell(15);
-    wrapper
-      .find('ul')
-      .first()
-      .find('li')
-      .last()
-      .simulate('click');
-    wrapper.find('.rc-picker-ok button').simulate('click');
+      const wrapper = mount(<MomentRangePicker onChange={onChange} showTime />);
+      wrapper.openPicker();
+      wrapper.selectCell(15);
+      wrapper
+        .find('ul')
+        .first()
+        .find('li')
+        .last()
+        .simulate('click');
+      wrapper.find('.rc-picker-ok button').simulate('click');
 
-    wrapper.selectCell(15);
-    wrapper
-      .find('ul')
-      .first()
-      .find('li')
-      .first()
-      .simulate('click');
-    wrapper.find('.rc-picker-ok button').simulate('click');
+      wrapper.selectCell(15);
+      wrapper
+        .find('ul')
+        .first()
+        .find('li')
+        .first()
+        .simulate('click');
+      wrapper.find('.rc-picker-ok button').simulate('click');
 
-    expect(onChange).toHaveBeenCalledWith(expect.anything(), [
-      '1990-09-15 00:00:00',
-      '1990-09-15 23:00:00',
-    ]);
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), [
+        '1990-09-15 00:00:00',
+        '1990-09-15 23:00:00',
+      ]);
 
-    expect(
-      isSame(onChange.mock.calls[0][0][0], '1990-09-15 00:00:00'),
-    ).toBeTruthy();
-    expect(
-      isSame(onChange.mock.calls[0][0][1], '1990-09-15 23:00:00'),
-    ).toBeTruthy();
+      expect(
+        isSame(onChange.mock.calls[0][0][0], '1990-09-15 00:00:00'),
+      ).toBeTruthy();
+      expect(
+        isSame(onChange.mock.calls[0][0][1], '1990-09-15 23:00:00'),
+      ).toBeTruthy();
+    });
+
+    it('not reorder when picker is time', () => {
+      const onChange = jest.fn();
+
+      const wrapper = mount(
+        <MomentRangePicker onChange={onChange} picker="time" />,
+      );
+      wrapper.openPicker();
+      wrapper
+        .find('ul')
+        .first()
+        .find('li')
+        .last()
+        .simulate('click');
+      wrapper.find('.rc-picker-ok button').simulate('click');
+
+      wrapper
+        .find('ul')
+        .first()
+        .find('li')
+        .at(2)
+        .simulate('click');
+      wrapper.find('.rc-picker-ok button').simulate('click');
+
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), [
+        '23:00:00',
+        '02:00:00',
+      ]);
+
+      expect(isSame(onChange.mock.calls[0][0][0], '23:00:00')).toBeTruthy();
+      expect(isSame(onChange.mock.calls[0][0][1], '02:00:00')).toBeTruthy();
+    });
   });
 });

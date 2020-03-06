@@ -393,7 +393,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         endValue = null;
       } else {
         // Reorder when in same date
-        values = [endValue, startValue];
+        values = reorderValues(values, generateConfig);
       }
     }
 
