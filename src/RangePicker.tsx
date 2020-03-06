@@ -254,7 +254,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     {
       value,
       defaultValue,
-      postState: values => reorderValues(values, generateConfig),
+      postState: values =>
+        picker === 'time' ? values : reorderValues(values, generateConfig),
     },
   );
 
@@ -391,7 +392,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         // Clean up end date when start date is after end date
         values = [startValue, null];
         endValue = null;
-      } else {
+      } else if (picker !== 'time') {
         // Reorder when in same date
         values = reorderValues(values, generateConfig);
       }
