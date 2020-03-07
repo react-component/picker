@@ -46,10 +46,7 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
           onSelect(generateConfig.addYear(value || viewDate, diff), 'key');
         },
         onUpDown: diff => {
-          onSelect(
-            generateConfig.addDate(value || viewDate, diff * WEEK_DAY_COUNT),
-            'key',
-          );
+          onSelect(generateConfig.addDate(value || viewDate, diff * WEEK_DAY_COUNT), 'key');
         },
         onPageUpDown: diff => {
           onSelect(generateConfig.addMonth(value || viewDate, diff), 'key');
@@ -103,6 +100,7 @@ function DatePanel<DateType>(props: DatePanelProps<DateType>) {
       />
       <DateBody
         {...props}
+        onSelect={date => onSelect(date, 'mouse')}
         prefixCls={prefixCls}
         value={value}
         viewDate={viewDate}

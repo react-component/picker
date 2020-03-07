@@ -8,6 +8,7 @@ export interface PanelBodyProps<DateType> {
   onSelect: (value: DateType) => void;
 
   // By panel
+  headerCells?: React.ReactNode;
   rowNum: number;
   colNum: number;
   baseDate: DateType;
@@ -16,6 +17,10 @@ export interface PanelBodyProps<DateType> {
   getCellText: (date: DateType) => React.ReactNode;
   getCellNode?: (date: DateType) => React.ReactNode;
   titleCell?: (date: DateType) => string;
+
+  // Used for week panel
+  prefixColumn?: (date: DateType) => React.ReactNode;
+  rowClassName?: (date: DateType) => string;
 }
 
 export default function PanelBody<DateType>({
@@ -24,12 +29,15 @@ export default function PanelBody<DateType>({
   onSelect,
   rowNum,
   colNum,
+  prefixColumn,
+  rowClassName,
   baseDate,
   getCellClassName,
   getCellText,
   getCellNode,
   getCellDate,
   titleCell,
+  headerCells,
 }: PanelBodyProps<DateType>) {
   const { onDateMouseEnter, onDateMouseLeave } = React.useContext(PanelContext);
 
@@ -40,11 +48,20 @@ export default function PanelBody<DateType>({
 
   for (let i = 0; i < rowNum; i += 1) {
     const row: React.ReactNode[] = [];
+    let rowStartDate: DateType;
 
     for (let j = 0; j < colNum; j += 1) {
       const offset = i * colNum + j;
       const currentDate = getCellDate(baseDate, offset);
       const disabled = disabledDate && disabledDate(currentDate);
+
+      if (j === 0) {
+        rowStartDate = currentDate;
+
+        if (prefixColumn) {
+          row.push(prefixColumn(rowStartDate));
+        }
+      }
 
       row.push(
         <td
@@ -79,12 +96,21 @@ export default function PanelBody<DateType>({
       );
     }
 
-    rows.push(<tr key={i}>{row}</tr>);
+    rows.push(
+      <tr key={i} className={classNames(rowClassName && rowClassName(rowStartDate!))}>
+        {row}
+      </tr>,
+    );
   }
 
   return (
     <div className={`${prefixCls}-body`}>
       <table className={`${prefixCls}-content`}>
+        {headerCells && (
+          <thead>
+            <tr>{headerCells}</tr>
+          </thead>
+        )}
         <tbody>{rows}</tbody>
       </table>
     </div>
