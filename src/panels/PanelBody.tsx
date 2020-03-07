@@ -12,9 +12,10 @@ export interface PanelBodyProps<DateType> {
   colNum: number;
   baseDate: DateType;
   getCellClassName: (date: DateType) => Record<string, boolean | undefined>;
-  getCellText: (date: DateType) => React.ReactNode;
   getCellDate: (date: DateType, offset: number) => DateType;
-  formatCell?: (date: DateType) => string;
+  getCellText: (date: DateType) => React.ReactNode;
+  getCellNode?: (date: DateType) => React.ReactNode;
+  titleCell?: (date: DateType) => string;
 }
 
 export default function PanelBody<DateType>({
@@ -26,8 +27,9 @@ export default function PanelBody<DateType>({
   baseDate,
   getCellClassName,
   getCellText,
+  getCellNode,
   getCellDate,
-  formatCell,
+  titleCell,
 }: PanelBodyProps<DateType>) {
   const { onDateMouseEnter, onDateMouseLeave } = React.useContext(PanelContext);
 
@@ -47,7 +49,7 @@ export default function PanelBody<DateType>({
       row.push(
         <td
           key={j}
-          title={formatCell && formatCell(currentDate)}
+          title={titleCell && titleCell(currentDate)}
           className={classNames(cellPrefixCls, {
             [`${cellPrefixCls}-disabled`]: disabled,
             ...getCellClassName(currentDate),
@@ -68,7 +70,11 @@ export default function PanelBody<DateType>({
             }
           }}
         >
-          <div className={`${cellPrefixCls}-inner`}>{getCellText(currentDate)}</div>
+          {getCellNode ? (
+            getCellNode(currentDate)
+          ) : (
+            <div className={`${cellPrefixCls}-inner`}>{getCellText(currentDate)}</div>
+          )}
         </td>,
       );
     }
