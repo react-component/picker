@@ -97,7 +97,7 @@ export default function PanelBody<DateType>({
     }
 
     rows.push(
-      <tr key={i} className={classNames(rowClassName && rowClassName(rowStartDate!))}>
+      <tr key={i} className={rowClassName && rowClassName(rowStartDate!)}>
         {row}
       </tr>,
     );

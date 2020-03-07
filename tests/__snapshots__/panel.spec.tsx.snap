@@ -175,9 +175,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
           </tr>
         </thead>
         <tbody>
-          <tr
-            class=""
-          >
+          <tr>
             <td
               class="rc-picker-cell"
               title="1990-08-26"
@@ -249,9 +247,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
               </div>
             </td>
           </tr>
-          <tr
-            class=""
-          >
+          <tr>
             <td
               class="rc-picker-cell rc-picker-cell-in-view"
               title="1990-09-02"
@@ -323,9 +319,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
               </div>
             </td>
           </tr>
-          <tr
-            class=""
-          >
+          <tr>
             <td
               class="rc-picker-cell rc-picker-cell-in-view"
               title="1990-09-09"
@@ -397,9 +391,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
               </div>
             </td>
           </tr>
-          <tr
-            class=""
-          >
+          <tr>
             <td
               class="rc-picker-cell rc-picker-cell-in-view"
               title="1990-09-16"
@@ -471,9 +463,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
               </div>
             </td>
           </tr>
-          <tr
-            class=""
-          >
+          <tr>
             <td
               class="rc-picker-cell rc-picker-cell-in-view"
               title="1990-09-23"
@@ -545,9 +535,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
               </div>
             </td>
           </tr>
-          <tr
-            class=""
-          >
+          <tr>
             <td
               class="rc-picker-cell rc-picker-cell-in-view"
               title="1990-09-30"
