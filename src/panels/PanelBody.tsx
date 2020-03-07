@@ -8,8 +8,8 @@ export interface PanelBodyProps<DateType> {
   onSelect: (value: DateType) => void;
 
   // By panel
-  rowCount: number;
-  colCount: number;
+  rowNum: number;
+  colNum: number;
   baseDate: DateType;
   getCellClassName: (date: DateType) => Record<string, boolean>;
   getCellText: (date: DateType) => React.ReactNode;
@@ -21,8 +21,8 @@ export default function PanelBody<DateType>({
   prefixCls,
   disabledDate,
   onSelect,
-  rowCount,
-  colCount,
+  rowNum,
+  colNum,
   baseDate,
   getCellClassName,
   getCellText,
@@ -36,11 +36,11 @@ export default function PanelBody<DateType>({
   // =============================== Body ===============================
   const rows: React.ReactNode[] = [];
 
-  for (let i = 0; i < rowCount; i += 1) {
+  for (let i = 0; i < rowNum; i += 1) {
     const row: React.ReactNode[] = [];
 
-    for (let j = 0; j < colCount; j += 1) {
-      const offset = i * colCount + j;
+    for (let j = 0; j < colNum; j += 1) {
+      const offset = i * colNum + j;
       const currentDate = getCellDate(baseDate, offset);
       const disabled = disabledDate && disabledDate(currentDate);
 
