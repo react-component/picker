@@ -16,9 +16,7 @@ describe('Picker.Panel', () => {
 
   describe('value', () => {
     it('defaultValue', () => {
-      const wrapper = mount(
-        <MomentPickerPanel defaultValue={getMoment('2000-01-01')} />,
-      );
+      const wrapper = mount(<MomentPickerPanel defaultValue={getMoment('2000-01-01')} />);
 
       expect(wrapper.find('.rc-picker-cell-selected').text()).toEqual('1');
     });
@@ -26,10 +24,7 @@ describe('Picker.Panel', () => {
     it('controlled', () => {
       const onChange = jest.fn();
       const wrapper = mount(
-        <MomentPickerPanel
-          value={getMoment('2000-01-01')}
-          onChange={onChange}
-        />,
+        <MomentPickerPanel value={getMoment('2000-01-01')} onChange={onChange} />,
       );
 
       wrapper.selectCell(23);
@@ -104,10 +99,7 @@ describe('Picker.Panel', () => {
           },
         });
 
-        let requestAnimationFrameSpy = jest.spyOn(
-          global,
-          'requestAnimationFrame' as any,
-        );
+        let requestAnimationFrameSpy = jest.spyOn(global, 'requestAnimationFrame' as any);
 
         // Spy to trigger 2 way of test for checking case cover
         if (bool) {
@@ -147,9 +139,7 @@ describe('Picker.Panel', () => {
 
   describe('click button to switch', () => {
     it('date', () => {
-      const wrapper = mount(
-        <MomentPickerPanel defaultValue={getMoment('1990-09-03')} />,
-      );
+      const wrapper = mount(<MomentPickerPanel defaultValue={getMoment('1990-09-03')} />);
 
       wrapper.clickButton('prev');
       expect(wrapper.find('.rc-picker-header-view').text()).toEqual('Aug1990');
@@ -166,10 +156,7 @@ describe('Picker.Panel', () => {
 
     it('month', () => {
       const wrapper = mount(
-        <MomentPickerPanel
-          defaultValue={getMoment('1990-09-03')}
-          picker="month"
-        />,
+        <MomentPickerPanel defaultValue={getMoment('1990-09-03')} picker="month" />,
       );
 
       wrapper.clickButton('super-prev');
@@ -181,40 +168,26 @@ describe('Picker.Panel', () => {
 
     it('year', () => {
       const wrapper = mount(
-        <MomentPickerPanel
-          defaultValue={getMoment('1990-09-03')}
-          picker="year"
-        />,
+        <MomentPickerPanel defaultValue={getMoment('1990-09-03')} picker="year" />,
       );
 
       wrapper.clickButton('super-prev');
-      expect(wrapper.find('.rc-picker-header-view').text()).toEqual(
-        '1980-1989',
-      );
+      expect(wrapper.find('.rc-picker-header-view').text()).toEqual('1980-1989');
 
       wrapper.clickButton('super-next');
-      expect(wrapper.find('.rc-picker-header-view').text()).toEqual(
-        '1990-1999',
-      );
+      expect(wrapper.find('.rc-picker-header-view').text()).toEqual('1990-1999');
     });
 
     it('decade', () => {
       const wrapper = mount(
-        <MomentPickerPanel
-          defaultValue={getMoment('1990-09-03')}
-          mode="decade"
-        />,
+        <MomentPickerPanel defaultValue={getMoment('1990-09-03')} mode="decade" />,
       );
 
       wrapper.clickButton('super-prev');
-      expect(wrapper.find('.rc-picker-header-view').text()).toEqual(
-        '1800-1899',
-      );
+      expect(wrapper.find('.rc-picker-header-view').text()).toEqual('1800-1899');
 
       wrapper.clickButton('super-next');
-      expect(wrapper.find('.rc-picker-header-view').text()).toEqual(
-        '1900-1999',
-      );
+      expect(wrapper.find('.rc-picker-header-view').text()).toEqual('1900-1999');
     });
   });
 
@@ -247,9 +220,7 @@ describe('Picker.Panel', () => {
 
     // Click on date
     wrapper.selectCell(5);
-    expect(
-      isSame(onSelect.mock.calls[0][0], '1990-09-05 01:03:07'),
-    ).toBeTruthy();
+    expect(isSame(onSelect.mock.calls[0][0], '1990-09-05 01:03:07')).toBeTruthy();
 
     // Click on time
     onSelect.mockReset();
@@ -259,20 +230,14 @@ describe('Picker.Panel', () => {
       .find('li')
       .at(11)
       .simulate('click');
-    expect(
-      isSame(onSelect.mock.calls[0][0], '2001-01-02 11:00:00'),
-    ).toBeTruthy();
+    expect(isSame(onSelect.mock.calls[0][0], '2001-01-02 11:00:00')).toBeTruthy();
   });
 
   describe('not trigger onSelect when cell disabled', () => {
     it('time', () => {
       const onSelect = jest.fn();
       const wrapper = mount(
-        <MomentPickerPanel
-          picker="time"
-          onSelect={onSelect}
-          disabledHours={() => [0]}
-        />,
+        <MomentPickerPanel picker="time" onSelect={onSelect} disabledHours={() => [0]} />,
       );
 
       // Disabled
@@ -382,9 +347,7 @@ describe('Picker.Panel', () => {
       .find('li')
       .last()
       .simulate('click');
-    expect(
-      isSame(onChange.mock.calls[0][0], '2000-01-01 12:01:02', 'second'),
-    ).toBeTruthy();
+    expect(isSame(onChange.mock.calls[0][0], '2000-01-01 12:01:02', 'second')).toBeTruthy();
   });
 
   it('time disabled columns', () => {
@@ -406,14 +369,10 @@ describe('Picker.Panel', () => {
 
     const invalidateDate = moment('notValidate', 'YYYY', true);
     mount(<MomentPickerPanel value={invalidateDate} />);
-    expect(errSpy).toHaveBeenCalledWith(
-      'Warning: Invalidate date pass to `value`.',
-    );
+    expect(errSpy).toHaveBeenCalledWith('Warning: Invalidate date pass to `value`.');
 
     mount(<MomentPickerPanel defaultValue={invalidateDate} />);
-    expect(errSpy).toHaveBeenCalledWith(
-      'Warning: Invalidate date pass to `defaultValue`.',
-    );
+    expect(errSpy).toHaveBeenCalledWith('Warning: Invalidate date pass to `defaultValue`.');
 
     errSpy.mockRestore();
   });
@@ -426,9 +385,7 @@ describe('Picker.Panel', () => {
   describe('hideHeader', () => {
     ['decade', 'year', 'month', 'date', 'time'].forEach(mode => {
       it(mode, () => {
-        const wrapper = mount(
-          <MomentPickerPanel mode={mode as any} hideHeader />,
-        );
+        const wrapper = mount(<MomentPickerPanel mode={mode as any} hideHeader />);
         expect(wrapper.find('.rc-picker-header')).toHaveLength(0);
       });
     });
@@ -447,5 +404,13 @@ describe('Picker.Panel', () => {
     expect(onOk).not.toHaveBeenCalled();
     wrapper.confirmOK();
     expect(isSame(onOk.mock.calls[0][0], '1990-09-03 03:00:00')).toBeTruthy();
+  });
+
+  it('monthCellRender', () => {
+    const wrapper = mount(
+      <MomentPickerPanel picker="month" monthCellRender={date => date.format('YYYY-MM')} />,
+    );
+
+    expect(wrapper.find('tbody').render()).toMatchSnapshot();
   });
 });

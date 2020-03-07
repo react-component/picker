@@ -1,5 +1,90 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Picker.Panel monthCellRender 1`] = `
+<tbody>
+  <tr>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-01"
+    >
+      1990-01
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-02"
+    >
+      1990-02
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-03"
+    >
+      1990-03
+    </td>
+  </tr>
+  <tr>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-04"
+    >
+      1990-04
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-05"
+    >
+      1990-05
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-06"
+    >
+      1990-06
+    </td>
+  </tr>
+  <tr>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-07"
+    >
+      1990-07
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-08"
+    >
+      1990-08
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-09"
+    >
+      1990-09
+    </td>
+  </tr>
+  <tr>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-10"
+    >
+      1990-10
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-11"
+    >
+      1990-11
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-12"
+    >
+      1990-12
+    </td>
+  </tr>
+</tbody>
+`;
+
 exports[`Picker.Panel should render correctly in rtl 1`] = `
 <div
   class="rc-picker-panel rc-picker-panel-rtl"
