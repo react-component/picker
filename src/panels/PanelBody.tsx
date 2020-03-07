@@ -11,10 +11,10 @@ export interface PanelBodyProps<DateType> {
   rowNum: number;
   colNum: number;
   baseDate: DateType;
-  getCellClassName: (date: DateType) => Record<string, boolean>;
+  getCellClassName: (date: DateType) => Record<string, boolean | undefined>;
   getCellText: (date: DateType) => React.ReactNode;
   getCellDate: (date: DateType, offset: number) => DateType;
-  formatCell: (date: DateType) => string;
+  formatCell?: (date: DateType) => string;
 }
 
 export default function PanelBody<DateType>({
@@ -47,7 +47,7 @@ export default function PanelBody<DateType>({
       row.push(
         <td
           key={j}
-          title={formatCell(currentDate)}
+          title={formatCell && formatCell(currentDate)}
           className={classNames(cellPrefixCls, {
             [`${cellPrefixCls}-disabled`]: disabled,
             ...getCellClassName(currentDate),
