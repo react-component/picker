@@ -1,19 +1,15 @@
 import * as React from 'react';
-import classNames from 'classnames';
 import { GenerateConfig } from '../../generate';
 import { Locale } from '../../interface';
 import { isSameMonth } from '../../utils/dateUtil';
-import PanelContext from '../../PanelContext';
 import RangeContext from '../../RangeContext';
 import useCellClassName from '../../hooks/useCellClassName';
+import PanelBody from '../PanelBody';
 
 export const MONTH_COL_COUNT = 3;
 const MONTH_ROW_COUNT = 4;
 
-export type MonthCellRender<DateType> = (
-  currentDate: DateType,
-  locale: Locale,
-) => React.ReactNode;
+export type MonthCellRender<DateType> = (currentDate: DateType, locale: Locale) => React.ReactNode;
 
 export interface MonthBodyProps<DateType> {
   prefixCls: string;
@@ -26,31 +22,20 @@ export interface MonthBodyProps<DateType> {
   onSelect: (value: DateType) => void;
 }
 
-function MonthBody<DateType>({
-  prefixCls,
-  locale,
-  value,
-  viewDate,
-  generateConfig,
-  disabledDate,
-  monthCellRender,
-  onSelect,
-}: MonthBodyProps<DateType>) {
+function MonthBody<DateType>(props: MonthBodyProps<DateType>) {
+  const { prefixCls, locale, value, viewDate, generateConfig, monthCellRender } = props;
+
   const { rangedValue, hoverRangedValue } = React.useContext(RangeContext);
-  const { onDateMouseEnter, onDateMouseLeave } = React.useContext(PanelContext);
 
-  const monthPrefixCls = `${prefixCls}-cell`;
+  const cellPrefixCls = `${prefixCls}-cell`;
 
-  // =============================== Month ===============================
-  const rows: React.ReactNode[] = [];
   const getCellClassName = useCellClassName({
-    cellPrefixCls: monthPrefixCls,
+    cellPrefixCls,
     value,
     generateConfig,
     rangedValue,
     hoverRangedValue,
-    isSameCell: (current, target) =>
-      isSameMonth(generateConfig, current, target),
+    isSameCell: (current, target) => isSameMonth(generateConfig, current, target),
     isInView: () => true,
     offsetCell: (date, offset) => generateConfig.addMonth(date, offset),
   });
@@ -61,75 +46,28 @@ function MonthBody<DateType>({
       ? generateConfig.locale.getShortMonths(locale.locale)
       : []);
 
-  const startMonth = generateConfig.setMonth(viewDate, 0);
+  const baseMonth = generateConfig.setMonth(viewDate, 0);
 
-  for (let i = 0; i < MONTH_ROW_COUNT; i += 1) {
-    const row: React.ReactNode[] = [];
-
-    for (let j = 0; j < MONTH_COL_COUNT; j += 1) {
-      const diffMonth = i * MONTH_COL_COUNT + j;
-      const monthDate = generateConfig.addMonth(startMonth, diffMonth);
-      const disabled = disabledDate && disabledDate(monthDate);
-
-      row.push(
-        <td
-          key={j}
-          title={generateConfig.locale.format(
-            locale.locale,
-            monthDate,
-            'YYYY-MM',
-          )}
-          className={classNames(monthPrefixCls, {
-            [`${monthPrefixCls}-disabled`]: disabled,
-            [`${monthPrefixCls}-selected`]: isSameMonth(
-              generateConfig,
-              value,
-              monthDate,
-            ),
-            ...getCellClassName(monthDate),
-          })}
-          onClick={() => {
-            if (!disabled) {
-              onSelect(monthDate);
-            }
-          }}
-          onMouseEnter={() => {
-            if (!disabled && onDateMouseEnter) {
-              onDateMouseEnter(monthDate);
-            }
-          }}
-          onMouseLeave={() => {
-            if (!disabled && onDateMouseLeave) {
-              onDateMouseLeave(monthDate);
-            }
-          }}
-        >
-          {monthCellRender ? (
-            monthCellRender(monthDate, locale)
-          ) : (
-            <div className={`${monthPrefixCls}-inner`}>
-              {locale.monthFormat
-                ? generateConfig.locale.format(
-                    locale.locale,
-                    monthDate,
-                    locale.monthFormat,
-                  )
-                : monthsLocale[diffMonth]}
-            </div>
-          )}
-        </td>,
-      );
-    }
-
-    rows.push(<tr key={i}>{row}</tr>);
-  }
+  const getCellNode = monthCellRender
+    ? (date: DateType) => monthCellRender(date, locale)
+    : undefined;
 
   return (
-    <div className={`${prefixCls}-body`}>
-      <table className={`${prefixCls}-content`}>
-        <tbody>{rows}</tbody>
-      </table>
-    </div>
+    <PanelBody
+      {...props}
+      rowNum={MONTH_ROW_COUNT}
+      colNum={MONTH_COL_COUNT}
+      baseDate={baseMonth}
+      getCellNode={getCellNode}
+      getCellText={date =>
+        locale.monthFormat
+          ? generateConfig.locale.format(locale.locale, date, locale.monthFormat)
+          : monthsLocale[generateConfig.getMonth(date)]
+      }
+      getCellClassName={getCellClassName}
+      getCellDate={generateConfig.addMonth}
+      titleCell={date => generateConfig.locale.format(locale.locale, date, 'YYYY-MM')}
+    />
   );
 }
 

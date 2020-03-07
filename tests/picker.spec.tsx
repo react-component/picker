@@ -140,9 +140,7 @@ describe('Picker.Basic', () => {
 
   describe('value', () => {
     it('defaultValue', () => {
-      const wrapper = mount(
-        <MomentPicker defaultValue={getMoment('1989-11-28')} />,
-      );
+      const wrapper = mount(<MomentPicker defaultValue={getMoment('1989-11-28')} />);
       expect(wrapper.find('input').prop('value')).toEqual('1989-11-28');
     });
 
@@ -160,9 +158,7 @@ describe('Picker.Basic', () => {
 
     it('controlled', () => {
       const onChange = jest.fn();
-      const wrapper = mount(
-        <MomentPicker value={getMoment('2011-11-11')} onChange={onChange} />,
-      );
+      const wrapper = mount(<MomentPicker value={getMoment('2011-11-11')} onChange={onChange} />);
 
       wrapper.openPicker();
       wrapper.selectCell(3);
@@ -202,11 +198,7 @@ describe('Picker.Basic', () => {
       it(name, () => {
         const onChange = jest.fn();
         const wrapper = mount(
-          <MomentPicker
-            onChange={onChange}
-            picker={picker as any}
-            allowClear
-          />,
+          <MomentPicker onChange={onChange} picker={picker as any} allowClear />,
         );
         wrapper.openPicker();
         wrapper.find('input').simulate('focus');
@@ -228,9 +220,7 @@ describe('Picker.Basic', () => {
         expect(wrapper.find('input').prop('value')).toEqual(value);
         expect(onChange).not.toHaveBeenCalled();
         wrapper.keyDown(KeyCode.ENTER);
-        expect(
-          isSame(onChange.mock.calls[0][0], matchDate, picker as any),
-        ).toBeTruthy();
+        expect(isSame(onChange.mock.calls[0][0], matchDate, picker as any)).toBeTruthy();
         expect(wrapper.find(selected).length).toBeTruthy();
         onChange.mockReset();
 
@@ -411,9 +401,7 @@ describe('Picker.Basic', () => {
     it('time', () => {
       const onChange = jest.fn();
       const onOk = jest.fn();
-      const wrapper = mount(
-        <MomentPicker picker="time" onChange={onChange} onOk={onOk} />,
-      );
+      const wrapper = mount(<MomentPicker picker="time" onChange={onChange} onOk={onOk} />);
       wrapper.openPicker();
 
       function selectColumn(colIndex: number, rowIndex: number) {
@@ -432,25 +420,19 @@ describe('Picker.Basic', () => {
       expect(onOk).not.toHaveBeenCalled();
       wrapper.confirmOK();
       expect(onOk).toHaveBeenCalled();
-      expect(
-        isSame(onChange.mock.calls[0][0], '1990-09-03 13:22:33', 'second'),
-      ).toBeTruthy();
+      expect(isSame(onChange.mock.calls[0][0], '1990-09-03 13:22:33', 'second')).toBeTruthy();
     });
   });
 
   it('renderExtraFooter', () => {
     const renderExtraFooter = jest.fn(mode => <div>{mode}</div>);
-    const wrapper = mount(
-      <MomentPicker renderExtraFooter={renderExtraFooter} />,
-    );
+    const wrapper = mount(<MomentPicker renderExtraFooter={renderExtraFooter} />);
 
     function matchFooter(mode: string) {
       expect(wrapper.find('.rc-picker-footer').text()).toEqual(mode);
-      expect(
-        renderExtraFooter.mock.calls[
-          renderExtraFooter.mock.calls.length - 1
-        ][0],
-      ).toEqual(mode);
+      expect(renderExtraFooter.mock.calls[renderExtraFooter.mock.calls.length - 1][0]).toEqual(
+        mode,
+      );
     }
 
     // Date
@@ -505,15 +487,11 @@ describe('Picker.Basic', () => {
     wrapper.openPicker();
     wrapper.find('.rc-picker-now > a').simulate('click');
 
-    expect(
-      isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second'),
-    ).toBeTruthy();
+    expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second')).toBeTruthy();
   });
 
   it('pass data- & aria- & role', () => {
-    const wrapper = mount(
-      <MomentPicker data-test="233" aria-label="3334" role="search" />,
-    );
+    const wrapper = mount(<MomentPicker data-test="233" aria-label="3334" role="search" />);
 
     expect(wrapper.render()).toMatchSnapshot();
   });
@@ -542,23 +520,22 @@ describe('Picker.Basic', () => {
   });
 
   it('week picker show correct year', () => {
-    const wrapper = mount(
-      <MomentPicker value={getMoment('2019-12-31')} picker="week" />,
-    );
+    const wrapper = mount(<MomentPicker value={getMoment('2019-12-31')} picker="week" />);
 
     expect(wrapper.find('input').prop('value')).toEqual('2020-1st');
   });
 
   it('click outside should also focus', () => {
-    const wrapper = mount(<MomentPicker />);
-    const inputElement = (wrapper
-      .find('input')
-      .instance() as any) as HTMLInputElement;
+    const onMouseUp = jest.fn();
+    const wrapper = mount(<MomentPicker onMouseUp={onMouseUp} />);
+    const inputElement = (wrapper.find('input').instance() as any) as HTMLInputElement;
     inputElement.focus = jest.fn();
 
     wrapper.find('.rc-picker').simulate('mouseUp');
     expect(inputElement.focus).toHaveBeenCalled();
     expect(wrapper.isOpen()).toBeTruthy();
+
+    expect(onMouseUp).toHaveBeenCalled();
   });
 
   it('defaultOpenValue in timePicker', () => {
@@ -581,17 +558,13 @@ describe('Picker.Basic', () => {
     wrapper.openPicker();
     wrapper.find('.rc-picker-ok button').simulate('click');
 
-    expect(
-      isSame(onChange.mock.calls[0][0], '2000-01-01 00:10:23'),
-    ).toBeTruthy();
+    expect(isSame(onChange.mock.calls[0][0], '2000-01-01 00:10:23')).toBeTruthy();
 
     errSpy.mockRestore();
   });
 
   it('close to reset', () => {
-    const wrapper = mount(
-      <MomentPicker defaultValue={getMoment('2000-01-01')} />,
-    );
+    const wrapper = mount(<MomentPicker defaultValue={getMoment('2000-01-01')} />);
 
     wrapper.openPicker();
     wrapper.find('input').simulate('change', {
@@ -607,20 +580,14 @@ describe('Picker.Basic', () => {
 
   it('switch picker should change format', () => {
     const wrapper = mount(
-      <MomentPicker
-        picker="date"
-        showTime
-        defaultValue={getMoment('1999-09-03')}
-      />,
+      <MomentPicker picker="date" showTime defaultValue={getMoment('1999-09-03')} />,
     );
     expect(wrapper.find('input').props().value).toEqual('1999-09-03 00:00:00');
 
-    [['date', '1999-09-03'], ['month', '1999-09'], ['year', '1999']].forEach(
-      ([picker, text]) => {
-        wrapper.setProps({ picker, showTime: false });
-        wrapper.update();
-        expect(wrapper.find('input').props().value).toEqual(text);
-      },
-    );
+    [['date', '1999-09-03'], ['month', '1999-09'], ['year', '1999']].forEach(([picker, text]) => {
+      wrapper.setProps({ picker, showTime: false });
+      wrapper.update();
+      expect(wrapper.find('input').props().value).toEqual(text);
+    });
   });
 });

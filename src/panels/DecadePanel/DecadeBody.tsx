@@ -1,7 +1,7 @@
 import * as React from 'react';
-import classNames from 'classnames';
 import { GenerateConfig } from '../../generate';
 import { DECADE_DISTANCE_COUNT, DECADE_UNIT_DIFF } from '.';
+import PanelBody from '../PanelBody';
 
 export const DECADE_COL_COUNT = 3;
 const DECADE_ROW_COUNT = 4;
@@ -14,76 +14,53 @@ export interface YearBodyProps<DateType> {
   onSelect: (value: DateType) => void;
 }
 
-function DecadeBody<DateType>({
-  prefixCls,
-  viewDate,
-  generateConfig,
-  disabledDate,
-  onSelect,
-}: YearBodyProps<DateType>) {
-  const yearPrefixCls = `${prefixCls}-cell`;
-  const rows: React.ReactNode[] = [];
+function DecadeBody<DateType>(props: YearBodyProps<DateType>) {
+  const DECADE_UNIT_DIFF_DES = DECADE_UNIT_DIFF - 1;
+  const { prefixCls, viewDate, generateConfig, disabledDate } = props;
+
+  const cellPrefixCls = `${prefixCls}-cell`;
 
   const yearNumber = generateConfig.getYear(viewDate);
-  const decadeYearNumber =
-    Math.floor(yearNumber / DECADE_UNIT_DIFF) * DECADE_UNIT_DIFF;
+  const decadeYearNumber = Math.floor(yearNumber / DECADE_UNIT_DIFF) * DECADE_UNIT_DIFF;
 
-  const startDecadeYear =
-    Math.floor(yearNumber / DECADE_DISTANCE_COUNT) * DECADE_DISTANCE_COUNT;
+  const startDecadeYear = Math.floor(yearNumber / DECADE_DISTANCE_COUNT) * DECADE_DISTANCE_COUNT;
   const endDecadeYear = startDecadeYear + DECADE_DISTANCE_COUNT - 1;
 
-  const baseDecadeYear =
+  const baseDecadeYear = generateConfig.setYear(
+    viewDate,
     startDecadeYear -
-    Math.ceil(
-      (DECADE_COL_COUNT * DECADE_ROW_COUNT * DECADE_UNIT_DIFF -
-        DECADE_DISTANCE_COUNT) /
-        2,
-    );
+      Math.ceil(
+        (DECADE_COL_COUNT * DECADE_ROW_COUNT * DECADE_UNIT_DIFF - DECADE_DISTANCE_COUNT) / 2,
+      ),
+  );
 
-  for (let i = 0; i < DECADE_ROW_COUNT; i += 1) {
-    const row: React.ReactNode[] = [];
+  const getCellClassName = (date: DateType) => {
+    const disabled = disabledDate && disabledDate(date);
 
-    for (let j = 0; j < DECADE_COL_COUNT; j += 1) {
-      const diffDecade = (i * DECADE_COL_COUNT + j) * DECADE_UNIT_DIFF;
-      const startDecadeNumber = baseDecadeYear + diffDecade;
-      const endDecadeNumber = baseDecadeYear + diffDecade + 9;
-      const cellDate = generateConfig.setYear(viewDate, startDecadeNumber);
-      const disabled = disabledDate && disabledDate(cellDate);
+    const startDecadeNumber = generateConfig.getYear(date);
+    const endDecadeNumber = startDecadeNumber + DECADE_UNIT_DIFF_DES;
 
-      row.push(
-        <td
-          key={j}
-          className={classNames(yearPrefixCls, {
-            [`${yearPrefixCls}-disabled`]: disabled,
-            [`${yearPrefixCls}-in-view`]:
-              startDecadeYear <= startDecadeNumber &&
-              endDecadeNumber <= endDecadeYear,
-            [`${yearPrefixCls}-selected`]:
-              startDecadeNumber === decadeYearNumber,
-          })}
-          onClick={() => {
-            if (disabled) {
-              return;
-            }
-            onSelect(cellDate);
-          }}
-        >
-          <div className={`${yearPrefixCls}-inner`}>
-            {startDecadeNumber}-{endDecadeNumber}
-          </div>
-        </td>,
-      );
-    }
-
-    rows.push(<tr key={i}>{row}</tr>);
-  }
+    return {
+      [`${cellPrefixCls}-disabled`]: disabled,
+      [`${cellPrefixCls}-in-view`]:
+        startDecadeYear <= startDecadeNumber && endDecadeNumber <= endDecadeYear,
+      [`${cellPrefixCls}-selected`]: startDecadeNumber === decadeYearNumber,
+    };
+  };
 
   return (
-    <div className={`${prefixCls}-body`}>
-      <table className={`${prefixCls}-content`}>
-        <tbody>{rows}</tbody>
-      </table>
-    </div>
+    <PanelBody
+      {...props}
+      rowNum={DECADE_ROW_COUNT}
+      colNum={DECADE_COL_COUNT}
+      baseDate={baseDecadeYear}
+      getCellText={date => {
+        const startDecadeNumber = generateConfig.getYear(date);
+        return `${startDecadeNumber}-${startDecadeNumber + DECADE_UNIT_DIFF_DES}`;
+      }}
+      getCellClassName={getCellClassName}
+      getCellDate={(date, offset) => generateConfig.addYear(date, offset * DECADE_UNIT_DIFF)}
+    />
   );
 }
 
