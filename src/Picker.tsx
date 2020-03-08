@@ -405,6 +405,10 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         onMouseDown={e => {
           e.preventDefault();
           e.stopPropagation();
+        }}
+        onMouseUp={e => {
+          e.preventDefault();
+          e.stopPropagation();
           triggerChange(null);
           triggerOpen(false, true);
         }}

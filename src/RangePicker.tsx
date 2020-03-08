@@ -907,6 +907,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         onMouseDown={e => {
           e.preventDefault();
           e.stopPropagation();
+        }}
+        onMouseUp={e => {
+          e.preventDefault();
+          e.stopPropagation();
           let values = mergedValue;
 
           if (!mergedDisabled[0]) {
