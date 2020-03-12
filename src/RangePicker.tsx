@@ -76,7 +76,7 @@ export interface RangePickerSharedProps<DateType> {
   onOk?: (dates: RangeValue<DateType>) => void;
   direction?: 'ltr' | 'rtl';
   /** @private Internal control of active picker. Do not use since it's private usage */
-  activePicker?: 0 | 1;
+  activePickerIndex?: 0 | 1;
 }
 
 type OmitPickerProps<Props> = Omit<
@@ -179,7 +179,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     components,
     order,
     direction,
-    activePicker,
+    activePickerIndex,
   } = props as MergedRangePickerProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
@@ -197,7 +197,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   // Active picker
   const [mergedActivePickerIndex, setMergedActivePickerIndex] = useMergedState<0 | 1>(0, {
-    value: activePicker,
+    value: activePickerIndex,
   });
 
   // Operation ref
