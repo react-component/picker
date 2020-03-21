@@ -4,9 +4,9 @@ import QuarterBody, { QUARTER_COL_COUNT } from './QuarterBody';
 import { PanelSharedProps } from '../../interface';
 import { createKeyDownHandler } from '../../utils/uiUtil';
 
-export interface MonthPanelProps<DateType> extends PanelSharedProps<DateType> {}
+export interface QuarterPanelProps<DateType> extends PanelSharedProps<DateType> {}
 
-function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
+function QuarterPanel<DateType>(props: QuarterPanelProps<DateType>) {
   const {
     prefixCls,
     operationRef,
@@ -18,7 +18,7 @@ function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
     onSelect,
   } = props;
 
-  const panelPrefixCls = `${prefixCls}-month-panel`;
+  const panelPrefixCls = `${prefixCls}-quarter-panel`;
 
   // ======================= Keyboard =======================
   operationRef.current = {
@@ -73,4 +73,4 @@ function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
   );
 }
 
-export default MonthPanel;
+export default QuarterPanel;

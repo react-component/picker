@@ -69,20 +69,22 @@ describe('Picker.Panel', () => {
       expect(wrapper.find('.rc-picker-year-panel').length).toBeTruthy();
     });
 
-    it('month', () => {
-      const wrapper = mount(<MomentPickerPanel picker="month" />);
-      wrapper.find('.rc-picker-year-btn').simulate('click');
-      wrapper.find('.rc-picker-decade-btn').simulate('click');
-      expect(wrapper.find('.rc-picker-decade-panel').length).toBeTruthy();
+    [['month', 'Aug'], ['quarter', 'Q3']].forEach(([picker, cell]) => {
+      it(picker, () => {
+        const wrapper = mount(<MomentPickerPanel picker={picker as any} />);
+        wrapper.find('.rc-picker-year-btn').simulate('click');
+        wrapper.find('.rc-picker-decade-btn').simulate('click');
+        expect(wrapper.find('.rc-picker-decade-panel').length).toBeTruthy();
 
-      wrapper.selectCell('1990-1999');
-      expect(wrapper.find('.rc-picker-year-panel').length).toBeTruthy();
+        wrapper.selectCell('1990-1999');
+        expect(wrapper.find('.rc-picker-year-panel').length).toBeTruthy();
 
-      wrapper.selectCell('1999');
-      expect(wrapper.find('.rc-picker-month-panel').length).toBeTruthy();
+        wrapper.selectCell('1999');
+        expect(wrapper.find(`.rc-picker-${picker}-panel`).length).toBeTruthy();
 
-      wrapper.selectCell('Aug');
-      expect(wrapper.find('.rc-picker-month-panel').length).toBeTruthy();
+        wrapper.selectCell(cell);
+        expect(wrapper.find(`.rc-picker-${picker}-panel`).length).toBeTruthy();
+      });
     });
   });
 
