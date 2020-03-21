@@ -14,9 +14,7 @@ import {
 
 describe('Picker.Keyboard', () => {
   function panelKeyDown(wrapper: Wrapper, keyCode: number, info?: object) {
-    wrapper
-      .find('.rc-picker-panel')
-      .simulate('keyDown', { which: keyCode, ...info });
+    wrapper.find('.rc-picker-panel').simulate('keyDown', { which: keyCode, ...info });
   }
 
   beforeAll(() => {
@@ -30,9 +28,7 @@ describe('Picker.Keyboard', () => {
   it('open to select', () => {
     const onChange = jest.fn();
     const onSelect = jest.fn();
-    const wrapper = mount(
-      <MomentPicker onSelect={onSelect} onChange={onChange} />,
-    );
+    const wrapper = mount(<MomentPicker onSelect={onSelect} onChange={onChange} />);
     wrapper.find('input').simulate('focus');
     wrapper.keyDown(KeyCode.ENTER);
     expect(wrapper.isOpen()).toBeTruthy();
@@ -195,77 +191,45 @@ describe('Picker.Keyboard', () => {
         ].forEach(({ name, operate }) => {
           it(name, () => {
             const onSelect = jest.fn();
-            const wrapper = mount(
-              <MomentPickerPanel onSelect={onSelect} showTime />,
-            );
+            const wrapper = mount(<MomentPickerPanel onSelect={onSelect} showTime />);
 
             // Focus Panel
             wrapper.find('.rc-picker-panel').simulate('focus');
 
             // Focus Date Panel
             operate(wrapper);
-            expect(
-              wrapper.find('.rc-picker-date-panel-active').length,
-            ).toBeTruthy();
+            expect(wrapper.find('.rc-picker-date-panel-active').length).toBeTruthy();
 
             // Select
             panelKeyDown(wrapper, KeyCode.DOWN);
-            expect(
-              isSame(onSelect.mock.calls[0][0], '1990-09-10'),
-            ).toBeTruthy();
+            expect(isSame(onSelect.mock.calls[0][0], '1990-09-10')).toBeTruthy();
 
             // Focus Time Panel
             panelKeyDown(wrapper, KeyCode.TAB);
-            expect(
-              wrapper.find('.rc-picker-time-panel-active').length,
-            ).toBeTruthy();
+            expect(wrapper.find('.rc-picker-time-panel-active').length).toBeTruthy();
 
             // Select
             onSelect.mockReset();
             panelKeyDown(wrapper, KeyCode.UP);
             panelKeyDown(wrapper, KeyCode.DOWN);
-            expect(
-              isSame(
-                onSelect.mock.calls[0][0],
-                '1990-09-10 01:00:00',
-                'second',
-              ),
-            ).toBeTruthy();
+            expect(isSame(onSelect.mock.calls[0][0], '1990-09-10 01:00:00', 'second')).toBeTruthy();
 
             // Next column select
             onSelect.mockReset();
             panelKeyDown(wrapper, KeyCode.RIGHT);
             panelKeyDown(wrapper, KeyCode.UP);
-            expect(
-              isSame(
-                onSelect.mock.calls[0][0],
-                '1990-09-10 01:59:00',
-                'second',
-              ),
-            ).toBeTruthy();
+            expect(isSame(onSelect.mock.calls[0][0], '1990-09-10 01:59:00', 'second')).toBeTruthy();
 
             // Enter to exit column edit
             onSelect.mockReset();
-            expect(
-              wrapper.find('.rc-picker-time-panel-column-active').length,
-            ).toBeTruthy();
+            expect(wrapper.find('.rc-picker-time-panel-column-active').length).toBeTruthy();
             panelKeyDown(wrapper, KeyCode.ENTER);
-            expect(
-              wrapper.find('.rc-picker-time-panel-column-active').length,
-            ).toBeFalsy();
-            expect(
-              isSame(
-                onSelect.mock.calls[0][0],
-                '1990-09-10 01:59:00',
-                'second',
-              ),
-            ).toBeTruthy();
+            expect(wrapper.find('.rc-picker-time-panel-column-active').length).toBeFalsy();
+            expect(isSame(onSelect.mock.calls[0][0], '1990-09-10 01:59:00', 'second')).toBeTruthy();
 
             // Close should not focus
             wrapper.find('.rc-picker-panel').simulate('blur');
-            expect(
-              wrapper.find('.rc-picker-time-panel-active').length,
-            ).toBeFalsy();
+            expect(wrapper.find('.rc-picker-time-panel-active').length).toBeFalsy();
           });
         });
       });
@@ -295,13 +259,9 @@ describe('Picker.Keyboard', () => {
 
   it('time enter will trigger onSelect', () => {
     const onSelect = jest.fn();
-    const wrapper = mount(
-      <MomentPickerPanel picker="time" onSelect={onSelect} />,
-    );
+    const wrapper = mount(<MomentPickerPanel picker="time" onSelect={onSelect} />);
     panelKeyDown(wrapper, KeyCode.ENTER);
-    expect(
-      isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second'),
-    ).toBeTruthy();
+    expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second')).toBeTruthy();
   });
 
   describe('arrow trigger onSelect', () => {
@@ -329,6 +289,31 @@ describe('Picker.Keyboard', () => {
       onSelect.mockReset();
       panelKeyDown(wrapper, KeyCode.DOWN);
       expect(isSame(onSelect.mock.calls[0][0], '1991-11-03')).toBeTruthy();
+    });
+
+    it('quarter', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(
+        <MomentPickerPanel
+          picker="quarter"
+          defaultValue={getMoment('1990-09-03')}
+          onSelect={onSelect}
+        />,
+      );
+
+      // Left
+      panelKeyDown(wrapper, KeyCode.LEFT);
+      expect(isSame(onSelect.mock.calls[0][0], '1990-06-03')).toBeTruthy();
+
+      // Control + Right
+      onSelect.mockReset();
+      panelKeyDown(wrapper, KeyCode.RIGHT, { ctrlKey: true });
+      expect(isSame(onSelect.mock.calls[0][0], '1991-06-03')).toBeTruthy();
+
+      // Down
+      onSelect.mockReset();
+      panelKeyDown(wrapper, KeyCode.DOWN);
+      expect(isSame(onSelect.mock.calls[0][0], '1992-06-03')).toBeTruthy();
     });
 
     it('year', () => {
@@ -369,25 +354,19 @@ describe('Picker.Keyboard', () => {
       // Left
       panelKeyDown(wrapper, KeyCode.LEFT);
       panelKeyDown(wrapper, KeyCode.ENTER);
-      expect(
-        isSame(onPanelChange.mock.calls[0][0], '1980', 'year'),
-      ).toBeTruthy();
+      expect(isSame(onPanelChange.mock.calls[0][0], '1980', 'year')).toBeTruthy();
 
       // Control + Right
       onPanelChange.mockReset();
       panelKeyDown(wrapper, KeyCode.RIGHT, { ctrlKey: true });
       panelKeyDown(wrapper, KeyCode.ENTER);
-      expect(
-        isSame(onPanelChange.mock.calls[0][0], '2080', 'year'),
-      ).toBeTruthy();
+      expect(isSame(onPanelChange.mock.calls[0][0], '2080', 'year')).toBeTruthy();
 
       // Down
       onPanelChange.mockReset();
       panelKeyDown(wrapper, KeyCode.DOWN);
       panelKeyDown(wrapper, KeyCode.ENTER);
-      expect(
-        isSame(onPanelChange.mock.calls[0][0], '2110', 'year'),
-      ).toBeTruthy();
+      expect(isSame(onPanelChange.mock.calls[0][0], '2110', 'year')).toBeTruthy();
     });
   });
 
@@ -397,10 +376,7 @@ describe('Picker.Keyboard', () => {
       const onCalendarChange = jest.fn();
       const onChange = jest.fn();
       const wrapper = mount(
-        <MomentRangePicker
-          onCalendarChange={onCalendarChange}
-          onChange={onChange}
-        />,
+        <MomentRangePicker onCalendarChange={onCalendarChange} onChange={onChange} />,
       );
 
       // Start Date
@@ -434,10 +410,7 @@ describe('Picker.Keyboard', () => {
       wrapper.keyDown(KeyCode.TAB, {}, 1);
       wrapper.keyDown(KeyCode.DOWN, {}, 1);
       wrapper.keyDown(KeyCode.ENTER, {}, 1);
-      expect(onCalendarChange.mock.calls[0][1]).toEqual([
-        '1990-01-08',
-        '2000-01-08',
-      ]);
+      expect(onCalendarChange.mock.calls[0][1]).toEqual(['1990-01-08', '2000-01-08']);
       expect(onChange.mock.calls[0][1]).toEqual(['1990-01-08', '2000-01-08']);
 
       jest.useRealTimers();

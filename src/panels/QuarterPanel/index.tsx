@@ -1,6 +1,6 @@
 import * as React from 'react';
 import QuarterHeader from './QuarterHeader';
-import QuarterBody, { QUARTER_COL_COUNT } from './QuarterBody';
+import QuarterBody from './QuarterBody';
 import { PanelSharedProps } from '../../interface';
 import { createKeyDownHandler } from '../../utils/uiUtil';
 
@@ -25,16 +25,13 @@ function QuarterPanel<DateType>(props: QuarterPanelProps<DateType>) {
     onKeyDown: event =>
       createKeyDownHandler(event, {
         onLeftRight: diff => {
-          onSelect(generateConfig.addMonth(value || viewDate, diff), 'key');
+          onSelect(generateConfig.addMonth(value || viewDate, diff * 3), 'key');
         },
         onCtrlLeftRight: diff => {
           onSelect(generateConfig.addYear(value || viewDate, diff), 'key');
         },
         onUpDown: diff => {
-          onSelect(generateConfig.addMonth(value || viewDate, diff * QUARTER_COL_COUNT), 'key');
-        },
-        onEnter: () => {
-          onPanelChange('date', value || viewDate);
+          onSelect(generateConfig.addYear(value || viewDate, diff), 'key');
         },
       }),
   };
@@ -66,7 +63,6 @@ function QuarterPanel<DateType>(props: QuarterPanelProps<DateType>) {
         prefixCls={prefixCls}
         onSelect={date => {
           onSelect(date, 'mouse');
-          onPanelChange('date', date);
         }}
       />
     </div>

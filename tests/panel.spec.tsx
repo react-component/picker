@@ -156,16 +156,18 @@ describe('Picker.Panel', () => {
       expect(wrapper.find('.rc-picker-header-view').text()).toEqual('Sep1990');
     });
 
-    it('month', () => {
-      const wrapper = mount(
-        <MomentPickerPanel defaultValue={getMoment('1990-09-03')} picker="month" />,
-      );
+    ['month', 'quarter'].forEach(picker => {
+      it(picker, () => {
+        const wrapper = mount(
+          <MomentPickerPanel defaultValue={getMoment('1990-09-03')} picker={picker as any} />,
+        );
 
-      wrapper.clickButton('super-prev');
-      expect(wrapper.find('.rc-picker-header-view').text()).toEqual('1989');
+        wrapper.clickButton('super-prev');
+        expect(wrapper.find('.rc-picker-header-view').text()).toEqual('1989');
 
-      wrapper.clickButton('super-next');
-      expect(wrapper.find('.rc-picker-header-view').text()).toEqual('1990');
+        wrapper.clickButton('super-next');
+        expect(wrapper.find('.rc-picker-header-view').text()).toEqual('1990');
+      });
     });
 
     it('year', () => {
@@ -385,7 +387,7 @@ describe('Picker.Panel', () => {
   });
 
   describe('hideHeader', () => {
-    ['decade', 'year', 'month', 'date', 'time'].forEach(mode => {
+    ['decade', 'year', 'month', 'quarter', 'date', 'time'].forEach(mode => {
       it(mode, () => {
         const wrapper = mount(<MomentPickerPanel mode={mode as any} hideHeader />);
         expect(wrapper.find('.rc-picker-header')).toHaveLength(0);
