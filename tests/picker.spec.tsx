@@ -27,6 +27,10 @@ describe('Picker.Basic', () => {
         componentNames: ['YearPanel', 'YearHeader', 'YearBody'],
       },
       {
+        mode: 'quarter',
+        componentNames: ['QuarterPanel', 'QuarterHeader', 'QuarterBody'],
+      },
+      {
         mode: 'month',
         componentNames: ['MonthPanel', 'MonthHeader', 'MonthBody'],
       },
@@ -59,6 +63,10 @@ describe('Picker.Basic', () => {
       {
         picker: 'year',
         componentNames: ['YearPanel', 'YearHeader', 'YearBody'],
+      },
+      {
+        picker: 'quarter',
+        componentNames: ['QuarterPanel', 'QuarterHeader', 'QuarterBody'],
       },
       {
         picker: 'month',
@@ -459,7 +467,7 @@ describe('Picker.Basic', () => {
       expect(isSame(onSelect.mock.calls[0][0], '1990-09-03')).toBeTruthy();
     });
 
-    ['decade', 'year', 'month', 'week'].forEach(name => {
+    ['decade', 'year', 'quarter', 'month', 'week'].forEach(name => {
       it(`not works on ${name}`, () => {
         const wrapper = mount(<MomentPicker picker={name as any} showToday />);
         wrapper.openPicker();
@@ -584,7 +592,12 @@ describe('Picker.Basic', () => {
     );
     expect(wrapper.find('input').props().value).toEqual('1999-09-03 00:00:00');
 
-    [['date', '1999-09-03'], ['month', '1999-09'], ['year', '1999']].forEach(([picker, text]) => {
+    [
+      ['date', '1999-09-03'],
+      ['month', '1999-09'],
+      ['quarter', '1999-Q3'],
+      ['year', '1999'],
+    ].forEach(([picker, text]) => {
       wrapper.setProps({ picker, showTime: false });
       wrapper.update();
       expect(wrapper.find('input').props().value).toEqual(text);

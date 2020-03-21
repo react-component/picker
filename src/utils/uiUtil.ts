@@ -44,13 +44,7 @@ export interface KeyboardConfig {
 }
 export function createKeyDownHandler(
   event: React.KeyboardEvent<HTMLElement>,
-  {
-    onLeftRight,
-    onCtrlLeftRight,
-    onUpDown,
-    onPageUpDown,
-    onEnter,
-  }: KeyboardConfig,
+  { onLeftRight, onCtrlLeftRight, onUpDown, onPageUpDown, onEnter }: KeyboardConfig,
 ): boolean {
   const { which, ctrlKey, metaKey } = event;
 
@@ -147,6 +141,10 @@ export function getDefaultFormat(
         mergedFormat = 'YYYY-MM';
         break;
 
+      case 'quarter':
+        mergedFormat = 'YYYY-\\QQ';
+        break;
+
       case 'year':
         mergedFormat = 'YYYY';
         break;
@@ -170,11 +168,7 @@ let globalClickFunc: ClickEventHandler | null = null;
 const clickCallbacks = new Set<ClickEventHandler>();
 
 export function addGlobalMouseDownEvent(callback: ClickEventHandler) {
-  if (
-    !globalClickFunc &&
-    typeof window !== 'undefined' &&
-    window.addEventListener
-  ) {
+  if (!globalClickFunc && typeof window !== 'undefined' && window.addEventListener) {
     globalClickFunc = (e: MouseEvent) => {
       // Clone a new list to avoid repeat trigger events
       [...clickCallbacks].forEach(queueFunc => {
@@ -210,6 +204,13 @@ const getMonthNextMode = (next: PanelMode): PanelMode => {
   return next;
 };
 
+const getQuarterNextMode = (next: PanelMode): PanelMode => {
+  if (next === 'month' || next === 'date') {
+    return 'quarter';
+  }
+  return next;
+};
+
 const getWeekNextMode = (next: PanelMode): PanelMode => {
   if (next === 'date') {
     return 'week';
@@ -217,12 +218,10 @@ const getWeekNextMode = (next: PanelMode): PanelMode => {
   return next;
 };
 
-export const PickerModeMap: Record<
-  PickerMode,
-  ((next: PanelMode) => PanelMode) | null
-> = {
+export const PickerModeMap: Record<PickerMode, ((next: PanelMode) => PanelMode) | null> = {
   year: getYearNextMode,
   month: getMonthNextMode,
+  quarter: getQuarterNextMode,
   week: getWeekNextMode,
   time: null,
   date: null,

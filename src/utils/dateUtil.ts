@@ -42,6 +42,27 @@ export function isSameYear<DateType>(
   return generateConfig.getYear(year1!) === generateConfig.getYear(year2!);
 }
 
+export function getQuarter<DateType>(generateConfig: GenerateConfig<DateType>, date: DateType) {
+  const quota = Math.floor(generateConfig.getMonth(date) / 3);
+  return quota + 1;
+}
+
+export function isSameQuarter<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  quarter1: NullableDateType<DateType>,
+  quarter2: NullableDateType<DateType>,
+) {
+  const equal = isNullEqual(quarter1, quarter2);
+  if (typeof equal === 'boolean') {
+    return equal;
+  }
+
+  return (
+    isSameYear(generateConfig, quarter1, quarter2) &&
+    getQuarter(generateConfig, quarter1!) === getQuarter(generateConfig, quarter2!)
+  );
+}
+
 export function isSameMonth<DateType>(
   generateConfig: GenerateConfig<DateType>,
   month1: NullableDateType<DateType>,
@@ -104,8 +125,7 @@ export function isSameWeek<DateType>(
   }
 
   return (
-    generateConfig.locale.getWeek(locale, date1!) ===
-    generateConfig.locale.getWeek(locale, date2!)
+    generateConfig.locale.getWeek(locale, date1!) === generateConfig.locale.getWeek(locale, date2!)
   );
 }
 
@@ -114,10 +134,7 @@ export function isEqual<DateType>(
   value1: NullableDateType<DateType>,
   value2: NullableDateType<DateType>,
 ) {
-  return (
-    isSameDate(generateConfig, value1, value2) &&
-    isSameTime(generateConfig, value1, value2)
-  );
+  return isSameDate(generateConfig, value1, value2) && isSameTime(generateConfig, value1, value2);
 }
 
 /** Between in date but not equal of date */
