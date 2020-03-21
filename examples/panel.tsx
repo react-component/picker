@@ -69,6 +69,11 @@ export default () => {
         </div>
 
         <div style={{ margin: '0 8px' }}>
+          <h3>Quarter Picker</h3>
+          <PickerPanel<Moment> {...sharedProps} locale={zhCN} picker="quarter" />
+        </div>
+
+        <div style={{ margin: '0 8px' }}>
           <h3>Week Picker US</h3>
           <PickerPanel<Moment> {...sharedProps} locale={enUS} picker="week" />
         </div>
@@ -79,12 +84,7 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Uncontrolled</h3>
-          <PickerPanel<Moment>
-            {...sharedProps}
-            locale={jaJP}
-            value={undefined}
-            picker="time"
-          />
+          <PickerPanel<Moment> {...sharedProps} locale={jaJP} value={undefined} picker="time" />
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Time AM/PM</h3>

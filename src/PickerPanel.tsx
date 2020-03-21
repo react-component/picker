@@ -17,6 +17,7 @@ import DatetimePanel from './panels/DatetimePanel';
 import DatePanel from './panels/DatePanel';
 import WeekPanel from './panels/WeekPanel';
 import MonthPanel from './panels/MonthPanel';
+import QuarterPanel from './panels/QuarterPanel';
 import YearPanel from './panels/YearPanel';
 import DecadePanel from './panels/DecadePanel';
 import { GenerateConfig } from './generate';
@@ -84,13 +85,11 @@ export interface PickerPanelSharedProps<DateType> {
   components?: Components;
 }
 
-export interface PickerPanelBaseProps<DateType>
-  extends PickerPanelSharedProps<DateType> {
+export interface PickerPanelBaseProps<DateType> extends PickerPanelSharedProps<DateType> {
   picker: Exclude<PickerMode, 'date' | 'time'>;
 }
 
-export interface PickerPanelDateProps<DateType>
-  extends PickerPanelSharedProps<DateType> {
+export interface PickerPanelDateProps<DateType> extends PickerPanelSharedProps<DateType> {
   picker?: 'date';
   showToday?: boolean;
 
@@ -149,18 +148,11 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     direction,
   } = props as MergedPickerPanelProps<DateType>;
 
-  const needConfirmButton: boolean =
-    (picker === 'date' && !!showTime) || picker === 'time';
+  const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
 
   if (process.env.NODE_ENV !== 'production') {
-    warning(
-      !value || generateConfig.isValidate(value),
-      'Invalidate date pass to `value`.',
-    );
-    warning(
-      !value || generateConfig.isValidate(value),
-      'Invalidate date pass to `defaultValue`.',
-    );
+    warning(!value || generateConfig.isValidate(value), 'Invalidate date pass to `value`.');
+    warning(!value || generateConfig.isValidate(value), 'Invalidate date pass to `defaultValue`.');
   }
 
   // ============================ State =============================
@@ -174,12 +166,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     defaultOpenValue,
   } = panelContext;
 
-  const {
-    inRange,
-    panelPosition,
-    rangedValue,
-    hoverRangedValue,
-  } = React.useContext(RangeContext);
+  const { inRange, panelPosition, rangedValue, hoverRangedValue } = React.useContext(RangeContext);
   const panelRef = React.useRef<PanelRefProps>({});
 
   // Handle init logic
@@ -198,10 +185,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   });
 
   // View date control
-  const [viewDate, setInnerViewDate] = useMergedState<
-    DateType | null,
-    DateType
-  >(null, {
+  const [viewDate, setInnerViewDate] = useMergedState<DateType | null, DateType>(null, {
     value: pickerValue,
     defaultValue: defaultPickerValue || mergedValue,
     postState: date => date || generateConfig.getNow(),
@@ -237,22 +221,14 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     },
   );
 
-  const [sourceMode, setSourceMode] = React.useState<PanelMode>(
-    () => mergedMode,
-  );
+  const [sourceMode, setSourceMode] = React.useState<PanelMode>(() => mergedMode);
 
-  const onInternalPanelChange = (
-    newMode: PanelMode | null,
-    viewValue: DateType,
-  ) => {
+  const onInternalPanelChange = (newMode: PanelMode | null, viewValue: DateType) => {
     const nextMode = getInternalNextMode(newMode || mergedMode);
     setSourceMode(mergedMode);
     setInnerMode(nextMode);
 
-    if (
-      onPanelChange &&
-      (mergedMode !== nextMode || isEqual(generateConfig, viewDate, viewDate))
-    ) {
+    if (onPanelChange && (mergedMode !== nextMode || isEqual(generateConfig, viewDate, viewDate))) {
       onPanelChange(viewValue, nextMode);
     }
   };
@@ -392,6 +368,18 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       );
       break;
 
+    case 'quarter':
+      panelNode = (
+        <QuarterPanel<DateType>
+          {...pickerProps}
+          onSelect={(date, type) => {
+            setViewDate(date);
+            triggerSelect(date, type);
+          }}
+        />
+      );
+      break;
+
     case 'week':
       panelNode = (
         <WeekPanel
@@ -489,8 +477,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     <PanelContext.Provider
       value={{
         ...panelContext,
-        hideHeader:
-          'hideHeader' in props ? hideHeader : panelContext.hideHeader,
+        hideHeader: 'hideHeader' in props ? hideHeader : panelContext.hideHeader,
         hidePrevBtn: inRange && panelPosition === 'right',
         hideNextBtn: inRange && panelPosition === 'left',
       }}
@@ -498,8 +485,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       <div
         tabIndex={tabIndex}
         className={classNames(`${prefixCls}-panel`, className, {
-          [`${prefixCls}-panel-has-range`]:
-            rangedValue && rangedValue[0] && rangedValue[1],
+          [`${prefixCls}-panel-has-range`]: rangedValue && rangedValue[0] && rangedValue[1],
           [`${prefixCls}-panel-has-range-hover`]:
             hoverRangedValue && hoverRangedValue[0] && hoverRangedValue[1],
           [`${prefixCls}-panel-rtl`]: direction === 'rtl',
