@@ -2,12 +2,7 @@ import * as React from 'react';
 import { RangeValue, PickerMode } from '../interface';
 import { GenerateConfig } from '../generate';
 import { getValue, updateValues } from '../utils/miscUtil';
-import {
-  getClosingViewDate,
-  isSameYear,
-  isSameMonth,
-  isSameDecade,
-} from '../utils/dateUtil';
+import { getClosingViewDate, isSameYear, isSameMonth, isSameDecade } from '../utils/dateUtil';
 
 function getStartEndDistance<DateType>(
   startDate: DateType,
@@ -17,9 +12,7 @@ function getStartEndDistance<DateType>(
 ): 'same' | 'closing' | 'far' {
   const startNext = getClosingViewDate(startDate, picker, generateConfig, 1);
 
-  function getDistance(
-    compareFunc: (start: DateType | null, end: DateType | null) => boolean,
-  ) {
+  function getDistance(compareFunc: (start: DateType | null, end: DateType | null) => boolean) {
     if (compareFunc(startDate, endDate)) {
       return 'same';
     }
@@ -31,17 +24,11 @@ function getStartEndDistance<DateType>(
 
   switch (picker) {
     case 'year':
-      return getDistance((start, end) =>
-        isSameDecade(generateConfig, start, end),
-      );
+      return getDistance((start, end) => isSameDecade(generateConfig, start, end));
     case 'month':
-      return getDistance((start, end) =>
-        isSameYear(generateConfig, start, end),
-      );
+      return getDistance((start, end) => isSameYear(generateConfig, start, end));
     default:
-      return getDistance((start, end) =>
-        isSameMonth(generateConfig, start, end),
-      );
+      return getDistance((start, end) => isSameMonth(generateConfig, start, end));
   }
 }
 
@@ -59,12 +46,7 @@ function getRangeViewDate<DateType>(
   }
 
   if (startDate && endDate) {
-    const distance = getStartEndDistance(
-      startDate,
-      endDate,
-      picker,
-      generateConfig,
-    );
+    const distance = getStartEndDistance(startDate, endDate, picker, generateConfig);
     switch (distance) {
       case 'same':
         return startDate;
@@ -88,16 +70,11 @@ export default function useRangeViewDates<DateType>({
   picker: PickerMode;
   defaultDates: RangeValue<DateType> | undefined;
   generateConfig: GenerateConfig<DateType>;
-}): [
-  (activePickerIndex: 0 | 1) => DateType,
-  (viewDate: DateType | null, index: 0 | 1) => void,
-] {
+}): [(activePickerIndex: 0 | 1) => DateType, (viewDate: DateType | null, index: 0 | 1) => void] {
   const [defaultViewDates, setDefaultViewDates] = React.useState<
     [DateType | null, DateType | null]
   >(() => [getValue(defaultDates, 0), getValue(defaultDates, 1)]);
-  const [viewDates, setInternalViewDates] = React.useState<
-    RangeValue<DateType>
-  >(null);
+  const [viewDates, setInternalViewDates] = React.useState<RangeValue<DateType>>(null);
 
   const startDate = getValue(values, 0);
   const endDate = getValue(values, 1);
@@ -128,7 +105,7 @@ export default function useRangeViewDates<DateType>({
 
       // Reset another one when not have value
       const anotherIndex = (index + 1) % 2;
-      if (getValue(values, anotherIndex)) {
+      if (!getValue(values, anotherIndex)) {
         newViewDates = updateValues(newViewDates, viewDate, anotherIndex);
       }
 

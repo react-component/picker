@@ -525,7 +525,7 @@ describe('Picker.Range', () => {
 
       wrapper.openPicker(1);
       wrapper.selectCell(1993);
-      expect(isSame(onPanelChange.mock.calls[0][0][1], '1993-09-03'));
+      expect(isSame(onPanelChange.mock.calls[0][0][1], '1993-02-03'));
       expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
     });
 
