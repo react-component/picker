@@ -102,11 +102,11 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Week</h3>
-          <Picker<Moment>
-            generateConfig={momentGenerateConfig}
-            locale={enUS}
-            picker="week"
-          />
+          <Picker<Moment> generateConfig={momentGenerateConfig} locale={enUS} picker="week" />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Quarter</h3>
+          <Picker<Moment> generateConfig={momentGenerateConfig} locale={enUS} picker="quarter" />
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Time</h3>
@@ -114,12 +114,7 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Time 12</h3>
-          <Picker<Moment>
-            {...sharedProps}
-            locale={zhCN}
-            picker="time"
-            use12Hours
-          />
+          <Picker<Moment> {...sharedProps} locale={zhCN} picker="time" use12Hours />
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Year</h3>

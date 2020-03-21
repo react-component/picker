@@ -141,6 +141,10 @@ export function getDefaultFormat(
         mergedFormat = 'YYYY-MM';
         break;
 
+      case 'quarter':
+        mergedFormat = 'YYYY-\\QQ';
+        break;
+
       case 'year':
         mergedFormat = 'YYYY';
         break;
