@@ -16,48 +16,39 @@ const generateConfig: GenerateConfig<Moment> = {
   // set
   addYear: (date, diff) => {
     const clone = date.clone();
-    clone.add(diff, 'year');
-    return clone;
+    return clone.add(diff, 'year');
   },
   addMonth: (date, diff) => {
     const clone = date.clone();
-    clone.add(diff, 'month');
-    return clone;
+    return clone.add(diff, 'month');
   },
   addDate: (date, diff) => {
     const clone = date.clone();
-    clone.add(diff, 'day');
-    return clone;
+    return clone.add(diff, 'day');
   },
   setYear: (date, year) => {
     const clone = date.clone();
-    clone.year(year);
-    return clone;
+    return clone.year(year);
   },
   setMonth: (date, month) => {
     const clone = date.clone();
-    clone.month(month);
-    return clone;
+    return clone.month(month);
   },
   setDate: (date, num) => {
     const clone = date.clone();
-    clone.date(num);
-    return clone;
+    return clone.date(num);
   },
   setHour: (date, hour) => {
     const clone = date.clone();
-    clone.hour(hour);
-    return clone;
+    return clone.hour(hour);
   },
   setMinute: (date, minute) => {
     const clone = date.clone();
-    clone.minute(minute);
-    return clone;
+    return clone.minute(minute);
   },
   setSecond: (date, second) => {
     const clone = date.clone();
-    clone.second(second);
-    return clone;
+    return clone.second(second);
   },
 
   // Compare
@@ -71,8 +62,8 @@ const generateConfig: GenerateConfig<Moment> = {
     },
     getWeek: (locale, date) => {
       const clone = date.clone();
-      clone.locale(locale);
-      return clone.week();
+      const result = clone.locale(locale);
+      return result.week();
     },
     getShortWeekDays: locale => {
       const date = moment().locale(locale);
@@ -84,8 +75,8 @@ const generateConfig: GenerateConfig<Moment> = {
     },
     format: (locale, date, format) => {
       const clone = date.clone();
-      clone.locale(locale);
-      return clone.format(format);
+      const result = clone.locale(locale);
+      return result.format(format);
     },
     parse: (locale, text, formats) => {
       const fallbackFormatList: string[] = [];
