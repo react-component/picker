@@ -437,5 +437,34 @@ describe('Picker.Panel', () => {
         });
       },
     );
+
+    it('update firstDayOfWeek', () => {
+      const defaultFirstDay = moment(enUS.locale)
+        .localeData()
+        .firstDayOfWeek();
+      moment.updateLocale(enUS.locale, {
+        week: {
+          dow: 5,
+        } as any,
+      });
+      expect(defaultFirstDay).toEqual(0);
+
+      const wrapper = mount(
+        <MomentPickerPanel defaultValue={getMoment('2020-04-02')} locale={enUS} />,
+      );
+
+      expect(
+        wrapper
+          .find('td')
+          .first()
+          .text(),
+      ).toEqual('27');
+
+      moment.updateLocale(enUS.locale, {
+        week: {
+          dow: defaultFirstDay,
+        } as any,
+      });
+    });
   });
 });
