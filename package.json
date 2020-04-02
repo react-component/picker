@@ -1,6 +1,6 @@
 {
   "name": "rc-picker",
-  "version": "1.4.2",
+  "version": "1.4.2-getaround.1",
   "description": "React date & time picker",
   "keywords": [
     "react",
@@ -19,7 +19,7 @@
   "homepage": "https://react-component.github.io/picker",
   "repository": {
     "type": "git",
-    "url": "git@github.com:react-component/picker.git"
+    "url": "git@github.com:Getaround/picker.git"
   },
   "bugs": {
     "url": "http://github.com/react-component/picker/issues"
