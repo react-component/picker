@@ -420,7 +420,7 @@ describe('Picker.Panel', () => {
     expect(wrapper.find('tbody').render()).toMatchSnapshot();
   });
 
-  describe.only('start weekday should be correct', () => {
+  describe('start weekday should be correct', () => {
     [{ locale: zhCN, startDate: '30' }, { locale: enUS, startDate: '29' }].forEach(
       ({ locale, startDate }) => {
         it(locale.locale, () => {
