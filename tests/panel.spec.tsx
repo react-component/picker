@@ -440,7 +440,9 @@ describe('Picker.Panel', () => {
   });
 
   it('update firstDayOfWeek', () => {
-    const defaultFirstDay = moment(enUS.locale).localeData().firstDayOfWeek;
+    const defaultFirstDay = moment(enUS.locale)
+      .localeData()
+      .firstDayOfWeek();
     moment.updateLocale(enUS.locale, {
       week: {
         dow: 5,
