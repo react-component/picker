@@ -5,7 +5,7 @@ import { GenerateConfig } from '.';
 const generateConfig: GenerateConfig<Moment> = {
   // get
   getNow: () => moment(),
-  getWeekDay: date => date.weekday(),
+  getWeekDay: date => date.clone().locale('en_US').weekday(),
   getYear: date => date.year(),
   getMonth: date => date.month(),
   getDate: date => date.date(),

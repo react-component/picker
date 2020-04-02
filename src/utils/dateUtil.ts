@@ -1,3 +1,4 @@
+import { noteOnce } from 'rc-util/lib/warning';
 import { GenerateConfig } from '../generate';
 import { NullableDateType, PickerMode } from '../interface';
 
@@ -160,10 +161,25 @@ export function getWeekStartDate<DateType>(
   generateConfig: GenerateConfig<DateType>,
   value: DateType,
 ) {
+  const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale);
   const monthStartDate = generateConfig.setDate(value, 1);
-  const wd = generateConfig.getWeekDay(monthStartDate);
 
-  return generateConfig.addDate(monthStartDate, -wd);
+  for (let i = 0; i < 7; i += 1) {
+    const current = generateConfig.addDate(monthStartDate, -i);
+    if (generateConfig.getWeekDay(current) === weekFirstDay) {
+      return current;
+    }
+  }
+
+  /* istanbul ignore next */
+  /* eslint-disable no-lone-blocks */
+  {
+    noteOnce(
+      false,
+      'Not find week start date. Please check your `generateConfig`. If using default `generateConfig`, please help to fire a issue.',
+    );
+    return value;
+  }
 }
 
 export function getClosingViewDate<DateType>(
