@@ -4,6 +4,8 @@ import moment from 'moment';
 import { resetWarned } from 'rc-util/lib/warning';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { mount, getMoment, isSame, MomentPickerPanel } from './util/commonUtil';
+import zhCN from '../src/locale/zh_CN';
+import enUS from '../src/locale/en_US';
 
 describe('Picker.Panel', () => {
   beforeAll(() => {
@@ -69,10 +71,7 @@ describe('Picker.Panel', () => {
       expect(wrapper.find('.rc-picker-year-panel').length).toBeTruthy();
     });
 
-    [
-      ['month', 'Aug'],
-      ['quarter', 'Q3'],
-    ].forEach(([picker, cell]) => {
+    [['month', 'Aug'], ['quarter', 'Q3']].forEach(([picker, cell]) => {
       it(picker, () => {
         const wrapper = mount(<MomentPickerPanel picker={picker as any} />);
         wrapper.find('.rc-picker-year-btn').simulate('click');
@@ -419,5 +418,24 @@ describe('Picker.Panel', () => {
     );
 
     expect(wrapper.find('tbody').render()).toMatchSnapshot();
+  });
+
+  describe('start weekday should be correct', () => {
+    [{ locale: zhCN, startDate: '30' }, { locale: enUS, startDate: '29' }].forEach(
+      ({ locale, startDate }) => {
+        it(locale.locale, () => {
+          const wrapper = mount(
+            <MomentPickerPanel defaultValue={getMoment('2020-04-02')} locale={locale} />,
+          );
+
+          expect(
+            wrapper
+              .find('td')
+              .first()
+              .text(),
+          ).toEqual(startDate);
+        });
+      },
+    );
   });
 });
