@@ -28,11 +28,7 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
   },
   isOpen() {
     const openDiv = this.find('.rc-picker-dropdown').hostNodes();
-    return (
-      openDiv &&
-      openDiv.length &&
-      !openDiv.hasClass('rc-picker-dropdown-hidden')
-    );
+    return openDiv && openDiv.length && !openDiv.hasClass('rc-picker-dropdown-hidden');
   },
   findCell(text, index = 0) {
     let matchCell;
@@ -41,10 +37,7 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
       .at(index)
       .find('td')
       .forEach(td => {
-        if (
-          td.text() === String(text) &&
-          td.props().className.includes('-in-view')
-        ) {
+        if (td.text() === String(text) && td.props().className.includes('-in-view')) {
           matchCell = td;
         }
       });

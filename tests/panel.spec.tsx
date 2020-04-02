@@ -69,7 +69,10 @@ describe('Picker.Panel', () => {
       expect(wrapper.find('.rc-picker-year-panel').length).toBeTruthy();
     });
 
-    [['month', 'Aug'], ['quarter', 'Q3']].forEach(([picker, cell]) => {
+    [
+      ['month', 'Aug'],
+      ['quarter', 'Q3'],
+    ].forEach(([picker, cell]) => {
       it(picker, () => {
         const wrapper = mount(<MomentPickerPanel picker={picker as any} />);
         wrapper.find('.rc-picker-year-btn').simulate('click');

@@ -42,9 +42,9 @@ describe('Picker.Generate', () => {
         date = generateConfig.setMinute(date, 3);
         date = generateConfig.setSecond(date, 5);
 
-        expect(
-          generateConfig.locale.format('en_US', date, 'YYYY-MM-DD HH:mm:ss'),
-        ).toEqual('2020-10-23 02:03:05');
+        expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD HH:mm:ss')).toEqual(
+          '2020-10-23 02:03:05',
+        );
       });
 
       it('add', () => {
@@ -52,9 +52,7 @@ describe('Picker.Generate', () => {
         date = generateConfig.addYear(date, 2);
         date = generateConfig.addMonth(date, 2);
         date = generateConfig.addDate(date, 2);
-        expect(
-          generateConfig.locale.format('en_US', date, 'YYYY-MM-DD'),
-        ).toEqual('1992-11-05');
+        expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD')).toEqual('1992-11-05');
       });
 
       it('isAfter', () => {
@@ -73,14 +71,11 @@ describe('Picker.Generate', () => {
         describe('parse', () => {
           it('basic', () => {
             ['2000-01-02', '02/01/2000'].forEach(str => {
-              const date = generateConfig.locale.parse('en_US', str, [
-                'YYYY-MM-DD',
-                'DD/MM/YYYY',
-              ]);
+              const date = generateConfig.locale.parse('en_US', str, ['YYYY-MM-DD', 'DD/MM/YYYY']);
 
-              expect(
-                generateConfig.locale.format('en_US', date!, 'YYYY-MM-DD'),
-              ).toEqual('2000-01-02');
+              expect(generateConfig.locale.format('en_US', date!, 'YYYY-MM-DD')).toEqual(
+                '2000-01-02',
+              );
             });
           });
 
@@ -107,14 +102,11 @@ describe('Picker.Generate', () => {
       describe('locale', () => {
         it('parse', () => {
           ['2000-01-02', '02/01/2000'].forEach(str => {
-            const date = generateConfig.locale.parse('en_US', str, [
-              'YYYY-MM-DD',
-              'DD/MM/YYYY',
-            ]);
+            const date = generateConfig.locale.parse('en_US', str, ['YYYY-MM-DD', 'DD/MM/YYYY']);
 
-            expect(
-              generateConfig.locale.format('en_US', date!, 'YYYY-MM-DD'),
-            ).toEqual('2000-01-02');
+            expect(generateConfig.locale.format('en_US', date!, 'YYYY-MM-DD')).toEqual(
+              '2000-01-02',
+            );
           });
         });
       });
@@ -127,9 +119,7 @@ describe('Picker.Generate', () => {
         ['en_US', 'zh_CN'].forEach(() => {
           expect(
             generateConfig.getWeekDay(
-              generateConfig.locale.parse('en_US', '2000-01-01', [
-                'YYYY-MM-DD',
-              ])!,
+              generateConfig.locale.parse('en_US', '2000-01-01', ['YYYY-MM-DD'])!,
             ),
           ).toEqual(6);
         });
@@ -137,27 +127,19 @@ describe('Picker.Generate', () => {
 
       it('Parse format Wo', () => {
         expect(
-          generateConfig.locale
-            .parse('en_US', '2012-51st', ['YYYY-Wo'])
-            ?.format('Wo'),
+          generateConfig.locale.parse('en_US', '2012-51st', ['YYYY-Wo'])?.format('Wo'),
         ).toEqual('51st');
-        expect(
-          generateConfig.locale
-            .parse('zh_CN', '2012-1周', ['YYYY-Wo'])
-            ?.format('Wo'),
-        ).toEqual('1周');
+        expect(generateConfig.locale.parse('zh_CN', '2012-1周', ['YYYY-Wo'])?.format('Wo')).toEqual(
+          '1周',
+        );
       });
 
       it('Parse format faild', () => {
+        expect(generateConfig.locale.parse('en_US', 'invalid string', ['invalid string'])).toEqual(
+          null,
+        );
         expect(
-          generateConfig.locale.parse('en_US', 'invalid string', [
-            'invalid string',
-          ]),
-        ).toEqual(null);
-        expect(
-          generateConfig.locale.parse('en_US', 'invalid string', [
-            'invalid string-Wo',
-          ]),
+          generateConfig.locale.parse('en_US', 'invalid string', ['invalid string-Wo']),
         ).toEqual(null);
       });
 
