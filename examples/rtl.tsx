@@ -41,10 +41,7 @@ export default () => {
 
   return (
     <div dir="rtl">
-      <h2>
-        Value:{' '}
-        {value ? `${formatDate(value[0])} ~ ${formatDate(value[1])}` : 'null'}
-      </h2>
+      <h2>Value: {value ? `${formatDate(value[0])} ~ ${formatDate(value[1])}` : 'null'}</h2>
 
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
@@ -104,6 +101,19 @@ export default () => {
           />
         </div>
         <div style={{ margin: '0 8px' }}>
+          <h3>Time Hours Format</h3>
+          <PickerPanel<Moment>
+            {...sharedProps}
+            locale={enUS}
+            mode="time"
+            showTime={{
+              showSecond: false,
+              format: 'h:mm A',
+              formatHours: 'h A',
+            }}
+          />
+        </div>
+        <div style={{ margin: '0 8px' }}>
           <h3>Datetime</h3>
           <PickerPanel<Moment> {...sharedProps} locale={zhCN} showTime />
         </div>
@@ -116,11 +126,7 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Uncontrolled</h3>
-          <Picker<Moment>
-            generateConfig={momentGenerateConfig}
-            locale={zhCN}
-            allowClear
-          />
+          <Picker<Moment> generateConfig={momentGenerateConfig} locale={zhCN} allowClear />
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Datetime</h3>
@@ -172,11 +178,7 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Week</h3>
-          <Picker<Moment>
-            generateConfig={momentGenerateConfig}
-            locale={zhCN}
-            picker="week"
-          />
+          <Picker<Moment> generateConfig={momentGenerateConfig} locale={zhCN} picker="week" />
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Time</h3>
@@ -184,12 +186,7 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Time 12</h3>
-          <Picker<Moment>
-            {...sharedProps}
-            locale={zhCN}
-            picker="time"
-            use12Hours
-          />
+          <Picker<Moment> {...sharedProps} locale={zhCN} picker="time" use12Hours />
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Year</h3>

@@ -117,6 +117,10 @@ export default () => {
           <Picker<Moment> {...sharedProps} locale={zhCN} picker="time" use12Hours />
         </div>
         <div style={{ margin: '0 8px' }}>
+          <h3>Time Hours Format</h3>
+          <Picker<Moment> {...sharedProps} locale={enUS} picker="time" formatHours="h A" />
+        </div>
+        <div style={{ margin: '0 8px' }}>
           <h3>Year</h3>
           <Picker<Moment> {...sharedProps} locale={zhCN} picker="year" />
         </div>

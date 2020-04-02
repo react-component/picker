@@ -100,6 +100,19 @@ export default () => {
           />
         </div>
         <div style={{ margin: '0 8px' }}>
+          <h3>Formatted Hours</h3>
+          <PickerPanel<Moment>
+            {...sharedProps}
+            locale={enUS}
+            picker="time"
+            showTime={{
+              showSecond: false,
+              format: 'h:mm A',
+              formatHours: 'h A',
+            }}
+          />
+        </div>
+        <div style={{ margin: '0 8px' }}>
           <h3>Datetime</h3>
           <PickerPanel<Moment> {...sharedProps} locale={zhCN} showTime />
         </div>

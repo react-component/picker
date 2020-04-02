@@ -10,11 +10,12 @@ function generateUnits(
   end: number,
   step: number,
   disabledUnits: number[] | undefined,
+  formatter?: ((num: number) => string) | undefined,
 ) {
   const units: Unit[] = [];
   for (let i = start; i <= end; i += step) {
     units.push({
-      label: leftPad(i, 2),
+      label: formatter ? formatter(i) : leftPad(i, 2),
       value: i,
       disabled: (disabledUnits || []).includes(i),
     });
@@ -40,6 +41,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   const {
     generateConfig,
     prefixCls,
+    locale,
     operationRef,
     activeColumnIndex,
     value,
@@ -47,6 +49,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     showMinute,
     showSecond,
     use12Hours,
+    formatHours,
     hourStep = 1,
     minuteStep = 1,
     secondStep = 1,
@@ -93,27 +96,37 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     return newDate;
   };
 
+  const formatHourValue = (
+    hourValue: number,
+    hourFormat: string,
+    config: GenerateConfig<DateType>,
+    configLocale: Locale,
+  ) =>
+    config.locale.format(
+      configLocale.locale,
+      config.locale.parse(configLocale.locale, hourValue.toString(), ['H']),
+      hourFormat,
+    );
+
   // ========================= Unit =========================
   const hours = generateUnits(
     0,
     use12Hours ? 11 : 23,
     hourStep,
     disabledHours && disabledHours(),
+    formatHours
+      ? hourValue => formatHourValue(hourValue, formatHours, generateConfig, locale)
+      : undefined,
   );
 
   // Should additional logic to handle 12 hours
   if (use12Hours && hour !== -1) {
     isPM = hour >= 12;
     hour %= 12;
-    hours[0].label = '12';
+    hours[0].label = formatHours ? formatHourValue(12, formatHours, generateConfig, locale) : '12';
   }
 
-  const minutes = generateUnits(
-    0,
-    59,
-    minuteStep,
-    disabledMinutes && disabledMinutes(hour),
-  );
+  const minutes = generateUnits(0, 59, minuteStep, disabledMinutes && disabledMinutes(hour));
 
   const seconds = generateUnits(
     0,
@@ -127,14 +140,11 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     onUpDown: diff => {
       const column = columns[activeColumnIndex];
       if (column) {
-        const valueIndex = column.units.findIndex(
-          unit => unit.value === column.value,
-        );
+        const valueIndex = column.units.findIndex(unit => unit.value === column.value);
 
         const unitLen = column.units.length;
         for (let i = 1; i < unitLen; i += 1) {
-          const nextUnit =
-            column.units[(valueIndex + diff * i + unitLen) % unitLen];
+          const nextUnit = column.units[(valueIndex + diff * i + unitLen) % unitLen];
 
           if (nextUnit.disabled !== true) {
             column.onSelect(nextUnit.value);
@@ -176,26 +186,14 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   });
 
   // Minute
-  addColumnNode(
-    showMinute,
-    <TimeUnitColumn key="minute" />,
-    minute,
-    minutes,
-    num => {
-      onSelect(setTime(isPM, hour, num, second), 'mouse');
-    },
-  );
+  addColumnNode(showMinute, <TimeUnitColumn key="minute" />, minute, minutes, num => {
+    onSelect(setTime(isPM, hour, num, second), 'mouse');
+  });
 
   // Second
-  addColumnNode(
-    showSecond,
-    <TimeUnitColumn key="second" />,
-    second,
-    seconds,
-    num => {
-      onSelect(setTime(isPM, hour, minute, num), 'mouse');
-    },
-  );
+  addColumnNode(showSecond, <TimeUnitColumn key="second" />, second, seconds, num => {
+    onSelect(setTime(isPM, hour, minute, num), 'mouse');
+  });
 
   // 12 Hours
   let PMIndex = -1;
@@ -213,9 +211,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     },
   );
 
-  return (
-    <div className={contentPrefixCls}>{columns.map(({ node }) => node)}</div>
-  );
+  return <div className={contentPrefixCls}>{columns.map(({ node }) => node)}</div>;
 }
 
 export default TimeBody;

@@ -53,6 +53,7 @@ render(<Picker />, mountNode);
 | showTime | Boolean \| Object | [showTime options](#showTime-options) | to provide an additional time selection |
 | picker | time \| date \| week \| month \| year |  | control which kind of panel should be shown |
 | format | String \| String[] | depends on whether you set timePicker and your locale | use to format/parse date(without time) value to/from input. When an array is provided, all values are used for parsing and first value for display |
+| formatHours | String | depends on whether you set timePicker and your locale | use to format picker panel hours column |
 | use12Hours | Boolean | false | 12 hours display mode |
 | value | moment |  | current value like input's value |
 | defaultValue | moment |  | defaultValue like input's defaultValue |
@@ -130,6 +131,7 @@ render(<Picker />, mountNode);
 | Property            | Type    | Default | Description                        |
 | ------------------- | ------- | ------- | ---------------------------------- |
 | format              | String  |         | moment format                      |
+| formatHours         | String  |         | moment format for hours in column  |
 | showHour            | Boolean | true    | whether show hour                  |
 | showMinute          | Boolean | true    | whether show minute                |
 | showSecond          | Boolean | true    | whether show second                |
