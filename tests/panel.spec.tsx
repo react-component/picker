@@ -420,7 +420,7 @@ describe('Picker.Panel', () => {
     expect(wrapper.find('tbody').render()).toMatchSnapshot();
   });
 
-  describe('start weekday should be correct', () => {
+  describe.only('start weekday should be correct', () => {
     [{ locale: zhCN, startDate: '30' }, { locale: enUS, startDate: '29' }].forEach(
       ({ locale, startDate }) => {
         it(locale.locale, () => {
@@ -437,34 +437,34 @@ describe('Picker.Panel', () => {
         });
       },
     );
-  });
 
-  it('update firstDayOfWeek', () => {
-    const defaultFirstDay = moment(enUS.locale)
-      .localeData()
-      .firstDayOfWeek();
-    moment.updateLocale(enUS.locale, {
-      week: {
-        dow: 5,
-      } as any,
-    });
-    expect(defaultFirstDay).toEqual(0);
+    it('update firstDayOfWeek', () => {
+      const defaultFirstDay = moment(enUS.locale)
+        .localeData()
+        .firstDayOfWeek();
+      moment.updateLocale(enUS.locale, {
+        week: {
+          dow: 5,
+        } as any,
+      });
+      expect(defaultFirstDay).toEqual(0);
 
-    const wrapper = mount(
-      <MomentPickerPanel defaultValue={getMoment('2020-04-02')} locale={enUS} />,
-    );
+      const wrapper = mount(
+        <MomentPickerPanel defaultValue={getMoment('2020-04-02')} locale={enUS} />,
+      );
 
-    expect(
-      wrapper
-        .find('td')
-        .first()
-        .text(),
-    ).toEqual('27');
+      expect(
+        wrapper
+          .find('td')
+          .first()
+          .text(),
+      ).toEqual('27');
 
-    moment.updateLocale(enUS.locale, {
-      week: {
-        dow: defaultFirstDay,
-      } as any,
+      moment.updateLocale(enUS.locale, {
+        week: {
+          dow: defaultFirstDay,
+        } as any,
+      });
     });
   });
 });
