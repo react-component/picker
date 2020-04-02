@@ -19,14 +19,7 @@ export interface TimeUnitColumnProps {
 }
 
 function TimeUnitColumn(props: TimeUnitColumnProps) {
-  const {
-    prefixCls,
-    units,
-    onSelect,
-    value,
-    active,
-    hideDisabledOptions,
-  } = props;
+  const { prefixCls, units, onSelect, value, active, hideDisabledOptions } = props;
   const cellPrefixCls = `${prefixCls}-cell`;
   const { open } = React.useContext(PanelContext);
 
@@ -37,7 +30,8 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
   React.useLayoutEffect(() => {
     const li = liRefs.current.get(value!);
     if (li && open !== false) {
-      scrollTo(ulRef.current!, li.offsetTop, 120);
+      const ul = ulRef.current!;
+      scrollTo(ul, li.offsetTop + li.offsetHeight / 2 - ul.offsetHeight / 2, 120);
     }
   }, [value]);
 
@@ -45,7 +39,8 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
     if (open) {
       const li = liRefs.current.get(value!);
       if (li) {
-        scrollTo(ulRef.current!, li.offsetTop, 0);
+        const ul = ulRef.current!;
+        scrollTo(ulRef.current!, li.offsetTop + li.offsetHeight / 2 - ul.offsetHeight / 2, 0);
       }
     }
   }, [open]);
