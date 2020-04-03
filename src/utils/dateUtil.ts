@@ -164,7 +164,16 @@ export function getWeekStartDate<DateType>(
   const monthStartDate = generateConfig.setDate(value, 1);
   const startDateWeekDay = generateConfig.getWeekDay(monthStartDate);
 
-  return generateConfig.addDate(monthStartDate, weekFirstDay - startDateWeekDay);
+  let alignStartDate = generateConfig.addDate(monthStartDate, weekFirstDay - startDateWeekDay);
+
+  if (
+    generateConfig.getMonth(alignStartDate) === generateConfig.getMonth(value) &&
+    generateConfig.getDate(alignStartDate) > 1
+  ) {
+    alignStartDate = generateConfig.addDate(alignStartDate, -7);
+  }
+
+  return alignStartDate;
 }
 
 export function getClosingViewDate<DateType>(

@@ -438,6 +438,23 @@ describe('Picker.Panel', () => {
       },
     );
 
+    [{ locale: zhCN, startDate: '24' }, { locale: enUS, startDate: '1' }].forEach(
+      ({ locale, startDate }) => {
+        it(`another align test of ${locale.locale}`, () => {
+          const wrapper = mount(
+            <MomentPickerPanel defaultValue={getMoment('2020-03-01')} locale={locale} />,
+          );
+
+          expect(
+            wrapper
+              .find('td')
+              .first()
+              .text(),
+          ).toEqual(startDate);
+        });
+      },
+    );
+
     it('update firstDayOfWeek', () => {
       const defaultFirstDay = moment(enUS.locale)
         .localeData()
