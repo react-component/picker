@@ -504,10 +504,10 @@ describe('Picker.Basic', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('support name prop', () => {
-    const wrapper = mount(<MomentPicker name="bamboo" />);
+  it('support name & autoComplete prop', () => {
+    const wrapper = mount(<MomentPicker name="bamboo" autoComplete="off" />);
 
-    expect(wrapper.find('input').props().name).toEqual('bamboo');
+    expect(wrapper.find('input').props()).toMatchObject({ name: 'bamboo', autoComplete: 'off' });
   });
 
   it('blur should reset invalidate text', () => {
