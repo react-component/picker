@@ -46,11 +46,11 @@ function QuarterBody<DateType>(props: QuarterBodyProps<DateType>) {
       colNum={QUARTER_COL_COUNT}
       baseDate={baseQuarter}
       getCellText={date =>
-        generateConfig.locale.format(locale.locale, date, locale.quarterFormat || '\\QQ')
+        generateConfig.locale.format(locale.locale, date, locale.quarterFormat || '[Q]Q')
       }
       getCellClassName={getCellClassName}
       getCellDate={(date, offset) => generateConfig.addMonth(date, offset * 3)}
-      titleCell={date => generateConfig.locale.format(locale.locale, date, 'YYYY-\\QQ')}
+      titleCell={date => generateConfig.locale.format(locale.locale, date, 'YYYY-[Q]Q')}
     />
   );
 }
