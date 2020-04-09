@@ -933,6 +933,28 @@ describe('Picker.Range', () => {
         });
       },
     );
+
+    // https://github.com/ant-design/ant-design/issues/22991
+    it('click switch 1 offset', () => {
+      const wrapper = mount(<MomentRangePicker />);
+      wrapper.openPicker();
+      expect(
+        wrapper
+          .find('.rc-picker-header-view')
+          .first()
+          .text(),
+      ).toEqual('Sep1990');
+      wrapper
+        .find('.rc-picker-header-next-btn')
+        .last()
+        .simulate('click');
+      expect(
+        wrapper
+          .find('.rc-picker-header-view')
+          .first()
+          .text(),
+      ).toEqual('Oct1990');
+    });
   });
 
   // https://github.com/ant-design/ant-design/issues/20868
