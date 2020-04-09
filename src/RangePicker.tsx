@@ -648,7 +648,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               updateValues(selectedValue, date, mergedActivePickerIndex),
             );
 
-            setViewDate(date, mergedActivePickerIndex);
+            let viewDate = date;
+            if (panelPosition === 'right') {
+              viewDate = getClosingViewDate(viewDate, newMode as any, generateConfig, -1);
+            }
+            setViewDate(viewDate, mergedActivePickerIndex);
           }}
           onOk={null}
           onSelect={undefined}
@@ -725,12 +729,21 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         },
       });
 
-      panels = (
-        <>
-          {direction === 'rtl' ? rightPanel : leftPanel}
-          {direction === 'rtl' ? showDoublePanel && leftPanel : showDoublePanel && rightPanel}
-        </>
-      );
+      if (direction === 'rtl') {
+        panels = (
+          <>
+            {rightPanel}
+            {showDoublePanel && leftPanel}
+          </>
+        );
+      } else {
+        panels = (
+          <>
+            {leftPanel}
+            {showDoublePanel && rightPanel}
+          </>
+        );
+      }
     } else {
       panels = renderPanel();
     }
