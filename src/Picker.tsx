@@ -26,11 +26,7 @@ import { isEqual } from './utils/dateUtil';
 import getDataOrAriaProps, { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import { PickerMode } from './interface';
-import {
-  getDefaultFormat,
-  getInputSize,
-  elementsContains,
-} from './utils/uiUtil';
+import { getDefaultFormat, getInputSize, elementsContains } from './utils/uiUtil';
 import usePickerInput from './hooks/usePickerInput';
 import useTextValueMapping from './hooks/useTextValueMapping';
 import useValueTexts from './hooks/useValueTexts';
@@ -120,9 +116,7 @@ export type PickerProps<DateType> =
 
 interface MergedPickerProps<DateType>
   extends Omit<
-    PickerBaseProps<DateType> &
-      PickerDateProps<DateType> &
-      PickerTimeProps<DateType>,
+    PickerBaseProps<DateType> & PickerDateProps<DateType> & PickerTimeProps<DateType>,
     'picker'
   > {
   picker?: PickerMode;
@@ -173,13 +167,10 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const needConfirmButton: boolean =
-    (picker === 'date' && !!showTime) || picker === 'time';
+  const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
 
   // ============================= State =============================
-  const formatList = toArray(
-    getDefaultFormat(format, picker, showTime, use12Hours),
-  );
+  const formatList = toArray(getDefaultFormat(format, picker, showTime, use12Hours));
 
   // Panel ref
   const panelDivRef = React.useRef<HTMLDivElement>(null);
@@ -192,9 +183,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   });
 
   // Selected value
-  const [selectedValue, setSelectedValue] = React.useState<DateType | null>(
-    mergedValue,
-  );
+  const [selectedValue, setSelectedValue] = React.useState<DateType | null>(mergedValue);
 
   // Operation ref
   const operationRef: React.MutableRefObject<ContextOperationRefProps | null> = React.useRef<
@@ -227,11 +216,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const [text, triggerTextChange, resetText] = useTextValueMapping({
     valueTexts,
     onTextChange: newText => {
-      const inputDate = generateConfig.locale.parse(
-        locale.locale,
-        newText,
-        formatList,
-      );
+      const inputDate = generateConfig.locale.parse(locale.locale, newText, formatList);
       if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
         setSelectedValue(inputDate);
       }
@@ -246,17 +231,12 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     if (onChange && !isEqual(generateConfig, mergedValue, newValue)) {
       onChange(
         newValue,
-        newValue
-          ? generateConfig.locale.format(locale.locale, newValue, formatList[0])
-          : '',
+        newValue ? generateConfig.locale.format(locale.locale, newValue, formatList[0]) : '',
       );
     }
   };
 
-  const triggerOpen = (
-    newOpen: boolean,
-    preventChangeEvent: boolean = false,
-  ) => {
+  const triggerOpen = (newOpen: boolean, preventChangeEvent: boolean = false) => {
     triggerInnerOpen(newOpen);
     if (!newOpen && !preventChangeEvent) {
       triggerChange(selectedValue);
@@ -280,9 +260,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
-  const onInternalMouseUp: React.MouseEventHandler<HTMLDivElement> = (
-    ...args
-  ) => {
+  const onInternalMouseUp: React.MouseEventHandler<HTMLDivElement> = (...args) => {
     if (onMouseUp) {
       onMouseUp(...args);
     }
@@ -300,14 +278,16 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     triggerOpen,
     forwardKeyDown,
     isClickOutside: target =>
-      !elementsContains(
-        [panelDivRef.current, inputDivRef.current],
-        target as HTMLElement,
-      ),
+      !elementsContains([panelDivRef.current, inputDivRef.current], target as HTMLElement),
     onSubmit: () => {
+      if (disabledDate && disabledDate(selectedValue)) {
+        return false;
+      }
+
       triggerChange(selectedValue);
       triggerOpen(false, true);
       resetText();
+      return true;
     },
     onCancel: () => {
       triggerOpen(false, true);
@@ -428,10 +408,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   }
 
   // ============================ Return =============================
-  const onContextSelect = (
-    date: DateType,
-    type: 'key' | 'mouse' | 'submit',
-  ) => {
+  const onContextSelect = (date: DateType, type: 'key' | 'mouse' | 'submit') => {
     if (type === 'submit' || (type !== 'key' && !needConfirmButton)) {
       // triggerChange will also update selected values
       triggerChange(date);

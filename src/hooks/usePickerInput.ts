@@ -18,14 +18,11 @@ export default function usePickerInput({
   triggerOpen: (open: boolean) => void;
   forwardKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => boolean;
   blurToCancel?: boolean;
-  onSubmit: () => void;
+  onSubmit: () => void | boolean;
   onCancel: () => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
-}): [
-  React.DOMAttributes<HTMLInputElement>,
-  { focused: boolean; typing: boolean },
-] {
+}): [React.DOMAttributes<HTMLInputElement>, { focused: boolean; typing: boolean }] {
   const [typing, setTyping] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
 
@@ -45,8 +42,7 @@ export default function usePickerInput({
         case KeyCode.ENTER: {
           if (!open) {
             triggerOpen(true);
-          } else {
-            onSubmit();
+          } else if (onSubmit() !== false) {
             setTyping(true);
           }
 

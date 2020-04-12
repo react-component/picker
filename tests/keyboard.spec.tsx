@@ -455,4 +455,36 @@ describe('Picker.Keyboard', () => {
 
     expect(preventDefault).toHaveBeenCalled();
   });
+
+  it('keyboard should not trigger on disabledDate', () => {
+    const onChange = jest.fn();
+    const onSelect = jest.fn();
+    const wrapper = mount(
+      <MomentPicker
+        showTime
+        onSelect={onSelect}
+        onChange={onChange}
+        disabledDate={date => date.date() % 2 === 0}
+      />,
+    );
+    wrapper.find('input').simulate('focus');
+    wrapper.keyDown(KeyCode.ENTER);
+    wrapper.keyDown(KeyCode.TAB);
+    wrapper.keyDown(KeyCode.TAB);
+    wrapper.keyDown(KeyCode.DOWN);
+    expect(isSame(onSelect.mock.calls[0][0], '1990-09-10')).toBeTruthy();
+
+    // Not enter to change
+    wrapper.keyDown(KeyCode.ENTER);
+    expect(onChange).not.toHaveBeenCalled();
+
+    // Not button enabled
+    expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
+
+    // Another can be enter
+    wrapper.keyDown(KeyCode.RIGHT);
+    expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeFalsy();
+    wrapper.keyDown(KeyCode.ENTER);
+    expect(onChange).toHaveBeenCalled();
+  });
 });
