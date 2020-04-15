@@ -82,6 +82,8 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   role?: string;
   name?: string;
 
+  autoComplete?: string;
+
   direction?: 'ltr' | 'rtl';
 }
 
@@ -163,6 +165,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onContextMenu,
     onClick,
     direction,
+    autoComplete,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -469,6 +472,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               {...inputProps}
               size={getInputSize(picker, formatList[0])}
               {...getDataOrAriaProps(props)}
+              autoComplete={autoComplete}
             />
             {suffixNode}
             {clearNode}
