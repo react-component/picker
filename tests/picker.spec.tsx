@@ -546,6 +546,15 @@ describe('Picker.Basic', () => {
     expect(onMouseUp).toHaveBeenCalled();
   });
 
+  it('not open when disabled', () => {
+    const wrapper = mount(<MomentPicker disabled />);
+    wrapper.find('.rc-picker').simulate('mouseUp');
+    expect(wrapper.isOpen()).toBeFalsy();
+
+    wrapper.setProps({ disabled: false });
+    expect(wrapper.isOpen()).toBeFalsy();
+  });
+
   it('defaultOpenValue in timePicker', () => {
     resetWarned();
     const onChange = jest.fn();

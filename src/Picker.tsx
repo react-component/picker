@@ -240,6 +240,10 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   };
 
   const triggerOpen = (newOpen: boolean, preventChangeEvent: boolean = false) => {
+    if (disabled && newOpen) {
+      return;
+    }
+
     triggerInnerOpen(newOpen);
     if (!newOpen && !preventChangeEvent) {
       triggerChange(selectedValue);
