@@ -55,6 +55,7 @@ function canValueTrigger<DateType>(
 }
 
 export interface RangePickerSharedProps<DateType> {
+  id?: string;
   value?: RangeValue<DateType>;
   defaultValue?: RangeValue<DateType>;
   defaultPickerValue?: [DateType, DateType];
@@ -136,6 +137,7 @@ interface MergedRangePickerProps<DateType>
 function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
+    id,
     style,
     className,
     popupStyle,
@@ -887,6 +889,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             ref={startInputDivRef}
           >
             <input
+              id={id}
               disabled={mergedDisabled[0]}
               readOnly={inputReadOnly || !startTyping}
               value={startText}

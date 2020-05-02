@@ -465,6 +465,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         >
           <div className={`${prefixCls}-input`} ref={inputDivRef}>
             <input
+              id={id}
               disabled={disabled}
               readOnly={inputReadOnly || !typing}
               value={text}
@@ -479,7 +480,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               size={getInputSize(picker, formatList[0])}
               {...getDataOrAriaProps(props)}
               autoComplete={autoComplete}
-              id={id}
             />
             {suffixNode}
             {clearNode}
