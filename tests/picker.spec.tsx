@@ -612,4 +612,9 @@ describe('Picker.Basic', () => {
       expect(wrapper.find('input').props().value).toEqual(text);
     });
   });
+
+  it('id', () => {
+    const wrapper = mount(<MomentPicker id="light" />);
+    expect(wrapper.find('input').props().id).toEqual('light');
+  });
 });

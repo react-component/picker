@@ -49,6 +49,7 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   defaultOpen?: boolean;
   /** Make input readOnly to avoid popup keyboard in mobile */
   inputReadOnly?: boolean;
+  id?: string;
 
   // Value
   format?: string | string[];
@@ -127,6 +128,7 @@ interface MergedPickerProps<DateType>
 function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
+    id,
     style,
     className,
     dropdownClassName,
@@ -463,6 +465,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         >
           <div className={`${prefixCls}-input`} ref={inputDivRef}>
             <input
+              id={id}
               disabled={disabled}
               readOnly={inputReadOnly || !typing}
               value={text}

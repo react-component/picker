@@ -1036,4 +1036,14 @@ describe('Picker.Range', () => {
     testOrderOnTime(false, '23:00:00', '02:00:00');
     testOrderOnTime(true, '02:00:00', '23:00:00');
   });
+
+  it('id', () => {
+    const wrapper = mount(<MomentRangePicker id="bamboo" />);
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .props().id,
+    ).toEqual('bamboo');
+  });
 });
