@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.1",
-    "moment": "^2.24.0",
+    "moment": "~2.24.0",
     "rc-trigger": "^4.0.0",
     "rc-util": "^4.17.0",
     "shallowequal": "^1.1.0"
