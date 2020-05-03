@@ -275,6 +275,23 @@ describe('Picker.Range', () => {
       wrapper.clearValue();
       expect(onChange.mock.calls[0][1]).toEqual(['', '2000-11-11']);
     });
+
+    // https://github.com/ant-design/ant-design/issues/23726
+    it('not fill when all disabled and no value', () => {
+      const wrapper = mount(<MomentRangePicker disabled />);
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .props().value,
+      ).toEqual('');
+      expect(
+        wrapper
+          .find('input')
+          .last()
+          .props().value,
+      ).toEqual('');
+    });
   });
 
   describe('ranges', () => {
