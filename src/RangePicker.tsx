@@ -236,6 +236,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const [selectedValue, setSelectedValue] = useMergedState(mergedValue, {
     postState: values => {
       let postValues = values;
+
+      if (mergedDisabled[0] && mergedDisabled[1]) {
+        return postValues;
+      }
+
+      // Fill disabled unit
       for (let i = 0; i < 2; i += 1) {
         if (mergedDisabled[i] && !getValue(postValues, i) && !getValue(allowEmpty, i)) {
           postValues = updateValues(postValues, generateConfig.getNow(), i);
