@@ -1,6 +1,12 @@
 # rc-picker
 
-[![NPM version][npm-image]][npm-url] [![build status][travis-image]][travis-url] [![Codecov][codecov-image]][codecov-url] [![david deps][david-image]][david-url] [![david devDeps][david-dev-image]][david-dev-url] [![npm download][download-image]][download-url]
+[![NPM version][npm-image]][npm-url]
+[![build status][travis-image]][travis-url]
+[![Codecov][codecov-image]][codecov-url]
+[![Dependencies][david-image]][david-url]
+[![DevDependencies][david-dev-image]][david-dev-url]
+[![npm download][download-image]][download-url]
+[![bundle size][bundlephobia-image]][bundlephobia-url]
 
 [npm-image]: http://img.shields.io/npm/v/rc-picker.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-picker
@@ -8,12 +14,14 @@
 [travis-url]: https://travis-ci.com/react-component/picker
 [codecov-image]: https://img.shields.io/codecov/c/github/react-component/picker/master.svg?style=flat-square
 [codecov-url]: https://codecov.io/gh/react-component/picker/branch/master
+[david-url]: https://david-dm.org/react-component/picker
 [david-image]: https://david-dm.org/react-component/picker/status.svg?style=flat-square
 [david-dev-url]: https://david-dm.org/react-component/picker?type=dev
 [david-dev-image]: https://david-dm.org/react-component/picker/dev-status.svg?style=flat-square
-[david-url]: https://david-dm.org/react-component/picker
 [download-image]: https://img.shields.io/npm/dm/rc-picker.svg?style=flat-square
 [download-url]: https://npmjs.org/package/rc-picker
+[bundlephobia-url]: https://bundlephobia.com/result?p=rc-picker
+[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/rc-picker
 
 ## Live Demo
 
