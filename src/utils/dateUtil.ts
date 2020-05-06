@@ -160,10 +160,20 @@ export function getWeekStartDate<DateType>(
   generateConfig: GenerateConfig<DateType>,
   value: DateType,
 ) {
+  const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale);
   const monthStartDate = generateConfig.setDate(value, 1);
-  const wd = generateConfig.getWeekDay(monthStartDate);
+  const startDateWeekDay = generateConfig.getWeekDay(monthStartDate);
 
-  return generateConfig.addDate(monthStartDate, -wd);
+  let alignStartDate = generateConfig.addDate(monthStartDate, weekFirstDay - startDateWeekDay);
+
+  if (
+    generateConfig.getMonth(alignStartDate) === generateConfig.getMonth(value) &&
+    generateConfig.getDate(alignStartDate) > 1
+  ) {
+    alignStartDate = generateConfig.addDate(alignStartDate, -7);
+  }
+
+  return alignStartDate;
 }
 
 export function getClosingViewDate<DateType>(

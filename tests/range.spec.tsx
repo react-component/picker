@@ -275,6 +275,23 @@ describe('Picker.Range', () => {
       wrapper.clearValue();
       expect(onChange.mock.calls[0][1]).toEqual(['', '2000-11-11']);
     });
+
+    // https://github.com/ant-design/ant-design/issues/23726
+    it('not fill when all disabled and no value', () => {
+      const wrapper = mount(<MomentRangePicker disabled />);
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .props().value,
+      ).toEqual('');
+      expect(
+        wrapper
+          .find('input')
+          .last()
+          .props().value,
+      ).toEqual('');
+    });
   });
 
   describe('ranges', () => {
@@ -933,6 +950,28 @@ describe('Picker.Range', () => {
         });
       },
     );
+
+    // https://github.com/ant-design/ant-design/issues/22991
+    it('click switch 1 offset', () => {
+      const wrapper = mount(<MomentRangePicker />);
+      wrapper.openPicker();
+      expect(
+        wrapper
+          .find('.rc-picker-header-view')
+          .first()
+          .text(),
+      ).toEqual('Sep1990');
+      wrapper
+        .find('.rc-picker-header-next-btn')
+        .last()
+        .simulate('click');
+      expect(
+        wrapper
+          .find('.rc-picker-header-view')
+          .first()
+          .text(),
+      ).toEqual('Oct1990');
+    });
   });
 
   // https://github.com/ant-design/ant-design/issues/20868
@@ -1013,5 +1052,15 @@ describe('Picker.Range', () => {
 
     testOrderOnTime(false, '23:00:00', '02:00:00');
     testOrderOnTime(true, '02:00:00', '23:00:00');
+  });
+
+  it('id', () => {
+    const wrapper = mount(<MomentRangePicker id="bamboo" />);
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .props().id,
+    ).toEqual('bamboo');
   });
 });

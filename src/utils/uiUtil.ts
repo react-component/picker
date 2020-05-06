@@ -142,7 +142,7 @@ export function getDefaultFormat(
         break;
 
       case 'quarter':
-        mergedFormat = 'YYYY-\\QQ';
+        mergedFormat = 'YYYY-[Q]Q';
         break;
 
       case 'year':

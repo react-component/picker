@@ -55,6 +55,7 @@ function canValueTrigger<DateType>(
 }
 
 export interface RangePickerSharedProps<DateType> {
+  id?: string;
   value?: RangeValue<DateType>;
   defaultValue?: RangeValue<DateType>;
   defaultPickerValue?: [DateType, DateType];
@@ -136,6 +137,7 @@ interface MergedRangePickerProps<DateType>
 function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
+    id,
     style,
     className,
     popupStyle,
@@ -234,6 +236,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const [selectedValue, setSelectedValue] = useMergedState(mergedValue, {
     postState: values => {
       let postValues = values;
+
+      if (mergedDisabled[0] && mergedDisabled[1]) {
+        return postValues;
+      }
+
+      // Fill disabled unit
       for (let i = 0; i < 2; i += 1) {
         if (mergedDisabled[i] && !getValue(postValues, i) && !getValue(allowEmpty, i)) {
           postValues = updateValues(postValues, generateConfig.getNow(), i);
@@ -648,7 +656,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               updateValues(selectedValue, date, mergedActivePickerIndex),
             );
 
-            setViewDate(date, mergedActivePickerIndex);
+            let viewDate = date;
+            if (panelPosition === 'right') {
+              viewDate = getClosingViewDate(viewDate, newMode as any, generateConfig, -1);
+            }
+            setViewDate(viewDate, mergedActivePickerIndex);
           }}
           onOk={null}
           onSelect={undefined}
@@ -725,12 +737,21 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         },
       });
 
-      panels = (
-        <>
-          {direction === 'rtl' ? rightPanel : leftPanel}
-          {direction === 'rtl' ? showDoublePanel && leftPanel : showDoublePanel && rightPanel}
-        </>
-      );
+      if (direction === 'rtl') {
+        panels = (
+          <>
+            {rightPanel}
+            {showDoublePanel && leftPanel}
+          </>
+        );
+      } else {
+        panels = (
+          <>
+            {leftPanel}
+            {showDoublePanel && rightPanel}
+          </>
+        );
+      }
     } else {
       panels = renderPanel();
     }
@@ -874,6 +895,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             ref={startInputDivRef}
           >
             <input
+              id={id}
               disabled={mergedDisabled[0]}
               readOnly={inputReadOnly || !startTyping}
               value={startText}

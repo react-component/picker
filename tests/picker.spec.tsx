@@ -504,10 +504,10 @@ describe('Picker.Basic', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  it('support name prop', () => {
-    const wrapper = mount(<MomentPicker name="bamboo" />);
+  it('support name & autoComplete prop', () => {
+    const wrapper = mount(<MomentPicker name="bamboo" autoComplete="off" />);
 
-    expect(wrapper.find('input').props().name).toEqual('bamboo');
+    expect(wrapper.find('input').props()).toMatchObject({ name: 'bamboo', autoComplete: 'off' });
   });
 
   it('blur should reset invalidate text', () => {
@@ -544,6 +544,15 @@ describe('Picker.Basic', () => {
     expect(wrapper.isOpen()).toBeTruthy();
 
     expect(onMouseUp).toHaveBeenCalled();
+  });
+
+  it('not open when disabled', () => {
+    const wrapper = mount(<MomentPicker disabled />);
+    wrapper.find('.rc-picker').simulate('mouseUp');
+    expect(wrapper.isOpen()).toBeFalsy();
+
+    wrapper.setProps({ disabled: false });
+    expect(wrapper.isOpen()).toBeFalsy();
   });
 
   it('defaultOpenValue in timePicker', () => {
@@ -602,5 +611,10 @@ describe('Picker.Basic', () => {
       wrapper.update();
       expect(wrapper.find('input').props().value).toEqual(text);
     });
+  });
+
+  it('id', () => {
+    const wrapper = mount(<MomentPicker id="light" />);
+    expect(wrapper.find('input').props().id).toEqual('light');
   });
 });

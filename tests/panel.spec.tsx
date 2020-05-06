@@ -4,6 +4,8 @@ import moment from 'moment';
 import { resetWarned } from 'rc-util/lib/warning';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { mount, getMoment, isSame, MomentPickerPanel } from './util/commonUtil';
+import zhCN from '../src/locale/zh_CN';
+import enUS from '../src/locale/en_US';
 
 describe('Picker.Panel', () => {
   beforeAll(() => {
@@ -416,5 +418,70 @@ describe('Picker.Panel', () => {
     );
 
     expect(wrapper.find('tbody').render()).toMatchSnapshot();
+  });
+
+  describe('start weekday should be correct', () => {
+    [{ locale: zhCN, startDate: '30' }, { locale: enUS, startDate: '29' }].forEach(
+      ({ locale, startDate }) => {
+        it(locale.locale, () => {
+          const wrapper = mount(
+            <MomentPickerPanel defaultValue={getMoment('2020-04-02')} locale={locale} />,
+          );
+
+          expect(
+            wrapper
+              .find('td')
+              .first()
+              .text(),
+          ).toEqual(startDate);
+        });
+      },
+    );
+
+    [{ locale: zhCN, startDate: '24' }, { locale: enUS, startDate: '1' }].forEach(
+      ({ locale, startDate }) => {
+        it(`another align test of ${locale.locale}`, () => {
+          const wrapper = mount(
+            <MomentPickerPanel defaultValue={getMoment('2020-03-01')} locale={locale} />,
+          );
+
+          expect(
+            wrapper
+              .find('td')
+              .first()
+              .text(),
+          ).toEqual(startDate);
+        });
+      },
+    );
+
+    it('update firstDayOfWeek', () => {
+      const defaultFirstDay = moment(enUS.locale)
+        .localeData()
+        .firstDayOfWeek();
+      moment.updateLocale(enUS.locale, {
+        week: {
+          dow: 5,
+        } as any,
+      });
+      expect(defaultFirstDay).toEqual(0);
+
+      const wrapper = mount(
+        <MomentPickerPanel defaultValue={getMoment('2020-04-02')} locale={enUS} />,
+      );
+
+      expect(
+        wrapper
+          .find('td')
+          .first()
+          .text(),
+      ).toEqual('27');
+
+      moment.updateLocale(enUS.locale, {
+        week: {
+          dow: defaultFirstDay,
+        } as any,
+      });
+    });
   });
 });
