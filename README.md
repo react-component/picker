@@ -10,7 +10,7 @@
 
 [npm-image]: http://img.shields.io/npm/v/rc-picker.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-picker
-[circleci-image]: https://img.shields.io/circleci/build/github/react-component/picker/master
+[circleci-image]: https://img.shields.io/circleci/build/github/react-component/picker/master?style=flat-square
 [circleci-url]: https://circleci.com/gh/react-component/picker
 [codecov-image]: https://img.shields.io/codecov/c/github/react-component/picker/master.svg?style=flat-square
 [codecov-url]: https://codecov.io/gh/react-component/picker/branch/master
