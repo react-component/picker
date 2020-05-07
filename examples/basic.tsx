@@ -33,7 +33,7 @@ export default () => {
     <div>
       <h1>Value: {value ? value.format('YYYY-MM-DD HH:mm:ss') : 'null'}</h1>
 
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
           <Picker<Moment> {...sharedProps} locale={zhCN} />
@@ -120,6 +120,10 @@ export default () => {
         <div style={{ margin: '0 8px' }}>
           <h3>Year</h3>
           <Picker<Moment> {...sharedProps} locale={zhCN} picker="year" />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Keyboard navigation (Tab key) disabled</h3>
+          <Picker<Moment> {...sharedProps} locale={enUS} tabIndex={-1} />
         </div>
       </div>
     </div>
