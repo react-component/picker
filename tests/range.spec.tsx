@@ -173,7 +173,7 @@ describe('Picker.Range', () => {
     expect(wrapper.findCell(11).hasClass('rc-picker-cell-disabled')).toBeFalsy();
   });
 
-  it('Reset when startDate is after endDate', () => {
+  it('Set correct start and end date', () => {
     const onChange = jest.fn();
     const wrapper = mount(<MomentRangePicker onChange={onChange} />);
 
@@ -182,8 +182,8 @@ describe('Picker.Range', () => {
 
     wrapper.openPicker(0);
     wrapper.selectCell(23);
-    expect(onChange).not.toHaveBeenCalled();
-    matchValues(wrapper, '1990-09-23', '');
+    expect(onChange).toHaveBeenCalled();
+    matchValues(wrapper, '1990-09-07', '1990-09-23');
   });
 
   it('allowEmpty', () => {
