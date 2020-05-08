@@ -12,6 +12,8 @@ export default function useRangeDisabled<DateType>({
   disabledDate,
   disabled,
   generateConfig,
+  disabledPickerStartDate,
+  disabledPickerEndDate,
 }: {
   picker: PickerMode;
   selectedValue: RangeValue<DateType>;
@@ -19,21 +21,23 @@ export default function useRangeDisabled<DateType>({
   disabled: [boolean, boolean];
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
+  disabledPickerStartDate?: (startDateToDisable: DateType) => boolean;
+  disabledPickerEndDate?: (endDateToDisable: DateType) => boolean;
 }) {
   const startDate = getValue(selectedValue, 0);
   const endDate = getValue(selectedValue, 1);
 
   const disabledStartDate = React.useCallback(
     (date: DateType) => {
+      if (disabledPickerStartDate) {
+        return disabledPickerStartDate(date);
+      }
       if (disabledDate && disabledDate(date)) {
         return true;
       }
 
       if (disabled[1] && endDate) {
-        return (
-          !isSameDate(generateConfig, date, endDate) &&
-          generateConfig.isAfter(date, endDate)
-        );
+        return !isSameDate(generateConfig, date, endDate) && generateConfig.isAfter(date, endDate);
       }
 
       return false;
@@ -43,6 +47,9 @@ export default function useRangeDisabled<DateType>({
 
   const disableEndDate = React.useCallback(
     (date: DateType) => {
+      if (disabledPickerEndDate) {
+        return disabledPickerEndDate(date);
+      }
       if (disabledDate && disabledDate(date)) {
         return true;
       }
