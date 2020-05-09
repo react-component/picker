@@ -49,7 +49,10 @@ const parseNoMatchNotice = () => {
 const generateConfig: GenerateConfig<Dayjs> = {
   // get
   getNow: () => dayjs(),
-  getWeekDay: date => date.weekday(),
+  getWeekDay: date => {
+    const clone = date.locale('en');
+    return clone.weekday() + clone.localeData().firstDayOfWeek();
+  },
   getYear: date => date.year(),
   getMonth: date => date.month(),
   getDate: date => date.date(),

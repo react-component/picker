@@ -45,6 +45,7 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   allowClear?: boolean;
   autoFocus?: boolean;
   disabled?: boolean;
+  tabIndex?: number;
   open?: boolean;
   defaultOpen?: boolean;
   /** Make input readOnly to avoid popup keyboard in mobile */
@@ -129,6 +130,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
     id,
+    tabIndex,
     style,
     className,
     dropdownClassName,
@@ -466,6 +468,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
           <div className={`${prefixCls}-input`} ref={inputDivRef}>
             <input
               id={id}
+              tabIndex={tabIndex}
               disabled={disabled}
               readOnly={inputReadOnly || !typing}
               value={text}
