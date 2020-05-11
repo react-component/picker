@@ -1063,4 +1063,32 @@ describe('Picker.Range', () => {
         .props().id,
     ).toEqual('bamboo');
   });
+
+  it('all dates inside endDate picker should be clickable', () => {
+    const onChange = jest.fn();
+
+    const wrapper = mount(
+      <MomentRangePicker
+        onChange={onChange}
+        disabledPickerEndDate={() => false}
+        disabledPickerStartDate={() => false}
+      />,
+    );
+
+    let cellNode: Wrapper;
+
+    // Start date
+    wrapper.openPicker();
+    wrapper.selectCell(23);
+
+    // End date
+    cellNode = wrapper.selectCell(11);
+    expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeFalsy();
+    expect(onChange).toHaveBeenCalled();
+
+    // Click origin disabled date
+    cellNode = wrapper.selectCell(28);
+    expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeFalsy();
+    expect(onChange).toHaveBeenCalled();
+  });
 });
