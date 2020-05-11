@@ -78,6 +78,8 @@ export interface RangePickerSharedProps<DateType> {
   direction?: 'ltr' | 'rtl';
   /** @private Internal control of active picker. Do not use since it's private usage */
   activePickerIndex?: 0 | 1;
+  disabledPickerStartDate?: (startDate: DateType) => boolean;
+  disabledPickerEndDate?: (endDate: DateType) => boolean;
 }
 
 type OmitPickerProps<Props> = Omit<
@@ -182,6 +184,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     order,
     direction,
     activePickerIndex,
+    disabledPickerStartDate,
+    disabledPickerEndDate,
   } = props as MergedRangePickerProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
@@ -288,6 +292,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     disabled: mergedDisabled,
     disabledDate,
     generateConfig,
+    disabledPickerStartDate,
+    disabledPickerEndDate,
   });
 
   // ============================= Open ==============================
@@ -332,13 +338,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
     let values = newValue;
     const startValue = getValue(values, 0);
-    let endValue = getValue(values, 1);
+    const endValue = getValue(values, 1);
 
     if (startValue && endValue && generateConfig.isAfter(startValue, endValue)) {
       if (!isSameDate(generateConfig, startValue, endValue)) {
-        // Clean up end date when start date is after end date
-        values = [startValue, null];
-        endValue = null;
+        // if user selects start date while end date picker is opened
+        // then set the start date at proper position
+        values = [startValue, endValue];
       } else if (picker !== 'time' || order !== false) {
         // Reorder when in same date
         values = reorderValues(values, generateConfig);

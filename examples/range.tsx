@@ -14,14 +14,12 @@ function formatDate(date: Moment | null) {
 }
 
 export default () => {
-  const [value, setValue] = React.useState<
-    [Moment | null, Moment | null] | null
-  >([defaultStartValue, defaultEndValue]);
+  const [value, setValue] = React.useState<[Moment | null, Moment | null] | null>([
+    defaultStartValue,
+    defaultEndValue,
+  ]);
 
-  const onChange = (
-    newValue: [Moment | null, Moment | null] | null,
-    formatStrings?: string[],
-  ) => {
+  const onChange = (newValue: [Moment | null, Moment | null] | null, formatStrings?: string[]) => {
     console.log('Change:', newValue, formatStrings);
     setValue(newValue);
   };
@@ -31,6 +29,12 @@ export default () => {
     formatStrings?: string[],
   ) => {
     console.log('Calendar Change:', newValue, formatStrings);
+  };
+
+  const onChangeWithAllDatesEnabled = (newValue: [Moment | null, Moment | null] | null) => {
+    if (newValue[0] && newValue[1] && newValue[1].isBefore(newValue[0])) {
+      setValue([newValue[1], newValue[0]]);
+    }
   };
 
   const sharedProps = {
@@ -44,10 +48,7 @@ export default () => {
 
   return (
     <div>
-      <h2>
-        Value:{' '}
-        {value ? `${formatDate(value[0])} ~ ${formatDate(value[1])}` : 'null'}
-      </h2>
+      <h2>Value: {value ? `${formatDate(value[0])} ~ ${formatDate(value[1])}` : 'null'}</h2>
 
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
@@ -132,21 +133,11 @@ export default () => {
 
         <div style={{ margin: '0 8px' }}>
           <h3>Start disabled</h3>
-          <RangePicker<Moment>
-            {...sharedProps}
-            locale={zhCN}
-            allowClear
-            disabled={[true, false]}
-          />
+          <RangePicker<Moment> {...sharedProps} locale={zhCN} allowClear disabled={[true, false]} />
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>End disabled</h3>
-          <RangePicker<Moment>
-            {...sharedProps}
-            locale={zhCN}
-            allowClear
-            disabled={[false, true]}
-          />
+          <RangePicker<Moment> {...sharedProps} locale={zhCN} allowClear disabled={[false, true]} />
         </div>
 
         <div style={{ margin: '0 8px' }}>
@@ -159,6 +150,17 @@ export default () => {
             disabled={[false, true]}
             allowEmpty={[false, true]}
             renderExtraFooter={() => <div>extra footer</div>}
+          />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>All dates enabled</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            onChange={onChangeWithAllDatesEnabled}
+            value={undefined}
+            locale={zhCN}
+            disabledPickerEndDate={() => false}
+            disabledPickerStartDate={() => false}
           />
         </div>
       </div>

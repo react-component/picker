@@ -132,6 +132,9 @@ render(<Picker />, mountNode);
 | onCalendarChange | Function(value:[moment], formatString: [string, string]) |  | a callback function, can be executed when the start time or the end time of the range is changing |
 | direction | String: ltr or rtl |  | Layout direction of picker component, it supports RTL direction too. |
 | order | Boolean | true | (TimeRangePicker only) `false` to disable auto order |
+| order | Boolean | true | (TimeRangePicker only) `false` to disable auto order |
+| disabledPickerStartDate | Function(startDate: moment):boolean |  | disable start date |
+| disabledPickerEndDate | Function(endDate: moment):boolean |  | disable end date |
 
 ### showTime-options
 
