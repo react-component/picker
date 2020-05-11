@@ -42,7 +42,7 @@ export default function useRangeDisabled<DateType>({
 
       return false;
     },
-    [disabledDate, disabled[1], endDate],
+    [disabledDate, disabled[1], endDate, disabledPickerStartDate],
   );
 
   const disableEndDate = React.useCallback(
@@ -66,7 +66,7 @@ export default function useRangeDisabled<DateType>({
 
       return false;
     },
-    [disabledDate, startDate, picker],
+    [disabledDate, startDate, picker, disabledPickerEndDate],
   );
 
   // Handle week date disabled
