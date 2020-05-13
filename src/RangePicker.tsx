@@ -76,6 +76,7 @@ export interface RangePickerSharedProps<DateType> {
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   onOk?: (dates: RangeValue<DateType>) => void;
   direction?: 'ltr' | 'rtl';
+  autoComplete?: string;
   /** @private Internal control of active picker. Do not use since it's private usage */
   activePickerIndex?: 0 | 1;
 }
@@ -182,6 +183,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     order,
     direction,
     activePickerIndex,
+    autoComplete,
   } = props as MergedRangePickerProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
@@ -907,6 +909,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               ref={startInputRef}
               {...startInputProps}
               {...inputSharedProps}
+              autoComplete={autoComplete}
             />
           </div>
           <div className={`${prefixCls}-range-separator`} ref={separatorRef}>
@@ -929,6 +932,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               ref={endInputRef}
               {...endInputProps}
               {...inputSharedProps}
+              autoComplete={autoComplete}
             />
           </div>
           <div
