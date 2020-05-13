@@ -8,6 +8,7 @@ exports[`Picker.Range icon 1`] = `
     class="rc-picker-input rc-picker-input-active"
   >
     <input
+      autocomplete="off"
       placeholder=""
       readonly=""
       size="12"
@@ -23,6 +24,7 @@ exports[`Picker.Range icon 1`] = `
     class="rc-picker-input"
   >
     <input
+      autocomplete="off"
       placeholder=""
       readonly=""
       size="12"
@@ -58,6 +60,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in rtl
     class="rc-picker-input rc-picker-input-active"
   >
     <input
+      autocomplete="off"
       placeholder=""
       readonly=""
       size="12"
@@ -73,6 +76,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in rtl
     class="rc-picker-input"
   >
     <input
+      autocomplete="off"
       placeholder=""
       readonly=""
       size="12"

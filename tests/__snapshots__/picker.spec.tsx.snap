@@ -5,6 +5,7 @@ exports[`Picker.Basic icon 1`] = `
   class="rc-picker-input"
 >
   <input
+    autocomplete="off"
     readonly=""
     size="12"
     title="1990-09-03"
@@ -36,6 +37,7 @@ exports[`Picker.Basic pass data- & aria- & role 1`] = `
   >
     <input
       aria-label="3334"
+      autocomplete="off"
       data-test="233"
       readonly=""
       role="search"
@@ -55,6 +57,7 @@ exports[`Picker.Basic should render correctly in rtl 1`] = `
     class="rc-picker-input"
   >
     <input
+      autocomplete="off"
       readonly=""
       size="12"
       title=""

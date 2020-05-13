@@ -85,7 +85,6 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   name?: string;
 
   autoComplete?: string;
-
   direction?: 'ltr' | 'rtl';
 }
 
@@ -169,7 +168,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onContextMenu,
     onClick,
     direction,
-    autoComplete,
+    autoComplete = 'off',
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);

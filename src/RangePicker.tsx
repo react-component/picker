@@ -183,7 +183,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     order,
     direction,
     activePickerIndex,
-    autoComplete,
+    autoComplete = 'off',
   } = props as MergedRangePickerProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
