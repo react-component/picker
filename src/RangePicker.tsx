@@ -125,13 +125,12 @@ export type RangePickerProps<DateType> =
   | RangePickerDateProps<DateType>
   | RangePickerTimeProps<DateType>;
 
-interface MergedRangePickerProps<DateType>
-  extends Omit<
-    RangePickerBaseProps<DateType> &
-      RangePickerDateProps<DateType> &
-      RangePickerTimeProps<DateType>,
-    'picker'
-  > {
+// TMP type to fit for ts 3.9.2
+type OmitType<DateType> = Omit<RangePickerBaseProps<DateType>, 'picker'> &
+  Omit<RangePickerDateProps<DateType>, 'picker'> &
+  Omit<RangePickerTimeProps<DateType>, 'picker'>;
+
+interface MergedRangePickerProps<DateType> extends OmitType<DateType> {
   picker?: PickerMode;
 }
 
@@ -612,7 +611,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       panelHoverRangedValue = hoverRangedValue;
     }
 
-    let panelShowTime: boolean | SharedTimeProps<DateType> | undefined = showTime;
+    let panelShowTime:
+      | boolean
+      | SharedTimeProps<DateType>
+      | undefined = showTime as SharedTimeProps<DateType>;
     if (showTime && typeof showTime === 'object' && showTime.defaultValue) {
       const timeDefaultValues: DateType[] = showTime.defaultValue!;
       panelShowTime = {

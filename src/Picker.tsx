@@ -117,11 +117,11 @@ export type PickerProps<DateType> =
   | PickerDateProps<DateType>
   | PickerTimeProps<DateType>;
 
-interface MergedPickerProps<DateType>
-  extends Omit<
-    PickerBaseProps<DateType> & PickerDateProps<DateType> & PickerTimeProps<DateType>,
-    'picker'
-  > {
+// TMP type to fit for ts 3.9.2
+type OmitType<DateType> = Omit<PickerBaseProps<DateType>, 'picker'> &
+  Omit<PickerDateProps<DateType>, 'picker'> &
+  Omit<PickerTimeProps<DateType>, 'picker'>;
+interface MergedPickerProps<DateType> extends OmitType<DateType> {
   picker?: PickerMode;
 }
 
