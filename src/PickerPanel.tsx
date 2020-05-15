@@ -465,6 +465,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     todayNode = (
       <a
         className={classNames(todayCls, disabled && `${todayCls}-disabled`)}
+        aria-disabled={disabled}
         onClick={() => {
           if (!disabled) {
             triggerSelect(now, 'mouse', true);
