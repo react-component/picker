@@ -459,11 +459,16 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   let todayNode: React.ReactNode;
 
   if (showToday && mergedMode === 'date' && picker === 'date' && !showTime) {
+    const now = generateConfig.getNow();
+    const todayCls = `${prefixCls}-today-btn`;
+    const disabled = disabledDate && disabledDate(now);
     todayNode = (
       <a
-        className={`${prefixCls}-today-btn`}
+        className={classNames(todayCls, disabled && `${todayCls}-disabled`)}
         onClick={() => {
-          triggerSelect(generateConfig.getNow(), 'mouse', true);
+          if (!disabled) {
+            triggerSelect(now, 'mouse', true);
+          }
         }}
       >
         {locale.today}
