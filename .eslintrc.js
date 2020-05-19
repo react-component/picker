@@ -4,6 +4,7 @@ module.exports = {
   ...base,
   rules: {
     ...base.rules,
+    'arrow-parens': 0,
     'no-template-curly-in-string': 0,
     'prefer-promise-reject-errors': 0,
     'react/no-array-index-key': 0,
@@ -13,9 +14,6 @@ module.exports = {
     'no-confusing-arrow': 0,
     'jsx-a11y/no-autofocus': 0,
     'jsx-a11y/heading-has-content': 0,
-    'import/no-extraneous-dependencies': [
-      'error',
-      { devDependencies: ['**/tests/**'] },
-    ],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/tests/**'] }],
   },
 };

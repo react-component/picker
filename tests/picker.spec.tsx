@@ -630,4 +630,14 @@ describe('Picker.Basic', () => {
     const wrapper = mount(<MomentPicker id="light" />);
     expect(wrapper.find('input').props().id).toEqual('light');
   });
+
+  it('dateRender', () => {
+    const wrapper = mount(<MomentPicker open dateRender={date => date.format('YYYY-MM-DD')} />);
+    expect(
+      wrapper
+        .find('tbody td')
+        .last()
+        .text(),
+    ).toEqual('1990-10-06');
+  });
 });
