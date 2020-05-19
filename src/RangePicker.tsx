@@ -21,6 +21,7 @@ import useRangeDisabled from './hooks/useRangeDisabled';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
 import useRangeViewDates from './hooks/useRangeViewDates';
+import { DateRender } from './panels/DatePanel/DateBody';
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -54,6 +55,14 @@ function canValueTrigger<DateType>(
   return false;
 }
 
+export type RangeDateRender<DateType> = (
+  currentDate: DateType,
+  today: DateType,
+  info: {
+    range: 'start' | 'end';
+  },
+) => React.ReactNode;
+
 export interface RangePickerSharedProps<DateType> {
   id?: string;
   value?: RangeValue<DateType>;
@@ -79,6 +88,7 @@ export interface RangePickerSharedProps<DateType> {
   autoComplete?: string;
   /** @private Internal control of active picker. Do not use since it's private usage */
   activePickerIndex?: 0 | 1;
+  dateRender?: RangeDateRender<DateType>;
 }
 
 type OmitPickerProps<Props> = Omit<
@@ -98,6 +108,7 @@ type OmitPickerProps<Props> = Omit<
   | 'pickerValue'
   | 'onPickerValueChange'
   | 'onOk'
+  | 'dateRender'
 >;
 
 type RangeShowTimeObject<DateType> = Omit<SharedTimeProps<DateType>, 'defaultValue'> & {
@@ -162,6 +173,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     defaultOpen,
     disabledDate,
     disabledTime,
+    dateRender,
     ranges,
     allowEmpty,
     allowClear,
@@ -623,6 +635,14 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       };
     }
 
+    let panelDateRender: DateRender<DateType> | null = null;
+    if (dateRender) {
+      panelDateRender = (date, today) =>
+        dateRender(date, today, {
+          range: mergedActivePickerIndex ? 'end' : 'start',
+        });
+    }
+
     return (
       <RangeContext.Provider
         value={{
@@ -635,6 +655,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         <PickerPanel<DateType>
           {...(props as any)}
           {...panelProps}
+          dateRender={panelDateRender}
           showTime={panelShowTime}
           mode={mergedModes[mergedActivePickerIndex]}
           generateConfig={generateConfig}

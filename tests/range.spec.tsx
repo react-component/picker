@@ -1063,4 +1063,27 @@ describe('Picker.Range', () => {
         .props().id,
     ).toEqual('bamboo');
   });
+
+  it('dateRender', () => {
+    let range = 'start';
+
+    const wrapper = mount(
+      <MomentRangePicker
+        open
+        dateRender={(date, _, info) => {
+          expect(info.range).toEqual(range);
+          return date.format('YYYY-MM-DD');
+        }}
+      />,
+    );
+    expect(
+      wrapper
+        .find('tbody td')
+        .last()
+        .text(),
+    ).toEqual('1990-11-10');
+
+    range = 'end';
+    wrapper.openPicker(1);
+  });
 });
