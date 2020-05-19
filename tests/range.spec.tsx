@@ -1086,4 +1086,15 @@ describe('Picker.Range', () => {
     range = 'end';
     wrapper.openPicker(1);
   });
+
+  // https://github.com/ant-design/ant-design/issues/21084
+  it('should not jump back to current date after select', () => {
+    const onPanelChange = jest.fn();
+    const wrapper = mount(<MomentRangePicker onPanelChange={onPanelChange} />);
+    wrapper.openPicker();
+    wrapper.clickButton('super-prev');
+    wrapper.selectCell(3);
+    wrapper.selectCell(4);
+    matchValues(wrapper, '1989-09-03', '1989-09-04');
+  });
 });
