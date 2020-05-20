@@ -1089,8 +1089,7 @@ describe('Picker.Range', () => {
 
   // https://github.com/ant-design/ant-design/issues/21084
   it('should not jump back to current date after select', () => {
-    const onPanelChange = jest.fn();
-    const wrapper = mount(<MomentRangePicker onPanelChange={onPanelChange} />);
+    const wrapper = mount(<MomentRangePicker />);
     wrapper.openPicker();
     wrapper.clickButton('super-prev');
     wrapper.selectCell(3);
