@@ -525,7 +525,7 @@ describe('Picker.Range', () => {
 
       wrapper.openPicker(1);
       wrapper.selectCell(1993);
-      expect(isSame(onPanelChange.mock.calls[0][0][1], '1993-09-03'));
+      expect(isSame(onPanelChange.mock.calls[0][0][1], '1993-02-03'));
       expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
     });
 
@@ -1085,5 +1085,15 @@ describe('Picker.Range', () => {
 
     range = 'end';
     wrapper.openPicker(1);
+  });
+
+  // https://github.com/ant-design/ant-design/issues/21084
+  it('should not jump back to current date after select', () => {
+    const wrapper = mount(<MomentRangePicker />);
+    wrapper.openPicker();
+    wrapper.clickButton('super-prev');
+    wrapper.selectCell(3);
+    wrapper.selectCell(4);
+    matchValues(wrapper, '1989-09-03', '1989-09-04');
   });
 });
