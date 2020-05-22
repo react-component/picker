@@ -55,7 +55,7 @@ function DateBody<DateType>(props: DateBodyProps<DateType>) {
       : []);
 
   if (prefixColumn) {
-    headerCells.push(<th key="empty" />);
+    headerCells.push(<th key="empty" aria-label="empty cell" />);
   }
   for (let i = 0; i < WEEK_DAY_COUNT; i += 1) {
     headerCells.push(<th key={i}>{weekDaysLocale[(i + weekFirstDay) % WEEK_DAY_COUNT]}</th>);
