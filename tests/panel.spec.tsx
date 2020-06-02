@@ -333,6 +333,14 @@ describe('Picker.Panel', () => {
         wrapper.selectCell('1910-1919');
         expect(onPanelChange).toHaveBeenCalled();
       });
+
+      it('not trigger when same panel', () => {
+        const onPanelChange = jest.fn();
+        const wrapper = mount(<MomentPickerPanel onPanelChange={onPanelChange} />);
+
+        wrapper.selectCell('23');
+        expect(onPanelChange).not.toHaveBeenCalled();
+      });
     });
   });
 
