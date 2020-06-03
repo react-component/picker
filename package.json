@@ -40,6 +40,7 @@
   "dependencies": {
     "@babel/runtime": "^7.10.1",
     "classnames": "^2.2.1",
+    "date-fns": "^2.14.0",
     "moment": "^2.24.0",
     "rc-trigger": "^4.0.0",
     "rc-util": "^5.0.1",
