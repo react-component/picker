@@ -2,8 +2,7 @@ import * as React from 'react';
 import { RangeValue, PickerMode, Locale } from '../interface';
 import { getValue } from '../utils/miscUtil';
 import { GenerateConfig } from '../generate';
-import { isSameDate } from '../utils/dateUtil';
-import useWeekDisabled from './useWeekDisabled';
+import { isSameDate, getQuarter } from '../utils/dateUtil';
 
 export default function useRangeDisabled<DateType>({
   picker,
@@ -30,10 +29,7 @@ export default function useRangeDisabled<DateType>({
       }
 
       if (disabled[1] && endDate) {
-        return (
-          !isSameDate(generateConfig, date, endDate) &&
-          generateConfig.isAfter(date, endDate)
-        );
+        return !isSameDate(generateConfig, date, endDate) && generateConfig.isAfter(date, endDate);
       }
 
       return false;
@@ -48,12 +44,25 @@ export default function useRangeDisabled<DateType>({
       }
 
       if (startDate) {
-        const compareStartDate =
-          picker === 'week' ? generateConfig.addDate(startDate, -7) : startDate;
+        if (picker === 'week') {
+          const startWeek = generateConfig.locale.getWeek(locale.locale, startDate);
+          const dateWeek = generateConfig.locale.getWeek(locale.locale, date);
+
+          return dateWeek < startWeek;
+        }
+
+        if (picker === 'quarter') {
+          const startYear = generateConfig.getYear(startDate);
+          const dateYear = generateConfig.getYear(date);
+          const startQuarter = getQuarter(generateConfig, startDate);
+          const dateQuarter = getQuarter(generateConfig, date);
+          const startVal = startYear * 10 + startQuarter;
+          const dateVal = dateYear * 10 + dateQuarter;
+          return dateVal < startVal;
+        }
 
         return (
-          !isSameDate(generateConfig, date, compareStartDate) &&
-          generateConfig.isAfter(compareStartDate, date)
+          !isSameDate(generateConfig, date, startDate) && generateConfig.isAfter(startDate, date)
         );
       }
 
@@ -61,25 +70,6 @@ export default function useRangeDisabled<DateType>({
     },
     [disabledDate, startDate, picker],
   );
-
-  // Handle week date disabled
-  const sharedWeekDisabledConfig = {
-    generateConfig,
-    locale,
-  };
-
-  const [disabledStartWeekDate] = useWeekDisabled({
-    ...sharedWeekDisabledConfig,
-    disabledDate: disabledStartDate,
-  });
-  const [disabledEndWeekDate] = useWeekDisabled({
-    ...sharedWeekDisabledConfig,
-    disabledDate: disableEndDate,
-  });
-
-  if (picker === 'week') {
-    return [disabledStartWeekDate, disabledEndWeekDate];
-  }
 
   return [disabledStartDate, disableEndDate];
 }

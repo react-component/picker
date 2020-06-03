@@ -11,7 +11,13 @@ import usePickerInput from './hooks/usePickerInput';
 import getDataOrAriaProps, { toArray, getValue, updateValues } from './utils/miscUtil';
 import { getDefaultFormat, getInputSize, elementsContains } from './utils/uiUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
-import { isEqual, getClosingViewDate, isSameDate } from './utils/dateUtil';
+import {
+  isEqual,
+  getClosingViewDate,
+  isSameDate,
+  isSameWeek,
+  isSameQuarter,
+} from './utils/dateUtil';
 import useValueTexts from './hooks/useValueTexts';
 import useTextValueMapping from './hooks/useTextValueMapping';
 import { GenerateConfig } from './generate';
@@ -348,7 +354,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     let endValue = getValue(values, 1);
 
     if (startValue && endValue && generateConfig.isAfter(startValue, endValue)) {
-      if (!isSameDate(generateConfig, startValue, endValue)) {
+      if (
+        // WeekPicker only compare week
+        (picker === 'week' && !isSameWeek(generateConfig, locale.locale, startValue, endValue)) ||
+        // WeekPicker only compare week
+        (picker === 'quarter' && !isSameQuarter(generateConfig, startValue, endValue)) ||
+        // Other non-TimePicker compare date
+        (picker !== 'week' &&
+          picker !== 'quarter' &&
+          picker !== 'time' &&
+          !isSameDate(generateConfig, startValue, endValue))
+      ) {
         // Clean up end date when start date is after end date
         values = [startValue, null];
         endValue = null;

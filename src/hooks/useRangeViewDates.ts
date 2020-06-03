@@ -25,6 +25,7 @@ function getStartEndDistance<DateType>(
   switch (picker) {
     case 'year':
       return getDistance((start, end) => isSameDecade(generateConfig, start, end));
+    case 'quarter':
     case 'month':
       return getDistance((start, end) => isSameYear(generateConfig, start, end));
     default:

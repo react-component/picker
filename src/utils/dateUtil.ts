@@ -185,6 +185,7 @@ export function getClosingViewDate<DateType>(
   switch (picker) {
     case 'year':
       return generateConfig.addYear(viewDate, offset * 10);
+    case 'quarter':
     case 'month':
       return generateConfig.addYear(viewDate, offset);
     default:
