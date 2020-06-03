@@ -132,8 +132,30 @@ export function isEqual<DateType>(
   generateConfig: GenerateConfig<DateType>,
   value1: NullableDateType<DateType>,
   value2: NullableDateType<DateType>,
+  type: PickerMode = 'time',
+  locale: string = '',
 ) {
-  return isSameDate(generateConfig, value1, value2) && isSameTime(generateConfig, value1, value2);
+  switch (type) {
+    case 'year':
+      return isSameYear(generateConfig, value1, value2);
+
+    case 'quarter':
+      return isSameQuarter(generateConfig, value1, value2);
+
+    case 'month':
+      return isSameMonth(generateConfig, value1, value2);
+
+    case 'week':
+      return isSameWeek(generateConfig, locale, value1, value2);
+
+    case 'date':
+      return isSameDate(generateConfig, value1, value2);
+
+    default:
+      return (
+        isSameDate(generateConfig, value1, value2) && isSameTime(generateConfig, value1, value2)
+      );
+  }
 }
 
 /** Between in date but not equal of date */
