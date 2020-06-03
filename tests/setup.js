@@ -33,15 +33,15 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
   findCell(text, index = 0) {
     let matchCell;
 
-    this.find('table')
-      .at(index)
-      .find('td')
-      .forEach(td => {
-        if (td.text() === String(text) && td.props().className.includes('-in-view')) {
-          matchCell = td;
-        }
-      });
+    const table = this.find('table').at(index);
+
+    table.find('td').forEach(td => {
+      if (td.text() === String(text) && td.props().className.includes('-in-view')) {
+        matchCell = td;
+      }
+    });
     if (!matchCell) {
+      console.log(table.html());
       throw new Error('Cell not match in picker panel.');
     }
 

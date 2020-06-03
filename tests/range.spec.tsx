@@ -6,6 +6,7 @@ import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { Moment } from 'moment';
 import { mount, getMoment, isSame, MomentRangePicker, Wrapper } from './util/commonUtil';
 import zhCN from '../src/locale/zh_CN';
+import { PickerMode } from '../src/interface';
 
 describe('Picker.Range', () => {
   function matchValues(wrapper: Wrapper, value1: string, value2: string) {
@@ -1095,5 +1096,63 @@ describe('Picker.Range', () => {
     wrapper.selectCell(3);
     wrapper.selectCell(4);
     matchValues(wrapper, '1989-09-03', '1989-09-04');
+  });
+
+  describe('can select endDate when in same level', () => {
+    /**
+     * Selection should support in same level.
+     * Like `2020-12-31` ~ `2020-01-01` is validate in `year` picker.
+     */
+    const list: {
+      picker: PickerMode;
+      defaultValue: string[];
+      selectCell: string;
+      match: string[];
+    }[] = [
+      // {
+      //   picker: 'week',
+      //   defaultValue: ['2020-06-13'],
+      //   selectCell: '9',
+      //   match: ['2020-24th'],
+      // },
+      // {
+      //   picker: 'month',
+      //   defaultValue: ['2020-03-31', '2020-04-01'],
+      //   selectCell: 'Mar',
+      //   match: ['2020-03'],
+      // },
+      {
+        picker: 'quarter',
+        defaultValue: ['2020-03-30', '2020-05-20'],
+        selectCell: 'Q1',
+        match: ['2020-Q1'],
+      },
+      // {
+      //   picker: 'year',
+      //   defaultValue: ['2020-12-31', '2021-01-01'],
+      //   selectCell: '2020',
+      //   match: ['2020'],
+      // },
+    ];
+
+    list.forEach(({ picker, defaultValue, match, selectCell }) => {
+      it(picker, () => {
+        const onChange = jest.fn();
+        const wrapper = mount(
+          <MomentRangePicker
+            picker={picker}
+            onChange={onChange}
+            defaultValue={[
+              getMoment(defaultValue[0]),
+              getMoment(defaultValue[1] || defaultValue[0]),
+            ]}
+          />,
+        );
+        wrapper.openPicker(1);
+        wrapper.selectCell(selectCell);
+        expect(onChange).toHaveBeenCalled();
+        expect(onChange).toHaveBeenCalledWith(expect.anything(), [match[0], match[1] || match[0]]);
+      });
+    });
   });
 });
