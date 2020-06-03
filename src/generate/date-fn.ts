@@ -19,24 +19,37 @@ import {
   isAfter,
   isValid,
   getDay,
-  setDay,
   format,
   parse,
-  toDate,
+  getWeek,
+  addWeeks,
+  startOfWeek,
 } from 'date-fns';
+
+import { enUS, zhCN, zhTW, enGB } from 'date-fns/locale';
 
 import { GenerateConfig } from '.';
 
+// TODO: should be export interface let user import supported locale
 const localeMap = {
-  en_GB: 'en-gb',
-  en_US: 'en',
-  zh_CN: 'zh-cn',
-  zh_TW: 'zh-tw',
+  en_GB: enGB,
+  en_US: enUS,
+  zh_CN: zhCN,
+  zh_TW: zhTW,
 };
 
 const parseLocale = function parseLocale(locale: string) {
-  const mapLocale = localeMap[locale];
-  return mapLocale || locale.split('_')[0];
+  const mapLocale = localeMap[locale as keyof typeof localeMap];
+  return mapLocale;
+};
+
+const parseFormat = (format: string) => {
+  return format
+    .replace(/Y/g, 'y')
+    .replace(/D/g, 'd')
+    .replace(/gggg/, 'yyyy')
+    .replace(/g/g, 'G')
+    .replace(/([Ww])o/g, 'wo');
 };
 
 const config: GenerateConfig<Date> = {
@@ -65,35 +78,54 @@ const config: GenerateConfig<Date> = {
   isValidate: isValid,
   locale: {
     getWeekFirstDay(locale) {
-      return getDay(setDay(new Date(new Date().toLocaleDateString(locale)), 1));
+      return getDay(startOfWeek(new Date(), { locale: parseLocale(locale) }));
     },
     getWeek(locale, date) {
-      return getDay(new Date(new Date(date).toLocaleDateString(locale)));
+      return getWeek(date, { locale: parseLocale(locale) });
     },
     format(locale, date, _format) {
-      return format(new Date(date.toLocaleDateString(locale)), _format);
+      return format(date, parseFormat(_format), { locale: parseLocale(locale) });
+    },
+    getShortMonths(locale) {
+      return Array.from({ length: 12 }, (_, i) =>
+        parseLocale(locale).localize!.month(i, { width: 'abbreviated' }),
+      );
+    },
+    getShortWeekDays(locale) {
+      return Array.from({ length: 7 }, (_, i) =>
+        parseLocale(locale).localize!.day(i, { width: 'short' }),
+      );
     },
     parse(locale, text, formats) {
-      const fallbackFormatList: string[] = [];
       for (let _format of formats) {
         let formatText = text;
+        let _formatSpec = parseFormat(_format);
         if (/[Ww]o/g.test(_format)) {
-          _format = _format.replace(/wo/g, 'w').replace(/Wo/g, 'W');
-          const matchFormat = _format.match(/[-YyMmDdHhSsWwGg]+/g);
-          const matchText = formatText.match(/[-\d]+/g);
-          if (matchFormat && matchText) {
-            _format = matchFormat.join('');
-            formatText = matchText.join('');
-          } else {
-            fallbackFormatList.push(_format.replace(/o/g, ''));
+          const year = formatText.split('-')[0];
+          const weekStr = formatText.split('-')[1];
+          const weekCal = parse(year, 'yyyy', new Date(), {
+            locale: parseLocale(locale),
+          });
+          if (isValid(weekCal)) {
+            let i = 1;
+            do {
+              const result = addWeeks(weekCal, i);
+              if (format(result, 'wo', { locale: parseLocale(locale) }) === weekStr) {
+                return result;
+              }
+            } while (52 - i++);
           }
         }
 
-        const date = format(new Date(formatText), _format, { locale: { code: locale } });
+        const date = parse(formatText, _formatSpec, new Date(), { locale: parseLocale(locale) });
         if (isValid(date)) {
-          return new Date(new Date(formatText).toLocaleDateString(locale));
+          return date;
         }
       }
+      noteOnce(
+        false,
+        'Not match any format strictly and fallback to fuzzy match. Please help to fire a issue about this.',
+      );
       return null;
     },
   },
