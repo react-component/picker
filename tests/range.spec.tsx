@@ -1109,30 +1109,18 @@ describe('Picker.Range', () => {
       selectCell: string;
       match: string[];
     }[] = [
-      // {
-      //   picker: 'week',
-      //   defaultValue: ['2020-06-13'],
-      //   selectCell: '9',
-      //   match: ['2020-24th'],
-      // },
-      // {
-      //   picker: 'month',
-      //   defaultValue: ['2020-03-31', '2020-04-01'],
-      //   selectCell: 'Mar',
-      //   match: ['2020-03'],
-      // },
+      {
+        picker: 'week',
+        defaultValue: ['2020-06-13'],
+        selectCell: '9',
+        match: ['2020-24th'],
+      },
       {
         picker: 'quarter',
         defaultValue: ['2020-03-30', '2020-05-20'],
         selectCell: 'Q1',
         match: ['2020-Q1'],
       },
-      // {
-      //   picker: 'year',
-      //   defaultValue: ['2020-12-31', '2021-01-01'],
-      //   selectCell: '2020',
-      //   match: ['2020'],
-      // },
     ];
 
     list.forEach(({ picker, defaultValue, match, selectCell }) => {
