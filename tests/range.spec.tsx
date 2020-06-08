@@ -1143,4 +1143,16 @@ describe('Picker.Range', () => {
       });
     });
   });
+
+  it('should not disabled when week picker in diff year', () => {
+    const wrapper = mount(
+      <MomentRangePicker
+        picker="week"
+        defaultValue={[getMoment('2000-12-15'), getMoment('2021-02-03')]}
+      />,
+    );
+
+    wrapper.openPicker(1);
+    expect(wrapper.findCell('15').hasClass('rc-picker-cell-disabled')).toBeFalsy();
+  });
 });

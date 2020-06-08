@@ -45,10 +45,13 @@ export default function useRangeDisabled<DateType>({
 
       if (startDate) {
         if (picker === 'week') {
+          const startYear = generateConfig.getYear(startDate);
+          const dateYear = generateConfig.getYear(date);
           const startWeek = generateConfig.locale.getWeek(locale.locale, startDate);
           const dateWeek = generateConfig.locale.getWeek(locale.locale, date);
-
-          return dateWeek < startWeek;
+          const startVal = startYear * 100 + startWeek;
+          const dateVal = dateYear * 100 + dateWeek;
+          return dateVal < startVal;
         }
 
         if (picker === 'quarter') {
