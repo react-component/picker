@@ -40,7 +40,6 @@
   "dependencies": {
     "@babel/runtime": "^7.10.1",
     "classnames": "^2.2.1",
-    "date-fns": "^2.14.0",
     "moment": "^2.24.0",
     "rc-trigger": "^4.0.0",
     "rc-util": "^5.0.1",
@@ -59,6 +58,7 @@
     "@umijs/fabric": "^2.0.8",
     "coveralls": "^3.0.6",
     "cross-env": "^7.0.2",
+    "date-fns": "2.14.0",
     "dayjs": "^1.8.18",
     "enzyme": "^3.0.0",
     "enzyme-adapter-react-16": "^1.0.1",
