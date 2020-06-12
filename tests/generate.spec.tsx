@@ -1,7 +1,7 @@
 import MockDate from 'mockdate';
 import momentGenerateConfig from '../src/generate/moment';
 import dayjsGenerateConfig from '../src/generate/dayjs';
-import dateFnsGenerateConfig from '../src/generate/date-fn';
+import dateFnsGenerateConfig from '../src/generate/date-fns';
 import { getMoment } from './util/commonUtil';
 
 import 'dayjs/locale/zh-cn';
@@ -89,7 +89,7 @@ describe('Picker.Generate', () => {
                 'gggg-wo',
               ),
             ).toEqual('2019-1st');
-            // Date fns still now support 周 in the locale
+
             expect(
               generateConfig.locale.format(
                 'zh_CN',

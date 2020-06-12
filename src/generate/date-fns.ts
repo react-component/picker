@@ -30,12 +30,35 @@ import { enUS, zhCN, zhTW, enGB } from 'date-fns/locale';
 
 import { GenerateConfig } from '.';
 
-// TODO: should be export interface let user import supported locale
+// hack for zh_CN and zh_TW week display
+function chineseLocalizeReplace(fn: Locale['localize']['ordinalNumber']) {
+  return (dirtyNumber: string, dirtyOptions: { unit?: any }) => {
+    const unit = String(dirtyOptions.unit);
+    if (unit === 'week') {
+      return `${+dirtyNumber}周`;
+    } else {
+      return fn(dirtyNumber, dirtyOptions);
+    }
+  };
+}
+
 const localeMap = {
   en_GB: enGB,
   en_US: enUS,
-  zh_CN: zhCN,
-  zh_TW: zhTW,
+  zh_CN: {
+    ...zhCN,
+    localize: {
+      ...zhCN.localize,
+      ordinalNumber: chineseLocalizeReplace(zhCN.localize.ordinalNumber),
+    },
+  },
+  zh_TW: {
+    ...zhTW,
+    localize: {
+      ...zhTW.localize,
+      ordinalNumber: chineseLocalizeReplace(zhTW.localize.ordinalNumber),
+    },
+  },
 };
 
 const parseLocale = function parseLocale(locale: string) {
