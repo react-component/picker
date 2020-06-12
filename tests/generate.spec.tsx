@@ -90,13 +90,13 @@ describe('Picker.Generate', () => {
               ),
             ).toEqual('2019-1st');
             // Date fns still now support 周 in the locale
-            // expect(
-            //   generateConfig.locale.format(
-            //     'zh_CN',
-            //     generateConfig.locale.parse('zh_CN', '2019-45周', ['gggg-wo'])!,
-            //     'gggg-wo',
-            //   ),
-            // ).toEqual('2019-45周');
+            expect(
+              generateConfig.locale.format(
+                'zh_CN',
+                generateConfig.locale.parse('zh_CN', '2019-45周', ['gggg-wo'])!,
+                'gggg-wo',
+              ),
+            ).toEqual('2019-45周');
           });
         });
       });
@@ -128,11 +128,10 @@ describe('Picker.Generate', () => {
       });
 
       it('Parse format Wo', () => {
-        const basic = generateConfig.locale.parse('en_US', '2012-51st', ['YYYY-Wo']);
+        let basic = generateConfig.locale.parse('en_US', '2012-51st', ['YYYY-Wo']);
         expect(generateConfig.locale.format('en_US', basic, 'Wo')).toEqual('51st');
-        // expect(generateConfig.locale.parse('zh_CN', '2012-1周', ['YYYY-Wo'])?.format('Wo')).toEqual(
-        //   '1周',
-        // );
+        basic = generateConfig.locale.parse('zh_CN', '2012-1周', ['YYYY-Wo']);
+        expect(generateConfig.locale.format('zh_CN', basic, 'Wo')).toEqual('1周');
       });
 
       it('Parse format faild', () => {
