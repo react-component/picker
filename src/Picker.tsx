@@ -213,7 +213,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   });
 
   // ============================= Text ==============================
-  const valueTexts = useValueTexts(selectedValue, {
+  const [valueTexts, firstValueText] = useValueTexts(selectedValue, {
     formatList,
     generateConfig,
     locale,
@@ -316,7 +316,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
       if (!valueTexts.length || valueTexts[0] === '') {
         triggerTextChange('');
-      } else if (!valueTexts.includes(text)) {
+      } else if (firstValueText !== text) {
         resetText();
       }
     }

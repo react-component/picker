@@ -472,9 +472,15 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     locale,
   };
 
-  const startValueTexts = useValueTexts<DateType>(getValue(selectedValue, 0), sharedTextHooksProps);
+  const [startValueTexts, firstStartValueText] = useValueTexts<DateType>(
+    getValue(selectedValue, 0),
+    sharedTextHooksProps,
+  );
 
-  const endValueTexts = useValueTexts<DateType>(getValue(selectedValue, 1), sharedTextHooksProps);
+  const [endValueTexts, firstEndValueText] = useValueTexts<DateType>(
+    getValue(selectedValue, 1),
+    sharedTextHooksProps,
+  );
 
   const onTextChange = (newText: string, index: 0 | 1) => {
     const inputDate = generateConfig.locale.parse(locale.locale, newText, formatList);
@@ -552,12 +558,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
       if (!startValueTexts.length || startValueTexts[0] === '') {
         triggerStartTextChange('');
-      } else if (!startValueTexts.includes(startText)) {
+      } else if (firstStartValueText !== startText) {
         resetStartText();
       }
       if (!endValueTexts.length || endValueTexts[0] === '') {
         triggerEndTextChange('');
-      } else if (!endValueTexts.includes(endText)) {
+      } else if (firstEndValueText !== endText) {
         resetEndText();
       }
     }
