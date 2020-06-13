@@ -13,14 +13,27 @@ export default function useValueTexts<DateType>(
   value: DateType | null,
   { formatList, generateConfig, locale }: ValueTextConfig<DateType>,
 ) {
-  return useMemo<string[]>(
+  return useMemo<[string[], string]>(
     () => {
       if (!value) {
-        return [''];
+        return [[''], ''];
       }
-      return formatList.map(subFormat =>
-        generateConfig.locale.format(locale.locale, value, subFormat),
-      );
+
+      // We will convert data format back to first format
+      let firstValueText: string = '';
+      const fullValueTexts: string[] = [];
+
+      for (let i = 0; i < formatList.length; i += 1) {
+        const format = formatList[i];
+        const formatStr = generateConfig.locale.format(locale.locale, value, format);
+        fullValueTexts.push(formatStr);
+
+        if (i === 0) {
+          firstValueText = formatStr;
+        }
+      }
+
+      return [fullValueTexts, firstValueText];
     },
     [value, formatList],
     (prev, next) => prev[0] !== next[0] || !shallowEqual(prev[1], next[1]),

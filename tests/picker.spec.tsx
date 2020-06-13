@@ -640,4 +640,16 @@ describe('Picker.Basic', () => {
         .text(),
     ).toEqual('1990-10-06');
   });
+
+  it('format', () => {
+    const wrapper = mount(<MomentPicker format={['YYYYMMDD', 'YYYY-MM-DD']} />);
+    wrapper.openPicker();
+    wrapper.find('input').simulate('change', {
+      target: {
+        value: '2000-01-01',
+      },
+    });
+    wrapper.closePicker();
+    expect(wrapper.find('input').prop('value')).toEqual('20000101');
+  });
 });

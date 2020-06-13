@@ -1155,4 +1155,49 @@ describe('Picker.Range', () => {
     wrapper.openPicker(1);
     expect(wrapper.findCell('15').hasClass('rc-picker-cell-disabled')).toBeFalsy();
   });
+
+  it('format', () => {
+    const wrapper = mount(
+      <MomentRangePicker
+        format={['YYYYMMDD', 'YYYY-MM-DD']}
+        defaultValue={[getMoment('2000-12-15'), getMoment('2021-02-03')]}
+      />,
+    );
+
+    // Start date
+    wrapper.openPicker();
+    wrapper
+      .find('input')
+      .first()
+      .simulate('change', {
+        target: {
+          value: '1989-09-03',
+        },
+      });
+    wrapper.closePicker();
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .prop('value'),
+    ).toEqual('19890903');
+
+    // end date
+    wrapper.openPicker(1);
+    wrapper
+      .find('input')
+      .last()
+      .simulate('change', {
+        target: {
+          value: '1990-11-28',
+        },
+      });
+    wrapper.closePicker(1);
+    expect(
+      wrapper
+        .find('input')
+        .last()
+        .prop('value'),
+    ).toEqual('19901128');
+  });
 });
