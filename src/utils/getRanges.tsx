@@ -9,6 +9,7 @@ export interface RangesProps {
   onNow?: null | (() => void) | false;
   onOk?: null | (() => void) | false;
   okDisabled?: boolean;
+  showToday?: boolean;
   locale: Locale;
 }
 
@@ -20,6 +21,7 @@ export default function getRanges({
   onNow,
   onOk,
   okDisabled,
+  showToday,
   locale,
 }: RangesProps) {
   let presetNode: React.ReactNode;
@@ -32,11 +34,7 @@ export default function getRanges({
       <>
         {rangeList.map(({ label, onClick, onMouseEnter, onMouseLeave }) => (
           <li key={label} className={`${prefixCls}-preset`}>
-            <Item
-              onClick={onClick}
-              onMouseEnter={onMouseEnter}
-              onMouseLeave={onMouseLeave}
-            >
+            <Item onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
               {label}
             </Item>
           </li>
@@ -48,7 +46,7 @@ export default function getRanges({
   if (needConfirmButton) {
     const Button = (components.button || 'button') as any;
 
-    if (onNow && !presetNode) {
+    if (onNow && !presetNode && showToday) {
       presetNode = (
         <li className={`${prefixCls}-now`}>
           <a className={`${prefixCls}-now-btn`} onClick={onNow}>

@@ -487,6 +487,20 @@ describe('Picker.Basic', () => {
         expect(wrapper.find('.rc-picker-today-btn').length).toBeFalsy();
       });
     });
+
+    it('hide now button when showTime is true and showToday is set to false', () => {
+      const wrapper = mount(<MomentPicker showTime showToday={false} />);
+      wrapper.openPicker();
+      expect(wrapper.find('.rc-picker-now-btn').length).toEqual(0);
+    });
+
+    it('show now button when showTime is true and showToday is set to true', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(<MomentPicker onSelect={onSelect} showTime showToday />);
+      wrapper.openPicker();
+      wrapper.find('.rc-picker-now > a').simulate('click');
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second')).toBeTruthy();
+    });
   });
 
   it('icon', () => {
@@ -502,13 +516,10 @@ describe('Picker.Basic', () => {
     expect(wrapper.find('.rc-picker-input').render()).toMatchSnapshot();
   });
 
-  it('datetime should display now', () => {
-    const onSelect = jest.fn();
-    const wrapper = mount(<MomentPicker onSelect={onSelect} showTime />);
+  it("datetime shouldn't display now by default", () => {
+    const wrapper = mount(<MomentPicker showTime />);
     wrapper.openPicker();
-    wrapper.find('.rc-picker-now > a').simulate('click');
-
-    expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second')).toBeTruthy();
+    expect(wrapper.find('.rc-picker-now > a').length).toEqual(0);
   });
 
   it('pass data- & aria- & role', () => {

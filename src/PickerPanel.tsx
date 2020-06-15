@@ -440,6 +440,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       needConfirmButton,
       okDisabled: !mergedValue || (disabledDate && disabledDate(mergedValue)),
       locale,
+      showToday,
       onNow:
         needConfirmButton &&
         (() => {
