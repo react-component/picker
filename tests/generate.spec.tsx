@@ -75,8 +75,11 @@ describe('Picker.Generate', () => {
             ['2000-01-02', '02/01/2000'].forEach(str => {
               const date = generateConfig.locale.parse('en_US', str, ['YYYY-MM-DD', 'DD/MM/YYYY']);
 
-              expect(generateConfig.locale.format('en_US', date!, 'YYYY-MM-DD')).toEqual(
-                '2000-01-02',
+              expect(generateConfig.locale.format('en_US', date!, 'YYYY-MM-Do')).toEqual(
+                '2000-01-2nd',
+              );
+              expect(generateConfig.locale.format('zh_CN', date!, 'YYYY-MM-Do')).toEqual(
+                '2000-01-2日',
               );
             });
           });
