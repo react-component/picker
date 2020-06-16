@@ -16,14 +16,7 @@ export interface YearHeaderProps<DateType> {
 }
 
 function YearHeader<DateType>(props: YearHeaderProps<DateType>) {
-  const {
-    prefixCls,
-    generateConfig,
-    viewDate,
-    onPrevDecade,
-    onNextDecade,
-    onDecadeClick,
-  } = props;
+  const { prefixCls, generateConfig, viewDate, onPrevDecade, onNextDecade, onDecadeClick } = props;
   const { hideHeader } = React.useContext(PanelContext);
   if (hideHeader) {
     return null;
@@ -32,8 +25,7 @@ function YearHeader<DateType>(props: YearHeaderProps<DateType>) {
   const headerPrefixCls = `${prefixCls}-header`;
 
   const yearNumber = generateConfig.getYear(viewDate);
-  const startYear =
-    Math.floor(yearNumber / YEAR_DECADE_COUNT) * YEAR_DECADE_COUNT;
+  const startYear = Math.floor(yearNumber / YEAR_DECADE_COUNT) * YEAR_DECADE_COUNT;
   const endYear = startYear + YEAR_DECADE_COUNT - 1;
 
   return (
@@ -43,12 +35,7 @@ function YearHeader<DateType>(props: YearHeaderProps<DateType>) {
       onSuperPrev={onPrevDecade}
       onSuperNext={onNextDecade}
     >
-      <button
-        type="button"
-        key="year"
-        onClick={onDecadeClick}
-        className={`${prefixCls}-decade-btn`}
-      >
+      <button type="button" onClick={onDecadeClick} className={`${prefixCls}-decade-btn`}>
         {startYear}-{endYear}
       </button>
     </Header>
