@@ -31,9 +31,13 @@ function QuarterHeader<DateType>(props: QuarterHeaderProps<DateType>) {
   }
 
   const headerPrefixCls = `${prefixCls}-header`;
-
   return (
-    <Header prefixCls={headerPrefixCls} onSuperPrev={onPrevYear} onSuperNext={onNextYear}>
+    <Header
+      {...props}
+      prefixCls={headerPrefixCls}
+      onSuperPrev={onPrevYear}
+      onSuperNext={onNextYear}
+    >
       <button type="button" key="year" onClick={onYearClick} className={`${prefixCls}-year-btn`}>
         {generateConfig.locale.format(locale.locale, viewDate, locale.yearFormat)}
       </button>
