@@ -92,6 +92,7 @@ export interface PickerPanelBaseProps<DateType> extends PickerPanelSharedProps<D
 export interface PickerPanelDateProps<DateType> extends PickerPanelSharedProps<DateType> {
   picker?: 'date';
   showToday?: boolean;
+  showNow?: boolean;
 
   // Time
   showTime?: boolean | SharedTimeProps<DateType>;
@@ -132,6 +133,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     mode,
     picker = 'date',
     tabIndex = 0,
+    showNow,
     showTime,
     showToday,
     renderExtraFooter,
@@ -440,6 +442,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       needConfirmButton,
       okDisabled: !mergedValue || (disabledDate && disabledDate(mergedValue)),
       locale,
+      showNow,
       onNow:
         needConfirmButton &&
         (() => {

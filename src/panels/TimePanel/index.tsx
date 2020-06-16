@@ -7,6 +7,7 @@ import { createKeyDownHandler } from '../../utils/uiUtil';
 
 export interface SharedTimeProps<DateType> extends DisabledTimes {
   format?: string;
+  showNow?: boolean;
   showHour?: boolean;
   showMinute?: boolean;
   showSecond?: boolean;
@@ -47,20 +48,13 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
 
   // ======================= Keyboard =======================
   const [activeColumnIndex, setActiveColumnIndex] = React.useState(-1);
-  const columnsCount = countBoolean([
-    showHour,
-    showMinute,
-    showSecond,
-    use12Hours,
-  ]);
+  const columnsCount = countBoolean([showHour, showMinute, showSecond, use12Hours]);
 
   operationRef.current = {
     onKeyDown: event =>
       createKeyDownHandler(event, {
         onLeftRight: diff => {
-          setActiveColumnIndex(
-            (activeColumnIndex + diff + columnsCount) % columnsCount,
-          );
+          setActiveColumnIndex((activeColumnIndex + diff + columnsCount) % columnsCount);
         },
         onUpDown: diff => {
           if (activeColumnIndex === -1) {
