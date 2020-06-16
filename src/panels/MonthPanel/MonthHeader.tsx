@@ -39,7 +39,7 @@ function MonthHeader<DateType>(props: MonthHeaderProps<DateType>) {
       onSuperPrev={onPrevYear}
       onSuperNext={onNextYear}
     >
-      <button type="button" key="month" onClick={onYearClick} className={`${prefixCls}-year-btn`}>
+      <button type="button" onClick={onYearClick} className={`${prefixCls}-year-btn`}>
         {generateConfig.locale.format(locale.locale, viewDate, locale.yearFormat)}
       </button>
     </Header>
