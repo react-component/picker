@@ -502,13 +502,45 @@ describe('Picker.Basic', () => {
     expect(wrapper.find('.rc-picker-input').render()).toMatchSnapshot();
   });
 
-  it('datetime should display now', () => {
-    const onSelect = jest.fn();
-    const wrapper = mount(<MomentPicker onSelect={onSelect} showTime />);
-    wrapper.openPicker();
-    wrapper.find('.rc-picker-now > a').simulate('click');
+  describe('showNow', () => {
+    it('datetime should display now', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(<MomentPicker onSelect={onSelect} showTime />);
+      wrapper.openPicker();
+      wrapper.find('.rc-picker-now > a').simulate('click');
 
-    expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second')).toBeTruthy();
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second')).toBeTruthy();
+    });
+
+    it("date shouldn't display now", () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(<MomentPicker onSelect={onSelect} />);
+      wrapper.openPicker();
+      expect(wrapper.find('.rc-picker-now > a').length).toEqual(0);
+    });
+
+    it("datetime shouldn't display now when showNow is false", () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(<MomentPicker onSelect={onSelect} showTime showNow={false} />);
+      wrapper.openPicker();
+      expect(wrapper.find('.rc-picker-now > a').length).toEqual(0);
+    });
+
+    it('time should display now', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(<MomentPicker onSelect={onSelect} picker="time" />);
+      wrapper.openPicker();
+      wrapper.find('.rc-picker-now > a').simulate('click');
+
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second')).toBeTruthy();
+    });
+
+    it("time shouldn't display now when showNow is false", () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(<MomentPicker onSelect={onSelect} picker="time" showNow={false} />);
+      wrapper.openPicker();
+      expect(wrapper.find('.rc-picker-now > a').length).toEqual(0);
+    });
   });
 
   it('pass data- & aria- & role', () => {
