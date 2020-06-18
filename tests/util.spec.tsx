@@ -252,7 +252,7 @@ describe('Picker.Util', () => {
         second: 0,
       });
     });
-    it('case random #1', () => {
+    it('extra case #1', () => {
       expect(
         getClosestTime(
           {
@@ -272,7 +272,7 @@ describe('Picker.Util', () => {
         second: 45,
       });
     });
-    it('case random #2', () => {
+    it('extra case #2', () => {
       expect(
         getClosestTime(
           {
@@ -292,7 +292,7 @@ describe('Picker.Util', () => {
         second: 45,
       });
     });
-    it('case random #3', () => {
+    it('extra case #3', () => {
       expect(
         getClosestTime(
           {
@@ -312,7 +312,7 @@ describe('Picker.Util', () => {
         second: 0,
       });
     });
-    it('case random #4', () => {
+    it('extra case #4', () => {
       expect(
         getClosestTime(
           {
@@ -332,7 +332,7 @@ describe('Picker.Util', () => {
         second: 0,
       });
     });
-    it('case random #5', () => {
+    it('extra case #5', () => {
       expect(
         getClosestTime(
           {

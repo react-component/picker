@@ -447,9 +447,10 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         second: generateConfig.getSecond(now),
       },
       {
-        hourStep,
-        minuteStep,
-        secondStep,
+        // step can't be zero
+        hourStep: hourStep || 1,
+        minuteStep: minuteStep || 1,
+        secondStep: secondStep || 1,
       },
     );
     let adjustedNow = now;

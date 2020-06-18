@@ -543,6 +543,18 @@ describe('Picker.Basic', () => {
     });
   });
 
+  describe('time step', () => {
+    it('work with now', () => {
+      MockDate.set(getMoment('1990-09-03 00:09:00').toDate());
+      const onSelect = jest.fn();
+      const wrapper = mount(<MomentPicker onSelect={onSelect} picker="time" minuteStep={10} />);
+      wrapper.openPicker();
+      wrapper.find('.rc-picker-now > a').simulate('click');
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:10:00', 'second')).toBeTruthy();
+      MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
+    });
+  });
+
   it('pass data- & aria- & role', () => {
     const wrapper = mount(<MomentPicker data-test="233" aria-label="3334" role="search" />);
 
