@@ -344,24 +344,100 @@ describe('Picker.Panel', () => {
     });
   });
 
-  it('time with use12Hours', () => {
-    const onChange = jest.fn();
-    const wrapper = mount(
-      <MomentPickerPanel
-        picker="time"
-        defaultValue={getMoment('2000-01-01 00:01:02')}
-        use12Hours
-        onChange={onChange}
-      />,
-    );
+  describe('time with use12Hours', () => {
+    it('should work', () => {
+      const onChange = jest.fn();
+      const wrapper = mount(
+        <MomentPickerPanel
+          picker="time"
+          defaultValue={getMoment('2000-01-01 00:01:02')}
+          use12Hours
+          onChange={onChange}
+        />,
+      );
 
-    wrapper
-      .find('.rc-picker-time-panel-column')
-      .last()
-      .find('li')
-      .last()
-      .simulate('click');
-    expect(isSame(onChange.mock.calls[0][0], '2000-01-01 12:01:02', 'second')).toBeTruthy();
+      wrapper
+        .find('.rc-picker-time-panel-column')
+        .last()
+        .find('li')
+        .last()
+        .simulate('click');
+      expect(isSame(onChange.mock.calls[0][0], '2000-01-01 12:01:02', 'second')).toBeTruthy();
+    });
+
+    it('should display hour from 12 at AM', () => {
+      const wrapper = mount(
+        <MomentPickerPanel
+          picker="time"
+          defaultValue={getMoment('2000-01-01 00:00:00')}
+          use12Hours
+        />,
+      );
+
+      const startHour = wrapper
+        .find('.rc-picker-time-panel-column')
+        .first()
+        .find('li')
+        .first()
+        .text();
+      expect(startHour).toEqual('12');
+    });
+
+    it('should display hour from 12 at AM', () => {
+      const wrapper = mount(
+        <MomentPickerPanel
+          picker="time"
+          defaultValue={getMoment('2000-01-01 12:00:00')}
+          use12Hours
+        />,
+      );
+
+      const startHour = wrapper
+        .find('.rc-picker-time-panel-column')
+        .first()
+        .find('li')
+        .first()
+        .text();
+      expect(startHour).toEqual('12');
+    });
+
+    it('should disable AM when 00 ~ 11 is disabled', () => {
+      const wrapper = mount(
+        <MomentPickerPanel
+          picker="time"
+          defaultValue={getMoment('2000-01-01 12:00:00')}
+          use12Hours
+          disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
+        />,
+      );
+
+      const startHour = wrapper
+        .find('.rc-picker-time-panel-column')
+        .last()
+        .find('li')
+        .first()
+        .find('.rc-picker-time-panel-cell-disabled');
+      expect(startHour.length).toEqual(1);
+    });
+
+    it('should disable PM when 12 ~ 23 is disabled', () => {
+      const wrapper = mount(
+        <MomentPickerPanel
+          picker="time"
+          defaultValue={getMoment('2000-01-01 12:00:00')}
+          use12Hours
+          disabledHours={() => [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]}
+        />,
+      );
+
+      const startHour = wrapper
+        .find('.rc-picker-time-panel-column')
+        .last()
+        .find('li')
+        .last()
+        .find('.rc-picker-time-panel-cell-disabled');
+      expect(startHour.length).toEqual(1);
+    });
   });
 
   it('time disabled columns', () => {

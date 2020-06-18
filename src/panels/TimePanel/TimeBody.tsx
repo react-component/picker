@@ -94,26 +94,35 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   };
 
   // ========================= Unit =========================
-  const hours = generateUnits(
-    0,
-    use12Hours ? 11 : 23,
-    hourStep,
-    disabledHours && disabledHours(),
-  );
+  let hours = generateUnits(0, 23, hourStep, disabledHours && disabledHours());
+
+  let AMDisabled: boolean = true;
+  let PMDisabled: boolean = true;
 
   // Should additional logic to handle 12 hours
-  if (use12Hours && hour !== -1) {
-    isPM = hour >= 12;
+  if (use12Hours) {
+    isPM = hour >= 12; // -1 means should display AM
+    hours.forEach(hourMeta => {
+      if (hourMeta.disabled) return;
+      if (hourMeta.value >= 12) {
+        PMDisabled = false;
+      } else AMDisabled = false;
+    });
+    hours = hours
+      .filter(isPM ? hourMeta => hourMeta.value >= 12 : hourMeta => hourMeta.value < 12)
+      .map(hourMeta => {
+        const hourValue = hourMeta.value % 12;
+        const hourLabel = hourValue === 0 ? '12' : leftPad(hourValue, 2);
+        return {
+          ...hourMeta,
+          label: hourLabel,
+          value: hourValue,
+        };
+      });
     hour %= 12;
-    hours[0].label = '12';
   }
 
-  const minutes = generateUnits(
-    0,
-    59,
-    minuteStep,
-    disabledMinutes && disabledMinutes(hour),
-  );
+  const minutes = generateUnits(0, 59, minuteStep, disabledMinutes && disabledMinutes(hour));
 
   const seconds = generateUnits(
     0,
@@ -127,14 +136,11 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     onUpDown: diff => {
       const column = columns[activeColumnIndex];
       if (column) {
-        const valueIndex = column.units.findIndex(
-          unit => unit.value === column.value,
-        );
+        const valueIndex = column.units.findIndex(unit => unit.value === column.value);
 
         const unitLen = column.units.length;
         for (let i = 1; i < unitLen; i += 1) {
-          const nextUnit =
-            column.units[(valueIndex + diff * i + unitLen) % unitLen];
+          const nextUnit = column.units[(valueIndex + diff * i + unitLen) % unitLen];
 
           if (nextUnit.disabled !== true) {
             column.onSelect(nextUnit.value);
@@ -176,26 +182,14 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   });
 
   // Minute
-  addColumnNode(
-    showMinute,
-    <TimeUnitColumn key="minute" />,
-    minute,
-    minutes,
-    num => {
-      onSelect(setTime(isPM, hour, num, second), 'mouse');
-    },
-  );
+  addColumnNode(showMinute, <TimeUnitColumn key="minute" />, minute, minutes, num => {
+    onSelect(setTime(isPM, hour, num, second), 'mouse');
+  });
 
   // Second
-  addColumnNode(
-    showSecond,
-    <TimeUnitColumn key="second" />,
-    second,
-    seconds,
-    num => {
-      onSelect(setTime(isPM, hour, minute, num), 'mouse');
-    },
-  );
+  addColumnNode(showSecond, <TimeUnitColumn key="second" />, second, seconds, num => {
+    onSelect(setTime(isPM, hour, minute, num), 'mouse');
+  });
 
   // 12 Hours
   let PMIndex = -1;
@@ -207,15 +201,16 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     use12Hours === true,
     <TimeUnitColumn key="12hours" />,
     PMIndex,
-    [{ label: 'AM', value: 0 }, { label: 'PM', value: 1 }],
+    [
+      { label: 'AM', value: 0, disabled: AMDisabled },
+      { label: 'PM', value: 1, disabled: PMDisabled },
+    ],
     num => {
       onSelect(setTime(!!num, hour, minute, second), 'mouse');
     },
   );
 
-  return (
-    <div className={contentPrefixCls}>{columns.map(({ node }) => node)}</div>
-  );
+  return <div className={contentPrefixCls}>{columns.map(({ node }) => node)}</div>;
 }
 
 export default TimeBody;
