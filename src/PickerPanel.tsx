@@ -38,6 +38,7 @@ import { MonthCellRender } from './panels/MonthPanel/MonthBody';
 import RangeContext from './RangeContext';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
+import { getClosestTime } from './utils/timeUtil';
 
 export interface PickerPanelSharedProps<DateType> {
   prefixCls?: string;
@@ -146,6 +147,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onOk,
     components,
     direction,
+    hourStep,
+    minuteStep,
+    secondStep,
   } = props as MergedPickerPanelProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
@@ -434,6 +438,27 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   let extraFooter: React.ReactNode;
   let rangesNode: React.ReactNode;
 
+  const onNow = () => {
+    const now = generateConfig.getNow();
+    const closestTime = getClosestTime(
+      {
+        hour: generateConfig.getHour(now),
+        minute: generateConfig.getMinute(now),
+        second: generateConfig.getSecond(now),
+      },
+      {
+        hourStep,
+        minuteStep,
+        secondStep,
+      },
+    );
+    let adjustedNow = now;
+    adjustedNow = generateConfig.setHour(adjustedNow, closestTime.hour);
+    adjustedNow = generateConfig.setMinute(adjustedNow, closestTime.minute);
+    adjustedNow = generateConfig.setSecond(adjustedNow, closestTime.second);
+    triggerSelect(adjustedNow, 'submit');
+  };
+
   if (!hideRanges) {
     extraFooter = getExtraFooter(prefixCls, mergedMode, renderExtraFooter);
     rangesNode = getRanges({
@@ -443,11 +468,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       okDisabled: !mergedValue || (disabledDate && disabledDate(mergedValue)),
       locale,
       showNow,
-      onNow:
-        needConfirmButton &&
-        (() => {
-          triggerSelect(generateConfig.getNow(), 'submit');
-        }),
+      onNow: needConfirmButton && onNow,
       onOk: () => {
         if (mergedValue) {
           triggerSelect(mergedValue, 'submit', true);
