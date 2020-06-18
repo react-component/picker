@@ -411,13 +411,13 @@ describe('Picker.Panel', () => {
         />,
       );
 
-      const startHour = wrapper
+      const disabledAMItem = wrapper
         .find('.rc-picker-time-panel-column')
         .last()
         .find('li')
         .first()
         .find('.rc-picker-time-panel-cell-disabled');
-      expect(startHour.length).toEqual(1);
+      expect(disabledAMItem.length).toEqual(1);
     });
 
     it('should disable PM when 12 ~ 23 is disabled', () => {
@@ -430,13 +430,13 @@ describe('Picker.Panel', () => {
         />,
       );
 
-      const startHour = wrapper
+      const disabledPMItem = wrapper
         .find('.rc-picker-time-panel-column')
         .last()
         .find('li')
         .last()
         .find('.rc-picker-time-panel-cell-disabled');
-      expect(startHour.length).toEqual(1);
+      expect(disabledPMItem.length).toEqual(1);
     });
   });
 
