@@ -96,8 +96,8 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   // ========================= Unit =========================
   let hours = generateUnits(0, 23, hourStep, disabledHours && disabledHours());
 
-  let AMDisabled: boolean = true;
-  let PMDisabled: boolean = true;
+  let AMDisabled = true;
+  let PMDisabled = true;
 
   // Should additional logic to handle 12 hours
   if (use12Hours) {
