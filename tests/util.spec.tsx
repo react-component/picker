@@ -92,7 +92,7 @@ describe('Picker.Util', () => {
         second: 0,
       });
     });
-    it('case to lower minute #2', () => {
+    it('case to lower minute #1', () => {
       expect(
         getClosestTime(
           {
@@ -112,7 +112,7 @@ describe('Picker.Util', () => {
         second: 45,
       });
     });
-    it('case to upper minute #2', () => {
+    it('case to upper minute #1', () => {
       expect(
         getClosestTime(
           {
@@ -172,7 +172,7 @@ describe('Picker.Util', () => {
         second: 0,
       });
     });
-    it('case carry hour #3', () => {
+    it('case carry hour #2', () => {
       expect(
         getClosestTime(
           {
