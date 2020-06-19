@@ -9,17 +9,15 @@ import { SharedTimeProps } from '.';
 import { setTime as utilSetTime } from '../../utils/timeUtil';
 
 function shouldUnitsUpdate(prevUnits: Unit[], nextUnits: Unit[]) {
+  // if any unit's disabled status is different, the units should be re-evaluted
   for (let i = 0; i < prevUnits.length; i += 1) {
-    if (shallowEqual(prevUnits[i].disabled, nextUnits[i].disabled)) return true;
+    if (prevUnits[i].disabled !== nextUnits[i].disabled) return true;
   }
   return false;
 }
 
 function isDifferentArray(prevArray: any[], nextArray: any[]) {
-  for (let i = 0; i < prevArray.length; i += 1) {
-    if (shallowEqual(prevArray[i], nextArray[i])) return true;
-  }
-  return false;
+  return !shallowEqual(prevArray, nextArray);
 }
 
 function generateUnits(
@@ -124,11 +122,13 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
 
   const [AMDisabled, PMDisabled] = useMemo(
     () => {
-      if (!use12Hours) return [false, false];
+      if (!use12Hours) {
+        return [false, false];
+      }
       const AMPMDisabled = [true, true];
-      memorizedRawHours.forEach(hourMeta => {
-        if (hourMeta.disabled) return;
-        if (hourMeta.value >= 12) {
+      memorizedRawHours.forEach(({ disabled, value: hourValue }) => {
+        if (disabled) return;
+        if (hourValue >= 12) {
           AMPMDisabled[1] = false;
         } else {
           AMPMDisabled[0] = false;
