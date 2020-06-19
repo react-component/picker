@@ -355,10 +355,12 @@ describe('Picker.Util', () => {
   });
 
   describe('setTime', () => {
-    expect(isSameTime(
-      momentGenerateConfig,
-      setTime(momentGenerateConfig, getMoment('1995-01-01 00:00:00'), 8, 7, 6),
-      getMoment('1995-01-01 08:07:06'),
-    )).toBeTruthy()
-  })
+    expect(
+      isSameTime(
+        momentGenerateConfig,
+        setTime(momentGenerateConfig, getMoment('1995-01-01 00:00:00'), 8, 7, 6),
+        getMoment('1995-01-01 08:07:06'),
+      ),
+    ).toBeTruthy();
+  });
 });
