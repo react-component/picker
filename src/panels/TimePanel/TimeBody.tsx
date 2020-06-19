@@ -1,4 +1,5 @@
 import * as React from 'react';
+import shallowEqual from 'shallowequal';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import { GenerateConfig } from '../../generate';
 import { Locale, OnSelect } from '../../interface';
@@ -9,14 +10,14 @@ import { setTime as utilSetTime } from '../../utils/timeUtil';
 
 function shouldUnitsUpdate(prevUnits: Unit[], nextUnits: Unit[]) {
   for (let i = 0; i < prevUnits.length; i += 1) {
-    if (prevUnits[i].disabled !== nextUnits[i].disabled) return true;
+    if (shallowEqual(prevUnits[i].disabled, nextUnits[i].disabled)) return true;
   }
   return false;
 }
 
 function isDifferentArray(prevArray: any[], nextArray: any[]) {
   for (let i = 0; i < prevArray.length; i += 1) {
-    if (prevArray[i] !== nextArray[i]) return true;
+    if (shallowEqual(prevArray[i], nextArray[i])) return true;
   }
   return false;
 }
