@@ -40,11 +40,8 @@ const parseLocale = (locale: string) => {
 
 const parseNoMatchNotice = () => {
   /* istanbul ignore next */
-  noteOnce(
-    false,
-    'Not match any format. Please help to fire a issue about this.',
-  );
-}
+  noteOnce(false, 'Not match any format. Please help to fire a issue about this.');
+};
 
 const generateConfig: GenerateConfig<Dayjs> = {
   // get
@@ -70,6 +67,11 @@ const generateConfig: GenerateConfig<Dayjs> = {
   setHour: (date, hour) => date.hour(hour),
   setMinute: (date, minute) => date.minute(minute),
   setSecond: (date, second) => date.second(second),
+  setTime: (date, hour, minute, second) =>
+    date
+      .hour(hour)
+      .minute(minute)
+      .second(second),
 
   // Compare
   isAfter: (date1, date2) => date1.isAfter(date2),
@@ -92,24 +94,26 @@ const generateConfig: GenerateConfig<Dayjs> = {
         .locale(parseLocale(locale))
         .localeData()
         .monthsShort(),
-    format: (locale, date, format) =>
-      date.locale(parseLocale(locale)).format(format),
+    format: (locale, date, format) => date.locale(parseLocale(locale)).format(format),
     parse: (locale, text, formats) => {
-      const localeStr = parseLocale(locale)
+      const localeStr = parseLocale(locale);
       for (let i = 0; i < formats.length; i += 1) {
         const format = formats[i];
         const formatText = text;
-        if (format.includes('wo') || format.includes('Wo')) { // parse Wo
-          const year = formatText.split('-')[0]
-          const weekStr = formatText.split('-')[1]
-          const firstWeek = dayjs(year, 'YYYY').startOf('year').locale(localeStr)
+        if (format.includes('wo') || format.includes('Wo')) {
+          // parse Wo
+          const year = formatText.split('-')[0];
+          const weekStr = formatText.split('-')[1];
+          const firstWeek = dayjs(year, 'YYYY')
+            .startOf('year')
+            .locale(localeStr);
           for (let j = 0; j <= 52; j += 1) {
-            const nextWeek = firstWeek.add(j, 'week')
+            const nextWeek = firstWeek.add(j, 'week');
             if (nextWeek.format('Wo') === weekStr) {
-              return nextWeek
+              return nextWeek;
             }
           }
-          parseNoMatchNotice()
+          parseNoMatchNotice();
           return null;
         }
         const date = dayjs(formatText, format).locale(localeStr);
@@ -118,7 +122,7 @@ const generateConfig: GenerateConfig<Dayjs> = {
         }
       }
 
-      parseNoMatchNotice()
+      parseNoMatchNotice();
       return null;
     },
   },

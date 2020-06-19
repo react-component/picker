@@ -1,9 +1,14 @@
 import * as React from 'react';
+import useMemo from 'rc-util/lib/hooks/useMemo';
 import { GenerateConfig } from '../../generate';
 import { Locale, OnSelect } from '../../interface';
 import TimeUnitColumn, { Unit } from './TimeUnitColumn';
 import { leftPad } from '../../utils/miscUtil';
 import { SharedTimeProps } from '.';
+
+function getUnitsMemoCondition(units) {
+  return units.map(unit => !unit.disabled).join('');
+}
 
 function generateUnits(
   start: number,
@@ -83,32 +88,48 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     const mergedMinute = Math.max(0, newMinute);
     const mergedSecond = Math.max(0, newSecond);
 
-    newDate = generateConfig.setSecond(newDate, mergedSecond);
-    newDate = generateConfig.setMinute(newDate, mergedMinute);
-    newDate = generateConfig.setHour(
+    newDate = generateConfig.setTime(
       newDate,
       !use12Hours || !isNewPM ? mergedHour : mergedHour + 12,
+      mergedMinute,
+      mergedSecond,
     );
 
     return newDate;
   };
 
   // ========================= Unit =========================
-  let hours = generateUnits(0, 23, hourStep, disabledHours && disabledHours());
+  const rawHours = generateUnits(0, 23, hourStep, disabledHours && disabledHours());
 
-  let AMDisabled = true;
-  let PMDisabled = true;
+  const memorizedRawHours = useMemo(
+    () => rawHours,
+    getUnitsMemoCondition(rawHours),
+    (prevCondition, nextCondition) => prevCondition !== nextCondition,
+  );
 
   // Should additional logic to handle 12 hours
   if (use12Hours) {
     isPM = hour >= 12; // -1 means should display AM
-    hours.forEach(hourMeta => {
+    hour %= 12;
+  }
+
+  const [AMDisabled, PMDisabled] = React.useMemo(() => {
+    if (!use12Hours) return [false, false];
+    const AMPMDisabled = [true, true];
+    memorizedRawHours.forEach(hourMeta => {
       if (hourMeta.disabled) return;
       if (hourMeta.value >= 12) {
-        PMDisabled = false;
-      } else AMDisabled = false;
+        AMPMDisabled[1] = false;
+      } else {
+        AMPMDisabled[0] = false;
+      }
     });
-    hours = hours
+    return AMPMDisabled;
+  }, [use12Hours, memorizedRawHours]);
+
+  const hours = React.useMemo(() => {
+    if (!use12Hours) return memorizedRawHours;
+    return memorizedRawHours
       .filter(isPM ? hourMeta => hourMeta.value >= 12 : hourMeta => hourMeta.value < 12)
       .map(hourMeta => {
         const hourValue = hourMeta.value % 12;
@@ -119,8 +140,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
           value: hourValue,
         };
       });
-    hour %= 12;
-  }
+  }, [use12Hours, memorizedRawHours]);
 
   const minutes = generateUnits(0, 59, minuteStep, disabledMinutes && disabledMinutes(hour));
 

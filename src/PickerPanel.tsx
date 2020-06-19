@@ -453,10 +453,12 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         secondStep: secondStep || 1,
       },
     );
-    let adjustedNow = now;
-    adjustedNow = generateConfig.setHour(adjustedNow, closestTime.hour);
-    adjustedNow = generateConfig.setMinute(adjustedNow, closestTime.minute);
-    adjustedNow = generateConfig.setSecond(adjustedNow, closestTime.second);
+    const adjustedNow = generateConfig.setTime(
+      now,
+      closestTime.hour,
+      closestTime.minute,
+      closestTime.second,
+    );
     triggerSelect(adjustedNow, 'submit');
   };
 

@@ -53,6 +53,13 @@ const generateConfig: GenerateConfig<Moment> = {
     const clone = date.clone();
     return clone.second(second);
   },
+  setTime: (date, hour, minute, second) => {
+    const clone = date.clone();
+    return clone
+      .hour(hour)
+      .minute(minute)
+      .second(second);
+  },
 
   // Compare
   isAfter: (date1, date2) => date1.isAfter(date2),
