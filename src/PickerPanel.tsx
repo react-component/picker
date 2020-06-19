@@ -461,9 +461,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       },
       {
         // step can't be zero
-        hourStep: hourStepValid ? hourStep : 1,
-        minuteStep: minuteStepValid ? minuteStep : 1,
-        secondStep: secondStepValid ? secondStep : 1,
+        hourStep: hourStepValid ? hourStep || 1 : 1,
+        minuteStep: minuteStepValid ? minuteStep || 1 : 1,
+        secondStep: secondStepValid ? secondStep || 1 : 1,
       },
     );
     const adjustedNow = setTime(
