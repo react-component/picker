@@ -47,6 +47,18 @@ describe('Picker.Generate', () => {
         );
       });
 
+      it('set time', () => {
+        let date = generateConfig.getNow();
+        date = generateConfig.setYear(date, 2020);
+        date = generateConfig.setMonth(date, 9);
+        date = generateConfig.setDate(date, 23);
+        date = generateConfig.setTime(date, 2, 3, 5);
+
+        expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD HH:mm:ss')).toEqual(
+          '2020-10-23 02:03:05',
+        );
+      });
+
       it('add', () => {
         let date = generateConfig.getNow();
         date = generateConfig.addYear(date, 2);
