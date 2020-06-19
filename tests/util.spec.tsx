@@ -1,5 +1,5 @@
 import momentGenerateConfig from '../src/generate/moment';
-import { getClosestTime, setTime } from '../src/utils/timeUtil';
+import { getLowerBoundTime, setTime } from '../src/utils/timeUtil';
 import { toArray } from '../src/utils/miscUtil';
 import { isSameTime, isSameDecade } from '../src/utils/dateUtil';
 import { getMoment } from './util/commonUtil';
@@ -31,10 +31,10 @@ describe('Picker.Util', () => {
     ).toBeTruthy();
   });
 
-  describe('getClosestTime', () => {
+  describe('getLowerBoundTime', () => {
     it('basic case', () => {
       expect(
-        getClosestTime(
+        getLowerBoundTime(
           {
             hour: 23,
             minute: 59,
@@ -54,7 +54,7 @@ describe('Picker.Util', () => {
     });
     it('case to lower hour #1', () => {
       expect(
-        getClosestTime(
+        getLowerBoundTime(
           {
             hour: 1,
             minute: 4,
@@ -72,9 +72,9 @@ describe('Picker.Util', () => {
         second: 45,
       });
     });
-    it('case to upper hour #1', () => {
+    it('case to lower hour #2', () => {
       expect(
-        getClosestTime(
+        getLowerBoundTime(
           {
             hour: 3,
             minute: 4,
@@ -87,218 +87,18 @@ describe('Picker.Util', () => {
           },
         ),
       ).toEqual({
-        hour: 4,
-        minute: 0,
-        second: 0,
-      });
-    });
-    it('case to lower minute #1', () => {
-      expect(
-        getClosestTime(
-          {
-            hour: 2,
-            minute: 3,
-            second: 0,
-          },
-          {
-            hourStep: 1,
-            minuteStep: 15,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
-        hour: 2,
-        minute: 0,
-        second: 45,
-      });
-    });
-    it('case to upper minute #1', () => {
-      expect(
-        getClosestTime(
-          {
-            hour: 2,
-            minute: 12,
-            second: 0,
-          },
-          {
-            hourStep: 1,
-            minuteStep: 15,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
-        hour: 2,
-        minute: 15,
-        second: 0,
-      });
-    });
-    it('case carry minute #1', () => {
-      expect(
-        getClosestTime(
-          {
-            hour: 21,
-            minute: 55,
-            second: 59,
-          },
-          {
-            hourStep: 1,
-            minuteStep: 1,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
-        hour: 21,
-        minute: 56,
-        second: 0,
-      });
-    });
-    it('case carry hour #1', () => {
-      expect(
-        getClosestTime(
-          {
-            hour: 21,
-            minute: 55,
-            second: 59,
-          },
-          {
-            hourStep: 1,
-            minuteStep: 10,
-            secondStep: 10,
-          },
-        ),
-      ).toEqual({
-        hour: 22,
-        minute: 0,
-        second: 0,
-      });
-    });
-    it('case carry hour #2', () => {
-      expect(
-        getClosestTime(
-          {
-            hour: 21,
-            minute: 59,
-            second: 59,
-          },
-          {
-            hourStep: 1,
-            minuteStep: 1,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
-        hour: 22,
-        minute: 0,
-        second: 0,
-      });
-    });
-    it('case carry day #1', () => {
-      expect(
-        getClosestTime(
-          {
-            hour: 22,
-            minute: 30,
-            second: 59,
-          },
-          {
-            hourStep: 4,
-            minuteStep: 1,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
         hour: 0,
-        minute: 0,
-        second: 0,
-      });
-    });
-    it('case carry day #2', () => {
-      expect(
-        getClosestTime(
-          {
-            hour: 23,
-            minute: 50,
-            second: 59,
-          },
-          {
-            hourStep: 4,
-            minuteStep: 30,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
-        hour: 0,
-        minute: 0,
-        second: 0,
-      });
-    });
-    it('case carry day #3', () => {
-      expect(
-        getClosestTime(
-          {
-            hour: 23,
-            minute: 59,
-            second: 59,
-          },
-          {
-            hourStep: 1,
-            minuteStep: 1,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
-        hour: 0,
-        minute: 0,
-        second: 0,
-      });
-    });
-    it('extra case #1', () => {
-      expect(
-        getClosestTime(
-          {
-            hour: 20,
-            minute: 45,
-            second: 59,
-          },
-          {
-            hourStep: 4,
-            minuteStep: 15,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
-        hour: 20,
         minute: 45,
         second: 45,
       });
     });
-    it('extra case #2', () => {
+    it('case to same hour, lower minute #1', () => {
       expect(
-        getClosestTime(
+        getLowerBoundTime(
           {
-            hour: 20,
-            minute: 59,
-            second: 59,
-          },
-          {
-            hourStep: 4,
-            minuteStep: 15,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
-        hour: 20,
-        minute: 45,
-        second: 45,
-      });
-    });
-    it('extra case #3', () => {
-      expect(
-        getClosestTime(
-          {
-            hour: 20,
-            minute: 59,
-            second: 59,
+            hour: 1,
+            minute: 31,
+            second: 5,
           },
           {
             hourStep: 1,
@@ -307,18 +107,38 @@ describe('Picker.Util', () => {
           },
         ),
       ).toEqual({
-        hour: 21,
-        minute: 0,
-        second: 0,
+        hour: 1,
+        minute: 30,
+        second: 45,
       });
     });
-    it('extra case #4', () => {
+    it('case to same hour, lower minute #2', () => {
       expect(
-        getClosestTime(
+        getLowerBoundTime(
           {
-            hour: 20,
-            minute: 30,
-            second: 59,
+            hour: 1,
+            minute: 44,
+            second: 5,
+          },
+          {
+            hourStep: 1,
+            minuteStep: 15,
+            secondStep: 15,
+          },
+        ),
+      ).toEqual({
+        hour: 1,
+        minute: 30,
+        second: 45,
+      });
+    });
+    it('case to same hour, same minute, lower second #1', () => {
+      expect(
+        getLowerBoundTime(
+          {
+            hour: 1,
+            minute: 44,
+            second: 5,
           },
           {
             hourStep: 1,
@@ -327,28 +147,28 @@ describe('Picker.Util', () => {
           },
         ),
       ).toEqual({
-        hour: 20,
-        minute: 31,
+        hour: 1,
+        minute: 44,
         second: 0,
       });
     });
-    it('extra case #5', () => {
+    it('case to same hour, same minute, lower second #2', () => {
       expect(
-        getClosestTime(
+        getLowerBoundTime(
           {
-            hour: 0,
-            minute: 9,
-            second: 0,
+            hour: 1,
+            minute: 44,
+            second: 14,
           },
           {
             hourStep: 1,
-            minuteStep: 10,
-            secondStep: 1,
+            minuteStep: 1,
+            secondStep: 15,
           },
         ),
       ).toEqual({
-        hour: 0,
-        minute: 10,
+        hour: 1,
+        minute: 44,
         second: 0,
       });
     });

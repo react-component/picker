@@ -38,7 +38,7 @@ import { MonthCellRender } from './panels/MonthPanel/MonthBody';
 import RangeContext from './RangeContext';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
-import { getClosestTime, setTime } from './utils/timeUtil';
+import { getLowerBoundTime, setTime } from './utils/timeUtil';
 
 export interface PickerPanelSharedProps<DateType> {
   prefixCls?: string;
@@ -453,7 +453,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
 
   const onNow = () => {
     const now = generateConfig.getNow();
-    const closestTime = getClosestTime(
+    const closestTime = getLowerBoundTime(
       {
         hour: generateConfig.getHour(now),
         minute: generateConfig.getMinute(now),
