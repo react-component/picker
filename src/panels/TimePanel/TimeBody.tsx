@@ -5,10 +5,20 @@ import { Locale, OnSelect } from '../../interface';
 import TimeUnitColumn, { Unit } from './TimeUnitColumn';
 import { leftPad } from '../../utils/miscUtil';
 import { SharedTimeProps } from '.';
-import { setTime as utilSetTime } from '../../utils/timeUtil'
+import { setTime as utilSetTime } from '../../utils/timeUtil';
 
-function getUnitsMemoCondition(units) {
-  return units.map(unit => (!unit.disabled ? 't' : 'f')).join('');
+function shouldUnitsUpdate(prevUnits: Unit[], nextUnits: Unit[]) {
+  for (let i = 0; i < prevUnits.length; i += 1) {
+    if (prevUnits[i].disabled !== nextUnits[i].disabled) return true;
+  }
+  return false;
+}
+
+function isDifferentArray(prevArray: any[], nextArray: any[]) {
+  for (let i = 0; i < prevArray.length; i += 1) {
+    if (prevArray[i] !== nextArray[i]) return true;
+  }
+  return false;
 }
 
 function generateUnits(
@@ -103,11 +113,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   // ========================= Unit =========================
   const rawHours = generateUnits(0, 23, hourStep, disabledHours && disabledHours());
 
-  const memorizedRawHours = useMemo(
-    () => rawHours,
-    getUnitsMemoCondition(rawHours),
-    (prevCondition, nextCondition) => prevCondition !== nextCondition,
-  );
+  const memorizedRawHours = useMemo(() => rawHours, rawHours, shouldUnitsUpdate);
 
   // Should additional logic to handle 12 hours
   if (use12Hours) {
@@ -115,34 +121,42 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     hour %= 12;
   }
 
-  const [AMDisabled, PMDisabled] = React.useMemo(() => {
-    if (!use12Hours) return [false, false];
-    const AMPMDisabled = [true, true];
-    memorizedRawHours.forEach(hourMeta => {
-      if (hourMeta.disabled) return;
-      if (hourMeta.value >= 12) {
-        AMPMDisabled[1] = false;
-      } else {
-        AMPMDisabled[0] = false;
-      }
-    });
-    return AMPMDisabled;
-  }, [use12Hours, memorizedRawHours]);
-
-  const hours = React.useMemo(() => {
-    if (!use12Hours) return memorizedRawHours;
-    return memorizedRawHours
-      .filter(isPM ? hourMeta => hourMeta.value >= 12 : hourMeta => hourMeta.value < 12)
-      .map(hourMeta => {
-        const hourValue = hourMeta.value % 12;
-        const hourLabel = hourValue === 0 ? '12' : leftPad(hourValue, 2);
-        return {
-          ...hourMeta,
-          label: hourLabel,
-          value: hourValue,
-        };
+  const [AMDisabled, PMDisabled] = useMemo(
+    () => {
+      if (!use12Hours) return [false, false];
+      const AMPMDisabled = [true, true];
+      memorizedRawHours.forEach(hourMeta => {
+        if (hourMeta.disabled) return;
+        if (hourMeta.value >= 12) {
+          AMPMDisabled[1] = false;
+        } else {
+          AMPMDisabled[0] = false;
+        }
       });
-  }, [use12Hours, memorizedRawHours]);
+      return AMPMDisabled;
+    },
+    [use12Hours, memorizedRawHours],
+    isDifferentArray,
+  );
+
+  const hours = useMemo(
+    () => {
+      if (!use12Hours) return memorizedRawHours;
+      return memorizedRawHours
+        .filter(isPM ? hourMeta => hourMeta.value >= 12 : hourMeta => hourMeta.value < 12)
+        .map(hourMeta => {
+          const hourValue = hourMeta.value % 12;
+          const hourLabel = hourValue === 0 ? '12' : leftPad(hourValue, 2);
+          return {
+            ...hourMeta,
+            label: hourLabel,
+            value: hourValue,
+          };
+        });
+    },
+    [use12Hours, memorizedRawHours],
+    isDifferentArray,
+  );
 
   const minutes = generateUnits(0, 59, minuteStep, disabledMinutes && disabledMinutes(hour));
 

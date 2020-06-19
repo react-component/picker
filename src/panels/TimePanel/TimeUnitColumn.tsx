@@ -6,7 +6,7 @@ import PanelContext from '../../PanelContext';
 export interface Unit {
   label: React.ReactText;
   value: number;
-  disabled?: boolean;
+  disabled: boolean;
 }
 
 export interface TimeUnitColumnProps {
@@ -19,14 +19,7 @@ export interface TimeUnitColumnProps {
 }
 
 function TimeUnitColumn(props: TimeUnitColumnProps) {
-  const {
-    prefixCls,
-    units,
-    onSelect,
-    value,
-    active,
-    hideDisabledOptions,
-  } = props;
+  const { prefixCls, units, onSelect, value, active, hideDisabledOptions } = props;
   const cellPrefixCls = `${prefixCls}-cell`;
   const { open } = React.useContext(PanelContext);
 
