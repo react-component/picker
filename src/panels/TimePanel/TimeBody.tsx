@@ -7,7 +7,7 @@ import { leftPad } from '../../utils/miscUtil';
 import { SharedTimeProps } from '.';
 
 function getUnitsMemoCondition(units) {
-  return units.map(unit => !unit.disabled).join('');
+  return units.map(unit => (!unit.disabled ? 't' : 'f')).join('');
 }
 
 function generateUnits(
