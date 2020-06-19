@@ -38,7 +38,7 @@ import { MonthCellRender } from './panels/MonthPanel/MonthBody';
 import RangeContext from './RangeContext';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
-import { getClosestTime } from './utils/timeUtil';
+import { getClosestTime, setTime } from './utils/timeUtil';
 
 export interface PickerPanelSharedProps<DateType> {
   prefixCls?: string;
@@ -453,7 +453,8 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         secondStep: secondStep || 1,
       },
     );
-    const adjustedNow = generateConfig.setTime(
+    const adjustedNow = setTime(
+      generateConfig,
       now,
       closestTime.hour,
       closestTime.minute,

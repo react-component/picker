@@ -1,3 +1,18 @@
+import { GenerateConfig } from '../generate';
+
+export function setTime<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  date: DateType,
+  hour: number,
+  minute: number,
+  second: number,
+): DateType {
+  let nextTime = generateConfig.setHour(date, hour);
+  nextTime = generateConfig.setMinute(nextTime, minute);
+  nextTime = generateConfig.setSecond(nextTime, second);
+  return nextTime
+}
+
 // Get the closest time of now under the constraint of time step
 export function getClosestTime(
   now: {

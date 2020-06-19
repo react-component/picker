@@ -5,6 +5,7 @@ import { Locale, OnSelect } from '../../interface';
 import TimeUnitColumn, { Unit } from './TimeUnitColumn';
 import { leftPad } from '../../utils/miscUtil';
 import { SharedTimeProps } from '.';
+import { setTime as utilSetTime } from '../../utils/timeUtil'
 
 function getUnitsMemoCondition(units) {
   return units.map(unit => (!unit.disabled ? 't' : 'f')).join('');
@@ -88,7 +89,8 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     const mergedMinute = Math.max(0, newMinute);
     const mergedSecond = Math.max(0, newSecond);
 
-    newDate = generateConfig.setTime(
+    newDate = utilSetTime(
+      generateConfig,
       newDate,
       !use12Hours || !isNewPM ? mergedHour : mergedHour + 12,
       mergedMinute,

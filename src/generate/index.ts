@@ -19,7 +19,6 @@ export interface GenerateConfig<DateType> {
   setHour: (value: DateType, hour: number) => DateType;
   setMinute: (value: DateType, minute: number) => DateType;
   setSecond: (value: DateType, second: number) => DateType;
-  setTime: (value: DateType, hour: number, minute: number, second: number) => DateType;
 
   // Compare
   isAfter: (date1: DateType, date2: DateType) => boolean;

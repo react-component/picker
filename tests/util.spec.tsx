@@ -1,5 +1,5 @@
 import momentGenerateConfig from '../src/generate/moment';
-import { getClosestTime } from '../src/utils/timeUtil';
+import { getClosestTime, setTime } from '../src/utils/timeUtil';
 import { toArray } from '../src/utils/miscUtil';
 import { isSameTime, isSameDecade } from '../src/utils/dateUtil';
 import { getMoment } from './util/commonUtil';
@@ -353,4 +353,12 @@ describe('Picker.Util', () => {
       });
     });
   });
+
+  describe('setTime', () => {
+    expect(isSameTime(
+      momentGenerateConfig,
+      setTime(momentGenerateConfig, getMoment('1995-01-01 00:00:00'), 8, 7, 6),
+      getMoment('1995-01-01 08:07:06'),
+    )).toBeTruthy()
+  })
 });
