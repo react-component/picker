@@ -154,9 +154,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
 
-  const hourStepValid = hourStep && 24 % hourStep === 0;
-  const minuteStepValid = minuteStep && 60 % minuteStep === 0;
-  const secondStepValid = secondStep && 60 % secondStep === 0;
+  const hourStepValid = hourStep === undefined || 24 % hourStep === 0;
+  const minuteStepValid = minuteStep === undefined || 60 % minuteStep === 0;
+  const secondStepValid = secondStep === undefined || 60 % secondStep === 0;
 
   if (process.env.NODE_ENV !== 'production') {
     warning(!value || generateConfig.isValidate(value), 'Invalidate date pass to `value`.');
