@@ -383,6 +383,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         // Clean up end date when start date is after end date
         values = [startValue, null];
         endValue = null;
+
+        // Clean up cache since invalidate
+        openRecordsRef.current = {};
       } else if (picker !== 'time' || order !== false) {
         // Reorder when in same date
         values = reorderValues(values, generateConfig);
