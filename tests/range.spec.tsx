@@ -782,6 +782,8 @@ describe('Picker.Range', () => {
       Object.defineProperty(clickEvent, 'target', {
         get: () => document.body,
       });
+
+      const current = onOpenChange.mock.calls.length;
       act(() => {
         window.dispatchEvent(clickEvent);
         wrapper
@@ -789,9 +791,10 @@ describe('Picker.Range', () => {
           .first()
           .simulate('blur');
       });
+      const next = onOpenChange.mock.calls.length;
 
       // Maybe not good since onOpenChange trigger twice
-      expect(onOpenChange).toHaveBeenCalledTimes((i + 1) * 2);
+      expect(current < next).toBeTruthy();
     }
     act(() => {
       jest.runAllTimers();
@@ -1200,5 +1203,57 @@ describe('Picker.Range', () => {
         .last()
         .prop('value'),
     ).toEqual('19901128');
+  });
+
+  describe('auto open', () => {
+    it('empty: start -> end -> close', () => {
+      const wrapper = mount(<MomentRangePicker />);
+      wrapper.openPicker(0);
+      wrapper.inputValue('1990-11-28');
+      wrapper.closePicker(0);
+
+      expect(wrapper.isOpen()).toBeTruthy();
+
+      wrapper.inputValue('1991-01-01');
+      wrapper.closePicker(1);
+      expect(wrapper.isOpen()).toBeFalsy();
+    });
+
+    it('valued: start -> end', () => {
+      const wrapper = mount(
+        <MomentRangePicker defaultValue={[getMoment('1989-01-01'), getMoment('1990-01-01')]} />,
+      );
+      wrapper.openPicker(0);
+      wrapper.inputValue('1990-11-28');
+      wrapper.closePicker(0);
+
+      expect(wrapper.isOpen()).toBeTruthy();
+    });
+
+    it('empty: end -> start', () => {
+      const wrapper = mount(<MomentRangePicker />);
+      wrapper.openPicker(1);
+      wrapper.inputValue('1990-11-28', 1);
+      wrapper.closePicker(1);
+
+      expect(wrapper.isOpen()).toBeTruthy();
+    });
+
+    it('empty: end before start -> start -> end', () => {
+      const wrapper = mount(<MomentRangePicker />);
+
+      wrapper.openPicker(1);
+      wrapper.inputValue('1990-11-28', 1);
+      wrapper.closePicker(1);
+      expect(wrapper.isOpen()).toBeTruthy();
+
+      wrapper.inputValue('1991-01-01', 0);
+      wrapper.closePicker(0);
+      expect(wrapper.isOpen()).toBeTruthy();
+
+      wrapper.inputValue('1992-01-01', 1);
+      wrapper.closePicker(1);
+      expect(wrapper.isOpen()).toBeFalsy();
+    });
   });
 });

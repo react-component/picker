@@ -74,4 +74,9 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
       .at(index)
       .simulate('keydown', { ...info, which });
   },
+  inputValue(text, index = 0) {
+    this.find('input')
+      .at(index)
+      .simulate('change', { target: { value: text } });
+  },
 });

@@ -4,11 +4,7 @@ import moment, { Moment, unitOfTime } from 'moment';
 import Picker, { PickerProps, PickerPanel } from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
 import enUS from '../../src/locale/en_US';
-import {
-  PickerBaseProps,
-  PickerDateProps,
-  PickerTimeProps,
-} from '../../src/Picker';
+import { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
 import {
   PickerPanelBaseProps,
   PickerPanelDateProps,
@@ -32,11 +28,10 @@ export type Wrapper = ReactWrapper & {
   clearValue: (index?: number) => void;
   keyDown: (which: number, info?: object, index?: number) => void;
   clickButton: (type: 'prev' | 'next' | 'super-prev' | 'super-next') => Wrapper;
+  inputValue: (text: string, index?: number) => Wrapper;
 };
 
-export const mount = originMount as (
-  ...args: Parameters<typeof originMount>
-) => Wrapper;
+export const mount = originMount as (...args: Parameters<typeof originMount>) => Wrapper;
 
 export function getMoment(str: string): Moment {
   const formatList = [FULL_FORMAT, 'YYYY-MM-DD', 'HH:mm:ss', 'YYYY'];
@@ -49,11 +44,7 @@ export function getMoment(str: string): Moment {
   throw new Error(`Format not match with: ${str}`);
 }
 
-export function isSame(
-  date: Moment | null,
-  dateStr: string,
-  type: unitOfTime.StartOf = 'date',
-) {
+export function isSame(date: Moment | null, dateStr: string, type: unitOfTime.StartOf = 'date') {
   if (!date) {
     return false;
   }
@@ -62,9 +53,7 @@ export function isSame(
     return true;
   }
 
-  throw new Error(
-    `${date.format(FULL_FORMAT)} is not same as expected: ${dateStr}`,
-  );
+  throw new Error(`${date.format(FULL_FORMAT)} is not same as expected: ${dateStr}`);
 }
 
 interface MomentDefaultProps {
@@ -72,8 +61,7 @@ interface MomentDefaultProps {
   generateConfig?: PickerProps<Moment>['generateConfig'];
 }
 
-type InjectDefaultProps<Props> = Omit<Props, 'locale' | 'generateConfig'> &
-  MomentDefaultProps;
+type InjectDefaultProps<Props> = Omit<Props, 'locale' | 'generateConfig'> & MomentDefaultProps;
 
 // Moment Picker
 export type MomentPickerProps =
@@ -103,11 +91,7 @@ export type MomentPickerPanelProps =
   | InjectDefaultProps<PickerPanelTimeProps<Moment>>;
 
 export const MomentPickerPanel = (props: MomentPickerPanelProps) => (
-  <PickerPanel<Moment>
-    generateConfig={momentGenerateConfig}
-    locale={enUS}
-    {...props}
-  />
+  <PickerPanel<Moment> generateConfig={momentGenerateConfig} locale={enUS} {...props} />
 );
 
 // Moment Range Picker

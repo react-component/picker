@@ -534,7 +534,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
       // Only blur will close open
       if (!newOpen && mergedActivePickerIndex === index) {
-        console.log('Trigger change!!!');
         triggerChange(selectedValue, index);
       }
     },
