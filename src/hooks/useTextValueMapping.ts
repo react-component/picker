@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export default function useTextValueMapping<ValueType>({
+export default function useTextValueMapping({
   valueTexts,
   onTextChange,
 }: {

@@ -502,12 +502,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   };
 
-  const [startText, triggerStartTextChange, resetStartText] = useTextValueMapping<DateType>({
+  const [startText, triggerStartTextChange, resetStartText] = useTextValueMapping({
     valueTexts: startValueTexts,
     onTextChange: newText => onTextChange(newText, 0),
   });
 
-  const [endText, triggerEndTextChange, resetEndText] = useTextValueMapping<DateType>({
+  const [endText, triggerEndTextChange, resetEndText] = useTextValueMapping({
     valueTexts: endValueTexts,
     onTextChange: newText => onTextChange(newText, 1),
   });
@@ -533,7 +533,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       triggerOpen(newOpen, index);
 
       // Only blur will close open
-      if (!newOpen && activePickerIndex === index) {
+      if (!newOpen && mergedActivePickerIndex === index) {
+        console.log('Trigger change!!!');
         triggerChange(selectedValue, index);
       }
     },
@@ -775,7 +776,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       onOk: () => {
         if (getValue(selectedValue, mergedActivePickerIndex)) {
           // triggerChangeOld(selectedValue);
-          triggerChange(selectedValue, null);
+          triggerChange(selectedValue, mergedActivePickerIndex);
           if (onOk) {
             onOk(selectedValue);
           }

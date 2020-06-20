@@ -1175,12 +1175,6 @@ describe('Picker.Range', () => {
         },
       });
     wrapper.closePicker();
-    expect(
-      wrapper
-        .find('input')
-        .first()
-        .prop('value'),
-    ).toEqual('19890903');
 
     // end date
     wrapper.openPicker(1);
@@ -1193,6 +1187,13 @@ describe('Picker.Range', () => {
         },
       });
     wrapper.closePicker(1);
+
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .prop('value'),
+    ).toEqual('19890903');
     expect(
       wrapper
         .find('input')
