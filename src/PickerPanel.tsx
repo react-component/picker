@@ -164,11 +164,11 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     warning(isHourStepValid, `\`hourStep\` ${hourStep} is invalid. It should be a factor of 24.`);
     warning(
       isMinuteStepValid,
-      `\`minuteStep\` ${isMinuteStepValid} is invalid. It should be a factor of 60.`,
+      `\`minuteStep\` ${minuteStep} is invalid. It should be a factor of 60.`,
     );
     warning(
       isSecondStepValid,
-      `\`secondStep\` ${isSecondStepValid} is invalid. It should be a factor of 60.`,
+      `\`secondStep\` ${secondStep} is invalid. It should be a factor of 60.`,
     );
   }
 

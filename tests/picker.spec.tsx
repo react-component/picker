@@ -553,6 +553,34 @@ describe('Picker.Basic', () => {
       expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:59', 'second')).toBeTruthy();
       MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
     });
+    it('should show warning when hour step is invalid', () => {
+      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      expect(spy).not.toBeCalled();
+      const wrapper = mount(<MomentPicker picker="time" hourStep={9} />);
+      wrapper.openPicker();
+      expect(spy).toBeCalledWith('Warning: `hourStep` 9 is invalid. It should be a factor of 24.');
+      spy.mockRestore();
+    });
+    it('should show warning when minute step is invalid', () => {
+      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      expect(spy).not.toBeCalled();
+      const wrapper = mount(<MomentPicker picker="time" minuteStep={9} />);
+      wrapper.openPicker();
+      expect(spy).toBeCalledWith(
+        'Warning: `minuteStep` 9 is invalid. It should be a factor of 60.',
+      );
+      spy.mockRestore();
+    });
+    it('should show warning when second step is invalid', () => {
+      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      expect(spy).not.toBeCalled();
+      const wrapper = mount(<MomentPicker picker="time" secondStep={9} />);
+      wrapper.openPicker();
+      expect(spy).toBeCalledWith(
+        'Warning: `secondStep` 9 is invalid. It should be a factor of 60.',
+      );
+      spy.mockRestore();
+    });
   });
 
   it('pass data- & aria- & role', () => {
