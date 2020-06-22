@@ -32,19 +32,22 @@ export function getLowerBoundTime(
   const { hour, minute, second } = now;
   const { hourStep, minuteStep, secondStep } = steps;
   const lowerBoundHour = Math.floor(hour / hourStep) * hourStep;
-  let lowerBoundMinute: number;
-  let lowerBoundSecond: number;
   if (lowerBoundHour < hour) {
-    lowerBoundMinute = 60 - minuteStep;
-    lowerBoundSecond = 60 - secondStep;
-  } else {
-    lowerBoundMinute = Math.floor(minute / minuteStep) * minuteStep;
-    if (lowerBoundMinute < minute) {
-      lowerBoundSecond = 60 - secondStep;
-    } else {
-      lowerBoundSecond = Math.floor(second / secondStep) * secondStep;
-    }
+    return {
+      hour: lowerBoundHour,
+      minute: 60 - minuteStep,
+      second: 60 - secondStep,
+    };
   }
+  const lowerBoundMinute = Math.floor(minute / minuteStep) * minuteStep;
+  if (lowerBoundMinute < minute) {
+    return {
+      hour: lowerBoundHour,
+      minute: lowerBoundMinute,
+      second: 60 - secondStep,
+    };
+  }
+  const lowerBoundSecond = Math.floor(second / secondStep) * secondStep;
   return {
     hour: lowerBoundHour,
     minute: lowerBoundMinute,

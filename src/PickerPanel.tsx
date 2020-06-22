@@ -147,28 +147,28 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onOk,
     components,
     direction,
-    hourStep,
-    minuteStep,
-    secondStep,
+    hourStep = 1,
+    minuteStep = 1,
+    secondStep = 1,
   } = props as MergedPickerPanelProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
 
-  const hourStepValid = hourStep === undefined || 24 % hourStep === 0;
-  const minuteStepValid = minuteStep === undefined || 60 % minuteStep === 0;
-  const secondStepValid = secondStep === undefined || 60 % secondStep === 0;
+  const isHourStepValid = 24 % hourStep === 0;
+  const isMinuteStepValid = 60 % minuteStep === 0;
+  const isSecondStepValid = 60 % secondStep === 0;
 
   if (process.env.NODE_ENV !== 'production') {
     warning(!value || generateConfig.isValidate(value), 'Invalidate date pass to `value`.');
     warning(!value || generateConfig.isValidate(value), 'Invalidate date pass to `defaultValue`.');
-    warning(hourStepValid, `\`hourStep\` ${hourStep} is invalid. It should be a factor of 24.`);
+    warning(isHourStepValid, `\`hourStep\` ${hourStep} is invalid. It should be a factor of 24.`);
     warning(
-      minuteStepValid,
-      `\`minuteStep\` ${minuteStepValid} is invalid. It should be a factor of 60.`,
+      isMinuteStepValid,
+      `\`minuteStep\` ${isMinuteStepValid} is invalid. It should be a factor of 60.`,
     );
     warning(
-      secondStepValid,
-      `\`secondStep\` ${secondStepValid} is invalid. It should be a factor of 60.`,
+      isSecondStepValid,
+      `\`secondStep\` ${isSecondStepValid} is invalid. It should be a factor of 60.`,
     );
   }
 
@@ -461,9 +461,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       },
       {
         // step can't be zero
-        hourStep: hourStepValid ? hourStep || 1 : 1,
-        minuteStep: minuteStepValid ? minuteStep || 1 : 1,
-        secondStep: secondStepValid ? secondStep || 1 : 1,
+        hourStep: isHourStepValid ? hourStep : 1,
+        minuteStep: isMinuteStepValid ? minuteStep : 1,
+        secondStep: isSecondStepValid ? secondStep : 1,
       },
     );
     const adjustedNow = setTime(
