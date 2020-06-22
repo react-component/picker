@@ -485,6 +485,19 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   };
 
+  // ======================== Mousedown Picker ========================
+  const onPickerMousedown = (e: MouseEvent) => {
+    if (
+      !mergedOpen &&
+      !startInputRef.current.contains(e.target as Node | null) &&
+      !endInputRef.current.contains(e.target as Node | null)
+    ) {
+      e.preventDefault();
+      startInputRef.current.focus();
+      triggerOpen(true, 0);
+    }
+  };
+
   // ============================= Text ==============================
   const sharedTextHooksProps = {
     formatList,
@@ -960,6 +973,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             [`${prefixCls}-rtl`]: direction === 'rtl',
           })}
           style={style}
+          onMouseDown={onPickerMousedown}
           {...getDataOrAriaProps(props)}
         >
           <div
