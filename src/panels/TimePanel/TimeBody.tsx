@@ -16,7 +16,7 @@ function shouldUnitsUpdate(prevUnits: Unit[], nextUnits: Unit[]) {
   return false;
 }
 
-function isDifferentArray(prevArray: any[], nextArray: any[]) {
+function isArrayDifferent(prevArray: any[], nextArray: any[]) {
   return !shallowEqual(prevArray, nextArray);
 }
 
@@ -137,7 +137,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
       return AMPMDisabled;
     },
     [use12Hours, memorizedRawHours],
-    isDifferentArray,
+    isArrayDifferent,
   );
 
   const hours = useMemo(
@@ -156,7 +156,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
         });
     },
     [use12Hours, memorizedRawHours],
-    isDifferentArray,
+    isArrayDifferent,
   );
 
   const minutes = generateUnits(0, 59, minuteStep, disabledMinutes && disabledMinutes(hour));
