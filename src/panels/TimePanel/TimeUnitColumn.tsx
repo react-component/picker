@@ -19,7 +19,14 @@ export interface TimeUnitColumnProps {
 }
 
 function TimeUnitColumn(props: TimeUnitColumnProps) {
-  const { prefixCls, units, onSelect, value, active, hideDisabledOptions } = props;
+  const {
+    prefixCls,
+    units,
+    onSelect,
+    value,
+    active,
+    hideDisabledOptions,
+  } = props;
   const cellPrefixCls = `${prefixCls}-cell`;
   const { open } = React.useContext(PanelContext);
 
