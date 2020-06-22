@@ -9,6 +9,7 @@ import { SharedTimeProps } from '.';
 import { setTime as utilSetTime } from '../../utils/timeUtil';
 
 function shouldUnitsUpdate(prevUnits: Unit[], nextUnits: Unit[]) {
+  if (prevUnits.length !== nextUnits.length) return true;
   // if any unit's disabled status is different, the units should be re-evaluted
   for (let i = 0; i < prevUnits.length; i += 1) {
     if (prevUnits[i].disabled !== nextUnits[i].disabled) return true;
