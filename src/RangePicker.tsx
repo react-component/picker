@@ -529,7 +529,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       }
     },
     triggerOpen: (newOpen: boolean) => {
-      // >>> triggerOpenOld(newOpen, index)
       triggerOpen(newOpen, index);
 
       // Only blur will close open
@@ -538,12 +537,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       }
     },
     onSubmit: () => {
-      // >>> triggerChangeOld(selectedValue);
       triggerChange(selectedValue, index);
       resetText();
     },
     onCancel: () => {
-      // >>> triggerOpenOld(false, index, true);
       triggerOpen(false, index);
       setSelectedValue(mergedValue);
       resetText();
@@ -885,7 +882,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             values = updateValues(values, null, 1);
           }
 
-          // >>> triggerChangeOld(values, { forceInput: false });
           triggerChange(values, null);
         }}
         className={`${prefixCls}-clear`}
