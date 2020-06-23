@@ -1,9 +1,20 @@
 import * as React from 'react';
+import useMemo from 'rc-util/lib/hooks/useMemo';
 import { GenerateConfig } from '../../generate';
 import { Locale, OnSelect } from '../../interface';
 import TimeUnitColumn, { Unit } from './TimeUnitColumn';
 import { leftPad } from '../../utils/miscUtil';
 import { SharedTimeProps } from '.';
+import { setTime as utilSetTime } from '../../utils/timeUtil';
+
+function shouldUnitsUpdate(prevUnits: Unit[], nextUnits: Unit[]) {
+  if (prevUnits.length !== nextUnits.length) return true;
+  // if any unit's disabled status is different, the units should be re-evaluted
+  for (let i = 0; i < prevUnits.length; i += 1) {
+    if (prevUnits[i].disabled !== nextUnits[i].disabled) return true;
+  }
+  return false;
+}
 
 function generateUnits(
   start: number,
@@ -83,37 +94,60 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     const mergedMinute = Math.max(0, newMinute);
     const mergedSecond = Math.max(0, newSecond);
 
-    newDate = generateConfig.setSecond(newDate, mergedSecond);
-    newDate = generateConfig.setMinute(newDate, mergedMinute);
-    newDate = generateConfig.setHour(
+    newDate = utilSetTime(
+      generateConfig,
       newDate,
       !use12Hours || !isNewPM ? mergedHour : mergedHour + 12,
+      mergedMinute,
+      mergedSecond,
     );
 
     return newDate;
   };
 
   // ========================= Unit =========================
-  const hours = generateUnits(
-    0,
-    use12Hours ? 11 : 23,
-    hourStep,
-    disabledHours && disabledHours(),
-  );
+  const rawHours = generateUnits(0, 23, hourStep, disabledHours && disabledHours());
+
+  const memorizedRawHours = useMemo(() => rawHours, rawHours, shouldUnitsUpdate);
 
   // Should additional logic to handle 12 hours
-  if (use12Hours && hour !== -1) {
-    isPM = hour >= 12;
+  if (use12Hours) {
+    isPM = hour >= 12; // -1 means should display AM
     hour %= 12;
-    hours[0].label = '12';
   }
 
-  const minutes = generateUnits(
-    0,
-    59,
-    minuteStep,
-    disabledMinutes && disabledMinutes(hour),
-  );
+  const [AMDisabled, PMDisabled] = React.useMemo(() => {
+    if (!use12Hours) {
+      return [false, false];
+    }
+    const AMPMDisabled = [true, true];
+    memorizedRawHours.forEach(({ disabled, value: hourValue }) => {
+      if (disabled) return;
+      if (hourValue >= 12) {
+        AMPMDisabled[1] = false;
+      } else {
+        AMPMDisabled[0] = false;
+      }
+    });
+    return AMPMDisabled;
+  }, [use12Hours, memorizedRawHours]);
+
+  const hours = React.useMemo(() => {
+    if (!use12Hours) return memorizedRawHours;
+    return memorizedRawHours
+      .filter(isPM ? hourMeta => hourMeta.value >= 12 : hourMeta => hourMeta.value < 12)
+      .map(hourMeta => {
+        const hourValue = hourMeta.value % 12;
+        const hourLabel = hourValue === 0 ? '12' : leftPad(hourValue, 2);
+        return {
+          ...hourMeta,
+          label: hourLabel,
+          value: hourValue,
+        };
+      });
+  }, [use12Hours, memorizedRawHours]);
+
+  const minutes = generateUnits(0, 59, minuteStep, disabledMinutes && disabledMinutes(hour));
 
   const seconds = generateUnits(
     0,
@@ -207,7 +241,10 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     use12Hours === true,
     <TimeUnitColumn key="12hours" />,
     PMIndex,
-    [{ label: 'AM', value: 0 }, { label: 'PM', value: 1 }],
+    [
+      { label: 'AM', value: 0, disabled: AMDisabled },
+      { label: 'PM', value: 1, disabled: PMDisabled },
+    ],
     num => {
       onSelect(setTime(!!num, hour, minute, second), 'mouse');
     },
