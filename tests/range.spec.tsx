@@ -174,14 +174,45 @@ describe('Picker.Range', () => {
     expect(wrapper.findCell(11).hasClass('rc-picker-cell-disabled')).toBeFalsy();
   });
 
-  it('Can not select when startDate is after endDate', () => {
-    const onChange = jest.fn();
-    const wrapper = mount(<MomentRangePicker onChange={onChange} />);
+  describe('Can not select when start or end first selected', () => {
+    it('select end', () => {
+      const wrapper = mount(<MomentRangePicker />);
 
-    wrapper.openPicker(1);
-    wrapper.selectCell(7);
+      wrapper.openPicker(1);
+      wrapper.selectCell(7);
 
-    expect(wrapper.findCell(23).hasClass('rc-picker-cell-disabled')).toBeTruthy();
+      expect(wrapper.findCell(23).hasClass('rc-picker-cell-disabled')).toBeTruthy();
+    });
+
+    it('select start', () => {
+      const wrapper = mount(<MomentRangePicker picker="quarter" />);
+
+      wrapper.openPicker(0);
+      wrapper.selectCell('Q3');
+
+      expect(wrapper.findCell('Q1').hasClass('rc-picker-cell-disabled')).toBeTruthy();
+    });
+
+    it('select end', () => {
+      const wrapper = mount(<MomentRangePicker picker="month" />);
+
+      wrapper.openPicker(1);
+      wrapper.selectCell('May');
+
+      expect(wrapper.findCell('Dec').hasClass('rc-picker-cell-disabled')).toBeTruthy();
+    });
+
+    it('disabled start', () => {
+      const wrapper = mount(
+        <MomentRangePicker
+          disabled={[true, false]}
+          defaultValue={[getMoment('1990-01-15'), getMoment('1990-02-15')]}
+        />,
+      );
+
+      wrapper.openPicker(1);
+      expect(wrapper.findCell(14).hasClass('rc-picker-cell-disabled')).toBeTruthy();
+    });
   });
 
   it('allowEmpty', () => {
