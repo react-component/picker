@@ -14,12 +14,20 @@ export function setTime<DateType>(
 }
 
 export function getLowerBoundTime(
-  now: {
+  {
+    hour,
+    minute,
+    second,
+  }: {
     hour: number;
     minute: number;
     second: number;
   },
-  steps: {
+  {
+    hourStep,
+    minuteStep,
+    secondStep,
+  }: {
     hourStep: number;
     minuteStep: number;
     secondStep: number;
@@ -29,8 +37,6 @@ export function getLowerBoundTime(
   minute: number;
   second: number;
 } {
-  const { hour, minute, second } = now;
-  const { hourStep, minuteStep, secondStep } = steps;
   const lowerBoundHour = Math.floor(hour / hourStep) * hourStep;
   if (lowerBoundHour < hour) {
     return {
