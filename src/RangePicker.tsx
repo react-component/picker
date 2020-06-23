@@ -485,19 +485,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   };
 
-  // ======================== Mousedown Picker ========================
-  const onPickerMousedown = (e: MouseEvent) => {
-    if (
-      !mergedOpen &&
-      !startInputRef.current.contains(e.target as Node | null) &&
-      !endInputRef.current.contains(e.target as Node | null)
-    ) {
-      e.preventDefault();
-      startInputRef.current.focus();
-      triggerOpen(true, 0);
-    }
-  };
-
   // ============================= Text ==============================
   const sharedTextHooksProps = {
     formatList,
@@ -577,6 +564,40 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     open: endOpen,
     value: endText,
   });
+
+  // ========================== Click Picker ==========================
+  const onPickerClick = (e: MouseEvent) => {
+    if (
+      !mergedOpen &&
+      !startInputRef.current.contains(e.target as Node | null) &&
+      !endInputRef.current.contains(e.target as Node | null)
+    ) {
+      if (!mergedDisabled[0]) {
+        startInputProps.onMouseDown(null);
+        Promise.resolve().then(() => {
+          // make sure panel DOM exists
+          startInputRef.current.focus();
+        });
+      } else if (!mergedDisabled[1]) {
+        endInputProps.onMouseDown(null);
+        Promise.resolve().then(() => {
+          endInputRef.current.focus();
+        });
+      }
+    }
+  };
+
+  const onPickerMouseDown = (e: MouseEvent) => {
+    // shouldn't affect input elements if picker is active
+    if (
+      mergedOpen &&
+      (startFocused || endFocused) &&
+      !startInputRef.current.contains(e.target as Node | null) &&
+      !endInputRef.current.contains(e.target as Node | null)
+    ) {
+      e.preventDefault();
+    }
+  };
 
   // ============================= Sync ==============================
   // Close should sync back with text value
@@ -973,7 +994,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             [`${prefixCls}-rtl`]: direction === 'rtl',
           })}
           style={style}
-          onMouseDown={onPickerMousedown}
+          onClick={onPickerClick}
+          onMouseDown={onPickerMouseDown}
           {...getDataOrAriaProps(props)}
         >
           <div
