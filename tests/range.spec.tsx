@@ -1299,4 +1299,48 @@ describe('Picker.Range', () => {
       expect(wrapper.isOpen()).toBeFalsy();
     });
   });
+
+  describe('click at non-input elements', () => {
+    it('should open when click suffix', () => {
+      const wrapper = mount(<MomentRangePicker suffixIcon="o" />);
+      wrapper.find('.rc-picker-suffix').simulate('click');
+      expect(wrapper.isOpen()).toBeTruthy();
+    });
+    it('should open when click seperator', () => {
+      const wrapper = mount(<MomentRangePicker suffixIcon="o" />);
+      wrapper.find('.rc-picker-range-separator').simulate('click');
+      expect(wrapper.isOpen()).toBeTruthy();
+    });
+    it('should focus on the first element', () => {
+      const wrapper = mount(<MomentRangePicker suffixIcon="o" />);
+      wrapper.find('.rc-picker-suffix').simulate('click');
+      expect(document.activeElement).toStrictEqual(
+        wrapper
+          .find('input')
+          .first()
+          .getDOMNode(),
+      );
+    });
+    it('should focus on the second element if first is disabled', () => {
+      const wrapper = mount(<MomentRangePicker suffixIcon="o" disabled={[true, false]} />);
+      wrapper.find('.rc-picker-suffix').simulate('click');
+      expect(document.activeElement).toStrictEqual(
+        wrapper
+          .find('input')
+          .last()
+          .getDOMNode(),
+      );
+    });
+    it("shouldn't let mousedown blur the input", () => {
+      const wrapper = mount(<MomentRangePicker suffixIcon="o" />);
+      wrapper.find('.rc-picker-suffix').simulate('click');
+      wrapper.find('.rc-picker-suffix').simulate('mousedown');
+      expect(document.activeElement).toStrictEqual(
+        wrapper
+          .find('input')
+          .first()
+          .getDOMNode(),
+      );
+    });
+  });
 });
