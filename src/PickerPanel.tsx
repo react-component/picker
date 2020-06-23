@@ -38,6 +38,7 @@ import { MonthCellRender } from './panels/MonthPanel/MonthBody';
 import RangeContext from './RangeContext';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
+import { getLowerBoundTime, setTime } from './utils/timeUtil';
 
 export interface PickerPanelSharedProps<DateType> {
   prefixCls?: string;
@@ -146,13 +147,29 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onOk,
     components,
     direction,
+    hourStep = 1,
+    minuteStep = 1,
+    secondStep = 1,
   } = props as MergedPickerPanelProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
 
+  const isHourStepValid = 24 % hourStep === 0;
+  const isMinuteStepValid = 60 % minuteStep === 0;
+  const isSecondStepValid = 60 % secondStep === 0;
+
   if (process.env.NODE_ENV !== 'production') {
     warning(!value || generateConfig.isValidate(value), 'Invalidate date pass to `value`.');
     warning(!value || generateConfig.isValidate(value), 'Invalidate date pass to `defaultValue`.');
+    warning(isHourStepValid, `\`hourStep\` ${hourStep} is invalid. It should be a factor of 24.`);
+    warning(
+      isMinuteStepValid,
+      `\`minuteStep\` ${minuteStep} is invalid. It should be a factor of 60.`,
+    );
+    warning(
+      isSecondStepValid,
+      `\`secondStep\` ${secondStep} is invalid. It should be a factor of 60.`,
+    );
   }
 
   // ============================ State =============================
@@ -434,6 +451,26 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   let extraFooter: React.ReactNode;
   let rangesNode: React.ReactNode;
 
+  const onNow = () => {
+    const now = generateConfig.getNow();
+    const lowerBoundTime = getLowerBoundTime(
+      generateConfig.getHour(now),
+      generateConfig.getMinute(now),
+      generateConfig.getSecond(now),
+      isHourStepValid ? hourStep : 1,
+      isMinuteStepValid ? minuteStep : 1,
+      isSecondStepValid ? secondStep : 1,
+    );
+    const adjustedNow = setTime(
+      generateConfig,
+      now,
+      lowerBoundTime[0], // hour
+      lowerBoundTime[1], // minute
+      lowerBoundTime[2], // second
+    );
+    triggerSelect(adjustedNow, 'submit');
+  };
+
   if (!hideRanges) {
     extraFooter = getExtraFooter(prefixCls, mergedMode, renderExtraFooter);
     rangesNode = getRanges({
@@ -443,11 +480,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       okDisabled: !mergedValue || (disabledDate && disabledDate(mergedValue)),
       locale,
       showNow,
-      onNow:
-        needConfirmButton &&
-        (() => {
-          triggerSelect(generateConfig.getNow(), 'submit');
-        }),
+      onNow: needConfirmButton && onNow,
       onOk: () => {
         if (mergedValue) {
           triggerSelect(mergedValue, 'submit', true);

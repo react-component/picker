@@ -6,7 +6,7 @@ import PanelContext from '../../PanelContext';
 export interface Unit {
   label: React.ReactText;
   value: number;
-  disabled?: boolean;
+  disabled: boolean;
 }
 
 export interface TimeUnitColumnProps {
