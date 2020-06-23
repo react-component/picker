@@ -33,144 +33,25 @@ describe('Picker.Util', () => {
 
   describe('getLowerBoundTime', () => {
     it('basic case', () => {
-      expect(
-        getLowerBoundTime(
-          {
-            hour: 23,
-            minute: 59,
-            second: 59,
-          },
-          {
-            hourStep: 1,
-            minuteStep: 1,
-            secondStep: 1,
-          },
-        ),
-      ).toEqual({
-        hour: 23,
-        minute: 59,
-        second: 59,
-      });
+      expect(getLowerBoundTime(23, 59, 59, 1, 1, 1)).toEqual([23, 59, 59]);
     });
     it('case to lower hour #1', () => {
-      expect(
-        getLowerBoundTime(
-          {
-            hour: 1,
-            minute: 4,
-            second: 5,
-          },
-          {
-            hourStep: 4,
-            minuteStep: 15,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
-        hour: 0,
-        minute: 45,
-        second: 45,
-      });
+      expect(getLowerBoundTime(1, 4, 5, 4, 15, 15)).toEqual([0, 45, 45]);
     });
     it('case to lower hour #2', () => {
-      expect(
-        getLowerBoundTime(
-          {
-            hour: 3,
-            minute: 4,
-            second: 5,
-          },
-          {
-            hourStep: 4,
-            minuteStep: 15,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
-        hour: 0,
-        minute: 45,
-        second: 45,
-      });
+      expect(getLowerBoundTime(3, 4, 5, 4, 15, 15)).toEqual([0, 45, 45]);
     });
     it('case to same hour, lower minute #1', () => {
-      expect(
-        getLowerBoundTime(
-          {
-            hour: 1,
-            minute: 31,
-            second: 5,
-          },
-          {
-            hourStep: 1,
-            minuteStep: 15,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
-        hour: 1,
-        minute: 30,
-        second: 45,
-      });
+      expect(getLowerBoundTime(1, 31, 5, 1, 15, 15)).toEqual([1, 30, 45]);
     });
     it('case to same hour, lower minute #2', () => {
-      expect(
-        getLowerBoundTime(
-          {
-            hour: 1,
-            minute: 44,
-            second: 5,
-          },
-          {
-            hourStep: 1,
-            minuteStep: 15,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
-        hour: 1,
-        minute: 30,
-        second: 45,
-      });
+      expect(getLowerBoundTime(1, 44, 5, 1, 15, 15)).toEqual([1, 30, 45]);
     });
     it('case to same hour, same minute, lower second #1', () => {
-      expect(
-        getLowerBoundTime(
-          {
-            hour: 1,
-            minute: 44,
-            second: 5,
-          },
-          {
-            hourStep: 1,
-            minuteStep: 1,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
-        hour: 1,
-        minute: 44,
-        second: 0,
-      });
+      expect(getLowerBoundTime(1, 44, 5, 1, 1, 15)).toEqual([1, 44, 0]);
     });
     it('case to same hour, same minute, lower second #2', () => {
-      expect(
-        getLowerBoundTime(
-          {
-            hour: 1,
-            minute: 44,
-            second: 14,
-          },
-          {
-            hourStep: 1,
-            minuteStep: 1,
-            secondStep: 15,
-          },
-        ),
-      ).toEqual({
-        hour: 1,
-        minute: 44,
-        second: 0,
-      });
+      expect(getLowerBoundTime(1, 44, 14, 1, 1, 15)).toEqual([1, 44, 0]);
     });
   });
 

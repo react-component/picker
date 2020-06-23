@@ -454,23 +454,19 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const onNow = () => {
     const now = generateConfig.getNow();
     const lowerBoundTime = getLowerBoundTime(
-      {
-        hour: generateConfig.getHour(now),
-        minute: generateConfig.getMinute(now),
-        second: generateConfig.getSecond(now),
-      },
-      {
-        hourStep: isHourStepValid ? hourStep : 1,
-        minuteStep: isMinuteStepValid ? minuteStep : 1,
-        secondStep: isSecondStepValid ? secondStep : 1,
-      },
+      generateConfig.getHour(now),
+      generateConfig.getMinute(now),
+      generateConfig.getSecond(now),
+      isHourStepValid ? hourStep : 1,
+      isMinuteStepValid ? minuteStep : 1,
+      isSecondStepValid ? secondStep : 1,
     );
     const adjustedNow = setTime(
       generateConfig,
       now,
-      lowerBoundTime.hour,
-      lowerBoundTime.minute,
-      lowerBoundTime.second,
+      lowerBoundTime[0], // hour
+      lowerBoundTime[1], // minute
+      lowerBoundTime[2], // second
     );
     triggerSelect(adjustedNow, 'submit');
   };
