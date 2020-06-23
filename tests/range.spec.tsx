@@ -174,17 +174,45 @@ describe('Picker.Range', () => {
     expect(wrapper.findCell(11).hasClass('rc-picker-cell-disabled')).toBeFalsy();
   });
 
-  it('Reset when startDate is after endDate', () => {
-    const onChange = jest.fn();
-    const wrapper = mount(<MomentRangePicker onChange={onChange} />);
+  describe('Can not select when start or end first selected', () => {
+    it('select end', () => {
+      const wrapper = mount(<MomentRangePicker />);
 
-    wrapper.openPicker(1);
-    wrapper.selectCell(7);
+      wrapper.openPicker(1);
+      wrapper.selectCell(7);
 
-    wrapper.openPicker(0);
-    wrapper.selectCell(23);
-    expect(onChange).not.toHaveBeenCalled();
-    matchValues(wrapper, '1990-09-23', '');
+      expect(wrapper.findCell(23).hasClass('rc-picker-cell-disabled')).toBeTruthy();
+    });
+
+    it('select start', () => {
+      const wrapper = mount(<MomentRangePicker picker="quarter" />);
+
+      wrapper.openPicker(0);
+      wrapper.selectCell('Q3');
+
+      expect(wrapper.findCell('Q1').hasClass('rc-picker-cell-disabled')).toBeTruthy();
+    });
+
+    it('select end', () => {
+      const wrapper = mount(<MomentRangePicker picker="month" />);
+
+      wrapper.openPicker(1);
+      wrapper.selectCell('May');
+
+      expect(wrapper.findCell('Dec').hasClass('rc-picker-cell-disabled')).toBeTruthy();
+    });
+
+    it('disabled start', () => {
+      const wrapper = mount(
+        <MomentRangePicker
+          disabled={[true, false]}
+          defaultValue={[getMoment('1990-01-15'), getMoment('1990-02-15')]}
+        />,
+      );
+
+      wrapper.openPicker(1);
+      expect(wrapper.findCell(14).hasClass('rc-picker-cell-disabled')).toBeTruthy();
+    });
   });
 
   it('allowEmpty', () => {
@@ -1208,10 +1236,10 @@ describe('Picker.Range', () => {
   describe('auto open', () => {
     it('empty: start -> end -> close', () => {
       const wrapper = mount(<MomentRangePicker />);
+
       wrapper.openPicker(0);
       wrapper.inputValue('1990-11-28');
       wrapper.closePicker(0);
-
       expect(wrapper.isOpen()).toBeTruthy();
 
       wrapper.inputValue('1991-01-01');
@@ -1219,27 +1247,22 @@ describe('Picker.Range', () => {
       expect(wrapper.isOpen()).toBeFalsy();
     });
 
-    it('valued: start -> end', () => {
+    it('valued: start -> end -> close', () => {
       const wrapper = mount(
         <MomentRangePicker defaultValue={[getMoment('1989-01-01'), getMoment('1990-01-01')]} />,
       );
+
       wrapper.openPicker(0);
       wrapper.inputValue('1990-11-28');
       wrapper.closePicker(0);
-
       expect(wrapper.isOpen()).toBeTruthy();
-    });
 
-    it('empty: end -> start', () => {
-      const wrapper = mount(<MomentRangePicker />);
-      wrapper.openPicker(1);
-      wrapper.inputValue('1990-11-28', 1);
+      wrapper.inputValue('1990-12-23');
       wrapper.closePicker(1);
-
-      expect(wrapper.isOpen()).toBeTruthy();
+      expect(wrapper.isOpen()).toBeFalsy();
     });
 
-    it('empty: end before start -> start -> end', () => {
+    it('empty: end -> start -> close', () => {
       const wrapper = mount(<MomentRangePicker />);
 
       wrapper.openPicker(1);
@@ -1247,12 +1270,23 @@ describe('Picker.Range', () => {
       wrapper.closePicker(1);
       expect(wrapper.isOpen()).toBeTruthy();
 
-      wrapper.inputValue('1991-01-01', 0);
+      wrapper.inputValue('1989-01-01');
       wrapper.closePicker(0);
+      expect(wrapper.isOpen()).toBeFalsy();
+    });
+
+    it('valued: end -> start -> close', () => {
+      const wrapper = mount(
+        <MomentRangePicker defaultValue={[getMoment('1989-01-01'), getMoment('1990-01-01')]} />,
+      );
+
+      wrapper.openPicker(1);
+      wrapper.inputValue('1990-11-28', 1);
+      wrapper.closePicker(1);
       expect(wrapper.isOpen()).toBeTruthy();
 
-      wrapper.inputValue('1992-01-01', 1);
-      wrapper.closePicker(1);
+      wrapper.inputValue('1989-01-01');
+      wrapper.closePicker(0);
       expect(wrapper.isOpen()).toBeFalsy();
     });
   });

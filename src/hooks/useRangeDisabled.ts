@@ -4,23 +4,45 @@ import { getValue } from '../utils/miscUtil';
 import { GenerateConfig } from '../generate';
 import { isSameDate, getQuarter } from '../utils/dateUtil';
 
-export default function useRangeDisabled<DateType>({
-  picker,
-  locale,
-  selectedValue,
-  disabledDate,
-  disabled,
-  generateConfig,
-}: {
-  picker: PickerMode;
-  selectedValue: RangeValue<DateType>;
-  disabledDate?: (date: DateType) => boolean;
-  disabled: [boolean, boolean];
-  locale: Locale;
-  generateConfig: GenerateConfig<DateType>;
-}) {
+export default function useRangeDisabled<DateType>(
+  {
+    picker,
+    locale,
+    selectedValue,
+    disabledDate,
+    disabled,
+    generateConfig,
+  }: {
+    picker: PickerMode;
+    selectedValue: RangeValue<DateType>;
+    disabledDate?: (date: DateType) => boolean;
+    disabled: [boolean, boolean];
+    locale: Locale;
+    generateConfig: GenerateConfig<DateType>;
+  },
+  disabledStart: boolean,
+  disabledEnd: boolean,
+) {
   const startDate = getValue(selectedValue, 0);
   const endDate = getValue(selectedValue, 1);
+
+  function weekNumber(date: DateType) {
+    const year = generateConfig.getYear(date);
+    const week = generateConfig.locale.getWeek(locale.locale, date);
+    return year * 100 + week;
+  }
+
+  function monthNumber(date: DateType) {
+    const year = generateConfig.getYear(date);
+    const month = generateConfig.getMonth(date);
+    return year * 100 + month;
+  }
+
+  function quarterNumber(date: DateType) {
+    const year = generateConfig.getYear(date);
+    const quarter = getQuarter(generateConfig, date);
+    return year * 10 + quarter;
+  }
 
   const disabledStartDate = React.useCallback(
     (date: DateType) => {
@@ -28,51 +50,66 @@ export default function useRangeDisabled<DateType>({
         return true;
       }
 
+      // Disabled range
       if (disabled[1] && endDate) {
         return !isSameDate(generateConfig, date, endDate) && generateConfig.isAfter(date, endDate);
       }
 
+      // Disabled part
+      if (disabledStart && endDate) {
+        switch (picker) {
+          case 'quarter':
+            return quarterNumber(date) > quarterNumber(endDate);
+          case 'month':
+            return monthNumber(date) > monthNumber(endDate);
+          case 'week':
+            return weekNumber(date) > weekNumber(endDate);
+          default:
+            return (
+              !isSameDate(generateConfig, date, endDate) && generateConfig.isAfter(date, endDate)
+            );
+        }
+      }
+
       return false;
     },
-    [disabledDate, disabled[1], endDate],
+    [disabledDate, disabled[1], endDate, disabledStart],
   );
 
-  const disableEndDate = React.useCallback(
+  const disabledEndDate = React.useCallback(
     (date: DateType) => {
       if (disabledDate && disabledDate(date)) {
         return true;
       }
 
-      if (startDate) {
-        if (picker === 'week') {
-          const startYear = generateConfig.getYear(startDate);
-          const dateYear = generateConfig.getYear(date);
-          const startWeek = generateConfig.locale.getWeek(locale.locale, startDate);
-          const dateWeek = generateConfig.locale.getWeek(locale.locale, date);
-          const startVal = startYear * 100 + startWeek;
-          const dateVal = dateYear * 100 + dateWeek;
-          return dateVal < startVal;
-        }
-
-        if (picker === 'quarter') {
-          const startYear = generateConfig.getYear(startDate);
-          const dateYear = generateConfig.getYear(date);
-          const startQuarter = getQuarter(generateConfig, startDate);
-          const dateQuarter = getQuarter(generateConfig, date);
-          const startVal = startYear * 10 + startQuarter;
-          const dateVal = dateYear * 10 + dateQuarter;
-          return dateVal < startVal;
-        }
-
+      // Disabled range
+      if (disabled[0] && startDate) {
         return (
-          !isSameDate(generateConfig, date, startDate) && generateConfig.isAfter(startDate, date)
+          !isSameDate(generateConfig, date, endDate) && generateConfig.isAfter(startDate, date)
         );
+      }
+
+      // Disabled part
+      if (disabledEnd && startDate) {
+        switch (picker) {
+          case 'quarter':
+            return quarterNumber(date) < quarterNumber(startDate);
+          case 'month':
+            return monthNumber(date) < monthNumber(startDate);
+          case 'week':
+            return weekNumber(date) < weekNumber(startDate);
+          default:
+            return (
+              !isSameDate(generateConfig, date, startDate) &&
+              generateConfig.isAfter(startDate, date)
+            );
+        }
       }
 
       return false;
     },
-    [disabledDate, startDate, picker],
+    [disabledDate, disabled[0], startDate, disabledEnd],
   );
 
-  return [disabledStartDate, disableEndDate];
+  return [disabledStartDate, disabledEndDate];
 }
