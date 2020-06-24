@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { useState, useEffect, useRef } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { addGlobalMouseDownEvent } from '../utils/uiUtil';
 
 export default function usePickerInput({
   open,
+  value,
   isClickOutside,
   triggerOpen,
   forwardKeyDown,
@@ -14,6 +16,7 @@ export default function usePickerInput({
   onBlur,
 }: {
   open: boolean;
+  value: string;
   isClickOutside: (clickElement: EventTarget | null) => boolean;
   triggerOpen: (open: boolean) => void;
   forwardKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => boolean;
@@ -23,14 +26,16 @@ export default function usePickerInput({
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }): [React.DOMAttributes<HTMLInputElement>, { focused: boolean; typing: boolean }] {
-  const [typing, setTyping] = React.useState(false);
-  const [focused, setFocused] = React.useState(false);
+  const [typing, setTyping] = useState(false);
+  const [focused, setFocused] = useState(false);
 
   /**
    * We will prevent blur to handle open event when user click outside,
    * since this will repeat trigger `onOpenChange` event.
    */
-  const preventBlurRef = React.useRef<boolean>(false);
+  const preventBlurRef = useRef<boolean>(false);
+
+  const valueChangedRef = useRef<boolean>(false);
 
   const inputProps: React.DOMAttributes<HTMLInputElement> = {
     onMouseDown: () => {
@@ -101,7 +106,10 @@ export default function usePickerInput({
         }, 0);
       } else if (open) {
         triggerOpen(false);
-        onSubmit();
+
+        if (valueChangedRef.current) {
+          onSubmit();
+        }
       }
       setFocused(false);
 
@@ -111,8 +119,17 @@ export default function usePickerInput({
     },
   };
 
+  // check if value changed
+  useEffect(() => {
+    valueChangedRef.current = false;
+  }, [open]);
+
+  useEffect(() => {
+    valueChangedRef.current = true;
+  }, [value]);
+
   // Global click handler
-  React.useEffect(() =>
+  useEffect(() =>
     addGlobalMouseDownEvent(({ target }: MouseEvent) => {
       if (open) {
         if (!isClickOutside(target)) {

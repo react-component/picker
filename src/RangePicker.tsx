@@ -556,11 +556,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const [startInputProps, { focused: startFocused, typing: startTyping }] = usePickerInput({
     ...getSharedInputHookProps(0, resetStartText),
     open: startOpen,
+    value: startText,
   });
 
   const [endInputProps, { focused: endFocused, typing: endTyping }] = usePickerInput({
     ...getSharedInputHookProps(1, resetEndText),
     open: endOpen,
+    value: endText,
   });
 
   // ============================= Sync ==============================
