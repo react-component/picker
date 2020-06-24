@@ -242,15 +242,12 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
-  const triggerOpen = (newOpen: boolean, preventChangeEvent: boolean = false) => {
+  const triggerOpen = (newOpen: boolean) => {
     if (disabled && newOpen) {
       return;
     }
 
     triggerInnerOpen(newOpen);
-    if (!newOpen && !preventChangeEvent) {
-      triggerChange(selectedValue);
-    }
   };
 
   const forwardKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
@@ -285,6 +282,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const [inputProps, { focused, typing }] = usePickerInput({
     blurToCancel: needConfirmButton,
     open: mergedOpen,
+    value: text,
     triggerOpen,
     forwardKeyDown,
     isClickOutside: target =>
@@ -295,12 +293,12 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       }
 
       triggerChange(selectedValue);
-      triggerOpen(false, true);
+      triggerOpen(false);
       resetText();
       return true;
     },
     onCancel: () => {
-      triggerOpen(false, true);
+      triggerOpen(false);
       setSelectedValue(mergedValue);
       resetText();
     },
@@ -400,7 +398,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
           e.preventDefault();
           e.stopPropagation();
           triggerChange(null);
-          triggerOpen(false, true);
+          triggerOpen(false);
         }}
         className={`${prefixCls}-clear`}
       >
@@ -422,7 +420,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     if (type === 'submit' || (type !== 'key' && !needConfirmButton)) {
       // triggerChange will also update selected values
       triggerChange(date);
-      triggerOpen(false, true);
+      triggerOpen(false);
     }
   };
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';

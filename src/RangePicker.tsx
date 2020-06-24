@@ -541,11 +541,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     },
     triggerOpen: (newOpen: boolean) => {
       triggerOpen(newOpen, index);
-
-      // Only blur will close open
-      if (!newOpen && mergedOpen !== newOpen && mergedActivePickerIndex === index) {
-        triggerChange(selectedValue, index);
-      }
     },
     onSubmit: () => {
       triggerChange(selectedValue, index);
@@ -561,11 +556,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const [startInputProps, { focused: startFocused, typing: startTyping }] = usePickerInput({
     ...getSharedInputHookProps(0, resetStartText),
     open: startOpen,
+    value: startText,
   });
 
   const [endInputProps, { focused: endFocused, typing: endTyping }] = usePickerInput({
     ...getSharedInputHookProps(1, resetEndText),
     open: endOpen,
+    value: endText,
   });
 
   // ============================= Sync ==============================

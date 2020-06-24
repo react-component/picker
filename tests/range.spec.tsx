@@ -1289,5 +1289,14 @@ describe('Picker.Range', () => {
       wrapper.closePicker(0);
       expect(wrapper.isOpen()).toBeFalsy();
     });
+
+    it('not change: start not to end', () => {
+      const wrapper = mount(
+        <MomentRangePicker defaultValue={[getMoment('1989-01-01'), getMoment('1990-01-01')]} />,
+      );
+      wrapper.openPicker(0);
+      wrapper.closePicker(0);
+      expect(wrapper.isOpen()).toBeFalsy();
+    });
   });
 });
