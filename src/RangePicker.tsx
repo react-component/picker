@@ -541,11 +541,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     },
     triggerOpen: (newOpen: boolean) => {
       triggerOpen(newOpen, index);
-
-      // Only blur will close open
-      if (!newOpen && mergedOpen !== newOpen && mergedActivePickerIndex === index) {
-        triggerChange(selectedValue, index);
-      }
     },
     onSubmit: () => {
       triggerChange(selectedValue, index);

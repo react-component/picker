@@ -99,8 +99,9 @@ export default function usePickerInput({
             onCancel();
           }
         }, 0);
-      } else {
+      } else if (open) {
         triggerOpen(false);
+        onSubmit();
       }
       setFocused(false);
 
