@@ -1299,4 +1299,20 @@ describe('Picker.Range', () => {
       expect(wrapper.isOpen()).toBeFalsy();
     });
   });
+
+  it('selection triggers onSelect callback', () => {
+    const onSelect = jest.fn();
+
+    const wrapper = mount(<MomentRangePicker onSelect={onSelect} />);
+
+    wrapper.openPicker();
+
+    // Start date
+    wrapper.selectCell(11);
+    expect(onSelect).toHaveBeenCalledWith(expect.anything(), '1990-09-11', 'start');
+
+    // End date
+    wrapper.selectCell(23);
+    expect(onSelect).toHaveBeenCalledWith(expect.anything(), '1990-09-23', 'end');
+  });
 });
