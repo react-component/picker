@@ -569,13 +569,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const onPickerClick = (e: MouseEvent) => {
     if (
       !mergedOpen &&
-      !startInputRef.current.contains(e.target as Node | null) &&
-      !endInputRef.current.contains(e.target as Node | null)
+      !startInputRef.current.contains(e.target as Node) &&
+      !endInputRef.current.contains(e.target as Node)
     ) {
       if (!mergedDisabled[0]) {
         startInputProps.onMouseDown(null);
+        // User Promise.resolve make sure panel DOM exists
         Promise.resolve().then(() => {
-          // make sure panel DOM exists
           startInputRef.current.focus();
         });
       } else if (!mergedDisabled[1]) {
@@ -592,8 +592,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     if (
       mergedOpen &&
       (startFocused || endFocused) &&
-      !startInputRef.current.contains(e.target as Node | null) &&
-      !endInputRef.current.contains(e.target as Node | null)
+      !startInputRef.current.contains(e.target as Node) &&
+      !endInputRef.current.contains(e.target as Node)
     ) {
       e.preventDefault();
     }
