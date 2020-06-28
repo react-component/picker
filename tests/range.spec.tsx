@@ -1345,10 +1345,8 @@ describe('Picker.Range', () => {
         }, 0);
       }, 200);
     });
-    // WTF test case
     it("shouldn't let mousedown blur the input", done => {
       setTimeout(() => {
-        console.log('sync test start');
         const preventDefault = jest.fn();
         const wrapper = mount(<MomentRangePicker suffixIcon="o" />, {
           attachTo: document.body,
@@ -1363,7 +1361,6 @@ describe('Picker.Range', () => {
           expect(preventDefault).toHaveBeenCalled();
           done();
         }, 0);
-        console.log('sync test end');
       }, 400);
     });
   });
