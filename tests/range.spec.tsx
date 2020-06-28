@@ -1348,27 +1348,20 @@ describe('Picker.Range', () => {
     // WTF test case
     // it("shouldn't let mousedown blur the input", (done) => {
     //   setTimeout(() => {
-    //     console.log('test start')
+    //     console.log('sync test start')
     //     const preventDefault = jest.fn();
     //     const wrapper = mount(<MomentRangePicker suffixIcon="o" />);
     //     wrapper.find('.rc-picker-suffix').simulate('click');
-    //     console.log('after click')
+    //     // 这里出问题的核心原因是 simulate click 导致的 startInputRef.focus() 没有触发 startInputProps.onFocus
     //     setTimeout(() => {
-    //       console.log('test settimeout start', document.activeElement.tagName)
+    //       // 没有触发 onFocus 就导致 range-picker 的内部状态不对，走不到 preventDefault 的分支
     //       wrapper.find('.rc-picker-suffix').simulate('mousedown', {
     //         preventDefault,
-    //         jjj: '666'
     //       });
     //       expect(preventDefault).toHaveBeenCalled();
-    //       // expect(document.activeElement).toStrictEqual(
-    //       //   wrapper
-    //       //     .find('input')
-    //       //     .first()
-    //       //     .getDOMNode(),
-    //       // );
     //       done();
     //     }, 0);
-    //     console.log('test sync end')
+    //     console.log('sync test end')
     //   }, 400);
     // });
   });
