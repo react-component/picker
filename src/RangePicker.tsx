@@ -574,7 +574,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     ) {
       if (!mergedDisabled[0]) {
         startInputProps.onMouseDown(null);
-        // User Promise.resolve make sure panel DOM exists
+        // Use Promise.resolve to make sure panel DOM exists
         Promise.resolve().then(() => {
           startInputRef.current.focus();
         });
