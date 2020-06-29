@@ -1352,16 +1352,14 @@ describe('Picker.Range', () => {
           attachTo: document.body,
         });
         wrapper.find('.rc-picker-suffix').simulate('click');
-        // 这里出问题的核心原因是 simulate click 导致的 startInputRef.focus() 没有触发 startInputProps.onFocus
         setTimeout(() => {
-          // 没有触发 onFocus 就导致 range-picker 的内部状态不对，走不到 preventDefault 的分支
           wrapper.find('.rc-picker-suffix').simulate('mousedown', {
             preventDefault,
           });
           expect(preventDefault).toHaveBeenCalled();
           done();
         }, 0);
-      }, 400);
+      }, 300);
     });
   });
 });
