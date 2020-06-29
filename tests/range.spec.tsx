@@ -32,10 +32,6 @@ describe('Picker.Range', () => {
     MockDate.reset();
   });
 
-  beforeEach(() => {
-    if (document.activeElement) (document.activeElement as any).blur();
-  });
-
   describe('value', () => {
     it('defaultValue', () => {
       const wrapper = mount(
