@@ -465,8 +465,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       !openRecordsRef.current[nextOpenIndex] &&
       getValue(values, sourceIndex)
     ) {
-      triggerOpen(true, nextOpenIndex);
-
       // Delay to focus to avoid input blur trigger expired selectedValues
       triggerOpenAndFocus(nextOpenIndex);
     } else {
