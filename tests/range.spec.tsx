@@ -1292,19 +1292,36 @@ describe('Picker.Range', () => {
       expect(wrapper.isOpen()).toBeFalsy();
     });
 
-    it('valued: end -> start -> close', () => {
-      const wrapper = mount(
-        <MomentRangePicker defaultValue={[getMoment('1989-01-01'), getMoment('1990-01-01')]} />,
-      );
+    describe('valued: end -> start -> close', () => {
+      it('in range', () => {
+        const wrapper = mount(
+          <MomentRangePicker defaultValue={[getMoment('1989-01-01'), getMoment('1990-01-01')]} />,
+        );
 
-      wrapper.openPicker(1);
-      wrapper.inputValue('1990-11-28', 1);
-      wrapper.closePicker(1);
-      expect(wrapper.isOpen()).toBeTruthy();
+        wrapper.openPicker(1);
+        wrapper.inputValue('1990-11-28', 1);
+        wrapper.closePicker(1);
+        expect(wrapper.isOpen()).toBeTruthy();
 
-      wrapper.inputValue('1989-01-01');
-      wrapper.closePicker(0);
-      expect(wrapper.isOpen()).toBeFalsy();
+        wrapper.inputValue('1989-01-01');
+        wrapper.closePicker(0);
+        expect(wrapper.isOpen()).toBeFalsy();
+      });
+
+      it('new end is before start', () => {
+        const wrapper = mount(
+          <MomentRangePicker defaultValue={[getMoment('1989-01-10'), getMoment('1989-01-15')]} />,
+        );
+
+        wrapper.openPicker(1);
+        wrapper.inputValue('1989-01-07', 1);
+        wrapper.closePicker(1);
+        expect(wrapper.isOpen()).toBeTruthy();
+
+        wrapper.inputValue('1989-01-01');
+        wrapper.closePicker(0);
+        expect(wrapper.isOpen()).toBeFalsy();
+      });
     });
 
     it('not change: start not to end', () => {
