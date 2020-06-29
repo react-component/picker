@@ -573,13 +573,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       !endInputRef.current.contains(e.target as Node)
     ) {
       if (!mergedDisabled[0]) {
-        startInputProps.onMouseDown(null);
+        triggerOpen(true, 0);
         // Use setTimeout to make sure panel DOM exists
         setTimeout(() => {
           startInputRef.current.focus();
         }, 0);
       } else if (!mergedDisabled[1]) {
-        endInputProps.onMouseDown(null);
+        triggerOpen(true, 1);
         setTimeout(() => {
           endInputRef.current.focus();
         }, 0);
