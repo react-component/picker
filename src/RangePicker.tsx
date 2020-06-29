@@ -374,6 +374,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   }
 
+  function triggerOpenAndFocus(index: 0 | 1) {
+    triggerOpen(true, index);
+    // Use setTimeout to make sure panel DOM exists
+    setTimeout(() => {
+      const inputRef = [startInputRef, endInputRef][index];
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 0);
+  }
+
   function triggerChange(newValue: RangeValue<DateType>, sourceIndex: 0 | 1) {
     let values = newValue;
     const startValue = getValue(values, 0);
@@ -454,15 +465,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       !openRecordsRef.current[nextOpenIndex] &&
       getValue(values, sourceIndex)
     ) {
-      triggerOpen(true, nextOpenIndex);
-
       // Delay to focus to avoid input blur trigger expired selectedValues
-      setTimeout(() => {
-        const inputRef = [startInputRef, endInputRef][nextOpenIndex];
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
-      }, 0);
+      triggerOpenAndFocus(nextOpenIndex);
     } else {
       triggerOpen(false, sourceIndex);
     }
@@ -564,6 +568,35 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     open: endOpen,
     value: endText,
   });
+
+  // ========================== Click Picker ==========================
+  const onPickerClick = (e: MouseEvent) => {
+    // When click inside the picker & outside the picker's input elements
+    // the panel should still be opened
+    if (
+      !mergedOpen &&
+      !startInputRef.current.contains(e.target as Node) &&
+      !endInputRef.current.contains(e.target as Node)
+    ) {
+      if (!mergedDisabled[0]) {
+        triggerOpenAndFocus(0);
+      } else if (!mergedDisabled[1]) {
+        triggerOpenAndFocus(1);
+      }
+    }
+  };
+
+  const onPickerMouseDown = (e: MouseEvent) => {
+    // shouldn't affect input elements if picker is active
+    if (
+      mergedOpen &&
+      (startFocused || endFocused) &&
+      !startInputRef.current.contains(e.target as Node) &&
+      !endInputRef.current.contains(e.target as Node)
+    ) {
+      e.preventDefault();
+    }
+  };
 
   // ============================= Sync ==============================
   // Close should sync back with text value
@@ -960,6 +993,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             [`${prefixCls}-rtl`]: direction === 'rtl',
           })}
           style={style}
+          onClick={onPickerClick}
+          onMouseDown={onPickerMouseDown}
           {...getDataOrAriaProps(props)}
         >
           <div
