@@ -1300,19 +1300,67 @@ describe('Picker.Range', () => {
     });
   });
 
-  it('selection triggers onSelect callback', () => {
-    const onSelect = jest.fn();
+  describe('click at non-input elements', () => {
+    it('should focus on the first element by default', () => {
+      jest.useFakeTimers();
+      const wrapper = mount(<MomentRangePicker />);
+      wrapper.find('.rc-picker').simulate('click');
+      expect(wrapper.isOpen()).toBeTruthy();
+      jest.runAllTimers();
+      expect(document.activeElement).toStrictEqual(
+        wrapper
+          .find('input')
+          .first()
+          .getDOMNode(),
+      );
+      jest.useRealTimers();
+    });
+    it('should focus on the second element if first is disabled', () => {
+      jest.useFakeTimers();
+      const wrapper = mount(<MomentRangePicker disabled={[true, false]} />);
+      wrapper.find('.rc-picker').simulate('click');
+      expect(wrapper.isOpen()).toBeTruthy();
+      jest.runAllTimers();
+      expect(document.activeElement).toStrictEqual(
+        wrapper
+          .find('input')
+          .last()
+          .getDOMNode(),
+      );
+      jest.useRealTimers();
+    });
+    it("shouldn't let mousedown blur the input", () => {
+      jest.useFakeTimers();
+      const preventDefault = jest.fn();
+      const wrapper = mount(<MomentRangePicker />, {
+        attachTo: document.body,
+      });
+      wrapper.find('.rc-picker').simulate('click');
+      jest.runAllTimers();
+      wrapper.find('.rc-picker').simulate('mousedown', {
+        preventDefault,
+      });
+      expect(wrapper.isOpen()).toBeTruthy();
+      expect(preventDefault).toHaveBeenCalled();
+      jest.useRealTimers();
+    });
+  });
 
-    const wrapper = mount(<MomentRangePicker onSelect={onSelect} />);
+  describe('Selection callbacks', () => {
+    it('selection triggers onSelect callback', () => {
+      const onSelect = jest.fn();
 
-    wrapper.openPicker();
+      const wrapper = mount(<MomentRangePicker onSelect={onSelect} />);
 
-    // Start date
-    wrapper.selectCell(11);
-    expect(onSelect).toHaveBeenCalledWith(expect.anything(), '1990-09-11', 'start');
+      wrapper.openPicker();
 
-    // End date
-    wrapper.selectCell(23);
-    expect(onSelect).toHaveBeenCalledWith(expect.anything(), '1990-09-23', 'end');
+      // Start date
+      wrapper.selectCell(11);
+      expect(onSelect).toHaveBeenCalledWith(expect.anything(), '1990-09-11', 'start');
+
+      // End date
+      wrapper.selectCell(23);
+      expect(onSelect).toHaveBeenCalledWith(expect.anything(), '1990-09-23', 'end');
+    });
   });
 });
