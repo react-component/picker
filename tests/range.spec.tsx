@@ -1315,51 +1315,45 @@ describe('Picker.Range', () => {
       wrapper.find('.rc-picker-range-separator').simulate('click');
       expect(wrapper.isOpen()).toBeTruthy();
     });
-    it('should focus on the first element', done => {
-      setTimeout(() => {
-        const wrapper = mount(<MomentRangePicker suffixIcon="o" />);
-        wrapper.find('.rc-picker-suffix').simulate('click');
-        setTimeout(() => {
-          expect(document.activeElement).toStrictEqual(
-            wrapper
-              .find('input')
-              .first()
-              .getDOMNode(),
-          );
-          done();
-        }, 0);
-      }, 100);
+    it('should focus on the first element', () => {
+      jest.useFakeTimers();
+      const wrapper = mount(<MomentRangePicker suffixIcon="o" />);
+      wrapper.find('.rc-picker-suffix').simulate('click');
+      jest.runAllTimers();
+      expect(document.activeElement).toStrictEqual(
+        wrapper
+          .find('input')
+          .first()
+          .getDOMNode(),
+      );
+      jest.useRealTimers();
     });
-    it('should focus on the second element if first is disabled', done => {
-      setTimeout(() => {
-        const wrapper = mount(<MomentRangePicker suffixIcon="o" disabled={[true, false]} />);
-        wrapper.find('.rc-picker-suffix').simulate('click');
-        setTimeout(() => {
-          expect(document.activeElement).toStrictEqual(
-            wrapper
-              .find('input')
-              .last()
-              .getDOMNode(),
-          );
-          done();
-        }, 0);
-      }, 200);
+    it('should focus on the second element if first is disabled', () => {
+      jest.useFakeTimers();
+      const wrapper = mount(<MomentRangePicker suffixIcon="o" disabled={[true, false]} />);
+      wrapper.find('.rc-picker-suffix').simulate('click');
+      jest.runAllTimers();
+      expect(document.activeElement).toStrictEqual(
+        wrapper
+          .find('input')
+          .last()
+          .getDOMNode(),
+      );
+      jest.useRealTimers();
     });
-    it("shouldn't let mousedown blur the input", done => {
-      setTimeout(() => {
-        const preventDefault = jest.fn();
-        const wrapper = mount(<MomentRangePicker suffixIcon="o" />, {
-          attachTo: document.body,
-        });
-        wrapper.find('.rc-picker-suffix').simulate('click');
-        setTimeout(() => {
-          wrapper.find('.rc-picker-suffix').simulate('mousedown', {
-            preventDefault,
-          });
-          expect(preventDefault).toHaveBeenCalled();
-          done();
-        }, 0);
-      }, 300);
+    it("shouldn't let mousedown blur the input", () => {
+      jest.useFakeTimers();
+      const preventDefault = jest.fn();
+      const wrapper = mount(<MomentRangePicker suffixIcon="o" />, {
+        attachTo: document.body,
+      });
+      wrapper.find('.rc-picker-suffix').simulate('click');
+      jest.runAllTimers();
+      wrapper.find('.rc-picker-suffix').simulate('mousedown', {
+        preventDefault,
+      });
+      expect(preventDefault).toHaveBeenCalled();
+      jest.useRealTimers();
     });
   });
 });

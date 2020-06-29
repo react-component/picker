@@ -574,15 +574,15 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     ) {
       if (!mergedDisabled[0]) {
         startInputProps.onMouseDown(null);
-        // Use Promise.resolve to make sure panel DOM exists
-        Promise.resolve().then(() => {
+        // Use setTimeout to make sure panel DOM exists
+        setTimeout(() => {
           startInputRef.current.focus();
-        });
+        }, 0);
       } else if (!mergedDisabled[1]) {
         endInputProps.onMouseDown(null);
-        Promise.resolve().then(() => {
+        setTimeout(() => {
           endInputRef.current.focus();
-        });
+        }, 0);
       }
     }
   };
