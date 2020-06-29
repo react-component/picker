@@ -566,23 +566,30 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   });
 
   // ========================== Click Picker ==========================
+  function triggerOpenAndFocus(index: 0 | 1) {
+    triggerOpen(true, index);
+    // Use setTimeout to make sure panel DOM exists
+    setTimeout(() => {
+      if (index === 0) {
+        startInputRef.current.focus();
+      } else {
+        endInputRef.current.focus();
+      }
+    }, 0);
+  }
+
   const onPickerClick = (e: MouseEvent) => {
+    // When click inside the picker & outside the picker's input elements
+    // the panel should still be opened
     if (
       !mergedOpen &&
       !startInputRef.current.contains(e.target as Node) &&
       !endInputRef.current.contains(e.target as Node)
     ) {
       if (!mergedDisabled[0]) {
-        triggerOpen(true, 0);
-        // Use setTimeout to make sure panel DOM exists
-        setTimeout(() => {
-          startInputRef.current.focus();
-        }, 0);
+        triggerOpenAndFocus(0);
       } else if (!mergedDisabled[1]) {
-        triggerOpen(true, 1);
-        setTimeout(() => {
-          endInputRef.current.focus();
-        }, 0);
+        triggerOpenAndFocus(1);
       }
     }
   };
