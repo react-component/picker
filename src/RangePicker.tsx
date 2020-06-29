@@ -374,6 +374,18 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   }
 
+  function triggerOpenAndFocus(index: 0 | 1) {
+    triggerOpen(true, index);
+    // Use setTimeout to make sure panel DOM exists
+    setTimeout(() => {
+      if (index === 0) {
+        startInputRef.current.focus();
+      } else {
+        endInputRef.current.focus();
+      }
+    }, 0);
+  }
+
   function triggerChange(newValue: RangeValue<DateType>, sourceIndex: 0 | 1) {
     let values = newValue;
     const startValue = getValue(values, 0);
@@ -457,12 +469,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       triggerOpen(true, nextOpenIndex);
 
       // Delay to focus to avoid input blur trigger expired selectedValues
-      setTimeout(() => {
-        const inputRef = [startInputRef, endInputRef][nextOpenIndex];
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
-      }, 0);
+      triggerOpenAndFocus(nextOpenIndex);
     } else {
       triggerOpen(false, sourceIndex);
     }
@@ -566,18 +573,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   });
 
   // ========================== Click Picker ==========================
-  function triggerOpenAndFocus(index: 0 | 1) {
-    triggerOpen(true, index);
-    // Use setTimeout to make sure panel DOM exists
-    setTimeout(() => {
-      if (index === 0) {
-        startInputRef.current.focus();
-      } else {
-        endInputRef.current.focus();
-      }
-    }, 0);
-  }
-
   const onPickerClick = (e: MouseEvent) => {
     // When click inside the picker & outside the picker's input elements
     // the panel should still be opened
