@@ -387,7 +387,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   function triggerChange(newValue: RangeValue<DateType>, sourceIndex: 0 | 1) {
     let values = newValue;
-    const startValue = getValue(values, 0);
+    let startValue = getValue(values, 0);
     let endValue = getValue(values, 1);
 
     // >>>>> Format start & end values
@@ -404,11 +404,18 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           !isSameDate(generateConfig, startValue, endValue))
       ) {
         // Clean up end date when start date is after end date
-        values = [startValue, null];
-        endValue = null;
+        if (sourceIndex === 0) {
+          values = [startValue, null];
+          endValue = null;
+        } else {
+          startValue = null;
+          values = [null, endValue];
+        }
 
         // Clean up cache since invalidate
-        openRecordsRef.current = {};
+        openRecordsRef.current = {
+          [sourceIndex]: true,
+        };
       } else if (picker !== 'time' || order !== false) {
         // Reorder when in same date
         values = reorderValues(values, generateConfig);
@@ -954,7 +961,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
     if (type === 'submit' || (type !== 'key' && !needConfirmButton)) {
       // triggerChange will also update selected values
-      // triggerChangeOld(values);
       triggerChange(values, mergedActivePickerIndex);
     } else {
       setSelectedValue(values);
