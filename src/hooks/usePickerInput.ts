@@ -136,9 +136,9 @@ export default function usePickerInput({
           preventBlurRef.current = true;
 
           // Always set back in case `onBlur` prevented by user
-          window.setTimeout(() => {
+          requestAnimationFrame(() => {
             preventBlurRef.current = false;
-          }, 0);
+          });
         } else if (!focused) {
           triggerOpen(false);
         }
