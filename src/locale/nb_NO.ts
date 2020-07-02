@@ -22,7 +22,7 @@ const locale: Locale = {
   monthBeforeYear: true,
   previousMonth: 'Forrige måned (PageUp)',
   nextMonth: 'Neste måned (PageDown)',
-  previousYear: 'I fjor (Control + venstre)',
+  previousYear: 'Forrige år (Control + venstre)',
   nextYear: 'Neste år (Control + høyre)',
   previousDecade: 'Forrige tiår',
   nextDecade: 'Neste tiår',
