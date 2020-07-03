@@ -13,6 +13,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+      - run: cp node_modules/father-build/template/tsconfig.json ./
       - run: npm run lint
   test:
     docker:
