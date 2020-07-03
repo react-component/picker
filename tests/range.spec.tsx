@@ -336,10 +336,10 @@ describe('Picker.Range', () => {
         />,
       );
 
-      wrapper.openPicker();
       let testNode;
 
       // Basic
+      wrapper.openPicker();
       testNode = wrapper.find('.rc-picker-ranges li span').first();
       expect(testNode.text()).toEqual('test');
       testNode.simulate('click');
@@ -347,8 +347,10 @@ describe('Picker.Range', () => {
         [expect.anything(), expect.anything()],
         ['1989-11-28', '1990-09-03'],
       );
+      expect(wrapper.isOpen()).toBeFalsy();
 
       // Function
+      wrapper.openPicker();
       testNode = wrapper.find('.rc-picker-ranges li span').last();
       expect(testNode.text()).toEqual('func');
       testNode.simulate('click');
@@ -356,6 +358,7 @@ describe('Picker.Range', () => {
         [expect.anything(), expect.anything()],
         ['2000-01-01', '2010-11-11'],
       );
+      expect(wrapper.isOpen()).toBeFalsy();
     });
 
     it('hover className', () => {
