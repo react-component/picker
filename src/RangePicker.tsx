@@ -682,8 +682,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     return {
       label,
       onClick: () => {
-        // triggerChangeOld(newValues);
         triggerChange(newValues, null);
+        triggerOpen(false, mergedActivePickerIndex);
       },
       onMouseEnter: () => {
         setRangeHoverValue(newValues);
