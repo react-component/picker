@@ -85,9 +85,12 @@ export interface RangePickerSharedProps<DateType> {
   separator?: React.ReactNode;
   allowEmpty?: [boolean, boolean];
   mode?: [PanelMode, PanelMode];
-  onSelect?: (value: DateType, formatString: string, info: 'start' | 'end') => void;
   onChange?: (values: RangeValue<DateType>, formatString: [string, string]) => void;
-  onCalendarChange?: (values: RangeValue<DateType>, formatString: [string, string]) => void;
+  onCalendarChange?: (
+    values: RangeValue<DateType>,
+    formatString: [string, string],
+    info: 'start' | 'end' | 'none',
+  ) => void;
   onPanelChange?: (values: RangeValue<DateType>, modes: [PanelMode, PanelMode]) => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -191,7 +194,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     inputReadOnly,
     mode,
     renderExtraFooter,
-    onSelect,
     onChange,
     onOpenChange,
     onPanelChange,
@@ -428,18 +430,18 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         ? generateConfig.locale.format(locale.locale, values[1], formatList[0])
         : '';
 
-    if (onSelect) {
-      if (!isEqual(generateConfig, getValue(mergedValue, 0), startValue)) {
-        onSelect(startValue, startStr, 'start');
-      }
-
-      if (!isEqual(generateConfig, getValue(mergedValue, 1), endValue)) {
-        onSelect(endValue, endStr, 'end');
-      }
-    }
-
     if (onCalendarChange) {
-      onCalendarChange(values, [startStr, endStr]);
+      const startChanged = !isEqual(generateConfig, getValue(selectedValue, 0), startValue);
+      const endChanged = !isEqual(generateConfig, getValue(selectedValue, 1), endValue);
+      let info = 'none';
+
+      if (startChanged) {
+        info = 'start';
+      } else if (endChanged) {
+        info = 'end';
+      }
+
+      onCalendarChange(values, [startStr, endStr], info);
     }
 
     // >>>>> Trigger `onChange` event
