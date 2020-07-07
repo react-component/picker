@@ -724,4 +724,9 @@ describe('Picker.Basic', () => {
     wrapper.closePicker();
     expect(wrapper.find('input').prop('value')).toEqual('20000101');
   });
+
+  it('panelRender', () => {
+    const wrapper = mount(<MomentPicker open panelRender={() => <h1>Light</h1>} />);
+    expect(wrapper.render()).toMatchSnapshot();
+  });
 });

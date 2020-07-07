@@ -63,6 +63,7 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   superPrevIcon?: React.ReactNode;
   superNextIcon?: React.ReactNode;
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
+  panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
 
   // Events
   onChange?: (value: DateType | null, dateString: string) => void;
@@ -157,6 +158,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     placeholder,
     getPopupContainer,
     pickerRef,
+    panelRender,
     onChange,
     onOpenChange,
     onFocus,
@@ -359,6 +361,25 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onPickerValueChange: undefined,
   };
 
+  let panelNode: React.ReactNode = (
+    <PickerPanel<DateType>
+      {...panelProps}
+      generateConfig={generateConfig}
+      className={classNames({
+        [`${prefixCls}-panel-focused`]: !typing,
+      })}
+      value={selectedValue}
+      locale={locale}
+      tabIndex={-1}
+      onChange={setSelectedValue}
+      direction={direction}
+    />
+  );
+
+  if (panelRender) {
+    panelNode = panelRender(panelNode);
+  }
+
   const panel = (
     <div
       className={`${prefixCls}-panel-container`}
@@ -366,18 +387,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         e.preventDefault();
       }}
     >
-      <PickerPanel<DateType>
-        {...panelProps}
-        generateConfig={generateConfig}
-        className={classNames({
-          [`${prefixCls}-panel-focused`]: !typing,
-        })}
-        value={selectedValue}
-        locale={locale}
-        tabIndex={-1}
-        onChange={setSelectedValue}
-        direction={direction}
-      />
+      {panelNode}
     </div>
   );
 

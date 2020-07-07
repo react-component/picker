@@ -336,10 +336,10 @@ describe('Picker.Range', () => {
         />,
       );
 
-      wrapper.openPicker();
       let testNode;
 
       // Basic
+      wrapper.openPicker();
       testNode = wrapper.find('.rc-picker-ranges li span').first();
       expect(testNode.text()).toEqual('test');
       testNode.simulate('click');
@@ -347,8 +347,10 @@ describe('Picker.Range', () => {
         [expect.anything(), expect.anything()],
         ['1989-11-28', '1990-09-03'],
       );
+      expect(wrapper.isOpen()).toBeFalsy();
 
       // Function
+      wrapper.openPicker();
       testNode = wrapper.find('.rc-picker-ranges li span').last();
       expect(testNode.text()).toEqual('func');
       testNode.simulate('click');
@@ -356,6 +358,7 @@ describe('Picker.Range', () => {
         [expect.anything(), expect.anything()],
         ['2000-01-01', '2010-11-11'],
       );
+      expect(wrapper.isOpen()).toBeFalsy();
     });
 
     it('hover className', () => {
@@ -1247,19 +1250,36 @@ describe('Picker.Range', () => {
       expect(wrapper.isOpen()).toBeFalsy();
     });
 
-    it('valued: start -> end -> close', () => {
-      const wrapper = mount(
-        <MomentRangePicker defaultValue={[getMoment('1989-01-01'), getMoment('1990-01-01')]} />,
-      );
+    describe('valued: start -> end -> close', () => {
+      it('in range', () => {
+        const wrapper = mount(
+          <MomentRangePicker defaultValue={[getMoment('1989-01-01'), getMoment('1990-01-01')]} />,
+        );
 
-      wrapper.openPicker(0);
-      wrapper.inputValue('1990-11-28');
-      wrapper.closePicker(0);
-      expect(wrapper.isOpen()).toBeTruthy();
+        wrapper.openPicker(0);
+        wrapper.inputValue('1990-11-28');
+        wrapper.closePicker(0);
+        expect(wrapper.isOpen()).toBeTruthy();
 
-      wrapper.inputValue('1990-12-23');
-      wrapper.closePicker(1);
-      expect(wrapper.isOpen()).toBeFalsy();
+        wrapper.inputValue('1990-12-23');
+        wrapper.closePicker(1);
+        expect(wrapper.isOpen()).toBeFalsy();
+      });
+
+      it('new start is after end', () => {
+        const wrapper = mount(
+          <MomentRangePicker defaultValue={[getMoment('1989-01-10'), getMoment('1989-01-15')]} />,
+        );
+
+        wrapper.openPicker(0);
+        wrapper.inputValue('1989-01-20');
+        wrapper.closePicker(0);
+        expect(wrapper.isOpen()).toBeTruthy();
+
+        wrapper.inputValue('1989-01-25');
+        wrapper.closePicker(1);
+        expect(wrapper.isOpen()).toBeFalsy();
+      });
     });
 
     it('empty: end -> start -> close', () => {
@@ -1275,19 +1295,36 @@ describe('Picker.Range', () => {
       expect(wrapper.isOpen()).toBeFalsy();
     });
 
-    it('valued: end -> start -> close', () => {
-      const wrapper = mount(
-        <MomentRangePicker defaultValue={[getMoment('1989-01-01'), getMoment('1990-01-01')]} />,
-      );
+    describe('valued: end -> start -> close', () => {
+      it('in range', () => {
+        const wrapper = mount(
+          <MomentRangePicker defaultValue={[getMoment('1989-01-01'), getMoment('1990-01-01')]} />,
+        );
 
-      wrapper.openPicker(1);
-      wrapper.inputValue('1990-11-28', 1);
-      wrapper.closePicker(1);
-      expect(wrapper.isOpen()).toBeTruthy();
+        wrapper.openPicker(1);
+        wrapper.inputValue('1990-11-28', 1);
+        wrapper.closePicker(1);
+        expect(wrapper.isOpen()).toBeTruthy();
 
-      wrapper.inputValue('1989-01-01');
-      wrapper.closePicker(0);
-      expect(wrapper.isOpen()).toBeFalsy();
+        wrapper.inputValue('1989-01-01');
+        wrapper.closePicker(0);
+        expect(wrapper.isOpen()).toBeFalsy();
+      });
+
+      it('new end is before start', () => {
+        const wrapper = mount(
+          <MomentRangePicker defaultValue={[getMoment('1989-01-10'), getMoment('1989-01-15')]} />,
+        );
+
+        wrapper.openPicker(1);
+        wrapper.inputValue('1989-01-07', 1);
+        wrapper.closePicker(1);
+        expect(wrapper.isOpen()).toBeTruthy();
+
+        wrapper.inputValue('1989-01-01');
+        wrapper.closePicker(0);
+        expect(wrapper.isOpen()).toBeFalsy();
+      });
     });
 
     it('not change: start not to end', () => {
@@ -1344,6 +1381,11 @@ describe('Picker.Range', () => {
       expect(preventDefault).toHaveBeenCalled();
       jest.useRealTimers();
     });
+  });
+
+  it('panelRender', () => {
+    const wrapper = mount(<MomentRangePicker open panelRender={() => <h1>Light</h1>} />);
+    expect(wrapper.render()).toMatchSnapshot();
   });
 
   describe('Selection callbacks', () => {

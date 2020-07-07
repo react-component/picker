@@ -28,6 +28,40 @@ exports[`Picker.Basic icon 1`] = `
 </div>
 `;
 
+exports[`Picker.Basic panelRender 1`] = `
+Array [
+  <div
+    class="rc-picker"
+  >
+    <div
+      class="rc-picker-input"
+    >
+      <input
+        autocomplete="off"
+        readonly=""
+        size="12"
+        title=""
+        value=""
+      />
+    </div>
+  </div>,
+  <div>
+    <div
+      class="rc-picker-dropdown"
+      style="opacity: 0;"
+    >
+      <div
+        class="rc-picker-panel-container"
+      >
+        <h1>
+          Light
+        </h1>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
 exports[`Picker.Basic pass data- & aria- & role 1`] = `
 <div
   class="rc-picker"
