@@ -12,39 +12,60 @@ const defaultEndValue = moment('2019-11-28 01:02:03');
 const defaultValue: [Moment, Moment] = [defaultStartValue, defaultEndValue];
 
 export default () => {
+  const [customizeNode, setCustomizeNode] = React.useState(false);
+
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-      <div>
-        <h3>Picker</h3>
-        <Picker<Moment>
-          open
-          generateConfig={momentGenerateConfig}
-          locale={zhCN}
-          allowClear
-          defaultValue={defaultStartValue}
-          panelRender={node => (
-            <>
-              <h3>My Panel</h3>
-              {node}
-            </>
-          )}
-        />
+    <>
+      {String(customizeNode)}
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div>
+          <h3>Picker</h3>
+          <Picker<Moment>
+            generateConfig={momentGenerateConfig}
+            locale={zhCN}
+            allowClear
+            defaultValue={defaultStartValue}
+            panelRender={node => (
+              <>
+                <button
+                  type="button"
+                  style={{ display: 'block' }}
+                  onClick={() => {
+                    setCustomizeNode(!customizeNode);
+                  }}
+                >
+                  Change
+                </button>
+
+                {customizeNode ? <span>My Panel</span> : node}
+              </>
+            )}
+          />
+        </div>
+        <div>
+          <h3>RangePicker</h3>
+          <RangePicker<Moment>
+            generateConfig={momentGenerateConfig}
+            locale={zhCN}
+            allowClear
+            defaultValue={defaultValue}
+            panelRender={node => (
+              <>
+                <button
+                  type="button"
+                  style={{ display: 'block' }}
+                  onClick={() => {
+                    setCustomizeNode(!customizeNode);
+                  }}
+                >
+                  Change
+                </button>
+                {customizeNode ? <span>My Panel</span> : node}
+              </>
+            )}
+          />
+        </div>
       </div>
-      <div>
-        <h3>RangePicker</h3>
-        <RangePicker<Moment>
-          generateConfig={momentGenerateConfig}
-          locale={zhCN}
-          allowClear
-          defaultValue={defaultValue}
-          panelRender={node => (
-            <>
-              <h3>My Panel</h3>
-              {node}
-            </>
-          )}
-        />
-      </div>
-    </div>
+    </>
   );
 };
