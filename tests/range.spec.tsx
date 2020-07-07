@@ -843,14 +843,29 @@ describe('Picker.Range', () => {
 
     // Not trigger when not value
     expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
+    expect(onCalendarChange).not.toHaveBeenCalled();
 
-    // Trigger when valued
+    // Trigger when start Ok'd
     onCalendarChange.mockReset();
     wrapper.selectCell(11);
+    expect(onCalendarChange).not.toHaveBeenCalled();
     wrapper.find('.rc-picker-ok button').simulate('click');
     expect(onCalendarChange).toHaveBeenCalledWith(
       [expect.anything(), null],
       ['1990-09-11 00:00:00', ''],
+      'none',
+    );
+    expect(onOk).toHaveBeenCalled();
+
+    // Trigger when end Ok'd
+    onCalendarChange.mockReset();
+    wrapper.selectCell(23);
+    expect(onCalendarChange).not.toHaveBeenCalled();
+    wrapper.find('.rc-picker-ok button').simulate('click');
+    expect(onCalendarChange).toHaveBeenCalledWith(
+      [expect.anything(), expect.anything()],
+      ['1990-09-11 00:00:00', '1990-09-23 00:00:00'],
+      'none',
     );
     expect(onOk).toHaveBeenCalled();
   });
@@ -1389,20 +1404,28 @@ describe('Picker.Range', () => {
   });
 
   describe('Selection callbacks', () => {
-    it('selection triggers onSelect callback', () => {
-      const onSelect = jest.fn();
+    it('selection provide info for onCalendarChange', () => {
+      const onCalendarChange = jest.fn();
 
-      const wrapper = mount(<MomentRangePicker onSelect={onSelect} />);
+      const wrapper = mount(<MomentRangePicker onCalendarChange={onCalendarChange} />);
 
       wrapper.openPicker();
 
       // Start date
       wrapper.selectCell(11);
-      expect(onSelect).toHaveBeenCalledWith(expect.anything(), '1990-09-11', 'start');
+      expect(onCalendarChange).toHaveBeenCalledWith(
+        [expect.anything(), null],
+        ['1990-09-11', ''],
+        'start',
+      );
 
       // End date
       wrapper.selectCell(23);
-      expect(onSelect).toHaveBeenCalledWith(expect.anything(), '1990-09-23', 'end');
+      expect(onCalendarChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['1990-09-11', '1990-09-23'],
+        'end',
+      );
     });
   });
 });
