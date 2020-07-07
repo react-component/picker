@@ -96,6 +96,7 @@ export interface RangePickerSharedProps<DateType> {
   /** @private Internal control of active picker. Do not use since it's private usage */
   activePickerIndex?: 0 | 1;
   dateRender?: RangeDateRender<DateType>;
+  panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
 }
 
 type OmitPickerProps<Props> = Omit<
@@ -181,6 +182,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     disabledDate,
     disabledTime,
     dateRender,
+    panelRender,
     ranges,
     allowEmpty,
     allowClear,
@@ -869,6 +871,22 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       panels = renderPanel();
     }
 
+    let mergedNodes: React.ReactNode = (
+      <>
+        <div className={`${prefixCls}-panels`}>{panels}</div>
+        {(extraNode || rangesNode) && (
+          <div className={`${prefixCls}-footer`}>
+            {extraNode}
+            {rangesNode}
+          </div>
+        )}
+      </>
+    );
+
+    if (panelRender) {
+      mergedNodes = panelRender(mergedNodes);
+    }
+
     return (
       <div
         className={`${prefixCls}-panel-container`}
@@ -878,13 +896,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           e.preventDefault();
         }}
       >
-        <div className={`${prefixCls}-panels`}>{panels}</div>
-        {(extraNode || rangesNode) && (
-          <div className={`${prefixCls}-footer`}>
-            {extraNode}
-            {rangesNode}
-          </div>
-        )}
+        {mergedNodes}
       </div>
     );
   }
