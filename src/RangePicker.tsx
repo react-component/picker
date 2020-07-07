@@ -442,7 +442,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     if (onCalendarChange) {
       const startChanged = !isEqual(generateConfig, getValue(selectedValue, 0), startValue);
       const endChanged = !isEqual(generateConfig, getValue(selectedValue, 1), endValue);
-      let info = 'none';
+      let info: 'start' | 'end' | 'none' = 'none';
 
       if (startChanged) {
         info = 'start';
