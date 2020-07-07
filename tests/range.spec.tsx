@@ -1382,4 +1382,9 @@ describe('Picker.Range', () => {
       jest.useRealTimers();
     });
   });
+
+  it('panelRender', () => {
+    const wrapper = mount(<MomentRangePicker open panelRender={() => <h1>Light</h1>} />);
+    expect(wrapper.render()).toMatchSnapshot();
+  });
 });
