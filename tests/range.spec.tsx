@@ -843,14 +843,29 @@ describe('Picker.Range', () => {
 
     // Not trigger when not value
     expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
+    expect(onCalendarChange).not.toHaveBeenCalled();
 
-    // Trigger when valued
+    // Trigger when start Ok'd
     onCalendarChange.mockReset();
     wrapper.selectCell(11);
+    expect(onCalendarChange).not.toHaveBeenCalled();
     wrapper.find('.rc-picker-ok button').simulate('click');
     expect(onCalendarChange).toHaveBeenCalledWith(
       [expect.anything(), null],
       ['1990-09-11 00:00:00', ''],
+      { range: 'start' },
+    );
+    expect(onOk).toHaveBeenCalled();
+
+    // Trigger when end Ok'd
+    onCalendarChange.mockReset();
+    wrapper.selectCell(23);
+    expect(onCalendarChange).not.toHaveBeenCalled();
+    wrapper.find('.rc-picker-ok button').simulate('click');
+    expect(onCalendarChange).toHaveBeenCalledWith(
+      [expect.anything(), expect.anything()],
+      ['1990-09-11 00:00:00', '1990-09-23 00:00:00'],
+      { range: 'end' },
     );
     expect(onOk).toHaveBeenCalled();
   });
@@ -1386,5 +1401,29 @@ describe('Picker.Range', () => {
   it('panelRender', () => {
     const wrapper = mount(<MomentRangePicker open panelRender={() => <h1>Light</h1>} />);
     expect(wrapper.render()).toMatchSnapshot();
+  });
+
+  describe('Selection callbacks', () => {
+    it('selection provide info for onCalendarChange', () => {
+      const onCalendarChange = jest.fn();
+
+      const wrapper = mount(<MomentRangePicker onCalendarChange={onCalendarChange} />);
+
+      wrapper.openPicker();
+
+      // Start date
+      wrapper.selectCell(11);
+      expect(onCalendarChange).toHaveBeenCalledWith([expect.anything(), null], ['1990-09-11', ''], {
+        range: 'start',
+      });
+
+      // End date
+      wrapper.selectCell(23);
+      expect(onCalendarChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['1990-09-11', '1990-09-23'],
+        { range: 'end' },
+      );
+    });
   });
 });

@@ -62,12 +62,16 @@ function canValueTrigger<DateType>(
   return false;
 }
 
+export type RangeType = 'start' | 'end';
+
+export interface RangeInfo {
+  range: RangeType;
+}
+
 export type RangeDateRender<DateType> = (
   currentDate: DateType,
   today: DateType,
-  info: {
-    range: 'start' | 'end';
-  },
+  info: RangeInfo,
 ) => React.ReactNode;
 
 export interface RangePickerSharedProps<DateType> {
@@ -77,7 +81,7 @@ export interface RangePickerSharedProps<DateType> {
   defaultPickerValue?: [DateType, DateType];
   placeholder?: [string, string];
   disabled?: boolean | [boolean, boolean];
-  disabledTime?: (date: EventValue<DateType>, type: 'start' | 'end') => DisabledTimes;
+  disabledTime?: (date: EventValue<DateType>, type: RangeType) => DisabledTimes;
   ranges?: Record<
     string,
     Exclude<RangeValue<DateType>, null> | (() => Exclude<RangeValue<DateType>, null>)
@@ -86,7 +90,11 @@ export interface RangePickerSharedProps<DateType> {
   allowEmpty?: [boolean, boolean];
   mode?: [PanelMode, PanelMode];
   onChange?: (values: RangeValue<DateType>, formatString: [string, string]) => void;
-  onCalendarChange?: (values: RangeValue<DateType>, formatString: [string, string]) => void;
+  onCalendarChange?: (
+    values: RangeValue<DateType>,
+    formatString: [string, string],
+    info: RangeInfo,
+  ) => void;
   onPanelChange?: (values: RangeValue<DateType>, modes: [PanelMode, PanelMode]) => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -436,7 +444,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         : '';
 
     if (onCalendarChange) {
-      onCalendarChange(values, [startStr, endStr]);
+      const info: RangeInfo = { range: sourceIndex === 0 ? 'start' : 'end' };
+
+      onCalendarChange(values, [startStr, endStr], info);
     }
 
     // >>>>> Trigger `onChange` event
