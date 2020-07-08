@@ -853,7 +853,7 @@ describe('Picker.Range', () => {
     expect(onCalendarChange).toHaveBeenCalledWith(
       [expect.anything(), null],
       ['1990-09-11 00:00:00', ''],
-      'none',
+      { range: 'start' },
     );
     expect(onOk).toHaveBeenCalled();
 
@@ -865,7 +865,7 @@ describe('Picker.Range', () => {
     expect(onCalendarChange).toHaveBeenCalledWith(
       [expect.anything(), expect.anything()],
       ['1990-09-11 00:00:00', '1990-09-23 00:00:00'],
-      'none',
+      { range: 'end' },
     );
     expect(onOk).toHaveBeenCalled();
   });
@@ -1413,18 +1413,16 @@ describe('Picker.Range', () => {
 
       // Start date
       wrapper.selectCell(11);
-      expect(onCalendarChange).toHaveBeenCalledWith(
-        [expect.anything(), null],
-        ['1990-09-11', ''],
-        'start',
-      );
+      expect(onCalendarChange).toHaveBeenCalledWith([expect.anything(), null], ['1990-09-11', ''], {
+        range: 'start',
+      });
 
       // End date
       wrapper.selectCell(23);
       expect(onCalendarChange).toHaveBeenCalledWith(
         [expect.anything(), expect.anything()],
         ['1990-09-11', '1990-09-23'],
-        'end',
+        { range: 'end' },
       );
     });
   });

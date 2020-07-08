@@ -62,12 +62,16 @@ function canValueTrigger<DateType>(
   return false;
 }
 
+export type RangeType = 'start' | 'end';
+
+export interface RangeInfo {
+  range: RangeType;
+}
+
 export type RangeDateRender<DateType> = (
   currentDate: DateType,
   today: DateType,
-  info: {
-    range: 'start' | 'end';
-  },
+  info: RangeInfo,
 ) => React.ReactNode;
 
 export interface RangePickerSharedProps<DateType> {
@@ -77,7 +81,7 @@ export interface RangePickerSharedProps<DateType> {
   defaultPickerValue?: [DateType, DateType];
   placeholder?: [string, string];
   disabled?: boolean | [boolean, boolean];
-  disabledTime?: (date: EventValue<DateType>, type: 'start' | 'end') => DisabledTimes;
+  disabledTime?: (date: EventValue<DateType>, type: RangeType) => DisabledTimes;
   ranges?: Record<
     string,
     Exclude<RangeValue<DateType>, null> | (() => Exclude<RangeValue<DateType>, null>)
@@ -89,7 +93,7 @@ export interface RangePickerSharedProps<DateType> {
   onCalendarChange?: (
     values: RangeValue<DateType>,
     formatString: [string, string],
-    info: 'start' | 'end' | 'none',
+    info: RangeInfo,
   ) => void;
   onPanelChange?: (values: RangeValue<DateType>, modes: [PanelMode, PanelMode]) => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
@@ -440,15 +444,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         : '';
 
     if (onCalendarChange) {
-      const startChanged = !isEqual(generateConfig, getValue(selectedValue, 0), startValue);
-      const endChanged = !isEqual(generateConfig, getValue(selectedValue, 1), endValue);
-      let info: 'start' | 'end' | 'none' = 'none';
-
-      if (startChanged) {
-        info = 'start';
-      } else if (endChanged) {
-        info = 'end';
-      }
+      const info: RangeInfo = { range: sourceIndex === 0 ? 'start' : 'end' };
 
       onCalendarChange(values, [startStr, endStr], info);
     }
