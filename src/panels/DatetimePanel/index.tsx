@@ -174,13 +174,14 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         operationRef={dateOperationRef}
         active={activePanel === 'date'}
         onSelect={date => {
+          const dateNow = generateConfig.getNow();
           onInternalSelect(
             setTime(
               generateConfig,
               date,
               showTime && typeof showTime === 'object'
                 ? showTime.defaultValue
-                : null,
+                : dateNow,
             ),
             'date',
           );
