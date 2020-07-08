@@ -12,31 +12,15 @@ function setTime<DateType>(
   date: DateType,
   defaultDate: NullableDateType<DateType>,
 ) {
-  if (!defaultDate) {
-    return date;
-  }
-
   let newDate = date;
-  newDate = generateConfig.setHour(
-    newDate,
-    generateConfig.getHour(defaultDate),
-  );
-  newDate = generateConfig.setMinute(
-    newDate,
-    generateConfig.getMinute(defaultDate),
-  );
-  newDate = generateConfig.setSecond(
-    newDate,
-    generateConfig.getSecond(defaultDate),
-  );
+  newDate = generateConfig.setHour(newDate, generateConfig.getHour(defaultDate));
+  newDate = generateConfig.setMinute(newDate, generateConfig.getMinute(defaultDate));
+  newDate = generateConfig.setSecond(newDate, generateConfig.getSecond(defaultDate));
   return newDate;
 }
 
 export interface DatetimePanelProps<DateType>
-  extends Omit<
-    DatePanelProps<DateType>,
-    'disabledHours' | 'disabledMinutes' | 'disabledSeconds'
-  > {
+  extends Omit<DatePanelProps<DateType>, 'disabledHours' | 'disabledMinutes' | 'disabledSeconds'> {
   disabledTime?: DisabledTime<DateType>;
   showTime?: boolean | SharedTimeProps<DateType>;
   defaultValue?: DateType;
@@ -57,9 +41,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
     onSelect,
   } = props;
   const panelPrefixCls = `${prefixCls}-datetime-panel`;
-  const [activePanel, setActivePanel] = React.useState<ActivePanelType | null>(
-    null,
-  );
+  const [activePanel, setActivePanel] = React.useState<ActivePanelType | null>(null);
 
   const dateOperationRef = React.useRef<PanelRefProps>({});
   const timeOperationRef = React.useRef<PanelRefProps>({});
@@ -96,8 +78,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
 
       // Operate on current active panel
       if (activePanel) {
-        const ref =
-          activePanel === 'date' ? dateOperationRef : timeOperationRef;
+        const ref = activePanel === 'date' ? dateOperationRef : timeOperationRef;
 
         if (ref.current && ref.current.onKeyDown) {
           ref.current.onKeyDown(event);
@@ -107,11 +88,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       }
 
       // Switch first active panel if operate without panel
-      if (
-        [KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN].includes(
-          event.which,
-        )
-      ) {
+      if ([KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN].includes(event.which)) {
         setActivePanel('date');
         return true;
       }
@@ -141,18 +118,9 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         generateConfig.getSecond(timeProps.defaultValue),
       );
     } else if (source === 'time' && !value && defaultValue) {
-      selectedDate = generateConfig.setYear(
-        selectedDate,
-        generateConfig.getYear(defaultValue),
-      );
-      selectedDate = generateConfig.setMonth(
-        selectedDate,
-        generateConfig.getMonth(defaultValue),
-      );
-      selectedDate = generateConfig.setDate(
-        selectedDate,
-        generateConfig.getDate(defaultValue),
-      );
+      selectedDate = generateConfig.setYear(selectedDate, generateConfig.getYear(defaultValue));
+      selectedDate = generateConfig.setMonth(selectedDate, generateConfig.getMonth(defaultValue));
+      selectedDate = generateConfig.setDate(selectedDate, generateConfig.getDate(defaultValue));
     }
 
     if (onSelect) {
@@ -179,9 +147,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
             setTime(
               generateConfig,
               date,
-              showTime && typeof showTime === 'object'
-                ? showTime.defaultValue
-                : dateNow,
+              showTime && typeof showTime === 'object' ? showTime.defaultValue : dateNow,
             ),
             'date',
           );
