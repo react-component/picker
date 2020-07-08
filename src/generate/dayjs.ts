@@ -118,7 +118,7 @@ const generateConfig: GenerateConfig<Dayjs> = {
         }
       }
 
-      parseNoMatchNotice()
+      if (formatText) parseNoMatchNotice()
       return null;
     },
   },
