@@ -12,6 +12,10 @@ function setTime<DateType>(
   date: DateType,
   defaultDate: NullableDateType<DateType>,
 ) {
+  if (!defaultDate) {
+    return date;
+  }
+
   let newDate = date;
   newDate = generateConfig.setHour(newDate, generateConfig.getHour(defaultDate));
   newDate = generateConfig.setMinute(newDate, generateConfig.getMinute(defaultDate));
