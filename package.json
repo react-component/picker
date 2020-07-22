@@ -59,6 +59,7 @@
     "coveralls": "^3.0.6",
     "cross-env": "^7.0.2",
     "dayjs": "^1.8.18",
+    "date-fns": "^2.15.0",
     "enzyme": "^3.0.0",
     "enzyme-adapter-react-16": "^1.0.1",
     "enzyme-to-json": "^3.4.0",
@@ -79,6 +80,7 @@
   },
   "peerDependencies": {
     "dayjs": "^1.8.18",
+    "date-fns": "^2.15.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0"
   },
