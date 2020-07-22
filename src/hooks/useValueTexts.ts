@@ -3,7 +3,7 @@ import useMemo from 'rc-util/lib/hooks/useMemo';
 import { GenerateConfig } from '../generate';
 import { Locale } from '../interface';
 
-interface ValueTextConfig<DateType> {
+export interface ValueTextConfig<DateType> {
   formatList: string[];
   generateConfig: GenerateConfig<DateType>;
   locale: Locale;

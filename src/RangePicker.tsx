@@ -29,6 +29,7 @@ import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
 import useRangeViewDates from './hooks/useRangeViewDates';
 import { DateRender } from './panels/DatePanel/DateBody';
+import useHoverPlaceholder from './hooks/useHoverPlaceholder';
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -284,18 +285,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     },
   });
 
-  const [rangeHoverValue, setRangeHoverValue] = useState<RangeValue<DateType>>(null);
-
-  // ========================== Hover Range ==========================
-  const [hoverRangedValue, setHoverRangedValue] = useState<RangeValue<DateType>>(null);
-
-  const onDateMouseEnter = (date: DateType) => {
-    setHoverRangedValue(updateValues(selectedValue, date, mergedActivePickerIndex));
-  };
-  const onDateMouseLeave = () => {
-    setHoverRangedValue(updateValues(selectedValue, null, mergedActivePickerIndex));
-  };
-
   // ============================= Modes =============================
   const [mergedModes, setInnerModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
     value: mode,
@@ -545,6 +534,49 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     valueTexts: endValueTexts,
     onTextChange: newText => onTextChange(newText, 1),
   });
+
+  const [rangeHoverValue, setRangeHoverValue] = useState<RangeValue<DateType>>(null);
+
+  // ========================== Hover Range ==========================
+  const [hoverRangedValue, setHoverRangedValue] = useState<RangeValue<DateType>>(null);
+
+  const [startPlaceholder, onStartEnter, onStartLeave] = useHoverPlaceholder(
+    getValue(placeholder, 0) || '',
+    startText,
+    {
+      formatList,
+      generateConfig,
+      locale,
+    },
+  );
+
+  const [endPlaceholder, onEndEnter, onEndLeave] = useHoverPlaceholder(
+    getValue(placeholder, 1) || '',
+    endText,
+    {
+      formatList,
+      generateConfig,
+      locale,
+    },
+  );
+
+  const onDateMouseEnter = (date: DateType) => {
+    setHoverRangedValue(updateValues(selectedValue, date, mergedActivePickerIndex));
+    if (mergedActivePickerIndex === 0) {
+      onStartEnter(date);
+    } else {
+      onEndEnter(date);
+    }
+  };
+
+  const onDateMouseLeave = () => {
+    setHoverRangedValue(updateValues(selectedValue, null, mergedActivePickerIndex));
+    if (mergedActivePickerIndex === 0) {
+      onStartLeave(null);
+    } else {
+      onEndLeave(null);
+    }
+  };
 
   // ============================= Input =============================
   const getSharedInputHookProps = (index: 0 | 1, resetText: () => void) => ({
@@ -1040,7 +1072,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
                 triggerStartTextChange(e.target.value);
               }}
               autoFocus={autoFocus}
-              placeholder={getValue(placeholder, 0) || ''}
+              placeholder={startPlaceholder}
               ref={startInputRef}
               {...startInputProps}
               {...inputSharedProps}
@@ -1063,7 +1095,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               onChange={e => {
                 triggerEndTextChange(e.target.value);
               }}
-              placeholder={getValue(placeholder, 1) || ''}
+              placeholder={endPlaceholder}
               ref={endInputRef}
               {...endInputProps}
               {...inputSharedProps}
