@@ -252,6 +252,7 @@ describe('Picker.Panel', () => {
 
     // Click on time
     onSelect.mockReset();
+    wrapper.selectCell(8);
     wrapper
       .find('ul')
       .first()
@@ -259,7 +260,7 @@ describe('Picker.Panel', () => {
       .at(11)
       .simulate('click');
     expect(
-      isSame(onSelect.mock.calls[0][0], `1990-09-03 11:${moment().format('mm:ss')}`),
+      isSame(onSelect.mock.calls[0][0], `1990-09-08 11:${moment().format('mm:ss')}`),
     ).toBeTruthy();
   });
 
