@@ -151,7 +151,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
             setTime(
               generateConfig,
               date,
-              showTime && typeof showTime === 'object' ? showTime.defaultValue : dateNow,
+              showTime && typeof showTime === 'object' ? showTime.defaultValue || null : dateNow,
             ),
             'date',
           );
