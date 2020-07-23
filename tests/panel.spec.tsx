@@ -239,6 +239,30 @@ describe('Picker.Panel', () => {
     expect(isSame(onSelect.mock.calls[0][0], '2001-01-02 11:00:00')).toBeTruthy();
   });
 
+  // This test is safe to remove
+  it('showtime is true', () => {
+    const onSelect = jest.fn();
+    const wrapper = mount(<MomentPickerPanel showTime value={null} onSelect={onSelect} />);
+
+    // Click on date
+    wrapper.selectCell(5);
+    expect(
+      isSame(onSelect.mock.calls[0][0], `1990-09-05 ${moment().format('hh:mm:ss')}`),
+    ).toBeTruthy();
+
+    // Click on time
+    onSelect.mockReset();
+    wrapper
+      .find('ul')
+      .first()
+      .find('li')
+      .at(11)
+      .simulate('click');
+    expect(
+      isSame(onSelect.mock.calls[0][0], `1990-09-03 11:${moment().format('mm:ss')}`),
+    ).toBeTruthy();
+  });
+
   describe('not trigger onSelect when cell disabled', () => {
     it('time', () => {
       const onSelect = jest.fn();
