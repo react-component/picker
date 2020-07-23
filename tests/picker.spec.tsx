@@ -758,26 +758,5 @@ describe('Picker.Basic', () => {
       expect(wrapper.find('input').prop('placeholder')).toBe(placeholder);
       wrapper.closePicker();
     });
-
-    it('placeholder should reset target date when input value change from empty to not', () => {
-      const wrapper = mount(
-        <MomentPicker placeholder={placeholder} defaultValue={getMoment('2020-07-22')} />,
-      );
-      wrapper.openPicker();
-      wrapper.find('input').simulate('change', {
-        target: {
-          value: '',
-        },
-      });
-      const cell = wrapper.findCell(24);
-      cell.simulate('mouseEnter');
-      expect(wrapper.find('input').prop('placeholder')).toBe('2020-07-24');
-      wrapper.find('input').simulate('change', {
-        target: {
-          value: '2020',
-        },
-      });
-      expect(wrapper.find('input').prop('placeholder')).toBe(placeholder);
-    });
   });
 });

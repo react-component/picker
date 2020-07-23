@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import useValueTexts, { ValueTextConfig } from './useValueTexts';
 
 export default function useHoverPlaceholder<DateType>(
@@ -21,16 +21,8 @@ export default function useHoverPlaceholder<DateType>(
   }
 
   function onLeave() {
-    if (value) {
-      setValue(null);
-    }
+    setValue(null);
   }
-
-  useEffect(() => {
-    if (text && value) {
-      setValue(null);
-    }
-  }, [text]);
 
   return [(valueTexts && valueTexts[0]) || placeholder, onEnter, onLeave];
 }
