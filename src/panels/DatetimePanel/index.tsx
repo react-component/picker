@@ -12,10 +12,6 @@ function setTime<DateType>(
   date: DateType,
   defaultDate: NullableDateType<DateType>,
 ) {
-  if (!defaultDate) {
-    return date;
-  }
-
   let newDate = date;
   newDate = generateConfig.setHour(newDate, generateConfig.getHour(defaultDate));
   newDate = generateConfig.setMinute(newDate, generateConfig.getMinute(defaultDate));
@@ -151,7 +147,9 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
             setTime(
               generateConfig,
               date,
-              showTime && typeof showTime === 'object' ? showTime.defaultValue || null : dateNow,
+              showTime && typeof showTime === 'object' && showTime.defaultValue
+                ? showTime.defaultValue
+                : dateNow,
             ),
             'date',
           );
