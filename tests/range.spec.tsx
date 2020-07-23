@@ -1426,4 +1426,79 @@ describe('Picker.Range', () => {
       );
     });
   });
+
+  describe('hover placeholder', () => {
+    const placeholder: [string, string] = ['custom placeholder1', 'custom placeholder2'];
+    const defaultValue: [Moment, Moment] = [getMoment('2020-07-22'), getMoment('2020-08-22')];
+
+    it('placeholder should be target date when input value is empty', () => {
+      const wrapper = mount(
+        <MomentRangePicker placeholder={placeholder} defaultValue={defaultValue} />,
+      );
+      wrapper.openPicker(0);
+      wrapper.inputValue('');
+      // left
+      const leftCell = wrapper.findCell('24');
+      leftCell.simulate('mouseEnter');
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .prop('placeholder'),
+      ).toBe('2020-07-24');
+      expect(
+        wrapper
+          .find('input')
+          .last()
+          .prop('placeholder'),
+      ).toBe(placeholder[1]);
+      leftCell.simulate('mouseLeave');
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .prop('placeholder'),
+      ).toBe(placeholder[0]);
+      expect(
+        wrapper
+          .find('input')
+          .last()
+          .prop('placeholder'),
+      ).toBe(placeholder[1]);
+      wrapper.closePicker(0);
+
+      // right
+      wrapper.openPicker(1);
+      wrapper.inputValue('', 1);
+
+      const rightCell = wrapper.findCell('24', 1);
+      rightCell.simulate('mouseEnter');
+      expect(
+        wrapper
+          .find('input')
+          .last()
+          .prop('placeholder'),
+      ).toBe('2020-08-24');
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .prop('placeholder'),
+      ).toBe(placeholder[0]);
+      rightCell.simulate('mouseLeave');
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .prop('placeholder'),
+      ).toBe(placeholder[0]);
+      expect(
+        wrapper
+          .find('input')
+          .last()
+          .prop('placeholder'),
+      ).toBe(placeholder[1]);
+      wrapper.closePicker(1);
+    });
+  });
 });

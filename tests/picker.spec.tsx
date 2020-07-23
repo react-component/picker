@@ -729,4 +729,34 @@ describe('Picker.Basic', () => {
     const wrapper = mount(<MomentPicker open panelRender={() => <h1>Light</h1>} />);
     expect(wrapper.render()).toMatchSnapshot();
   });
+
+  describe('hover placeholder', () => {
+    const placeholder = 'custom placeholder';
+    it('placeholder should be origin value when input value is not empty', () => {
+      const wrapper = mount(
+        <MomentPicker placeholder={placeholder} open defaultValue={getMoment('2020-07-22')} />,
+      );
+      const cell = wrapper.findCell(24);
+      cell.simulate('mouseEnter');
+      expect(wrapper.find('input').prop('placeholder')).toBe(placeholder);
+    });
+
+    it('placeholder should be target date when input value is empty', () => {
+      const wrapper = mount(
+        <MomentPicker placeholder={placeholder} defaultValue={getMoment('2020-07-22')} />,
+      );
+      wrapper.openPicker();
+      wrapper.find('input').simulate('change', {
+        target: {
+          value: '',
+        },
+      });
+      const cell = wrapper.findCell(24);
+      cell.simulate('mouseEnter');
+      expect(wrapper.find('input').prop('placeholder')).toBe('2020-07-24');
+      cell.simulate('mouseLeave');
+      expect(wrapper.find('input').prop('placeholder')).toBe(placeholder);
+      wrapper.closePicker();
+    });
+  });
 });

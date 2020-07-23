@@ -30,6 +30,7 @@ import { getDefaultFormat, getInputSize, elementsContains } from './utils/uiUtil
 import usePickerInput from './hooks/usePickerInput';
 import useTextValueMapping from './hooks/useTextValueMapping';
 import useValueTexts from './hooks/useValueTexts';
+import useHoverPlaceholder from './hooks/useHoverPlaceholder';
 
 export interface PickerRefConfig {
   focus: () => void;
@@ -435,6 +436,12 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   };
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
 
+  const [hoverPlaceholder, onEnter, onLeave] = useHoverPlaceholder(placeholder, text, {
+    formatList,
+    generateConfig,
+    locale,
+  });
+
   return (
     <PanelContext.Provider
       value={{
@@ -444,6 +451,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         onSelect: onContextSelect,
         open: mergedOpen,
         defaultOpenValue,
+        onDateMouseEnter: onEnter,
+        onDateMouseLeave: onLeave,
       }}
     >
       <PickerTrigger
@@ -483,7 +492,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
                 triggerTextChange(e.target.value);
               }}
               autoFocus={autoFocus}
-              placeholder={placeholder}
+              placeholder={hoverPlaceholder}
               ref={inputRef}
               title={text}
               {...inputProps}
