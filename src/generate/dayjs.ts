@@ -33,9 +33,9 @@ const localeMap: IlocaleMapObject = {
   zh_TW: 'zh-tw',
 };
 
-const parseLocale = (locale: string): any => {
+const parseLocale = (locale: string) => {
   const mapLocale = localeMap[locale];
-  return mapLocale || locale.split('_')[0];
+  return (mapLocale || locale.split('_')[0]) as LocalePresetType;
 };
 
 const parseNoMatchNotice = () => {
