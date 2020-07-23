@@ -33,18 +33,15 @@ const localeMap: IlocaleMapObject = {
   zh_TW: 'zh-tw',
 };
 
-const parseLocale = (locale: string) => {
+const parseLocale = (locale: string): any => {
   const mapLocale = localeMap[locale];
   return mapLocale || locale.split('_')[0];
 };
 
 const parseNoMatchNotice = () => {
   /* istanbul ignore next */
-  noteOnce(
-    false,
-    'Not match any format. Please help to fire a issue about this.',
-  );
-}
+  noteOnce(false, 'Not match any format. Please help to fire a issue about this.');
+};
 
 const generateConfig: GenerateConfig<Dayjs> = {
   // get
@@ -92,24 +89,26 @@ const generateConfig: GenerateConfig<Dayjs> = {
         .locale(parseLocale(locale))
         .localeData()
         .monthsShort(),
-    format: (locale, date, format) =>
-      date.locale(parseLocale(locale)).format(format),
+    format: (locale, date, format) => date.locale(parseLocale(locale)).format(format),
     parse: (locale, text, formats) => {
-      const localeStr = parseLocale(locale)
+      const localeStr = parseLocale(locale);
       for (let i = 0; i < formats.length; i += 1) {
         const format = formats[i];
         const formatText = text;
-        if (format.includes('wo') || format.includes('Wo')) { // parse Wo
-          const year = formatText.split('-')[0]
-          const weekStr = formatText.split('-')[1]
-          const firstWeek = dayjs(year, 'YYYY').startOf('year').locale(localeStr)
+        if (format.includes('wo') || format.includes('Wo')) {
+          // parse Wo
+          const year = formatText.split('-')[0];
+          const weekStr = formatText.split('-')[1];
+          const firstWeek = dayjs(year, 'YYYY')
+            .startOf('year')
+            .locale(localeStr);
           for (let j = 0; j <= 52; j += 1) {
-            const nextWeek = firstWeek.add(j, 'week')
+            const nextWeek = firstWeek.add(j, 'week');
             if (nextWeek.format('Wo') === weekStr) {
-              return nextWeek
+              return nextWeek;
             }
           }
-          parseNoMatchNotice()
+          parseNoMatchNotice();
           return null;
         }
         const date = dayjs(formatText, format).locale(localeStr);
