@@ -1501,4 +1501,40 @@ describe('Picker.Range', () => {
       wrapper.closePicker(1);
     });
   });
+
+  // https://github.com/ant-design/ant-design/issues/25746
+  it('ok button should be disabled when disabledDate is true', () => {
+    const disabledDate = () => {
+      // Can not select days before today and today
+      return true;
+    };
+    const wrapper = mount(
+      <MomentRangePicker
+        showTime
+        disabledDate={disabledDate}
+        defaultValue={[getMoment('2020-07-24'), getMoment('2020-08-24')]}
+      />,
+    );
+
+    wrapper.openPicker();
+
+    expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
+
+    wrapper
+      .find('PickerPanel')
+      .first()
+      .find('.rc-picker-time-panel-column')
+      .first()
+      .find('li')
+      .at(6)
+      .simulate('click');
+
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .props().value,
+    ).toEqual('2020-07-24 06:00:00');
+    expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
+  });
 });

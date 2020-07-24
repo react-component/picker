@@ -858,7 +858,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       prefixCls,
       components,
       needConfirmButton,
-      okDisabled: !getValue(selectedValue, mergedActivePickerIndex),
+      okDisabled:
+        !getValue(selectedValue, mergedActivePickerIndex) ||
+        (disabledDate && disabledDate(selectedValue[mergedActivePickerIndex])),
       locale,
       rangeList,
       onOk: () => {
