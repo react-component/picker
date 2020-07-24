@@ -540,7 +540,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   // ========================== Hover Range ==========================
   const [hoverRangedValue, setHoverRangedValue] = useState<RangeValue<DateType>>(null);
 
-  const [startPlaceholder, onStartEnter, onStartLeave] = useHoverPlaceholder(
+  const [startPlaceholder, onStartEnter, onStartLeave, isStartHover] = useHoverPlaceholder(
     getValue(placeholder, 0) || '',
     startText,
     {
@@ -550,7 +550,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     },
   );
 
-  const [endPlaceholder, onEndEnter, onEndLeave] = useHoverPlaceholder(
+  const [endPlaceholder, onEndEnter, onEndLeave, isEndHover] = useHoverPlaceholder(
     getValue(placeholder, 1) || '',
     endText,
     {
@@ -1060,6 +1060,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           <div
             className={classNames(`${prefixCls}-input`, {
               [`${prefixCls}-input-active`]: mergedActivePickerIndex === 0,
+              [`${prefixCls}-input-placeholder`]: isStartHover,
             })}
             ref={startInputDivRef}
           >
@@ -1067,8 +1068,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               id={id}
               disabled={mergedDisabled[0]}
               readOnly={inputReadOnly || !startTyping}
-              value={startText}
+              value={startText && isStartHover ? startPlaceholder : startText}
               onChange={e => {
+                onStartLeave(null);
                 triggerStartTextChange(e.target.value);
               }}
               autoFocus={autoFocus}
@@ -1085,14 +1087,16 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           <div
             className={classNames(`${prefixCls}-input`, {
               [`${prefixCls}-input-active`]: mergedActivePickerIndex === 1,
+              [`${prefixCls}-input-placeholder`]: isEndHover,
             })}
             ref={endInputDivRef}
           >
             <input
               disabled={mergedDisabled[1]}
               readOnly={inputReadOnly || !endTyping}
-              value={endText}
+              value={endText && isEndHover ? endPlaceholder : endText}
               onChange={e => {
+                onEndLeave(null);
                 triggerEndTextChange(e.target.value);
               }}
               placeholder={endPlaceholder}

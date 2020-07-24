@@ -1431,7 +1431,7 @@ describe('Picker.Range', () => {
     const placeholder: [string, string] = ['custom placeholder1', 'custom placeholder2'];
     const defaultValue: [Moment, Moment] = [getMoment('2020-07-22'), getMoment('2020-08-22')];
 
-    it('placeholder should be target date when input value is empty', () => {
+    it('when input value is empty', () => {
       const wrapper = mount(
         <MomentRangePicker placeholder={placeholder} defaultValue={defaultValue} />,
       );
@@ -1449,9 +1449,21 @@ describe('Picker.Range', () => {
       expect(
         wrapper
           .find('input')
+          .first()
+          .prop('value'),
+      ).toBe('');
+      expect(
+        wrapper
+          .find('input')
           .last()
           .prop('placeholder'),
       ).toBe(placeholder[1]);
+      expect(
+        wrapper
+          .find('input')
+          .last()
+          .prop('value'),
+      ).toBe('2020-08-22');
       leftCell.simulate('mouseLeave');
       expect(
         wrapper
@@ -1465,6 +1477,18 @@ describe('Picker.Range', () => {
           .last()
           .prop('placeholder'),
       ).toBe(placeholder[1]);
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .prop('value'),
+      ).toBe('');
+      expect(
+        wrapper
+          .find('input')
+          .last()
+          .prop('value'),
+      ).toBe('2020-08-22');
       wrapper.closePicker(0);
 
       // right
@@ -1485,6 +1509,18 @@ describe('Picker.Range', () => {
           .first()
           .prop('placeholder'),
       ).toBe(placeholder[0]);
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .prop('value'),
+      ).toBe('2020-07-22');
+      expect(
+        wrapper
+          .find('input')
+          .last()
+          .prop('value'),
+      ).toBe('');
       rightCell.simulate('mouseLeave');
       expect(
         wrapper

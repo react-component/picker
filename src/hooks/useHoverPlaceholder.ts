@@ -5,7 +5,7 @@ export default function useHoverPlaceholder<DateType>(
   placeholder: string,
   text: string,
   { formatList, generateConfig, locale }: ValueTextConfig<DateType>,
-): [string, (date: DateType) => void, (date: DateType) => void] {
+): [string, (date: DateType) => void, (date: DateType) => void, boolean] {
   const [value, setValue] = useState(null);
 
   const [valueTexts] = useValueTexts(value, {
@@ -15,14 +15,14 @@ export default function useHoverPlaceholder<DateType>(
   });
 
   function onEnter(date: DateType) {
-    if (!text) {
-      setValue(date);
-    }
+    setValue(date);
   }
 
   function onLeave() {
     setValue(null);
   }
 
-  return [(valueTexts && valueTexts[0]) || placeholder, onEnter, onLeave];
+  const hoverPlaceholder = valueTexts && valueTexts[0];
+
+  return [hoverPlaceholder || placeholder, onEnter, onLeave, !!hoverPlaceholder];
 }

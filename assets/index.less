@@ -2,6 +2,23 @@
 
 @background-color: rgb(255, 240, 255);
 
+@input-placeholder-color: hsv(0, 0, 75%);
+
+.placeholder(@color: @input-placeholder-color) {
+  // Firefox
+  &::-moz-placeholder {
+    opacity: 1; // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526
+  }
+
+  &::placeholder {
+    color: @color;
+  }
+
+  &:placeholder-shown {
+    text-overflow: ellipsis;
+  }
+}
+
 .@{prefix-cls} {
   display: inline-flex;
 
@@ -292,6 +309,13 @@
 
     > input {
       width: 100%;
+      .placeholder();
+    }
+
+    &-placeholder {
+      > input {
+        color: @input-placeholder-color;
+      }
     }
   }
 

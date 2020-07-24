@@ -436,7 +436,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   };
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
 
-  const [hoverPlaceholder, onEnter, onLeave] = useHoverPlaceholder(placeholder, text, {
+  const [hoverPlaceholder, onEnter, onLeave, isHover] = useHoverPlaceholder(placeholder, text, {
     formatList,
     generateConfig,
     locale,
@@ -481,14 +481,20 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
           onContextMenu={onContextMenu}
           onClick={onClick}
         >
-          <div className={`${prefixCls}-input`} ref={inputDivRef}>
+          <div
+            className={classNames(`${prefixCls}-input`, {
+              [`${prefixCls}-input-placeholder`]: isHover,
+            })}
+            ref={inputDivRef}
+          >
             <input
               id={id}
               tabIndex={tabIndex}
               disabled={disabled}
               readOnly={inputReadOnly || !typing}
-              value={text}
+              value={text && isHover ? hoverPlaceholder : text}
               onChange={e => {
+                onLeave(null);
                 triggerTextChange(e.target.value);
               }}
               autoFocus={autoFocus}
