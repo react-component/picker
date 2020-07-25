@@ -30,7 +30,7 @@ import { getDefaultFormat, getInputSize, elementsContains } from './utils/uiUtil
 import usePickerInput from './hooks/usePickerInput';
 import useTextValueMapping from './hooks/useTextValueMapping';
 import useValueTexts from './hooks/useValueTexts';
-import useHoverPlaceholder from './hooks/useHoverPlaceholder';
+import useHoverValue from './hooks/useHoverValue';
 
 export interface PickerRefConfig {
   focus: () => void;
@@ -436,7 +436,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   };
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
 
-  const [hoverPlaceholder, onEnter, onLeave, isHover] = useHoverPlaceholder(placeholder, text, {
+  const [hoverValue, onEnter, onLeave] = useHoverValue(text, {
     formatList,
     generateConfig,
     locale,
@@ -483,7 +483,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         >
           <div
             className={classNames(`${prefixCls}-input`, {
-              [`${prefixCls}-input-placeholder`]: isHover,
+              [`${prefixCls}-input-placeholder`]: !!hoverValue,
             })}
             ref={inputDivRef}
           >
@@ -492,13 +492,13 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               tabIndex={tabIndex}
               disabled={disabled}
               readOnly={inputReadOnly || !typing}
-              value={text && isHover ? hoverPlaceholder : text}
+              value={hoverValue || text}
               onChange={e => {
                 onLeave(null);
                 triggerTextChange(e.target.value);
               }}
               autoFocus={autoFocus}
-              placeholder={hoverPlaceholder}
+              placeholder={placeholder}
               ref={inputRef}
               title={text}
               {...inputProps}

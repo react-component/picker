@@ -1428,113 +1428,118 @@ describe('Picker.Range', () => {
   });
 
   describe('hover placeholder', () => {
-    const placeholder: [string, string] = ['custom placeholder1', 'custom placeholder2'];
     const defaultValue: [Moment, Moment] = [getMoment('2020-07-22'), getMoment('2020-08-22')];
 
-    it('when input value is empty', () => {
-      const wrapper = mount(
-        <MomentRangePicker placeholder={placeholder} defaultValue={defaultValue} />,
-      );
-      wrapper.openPicker(0);
-      wrapper.inputValue('');
+    it('should restore after selecting cell', () => {
+      const wrapper = mount(<MomentRangePicker defaultValue={defaultValue} />);
       // left
-      const leftCell = wrapper.findCell('24');
+      wrapper.openPicker(0);
+      const leftCell = wrapper.findCell(24, 0);
       leftCell.simulate('mouseEnter');
       expect(
         wrapper
           .find('input')
           .first()
-          .prop('placeholder'),
+          .prop('value'),
       ).toBe('2020-07-24');
       expect(
         wrapper
           .find('input')
-          .first()
+          .last()
           .prop('value'),
-      ).toBe('');
+      ).toBe('2020-08-22');
+      expect(
+        wrapper
+          .find('.rc-picker-input')
+          .first()
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeTruthy();
+      expect(
+        wrapper
+          .find('.rc-picker-input')
+          .last()
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+
+      wrapper.selectCell(24, 0);
       expect(
         wrapper
           .find('input')
-          .last()
-          .prop('placeholder'),
-      ).toBe(placeholder[1]);
+          .first()
+          .prop('value'),
+      ).toBe('2020-07-24');
       expect(
         wrapper
           .find('input')
           .last()
           .prop('value'),
       ).toBe('2020-08-22');
-      leftCell.simulate('mouseLeave');
       expect(
         wrapper
-          .find('input')
+          .find('.rc-picker-input')
           .first()
-          .prop('placeholder'),
-      ).toBe(placeholder[0]);
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
       expect(
         wrapper
-          .find('input')
+          .find('.rc-picker-input')
           .last()
-          .prop('placeholder'),
-      ).toBe(placeholder[1]);
-      expect(
-        wrapper
-          .find('input')
-          .first()
-          .prop('value'),
-      ).toBe('');
-      expect(
-        wrapper
-          .find('input')
-          .last()
-          .prop('value'),
-      ).toBe('2020-08-22');
-      wrapper.closePicker(0);
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
 
       // right
-      wrapper.openPicker(1);
-      wrapper.inputValue('', 1);
-
-      const rightCell = wrapper.findCell('24', 1);
+      const rightCell = wrapper.findCell(24, 1);
       rightCell.simulate('mouseEnter');
       expect(
         wrapper
           .find('input')
+          .first()
+          .prop('value'),
+      ).toBe('2020-07-24');
+      expect(
+        wrapper
+          .find('input')
           .last()
-          .prop('placeholder'),
+          .prop('value'),
       ).toBe('2020-08-24');
       expect(
         wrapper
-          .find('input')
+          .find('.rc-picker-input')
           .first()
-          .prop('placeholder'),
-      ).toBe(placeholder[0]);
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+      expect(
+        wrapper
+          .find('.rc-picker-input')
+          .last()
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeTruthy();
+
+      wrapper.selectCell(24, 1);
       expect(
         wrapper
           .find('input')
           .first()
           .prop('value'),
-      ).toBe('2020-07-22');
+      ).toBe('2020-07-24');
       expect(
         wrapper
           .find('input')
           .last()
           .prop('value'),
-      ).toBe('');
-      rightCell.simulate('mouseLeave');
+      ).toBe('2020-08-24');
       expect(
         wrapper
-          .find('input')
+          .find('.rc-picker-input')
           .first()
-          .prop('placeholder'),
-      ).toBe(placeholder[0]);
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
       expect(
         wrapper
-          .find('input')
+          .find('.rc-picker-input')
           .last()
-          .prop('placeholder'),
-      ).toBe(placeholder[1]);
-      wrapper.closePicker(1);
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
     });
   });
 });
