@@ -198,70 +198,101 @@ describe('Picker.Panel', () => {
   });
 
   // This test is safe to remove
-  it('showtime', () => {
-    const onSelect = jest.fn();
-    const wrapper = mount(
-      <MomentPickerPanel
-        showTime={{
-          hideDisabledOptions: true,
-          showSecond: false,
-          defaultValue: getMoment('2001-01-02 01:03:07'),
-          disabledHours: () => [0, 1, 2, 3],
-        }}
-        defaultValue={getMoment('2001-01-02 01:03:07')}
-        value={null}
-        onSelect={onSelect}
-      />,
-    );
+  describe('showtime', () => {
+    it('object', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(
+        <MomentPickerPanel
+          showTime={{
+            hideDisabledOptions: true,
+            showSecond: false,
+            defaultValue: getMoment('2001-01-02 01:03:07'),
+            disabledHours: () => [0, 1, 2, 3],
+          }}
+          defaultValue={getMoment('2001-01-02 01:03:07')}
+          value={null}
+          onSelect={onSelect}
+        />,
+      );
 
-    expect(wrapper.find('.rc-picker-time-panel-column')).toHaveLength(2);
-    expect(
+      expect(wrapper.find('.rc-picker-time-panel-column')).toHaveLength(2);
+      expect(
+        wrapper
+          .find('.rc-picker-time-panel-column')
+          .first()
+          .find('li')
+          .first()
+          .text(),
+      ).toEqual('04');
+
+      // Click on date
+      wrapper.selectCell(5);
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-05 01:03:07')).toBeTruthy();
+
+      // Click on time
+      onSelect.mockReset();
       wrapper
-        .find('.rc-picker-time-panel-column')
+        .find('ul')
         .first()
         .find('li')
+        .at(11)
+        .simulate('click');
+      expect(isSame(onSelect.mock.calls[0][0], '2001-01-02 11:00:00')).toBeTruthy();
+    });
+
+    it('object have no defaultValue', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(
+        <MomentPickerPanel
+          showTime={{}}
+          defaultValue={getMoment('2001-01-02 01:03:07')}
+          value={null}
+          onSelect={onSelect}
+        />,
+      );
+
+      // Click on date
+      wrapper.selectCell(8);
+      expect(
+        isSame(onSelect.mock.calls[0][0], `1990-09-08 ${moment().format('hh:mm:ss')}`),
+      ).toBeTruthy();
+
+      // Click on time
+      onSelect.mockReset();
+      wrapper
+        .find('ul')
         .first()
-        .text(),
-    ).toEqual('04');
+        .find('li')
+        .at(10)
+        .simulate('click');
+      expect(
+        isSame(onSelect.mock.calls[0][0], `2001-01-02 10:${moment().format('mm:ss')}`),
+      ).toBeTruthy();
+    });
 
-    // Click on date
-    wrapper.selectCell(5);
-    expect(isSame(onSelect.mock.calls[0][0], '1990-09-05 01:03:07')).toBeTruthy();
+    it('true', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(<MomentPickerPanel showTime onSelect={onSelect} />);
 
-    // Click on time
-    onSelect.mockReset();
-    wrapper
-      .find('ul')
-      .first()
-      .find('li')
-      .at(11)
-      .simulate('click');
-    expect(isSame(onSelect.mock.calls[0][0], '2001-01-02 11:00:00')).toBeTruthy();
-  });
+      // Click on date
+      wrapper.selectCell(10);
+      expect(
+        isSame(onSelect.mock.calls[0][0], `1990-09-10 ${moment().format('hh:mm:ss')}`),
+      ).toBeTruthy();
 
-  // This test is safe to remove
-  it('showtime is true', () => {
-    const onSelect = jest.fn();
-    const wrapper = mount(<MomentPickerPanel showTime value={null} onSelect={onSelect} />);
-
-    // Click on date
-    wrapper.selectCell(5);
-    expect(
-      isSame(onSelect.mock.calls[0][0], `1990-09-05 ${moment().format('hh:mm:ss')}`),
-    ).toBeTruthy();
-
-    // Click on time
-    onSelect.mockReset();
-    wrapper.selectCell(8);
-    wrapper
-      .find('ul')
-      .first()
-      .find('li')
-      .at(11)
-      .simulate('click');
-    expect(
-      isSame(onSelect.mock.calls[0][0], `1990-09-08 11:${moment().format('mm:ss')}`),
-    ).toBeTruthy();
+      // Click on time
+      onSelect.mockReset();
+      wrapper.selectCell(8);
+      wrapper
+        .find('ul')
+        .first()
+        .find('li')
+        .at(10)
+        .simulate('click');
+      expect(
+        isSame(onSelect.mock.calls[0][0], `1990-09-08 10:${moment().format('mm:ss')}`),
+      ).toBeTruthy();
+    });
   });
 
   describe('not trigger onSelect when cell disabled', () => {
