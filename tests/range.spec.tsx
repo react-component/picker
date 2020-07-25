@@ -1430,6 +1430,124 @@ describe('Picker.Range', () => {
   describe('hover placeholder', () => {
     const defaultValue: [Moment, Moment] = [getMoment('2020-07-22'), getMoment('2020-08-22')];
 
+    it('should restore when leave', () => {
+      const wrapper = mount(<MomentRangePicker defaultValue={defaultValue} />);
+
+      // left
+      wrapper.openPicker(0);
+      const leftCell = wrapper.findCell(24);
+      leftCell.simulate('mouseEnter');
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .prop('value'),
+      ).toBe('2020-07-24');
+      expect(
+        wrapper
+          .find('input')
+          .last()
+          .prop('value'),
+      ).toBe('2020-08-22');
+      expect(
+        wrapper
+          .find('.rc-picker-input')
+          .first()
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeTruthy();
+      expect(
+        wrapper
+          .find('.rc-picker-input')
+          .last()
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+
+      leftCell.simulate('mouseLeave');
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .prop('value'),
+      ).toBe('2020-07-22');
+      expect(
+        wrapper
+          .find('input')
+          .last()
+          .prop('value'),
+      ).toBe('2020-08-22');
+      expect(
+        wrapper
+          .find('.rc-picker-input')
+          .first()
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+      expect(
+        wrapper
+          .find('.rc-picker-input')
+          .last()
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+
+      wrapper.closePicker(0);
+
+      // right
+      wrapper.openPicker(1);
+      const rightCell = wrapper.findCell(24, 1);
+      rightCell.simulate('mouseEnter');
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .prop('value'),
+      ).toBe('2020-07-22');
+      expect(
+        wrapper
+          .find('input')
+          .last()
+          .prop('value'),
+      ).toBe('2020-08-24');
+      expect(
+        wrapper
+          .find('.rc-picker-input')
+          .first()
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+      expect(
+        wrapper
+          .find('.rc-picker-input')
+          .last()
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeTruthy();
+
+      rightCell.simulate('mouseLeave');
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .prop('value'),
+      ).toBe('2020-07-22');
+      expect(
+        wrapper
+          .find('input')
+          .last()
+          .prop('value'),
+      ).toBe('2020-08-22');
+      expect(
+        wrapper
+          .find('.rc-picker-input')
+          .first()
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+      expect(
+        wrapper
+          .find('.rc-picker-input')
+          .last()
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+
+      wrapper.closePicker(1);
+    });
+
     it('should restore after selecting cell', () => {
       const wrapper = mount(<MomentRangePicker defaultValue={defaultValue} />);
       // left
