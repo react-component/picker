@@ -494,7 +494,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               readOnly={inputReadOnly || !typing}
               value={hoverValue || text}
               onChange={e => {
-                onLeave(null);
                 triggerTextChange(e.target.value);
               }}
               autoFocus={autoFocus}

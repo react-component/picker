@@ -1062,7 +1062,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               readOnly={inputReadOnly || !startTyping}
               value={startHoverValue || startText}
               onChange={e => {
-                onStartLeave(null);
                 triggerStartTextChange(e.target.value);
               }}
               autoFocus={autoFocus}
@@ -1088,7 +1087,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               readOnly={inputReadOnly || !endTyping}
               value={endHoverValue || endText}
               onChange={e => {
-                onEndLeave(null);
                 triggerEndTextChange(e.target.value);
               }}
               placeholder={getValue(placeholder, 1) || ''}
