@@ -35,7 +35,7 @@ const localeMap: IlocaleMapObject = {
 
 const parseLocale = (locale: string) => {
   const mapLocale = localeMap[locale];
-  return mapLocale || locale.split('_')[0];
+  return (mapLocale || locale.split('_')[0]) as LocalePresetType;
 };
 
 const parseNoMatchNotice = () => {

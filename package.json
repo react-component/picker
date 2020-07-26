@@ -38,14 +38,14 @@
     "now-build": "npm run build"
   },
   "dependencies": {
-    "react": "^16.0.0",
     "@babel/runtime": "^7.10.1",
     "classnames": "^2.2.1",
-    "moment": "^2.24.0",
     "date-fns": "^2.15.0",
-    "dayjs": "^1.8.18",
+    "dayjs": "^1.8.30",
+    "moment": "^2.24.0",
     "rc-trigger": "^4.0.0",
     "rc-util": "^5.0.1",
+    "react": "^16.0.0",
     "shallowequal": "^1.1.0"
   },
   "engines": {
