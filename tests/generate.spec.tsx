@@ -19,6 +19,7 @@ describe('Picker.Generate', () => {
   const list: { name: string; generateConfig: GenerateConfig<any> }[] = [
     { name: 'moment', generateConfig: momentGenerateConfig },
     { name: 'dayjs', generateConfig: dayjsGenerateConfig },
+    { name: 'date-fns', generateConfig: dateFnsGenerateConfig },
   ];
 
   list.forEach(({ name, generateConfig }) => {
@@ -43,7 +44,8 @@ describe('Picker.Generate', () => {
         date = generateConfig.setMinute(date, 3);
         date = generateConfig.setSecond(date, 5);
 
-        expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD HH:mm:ss')).toEqual(
+        const formatStr = name === 'date-fns' ? 'yyyy-MM-dd HH:mm:ss' : 'YYYY-MM-DD HH:mm:ss';
+        expect(generateConfig.locale.format('en_US', date, formatStr)).toEqual(
           '2020-10-23 02:03:05',
         );
       });
@@ -53,7 +55,8 @@ describe('Picker.Generate', () => {
         date = generateConfig.addYear(date, 2);
         date = generateConfig.addMonth(date, 2);
         date = generateConfig.addDate(date, 2);
-        expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD')).toEqual('1992-11-05');
+        const formatStr = name === 'date-fns' ? 'yyyy-MM-dd' : 'YYYY-MM-DD';
+        expect(generateConfig.locale.format('en_US', date, formatStr)).toEqual('1992-11-05');
       });
 
       it('isAfter', () => {
@@ -71,43 +74,44 @@ describe('Picker.Generate', () => {
       describe('locale', () => {
         describe('parse', () => {
           it('basic', () => {
+            const formatStr1 = name === 'date-fns' ? 'yyyy-MM-dd' : 'YYYY-MM-DD';
+            const formatStr2 = name === 'date-fns' ? 'dd/mm/yyyy' : 'DD/MM/YYYY';
             ['2000-01-02', '02/01/2000'].forEach(str => {
-              const date = generateConfig.locale.parse('en_US', str, ['YYYY-MM-DD', 'DD/MM/YYYY']);
+              const date = generateConfig.locale.parse('en_US', str, [formatStr1, formatStr2]);
 
-              expect(generateConfig.locale.format('en_US', date!, 'YYYY-MM-DD')).toEqual(
+              expect(generateConfig.locale.format('en_US', date!, formatStr1)).toEqual(
                 '2000-01-02',
               );
             });
           });
 
           it('week', () => {
-            expect(
-              generateConfig.locale.format(
-                'en_US',
-                generateConfig.locale.parse('en_US', '2019-1st', ['gggg-wo'])!,
-                'gggg-wo',
-              ),
-            ).toEqual('2019-1st');
+            const formatStr = name === 'date-fns' ? 'GGGG-wo' : 'gggg-wo';
+            if (name !== 'date-fns') {
+              expect(
+                generateConfig.locale.format(
+                  'en_US',
+                  generateConfig.locale.parse('en_US', '2019-1st', [formatStr])!,
+                  formatStr,
+                ),
+              ).toEqual('2019-1st');
 
-            expect(
-              generateConfig.locale.format(
-                'zh_CN',
-                generateConfig.locale.parse('zh_CN', '2019-45周', ['gggg-wo'])!,
-                'gggg-wo',
-              ),
-            ).toEqual('2019-45周');
-          });
-        });
-      });
-
-      describe('locale', () => {
-        it('parse', () => {
-          ['2000-01-02', '02/01/2000'].forEach(str => {
-            const date = generateConfig.locale.parse('en_US', str, ['YYYY-MM-DD', 'DD/MM/YYYY']);
-
-            expect(generateConfig.locale.format('en_US', date!, 'YYYY-MM-DD')).toEqual(
-              '2000-01-02',
-            );
+              expect(
+                generateConfig.locale.format(
+                  'zh_CN',
+                  generateConfig.locale.parse('zh_CN', '2019-45周', [formatStr])!,
+                  formatStr,
+                ),
+              ).toEqual('2019-45周');
+            } else {
+              expect(
+                generateConfig.locale.format(
+                  'en_US',
+                  generateConfig.locale.parse('en_US', '2019-1st', [formatStr])!,
+                  formatStr,
+                ),
+              ).toEqual(null);
+            }
           });
         });
       });
@@ -116,23 +120,26 @@ describe('Picker.Generate', () => {
         expect(generateConfig.locale.getWeekFirstDay('en_US')).toEqual(0);
         expect(generateConfig.locale.getWeekFirstDay('zh_CN')).toEqual(1);
 
+        const formatStr = name === 'date-fns' ? 'yyyy-MM-dd' : 'YYYY-MM-DD';
         // Should keep same weekday
         ['en_US', 'zh_CN'].forEach(() => {
           expect(
             generateConfig.getWeekDay(
-              generateConfig.locale.parse('en_US', '2000-01-01', ['YYYY-MM-DD'])!,
+              generateConfig.locale.parse('en_US', '2000-01-01', [formatStr])!,
             ),
           ).toEqual(6);
         });
       });
 
       it('Parse format Wo', () => {
-        expect(
-          generateConfig.locale.parse('en_US', '2012-51st', ['YYYY-Wo'])?.format('Wo'),
-        ).toEqual('51st');
-        expect(generateConfig.locale.parse('zh_CN', '2012-1周', ['YYYY-Wo'])?.format('Wo')).toEqual(
-          '1周',
-        );
+        if (name !== 'date-fns') {
+          expect(
+            generateConfig.locale.parse('en_US', '2012-51st', ['YYYY-Wo']).format('Wo'),
+          ).toEqual('51st');
+          expect(
+            generateConfig.locale.parse('zh_CN', '2012-1周', ['YYYY-Wo']).format('Wo'),
+          ).toEqual('1周');
+        }
       });
 
       it('Parse format faild', () => {
@@ -144,78 +151,72 @@ describe('Picker.Generate', () => {
         ).toEqual(null);
       });
 
-      it('getShortWeekDays', () => {
-        expect(generateConfig.locale.getShortWeekDays!('zh_CN')).toEqual([
-          '日',
-          '一',
-          '二',
-          '三',
-          '四',
-          '五',
-          '六',
-        ]);
-        expect(generateConfig.locale.getShortWeekDays!('en_US')).toEqual([
-          'Su',
-          'Mo',
-          'Tu',
-          'We',
-          'Th',
-          'Fr',
-          'Sa',
-        ]);
-      });
+      if (name !== 'date-fns') {
+        it('getShortWeekDays', () => {
+          expect(generateConfig.locale.getShortWeekDays!('zh_CN')).toEqual([
+            '日',
+            '一',
+            '二',
+            '三',
+            '四',
+            '五',
+            '六',
+          ]);
+          expect(generateConfig.locale.getShortWeekDays!('en_US')).toEqual([
+            'Su',
+            'Mo',
+            'Tu',
+            'We',
+            'Th',
+            'Fr',
+            'Sa',
+          ]);
+        });
 
-      it('getShortMonths', () => {
-        expect(generateConfig.locale.getShortMonths!('zh_CN')).toEqual([
-          '1月',
-          '2月',
-          '3月',
-          '4月',
-          '5月',
-          '6月',
-          '7月',
-          '8月',
-          '9月',
-          '10月',
-          '11月',
-          '12月',
-        ]);
-        expect(generateConfig.locale.getShortMonths!('en_US')).toEqual([
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-          'Oct',
-          'Nov',
-          'Dec',
-        ]);
-      });
+        it('getShortMonths', () => {
+          expect(generateConfig.locale.getShortMonths!('zh_CN')).toEqual([
+            '1月',
+            '2月',
+            '3月',
+            '4月',
+            '5月',
+            '6月',
+            '7月',
+            '8月',
+            '9月',
+            '10月',
+            '11月',
+            '12月',
+          ]);
+          expect(generateConfig.locale.getShortMonths!('en_US')).toEqual([
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec',
+          ]);
+        });
+      }
 
       it('getWeek', () => {
+        const formatStr = name === 'date-fns' ? 'yyyy-MM-dd' : 'YYYY-MM-DD';
         expect(
           generateConfig.locale.getWeek(
             'zh_CN',
-            generateConfig.locale.parse('zh_CN', '2019-12-08', ['YYYY-MM-DD'])!,
-          ),
-        ).toEqual(49);
-      });
-
-      it('getWeek', () => {
-        expect(
-          generateConfig.locale.getWeek(
-            'zh_CN',
-            generateConfig.locale.parse('zh_CN', '2019-12-08', ['YYYY-MM-DD'])!,
+            generateConfig.locale.parse('zh_CN', '2019-12-08', [formatStr]),
           ),
         ).toEqual(49);
         expect(
           generateConfig.locale.getWeek(
             'en_US',
-            generateConfig.locale.parse('en_US', '2019-12-08', ['YYYY-MM-DD'])!,
+            generateConfig.locale.parse('en_US', '2019-12-08', [formatStr]),
           ),
         ).toEqual(50);
       });
@@ -233,59 +234,3 @@ describe('Generate:moment', () => {
     expect(now.locale()).toEqual('zh-cn');
   });
 });
-
-
-describe('Generate:date-fns', () => {
-  beforeAll(() => {
-    MockDate.set(getMoment('1990-09-03 01:02:03').toDate());
-  });
-
-  afterAll(() => {
-    MockDate.reset();
-  });
-
-  it('get', () => {
-    const now = dateFnsGenerateConfig.getNow();
-    expect(dateFnsGenerateConfig.getWeekDay(now)).toEqual(1);
-    expect(dateFnsGenerateConfig.getSecond(now)).toEqual(3);
-    expect(dateFnsGenerateConfig.getMinute(now)).toEqual(2);
-    expect(dateFnsGenerateConfig.getHour(now)).toEqual(1);
-    expect(dateFnsGenerateConfig.getDate(now)).toEqual(3);
-    expect(dateFnsGenerateConfig.getMonth(now)).toEqual(8);
-    expect(dateFnsGenerateConfig.getYear(now)).toEqual(1990);
-  })
-
-  it('set', () => {
-    let date = dateFnsGenerateConfig.getNow();
-    date = dateFnsGenerateConfig.setYear(date, 2020);
-    date = dateFnsGenerateConfig.setMonth(date, 9);
-    date = dateFnsGenerateConfig.setDate(date, 23);
-    date = dateFnsGenerateConfig.setHour(date, 2);
-    date = dateFnsGenerateConfig.setMinute(date, 3);
-    date = dateFnsGenerateConfig.setSecond(date, 5);
-
-    expect(dateFnsGenerateConfig.locale.format('en_US', date, 'yyyy-MM-dd HH:mm:ss')).toEqual(
-      '2020-10-23 02:03:05',
-    );
-  });
-
-  it('add', () => {
-    let date = dateFnsGenerateConfig.getNow();
-    date = dateFnsGenerateConfig.addYear(date, 2);
-    date = dateFnsGenerateConfig.addMonth(date, 2);
-    date = dateFnsGenerateConfig.addDate(date, 2);
-    expect(dateFnsGenerateConfig.locale.format('en_US', date, 'yyyy-MM-dd')).toEqual('1992-11-05');
-  });
-
-  it('isAfter', () => {
-    const now = dateFnsGenerateConfig.getNow();
-    const prev = dateFnsGenerateConfig.addDate(now, -1);
-    const next = dateFnsGenerateConfig.addDate(now, 1);
-    expect(dateFnsGenerateConfig.isAfter(now, prev)).toBeTruthy();
-    expect(dateFnsGenerateConfig.isAfter(next, now)).toBeTruthy();
-  });
-
-  it('isValidate', () => {
-    expect(dateFnsGenerateConfig.isValidate(dateFnsGenerateConfig.getNow())).toBeTruthy();
-  });
-})

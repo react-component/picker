@@ -1,17 +1,32 @@
-import { getDay, getYear, getMonth, getDate, getHours, getMinutes, getSeconds, addYears, addMonths, addDays, setYear, setMonth, setDate, setHours, setMinutes, setSeconds, isAfter, isValid, getWeek, format as formatDate, parse as parseDate } from 'date-fns';
-import Locale from 'date-fns/locale';
+import {
+  getDay,
+  getYear,
+  getMonth,
+  getDate,
+  getHours,
+  getMinutes,
+  getSeconds,
+  addYears,
+  addMonths,
+  addDays,
+  setYear,
+  setMonth,
+  setDate,
+  setHours,
+  setMinutes,
+  setSeconds,
+  isAfter,
+  isValid,
+  getWeek,
+  format as formatDate,
+  parse as parseDate,
+} from 'date-fns';
+import * as Locale from 'date-fns/locale';
 import { GenerateConfig } from '.';
 
 const dealLocal = (str: string) => {
-  return str.replace(/\_/g, '');
-}
-
-type IlocaleMapObject = { [key: string]: Locale };
-const localeMap: IlocaleMapObject = {};
-
-for (let item in Locale) {
-  localeMap[dealLocal(item)] = Locale[item];
-}
+  return str.replace(/_/g, '');
+};
 
 const generateConfig: GenerateConfig<Date> = {
   // get
@@ -41,20 +56,25 @@ const generateConfig: GenerateConfig<Date> = {
 
   locale: {
     getWeekFirstDay: locale => {
-      const clone = localeMap[locale];
+      const clone = Locale[dealLocal(locale)];
       return clone.options.weekStartsOn;
     },
     getWeek: (locale, date) => {
-      return getWeek(date, { locale: localeMap[locale] });
+      return getWeek(date, { locale: Locale[dealLocal(locale)] });
     },
     format: (locale, date, format) => {
-      return formatDate(date, format, { locale: localeMap[locale] });
+      if (!isValid(date)) {
+        return null;
+      }
+      return formatDate(date, format, { locale: Locale[dealLocal(locale)] });
     },
     parse: (locale, text, formats) => {
       for (let i = 0; i < formats.length; i += 1) {
         const format = formats[i];
         const formatText = text;
-        const date = parseDate(formatText, format, new Date(), { locale: localeMap[locale] });
+        const date = parseDate(formatText, format, new Date(), {
+          locale: Locale[dealLocal(locale)],
+        });
         if (isValid(date)) {
           return date;
         }
