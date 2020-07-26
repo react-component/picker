@@ -2,7 +2,7 @@ import dateFns from 'date-fns';
 import Locale from 'date-fns/locale';
 import { GenerateConfig } from '.';
 
-const generateConfig: GenerateConfig<Date | number> = {
+const generateConfig: GenerateConfig<Date> = {
   // get
   getNow: () => new Date(),
   getWeekDay: date => dateFns.getDay(date),
@@ -39,7 +39,15 @@ const generateConfig: GenerateConfig<Date | number> = {
     format: (locale, date, format) => {
       return dateFns.format(date, format, { locale: Locale[locale] });
     },
-    parse: () => {
+    parse: (locale, text, formats) => {
+      for (let i = 0; i < formats.length; i += 1) {
+        const format = formats[i];
+        const formatText = text;
+        const date = dateFns.parse(formatText, format, new Date(), { locale: Locale[locale] });
+        if (dateFns.isValid(date)) {
+          return date;
+        }
+      }
       return null;
     },
   },
