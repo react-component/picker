@@ -38,10 +38,12 @@
     "now-build": "npm run build"
   },
   "dependencies": {
+    "react": "^16.0.0",
     "@babel/runtime": "^7.10.1",
     "classnames": "^2.2.1",
     "moment": "^2.24.0",
     "date-fns": "^2.15.0",
+    "dayjs": "^1.8.18",
     "rc-trigger": "^4.0.0",
     "rc-util": "^5.0.1",
     "shallowequal": "^1.1.0"
@@ -59,7 +61,6 @@
     "@umijs/fabric": "^2.0.8",
     "coveralls": "^3.0.6",
     "cross-env": "^7.0.2",
-    "dayjs": "^1.8.18",
     "enzyme": "^3.0.0",
     "enzyme-adapter-react-16": "^1.0.1",
     "enzyme-to-json": "^3.4.0",
@@ -73,7 +74,6 @@
     "mockdate": "^3.0.2",
     "np": "^6.2.3",
     "prettier": "^2.0.5",
-    "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
     "typescript": "^3.7.2"
