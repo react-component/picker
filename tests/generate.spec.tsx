@@ -1,6 +1,7 @@
 import MockDate from 'mockdate';
 import momentGenerateConfig from '../src/generate/moment';
 import dayjsGenerateConfig from '../src/generate/dayjs';
+import dateFnsGenerateConfig from '../src/generate/dateFns';
 import { getMoment } from './util/commonUtil';
 
 import 'dayjs/locale/zh-cn';
@@ -232,3 +233,59 @@ describe('Generate:moment', () => {
     expect(now.locale()).toEqual('zh-cn');
   });
 });
+
+
+describe('Generate:date-fns', () => {
+  beforeAll(() => {
+    MockDate.set(getMoment('1990-09-03 01:02:03').toDate());
+  });
+
+  afterAll(() => {
+    MockDate.reset();
+  });
+
+  it('get', () => {
+    const now = dateFnsGenerateConfig.getNow();
+    expect(dateFnsGenerateConfig.getWeekDay(now)).toEqual(1);
+    expect(dateFnsGenerateConfig.getSecond(now)).toEqual(3);
+    expect(dateFnsGenerateConfig.getMinute(now)).toEqual(2);
+    expect(dateFnsGenerateConfig.getHour(now)).toEqual(1);
+    expect(dateFnsGenerateConfig.getDate(now)).toEqual(3);
+    expect(dateFnsGenerateConfig.getMonth(now)).toEqual(8);
+    expect(dateFnsGenerateConfig.getYear(now)).toEqual(1990);
+  })
+
+  it('set', () => {
+    let date = dateFnsGenerateConfig.getNow();
+    date = dateFnsGenerateConfig.setYear(date, 2020);
+    date = dateFnsGenerateConfig.setMonth(date, 9);
+    date = dateFnsGenerateConfig.setDate(date, 23);
+    date = dateFnsGenerateConfig.setHour(date, 2);
+    date = dateFnsGenerateConfig.setMinute(date, 3);
+    date = dateFnsGenerateConfig.setSecond(date, 5);
+
+    expect(dateFnsGenerateConfig.locale.format('en_US', date, 'yyyy-MM-dd HH:mm:ss')).toEqual(
+      '2020-10-23 02:03:05',
+    );
+  });
+
+  it('add', () => {
+    let date = dateFnsGenerateConfig.getNow();
+    date = dateFnsGenerateConfig.addYear(date, 2);
+    date = dateFnsGenerateConfig.addMonth(date, 2);
+    date = dateFnsGenerateConfig.addDate(date, 2);
+    expect(dateFnsGenerateConfig.locale.format('en_US', date, 'yyyy-MM-dd')).toEqual('1992-11-05');
+  });
+
+  it('isAfter', () => {
+    const now = dateFnsGenerateConfig.getNow();
+    const prev = dateFnsGenerateConfig.addDate(now, -1);
+    const next = dateFnsGenerateConfig.addDate(now, 1);
+    expect(dateFnsGenerateConfig.isAfter(now, prev)).toBeTruthy();
+    expect(dateFnsGenerateConfig.isAfter(next, now)).toBeTruthy();
+  });
+
+  it('isValidate', () => {
+    expect(dateFnsGenerateConfig.isValidate(dateFnsGenerateConfig.getNow())).toBeTruthy();
+  });
+})

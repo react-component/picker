@@ -1,50 +1,61 @@
-import dateFns from 'date-fns';
+import { getDay, getYear, getMonth, getDate, getHours, getMinutes, getSeconds, addYears, addMonths, addDays, setYear, setMonth, setDate, setHours, setMinutes, setSeconds, isAfter, isValid, getWeek, format as formatDate, parse as parseDate } from 'date-fns';
 import Locale from 'date-fns/locale';
 import { GenerateConfig } from '.';
+
+const dealLocal = (str: string) => {
+  return str.replace(/\_/g, '');
+}
+
+type IlocaleMapObject = { [key: string]: Locale };
+const localeMap: IlocaleMapObject = {};
+
+for (let item in Locale) {
+  localeMap[dealLocal(item)] = Locale[item];
+}
 
 const generateConfig: GenerateConfig<Date> = {
   // get
   getNow: () => new Date(),
-  getWeekDay: date => dateFns.getDay(date),
-  getYear: date => dateFns.getYear(date),
-  getMonth: date => dateFns.getMonth(date),
-  getDate: date => dateFns.getDate(date),
-  getHour: date => dateFns.getHours(date),
-  getMinute: date => dateFns.getMinutes(date),
-  getSecond: date => dateFns.getSeconds(date),
+  getWeekDay: date => getDay(date),
+  getYear: date => getYear(date),
+  getMonth: date => getMonth(date),
+  getDate: date => getDate(date),
+  getHour: date => getHours(date),
+  getMinute: date => getMinutes(date),
+  getSecond: date => getSeconds(date),
 
   // set
-  addYear: (date, diff) => dateFns.addYears(date, diff),
-  addMonth: (date, diff) => dateFns.addMonths(date, diff),
-  addDate: (date, diff) => dateFns.addDays(date, diff),
-  setYear: (date, year) => dateFns.setYear(date, year),
-  setMonth: (date, month) => dateFns.setMonth(date, month),
-  setDate: (date, num) => dateFns.setDate(date, num),
-  setHour: (date, hour) => dateFns.setHours(date, hour),
-  setMinute: (date, minute) => dateFns.setMinutes(date, minute),
-  setSecond: (date, second) => dateFns.setSeconds(date, second),
+  addYear: (date, diff) => addYears(date, diff),
+  addMonth: (date, diff) => addMonths(date, diff),
+  addDate: (date, diff) => addDays(date, diff),
+  setYear: (date, year) => setYear(date, year),
+  setMonth: (date, month) => setMonth(date, month),
+  setDate: (date, num) => setDate(date, num),
+  setHour: (date, hour) => setHours(date, hour),
+  setMinute: (date, minute) => setMinutes(date, minute),
+  setSecond: (date, second) => setSeconds(date, second),
 
   // Compare
-  isAfter: (date1, date2) => dateFns.isAfter(date1, date2),
-  isValidate: date => dateFns.isValid(date),
+  isAfter: (date1, date2) => isAfter(date1, date2),
+  isValidate: date => isValid(date),
 
   locale: {
     getWeekFirstDay: locale => {
-      const clone = Locale[locale];
+      const clone = localeMap[locale];
       return clone.options.weekStartsOn;
     },
     getWeek: (locale, date) => {
-      return dateFns.getWeek(date, { locale: Locale[locale] });
+      return getWeek(date, { locale: localeMap[locale] });
     },
     format: (locale, date, format) => {
-      return dateFns.format(date, format, { locale: Locale[locale] });
+      return formatDate(date, format, { locale: localeMap[locale] });
     },
     parse: (locale, text, formats) => {
       for (let i = 0; i < formats.length; i += 1) {
         const format = formats[i];
         const formatText = text;
-        const date = dateFns.parse(formatText, format, new Date(), { locale: Locale[locale] });
-        if (dateFns.isValid(date)) {
+        const date = parseDate(formatText, format, new Date(), { locale: localeMap[locale] });
+        if (isValid(date)) {
           return date;
         }
       }
