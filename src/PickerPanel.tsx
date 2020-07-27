@@ -117,6 +117,7 @@ type OmitType<DateType> = Omit<PickerPanelBaseProps<DateType>, 'picker'> &
   Omit<PickerPanelTimeProps<DateType>, 'picker'>;
 interface MergedPickerPanelProps<DateType> extends OmitType<DateType> {
   picker?: PickerMode;
+  mergedOpen: boolean;
 }
 
 function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
