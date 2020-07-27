@@ -24,6 +24,7 @@ export interface DatetimePanelProps<DateType>
   disabledTime?: DisabledTime<DateType>;
   showTime?: boolean | SharedTimeProps<DateType>;
   defaultValue?: DateType;
+  mergedOpen: boolean;
 }
 
 const ACTIVE_PANEL = tuple('date', 'time');
@@ -39,14 +40,18 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
     disabledTime,
     showTime,
     onSelect,
+    mergedOpen,
   } = props;
   const panelPrefixCls = `${prefixCls}-datetime-panel`;
   const [activePanel, setActivePanel] = React.useState<ActivePanelType | null>(null);
+  const [temporaryStorageTime, setTemporaryStorageTime] = React.useState<DateType | null>(null);
 
   const dateOperationRef = React.useRef<PanelRefProps>({});
   const timeOperationRef = React.useRef<PanelRefProps>({});
 
   const timeProps = typeof showTime === 'object' ? { ...showTime } : {};
+  // temporaryStorageTime change if mergedOpen change
+  React.useMemo(() => setTemporaryStorageTime(null), [mergedOpen]);
 
   // ======================= Keyboard =======================
   function getNextActive(offset: number) {
@@ -126,6 +131,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
     if (onSelect) {
       onSelect(selectedDate, 'mouse');
     }
+    return selectedDate;
   };
 
   // ======================== Render ========================
@@ -142,7 +148,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         operationRef={dateOperationRef}
         active={activePanel === 'date'}
         onSelect={date => {
-          const dateNow = generateConfig.getNow();
+          const dateNow = temporaryStorageTime || generateConfig.getNow();
           onInternalSelect(
             setTime(
               generateConfig,
@@ -164,7 +170,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         operationRef={timeOperationRef}
         active={activePanel === 'time'}
         onSelect={date => {
-          onInternalSelect(date, 'time');
+          setTemporaryStorageTime(onInternalSelect(date, 'time'));
         }}
       />
     </div>
