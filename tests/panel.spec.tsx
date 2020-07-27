@@ -239,29 +239,30 @@ describe('Picker.Panel', () => {
     expect(isSame(onSelect.mock.calls[0][0], '2001-01-02 11:00:00')).toBeTruthy();
   });
 
-  // This test is safe to remove
   it('showtime is true', () => {
     const onSelect = jest.fn();
     const wrapper = mount(<MomentPickerPanel showTime value={null} onSelect={onSelect} />);
 
-    const timerGame = new Promise(resolve =>
-      setTimeout(() => {
-        MockDate.set(getMoment('1990-09-03 01:10:10').toDate());
-        resolve();
-      }, 1000),
-    );
+    MockDate.set(getMoment('1990-09-03 01:10:10').toDate());
 
-    // Click on date
+    // first click on date
     wrapper.selectCell(5);
-    expect(isSame(onSelect.mock.calls[0][0], `1990-09-05 00:00:00`, 'seconds')).toBeTruthy();
+    expect(isSame(onSelect.mock.calls[0][0], '1990-09-05 01:10:10', 'second')).toBeTruthy();
 
-    // Click on date
-    timerGame.then(() => {
-      wrapper.selectCell(10);
-      expect(
-        isSame(onSelect.mock.calls[0][0], `1990-09-10 ${moment().format('hh:mm:ss')}`, 'seconds'),
-      ).toBeTruthy();
-    });
+    // then click on time
+    onSelect.mockReset();
+    wrapper
+      .find('ul')
+      .first()
+      .find('li')
+      .at(11)
+      .simulate('click');
+    expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 11:00:00', 'second')).toBeTruthy();
+
+    // then click on date
+    onSelect.mockReset();
+    wrapper.selectCell(6);
+    expect(isSame(onSelect.mock.calls[0][0], '1990-09-06 11:00:00', 'second')).toBeTruthy();
   });
 
   describe('not trigger onSelect when cell disabled', () => {
