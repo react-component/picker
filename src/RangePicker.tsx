@@ -29,7 +29,7 @@ import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
 import useRangeViewDates from './hooks/useRangeViewDates';
 import { DateRender } from './panels/DatePanel/DateBody';
-import useHoverPlaceholder from './hooks/useHoverPlaceholder';
+import useHoverValue from './hooks/useHoverValue';
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -540,25 +540,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   // ========================== Hover Range ==========================
   const [hoverRangedValue, setHoverRangedValue] = useState<RangeValue<DateType>>(null);
 
-  const [startPlaceholder, onStartEnter, onStartLeave] = useHoverPlaceholder(
-    getValue(placeholder, 0) || '',
-    startText,
-    {
-      formatList,
-      generateConfig,
-      locale,
-    },
-  );
+  const [startHoverValue, onStartEnter, onStartLeave] = useHoverValue(startText, {
+    formatList,
+    generateConfig,
+    locale,
+  });
 
-  const [endPlaceholder, onEndEnter, onEndLeave] = useHoverPlaceholder(
-    getValue(placeholder, 1) || '',
-    endText,
-    {
-      formatList,
-      generateConfig,
-      locale,
-    },
-  );
+  const [endHoverValue, onEndEnter, onEndLeave] = useHoverValue(endText, {
+    formatList,
+    generateConfig,
+    locale,
+  });
 
   const onDateMouseEnter = (date: DateType) => {
     setHoverRangedValue(updateValues(selectedValue, date, mergedActivePickerIndex));
@@ -1062,6 +1054,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           <div
             className={classNames(`${prefixCls}-input`, {
               [`${prefixCls}-input-active`]: mergedActivePickerIndex === 0,
+              [`${prefixCls}-input-placeholder`]: !!startHoverValue,
             })}
             ref={startInputDivRef}
           >
@@ -1069,12 +1062,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
               id={id}
               disabled={mergedDisabled[0]}
               readOnly={inputReadOnly || !startTyping}
-              value={startText}
+              value={startHoverValue || startText}
               onChange={e => {
                 triggerStartTextChange(e.target.value);
               }}
               autoFocus={autoFocus}
-              placeholder={startPlaceholder}
+              placeholder={getValue(placeholder, 0) || ''}
               ref={startInputRef}
               {...startInputProps}
               {...inputSharedProps}
@@ -1087,17 +1080,18 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           <div
             className={classNames(`${prefixCls}-input`, {
               [`${prefixCls}-input-active`]: mergedActivePickerIndex === 1,
+              [`${prefixCls}-input-placeholder`]: !!endHoverValue,
             })}
             ref={endInputDivRef}
           >
             <input
               disabled={mergedDisabled[1]}
               readOnly={inputReadOnly || !endTyping}
-              value={endText}
+              value={endHoverValue || endText}
               onChange={e => {
                 triggerEndTextChange(e.target.value);
               }}
-              placeholder={endPlaceholder}
+              placeholder={getValue(placeholder, 1) || ''}
               ref={endInputRef}
               {...endInputProps}
               {...inputSharedProps}

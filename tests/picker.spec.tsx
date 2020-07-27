@@ -730,33 +730,52 @@ describe('Picker.Basic', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
-  describe('hover placeholder', () => {
-    const placeholder = 'custom placeholder';
-    it('placeholder should be origin value when input value is not empty', () => {
-      const wrapper = mount(
-        <MomentPicker placeholder={placeholder} open defaultValue={getMoment('2020-07-22')} />,
-      );
+  describe('hover value', () => {
+    it('should restore when leave', () => {
+      const wrapper = mount(<MomentPicker open defaultValue={getMoment('2020-07-22')} />);
       const cell = wrapper.findCell(24);
       cell.simulate('mouseEnter');
-      expect(wrapper.find('input').prop('placeholder')).toBe(placeholder);
+      expect(wrapper.find('input').prop('value')).toBe('2020-07-24');
+      expect(wrapper.find('.rc-picker-input').hasClass('rc-picker-input-placeholder')).toBeTruthy();
+
+      cell.simulate('mouseLeave');
+      expect(wrapper.find('input').prop('value')).toBe('2020-07-22');
+      expect(wrapper.find('.rc-picker-input').hasClass('rc-picker-input-placeholder')).toBeFalsy();
     });
 
-    it('placeholder should be target date when input value is empty', () => {
-      const wrapper = mount(
-        <MomentPicker placeholder={placeholder} defaultValue={getMoment('2020-07-22')} />,
-      );
+    it('should restore after selecting cell', () => {
+      const wrapper = mount(<MomentPicker defaultValue={getMoment('2020-07-22')} />);
       wrapper.openPicker();
-      wrapper.find('input').simulate('change', {
-        target: {
-          value: '',
-        },
-      });
       const cell = wrapper.findCell(24);
       cell.simulate('mouseEnter');
-      expect(wrapper.find('input').prop('placeholder')).toBe('2020-07-24');
-      cell.simulate('mouseLeave');
-      expect(wrapper.find('input').prop('placeholder')).toBe(placeholder);
+      expect(wrapper.find('input').prop('value')).toBe('2020-07-24');
+      expect(wrapper.find('.rc-picker-input').hasClass('rc-picker-input-placeholder')).toBeTruthy();
+
+      wrapper.selectCell(24);
+      expect(wrapper.find('input').prop('value')).toBe('2020-07-24');
+      expect(wrapper.find('.rc-picker-input').hasClass('rc-picker-input-placeholder')).toBeFalsy();
+    });
+
+    it('change value when hovering', () => {
+      const wrapper = mount(<MomentPicker defaultValue={getMoment('2020-07-22')} />);
+      wrapper.openPicker();
+      const cell = wrapper.findCell(24);
+      cell.simulate('mouseEnter');
+      expect(wrapper.find('input').prop('value')).toBe('2020-07-24');
+      expect(wrapper.find('.rc-picker-input').hasClass('rc-picker-input-placeholder')).toBeTruthy();
+
+      wrapper.find('input').simulate('change', {
+        target: {
+          value: '2020-07-23',
+        },
+      });
+
+      expect(wrapper.find('input').prop('value')).toBe('2020-07-23');
+      expect(wrapper.find('.rc-picker-input').hasClass('rc-picker-input-placeholder')).toBeFalsy();
+
       wrapper.closePicker();
+      expect(wrapper.find('input').prop('value')).toBe('2020-07-23');
+      expect(wrapper.find('.rc-picker-input').hasClass('rc-picker-input-placeholder')).toBeFalsy();
     });
   });
 });
