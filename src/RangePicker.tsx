@@ -780,6 +780,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           defaultValue={undefined}
           defaultPickerValue={undefined}
           mergedOpen={mergedOpen}
+          mergedActivePickerIndex={mergedActivePickerIndex}
         />
       </RangeContext.Provider>
     );

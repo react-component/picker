@@ -242,12 +242,23 @@ describe('Picker.Panel', () => {
   it('showtime is true', () => {
     const onSelect = jest.fn();
     const wrapper = mount(<MomentPickerPanel showTime value={null} onSelect={onSelect} />);
+    const timerGame = () => {
+      setTimeout(() => {
+        MockDate.set(getMoment('1990-09-03 01:10:10').toDate());
+      }, 1000);
+    };
 
-    MockDate.set(getMoment('1990-09-03 01:10:10').toDate());
-
+    jest.useFakeTimers();
+    timerGame();
     // first click on date
     wrapper.selectCell(5);
-    expect(isSame(onSelect.mock.calls[0][0], '1990-09-05 01:10:10', 'second')).toBeTruthy();
+    expect(isSame(onSelect.mock.calls[0][0], '1990-09-05 00:00:00', 'second')).toBeTruthy();
+
+    // then click on date
+    onSelect.mockReset();
+    jest.runAllTimers();
+    wrapper.selectCell(8);
+    expect(isSame(onSelect.mock.calls[0][0], '1990-09-08 01:10:10', 'second')).toBeTruthy();
 
     // then click on time
     onSelect.mockReset();

@@ -105,6 +105,7 @@ export interface PickerPanelTimeProps<DateType>
     SharedTimeProps<DateType> {
   picker: 'time';
   mergedOpen: boolean;
+  mergedActivePickerIndex: number;
 }
 
 export type PickerPanelProps<DateType> =

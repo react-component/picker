@@ -25,6 +25,7 @@ export interface DatetimePanelProps<DateType>
   showTime?: boolean | SharedTimeProps<DateType>;
   defaultValue?: DateType;
   mergedOpen: boolean;
+  mergedActivePickerIndex: number;
 }
 
 const ACTIVE_PANEL = tuple('date', 'time');
@@ -41,6 +42,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
     showTime,
     onSelect,
     mergedOpen,
+    mergedActivePickerIndex,
   } = props;
   const panelPrefixCls = `${prefixCls}-datetime-panel`;
   const [activePanel, setActivePanel] = React.useState<ActivePanelType | null>(null);
@@ -51,7 +53,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
 
   const timeProps = typeof showTime === 'object' ? { ...showTime } : {};
   // temporaryStorageTime change if mergedOpen change
-  React.useMemo(() => setTemporaryStorageTime(null), [mergedOpen]);
+  React.useMemo(() => setTemporaryStorageTime(null), [mergedOpen, mergedActivePickerIndex]);
 
   // ======================= Keyboard =======================
   function getNextActive(offset: number) {
