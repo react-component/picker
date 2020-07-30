@@ -90,7 +90,6 @@ describe('Picker.Generate', () => {
                   'gggg-wo',
                 ),
               ).toEqual('2019-1st');
-
               expect(
                 generateConfig.locale.format(
                   'zh_CN',
@@ -98,6 +97,14 @@ describe('Picker.Generate', () => {
                   'gggg-wo',
                 ),
               ).toEqual('2019-45周');
+            } else {
+              expect(
+                generateConfig.locale.format(
+                  'en_US',
+                  generateConfig.locale.parse('en_US', '2019-1st', ['GGGG-wo'])!,
+                  'GGGG-wo',
+                ),
+              ).toEqual(null);
             }
           });
         });
