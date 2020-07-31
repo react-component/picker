@@ -44,8 +44,7 @@ describe('Picker.Generate', () => {
         date = generateConfig.setMinute(date, 3);
         date = generateConfig.setSecond(date, 5);
 
-        const formatStr = name === 'date-fns' ? 'yyyy-MM-dd HH:mm:ss' : 'YYYY-MM-DD HH:mm:ss';
-        expect(generateConfig.locale.format('en_US', date, formatStr)).toEqual(
+        expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD HH:mm:ss')).toEqual(
           '2020-10-23 02:03:05',
         );
       });
@@ -55,8 +54,7 @@ describe('Picker.Generate', () => {
         date = generateConfig.addYear(date, 2);
         date = generateConfig.addMonth(date, 2);
         date = generateConfig.addDate(date, 2);
-        const formatStr = name === 'date-fns' ? 'yyyy-MM-dd' : 'YYYY-MM-DD';
-        expect(generateConfig.locale.format('en_US', date, formatStr)).toEqual('1992-11-05');
+        expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD')).toEqual('1992-11-05');
       });
 
       it('isAfter', () => {
@@ -74,41 +72,37 @@ describe('Picker.Generate', () => {
       describe('locale', () => {
         describe('parse', () => {
           it('basic', () => {
-            const formatStr1 = name === 'date-fns' ? 'yyyy-MM-dd' : 'YYYY-MM-DD';
-            const formatStr2 = name === 'date-fns' ? 'dd/mm/yyyy' : 'DD/MM/YYYY';
             ['2000-01-02', '02/01/2000'].forEach(str => {
-              const date = generateConfig.locale.parse('en_US', str, [formatStr1, formatStr2]);
+              const date = generateConfig.locale.parse('en_US', str, ['YYYY-MM-DD', 'DD/MM/YYYY']);
 
-              expect(generateConfig.locale.format('en_US', date!, formatStr1)).toEqual(
+              expect(generateConfig.locale.format('en_US', date!, 'YYYY-MM-DD')).toEqual(
                 '2000-01-02',
               );
             });
           });
 
           it('week', () => {
-            const formatStr = name === 'date-fns' ? 'GGGG-wo' : 'gggg-wo';
             if (name !== 'date-fns') {
               expect(
                 generateConfig.locale.format(
                   'en_US',
-                  generateConfig.locale.parse('en_US', '2019-1st', [formatStr])!,
-                  formatStr,
+                  generateConfig.locale.parse('en_US', '2019-1st', ['gggg-wo'])!,
+                  'gggg-wo',
                 ),
               ).toEqual('2019-1st');
-
               expect(
                 generateConfig.locale.format(
                   'zh_CN',
-                  generateConfig.locale.parse('zh_CN', '2019-45周', [formatStr])!,
-                  formatStr,
+                  generateConfig.locale.parse('zh_CN', '2019-45周', ['gggg-wo'])!,
+                  'gggg-wo',
                 ),
               ).toEqual('2019-45周');
             } else {
               expect(
                 generateConfig.locale.format(
                   'en_US',
-                  generateConfig.locale.parse('en_US', '2019-1st', [formatStr])!,
-                  formatStr,
+                  generateConfig.locale.parse('en_US', '2019-1st', ['GGGG-wo'])!,
+                  'GGGG-wo',
                 ),
               ).toEqual(null);
             }
@@ -120,12 +114,11 @@ describe('Picker.Generate', () => {
         expect(generateConfig.locale.getWeekFirstDay('en_US')).toEqual(0);
         expect(generateConfig.locale.getWeekFirstDay('zh_CN')).toEqual(1);
 
-        const formatStr = name === 'date-fns' ? 'yyyy-MM-dd' : 'YYYY-MM-DD';
         // Should keep same weekday
         ['en_US', 'zh_CN'].forEach(() => {
           expect(
             generateConfig.getWeekDay(
-              generateConfig.locale.parse('en_US', '2000-01-01', [formatStr])!,
+              generateConfig.locale.parse('en_US', '2000-01-01', ['YYYY-MM-DD'])!,
             ),
           ).toEqual(6);
         });
