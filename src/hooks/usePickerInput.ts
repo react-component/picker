@@ -134,13 +134,11 @@ export default function usePickerInput({
       if (open) {
         if (!isClickOutside(target)) {
           preventBlurRef.current = true;
-
-          // Always set back in case `onBlur` prevented by user
-          requestAnimationFrame(() => {
-            preventBlurRef.current = false;
-          });
-        } else if (!focused) {
-          triggerOpen(false);
+        } else {
+          preventBlurRef.current = false;
+          if (!focused) {
+            triggerOpen(false);
+          }
         }
       }
     }),
