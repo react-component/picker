@@ -550,7 +550,7 @@ describe('Picker.Basic', () => {
       const wrapper = mount(<MomentPicker onSelect={onSelect} picker="time" minuteStep={10} />);
       wrapper.openPicker();
       wrapper.find('.rc-picker-now > a').simulate('click');
-      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:59', 'second')).toBeTruthy();
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:10:00', 'second')).toBeTruthy();
       MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
     });
     it('should show warning when hour step is invalid', () => {
@@ -580,6 +580,86 @@ describe('Picker.Basic', () => {
         'Warning: `secondStep` 9 is invalid. It should be a factor of 60.',
       );
       spy.mockRestore();
+    });
+  });
+
+  describe('disabledHours disabledMinutes disabledSeconds', () => {
+    it('hour, minute and second work with now', () => {
+      MockDate.set(getMoment('1990-09-03 02:00:00').toDate());
+      const onSelect = jest.fn();
+      const wrapper = mount(
+        <MomentPicker
+          onSelect={onSelect}
+          picker="time"
+          disabledHours={() => [2, 3, 8]}
+          disabledMinutes={() => [0]}
+          disabledSeconds={() => [0, 1]}
+        />,
+      );
+      wrapper.openPicker();
+      wrapper.find('.rc-picker-now > a').simulate('click');
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 01:59:59', 'second')).toBeTruthy();
+    });
+
+    it('hour, minute and second with now of date showtime', () => {
+      MockDate.set(getMoment('1990-09-03 00:09:00').toDate());
+      const onSelect = jest.fn();
+      const wrapper = mount(
+        <MomentPicker
+          showTime
+          onSelect={onSelect}
+          disabledHours={() => [1, 2, 8]}
+          disabledMinutes={() => [8, 9, 10]}
+          disabledSeconds={() => [57, 59]}
+        />,
+      );
+      wrapper.openPicker();
+      wrapper.find('.rc-picker-now > a').simulate('click');
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:07:58', 'second')).toBeTruthy();
+    });
+
+    it('click time', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(
+        <MomentPicker
+          onSelect={onSelect}
+          picker="time"
+          disabledHours={() => [1, 2, 8]}
+          disabledMinutes={() => [0, 8, 9]}
+          disabledSeconds={() => [0, 1]}
+        />,
+      );
+      wrapper.openPicker();
+
+      // click on hour
+      onSelect.mockReset();
+      wrapper
+        .find('ul')
+        .at(0)
+        .find('li')
+        .at(5)
+        .simulate('click');
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 05:01:02', 'second')).toBeTruthy();
+
+      // click on minute
+      onSelect.mockReset();
+      wrapper
+        .find('ul')
+        .at(1)
+        .find('li')
+        .at(5)
+        .simulate('click');
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 05:05:02', 'second')).toBeTruthy();
+
+      // click on second
+      onSelect.mockReset();
+      wrapper
+        .find('ul')
+        .at(2)
+        .find('li')
+        .at(5)
+        .simulate('click');
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 05:05:05', 'second')).toBeTruthy();
     });
   });
 
