@@ -38,7 +38,7 @@ import { MonthCellRender } from './panels/MonthPanel/MonthBody';
 import RangeContext from './RangeContext';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
-import { getLowerBoundTime, setTime } from './utils/timeUtil';
+import { handlerMergedValue } from './utils/timeUtil';
 
 export interface PickerPanelSharedProps<DateType> {
   prefixCls?: string;
@@ -150,6 +150,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     hourStep = 1,
     minuteStep = 1,
     secondStep = 1,
+    disabledHours,
+    disabledMinutes,
+    disabledSeconds,
   } = props as MergedPickerPanelProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
@@ -420,8 +423,24 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
           {...pickerProps}
           {...(typeof showTime === 'object' ? showTime : null)}
           onSelect={(date, type) => {
-            setViewDate(date);
-            triggerSelect(date, type);
+            const newDate =
+              hourStep ||
+              minuteStep ||
+              secondStep ||
+              disabledHours ||
+              disabledMinutes ||
+              disabledSeconds
+                ? handlerMergedValue(generateConfig, date, [
+                    hourStep,
+                    minuteStep,
+                    secondStep,
+                    disabledHours,
+                    disabledMinutes,
+                    disabledSeconds,
+                  ])
+                : date;
+            setViewDate(newDate);
+            triggerSelect(newDate, type);
           }}
         />
       );
@@ -433,8 +452,24 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
           <DatetimePanel
             {...pickerProps}
             onSelect={(date, type) => {
-              setViewDate(date);
-              triggerSelect(date, type);
+              const newDate =
+                hourStep ||
+                minuteStep ||
+                secondStep ||
+                disabledHours ||
+                disabledMinutes ||
+                disabledSeconds
+                  ? handlerMergedValue(generateConfig, date, [
+                      hourStep,
+                      minuteStep,
+                      secondStep,
+                      disabledHours,
+                      disabledMinutes,
+                      disabledSeconds,
+                    ])
+                  : date;
+              setViewDate(newDate);
+              triggerSelect(newDate, type);
             }}
           />
         );
@@ -456,23 +491,18 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   let rangesNode: React.ReactNode;
 
   const onNow = () => {
-    const now = generateConfig.getNow();
-    const lowerBoundTime = getLowerBoundTime(
-      generateConfig.getHour(now),
-      generateConfig.getMinute(now),
-      generateConfig.getSecond(now),
-      isHourStepValid ? hourStep : 1,
-      isMinuteStepValid ? minuteStep : 1,
-      isSecondStepValid ? secondStep : 1,
-    );
-    const adjustedNow = setTime(
-      generateConfig,
-      now,
-      lowerBoundTime[0], // hour
-      lowerBoundTime[1], // minute
-      lowerBoundTime[2], // second
-    );
-    triggerSelect(adjustedNow, 'submit');
+    const now =
+      hourStep || minuteStep || secondStep || disabledHours || disabledMinutes || disabledSeconds
+        ? handlerMergedValue(generateConfig, generateConfig.getNow(), [
+            hourStep,
+            minuteStep,
+            secondStep,
+            disabledHours,
+            disabledMinutes,
+            disabledSeconds,
+          ])
+        : generateConfig.getNow();
+    triggerSelect(now, 'submit');
   };
 
   if (!hideRanges) {
