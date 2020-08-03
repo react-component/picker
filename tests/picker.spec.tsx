@@ -583,8 +583,26 @@ describe('Picker.Basic', () => {
     });
   });
 
-  describe('disabledHours disabledMinutes disabledSeconds', () => {
-    it('hour, minute and second work with now', () => {
+  describe('values,conditions of disabledTimes and timeSteps', () => {
+    it('click on now button without disabledTimes and timeSteps', () => {
+      MockDate.set(getMoment('1990-09-03 00:09:00').toDate());
+      const onSelect = jest.fn();
+      const wrapper = mount(<MomentPicker onSelect={onSelect} picker="time" />);
+      wrapper.openPicker();
+      wrapper.find('.rc-picker-now > a').simulate('click');
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:09:00', 'second')).toBeTruthy();
+    });
+
+    it('date-showtime, click on now button without disabledTimes', () => {
+      MockDate.set(getMoment('1990-09-03 00:09:00').toDate());
+      const onSelect = jest.fn();
+      const wrapper = mount(<MomentPicker showTime onSelect={onSelect} />);
+      wrapper.openPicker();
+      wrapper.find('.rc-picker-now > a').simulate('click');
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:09:00', 'second')).toBeTruthy();
+    });
+
+    it('time, click on now button with disabledTimes', () => {
       MockDate.set(getMoment('1990-09-03 02:00:00').toDate());
       const onSelect = jest.fn();
       const wrapper = mount(
@@ -601,7 +619,7 @@ describe('Picker.Basic', () => {
       expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 01:59:59', 'second')).toBeTruthy();
     });
 
-    it('hour, minute and second with now of date showtime', () => {
+    it('date-showtime, click on now button with disabledTimes', () => {
       MockDate.set(getMoment('1990-09-03 00:09:00').toDate());
       const onSelect = jest.fn();
       const wrapper = mount(
@@ -618,7 +636,7 @@ describe('Picker.Basic', () => {
       expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:07:58', 'second')).toBeTruthy();
     });
 
-    it('click time', () => {
+    it('click time with disabledTimes', () => {
       const onSelect = jest.fn();
       const wrapper = mount(
         <MomentPicker
@@ -660,6 +678,22 @@ describe('Picker.Basic', () => {
         .at(5)
         .simulate('click');
       expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 05:05:05', 'second')).toBeTruthy();
+    });
+
+    it('click time without disabledTimes and timeSteps', () => {
+      const onSelect = jest.fn();
+      const wrapper = mount(<MomentPicker onSelect={onSelect} picker="time" />);
+      wrapper.openPicker();
+
+      // click on hour
+      onSelect.mockReset();
+      wrapper
+        .find('ul')
+        .at(0)
+        .find('li')
+        .at(5)
+        .simulate('click');
+      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 05:00:00', 'second')).toBeTruthy();
     });
   });
 
