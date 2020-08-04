@@ -811,33 +811,89 @@ describe('Picker.Basic', () => {
         .at(rowIndex)
         .simulate('click');
     }
+    const testData = [
+      {
+        title: 'with disabledHours',
+        disabledHours: () => [1, 2, 4],
+        expectNowVal: '1990-09-03 05:05:05',
+        expectClickDateVal: '1990-09-05 05:05:05',
+        expectHourVal: '1990-09-03 03:05:05',
+        expectMinuteVal: '1990-09-03 05:01:05',
+        expectSecondVal: '1990-09-03 05:05:02',
+      },
+      {
+        title: 'with disabledMinutes',
+        disabledMinutes: () => [0, 2, 4],
+        expectNowVal: '1990-09-03 05:05:05',
+        expectClickDateVal: '1990-09-05 05:05:05',
+        expectHourVal: '1990-09-03 03:05:05',
+        expectMinuteVal: '1990-09-03 05:01:05',
+        expectSecondVal: '1990-09-03 05:05:02',
+      },
+      {
+        title: 'with disabledSeconds',
+        disabledSeconds: () => [1, 3, 4],
+        expectNowVal: '1990-09-03 05:05:05',
+        expectClickDateVal: '1990-09-05 05:05:05',
+        expectHourVal: '1990-09-03 03:05:05',
+        expectMinuteVal: '1990-09-03 05:01:05',
+        expectSecondVal: '1990-09-03 05:05:02',
+      },
+      {
+        title: 'with hourStep',
+        hourStep: 4,
+        expectNowVal: '1990-09-03 04:59:59',
+        expectClickDateVal: '1990-09-05 04:59:59',
+        expectHourVal: '1990-09-03 12:59:59',
+        expectMinuteVal: '1990-09-03 04:01:59',
+        expectSecondVal: '1990-09-03 04:59:02',
+      },
+      {
+        title: 'with minuteStep',
+        minuteStep: 10,
+        expectNowVal: '1990-09-03 05:00:59',
+        expectClickDateVal: '1990-09-05 05:00:59',
+        expectHourVal: '1990-09-03 03:00:59',
+        expectMinuteVal: '1990-09-03 05:10:59',
+        expectSecondVal: '1990-09-03 05:00:02',
+      },
+      {
+        title: 'with secondStep',
+        secondStep: 10,
+        expectNowVal: '1990-09-03 05:05:00',
+        expectClickDateVal: '1990-09-05 05:05:00',
+        expectHourVal: '1990-09-03 03:05:00',
+        expectMinuteVal: '1990-09-03 05:01:00',
+        expectSecondVal: '1990-09-03 05:05:20',
+      },
+    ];
     describe('time', () => {
       it('without disabledTimes and timeSteps', () => {
+        MockDate.set(getMoment('1990-09-03 05:05:05').toDate());
         const onSelect = jest.fn();
         const wrapper = mount(<MomentPicker onSelect={onSelect} picker="time" />);
         wrapper.openPicker();
 
         wrapper.find('.rc-picker-now > a').simulate('click');
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second')).toBeTruthy();
+        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 05:05:05', 'second')).toBeTruthy();
 
         // click on hour
         onSelect.mockReset();
         selectColumn(wrapper, 0, 1);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 01:00:00', 'second')).toBeTruthy();
+        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 01:05:05', 'second')).toBeTruthy();
 
         // click on minute
         onSelect.mockReset();
         selectColumn(wrapper, 1, 1);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:01:00', 'second')).toBeTruthy();
+        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 05:01:05', 'second')).toBeTruthy();
 
         // click on second
         onSelect.mockReset();
         selectColumn(wrapper, 2, 1);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:01', 'second')).toBeTruthy();
+        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 05:05:01', 'second')).toBeTruthy();
       });
 
       it('with disabledTimes', () => {
-        MockDate.set(getMoment('1990-09-03 05:05:05').toDate());
         const onSelect = jest.fn();
         const wrapper = mount(
           <MomentPicker
@@ -867,6 +923,40 @@ describe('Picker.Basic', () => {
         onSelect.mockReset();
         selectColumn(wrapper, 2, 2);
         expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 04:59:02', 'second')).toBeTruthy();
+      });
+
+      testData.forEach(item => {
+        const {
+          title,
+          expectNowVal,
+          expectMinuteVal,
+          expectHourVal,
+          expectSecondVal,
+          ...otherOpt
+        } = item;
+        it(`${item.title}`, () => {
+          const onSelect = jest.fn();
+          const wrapper = mount(<MomentPicker onSelect={onSelect} picker="time" {...otherOpt} />);
+          wrapper.openPicker();
+
+          wrapper.find('.rc-picker-now > a').simulate('click');
+          expect(isSame(onSelect.mock.calls[0][0], `${expectNowVal}`, 'second')).toBeTruthy();
+
+          // click on hour
+          onSelect.mockReset();
+          selectColumn(wrapper, 0, 3);
+          expect(isSame(onSelect.mock.calls[0][0], `${expectHourVal}`, 'second')).toBeTruthy();
+
+          // click on minute
+          onSelect.mockReset();
+          selectColumn(wrapper, 1, 1);
+          expect(isSame(onSelect.mock.calls[0][0], `${expectMinuteVal}`, 'second')).toBeTruthy();
+
+          // click on second
+          onSelect.mockReset();
+          selectColumn(wrapper, 2, 2);
+          expect(isSame(onSelect.mock.calls[0][0], `${expectSecondVal}`, 'second')).toBeTruthy();
+        });
       });
 
       it('with timeSteps', () => {
@@ -1001,6 +1091,45 @@ describe('Picker.Basic', () => {
         onSelect.mockReset();
         selectColumn(wrapper, 2, 2);
         expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 08:10:40', 'second')).toBeTruthy();
+      });
+
+      testData.forEach(item => {
+        const {
+          title,
+          expectNowVal,
+          expectMinuteVal,
+          expectHourVal,
+          expectSecondVal,
+          expectClickDateVal,
+          ...otherOpt
+        } = item;
+        it(`${item.title}`, () => {
+          const onSelect = jest.fn();
+          const wrapper = mount(<MomentPicker onSelect={onSelect} showTime {...otherOpt} />);
+          wrapper.openPicker();
+
+          wrapper.find('.rc-picker-now > a').simulate('click');
+          expect(isSame(onSelect.mock.calls[0][0], `${expectNowVal}`, 'second')).toBeTruthy();
+
+          onSelect.mockReset();
+          wrapper.selectCell(5);
+          expect(isSame(onSelect.mock.calls[0][0], `${expectClickDateVal}`, 'second')).toBeTruthy();
+
+          // click on hour
+          onSelect.mockReset();
+          selectColumn(wrapper, 0, 3);
+          expect(isSame(onSelect.mock.calls[0][0], `${expectHourVal}`, 'second')).toBeTruthy();
+
+          // click on minute
+          onSelect.mockReset();
+          selectColumn(wrapper, 1, 1);
+          expect(isSame(onSelect.mock.calls[0][0], `${expectMinuteVal}`, 'second')).toBeTruthy();
+
+          // click on second
+          onSelect.mockReset();
+          selectColumn(wrapper, 2, 2);
+          expect(isSame(onSelect.mock.calls[0][0], `${expectSecondVal}`, 'second')).toBeTruthy();
+        });
       });
     });
   });
