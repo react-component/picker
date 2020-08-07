@@ -238,6 +238,10 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     },
   );
 
+  React.useEffect(() => {
+    setInnerMode(picker);
+  }, [picker]);
+
   const [sourceMode, setSourceMode] = React.useState<PanelMode>(() => mergedMode);
 
   const onInternalPanelChange = (newMode: PanelMode | null, viewValue: DateType) => {
