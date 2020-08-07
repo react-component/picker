@@ -734,6 +734,7 @@ describe('Picker.Basic', () => {
     const wrapper = mount(<MomentPicker open picker="week" />);
     expect(wrapper.find('.rc-picker-week-panel').length).toEqual(1);
     wrapper.setProps({ picker: 'month' });
+    wrapper.update();
     expect(wrapper.find('.rc-picker-week-panel').length).toEqual(0);
     expect(wrapper.find('.rc-picker-month-panel').length).toEqual(1);
   });
