@@ -1696,4 +1696,44 @@ describe('Picker.Range', () => {
     ).toEqual('2020-07-24 06:00:00');
     expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
   });
+
+  // https://github.com/ant-design/ant-design/issues/26024
+  it('panel should keep open when nextValue is empty', () => {
+    MockDate.set(getMoment('2020-08-08 00:00:00').toDate());
+
+    const wrapper = mount(<MomentRangePicker />);
+
+    wrapper.openPicker(0);
+
+    wrapper.selectCell(7, 0);
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .prop('value'),
+    ).toBe('2020-08-07');
+
+    // back to first panel and clear input value
+    wrapper
+      .find('input')
+      .first()
+      .simulate('focus');
+    wrapper.inputValue('', 0);
+
+    // reselect date
+    wrapper.selectCell(9, 0);
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .prop('value'),
+    ).toBe('2020-08-09');
+
+    // end date
+    wrapper.selectCell(9, 1);
+
+    matchValues(wrapper, '2020-08-09', '2020-09-09');
+
+    MockDate.reset();
+  });
 });
