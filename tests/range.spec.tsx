@@ -1699,8 +1699,6 @@ describe('Picker.Range', () => {
 
   // https://github.com/ant-design/ant-design/issues/26024
   it('panel should keep open when nextValue is empty', () => {
-    MockDate.set(getMoment('2020-08-08 00:00:00').toDate());
-
     const wrapper = mount(<MomentRangePicker />);
 
     wrapper.openPicker(0);
@@ -1711,7 +1709,7 @@ describe('Picker.Range', () => {
         .find('input')
         .first()
         .prop('value'),
-    ).toBe('2020-08-07');
+    ).toBe('1990-09-07');
 
     // back to first panel and clear input value
     wrapper
@@ -1727,13 +1725,11 @@ describe('Picker.Range', () => {
         .find('input')
         .first()
         .prop('value'),
-    ).toBe('2020-08-09');
+    ).toBe('1990-09-09');
 
     // end date
     wrapper.selectCell(9, 1);
 
-    matchValues(wrapper, '2020-08-09', '2020-09-09');
-
-    MockDate.reset();
+    matchValues(wrapper, '1990-09-09', '1990-10-09');
   });
 });
