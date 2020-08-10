@@ -20,6 +20,8 @@ import {
   getWeek,
   format as formatDate,
   parse as parseDate,
+  startOfWeek,
+  startOfYear,
 } from 'date-fns';
 import * as Locale from 'date-fns/locale';
 import { GenerateConfig } from '.';
@@ -36,6 +38,10 @@ const localeParse = (format: string) => {
     .replace(/g/g, 'G')
     .replace(/([Ww])o/g, 'wo');
 };
+
+const now = new Date();
+const firstDOW = startOfWeek(now);
+const firstDOY = startOfYear(now);
 
 const generateConfig: GenerateConfig<Date> = {
   // get
@@ -67,6 +73,16 @@ const generateConfig: GenerateConfig<Date> = {
     getWeekFirstDay: locale => {
       const clone = Locale[dealLocal(locale)];
       return clone.options.weekStartsOn;
+    },
+    getShortWeekDays: locale => {
+      return Array.from(Array(7)).map((e, i) =>
+        formatDate(addDays(firstDOW, i), 'EEEEEE', { locale: Locale[dealLocal(locale)] }),
+      );
+    },
+    getShortMonths: locale => {
+      return Array.from(Array(12)).map((d, i) =>
+        formatDate(addMonths(firstDOY, i), 'MMM', { locale: Locale[dealLocal(locale)] }),
+      );
     },
     getWeek: (locale, date) => {
       return getWeek(date, { locale: Locale[dealLocal(locale)] });
