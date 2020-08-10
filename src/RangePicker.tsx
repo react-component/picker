@@ -470,7 +470,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     if (
       nextOpenIndex !== null &&
       nextOpenIndex !== mergedActivePickerIndex &&
-      !openRecordsRef.current[nextOpenIndex] &&
+      (!openRecordsRef.current[nextOpenIndex] || !getValue(values, nextOpenIndex)) &&
       getValue(values, sourceIndex)
     ) {
       // Delay to focus to avoid input blur trigger expired selectedValues
