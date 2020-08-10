@@ -313,7 +313,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     }
   };
 
-  if (operationRef) {
+  if (operationRef && panelPosition !== 'right') {
     operationRef.current = {
       onKeyDown: onInternalKeyDown,
       onClose: () => {

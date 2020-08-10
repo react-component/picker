@@ -153,6 +153,15 @@ export default () => {
             renderExtraFooter={() => <div>extra footer</div>}
           />
         </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Uncontrolled2</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            placeholder={['start...', 'end...']}
+          />
+        </div>
       </div>
     </div>
   );
