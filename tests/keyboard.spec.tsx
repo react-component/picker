@@ -443,6 +443,27 @@ describe('Picker.Keyboard', () => {
           .props().value,
       ).toEqual('');
     });
+
+    it('move based on current date on first keyboard event', () => {
+      jest.useFakeTimers();
+      const onCalendarChange = jest.fn();
+      const onChange = jest.fn();
+      const wrapper = mount(
+        <MomentRangePicker onCalendarChange={onCalendarChange} onChange={onChange} />,
+      );
+
+      // Start Date
+      wrapper.openPicker();
+      wrapper
+        .find('input')
+        .first()
+        .simulate('change', { target: { value: '' } });
+      wrapper.keyDown(KeyCode.TAB);
+      wrapper.keyDown(KeyCode.RIGHT);
+      wrapper.keyDown(KeyCode.ENTER);
+      expect(onCalendarChange.mock.calls[0][1]).toEqual(['1990-09-04', '']);
+      expect(onChange).not.toHaveBeenCalled();
+    });
   });
 
   it('enter should prevent default to avoid form submit', () => {
