@@ -979,6 +979,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           }
 
           triggerChange(values, null);
+          triggerOpen(false, mergedActivePickerIndex);
         }}
         className={`${prefixCls}-clear`}
       >
