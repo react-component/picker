@@ -301,7 +301,9 @@ describe('Picker.Range', () => {
         />,
       );
 
+      wrapper.openPicker();
       wrapper.clearValue();
+      expect(wrapper.isOpen()).toBeFalsy();
       expect(onChange.mock.calls[0][1]).toEqual(['', '2000-11-11']);
     });
 
