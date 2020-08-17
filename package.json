@@ -45,7 +45,6 @@
     "moment": "^2.24.0",
     "rc-trigger": "^4.0.0",
     "rc-util": "^5.0.1",
-    "react": "^16.0.0",
     "shallowequal": "^1.1.0"
   },
   "engines": {
@@ -74,6 +73,7 @@
     "mockdate": "^3.0.2",
     "np": "^6.2.3",
     "prettier": "^2.0.5",
+    "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
     "typescript": "^3.7.2"
