@@ -76,7 +76,7 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
-    "typescript": "^3.7.2"
+    "typescript": "^4.0.2"
   },
   "cnpm": {
     "mode": "npm"
