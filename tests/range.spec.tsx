@@ -1734,4 +1734,14 @@ describe('Picker.Range', () => {
 
     matchValues(wrapper, '1990-09-09', '1990-10-09');
   });
+
+  it('right date panel switch to month should keep in the same year', () => {
+    const wrapper = mount(<MomentRangePicker />);
+    wrapper.openPicker(0);
+    wrapper
+      .find('.rc-picker-month-btn')
+      .last()
+      .simulate('click');
+    expect(wrapper.find('.rc-picker-year-btn').text()).toEqual('1990');
+  });
 });

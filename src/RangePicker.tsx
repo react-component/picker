@@ -805,7 +805,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             );
 
             let viewDate = date;
-            if (panelPosition === 'right') {
+            if (panelPosition === 'right' && mergedModes[mergedActivePickerIndex] === newMode) {
               viewDate = getClosingViewDate(viewDate, newMode as any, generateConfig, -1);
             }
             setViewDate(viewDate, mergedActivePickerIndex);
