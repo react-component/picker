@@ -1744,4 +1744,18 @@ describe('Picker.Range', () => {
       .simulate('click');
     expect(wrapper.find('.rc-picker-year-btn').text()).toEqual('1990');
   });
+
+  // https://github.com/ant-design/ant-design/issues/26390
+  it('month panel should be disabled', () => {
+    const wrapper = mount(<MomentRangePicker />);
+    wrapper.openPicker();
+    wrapper.selectCell(15);
+
+    wrapper
+      .find('.rc-picker-month-btn')
+      .first()
+      .simulate('click');
+    expect(wrapper.findCell('Jan').hasClass('rc-picker-cell-disabled')).toBeTruthy();
+    expect(wrapper.findCell('Dec').hasClass('rc-picker-cell-disabled')).toBeFalsy();
+  });
 });
