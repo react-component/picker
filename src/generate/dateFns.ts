@@ -71,6 +71,16 @@ const generateConfig: GenerateConfig<Date> = {
     getWeek: (locale, date) => {
       return getWeek(date, { locale: Locale[dealLocal(locale)] });
     },
+    getShortWeekDays: locale => {
+      const clone = Locale[dealLocal(locale)];
+      return Array.from({ length: 7 }).map((_, i) => clone.localize.day(i, { width: 'short' }));
+    },
+    getShortMonths: locale => {
+      const clone = Locale[dealLocal(locale)];
+      return Array.from({ length: 12 }).map((_, i) =>
+        clone.localize.month(i, { width: 'abbreviated' }),
+      );
+    },
     format: (locale, date, format) => {
       if (!isValid(date)) {
         return null;
