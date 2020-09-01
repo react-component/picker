@@ -73,23 +73,26 @@ const generateConfig: GenerateConfig<Dayjs> = {
   isValidate: date => date.isValid(),
 
   locale: {
-    getWeekFirstDay: locale =>
-      dayjs()
-        .locale(parseLocale(locale))
+    getWeekFirstDay: locale => {
+      dayjs().locale();
+      return dayjs()
+        .locale(parseLocale(locale) as LocalePresetType)
         .localeData()
-        .firstDayOfWeek(),
-    getWeek: (locale, date) => date.locale(parseLocale(locale)).week(),
+        .firstDayOfWeek();
+    },
+    getWeek: (locale, date) => date.locale(parseLocale(locale) as LocalePresetType).week(),
     getShortWeekDays: locale =>
       dayjs()
-        .locale(parseLocale(locale))
+        .locale(parseLocale(locale) as LocalePresetType)
         .localeData()
         .weekdaysMin(),
     getShortMonths: locale =>
       dayjs()
-        .locale(parseLocale(locale))
+        .locale(parseLocale(locale) as LocalePresetType)
         .localeData()
         .monthsShort(),
-    format: (locale, date, format) => date.locale(parseLocale(locale)).format(format),
+    format: (locale, date, format) =>
+      date.locale(parseLocale(locale) as LocalePresetType).format(format),
     parse: (locale, text, formats) => {
       const localeStr = parseLocale(locale);
       for (let i = 0; i < formats.length; i += 1) {
@@ -101,7 +104,7 @@ const generateConfig: GenerateConfig<Dayjs> = {
           const weekStr = formatText.split('-')[1];
           const firstWeek = dayjs(year, 'YYYY')
             .startOf('year')
-            .locale(localeStr);
+            .locale(localeStr as LocalePresetType);
           for (let j = 0; j <= 52; j += 1) {
             const nextWeek = firstWeek.add(j, 'week');
             if (nextWeek.format('Wo') === weekStr) {
@@ -111,7 +114,7 @@ const generateConfig: GenerateConfig<Dayjs> = {
           parseNoMatchNotice();
           return null;
         }
-        const date = dayjs(formatText, format).locale(localeStr);
+        const date = dayjs(formatText, format).locale(localeStr as LocalePresetType);
         if (date.isValid()) {
           return date;
         }
