@@ -38,7 +38,7 @@ import { MonthCellRender } from './panels/MonthPanel/MonthBody';
 import RangeContext from './RangeContext';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
-import { handlerMergedValue } from './utils/timeUtil';
+import { getBoundTimeWrapper } from './utils/timeUtil';
 
 export interface PickerPanelSharedProps<DateType> {
   prefixCls?: string;
@@ -430,7 +430,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
               disabledHours ||
               disabledMinutes ||
               disabledSeconds
-                ? handlerMergedValue(generateConfig, date, [
+                ? getBoundTimeWrapper(generateConfig, date, [
                     hourStep,
                     minuteStep,
                     secondStep,
@@ -459,7 +459,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
                 disabledHours ||
                 disabledMinutes ||
                 disabledSeconds
-                  ? handlerMergedValue(generateConfig, date, [
+                  ? getBoundTimeWrapper(generateConfig, date, [
                       hourStep,
                       minuteStep,
                       secondStep,
@@ -493,7 +493,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const onNow = () => {
     const now =
       hourStep || minuteStep || secondStep || disabledHours || disabledMinutes || disabledSeconds
-        ? handlerMergedValue(generateConfig, generateConfig.getNow(), [
+        ? getBoundTimeWrapper(generateConfig, generateConfig.getNow(), [
             hourStep,
             minuteStep,
             secondStep,

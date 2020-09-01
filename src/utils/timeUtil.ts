@@ -119,7 +119,7 @@ function generateUnitValues(
   disabledUnits: number[] = [],
   cacheFlag?: boolean,
 ): number[] {
-  if (cacheFlag && unitsCache.has(`${start},${end},${step}`)) {
+  if (cacheFlag && !disabledUnits && unitsCache.has(`${start},${end},${step}`)) {
     return unitsCache.get(`${start},${end},${step}`);
   }
   const units: number[] = [];
@@ -134,16 +134,16 @@ function generateUnitValues(
   return units;
 }
 
-export function handlerMergedValue<DateType>(
+export function getBoundTimeWrapper<DateType>(
   generateConfig: GenerateConfig<DateType>,
   date: DateType,
   info: [
     number,
     number,
     number,
-    () => number[] | undefined,
-    (hour: number) => number[] | undefined,
-    (hour: number, minute: number) => number[] | undefined,
+    () => number[],
+    (hour: number) => number[],
+    (hour: number, minute: number) => number[],
   ],
 ) {
   const [h, m, s] = getBoundTime(
