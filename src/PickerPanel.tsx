@@ -241,6 +241,10 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     },
   );
 
+  React.useEffect(() => {
+    setInnerMode(picker);
+  }, [picker]);
+
   const [sourceMode, setSourceMode] = React.useState<PanelMode>(() => mergedMode);
 
   const onInternalPanelChange = (newMode: PanelMode | null, viewValue: DateType) => {
@@ -312,7 +316,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     }
   };
 
-  if (operationRef) {
+  if (operationRef && panelPosition !== 'right') {
     operationRef.current = {
       onKeyDown: onInternalKeyDown,
       onClose: () => {
@@ -346,7 +350,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onViewDateChange: setViewDate,
     sourceMode,
     onPanelChange: onInternalPanelChange,
-    disabledDate: picker === mergedMode ? disabledDate : undefined,
+    disabledDate: mergedMode !== 'decade' ? disabledDate : undefined,
   };
   delete pickerProps.onChange;
   delete pickerProps.onSelect;

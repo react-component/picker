@@ -301,7 +301,9 @@ describe('Picker.Range', () => {
         />,
       );
 
+      wrapper.openPicker();
       wrapper.clearValue();
+      expect(wrapper.isOpen()).toBeFalsy();
       expect(onChange.mock.calls[0][1]).toEqual(['', '2000-11-11']);
     });
 
@@ -1695,5 +1697,65 @@ describe('Picker.Range', () => {
         .props().value,
     ).toEqual('2020-07-24 06:00:00');
     expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
+  });
+
+  // https://github.com/ant-design/ant-design/issues/26024
+  it('panel should keep open when nextValue is empty', () => {
+    const wrapper = mount(<MomentRangePicker />);
+
+    wrapper.openPicker(0);
+
+    wrapper.selectCell(7, 0);
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .prop('value'),
+    ).toBe('1990-09-07');
+
+    // back to first panel and clear input value
+    wrapper
+      .find('input')
+      .first()
+      .simulate('focus');
+    wrapper.inputValue('', 0);
+
+    // reselect date
+    wrapper.selectCell(9, 0);
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .prop('value'),
+    ).toBe('1990-09-09');
+
+    // end date
+    wrapper.selectCell(9, 1);
+
+    matchValues(wrapper, '1990-09-09', '1990-10-09');
+  });
+
+  it('right date panel switch to month should keep in the same year', () => {
+    const wrapper = mount(<MomentRangePicker />);
+    wrapper.openPicker(0);
+    wrapper
+      .find('.rc-picker-month-btn')
+      .last()
+      .simulate('click');
+    expect(wrapper.find('.rc-picker-year-btn').text()).toEqual('1990');
+  });
+
+  // https://github.com/ant-design/ant-design/issues/26390
+  it('month panel should be disabled', () => {
+    const wrapper = mount(<MomentRangePicker />);
+    wrapper.openPicker();
+    wrapper.selectCell(15);
+
+    wrapper
+      .find('.rc-picker-month-btn')
+      .first()
+      .simulate('click');
+    expect(wrapper.findCell('Jan').hasClass('rc-picker-cell-disabled')).toBeTruthy();
+    expect(wrapper.findCell('Dec').hasClass('rc-picker-cell-disabled')).toBeFalsy();
   });
 });

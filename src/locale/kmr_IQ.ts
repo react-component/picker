@@ -1,7 +1,7 @@
 import { Locale } from '../interface';
 
 const locale: Locale = {
-  locale: 'ku_IQ',
+  locale: 'ku',
   today: 'Îro',
   now: 'Niha',
   backToToday: 'Vegere îro',

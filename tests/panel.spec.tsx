@@ -315,25 +315,6 @@ describe('Picker.Panel', () => {
         expect(onPanelChange).toHaveBeenCalled();
       });
 
-      // decade is not a picker, but we still test here in case will support
-      it('picker', () => {
-        const onPanelChange = jest.fn();
-        const wrapper = mount(
-          <MomentPickerPanel
-            picker={'decade' as any}
-            mode="decade"
-            onPanelChange={onPanelChange}
-            disabledDate={date => date.year() === 1900}
-          />,
-        );
-
-        wrapper.selectCell('1900-1909');
-        expect(onPanelChange).not.toHaveBeenCalled();
-
-        wrapper.selectCell('1910-1919');
-        expect(onPanelChange).toHaveBeenCalled();
-      });
-
       it('not trigger when same panel', () => {
         const onPanelChange = jest.fn();
         const wrapper = mount(<MomentPickerPanel onPanelChange={onPanelChange} />);

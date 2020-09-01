@@ -470,7 +470,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     if (
       nextOpenIndex !== null &&
       nextOpenIndex !== mergedActivePickerIndex &&
-      !openRecordsRef.current[nextOpenIndex] &&
+      (!openRecordsRef.current[nextOpenIndex] || !getValue(values, nextOpenIndex)) &&
       getValue(values, sourceIndex)
     ) {
       // Delay to focus to avoid input blur trigger expired selectedValues
@@ -805,7 +805,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             );
 
             let viewDate = date;
-            if (panelPosition === 'right') {
+            if (panelPosition === 'right' && mergedModes[mergedActivePickerIndex] === newMode) {
               viewDate = getClosingViewDate(viewDate, newMode as any, generateConfig, -1);
             }
             setViewDate(viewDate, mergedActivePickerIndex);
@@ -979,6 +979,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           }
 
           triggerChange(values, null);
+          triggerOpen(false, mergedActivePickerIndex);
         }}
         className={`${prefixCls}-clear`}
       >

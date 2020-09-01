@@ -28,6 +28,15 @@ const dealLocal = (str: string) => {
   return str.replace(/_/g, '');
 };
 
+const localeParse = (format: string) => {
+  return format
+    .replace(/Y/g, 'y')
+    .replace(/D/g, 'd')
+    .replace(/gggg/, 'yyyy')
+    .replace(/g/g, 'G')
+    .replace(/([Ww])o/g, 'wo');
+};
+
 const generateConfig: GenerateConfig<Date> = {
   // get
   getNow: () => new Date(),
@@ -62,15 +71,27 @@ const generateConfig: GenerateConfig<Date> = {
     getWeek: (locale, date) => {
       return getWeek(date, { locale: Locale[dealLocal(locale)] });
     },
+    getShortWeekDays: locale => {
+      const clone = Locale[dealLocal(locale)];
+      return Array.from({ length: 7 }).map((_, i) => clone.localize.day(i, { width: 'short' }));
+    },
+    getShortMonths: locale => {
+      const clone = Locale[dealLocal(locale)];
+      return Array.from({ length: 12 }).map((_, i) =>
+        clone.localize.month(i, { width: 'abbreviated' }),
+      );
+    },
     format: (locale, date, format) => {
       if (!isValid(date)) {
         return null;
       }
-      return formatDate(date, format, { locale: Locale[dealLocal(locale)] });
+      return formatDate(date, localeParse(format), {
+        locale: Locale[dealLocal(locale)],
+      });
     },
     parse: (locale, text, formats) => {
       for (let i = 0; i < formats.length; i += 1) {
-        const format = formats[i];
+        const format = localeParse(formats[i]);
         const formatText = text;
         const date = parseDate(formatText, format, new Date(), {
           locale: Locale[dealLocal(locale)],

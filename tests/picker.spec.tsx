@@ -730,6 +730,15 @@ describe('Picker.Basic', () => {
     expect(wrapper.render()).toMatchSnapshot();
   });
 
+  it('change panel when `picker` changed', () => {
+    const wrapper = mount(<MomentPicker open picker="week" />);
+    expect(wrapper.find('.rc-picker-week-panel').length).toEqual(1);
+    wrapper.setProps({ picker: 'month' });
+    wrapper.update();
+    expect(wrapper.find('.rc-picker-week-panel').length).toEqual(0);
+    expect(wrapper.find('.rc-picker-month-panel').length).toEqual(1);
+  });
+
   describe('hover value', () => {
     it('should restore when leave', () => {
       const wrapper = mount(<MomentPicker open defaultValue={getMoment('2020-07-22')} />);

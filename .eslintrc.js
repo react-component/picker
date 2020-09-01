@@ -14,6 +14,6 @@ module.exports = {
     'no-confusing-arrow': 0,
     'jsx-a11y/no-autofocus': 0,
     'jsx-a11y/heading-has-content': 0,
-    'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/tests/**'] }],
+    'import/no-extraneous-dependencies': ['error', { packageDir: './' }],
   },
 };
