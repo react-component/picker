@@ -130,7 +130,7 @@ Array [
   <div>
     <div
       class="rc-picker-dropdown rc-picker-dropdown-range"
-      style="opacity: 0;"
+      style="opacity: 0; pointer-events: none;"
     >
       <div
         class="rc-picker-range-wrapper rc-picker-date-range-wrapper"

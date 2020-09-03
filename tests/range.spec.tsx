@@ -1699,6 +1699,30 @@ describe('Picker.Range', () => {
     expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
   });
 
+  // https://github.com/ant-design/ant-design/issues/26544
+  it('should clean hover style when selecting the same value with last value', () => {
+    const wrapper = mount(
+      <MomentRangePicker defaultValue={[getMoment('2020-07-24'), getMoment('2020-08-24')]} />,
+  );
+
+    wrapper.openPicker();
+
+    wrapper.selectCell(24, 0);
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .prop('value'),
+    ).toBe('2020-07-24');
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .hasClass('rc-picker-input-placeholder'),
+    ).toBeFalsy();
+    expect(wrapper.isOpen()).toBeTruthy();
+  });
+
   // https://github.com/ant-design/ant-design/issues/26024
   it('panel should keep open when nextValue is empty', () => {
     const wrapper = mount(<MomentRangePicker />);
