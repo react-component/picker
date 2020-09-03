@@ -1,5 +1,13 @@
 import { GenerateConfig } from '../generate';
 
+// Type of function that generateUnitValues
+type TypeGenerateUnitValues = (
+  start: number,
+  end: number,
+  step: number,
+  disabledUnits: number[],
+) => number[];
+
 export function setTime<DateType>(
   generateConfig: GenerateConfig<DateType>,
   date: DateType,
@@ -13,29 +21,8 @@ export function setTime<DateType>(
   return nextTime;
 }
 
-export function getLowerBoundTime(
-  hour: number,
-  minute: number,
-  second: number,
-  hourStep: number,
-  minuteStep: number,
-  secondStep: number,
-): [number, number, number] {
-  const lowerBoundHour = Math.floor(hour / hourStep) * hourStep;
-  if (lowerBoundHour < hour) {
-    return [lowerBoundHour, 60 - minuteStep, 60 - secondStep];
-  }
-  const lowerBoundMinute = Math.floor(minute / minuteStep) * minuteStep;
-  if (lowerBoundMinute < minute) {
-    return [lowerBoundHour, lowerBoundMinute, 60 - secondStep];
-  }
-  const lowerBoundSecond = Math.floor(second / secondStep) * secondStep;
-  return [lowerBoundHour, lowerBoundMinute, lowerBoundSecond];
-}
-
-const unitsCache = new Map<string, number[]>();
-
 export function getBoundTime(
+  generateUnitValues: TypeGenerateUnitValues,
   hour: number,
   minute: number,
   second: number,
@@ -46,20 +33,13 @@ export function getBoundTime(
   disabledMinutes?: (hour: number) => number[],
   disabledSeconds?: (hour: number, minute: number) => number[],
 ): [number, number, number] {
-  const hours = generateUnitValues(
-    0,
-    23,
-    hourStep,
-    disabledHours && disabledHours(),
-    !disabledHours,
-  );
+  const hours = generateUnitValues(0, 23, hourStep, disabledHours && disabledHours());
   const boundHour = getBoundTimeItem(hour, hours);
   const minutes = generateUnitValues(
     0,
     59,
     minuteStep,
     disabledMinutes && disabledMinutes(boundHour),
-    !disabledMinutes,
   );
   const boundMinute = getBoundTimeItem(minute, minutes);
   const seconds = generateUnitValues(
@@ -67,7 +47,6 @@ export function getBoundTime(
     59,
     secondStep,
     disabledSeconds && disabledSeconds(boundHour, boundMinute),
-    !disabledSeconds,
   );
   const boundSecond = getBoundTimeItem(second, seconds);
 
@@ -112,29 +91,25 @@ function getBoundTimeItem(timeItem: number, timeItems: number[]): number {
   return newTimeItem;
 }
 
-function generateUnitValues(
-  start: number,
-  end: number,
-  step: number,
-  disabledUnits: number[] = [],
-  cacheFlag?: boolean,
-): number[] {
-  if (cacheFlag && !disabledUnits && unitsCache.has(`${start},${end},${step}`)) {
-    return unitsCache.get(`${start},${end},${step}`);
-  }
-  const units: number[] = [];
-  for (let i = start; i <= end; i += step) {
-    if (!disabledUnits.includes(i)) {
-      units.push(i);
+export function getFuncGenerateUnitValues(): TypeGenerateUnitValues {
+  const unitsCacheInternal = new Map<string, number[]>();
+  return (start: number, end: number, step: number, disabledUnits: number[] = []): number[] => {
+    if (unitsCacheInternal.has(`${start},${end},${step},${disabledUnits}`)) {
+      return unitsCacheInternal.get(`${start},${end},${step},${disabledUnits}`);
     }
-  }
-  if (cacheFlag) {
-    unitsCache.set(`${start},${end},${step}`, units);
-  }
-  return units;
+    const units: number[] = [];
+    for (let i = start; i <= end; i += step) {
+      if (!disabledUnits.includes(i)) {
+        units.push(i);
+      }
+    }
+    unitsCacheInternal.set(`${start},${end},${step},${disabledUnits}`, units);
+    return units;
+  };
 }
 
 export function getBoundTimeWrapper<DateType>(
+  generateUnitValues: TypeGenerateUnitValues,
   generateConfig: GenerateConfig<DateType>,
   date: DateType,
   info: [
@@ -147,6 +122,7 @@ export function getBoundTimeWrapper<DateType>(
   ],
 ) {
   const [h, m, s] = getBoundTime(
+    generateUnitValues,
     generateConfig.getHour(date),
     generateConfig.getMinute(date),
     generateConfig.getSecond(date),
