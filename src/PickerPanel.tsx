@@ -38,7 +38,7 @@ import { MonthCellRender } from './panels/MonthPanel/MonthBody';
 import RangeContext from './RangeContext';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
-import { getBoundTimeWrapper } from './utils/timeUtil';
+import { getBoundTimeWrapper, getFuncGenerateUnitValues } from './utils/timeUtil';
 
 export interface PickerPanelSharedProps<DateType> {
   prefixCls?: string;
@@ -191,6 +191,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
 
   // Handle init logic
   const initRef = React.useRef(true);
+
+  // get func generateUnitValues
+  const generateUnitValues = React.useMemo(() => getFuncGenerateUnitValues(), [1]);
 
   // Value
   const [mergedValue, setInnerValue] = useMergedState(null, {
@@ -430,7 +433,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
               disabledHours ||
               disabledMinutes ||
               disabledSeconds
-                ? getBoundTimeWrapper(generateConfig, date, [
+                ? getBoundTimeWrapper(generateUnitValues, generateConfig, date, [
                     hourStep,
                     minuteStep,
                     secondStep,
@@ -459,7 +462,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
                 disabledHours ||
                 disabledMinutes ||
                 disabledSeconds
-                  ? getBoundTimeWrapper(generateConfig, date, [
+                  ? getBoundTimeWrapper(generateUnitValues, generateConfig, date, [
                       hourStep,
                       minuteStep,
                       secondStep,
@@ -493,7 +496,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const onNow = () => {
     const now =
       hourStep || minuteStep || secondStep || disabledHours || disabledMinutes || disabledSeconds
-        ? getBoundTimeWrapper(generateConfig, generateConfig.getNow(), [
+        ? getBoundTimeWrapper(generateUnitValues, generateConfig, generateConfig.getNow(), [
             hourStep,
             minuteStep,
             secondStep,
