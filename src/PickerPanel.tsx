@@ -193,7 +193,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const initRef = React.useRef(true);
 
   // get func generateUnitValues
-  const generateUnitValues = React.useMemo(() => getFuncGenerateUnitValues(), [1]);
+  const generateUnitValues = React.useMemo(() => getFuncGenerateUnitValues(), []);
 
   // Value
   const [mergedValue, setInnerValue] = useMergedState(null, {
