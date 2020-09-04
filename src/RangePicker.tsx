@@ -1011,6 +1011,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     if (type === 'submit' || (type !== 'key' && !needConfirmButton)) {
       // triggerChange will also update selected values
       triggerChange(values, mergedActivePickerIndex);
+      // clear hover value style
+      if (mergedActivePickerIndex === 0) {
+        onStartLeave(null);
+      } else {
+        onEndLeave(null);
+      }
     } else {
       setSelectedValue(values);
     }
