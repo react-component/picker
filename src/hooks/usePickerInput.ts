@@ -10,7 +10,6 @@ export default function usePickerInput({
   triggerOpen,
   forwardKeyDown,
   onKeyDown,
-  disableKey,
   blurToCancel,
   onSubmit,
   onCancel,
@@ -23,7 +22,6 @@ export default function usePickerInput({
   triggerOpen: (open: boolean) => void;
   forwardKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => boolean;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  disableKey?: Array<String>;
   blurToCancel?: boolean;
   onSubmit: () => void | boolean;
   onCancel: () => void;
@@ -53,38 +51,32 @@ export default function usePickerInput({
 
       switch (e.which) {
         case KeyCode.ENTER: {
-          if (!disableKey || !disableKey.includes('ENTER')) {
-            if (!open) {
-              triggerOpen(true);
-            } else if (onSubmit() !== false) {
-              setTyping(true);
-            }
-
-            e.preventDefault();
+          if (!open) {
+            triggerOpen(true);
+          } else if (onSubmit() !== false) {
+            setTyping(true);
           }
+
+          e.preventDefault();
           return;
         }
 
         case KeyCode.TAB: {
-          if (!disableKey || !disableKey.includes('TAB')) {
-            if (typing && open && !e.shiftKey) {
-              setTyping(false);
+          if (typing && open && !e.shiftKey) {
+            setTyping(false);
+            e.preventDefault();
+          } else if (!typing && open) {
+            if (!forwardKeyDown(e) && e.shiftKey) {
+              setTyping(true);
               e.preventDefault();
-            } else if (!typing && open) {
-              if (!forwardKeyDown(e) && e.shiftKey) {
-                setTyping(true);
-                e.preventDefault();
-              }
             }
           }
           return;
         }
 
         case KeyCode.ESC: {
-          if (!disableKey || !disableKey.includes('ESC')) {
-            setTyping(true);
-            onCancel();
-          }
+          setTyping(true);
+          onCancel();
           return;
         }
       }

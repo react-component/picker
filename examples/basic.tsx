@@ -29,7 +29,7 @@ export default () => {
     onChange,
   };
 
-  const keyDown = (e) => {
+  const keyDown = e => {
     console.log(e.keyCode);
   };
 
@@ -131,13 +131,7 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Keyboard event with disabled key</h3>
-          <Picker<Moment>
-            {...sharedProps}
-            locale={enUS}
-            onKeyDown={keyDown}
-            disableKey={['ENTER']}
-            tabIndex={-1}
-          />
+          <Picker<Moment> {...sharedProps} locale={enUS} onKeyDown={keyDown} tabIndex={-1} />
         </div>
       </div>
     </div>

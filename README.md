@@ -79,7 +79,6 @@ render(<Picker />, mountNode);
 | onFocus | (event:React.FocusEventHandler<HTMLInputElement>) => void |  | called like input's on focus |
 | onBlur | (event:React.FocusEventHandler<HTMLInputElement>) => void |  | called like input's on blur |
 | onKeyDown | (event:React.KeyboardEventHandler<HTMLInputElemet>) => void |  | input on keydown event |
-| disableKey | Array<String> |  | disable default key for keydown event, available only for key 'ENTER', 'TAB', & 'ESC' |
 | direction | String: ltr or rtl |  | Layout direction of picker component, it supports RTL direction too. |
 
 ### PickerPanel
