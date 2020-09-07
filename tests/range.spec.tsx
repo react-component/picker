@@ -1430,6 +1430,13 @@ describe('Picker.Range', () => {
   });
 
   describe('hover placeholder', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
     const defaultValue: [Moment, Moment] = [getMoment('2020-07-22'), getMoment('2020-08-22')];
 
     it('should restore when leave', () => {
@@ -1439,6 +1446,8 @@ describe('Picker.Range', () => {
       wrapper.openPicker(0);
       const leftCell = wrapper.findCell(24);
       leftCell.simulate('mouseEnter');
+      jest.runAllTimers();
+      wrapper.update();
       expect(
         wrapper
           .find('input')
@@ -1465,6 +1474,8 @@ describe('Picker.Range', () => {
       ).toBeFalsy();
 
       leftCell.simulate('mouseLeave');
+      jest.runAllTimers();
+      wrapper.update();
       expect(
         wrapper
           .find('input')
@@ -1496,6 +1507,8 @@ describe('Picker.Range', () => {
       wrapper.openPicker(1);
       const rightCell = wrapper.findCell(24, 1);
       rightCell.simulate('mouseEnter');
+      jest.runAllTimers();
+      wrapper.update();
       expect(
         wrapper
           .find('input')
@@ -1522,6 +1535,8 @@ describe('Picker.Range', () => {
       ).toBeTruthy();
 
       rightCell.simulate('mouseLeave');
+      jest.runAllTimers();
+      wrapper.update();
       expect(
         wrapper
           .find('input')
@@ -1556,6 +1571,8 @@ describe('Picker.Range', () => {
       wrapper.openPicker(0);
       const leftCell = wrapper.findCell(24, 0);
       leftCell.simulate('mouseEnter');
+      jest.runAllTimers();
+      wrapper.update();
       expect(
         wrapper
           .find('input')
@@ -1610,6 +1627,8 @@ describe('Picker.Range', () => {
       // right
       const rightCell = wrapper.findCell(24, 1);
       rightCell.simulate('mouseEnter');
+      jest.runAllTimers();
+      wrapper.update();
       expect(
         wrapper
           .find('input')
@@ -1661,6 +1680,30 @@ describe('Picker.Range', () => {
           .hasClass('rc-picker-input-placeholder'),
       ).toBeFalsy();
     });
+
+    // https://github.com/ant-design/ant-design/issues/26544
+    it('should clean hover style when selecting the same value with last value', () => {
+      const wrapper = mount(
+        <MomentRangePicker defaultValue={[getMoment('2020-07-24'), getMoment('2020-08-24')]} />,
+      );
+
+      wrapper.openPicker();
+
+      wrapper.selectCell(24, 0);
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .prop('value'),
+      ).toBe('2020-07-24');
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+      expect(wrapper.isOpen()).toBeTruthy();
+    });
   });
 
   // https://github.com/ant-design/ant-design/issues/25746
@@ -1697,30 +1740,6 @@ describe('Picker.Range', () => {
         .props().value,
     ).toEqual('2020-07-24 06:00:00');
     expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
-  });
-
-  // https://github.com/ant-design/ant-design/issues/26544
-  it('should clean hover style when selecting the same value with last value', () => {
-    const wrapper = mount(
-      <MomentRangePicker defaultValue={[getMoment('2020-07-24'), getMoment('2020-08-24')]} />,
-  );
-
-    wrapper.openPicker();
-
-    wrapper.selectCell(24, 0);
-    expect(
-      wrapper
-        .find('input')
-        .first()
-        .prop('value'),
-    ).toBe('2020-07-24');
-    expect(
-      wrapper
-        .find('input')
-        .first()
-        .hasClass('rc-picker-input-placeholder'),
-    ).toBeFalsy();
-    expect(wrapper.isOpen()).toBeTruthy();
   });
 
   // https://github.com/ant-design/ant-design/issues/26024
