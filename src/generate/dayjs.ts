@@ -6,7 +6,7 @@ import weekOfYear from 'dayjs/plugin/weekOfYear';
 import weekYear from 'dayjs/plugin/weekYear';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { GenerateConfig, LocalePresetType } from '.';
+import { GenerateConfig } from '.';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -76,25 +76,24 @@ const generateConfig: GenerateConfig<Dayjs> = {
     getWeekFirstDay: locale => {
       dayjs().locale();
       return dayjs()
-        .locale(parseLocale(locale) as LocalePresetType)
+        .locale(parseLocale(locale))
         .localeData()
         .firstDayOfWeek();
     },
-    getWeek: (locale, date) => date.locale(parseLocale(locale) as LocalePresetType).week(),
+    getWeek: (locale, date) => date.locale(parseLocale(locale)).week(),
     getShortWeekDays: locale =>
       dayjs()
-        .locale(parseLocale(locale) as LocalePresetType)
+        .locale(parseLocale(locale))
         .localeData()
         .weekdaysMin(),
     getShortMonths: locale =>
       dayjs()
-        .locale(parseLocale(locale) as LocalePresetType)
+        .locale(parseLocale(locale))
         .localeData()
         .monthsShort(),
-    format: (locale, date, format) =>
-      date.locale(parseLocale(locale) as LocalePresetType).format(format),
+    format: (locale, date, format) => date.locale(parseLocale(locale)).format(format),
     parse: (locale, text, formats) => {
-      const localeStr = parseLocale(locale) as LocalePresetType;
+      const localeStr = parseLocale(locale);
       for (let i = 0; i < formats.length; i += 1) {
         const format = formats[i];
         const formatText = text;
