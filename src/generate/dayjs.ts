@@ -6,7 +6,7 @@ import weekOfYear from 'dayjs/plugin/weekOfYear';
 import weekYear from 'dayjs/plugin/weekYear';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { GenerateConfig } from '.';
+import { GenerateConfig, LocalePresetType } from '.';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -94,7 +94,7 @@ const generateConfig: GenerateConfig<Dayjs> = {
     format: (locale, date, format) =>
       date.locale(parseLocale(locale) as LocalePresetType).format(format),
     parse: (locale, text, formats) => {
-      const localeStr = parseLocale(locale);
+      const localeStr = parseLocale(locale) as LocalePresetType;
       for (let i = 0; i < formats.length; i += 1) {
         const format = formats[i];
         const formatText = text;
@@ -104,7 +104,7 @@ const generateConfig: GenerateConfig<Dayjs> = {
           const weekStr = formatText.split('-')[1];
           const firstWeek = dayjs(year, 'YYYY')
             .startOf('year')
-            .locale(localeStr as LocalePresetType);
+            .locale(localeStr);
           for (let j = 0; j <= 52; j += 1) {
             const nextWeek = firstWeek.add(j, 'week');
             if (nextWeek.format('Wo') === weekStr) {
@@ -114,7 +114,7 @@ const generateConfig: GenerateConfig<Dayjs> = {
           parseNoMatchNotice();
           return null;
         }
-        const date = dayjs(formatText, format).locale(localeStr as LocalePresetType);
+        const date = dayjs(formatText, format).locale(localeStr);
         if (date.isValid()) {
           return date;
         }
