@@ -48,7 +48,7 @@ Array [
   <div>
     <div
       class="rc-picker-dropdown"
-      style="opacity: 0;"
+      style="opacity: 0; pointer-events: none;"
     >
       <div
         class="rc-picker-panel-container"
