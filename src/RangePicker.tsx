@@ -564,9 +564,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const onDateMouseLeave = () => {
     setHoverRangedValue(updateValues(selectedValue, null, mergedActivePickerIndex));
     if (mergedActivePickerIndex === 0) {
-      onStartLeave(null);
+      onStartLeave();
     } else {
-      onEndLeave(null);
+      onEndLeave();
     }
   };
 
@@ -1013,9 +1013,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       triggerChange(values, mergedActivePickerIndex);
       // clear hover value style
       if (mergedActivePickerIndex === 0) {
-        onStartLeave(null);
+        onStartLeave();
       } else {
-        onEndLeave(null);
+        onEndLeave();
       }
     } else {
       setSelectedValue(values);
