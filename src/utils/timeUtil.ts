@@ -65,6 +65,7 @@ export function getBoundTime(
   return [boundHour, boundMinute, boundSecond];
 }
 
+// return maxVal when time bigger then max,return minVal when time smaller then min,else return closeVal。
 function getBoundTimeItem(timeItem: number, timeItems: number[]): number {
   let newTimeItem = -1;
   if (timeItems.length > 0) {
@@ -75,8 +76,7 @@ function getBoundTimeItem(timeItem: number, timeItems: number[]): number {
     } else if (timeItem >= maxTimeItem) {
       newTimeItem = maxTimeItem;
     } else {
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < timeItems.length; i++) {
+      for (let i = 0; i < timeItems.length; i += 1) {
         const lowerBoundTimeItem = timeItems[i];
         const higherBoundTimeItem = timeItems[i + 1];
         if (timeItem >= lowerBoundTimeItem) {
