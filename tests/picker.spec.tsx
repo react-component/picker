@@ -740,14 +740,24 @@ describe('Picker.Basic', () => {
   });
 
   describe('hover value', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+    afterEach(() => {
+      jest.useRealTimers();
+    });
     it('should restore when leave', () => {
       const wrapper = mount(<MomentPicker open defaultValue={getMoment('2020-07-22')} />);
       const cell = wrapper.findCell(24);
       cell.simulate('mouseEnter');
+      jest.runAllTimers();
+      wrapper.update();
       expect(wrapper.find('input').prop('value')).toBe('2020-07-24');
       expect(wrapper.find('.rc-picker-input').hasClass('rc-picker-input-placeholder')).toBeTruthy();
 
       cell.simulate('mouseLeave');
+      jest.runAllTimers();
+      wrapper.update();
       expect(wrapper.find('input').prop('value')).toBe('2020-07-22');
       expect(wrapper.find('.rc-picker-input').hasClass('rc-picker-input-placeholder')).toBeFalsy();
     });
@@ -757,6 +767,8 @@ describe('Picker.Basic', () => {
       wrapper.openPicker();
       const cell = wrapper.findCell(24);
       cell.simulate('mouseEnter');
+      jest.runAllTimers();
+      wrapper.update();
       expect(wrapper.find('input').prop('value')).toBe('2020-07-24');
       expect(wrapper.find('.rc-picker-input').hasClass('rc-picker-input-placeholder')).toBeTruthy();
 
@@ -770,6 +782,8 @@ describe('Picker.Basic', () => {
       wrapper.openPicker();
       const cell = wrapper.findCell(24);
       cell.simulate('mouseEnter');
+      jest.runAllTimers();
+      wrapper.update();
       expect(wrapper.find('input').prop('value')).toBe('2020-07-24');
       expect(wrapper.find('.rc-picker-input').hasClass('rc-picker-input-placeholder')).toBeTruthy();
 
