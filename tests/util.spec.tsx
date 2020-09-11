@@ -59,6 +59,13 @@ describe('Picker.Util', () => {
     });
   });
 
+  describe('generateUnitValues', () => {
+    const generateUnitValues = getFuncGenerateUnitValues();
+    expect(generateUnitValues(0, 5, 1, [1])).toEqual([0, 2, 3, 4, 5]);
+    expect(generateUnitValues(0, 10, 2, [1])).toEqual([0, 2, 4, 6, 8, 10]);
+    expect(generateUnitValues(0, 8, 3, [3])).toEqual([0, 6]);
+  });
+
   describe('setTime', () => {
     expect(
       isSameTime(
