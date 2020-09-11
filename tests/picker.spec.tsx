@@ -866,8 +866,15 @@ describe('Picker.Basic', () => {
         expectMinuteVal: '1990-09-03 05:01:00',
         expectSecondVal: '1990-09-03 05:05:20',
       },
+      {
+        title: 'without disabledTimes and timeSteps',
+        expectNowVal: '1990-09-03 05:05:05',
+        expectClickDateVal: '1990-09-05 05:05:05',
+        expectHourVal: '1990-09-03 03:05:05',
+        expectMinuteVal: '1990-09-03 05:01:05',
+        expectSecondVal: '1990-09-03 05:05:02',
+      },
     ];
-
     describe('date time', () => {
       it('without disabledTimes and timeSteps', () => {
         MockDate.set(getMoment('1990-09-03 05:05:05').toDate());
