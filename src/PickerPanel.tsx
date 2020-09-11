@@ -195,6 +195,20 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   // get func generateUnitValues
   const generateUnitValues = React.useMemo(() => getFuncGenerateUnitValues(), []);
 
+  // if disabledTimes and timeSteps?
+  const ifTimeDisabledStep = React.useMemo(
+    () =>
+      !!(
+        hourStep ||
+        minuteStep ||
+        secondStep ||
+        disabledHours ||
+        disabledMinutes ||
+        disabledSeconds
+      ),
+    [hourStep, minuteStep, secondStep, disabledHours, disabledMinutes, disabledSeconds],
+  );
+
   // Value
   const [mergedValue, setInnerValue] = useMergedState(null, {
     value,
@@ -426,22 +440,16 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
           {...pickerProps}
           {...(typeof showTime === 'object' ? showTime : null)}
           onSelect={(date, type) => {
-            const newDate =
-              hourStep ||
-              minuteStep ||
-              secondStep ||
-              disabledHours ||
-              disabledMinutes ||
-              disabledSeconds
-                ? getBoundTimeWrapper(generateUnitValues, generateConfig, date, [
-                    hourStep,
-                    minuteStep,
-                    secondStep,
-                    disabledHours,
-                    disabledMinutes,
-                    disabledSeconds,
-                  ])
-                : date;
+            const newDate = ifTimeDisabledStep
+              ? getBoundTimeWrapper(generateUnitValues, generateConfig, date, [
+                  hourStep,
+                  minuteStep,
+                  secondStep,
+                  disabledHours,
+                  disabledMinutes,
+                  disabledSeconds,
+                ])
+              : date;
             setViewDate(newDate);
             triggerSelect(newDate, type);
           }}
@@ -455,22 +463,16 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
           <DatetimePanel
             {...pickerProps}
             onSelect={(date, type) => {
-              const newDate =
-                hourStep ||
-                minuteStep ||
-                secondStep ||
-                disabledHours ||
-                disabledMinutes ||
-                disabledSeconds
-                  ? getBoundTimeWrapper(generateUnitValues, generateConfig, date, [
-                      hourStep,
-                      minuteStep,
-                      secondStep,
-                      disabledHours,
-                      disabledMinutes,
-                      disabledSeconds,
-                    ])
-                  : date;
+              const newDate = ifTimeDisabledStep
+                ? getBoundTimeWrapper(generateUnitValues, generateConfig, date, [
+                    hourStep,
+                    minuteStep,
+                    secondStep,
+                    disabledHours,
+                    disabledMinutes,
+                    disabledSeconds,
+                  ])
+                : date;
               setViewDate(newDate);
               triggerSelect(newDate, type);
             }}
@@ -494,17 +496,16 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   let rangesNode: React.ReactNode;
 
   const onNow = () => {
-    const now =
-      hourStep || minuteStep || secondStep || disabledHours || disabledMinutes || disabledSeconds
-        ? getBoundTimeWrapper(generateUnitValues, generateConfig, generateConfig.getNow(), [
-            hourStep,
-            minuteStep,
-            secondStep,
-            disabledHours,
-            disabledMinutes,
-            disabledSeconds,
-          ])
-        : generateConfig.getNow();
+    const now = ifTimeDisabledStep
+      ? getBoundTimeWrapper(generateUnitValues, generateConfig, generateConfig.getNow(), [
+          hourStep,
+          minuteStep,
+          secondStep,
+          disabledHours,
+          disabledMinutes,
+          disabledSeconds,
+        ])
+      : generateConfig.getNow();
     triggerSelect(now, 'submit');
   };
 
