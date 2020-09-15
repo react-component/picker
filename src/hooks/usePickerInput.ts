@@ -21,7 +21,10 @@ export default function usePickerInput({
   isClickOutside: (clickElement: EventTarget | null) => boolean;
   triggerOpen: (open: boolean) => void;
   forwardKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => boolean;
-  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, preventDefaultBehaviors) => void;
+  onKeyDown: (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    preventDefaultBehaviors: () => void,
+  ) => void;
   blurToCancel?: boolean;
   onSubmit: () => void | boolean;
   onCancel: () => void;
@@ -47,14 +50,14 @@ export default function usePickerInput({
     },
     onKeyDown: e => {
       if (onKeyDown) {
-        const preventDefaultBehaviors = () => {
+        const preventDefaultBehaviors = (): void => {
           setPreventDefault(true);
         };
 
         onKeyDown(e, preventDefaultBehaviors);
       }
 
-      if(preventDefault === false) {
+      if (preventDefault === false) {
         switch (e.which) {
           case KeyCode.ENTER: {
             if (!open) {
