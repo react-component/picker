@@ -78,7 +78,7 @@ render(<Picker />, mountNode);
 | onOpenChange | Function(open:boolean) |  | called when open/close picker |
 | onFocus | (event:React.FocusEventHandler<HTMLInputElement>) => void |  | called like input's on focus |
 | onBlur | (event:React.FocusEventHandler<HTMLInputElement>) => void |  | called like input's on blur |
-| onKeyDown | (event:React.KeyboardEventHandler<HTMLInputElemet>) => void |  | input on keydown event |
+| onKeyDown | (event:React.KeyboardEventHandler<HTMLInputElemet>, preventDefaultBehaviors:void) => void |  | input on keydown event |
 | direction | String: ltr or rtl |  | Layout direction of picker component, it supports RTL direction too. |
 
 ### PickerPanel

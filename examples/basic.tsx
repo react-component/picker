@@ -29,7 +29,8 @@ export default () => {
     onChange,
   };
 
-  const keyDown = e => {
+  const keyDown = (e, preventDefaultBehaviors) => {
+    preventDefaultBehaviors();
     console.log(e.keyCode);
   };
 
@@ -64,7 +65,7 @@ export default () => {
               defaultValue: moment('11:28:39', 'HH:mm:ss'),
             }}
             showToday
-            disabledTime={date => {
+            disabledTime={(date) => {
               if (date && date.isSame(defaultValue, 'date')) {
                 return {
                   disabledHours: () => [1, 3, 5, 7, 9, 11],

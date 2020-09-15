@@ -21,7 +21,7 @@ export default function usePickerInput({
   isClickOutside: (clickElement: EventTarget | null) => boolean;
   triggerOpen: (open: boolean) => void;
   forwardKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => boolean;
-  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, preventDefaultBehaviors) => void;
   blurToCancel?: boolean;
   onSubmit: () => void | boolean;
   onCancel: () => void;
@@ -30,6 +30,7 @@ export default function usePickerInput({
 }): [React.DOMAttributes<HTMLInputElement>, { focused: boolean; typing: boolean }] {
   const [typing, setTyping] = useState(false);
   const [focused, setFocused] = useState(false);
+  const [preventDefault, setPreventDefault] = useState(false);
 
   /**
    * We will prevent blur to handle open event when user click outside,
@@ -46,46 +47,52 @@ export default function usePickerInput({
     },
     onKeyDown: e => {
       if (onKeyDown) {
-        onKeyDown(e);
+        const preventDefaultBehaviors = () => {
+          setPreventDefault(true);
+        };
+
+        onKeyDown(e, preventDefaultBehaviors);
       }
 
-      switch (e.which) {
-        case KeyCode.ENTER: {
-          if (!open) {
-            triggerOpen(true);
-          } else if (onSubmit() !== false) {
-            setTyping(true);
-          }
-
-          e.preventDefault();
-          return;
-        }
-
-        case KeyCode.TAB: {
-          if (typing && open && !e.shiftKey) {
-            setTyping(false);
-            e.preventDefault();
-          } else if (!typing && open) {
-            if (!forwardKeyDown(e) && e.shiftKey) {
+      if(preventDefault === false) {
+        switch (e.which) {
+          case KeyCode.ENTER: {
+            if (!open) {
+              triggerOpen(true);
+            } else if (onSubmit() !== false) {
               setTyping(true);
-              e.preventDefault();
             }
+
+            e.preventDefault();
+            return;
           }
-          return;
+
+          case KeyCode.TAB: {
+            if (typing && open && !e.shiftKey) {
+              setTyping(false);
+              e.preventDefault();
+            } else if (!typing && open) {
+              if (!forwardKeyDown(e) && e.shiftKey) {
+                setTyping(true);
+                e.preventDefault();
+              }
+            }
+            return;
+          }
+
+          case KeyCode.ESC: {
+            setTyping(true);
+            onCancel();
+            return;
+          }
         }
 
-        case KeyCode.ESC: {
-          setTyping(true);
-          onCancel();
-          return;
+        if (!open && ![KeyCode.SHIFT].includes(e.which)) {
+          triggerOpen(true);
+        } else if (!typing) {
+          // Let popup panel handle keyboard
+          forwardKeyDown(e);
         }
-      }
-
-      if (!open && ![KeyCode.SHIFT].includes(e.which)) {
-        triggerOpen(true);
-      } else if (!typing) {
-        // Let popup panel handle keyboard
-        forwardKeyDown(e);
       }
     },
 
