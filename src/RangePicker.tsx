@@ -18,6 +18,7 @@ import {
   isSameDate,
   isSameWeek,
   isSameQuarter,
+  formatValue,
 } from './utils/dateUtil';
 import useValueTexts from './hooks/useValueTexts';
 import useTextValueMapping from './hooks/useTextValueMapping';
@@ -229,7 +230,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const endInputRef = useRef<HTMLInputElement>(null);
 
   // ============================= Misc ==============================
-  const formatList = toArray(getDefaultFormat(format, picker, showTime, use12Hours));
+  const formatList = toArray(getDefaultFormat<DateType>(format, picker, showTime, use12Hours));
 
   // Active picker
   const [mergedActivePickerIndex, setMergedActivePickerIndex] = useMergedState<0 | 1>(0, {
@@ -425,11 +426,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
     const startStr =
       values && values[0]
-        ? generateConfig.locale.format(locale.locale, values[0], formatList[0])
+        ? formatValue(values[0], { generateConfig, locale, format: formatList[0] })
         : '';
     const endStr =
       values && values[1]
-        ? generateConfig.locale.format(locale.locale, values[1], formatList[0])
+        ? formatValue(values[1], { generateConfig, locale, format: formatList[0] })
         : '';
 
     if (onCalendarChange) {
@@ -515,7 +516,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   );
 
   const onTextChange = (newText: string, index: 0 | 1) => {
-    const inputDate = generateConfig.locale.parse(locale.locale, newText, formatList);
+    const inputDate = generateConfig.locale.parse(locale.locale, newText, formatList as string[]);
 
     const disabledFunc = index === 0 ? disabledStartDate : disabledEndDate;
 
@@ -989,7 +990,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }
 
   const inputSharedProps = {
-    size: getInputSize(picker, formatList[0]),
+    size: getInputSize(picker, formatList[0], generateConfig),
   };
 
   let activeBarLeft: number = 0;
@@ -1068,7 +1069,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             <input
               id={id}
               disabled={mergedDisabled[0]}
-              readOnly={inputReadOnly || !startTyping}
+              readOnly={inputReadOnly || typeof formatList[0] !== 'string' || !startTyping}
               value={startHoverValue || startText}
               onChange={e => {
                 triggerStartTextChange(e.target.value);
@@ -1093,7 +1094,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           >
             <input
               disabled={mergedDisabled[1]}
-              readOnly={inputReadOnly || !endTyping}
+              readOnly={inputReadOnly || typeof formatList[1] !== 'string' || !endTyping}
               value={endHoverValue || endText}
               onChange={e => {
                 triggerEndTextChange(e.target.value);
