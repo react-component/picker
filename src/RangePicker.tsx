@@ -1069,7 +1069,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             <input
               id={id}
               disabled={mergedDisabled[0]}
-              readOnly={inputReadOnly || typeof formatList[0] !== 'string' || !startTyping}
+              readOnly={inputReadOnly || typeof formatList[0] === 'function' || !startTyping}
               value={startHoverValue || startText}
               onChange={e => {
                 triggerStartTextChange(e.target.value);
@@ -1094,7 +1094,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           >
             <input
               disabled={mergedDisabled[1]}
-              readOnly={inputReadOnly || typeof formatList[1] !== 'string' || !endTyping}
+              readOnly={inputReadOnly || typeof formatList[0] === 'function' || !endTyping}
               value={endHoverValue || endText}
               onChange={e => {
                 triggerEndTextChange(e.target.value);

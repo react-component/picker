@@ -1253,6 +1253,51 @@ describe('Picker.Range', () => {
     ).toEqual('19901128');
   });
 
+  it('custom format', () => {
+    const wrapper = mount(
+      <MomentRangePicker
+        format={[(val: Moment) => `custom format:${val.format('YYYYMMDD')}`, 'YYYY-MM-DD']}
+        defaultValue={[getMoment('2020-09-17'), getMoment('2020-10-17')]}
+      />,
+    );
+
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .prop('readOnly'),
+    ).toBeTruthy();
+    expect(
+      wrapper
+        .find('input')
+        .last()
+        .prop('readOnly'),
+    ).toBeTruthy();
+
+    // Start date
+    wrapper.openPicker();
+    wrapper.selectCell(24);
+    wrapper.closePicker();
+
+    // end date
+    wrapper.openPicker(1);
+    wrapper.selectCell(24, 1);
+    wrapper.closePicker(1);
+
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .prop('value'),
+    ).toEqual('custom format:20200924');
+    expect(
+      wrapper
+        .find('input')
+        .last()
+        .prop('value'),
+    ).toEqual('custom format:20201024');
+  });
+
   describe('auto open', () => {
     it('empty: start -> end -> close', () => {
       const wrapper = mount(<MomentRangePicker />);
