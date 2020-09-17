@@ -491,7 +491,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               id={id}
               tabIndex={tabIndex}
               disabled={disabled}
-              readOnly={inputReadOnly || typeof formatList[0] !== 'string' || !typing}
+              readOnly={inputReadOnly || typeof formatList[0] === 'function' || !typing}
               value={hoverValue || text}
               onChange={e => {
                 triggerTextChange(e.target.value);
