@@ -1,5 +1,6 @@
 import KeyCode from 'rc-util/lib/KeyCode';
-import { PanelMode, PickerMode } from '../interface';
+import { GenerateConfig } from '../generate';
+import { CustomFormat, PanelMode, PickerMode } from '../interface';
 
 const scrollIds = new Map<HTMLElement, number>();
 
@@ -120,8 +121,8 @@ export function createKeyDownHandler(
 }
 
 // ===================== Format =====================
-export function getDefaultFormat(
-  format: string | string[] | undefined,
+export function getDefaultFormat<DateType>(
+  format: string | CustomFormat<DateType> | Array<string | CustomFormat<DateType>> | undefined,
   picker: PickerMode | undefined,
   showTime: boolean | object | undefined,
   use12Hours: boolean | undefined,
@@ -157,9 +158,15 @@ export function getDefaultFormat(
   return mergedFormat;
 }
 
-export function getInputSize(picker: PickerMode | undefined, format: string) {
+export function getInputSize<DateType>(
+  picker: PickerMode | undefined,
+  format: string | CustomFormat<DateType>,
+  generateConfig: GenerateConfig<DateType>,
+) {
   const defaultSize = picker === 'time' ? 8 : 10;
-  return Math.max(defaultSize, format.length) + 2;
+  const length =
+    typeof format === 'function' ? format(generateConfig.getNow()).length : format.length;
+  return Math.max(defaultSize, length) + 2;
 }
 
 // ===================== Window =====================
