@@ -1863,4 +1863,41 @@ describe('Picker.Range', () => {
     expect(wrapper.findCell('Jan').hasClass('rc-picker-cell-disabled')).toBeTruthy();
     expect(wrapper.findCell('Dec').hasClass('rc-picker-cell-disabled')).toBeFalsy();
   });
+
+  // https://github.com/ant-design/ant-design/issues/23167
+  it('default endDate should be relative startDate', () => {
+    const wrapper = mount(<MomentRangePicker showTime />);
+    wrapper.openPicker();
+
+    wrapper.selectCell(24);
+    wrapper.find('.rc-picker-ok button').simulate('click');
+
+    wrapper
+      .find('ul')
+      .first()
+      .find('li')
+      .at(0)
+      .simulate('click');
+    wrapper.find('.rc-picker-ok button').simulate('click');
+
+    matchValues(wrapper, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
+  });
+
+  it('default startDate should be relative endDate', () => {
+    const wrapper = mount(<MomentRangePicker showTime />);
+    wrapper.openPicker(1);
+
+    wrapper.selectCell(24);
+    wrapper.find('.rc-picker-ok button').simulate('click');
+
+    wrapper
+      .find('ul')
+      .first()
+      .find('li')
+      .at(0)
+      .simulate('click');
+    wrapper.find('.rc-picker-ok button').simulate('click');
+
+    matchValues(wrapper, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
+  });
 });
