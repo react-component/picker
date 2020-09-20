@@ -19,6 +19,7 @@ import {
   isSameWeek,
   isSameQuarter,
   formatValue,
+  parseValue,
 } from './utils/dateUtil';
 import useValueTexts from './hooks/useValueTexts';
 import useTextValueMapping from './hooks/useTextValueMapping';
@@ -516,7 +517,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   );
 
   const onTextChange = (newText: string, index: 0 | 1) => {
-    const inputDate = generateConfig.locale.parse(locale.locale, newText, formatList as string[]);
+    const inputDate = parseValue(newText, {
+      locale,
+      formatList,
+      generateConfig,
+    });
 
     const disabledFunc = index === 0 ? disabledStartDate : disabledEndDate;
 

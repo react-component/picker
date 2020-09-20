@@ -729,6 +729,7 @@ describe('Picker.Basic', () => {
   it('custom format', () => {
     const wrapper = mount(
       <MomentPicker
+        allowClear
         defaultValue={getMoment('2020-09-17')}
         format={[(val: Moment) => `custom format:${val.format('YYYYMMDD')}`, 'YYYY-MM-DD']}
       />,
@@ -738,6 +739,11 @@ describe('Picker.Basic', () => {
     wrapper.selectCell(24);
     wrapper.closePicker();
     expect(wrapper.find('input').prop('value')).toEqual('custom format:20200924');
+
+    // clear
+    const clearNode = wrapper.find('.rc-picker-clear');
+    expect(clearNode.simulate.bind(clearNode, 'mouseUp')).not.toThrow();
+    expect(wrapper.find('input').prop('value')).toEqual('');
   });
 
   it('panelRender', () => {
