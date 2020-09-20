@@ -222,7 +222,7 @@ export function parseValue<DateType>(
     formatList: Array<string | CustomFormat<DateType>>;
   },
 ) {
-  if (!value || formatList.some(item => typeof item === 'function')) {
+  if (!value || typeof formatList[0] === 'function') {
     return null;
   }
 
