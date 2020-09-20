@@ -209,3 +209,22 @@ export function formatValue<DateType>(
     ? format(value)
     : generateConfig.locale.format(locale.locale, value, format);
 }
+
+export function parseValue<DateType>(
+  value: string,
+  {
+    generateConfig,
+    locale,
+    formatList,
+  }: {
+    generateConfig: GenerateConfig<DateType>;
+    locale: Locale;
+    formatList: Array<string | CustomFormat<DateType>>;
+  },
+) {
+  if (!value || typeof formatList[0] === 'function') {
+    return null;
+  }
+
+  return generateConfig.locale.parse(locale.locale, value, formatList as string[]);
+}

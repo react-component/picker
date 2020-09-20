@@ -22,7 +22,7 @@ import PickerPanel, {
   PickerPanelTimeProps,
 } from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
-import { formatValue, isEqual } from './utils/dateUtil';
+import { formatValue, isEqual, parseValue } from './utils/dateUtil';
 import getDataOrAriaProps, { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
 import { CustomFormat, PickerMode } from './interface';
@@ -225,7 +225,11 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const [text, triggerTextChange, resetText] = useTextValueMapping({
     valueTexts,
     onTextChange: newText => {
-      const inputDate = generateConfig.locale.parse(locale.locale, newText, formatList as string[]);
+      const inputDate = parseValue(newText, {
+        locale,
+        formatList,
+        generateConfig,
+      });
       if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
         setSelectedValue(inputDate);
       }

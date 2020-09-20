@@ -1256,6 +1256,7 @@ describe('Picker.Range', () => {
   it('custom format', () => {
     const wrapper = mount(
       <MomentRangePicker
+        allowClear
         format={[(val: Moment) => `custom format:${val.format('YYYYMMDD')}`, 'YYYY-MM-DD']}
         defaultValue={[getMoment('2020-09-17'), getMoment('2020-10-17')]}
       />,
@@ -1296,6 +1297,22 @@ describe('Picker.Range', () => {
         .last()
         .prop('value'),
     ).toEqual('custom format:20201024');
+
+    // clear
+    const clearNode = wrapper.find('.rc-picker-clear');
+    expect(clearNode.simulate.bind(clearNode, 'mouseUp')).not.toThrow();
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .prop('value'),
+    ).toEqual('');
+    expect(
+      wrapper
+        .find('input')
+        .last()
+        .prop('value'),
+    ).toEqual('');
   });
 
   describe('auto open', () => {
