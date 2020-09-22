@@ -22,10 +22,10 @@ import PickerPanel, {
   PickerPanelTimeProps,
 } from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
-import { isEqual } from './utils/dateUtil';
+import { formatValue, isEqual, parseValue } from './utils/dateUtil';
 import getDataOrAriaProps, { toArray } from './utils/miscUtil';
 import PanelContext, { ContextOperationRefProps } from './PanelContext';
-import { PickerMode } from './interface';
+import { CustomFormat, PickerMode } from './interface';
 import { getDefaultFormat, getInputSize, elementsContains } from './utils/uiUtil';
 import usePickerInput from './hooks/usePickerInput';
 import useTextValueMapping from './hooks/useTextValueMapping';
@@ -54,7 +54,7 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   id?: string;
 
   // Value
-  format?: string | string[];
+  format?: string | CustomFormat<DateType> | Array<string | CustomFormat<DateType>>;
 
   // Render
   suffixIcon?: React.ReactNode;
@@ -226,8 +226,12 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   const [text, triggerTextChange, resetText] = useTextValueMapping({
     valueTexts,
-    onTextChange: (newText) => {
-      const inputDate = generateConfig.locale.parse(locale.locale, newText, formatList);
+    onTextChange: newText => {
+      const inputDate = parseValue(newText, {
+        locale,
+        formatList,
+        generateConfig,
+      });
       if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
         setSelectedValue(inputDate);
       }
@@ -242,7 +246,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     if (onChange && !isEqual(generateConfig, mergedValue, newValue)) {
       onChange(
         newValue,
-        newValue ? generateConfig.locale.format(locale.locale, newValue, formatList[0]) : '',
+        newValue ? formatValue(newValue, { generateConfig, locale, format: formatList[0] }) : '',
       );
     }
   };
@@ -496,7 +500,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               id={id}
               tabIndex={tabIndex}
               disabled={disabled}
-              readOnly={inputReadOnly || !typing}
+              readOnly={inputReadOnly || typeof formatList[0] === 'function' || !typing}
               value={hoverValue || text}
               onChange={(e) => {
                 triggerTextChange(e.target.value);
@@ -506,7 +510,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               ref={inputRef}
               title={text}
               {...inputProps}
-              size={getInputSize(picker, formatList[0])}
+              size={getInputSize(picker, formatList[0], generateConfig)}
               {...getDataOrAriaProps(props)}
               autoComplete={autoComplete}
             />

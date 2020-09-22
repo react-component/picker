@@ -4,6 +4,7 @@ import { act } from 'react-dom/test-utils';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { resetWarned } from 'rc-util/lib/warning';
+import { Moment } from 'moment';
 import { PanelMode, PickerMode } from '../src/interface';
 import { mount, getMoment, isSame, MomentPicker } from './util/commonUtil';
 
@@ -723,6 +724,26 @@ describe('Picker.Basic', () => {
     });
     wrapper.closePicker();
     expect(wrapper.find('input').prop('value')).toEqual('20000101');
+  });
+
+  it('custom format', () => {
+    const wrapper = mount(
+      <MomentPicker
+        allowClear
+        defaultValue={getMoment('2020-09-17')}
+        format={[(val: Moment) => `custom format:${val.format('YYYYMMDD')}`, 'YYYY-MM-DD']}
+      />,
+    );
+    expect(wrapper.find('input').prop('readOnly')).toBeTruthy();
+    wrapper.openPicker();
+    wrapper.selectCell(24);
+    wrapper.closePicker();
+    expect(wrapper.find('input').prop('value')).toEqual('custom format:20200924');
+
+    // clear
+    const clearNode = wrapper.find('.rc-picker-clear');
+    expect(clearNode.simulate.bind(clearNode, 'mouseUp')).not.toThrow();
+    expect(wrapper.find('input').prop('value')).toEqual('');
   });
 
   it('panelRender', () => {

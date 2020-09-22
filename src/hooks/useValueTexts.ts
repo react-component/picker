@@ -1,10 +1,11 @@
 import shallowEqual from 'shallowequal';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import { GenerateConfig } from '../generate';
-import { Locale } from '../interface';
+import { CustomFormat, Locale } from '../interface';
+import { formatValue } from '../utils/dateUtil';
 
 export interface ValueTextConfig<DateType> {
-  formatList: string[];
+  formatList: Array<string | CustomFormat<DateType>>;
   generateConfig: GenerateConfig<DateType>;
   locale: Locale;
 }
@@ -25,7 +26,7 @@ export default function useValueTexts<DateType>(
 
       for (let i = 0; i < formatList.length; i += 1) {
         const format = formatList[i];
-        const formatStr = generateConfig.locale.format(locale.locale, value, format);
+        const formatStr = formatValue(value, { generateConfig, locale, format });
         fullValueTexts.push(formatStr);
 
         if (i === 0) {
