@@ -11,6 +11,7 @@ month: 'Месяц',
 year: 'Год',
 timeSelect: 'Выбраць час',
 dateSelect: 'Выбраць дату',
+weekSelect: 'Выбраць тыдзень',
 monthSelect: 'Выбраць месяц',
 yearSelect: 'Выбраць год',
 decadeSelect: 'Выбраць дзесяцігоддзе',
@@ -28,4 +29,5 @@ nextDecade: 'Наступнае дзесяцігоддзе',
 previousCentury: 'Папярэдні век',
 nextCentury: 'Наступны век',
 };
+
 export default locale;
