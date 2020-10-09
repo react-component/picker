@@ -117,6 +117,7 @@ describe('Picker.Basic', () => {
       expect(wrapper.isOpen()).toBeTruthy();
 
       wrapper.setProps({ open: false });
+      wrapper.update();
       expect(wrapper.isOpen()).toBeFalsy();
     });
 
