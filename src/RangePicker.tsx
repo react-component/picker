@@ -363,7 +363,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         setViewDate(null, index);
       }
     } else if (mergedActivePickerIndex === index) {
-      console.error('>>>', newOpen);
       triggerInnerOpen(newOpen);
 
       // Clean up async
