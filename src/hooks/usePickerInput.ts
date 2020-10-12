@@ -105,7 +105,12 @@ export default function usePickerInput({
           }
         }, 0);
       } else if (open) {
-        triggerOpen(false);
+        // Use timeout to check again in case some component like `rc-select` take focus of input
+        setTimeout(() => {
+          if (isClickOutside(document.activeElement)) {
+            triggerOpen(false);
+          }
+        }, 0);
 
         if (valueChangedRef.current) {
           onSubmit();

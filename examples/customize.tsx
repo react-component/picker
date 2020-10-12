@@ -1,11 +1,14 @@
 import * as React from 'react';
 import moment, { Moment } from 'moment';
-import Picker from '../src';
+import Select from 'rc-select';
+import 'rc-select/assets/index.less';
+import Picker, { RangePicker } from '../src';
 import PickerPanel from '../src/PickerPanel';
 import momentGenerateConfig from '../src/generate/moment';
 import zhCN from '../src/locale/zh_CN';
 import '../assets/index.less';
 import './slide.less';
+import { PanelMode } from '../src/interface';
 
 interface DateRangeState {
   startValue: Moment | null;
@@ -13,14 +16,6 @@ interface DateRangeState {
   endOpen: boolean;
   initValue: Moment;
 }
-type PanelMode =
-  | 'time'
-  | 'datetime'
-  | 'date'
-  | 'week'
-  | 'month'
-  | 'year'
-  | 'decade';
 
 const now = moment();
 
@@ -156,6 +151,21 @@ class Customize extends React.Component<{}, DateRangeState> {
             <div ref={this.poupContainerRef} />
           </div>
           <div>
+            <h3>Picker footer</h3>
+            <RangePicker
+              generateConfig={momentGenerateConfig}
+              locale={zhCN}
+              style={{ width: 200, height: 28 }}
+              renderExtraFooter={() => (
+                <div>
+                  <Select>
+                    <Select.Option value="bamboo">Light</Select.Option>
+                  </Select>
+                </div>
+              )}
+            />
+          </div>
+          <div>
             <h3>renderExtraFooter</h3>
             <PickerPanel
               generateConfig={momentGenerateConfig}
@@ -165,9 +175,7 @@ class Customize extends React.Component<{}, DateRangeState> {
               onSelect={this.handleSelect}
               value={initValue}
               onPanelChange={changePanelCallBack}
-              renderExtraFooter={(mode: PanelMode) => (
-                <div>{mode} extra footer</div>
-              )}
+              renderExtraFooter={(mode: PanelMode) => <div>{mode} extra footer</div>}
             />
           </div>
           <div>

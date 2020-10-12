@@ -223,6 +223,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const openRecordsRef = useRef<Record<number, boolean>>({});
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const rangePanelRef = useRef<HTMLDivElement>();
   const panelDivRef = useRef<HTMLDivElement>(null);
   const startInputDivRef = useRef<HTMLDivElement>(null);
   const endInputDivRef = useRef<HTMLDivElement>(null);
@@ -362,6 +363,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         setViewDate(null, index);
       }
     } else if (mergedActivePickerIndex === index) {
+      console.error('>>>', newOpen);
       triggerInnerOpen(newOpen);
 
       // Clean up async
@@ -585,7 +587,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       !elementsContains(
         [panelDivRef.current, startInputDivRef.current, endInputDivRef.current],
         target as HTMLElement,
-      ),
+      ) && !rangePanelRef.current.contains(document.activeElement),
     onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
       setMergedActivePickerIndex(index);
       if (onFocus) {
@@ -949,6 +951,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     <div
       className={classNames(`${prefixCls}-range-wrapper`, `${prefixCls}-${picker}-range-wrapper`)}
       style={{ minWidth: popupMinWidth }}
+      ref={rangePanelRef}
     >
       <div className={`${prefixCls}-range-arrow`} style={arrowPositionStyle} />
 

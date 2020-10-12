@@ -174,6 +174,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     autoComplete = 'off',
   } = props as MergedPickerProps<DateType>;
 
+  const panelRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
@@ -293,7 +294,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     triggerOpen,
     forwardKeyDown,
     isClickOutside: target =>
-      !elementsContains([panelDivRef.current, inputDivRef.current], target as HTMLElement),
+      !elementsContains([panelDivRef.current, inputDivRef.current], target as HTMLElement) &&
+      !panelRef.current.contains(document.activeElement),
     onSubmit: () => {
       if (disabledDate && disabledDate(selectedValue)) {
         return false;
@@ -391,6 +393,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       onMouseDown={e => {
         e.preventDefault();
       }}
+      ref={panelRef}
     >
       {panelNode}
     </div>
