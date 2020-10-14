@@ -3,6 +3,7 @@ import Header from '../Header';
 import { Locale } from '../../interface';
 import { GenerateConfig } from '../../generate';
 import PanelContext from '../../PanelContext';
+import { formatValue } from '../../utils/dateUtil';
 
 export interface MonthHeaderProps<DateType> {
   prefixCls: string;
@@ -40,7 +41,11 @@ function MonthHeader<DateType>(props: MonthHeaderProps<DateType>) {
       onSuperNext={onNextYear}
     >
       <button type="button" onClick={onYearClick} className={`${prefixCls}-year-btn`}>
-        {generateConfig.locale.format(locale.locale, viewDate, locale.yearFormat)}
+        {formatValue(viewDate, {
+          locale,
+          format: locale.yearFormat,
+          generateConfig,
+        })}
       </button>
     </Header>
   );

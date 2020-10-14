@@ -3,6 +3,7 @@ import Header from '../Header';
 import { Locale } from '../../interface';
 import { GenerateConfig } from '../../generate';
 import PanelContext from '../../PanelContext';
+import { formatValue } from '../../utils/dateUtil';
 
 export interface DateHeaderProps<DateType> {
   prefixCls: string;
@@ -57,7 +58,11 @@ function DateHeader<DateType>(props: DateHeaderProps<DateType>) {
       tabIndex={-1}
       className={`${prefixCls}-year-btn`}
     >
-      {generateConfig.locale.format(locale.locale, viewDate, locale.yearFormat)}
+      {formatValue(viewDate, {
+        locale,
+        format: locale.yearFormat,
+        generateConfig,
+      })}
     </button>
   );
   const monthNode: React.ReactNode = (
@@ -69,18 +74,16 @@ function DateHeader<DateType>(props: DateHeaderProps<DateType>) {
       className={`${prefixCls}-month-btn`}
     >
       {locale.monthFormat
-        ? generateConfig.locale.format(
-            locale.locale,
-            viewDate,
-            locale.monthFormat,
-          )
+        ? formatValue(viewDate, {
+            locale,
+            format: locale.monthFormat,
+            generateConfig,
+          })
         : monthsLocale[month]}
     </button>
   );
 
-  const monthYearNodes = locale.monthBeforeYear
-    ? [monthNode, yearNode]
-    : [yearNode, monthNode];
+  const monthYearNodes = locale.monthBeforeYear ? [monthNode, yearNode] : [yearNode, monthNode];
 
   return (
     <Header
