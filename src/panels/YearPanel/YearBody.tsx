@@ -3,7 +3,7 @@ import { GenerateConfig } from '../../generate';
 import { YEAR_DECADE_COUNT } from '.';
 import { Locale, NullableDateType } from '../../interface';
 import useCellClassName from '../../hooks/useCellClassName';
-import { isSameYear } from '../../utils/dateUtil';
+import { formatValue, isSameYear } from '../../utils/dateUtil';
 import RangeContext from '../../RangeContext';
 import PanelBody from '../PanelBody';
 
@@ -60,7 +60,13 @@ function YearBody<DateType>(props: YearBodyProps<DateType>) {
       getCellText={generateConfig.getYear}
       getCellClassName={getCellClassName}
       getCellDate={generateConfig.addYear}
-      titleCell={date => generateConfig.locale.format(locale.locale, date, 'YYYY')}
+      titleCell={date =>
+        formatValue(date, {
+          locale,
+          format: 'YYYY',
+          generateConfig,
+        })
+      }
     />
   );
 }
