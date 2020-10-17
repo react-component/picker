@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { useRef, useLayoutEffect } from 'react';
 import classNames from 'classnames';
-import { scrollTo } from '../../utils/uiUtil';
+import { scrollTo, waitElementReady } from '../../utils/uiUtil';
 import PanelContext from '../../PanelContext';
 
 export interface Unit {
@@ -19,35 +20,35 @@ export interface TimeUnitColumnProps {
 }
 
 function TimeUnitColumn(props: TimeUnitColumnProps) {
-  const {
-    prefixCls,
-    units,
-    onSelect,
-    value,
-    active,
-    hideDisabledOptions,
-  } = props;
+  const { prefixCls, units, onSelect, value, active, hideDisabledOptions } = props;
   const cellPrefixCls = `${prefixCls}-cell`;
   const { open } = React.useContext(PanelContext);
 
-  const ulRef = React.useRef<HTMLUListElement>(null);
-  const liRefs = React.useRef<Map<number, HTMLElement | null>>(new Map());
+  const ulRef = useRef<HTMLUListElement>(null);
+  const liRefs = useRef<Map<number, HTMLElement | null>>(new Map());
+  const scrollRef = useRef<Function>();
 
   // `useLayoutEffect` here to avoid blink by duration is 0
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     const li = liRefs.current.get(value!);
     if (li && open !== false) {
       scrollTo(ulRef.current!, li.offsetTop, 120);
     }
   }, [value]);
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     if (open) {
       const li = liRefs.current.get(value!);
       if (li) {
-        scrollTo(ulRef.current!, li.offsetTop, 0);
+        scrollRef.current = waitElementReady(li, () => {
+          scrollTo(ulRef.current!, li.offsetTop, 0);
+        });
       }
     }
+
+    return () => {
+      scrollRef.current?.();
+    };
   }, [open]);
 
   return (
@@ -58,7 +59,7 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
       ref={ulRef}
       style={{ position: 'relative' }}
     >
-      {units!.map(unit => {
+      {units!.map((unit) => {
         if (hideDisabledOptions && unit.disabled) {
           return null;
         }
@@ -66,7 +67,7 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
         return (
           <li
             key={unit.value}
-            ref={element => {
+            ref={(element) => {
               liRefs.current.set(unit.value, element);
             }}
             className={classNames(cellPrefixCls, {
