@@ -1,8 +1,31 @@
 import KeyCode from 'rc-util/lib/KeyCode';
+import raf from 'rc-util/lib/raf';
+import isVisible from 'rc-util/lib/Dom/isVisible';
 import { GenerateConfig } from '../generate';
 import { CustomFormat, PanelMode, PickerMode } from '../interface';
 
 const scrollIds = new Map<HTMLElement, number>();
+
+/** Trigger when element is visible in view */
+export function waitElementReady(element: HTMLElement, callback: () => void): () => void {
+  let id: number;
+
+  function tryOrNextFrame() {
+    if (isVisible(element)) {
+      callback();
+    } else {
+      id = raf(() => {
+        tryOrNextFrame();
+      });
+    }
+  }
+
+  tryOrNextFrame();
+
+  return () => {
+    raf.cancel(id);
+  };
+}
 
 /* eslint-disable no-param-reassign */
 export function scrollTo(element: HTMLElement, to: number, duration: number) {
@@ -178,7 +201,7 @@ export function addGlobalMouseDownEvent(callback: ClickEventHandler) {
   if (!globalClickFunc && typeof window !== 'undefined' && window.addEventListener) {
     globalClickFunc = (e: MouseEvent) => {
       // Clone a new list to avoid repeat trigger events
-      [...clickCallbacks].forEach(queueFunc => {
+      [...clickCallbacks].forEach((queueFunc) => {
         queueFunc(e);
       });
     };
@@ -238,5 +261,5 @@ export function elementsContains(
   elements: (HTMLElement | undefined | null)[],
   target: HTMLElement,
 ) {
-  return elements.some(ele => ele && ele.contains(target));
+  return elements.some((ele) => ele && ele.contains(target));
 }
