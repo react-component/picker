@@ -614,7 +614,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
 </div>
 `;
 
-exports[`Picker.Panel time disabled columns 1`] = `
+exports[`Picker.Panel time disabled columns basic 1`] = `
 <div
   class="rc-picker-panel"
   tabindex="0"

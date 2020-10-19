@@ -421,17 +421,37 @@ describe('Picker.Panel', () => {
     });
   });
 
-  it('time disabled columns', () => {
-    const wrapper = mount(
-      <MomentPickerPanel
-        mode="time"
-        disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7]}
-        disabledMinutes={() => [2, 4, 6, 8, 10]}
-        disabledSeconds={() => [10, 20, 30, 40, 50]}
-      />,
-    );
+  describe('time disabled columns', () => {
+    it('basic', () => {
+      const wrapper = mount(
+        <MomentPickerPanel
+          mode="time"
+          disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7]}
+          disabledMinutes={() => [2, 4, 6, 8, 10]}
+          disabledSeconds={() => [10, 20, 30, 40, 50]}
+        />,
+      );
 
-    expect(wrapper.render()).toMatchSnapshot();
+      expect(wrapper.render()).toMatchSnapshot();
+    });
+
+    it('use12Hour', () => {
+      const disabledMinutes = jest.fn(() => []);
+      const disabledSeconds = jest.fn(() => []);
+
+      mount(
+        <MomentPickerPanel
+          mode="time"
+          use12Hours
+          value={getMoment('2000-01-01 13:07:04')}
+          disabledMinutes={disabledMinutes}
+          disabledSeconds={disabledSeconds}
+        />,
+      );
+
+      expect(disabledMinutes).toHaveBeenCalledWith(13);
+      expect(disabledSeconds).toHaveBeenCalledWith(13, 7);
+    });
   });
 
   it('warning with invalidate value', () => {
