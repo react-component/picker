@@ -1,4 +1,4 @@
-# rc-picker 
+# rc-picker
 
 [![NPM version][npm-image]][npm-url]
 [![build status][github-actions-image]][github-actions-url]
