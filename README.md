@@ -1,7 +1,7 @@
 # rc-picker 
 
 [![NPM version][npm-image]][npm-url]
-[![build status][circleci-image]][circleci-url]
+[![build status][github-actions-image]][github-actions-url]
 [![Codecov][codecov-image]][codecov-url]
 [![Dependencies][david-image]][david-url]
 [![DevDependencies][david-dev-image]][david-dev-url]
@@ -10,8 +10,8 @@
 
 [npm-image]: http://img.shields.io/npm/v/rc-picker.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-picker
-[circleci-image]: https://img.shields.io/circleci/build/github/react-component/picker/master?style=flat-square
-[circleci-url]: https://circleci.com/gh/react-component/picker
+[github-actions-image]: https://github.com/react-component/picker/workflows/CI/badge.svg
+[github-actions-url]: https://github.com/react-component/picker/actions
 [codecov-image]: https://img.shields.io/codecov/c/github/react-component/picker/master.svg?style=flat-square
 [codecov-url]: https://codecov.io/gh/react-component/picker/branch/master
 [david-url]: https://david-dm.org/react-component/picker
