@@ -4,6 +4,7 @@ import { act } from 'react-dom/test-utils';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { resetWarned } from 'rc-util/lib/warning';
+import { Moment } from 'moment';
 import { PanelMode, PickerMode } from '../src/interface';
 import { mount, getMoment, isSame, MomentPicker } from './util/commonUtil';
 
@@ -116,6 +117,7 @@ describe('Picker.Basic', () => {
       expect(wrapper.isOpen()).toBeTruthy();
 
       wrapper.setProps({ open: false });
+      wrapper.update();
       expect(wrapper.isOpen()).toBeFalsy();
     });
 
@@ -725,6 +727,26 @@ describe('Picker.Basic', () => {
     expect(wrapper.find('input').prop('value')).toEqual('20000101');
   });
 
+  it('custom format', () => {
+    const wrapper = mount(
+      <MomentPicker
+        allowClear
+        defaultValue={getMoment('2020-09-17')}
+        format={[(val: Moment) => `custom format:${val.format('YYYYMMDD')}`, 'YYYY-MM-DD']}
+      />,
+    );
+    expect(wrapper.find('input').prop('readOnly')).toBeTruthy();
+    wrapper.openPicker();
+    wrapper.selectCell(24);
+    wrapper.closePicker();
+    expect(wrapper.find('input').prop('value')).toEqual('custom format:20200924');
+
+    // clear
+    const clearNode = wrapper.find('.rc-picker-clear');
+    expect(clearNode.simulate.bind(clearNode, 'mouseUp')).not.toThrow();
+    expect(wrapper.find('input').prop('value')).toEqual('');
+  });
+
   it('panelRender', () => {
     const wrapper = mount(<MomentPicker open panelRender={() => <h1>Light</h1>} />);
     expect(wrapper.render()).toMatchSnapshot();
@@ -1134,6 +1156,48 @@ describe('Picker.Basic', () => {
         expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 04:40:15', 'second')).toBeTruthy();
         MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
       });
+    });
+  });
+  describe('time picker open to scroll', () => {
+    let domMock: ReturnType<typeof spyElementPrototypes>;
+    let canBeSeen = false;
+    let triggered = false;
+
+    beforeAll(() => {
+      domMock = spyElementPrototypes(HTMLElement, {
+        offsetParent: {
+          get: () => {
+            if (canBeSeen) {
+              return {};
+            }
+            canBeSeen = true;
+            return null;
+          },
+        },
+        scrollTop: {
+          get: () => 0,
+          set: () => {
+            triggered = true;
+          },
+        },
+      });
+    });
+
+    afterAll(() => {
+      domMock.mockRestore();
+    });
+
+    it('work', () => {
+      jest.useFakeTimers();
+      const wrapper = mount(
+        <MomentPicker picker="time" defaultValue={getMoment('2020-07-22 09:03:28')} open />,
+      );
+      jest.runAllTimers();
+
+      expect(triggered).toBeTruthy();
+
+      jest.useRealTimers();
+      wrapper.unmount();
     });
   });
 });

@@ -1,5 +1,5 @@
 import { GenerateConfig } from '../generate';
-import { NullableDateType, PickerMode } from '../interface';
+import { NullableDateType, PickerMode, Locale, CustomFormat } from '../interface';
 
 export const WEEK_DAY_COUNT = 7;
 
@@ -191,4 +191,40 @@ export function getClosingViewDate<DateType>(
     default:
       return generateConfig.addMonth(viewDate, offset);
   }
+}
+
+export function formatValue<DateType>(
+  value: DateType,
+  {
+    generateConfig,
+    locale,
+    format,
+  }: {
+    generateConfig: GenerateConfig<DateType>;
+    locale: Locale;
+    format: string | CustomFormat<DateType>;
+  },
+) {
+  return typeof format === 'function'
+    ? format(value)
+    : generateConfig.locale.format(locale.locale, value, format);
+}
+
+export function parseValue<DateType>(
+  value: string,
+  {
+    generateConfig,
+    locale,
+    formatList,
+  }: {
+    generateConfig: GenerateConfig<DateType>;
+    locale: Locale;
+    formatList: Array<string | CustomFormat<DateType>>;
+  },
+) {
+  if (!value || typeof formatList[0] === 'function') {
+    return null;
+  }
+
+  return generateConfig.locale.parse(locale.locale, value, formatList as string[]);
 }

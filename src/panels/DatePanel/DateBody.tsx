@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { GenerateConfig } from '../../generate';
-import { WEEK_DAY_COUNT, getWeekStartDate, isSameDate, isSameMonth } from '../../utils/dateUtil';
+import {
+  WEEK_DAY_COUNT,
+  getWeekStartDate,
+  isSameDate,
+  isSameMonth,
+  formatValue,
+} from '../../utils/dateUtil';
 import { Locale } from '../../interface';
 import RangeContext from '../../RangeContext';
 import useCellClassName from '../../hooks/useCellClassName';
@@ -86,7 +92,13 @@ function DateBody<DateType>(props: DateBodyProps<DateType>) {
       getCellText={generateConfig.getDate}
       getCellClassName={getCellClassName}
       getCellDate={generateConfig.addDate}
-      titleCell={date => generateConfig.locale.format(locale.locale, date, 'YYYY-MM-DD')}
+      titleCell={date =>
+        formatValue(date, {
+          locale,
+          format: 'YYYY-MM-DD',
+          generateConfig,
+        })
+      }
       headerCells={headerCells}
     />
   );

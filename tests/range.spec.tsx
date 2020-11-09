@@ -1253,6 +1253,68 @@ describe('Picker.Range', () => {
     ).toEqual('19901128');
   });
 
+  it('custom format', () => {
+    const wrapper = mount(
+      <MomentRangePicker
+        allowClear
+        format={[(val: Moment) => `custom format:${val.format('YYYYMMDD')}`, 'YYYY-MM-DD']}
+        defaultValue={[getMoment('2020-09-17'), getMoment('2020-10-17')]}
+      />,
+    );
+
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .prop('readOnly'),
+    ).toBeTruthy();
+    expect(
+      wrapper
+        .find('input')
+        .last()
+        .prop('readOnly'),
+    ).toBeTruthy();
+
+    // Start date
+    wrapper.openPicker();
+    wrapper.selectCell(24);
+    wrapper.closePicker();
+
+    // end date
+    wrapper.openPicker(1);
+    wrapper.selectCell(24, 1);
+    wrapper.closePicker(1);
+
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .prop('value'),
+    ).toEqual('custom format:20200924');
+    expect(
+      wrapper
+        .find('input')
+        .last()
+        .prop('value'),
+    ).toEqual('custom format:20201024');
+
+    // clear
+    const clearNode = wrapper.find('.rc-picker-clear');
+    expect(clearNode.simulate.bind(clearNode, 'mouseUp')).not.toThrow();
+    expect(
+      wrapper
+        .find('input')
+        .first()
+        .prop('value'),
+    ).toEqual('');
+    expect(
+      wrapper
+        .find('input')
+        .last()
+        .prop('value'),
+    ).toEqual('');
+  });
+
   describe('auto open', () => {
     it('empty: start -> end -> close', () => {
       const wrapper = mount(<MomentRangePicker />);
@@ -1800,5 +1862,42 @@ describe('Picker.Range', () => {
       .simulate('click');
     expect(wrapper.findCell('Jan').hasClass('rc-picker-cell-disabled')).toBeTruthy();
     expect(wrapper.findCell('Dec').hasClass('rc-picker-cell-disabled')).toBeFalsy();
+  });
+
+  // https://github.com/ant-design/ant-design/issues/23167
+  it('default endDate should be relative startDate', () => {
+    const wrapper = mount(<MomentRangePicker showTime />);
+    wrapper.openPicker();
+
+    wrapper.selectCell(24);
+    wrapper.find('.rc-picker-ok button').simulate('click');
+
+    wrapper
+      .find('ul')
+      .first()
+      .find('li')
+      .at(0)
+      .simulate('click');
+    wrapper.find('.rc-picker-ok button').simulate('click');
+
+    matchValues(wrapper, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
+  });
+
+  it('default startDate should be relative endDate', () => {
+    const wrapper = mount(<MomentRangePicker showTime />);
+    wrapper.openPicker(1);
+
+    wrapper.selectCell(24);
+    wrapper.find('.rc-picker-ok button').simulate('click');
+
+    wrapper
+      .find('ul')
+      .first()
+      .find('li')
+      .at(0)
+      .simulate('click');
+    wrapper.find('.rc-picker-ok button').simulate('click');
+
+    matchValues(wrapper, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
   });
 });

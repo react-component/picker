@@ -105,3 +105,5 @@ export type RangeList = {
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 }[];
+
+export type CustomFormat<DateType> = (value: DateType) => string;
