@@ -199,9 +199,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const ifTimeDisabledStep = React.useMemo(
     () =>
       !!(
-        hourStep ||
-        minuteStep ||
-        secondStep ||
+        hourStep !== 1 ||
+        minuteStep !== 1 ||
+        secondStep !== 1 ||
         disabledHours ||
         disabledMinutes ||
         disabledSeconds
