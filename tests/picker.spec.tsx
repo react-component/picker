@@ -825,116 +825,61 @@ describe('Picker.Basic', () => {
   });
 
   describe('conditions of diabledTimes and timeSteps', () => {
-    function selectColumn(wrapper: any, colIndex: number, rowIndex: number) {
-      wrapper
-        .find('ul')
-        .at(colIndex)
-        .find('li')
-        .at(rowIndex)
-        .simulate('click');
-    }
     const testData = [
       {
-        title: 'with disabledHours',
-        disabledHours: () => [1, 2, 4],
-        expectNowVal: '1990-09-03 05:05:05',
-        expectClickDateVal: '1990-09-05 05:05:05',
-        expectHourVal: '1990-09-03 03:05:05',
-        expectMinuteVal: '1990-09-03 05:01:05',
-        expectSecondVal: '1990-09-03 05:05:02',
-      },
-      {
-        title: 'with disabledMinutes',
-        disabledMinutes: () => [0, 2, 4],
-        expectNowVal: '1990-09-03 05:05:05',
-        expectClickDateVal: '1990-09-05 05:05:05',
-        expectHourVal: '1990-09-03 03:05:05',
-        expectMinuteVal: '1990-09-03 05:01:05',
-        expectSecondVal: '1990-09-03 05:05:02',
-      },
-      {
-        title: 'with disabledSeconds',
+        title: 'with disabledTimes and timeSteps',
+        disabledHours: () => [5, 10, 15],
+        disabledMinutes: () => [0, 2, 6],
         disabledSeconds: () => [1, 3, 4],
-        expectNowVal: '1990-09-03 05:05:05',
-        expectClickDateVal: '1990-09-05 05:05:05',
-        expectHourVal: '1990-09-03 03:05:05',
-        expectMinuteVal: '1990-09-03 05:01:05',
-        expectSecondVal: '1990-09-03 05:05:02',
-      },
-      {
-        title: 'with hourStep',
         hourStep: 4,
-        expectNowVal: '1990-09-03 04:59:59',
-        expectClickDateVal: '1990-09-05 04:59:59',
-        expectHourVal: '1990-09-03 12:59:59',
-        expectMinuteVal: '1990-09-03 04:01:59',
-        expectSecondVal: '1990-09-03 04:59:02',
+        minuteStep: 5,
+        secondStep: 5,
+        expectNowVal: '1990-09-03 04:55:55',
+        expectClickDateVal: '1990-09-05 04:55:55',
+        mockDate: '1990-09-03 05:05:05',
       },
       {
-        title: 'with minuteStep',
-        minuteStep: 10,
-        expectNowVal: '1990-09-03 05:00:59',
-        expectClickDateVal: '1990-09-05 05:00:59',
-        expectHourVal: '1990-09-03 03:00:59',
-        expectMinuteVal: '1990-09-03 05:10:59',
-        expectSecondVal: '1990-09-03 05:00:02',
+        title: 'with disabledTimes and timeSteps',
+        disabledHours: () => [5, 10, 15],
+        disabledMinutes: () => [0, 2, 6],
+        disabledSeconds: () => [1, 3, 4],
+        expectNowVal: '2020-11-11 00:01:00',
+        expectClickDateVal: '2020-11-05 00:01:00',
+        mockDate: '2020-11-11 00:00:00',
       },
       {
-        title: 'with secondStep',
-        secondStep: 10,
-        expectNowVal: '1990-09-03 05:05:00',
-        expectClickDateVal: '1990-09-05 05:05:00',
-        expectHourVal: '1990-09-03 03:05:00',
-        expectMinuteVal: '1990-09-03 05:01:00',
-        expectSecondVal: '1990-09-03 05:05:20',
+        title: 'with disabledTimes and timeSteps',
+        hourStep: 4,
+        minuteStep: 5,
+        secondStep: 5,
+        expectNowVal: '1990-09-03 00:00:00',
+        expectClickDateVal: '1990-09-05 00:00:00',
+        mockDate: '1990-09-03 00:00:00',
       },
       {
         title: 'without disabledTimes and timeSteps',
         expectNowVal: '1990-09-03 05:05:05',
         expectClickDateVal: '1990-09-05 05:05:05',
-        expectHourVal: '1990-09-03 03:05:05',
-        expectMinuteVal: '1990-09-03 05:01:05',
-        expectSecondVal: '1990-09-03 05:05:02',
+        mockDate: '1990-09-03 05:05:05',
+      },
+      {
+        title: 'without disabledTimes and timeSteps',
+        expectNowVal: '2020-11-11 00:00:00',
+        expectClickDateVal: '2020-11-05 00:00:00',
+        mockDate: '2020-11-11 00:00:00',
+      },
+      {
+        title: 'without disabledTimes and timeSteps',
+        expectNowVal: '1990-09-03 00:00:00',
+        expectClickDateVal: '1990-09-05 00:00:00',
+        mockDate: '1990-09-03 00:00:00',
       },
     ];
     describe('date time', () => {
-      it('without disabledTimes and timeSteps', () => {
-        MockDate.set(getMoment('1990-09-03 05:05:05').toDate());
-        const onSelect = jest.fn();
-        const wrapper = mount(<MomentPicker onSelect={onSelect} showTime />);
-        wrapper.openPicker();
-
-        wrapper.find('.rc-picker-now > a').simulate('click');
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 05:05:05', 'second')).toBeTruthy();
-
-        onSelect.mockReset();
-        wrapper.selectCell(5);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-05 05:05:05', 'second')).toBeTruthy();
-
-        onSelect.mockReset();
-        selectColumn(wrapper, 0, 6);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 06:05:05', 'second')).toBeTruthy();
-
-        onSelect.mockReset();
-        selectColumn(wrapper, 1, 6);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 05:06:05', 'second')).toBeTruthy();
-
-        onSelect.mockReset();
-        selectColumn(wrapper, 2, 6);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 05:05:06', 'second')).toBeTruthy();
-      });
-
       testData.forEach(item => {
-        const {
-          title,
-          expectNowVal,
-          expectMinuteVal,
-          expectHourVal,
-          expectSecondVal,
-          expectClickDateVal,
-          ...otherOpt
-        } = item;
+        const { title, expectNowVal, expectClickDateVal, mockDate, ...otherOpt } = item;
         it(`${item.title}`, () => {
+          MockDate.set(getMoment(mockDate).toDate());
           const onSelect = jest.fn();
           const wrapper = mount(<MomentPicker onSelect={onSelect} showTime {...otherOpt} />);
           wrapper.openPicker();
@@ -945,135 +890,24 @@ describe('Picker.Basic', () => {
           onSelect.mockReset();
           wrapper.selectCell(5);
           expect(isSame(onSelect.mock.calls[0][0], `${expectClickDateVal}`, 'second')).toBeTruthy();
-
-          // click on hour
-          onSelect.mockReset();
-          selectColumn(wrapper, 0, 3);
-          expect(isSame(onSelect.mock.calls[0][0], `${expectHourVal}`, 'second')).toBeTruthy();
-
-          // click on minute
-          onSelect.mockReset();
-          selectColumn(wrapper, 1, 1);
-          expect(isSame(onSelect.mock.calls[0][0], `${expectMinuteVal}`, 'second')).toBeTruthy();
-
-          // click on second
-          onSelect.mockReset();
-          selectColumn(wrapper, 2, 2);
-          expect(isSame(onSelect.mock.calls[0][0], `${expectSecondVal}`, 'second')).toBeTruthy();
+          MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
         });
-      });
-
-      it('without disabledTimes and timeSteps', () => {
-        MockDate.set(getMoment('1990-09-03 10:01:05').toDate());
-        const onSelect = jest.fn();
-        const wrapper = mount(<MomentPicker onSelect={onSelect} showTime />);
-        wrapper.openPicker();
-
-        wrapper.find('.rc-picker-now > a').simulate('click');
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 10:01:05', 'second')).toBeTruthy();
-
-        onSelect.mockReset();
-        wrapper.selectCell(5);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-05 10:01:05', 'second')).toBeTruthy();
-
-        onSelect.mockReset();
-        selectColumn(wrapper, 0, 6);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 06:01:05', 'second')).toBeTruthy();
-
-        onSelect.mockReset();
-        selectColumn(wrapper, 1, 6);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 10:06:05', 'second')).toBeTruthy();
-
-        onSelect.mockReset();
-        selectColumn(wrapper, 2, 6);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 10:01:06', 'second')).toBeTruthy();
-        MockDate.set(getMoment('1990-09-03 05:05:05').toDate());
       });
     });
 
     describe('time', () => {
-      it('without disabledTimes and timeSteps', () => {
-        const onSelect = jest.fn();
-        const wrapper = mount(<MomentPicker onSelect={onSelect} picker="time" />);
-        wrapper.openPicker();
-
-        wrapper.find('.rc-picker-now > a').simulate('click');
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 05:05:05', 'second')).toBeTruthy();
-
-        // click on hour
-        onSelect.mockReset();
-        selectColumn(wrapper, 0, 1);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 01:05:05', 'second')).toBeTruthy();
-
-        // click on minute
-        onSelect.mockReset();
-        selectColumn(wrapper, 1, 1);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 05:01:05', 'second')).toBeTruthy();
-
-        // click on second
-        onSelect.mockReset();
-        selectColumn(wrapper, 2, 1);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 05:05:01', 'second')).toBeTruthy();
-      });
-
       testData.forEach(item => {
-        const {
-          title,
-          expectNowVal,
-          expectMinuteVal,
-          expectHourVal,
-          expectSecondVal,
-          ...otherOpt
-        } = item;
+        const { title, expectNowVal, mockDate, ...otherOpt } = item;
         it(`${item.title}`, () => {
+          MockDate.set(getMoment(mockDate).toDate());
           const onSelect = jest.fn();
           const wrapper = mount(<MomentPicker onSelect={onSelect} picker="time" {...otherOpt} />);
           wrapper.openPicker();
 
           wrapper.find('.rc-picker-now > a').simulate('click');
           expect(isSame(onSelect.mock.calls[0][0], `${expectNowVal}`, 'second')).toBeTruthy();
-
-          // click on hour
-          onSelect.mockReset();
-          selectColumn(wrapper, 0, 3);
-          expect(isSame(onSelect.mock.calls[0][0], `${expectHourVal}`, 'second')).toBeTruthy();
-
-          // click on minute
-          onSelect.mockReset();
-          selectColumn(wrapper, 1, 1);
-          expect(isSame(onSelect.mock.calls[0][0], `${expectMinuteVal}`, 'second')).toBeTruthy();
-
-          // click on second
-          onSelect.mockReset();
-          selectColumn(wrapper, 2, 2);
-          expect(isSame(onSelect.mock.calls[0][0], `${expectSecondVal}`, 'second')).toBeTruthy();
+          MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
         });
-      });
-
-      it('without disabledTimes and timeSteps', () => {
-        MockDate.set(getMoment('1990-09-03 23:05:05').toDate());
-        const onSelect = jest.fn();
-        const wrapper = mount(<MomentPicker onSelect={onSelect} picker="time" />);
-        wrapper.openPicker();
-
-        wrapper.find('.rc-picker-now > a').simulate('click');
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 23:05:05', 'second')).toBeTruthy();
-
-        // click on hour
-        onSelect.mockReset();
-        selectColumn(wrapper, 0, 1);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 01:05:05', 'second')).toBeTruthy();
-
-        // click on minute
-        onSelect.mockReset();
-        selectColumn(wrapper, 1, 1);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 23:01:05', 'second')).toBeTruthy();
-
-        // click on second
-        onSelect.mockReset();
-        selectColumn(wrapper, 2, 1);
-        expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 23:05:01', 'second')).toBeTruthy();
-        MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
       });
     });
   });
