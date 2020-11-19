@@ -1,5 +1,5 @@
 import momentGenerateConfig from '../src/generate/moment';
-import { getLowerBoundTime, setTime } from '../src/utils/timeUtil';
+import { getLowerBoundTime, setTime, getLastDay } from '../src/utils/timeUtil';
 import { toArray } from '../src/utils/miscUtil';
 import { isSameTime, isSameDecade } from '../src/utils/dateUtil';
 import { getMoment } from './util/commonUtil';
@@ -63,5 +63,14 @@ describe('Picker.Util', () => {
         getMoment('1995-01-01 08:07:06'),
       ),
     ).toBeTruthy();
+  });
+
+  describe('getLastDay', () => {
+    expect(
+      getLastDay(
+        momentGenerateConfig,
+        getMoment('2020-10-01'),
+      ),
+    ).toEqual('2020-10-31');
   });
 });

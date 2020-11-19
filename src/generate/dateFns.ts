@@ -3,7 +3,7 @@ import {
   getYear,
   getMonth,
   getDate,
-  endOfDay,
+  endOfMonth,
   getHours,
   getMinutes,
   getSeconds,
@@ -42,7 +42,7 @@ const generateConfig: GenerateConfig<Date> = {
   // get
   getNow: () => new Date(),
   getFixedDate: string => new Date(string),
-  getEndDate: date => endOfDay(date),
+  getEndDate: date => endOfMonth(date),
   getWeekDay: date => getDay(date),
   getYear: date => getYear(date),
   getMonth: date => getMonth(date),
