@@ -26,13 +26,21 @@ describe('Picker.Generate', () => {
     describe(name, () => {
       it('get', () => {
         const now = generateConfig.getNow();
+        const fixedDate = generateConfig.getFixedDate('1990-09-03');
+        const endDate = generateConfig.getEndDate(fixedDate);
         expect(generateConfig.getWeekDay(now)).toEqual(1);
         expect(generateConfig.getSecond(now)).toEqual(3);
         expect(generateConfig.getMinute(now)).toEqual(2);
         expect(generateConfig.getHour(now)).toEqual(1);
         expect(generateConfig.getDate(now)).toEqual(3);
+        expect(generateConfig.getDate(fixedDate)).toEqual(3);
+        expect(generateConfig.getDate(endDate)).toEqual(30);
         expect(generateConfig.getMonth(now)).toEqual(8);
+        expect(generateConfig.getMonth(fixedDate)).toEqual(8);
+        expect(generateConfig.getMonth(endDate)).toEqual(8);
         expect(generateConfig.getYear(now)).toEqual(1990);
+        expect(generateConfig.getYear(fixedDate)).toEqual(1990);
+        expect(generateConfig.getYear(endDate)).toEqual(1990);
       });
 
       it('set', () => {

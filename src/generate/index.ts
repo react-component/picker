@@ -8,6 +8,8 @@ export interface GenerateConfig<DateType> {
   getMonth: (value: DateType) => number;
   getYear: (value: DateType) => number;
   getNow: () => DateType;
+  getFixedDate: (fixed: string) => DateType;
+  getEndDate: (value: DateType) => DateType;
 
   // Set
   addYear: (value: DateType, diff: number) => DateType;
