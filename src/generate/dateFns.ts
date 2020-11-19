@@ -3,6 +3,7 @@ import {
   getYear,
   getMonth,
   getDate,
+  endOfDay,
   getHours,
   getMinutes,
   getSeconds,
@@ -40,6 +41,8 @@ const localeParse = (format: string) => {
 const generateConfig: GenerateConfig<Date> = {
   // get
   getNow: () => new Date(),
+  getFixedDate: string => new Date(string),
+  getEndDate: date => endOfDay(date),
   getWeekDay: date => getDay(date),
   getYear: date => getYear(date),
   getMonth: date => getMonth(date),

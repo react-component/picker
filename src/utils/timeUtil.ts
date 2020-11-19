@@ -32,3 +32,13 @@ export function getLowerBoundTime(
   const lowerBoundSecond = Math.floor(second / secondStep) * secondStep;
   return [lowerBoundHour, lowerBoundMinute, lowerBoundSecond];
 }
+
+export function getLastDay<DateType>(generateConfig: GenerateConfig<DateType>, date: DateType) {
+  const year = generateConfig.getYear(date);
+  const month = generateConfig.getMonth(date) + 1;
+  let monthShow: string;
+  const endDate = generateConfig.getEndDate(generateConfig.getFixedDate(`${year}-${month}-01`));
+  const lastDay = generateConfig.getDate(endDate);
+  monthShow = month < 10 ? `0${month}` : `${month}`;
+  return `${year}-${monthShow}-${lastDay}`;
+}
