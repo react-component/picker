@@ -3,11 +3,13 @@ import classNames from 'classnames';
 import PanelContext from '../PanelContext';
 import { GenerateConfig } from '../generate';
 import { getLastDay } from '../utils/timeUtil';
+import { PanelMode } from '../interface';
 
 export interface PanelBodyProps<DateType> {
   prefixCls: string;
   disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;
+  picker?: PanelMode;
 
   // By panel
   headerCells?: React.ReactNode;
@@ -30,6 +32,7 @@ export default function PanelBody<DateType>({
   prefixCls,
   disabledDate,
   onSelect,
+  picker,
   rowNum,
   colNum,
   prefixColumn,
@@ -75,8 +78,8 @@ export default function PanelBody<DateType>({
           title={title}
           className={classNames(cellPrefixCls, {
             [`${cellPrefixCls}-disabled`]: disabled,
-            [`${cellPrefixCls}-start`]: getCellText(currentDate) === 1,
-            [`${cellPrefixCls}-end`]: title === getLastDay(generateConfig, currentDate),
+            [`${cellPrefixCls}-start`]: getCellText(currentDate) === 1 || picker === 'year' && Number(title) % 10 === 0,
+            [`${cellPrefixCls}-end`]: title === getLastDay(generateConfig, currentDate) || picker === 'year' && Number(title) % 10 === 9,
             ...getCellClassName(currentDate),
           })}
           onClick={() => {
