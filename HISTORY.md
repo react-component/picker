@@ -1,3 +1,13 @@
+## 2.4.0
+
+`2020-11-19`
+
+- feat: add start end [#175](https://github.com/react-component/picker/pull/175)
+
+
+> It has not been updated for a long time and will be maintained from now on.
+
+---
 ## 0.6.0
 
 - support `maxColumnsPerRow`.
