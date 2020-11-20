@@ -1,11 +1,17 @@
+# Changelog
+## 2.4.1
+
+`2020-11-20`
+
+- feat: add year start & end. [#176](https://github.com/react-component/picker/pull/176)
+
 ## 2.4.0
 
 `2020-11-19`
 
-- feat: add start end [#175](https://github.com/react-component/picker/pull/175)
+- feat: add start end. [#175](https://github.com/react-component/picker/pull/175)
 
-
-> It has not been updated for a long time and will be maintained from now on.
+> It has not been updated for a long time and will be maintained from now on. More in [releases](https://github.com/react-component/picker/releases).
 
 ---
 ## 0.6.0
