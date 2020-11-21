@@ -145,7 +145,7 @@ describe('Picker.Generate', () => {
             'zh_CN',
             generateConfig.locale.parse('zh_CN', '2020-12-30', [formatStr]),
           ),
-        ).toEqual(1609084800000);
+        ).toEqual(1609113600000);
       });
 
       it('Parse format Wo', () => {
