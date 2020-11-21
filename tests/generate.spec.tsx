@@ -132,6 +132,22 @@ describe('Picker.Generate', () => {
         });
       });
 
+      it('getWeekFirstDayValue', () => {
+        const formatStr = name === 'date-fns' ? 'yyyy-MM-dd' : 'YYYY-MM-DD';
+        expect(
+          generateConfig.locale.getWeekFirstDayValue(
+            'en_US',
+            generateConfig.locale.parse('en_US', '2020-12-30', [formatStr]),
+          ),
+        ).toEqual(1608998400000);
+        expect(
+          generateConfig.locale.getWeekFirstDayValue(
+            'zh_CN',
+            generateConfig.locale.parse('zh_CN', '2020-12-30', [formatStr]),
+          ),
+        ).toEqual(1609084800000);
+      });
+
       it('Parse format Wo', () => {
         if (name !== 'date-fns') {
           expect(
