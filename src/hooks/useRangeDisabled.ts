@@ -26,10 +26,8 @@ export default function useRangeDisabled<DateType>(
   const startDate = getValue(selectedValue, 0);
   const endDate = getValue(selectedValue, 1);
 
-  function weekNumber(date: DateType) {
-    const year = generateConfig.getYear(date);
-    const week = generateConfig.locale.getWeek(locale.locale, date);
-    return year * 100 + week;
+  function weekFirstDayValue(date: DateType) {
+    return generateConfig.locale.getWeekFirstDayValue(locale.locale, date);
   }
 
   function monthNumber(date: DateType) {
@@ -63,7 +61,7 @@ export default function useRangeDisabled<DateType>(
           case 'month':
             return monthNumber(date) > monthNumber(endDate);
           case 'week':
-            return weekNumber(date) > weekNumber(endDate);
+            return weekFirstDayValue(date) > weekFirstDayValue(endDate);
           default:
             return (
               !isSameDate(generateConfig, date, endDate) && generateConfig.isAfter(date, endDate)
@@ -97,7 +95,7 @@ export default function useRangeDisabled<DateType>(
           case 'month':
             return monthNumber(date) < monthNumber(startDate);
           case 'week':
-            return weekNumber(date) < weekNumber(startDate);
+            return weekFirstDayValue(date) < weekFirstDayValue(startDate);
           default:
             return (
               !isSameDate(generateConfig, date, startDate) &&

@@ -19,6 +19,7 @@ import {
   isAfter,
   isValid,
   getWeek,
+  startOfWeek,
   format as formatDate,
   parse as parseDate,
 } from 'date-fns';
@@ -70,6 +71,9 @@ const generateConfig: GenerateConfig<Date> = {
     getWeekFirstDay: locale => {
       const clone = Locale[dealLocal(locale)];
       return clone.options.weekStartsOn;
+    },
+    getWeekFirstDayValue: (locale, date) => {
+      return startOfWeek(date, { locale: Locale[dealLocal(locale)] }).valueOf();
     },
     getWeek: (locale, date) => {
       return getWeek(date, { locale: Locale[dealLocal(locale)] });
