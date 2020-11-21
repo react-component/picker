@@ -139,7 +139,7 @@ describe('Picker.Generate', () => {
             'en_US',
             generateConfig.locale.parse('en_US', '2020-12-30', [formatStr]),
           ),
-        ).toEqual(1608998400000);
+        ).toEqual(1609027200000);
         expect(
           generateConfig.locale.getWeekFirstDayValue(
             'zh_CN',
