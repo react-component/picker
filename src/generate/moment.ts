@@ -68,6 +68,11 @@ const generateConfig: GenerateConfig<Moment> = {
       const date = moment().locale(locale);
       return date.localeData().firstDayOfWeek();
     },
+    getWeekFirstDate: (locale, date) => {
+      const clone = date.clone();
+      const result = clone.locale(locale);
+      return result.weekday(0);
+    },
     getWeek: (locale, date) => {
       const clone = date.clone();
       const result = clone.locale(locale);
