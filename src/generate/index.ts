@@ -28,7 +28,7 @@ export interface GenerateConfig<DateType> {
 
   locale: {
     getWeekFirstDay: (locale: string) => number;
-    getWeekFirstDayValue: (locale: string, value: DateType) => number;
+    getWeekFirstDate: (locale: string, value: DateType) => DateType;
     getWeek: (locale: string, value: DateType) => number;
 
     format: (locale: string, date: DateType, format: string) => string;

@@ -134,18 +134,16 @@ describe('Picker.Generate', () => {
 
       it('getWeekFirstDayValue', () => {
         const formatStr = name === 'date-fns' ? 'yyyy-MM-dd' : 'YYYY-MM-DD';
-        expect(
-          generateConfig.locale.getWeekFirstDayValue(
-            'en_US',
-            generateConfig.locale.parse('en_US', '2020-12-30', [formatStr]),
-          ),
-        ).toEqual(1609027200000);
-        expect(
-          generateConfig.locale.getWeekFirstDayValue(
-            'zh_CN',
-            generateConfig.locale.parse('zh_CN', '2020-12-30', [formatStr]),
-          ),
-        ).toEqual(1609113600000);
+        const usDate = generateConfig.locale.getWeekFirstDate(
+          'en_US',
+          generateConfig.locale.parse('en_US', '2020-12-30', [formatStr]),
+        );
+        const cnDate = generateConfig.locale.getWeekFirstDate(
+          'zh_CN',
+          generateConfig.locale.parse('zh_CN', '2020-12-30', [formatStr]),
+        );
+        expect(generateConfig.locale.format('en_US', usDate, formatStr)).toEqual('2020-12-27');
+        expect(generateConfig.locale.format('zh_CN', cnDate, formatStr)).toEqual('2020-12-28');
       });
 
       it('Parse format Wo', () => {

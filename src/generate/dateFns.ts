@@ -72,8 +72,8 @@ const generateConfig: GenerateConfig<Date> = {
       const clone = Locale[dealLocal(locale)];
       return clone.options.weekStartsOn;
     },
-    getWeekFirstDayValue: (locale, date) => {
-      return startOfWeek(date, { locale: Locale[dealLocal(locale)] }).valueOf();
+    getWeekFirstDate: (locale, date) => {
+      return startOfWeek(date, { locale: Locale[dealLocal(locale)] });
     },
     getWeek: (locale, date) => {
       return getWeek(date, { locale: Locale[dealLocal(locale)] });
