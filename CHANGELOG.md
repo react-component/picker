@@ -1,4 +1,11 @@
 # Changelog
+
+## 2.4.2
+
+`2020-11-24`
+
+- fix: week range disabled rule. [#177](https://github.com/react-component/picker/pull/177)
+
 ## 2.4.1
 
 `2020-11-20`
