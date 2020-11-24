@@ -132,7 +132,7 @@ describe('Picker.Generate', () => {
         });
       });
 
-      it('getWeekFirstDayValue', () => {
+      it('getWeekFirstDate', () => {
         const formatStr = name === 'date-fns' ? 'yyyy-MM-dd' : 'YYYY-MM-DD';
         const usDate = generateConfig.locale.getWeekFirstDate(
           'en_US',
