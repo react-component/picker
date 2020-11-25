@@ -364,6 +364,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     style: undefined,
     pickerValue: undefined,
     onPickerValueChange: undefined,
+    mergedOpen,
   };
 
   let panelNode: React.ReactNode = (

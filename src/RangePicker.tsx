@@ -831,6 +831,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             mergedActivePickerIndex === 0 ? getValue(selectedValue, 1) : getValue(selectedValue, 0)
           }
           defaultPickerValue={undefined}
+          mergedOpen={mergedOpen}
+          mergedActivePickerIndex={mergedActivePickerIndex}
         />
       </RangeContext.Provider>
     );

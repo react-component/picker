@@ -12,34 +12,20 @@ function setTime<DateType>(
   date: DateType,
   defaultDate: NullableDateType<DateType>,
 ) {
-  if (!defaultDate) {
-    return date;
-  }
-
   let newDate = date;
-  newDate = generateConfig.setHour(
-    newDate,
-    generateConfig.getHour(defaultDate),
-  );
-  newDate = generateConfig.setMinute(
-    newDate,
-    generateConfig.getMinute(defaultDate),
-  );
-  newDate = generateConfig.setSecond(
-    newDate,
-    generateConfig.getSecond(defaultDate),
-  );
+  newDate = generateConfig.setHour(newDate, generateConfig.getHour(defaultDate));
+  newDate = generateConfig.setMinute(newDate, generateConfig.getMinute(defaultDate));
+  newDate = generateConfig.setSecond(newDate, generateConfig.getSecond(defaultDate));
   return newDate;
 }
 
 export interface DatetimePanelProps<DateType>
-  extends Omit<
-    DatePanelProps<DateType>,
-    'disabledHours' | 'disabledMinutes' | 'disabledSeconds'
-  > {
+  extends Omit<DatePanelProps<DateType>, 'disabledHours' | 'disabledMinutes' | 'disabledSeconds'> {
   disabledTime?: DisabledTime<DateType>;
   showTime?: boolean | SharedTimeProps<DateType>;
   defaultValue?: DateType;
+  mergedOpen: boolean;
+  mergedActivePickerIndex: number;
 }
 
 const ACTIVE_PANEL = tuple('date', 'time');
@@ -55,16 +41,19 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
     disabledTime,
     showTime,
     onSelect,
+    mergedOpen,
+    mergedActivePickerIndex,
   } = props;
   const panelPrefixCls = `${prefixCls}-datetime-panel`;
-  const [activePanel, setActivePanel] = React.useState<ActivePanelType | null>(
-    null,
-  );
+  const [activePanel, setActivePanel] = React.useState<ActivePanelType | null>(null);
+  const [temporaryStorageTime, setTemporaryStorageTime] = React.useState<DateType | null>(null);
 
   const dateOperationRef = React.useRef<PanelRefProps>({});
   const timeOperationRef = React.useRef<PanelRefProps>({});
 
   const timeProps = typeof showTime === 'object' ? { ...showTime } : {};
+  // temporaryStorageTime change if mergedOpen change
+  React.useMemo(() => setTemporaryStorageTime(null), [mergedOpen, mergedActivePickerIndex]);
 
   // ======================= Keyboard =======================
   function getNextActive(offset: number) {
@@ -96,8 +85,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
 
       // Operate on current active panel
       if (activePanel) {
-        const ref =
-          activePanel === 'date' ? dateOperationRef : timeOperationRef;
+        const ref = activePanel === 'date' ? dateOperationRef : timeOperationRef;
 
         if (ref.current && ref.current.onKeyDown) {
           ref.current.onKeyDown(event);
@@ -107,11 +95,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       }
 
       // Switch first active panel if operate without panel
-      if (
-        [KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN].includes(
-          event.which,
-        )
-      ) {
+      if ([KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN].includes(event.which)) {
         setActivePanel('date');
         return true;
       }
@@ -141,23 +125,15 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         generateConfig.getSecond(timeProps.defaultValue),
       );
     } else if (source === 'time' && !value && defaultValue) {
-      selectedDate = generateConfig.setYear(
-        selectedDate,
-        generateConfig.getYear(defaultValue),
-      );
-      selectedDate = generateConfig.setMonth(
-        selectedDate,
-        generateConfig.getMonth(defaultValue),
-      );
-      selectedDate = generateConfig.setDate(
-        selectedDate,
-        generateConfig.getDate(defaultValue),
-      );
+      selectedDate = generateConfig.setYear(selectedDate, generateConfig.getYear(defaultValue));
+      selectedDate = generateConfig.setMonth(selectedDate, generateConfig.getMonth(defaultValue));
+      selectedDate = generateConfig.setDate(selectedDate, generateConfig.getDate(defaultValue));
     }
 
     if (onSelect) {
       onSelect(selectedDate, 'mouse');
     }
+    return selectedDate;
   };
 
   // ======================== Render ========================
@@ -174,13 +150,14 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         operationRef={dateOperationRef}
         active={activePanel === 'date'}
         onSelect={date => {
+          const dateNow = temporaryStorageTime || generateConfig.getNow();
           onInternalSelect(
             setTime(
               generateConfig,
               date,
-              showTime && typeof showTime === 'object'
+              showTime && typeof showTime === 'object' && showTime.defaultValue
                 ? showTime.defaultValue
-                : null,
+                : dateNow,
             ),
             'date',
           );
@@ -195,7 +172,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         operationRef={timeOperationRef}
         active={activePanel === 'time'}
         onSelect={date => {
-          onInternalSelect(date, 'time');
+          setTemporaryStorageTime(onInternalSelect(date, 'time'));
         }}
       />
     </div>
