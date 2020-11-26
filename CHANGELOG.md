@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.3
+
+`2020-11-26`
+
+- fix: Calendar should not trigger `onChange` when date is `disabled`. [#183](https://github.com/react-component/picker/pull/183)
+
 ## 2.4.2
 
 `2020-11-24`
