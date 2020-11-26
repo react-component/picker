@@ -170,6 +170,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onMouseLeave,
     onContextMenu,
     onClick,
+    onSelect,
     direction,
     autoComplete = 'off',
   } = props as MergedPickerProps<DateType>;
@@ -195,16 +196,16 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const [selectedValue, setSelectedValue] = React.useState<DateType | null>(mergedValue);
 
   // Operation ref
-  const operationRef: React.MutableRefObject<ContextOperationRefProps | null> = React.useRef<
-    ContextOperationRefProps
-  >(null);
+  const operationRef: React.MutableRefObject<ContextOperationRefProps | null> = React.useRef<ContextOperationRefProps>(
+    null,
+  );
 
   // Open
   const [mergedOpen, triggerInnerOpen] = useMergedState(false, {
     value: open,
     defaultValue: defaultOpen,
-    postState: postOpen => (disabled ? false : postOpen),
-    onChange: newOpen => {
+    postState: (postOpen) => (disabled ? false : postOpen),
+    onChange: (newOpen) => {
       if (onOpenChange) {
         onOpenChange(newOpen);
       }
@@ -224,7 +225,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   const [text, triggerTextChange, resetText] = useTextValueMapping({
     valueTexts,
-    onTextChange: newText => {
+    onTextChange: (newText) => {
       const inputDate = parseValue(newText, {
         locale,
         formatList,
@@ -292,7 +293,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     value: text,
     triggerOpen,
     forwardKeyDown,
-    isClickOutside: target =>
+    isClickOutside: (target) =>
       !elementsContains([panelDivRef.current, inputDivRef.current], target as HTMLElement),
     onSubmit: () => {
       if (disabledDate && disabledDate(selectedValue)) {
@@ -364,6 +365,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     style: undefined,
     pickerValue: undefined,
     onPickerValueChange: undefined,
+    onChange: null,
   };
 
   let panelNode: React.ReactNode = (
@@ -376,7 +378,10 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       value={selectedValue}
       locale={locale}
       tabIndex={-1}
-      onChange={setSelectedValue}
+      onSelect={(date) => {
+        onSelect?.(date);
+        setSelectedValue(date);
+      }}
       direction={direction}
     />
   );
@@ -388,7 +393,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const panel = (
     <div
       className={`${prefixCls}-panel-container`}
-      onMouseDown={e => {
+      onMouseDown={(e) => {
         e.preventDefault();
       }}
     >
@@ -405,11 +410,11 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   if (allowClear && mergedValue && !disabled) {
     clearNode = (
       <span
-        onMouseDown={e => {
+        onMouseDown={(e) => {
           e.preventDefault();
           e.stopPropagation();
         }}
-        onMouseUp={e => {
+        onMouseUp={(e) => {
           e.preventDefault();
           e.stopPropagation();
           triggerChange(null);
@@ -497,7 +502,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
               disabled={disabled}
               readOnly={inputReadOnly || typeof formatList[0] === 'function' || !typing}
               value={hoverValue || text}
-              onChange={e => {
+              onChange={(e) => {
                 triggerTextChange(e.target.value);
               }}
               autoFocus={autoFocus}
