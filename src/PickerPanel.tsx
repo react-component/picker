@@ -193,7 +193,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const [mergedValue, setInnerValue] = useMergedState(null, {
     value,
     defaultValue,
-    postState: val => {
+    postState: (val) => {
       if (!val && defaultOpenValue && picker === 'time') {
         return defaultOpenValue;
       }
@@ -205,7 +205,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const [viewDate, setInnerViewDate] = useMergedState<DateType | null, DateType>(null, {
     value: pickerValue,
     defaultValue: defaultPickerValue || mergedValue,
-    postState: date => date || generateConfig.getNow(),
+    postState: (date) => date || generateConfig.getNow(),
   });
 
   const setViewDate = (date: DateType) => {
@@ -270,7 +270,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         onContextSelect(date, type);
       }
 
-      if (onChange && !isEqual(generateConfig, date, mergedValue)) {
+      if (onChange && !isEqual(generateConfig, date, mergedValue) && !disabledDate?.(date)) {
         onChange(date);
       }
     }
@@ -307,7 +307,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     /* eslint-enable no-lone-blocks */
   };
 
-  const onInternalBlur: React.FocusEventHandler<HTMLElement> = e => {
+  const onInternalBlur: React.FocusEventHandler<HTMLElement> = (e) => {
     if (panelRef.current && panelRef.current.onBlur) {
       panelRef.current.onBlur(e);
     }

@@ -70,9 +70,13 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
     this.find('.rc-picker-clear-btn').simulate('mouseUp');
   },
   keyDown(which, info = {}, index = 0) {
-    this.find('input')
-      .at(index)
-      .simulate('keydown', { ...info, which });
+    let component = this.find('input');
+
+    if (component.length === 0) {
+      component = this.find('.rc-picker-panel');
+    }
+
+    component.at(index).simulate('keydown', { ...info, which });
   },
   inputValue(text, index = 0) {
     this.find('input')
