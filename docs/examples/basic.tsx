@@ -1,10 +1,10 @@
 import React from 'react';
 import moment, { Moment } from 'moment';
-import Picker from '../src/Picker';
-import momentGenerateConfig from '../src/generate/moment';
-import zhCN from '../src/locale/zh_CN';
-import enUS from '../src/locale/en_US';
-import '../assets/index.less';
+import Picker from 'rc-picker';
+import zhCN from '../../src/locale/zh_CN';
+import enUS from '../../src/locale/en_US';
+import momentGenerateConfig from '../../src/generate/moment';
+import '../../assets/index.less';
 
 // const defaultValue = moment('2019-09-03 05:02:03');
 const defaultValue = moment('2019-11-28 01:02:03');

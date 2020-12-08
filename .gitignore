@@ -31,4 +31,9 @@ package-lock.json
 coverage/
 .doc
 .history
-tsconfig.json
+
+# umi
+.umi
+.umi-production
+.umi-test
+.env.local

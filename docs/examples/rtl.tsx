@@ -1,13 +1,13 @@
 import React from 'react';
 import moment, { Moment } from 'moment';
-import Picker from '../src/Picker';
-import RangePicker from '../src/RangePicker';
-import PickerPanel from '../src/PickerPanel';
-import momentGenerateConfig from '../src/generate/moment';
-import zhCN from '../src/locale/zh_CN';
-import enUS from '../src/locale/en_US';
-import jaJP from '../src/locale/ja_JP';
-import '../assets/index.less';
+import Picker from 'rc-picker';
+import RangePicker from '../../src/RangePicker';
+import PickerPanel from '../../src/PickerPanel';
+import momentGenerateConfig from '../../src/generate/moment';
+import zhCN from '../../src/locale/zh_CN';
+import enUS from '../../src/locale/en_US';
+import jaJP from '../../src/locale/ja_JP';
+import '../../assets/index.less';
 
 const defaultValue = moment('2019-11-28 01:02:03');
 

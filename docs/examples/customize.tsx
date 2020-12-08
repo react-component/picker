@@ -1,10 +1,10 @@
 import * as React from 'react';
 import moment, { Moment } from 'moment';
-import Picker from '../src';
-import PickerPanel from '../src/PickerPanel';
-import momentGenerateConfig from '../src/generate/moment';
-import zhCN from '../src/locale/zh_CN';
-import '../assets/index.less';
+import Picker from 'rc-picker';
+import PickerPanel from '../../src/PickerPanel';
+import momentGenerateConfig from '../../src/generate/moment';
+import zhCN from '../../src/locale/zh_CN';
+import '../../assets/index.less';
 import './slide.less';
 
 interface DateRangeState {
