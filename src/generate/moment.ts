@@ -58,6 +58,14 @@ const generateConfig: GenerateConfig<Moment> = {
     const clone = date.clone();
     return clone.second(second);
   },
+  addEndMonth: (date, diff) => {
+    const clone = date.clone();
+    return clone.endOf('month').add(diff, 'month');
+  },
+  addEndYear: (date, diff) => {
+    const clone = date.clone();
+    return clone.endOf('year').add(diff, 'year');
+  },
 
   // Compare
   isAfter: (date1, date2) => date1.isAfter(date2),

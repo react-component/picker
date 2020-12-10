@@ -70,6 +70,7 @@ function MonthBody<DateType>(props: MonthBodyProps<DateType>) {
       }
       getCellClassName={getCellClassName}
       getCellDate={generateConfig.addMonth}
+      getCompareDate={generateConfig.addEndMonth}
       titleCell={date =>
         formatValue(date, {
           locale,

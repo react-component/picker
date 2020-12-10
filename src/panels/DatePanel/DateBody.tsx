@@ -92,6 +92,7 @@ function DateBody<DateType>(props: DateBodyProps<DateType>) {
       getCellText={generateConfig.getDate}
       getCellClassName={getCellClassName}
       getCellDate={generateConfig.addDate}
+      getCompareDate={generateConfig.addDate}
       titleCell={date =>
         formatValue(date, {
           locale,

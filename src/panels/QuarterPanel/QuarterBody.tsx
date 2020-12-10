@@ -54,6 +54,7 @@ function QuarterBody<DateType>(props: QuarterBodyProps<DateType>) {
       }
       getCellClassName={getCellClassName}
       getCellDate={(date, offset) => generateConfig.addMonth(date, offset * 3)}
+      getCompareDate={(date, offset) => generateConfig.addEndMonth(date, offset * 3)}
       titleCell={date =>
         formatValue(date, {
           locale,
