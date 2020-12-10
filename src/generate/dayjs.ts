@@ -69,6 +69,8 @@ const generateConfig: GenerateConfig<Dayjs> = {
   setHour: (date, hour) => date.hour(hour),
   setMinute: (date, minute) => date.minute(minute),
   setSecond: (date, second) => date.second(second),
+  addEndMonth: (date, diff) => date.add(diff, 'month').endOf('month'),
+  addEndYear: (date, diff) => date.add(diff, 'year').endOf('year'),
 
   // Compare
   isAfter: (date1, date2) => date1.isAfter(date2),
