@@ -62,7 +62,7 @@ export default function PanelBody<DateType>({
     for (let j = 0; j < colNum; j += 1) {
       const offset = i * colNum + j;
       const currentDate = getCellDate(baseDate, offset);
-      const compareDate = getCompareDate(baseDate, offset)
+      const compareDate = getCompareDate(baseDate, offset);
       const disabled = disabledDate && disabledDate(compareDate);
 
       if (j === 0) {
@@ -81,8 +81,11 @@ export default function PanelBody<DateType>({
           title={title}
           className={classNames(cellPrefixCls, {
             [`${cellPrefixCls}-disabled`]: disabled,
-            [`${cellPrefixCls}-start`]: getCellText(currentDate) === 1 || picker === 'year' && Number(title) % 10 === 0,
-            [`${cellPrefixCls}-end`]: title === getLastDay(generateConfig, currentDate) || picker === 'year' && Number(title) % 10 === 9,
+            [`${cellPrefixCls}-start`]:
+              getCellText(currentDate) === 1 || (picker === 'year' && Number(title) % 10 === 0),
+            [`${cellPrefixCls}-end`]:
+              title === getLastDay(generateConfig, currentDate) ||
+              (picker === 'year' && Number(title) % 10 === 9),
             ...getCellClassName(currentDate),
           })}
           onClick={() => {
