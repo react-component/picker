@@ -3,6 +3,7 @@ import {
   getYear,
   getMonth,
   getDate,
+  endOfMonth,
   getHours,
   getMinutes,
   getSeconds,
@@ -18,6 +19,7 @@ import {
   isAfter,
   isValid,
   getWeek,
+  startOfWeek,
   format as formatDate,
   parse as parseDate,
 } from 'date-fns';
@@ -40,6 +42,8 @@ const localeParse = (format: string) => {
 const generateConfig: GenerateConfig<Date> = {
   // get
   getNow: () => new Date(),
+  getFixedDate: string => new Date(string),
+  getEndDate: date => endOfMonth(date),
   getWeekDay: date => getDay(date),
   getYear: date => getYear(date),
   getMonth: date => getMonth(date),
@@ -67,6 +71,9 @@ const generateConfig: GenerateConfig<Date> = {
     getWeekFirstDay: locale => {
       const clone = Locale[dealLocal(locale)];
       return clone.options.weekStartsOn;
+    },
+    getWeekFirstDate: (locale, date) => {
+      return startOfWeek(date, { locale: Locale[dealLocal(locale)] });
     },
     getWeek: (locale, date) => {
       return getWeek(date, { locale: Locale[dealLocal(locale)] });

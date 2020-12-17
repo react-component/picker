@@ -658,11 +658,19 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   // Close should sync back with text value
   const startStr =
     mergedValue && mergedValue[0]
-      ? generateConfig.locale.format(locale.locale, mergedValue[0], 'YYYYMMDDHHmmss')
+      ? formatValue(mergedValue[0], {
+          locale,
+          format: 'YYYYMMDDHHmmss',
+          generateConfig,
+        })
       : '';
   const endStr =
     mergedValue && mergedValue[1]
-      ? generateConfig.locale.format(locale.locale, mergedValue[1], 'YYYYMMDDHHmmss')
+      ? formatValue(mergedValue[1], {
+          locale,
+          format: 'YYYYMMDDHHmmss',
+          generateConfig,
+        })
       : '';
 
   useEffect(() => {

@@ -172,6 +172,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onContextMenu,
     onClick,
     onKeyDown,
+    onSelect,
     direction,
     autoComplete = 'off',
   } = props as MergedPickerProps<DateType>;
@@ -197,9 +198,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const [selectedValue, setSelectedValue] = React.useState<DateType | null>(mergedValue);
 
   // Operation ref
-  const operationRef: React.MutableRefObject<ContextOperationRefProps | null> = React.useRef<
-    ContextOperationRefProps
-  >(null);
+  const operationRef: React.MutableRefObject<ContextOperationRefProps | null> = React.useRef<ContextOperationRefProps>(
+    null,
+  );
 
   // Open
   const [mergedOpen, triggerInnerOpen] = useMergedState(false, {
@@ -226,7 +227,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   const [text, triggerTextChange, resetText] = useTextValueMapping({
     valueTexts,
-    onTextChange: newText => {
+    onTextChange: (newText) => {
       const inputDate = parseValue(newText, {
         locale,
         formatList,
@@ -369,6 +370,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     style: undefined,
     pickerValue: undefined,
     onPickerValueChange: undefined,
+    onChange: null,
   };
 
   let panelNode: React.ReactNode = (
@@ -381,7 +383,10 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       value={selectedValue}
       locale={locale}
       tabIndex={-1}
-      onChange={setSelectedValue}
+      onSelect={(date) => {
+        onSelect?.(date);
+        setSelectedValue(date);
+      }}
       direction={direction}
     />
   );

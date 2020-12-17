@@ -3,6 +3,7 @@ import Header from '../Header';
 import { Locale } from '../../interface';
 import { GenerateConfig } from '../../generate';
 import PanelContext from '../../PanelContext';
+import { formatValue } from '../../utils/dateUtil';
 
 export interface TimeHeaderProps<DateType> {
   prefixCls: string;
@@ -24,7 +25,11 @@ function TimeHeader<DateType>(props: TimeHeaderProps<DateType>) {
   return (
     <Header prefixCls={headerPrefixCls}>
       {value
-        ? generateConfig.locale.format(locale.locale, value, format)
+        ? formatValue(value, {
+            locale,
+            format,
+            generateConfig,
+          })
         : '\u00A0'}
     </Header>
   );

@@ -46,6 +46,8 @@ const parseNoMatchNotice = () => {
 const generateConfig: GenerateConfig<Dayjs> = {
   // get
   getNow: () => dayjs(),
+  getFixedDate: string => dayjs(string, 'YYYY-MM-DD'),
+  getEndDate: date => date.endOf('month'),
   getWeekDay: date => {
     const clone = date.locale('en');
     return clone.weekday() + clone.localeData().firstDayOfWeek();
@@ -78,6 +80,7 @@ const generateConfig: GenerateConfig<Dayjs> = {
         .locale(parseLocale(locale))
         .localeData()
         .firstDayOfWeek(),
+    getWeekFirstDate: (locale, date) => date.locale(parseLocale(locale)).weekday(0),
     getWeek: (locale, date) => date.locale(parseLocale(locale)).week(),
     getShortWeekDays: locale =>
       dayjs()

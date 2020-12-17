@@ -117,6 +117,7 @@ describe('Picker.Basic', () => {
       expect(wrapper.isOpen()).toBeTruthy();
 
       wrapper.setProps({ open: false });
+      wrapper.update();
       expect(wrapper.isOpen()).toBeFalsy();
     });
 
@@ -820,6 +821,49 @@ describe('Picker.Basic', () => {
       wrapper.closePicker();
       expect(wrapper.find('input').prop('value')).toBe('2020-07-23');
       expect(wrapper.find('.rc-picker-input').hasClass('rc-picker-input-placeholder')).toBeFalsy();
+    });
+  });
+
+  describe('time picker open to scroll', () => {
+    let domMock: ReturnType<typeof spyElementPrototypes>;
+    let canBeSeen = false;
+    let triggered = false;
+
+    beforeAll(() => {
+      domMock = spyElementPrototypes(HTMLElement, {
+        offsetParent: {
+          get: () => {
+            if (canBeSeen) {
+              return {};
+            }
+            canBeSeen = true;
+            return null;
+          },
+        },
+        scrollTop: {
+          get: () => 0,
+          set: () => {
+            triggered = true;
+          },
+        },
+      });
+    });
+
+    afterAll(() => {
+      domMock.mockRestore();
+    });
+
+    it('work', () => {
+      jest.useFakeTimers();
+      const wrapper = mount(
+        <MomentPicker picker="time" defaultValue={getMoment('2020-07-22 09:03:28')} open />,
+      );
+      jest.runAllTimers();
+
+      expect(triggered).toBeTruthy();
+
+      jest.useRealTimers();
+      wrapper.unmount();
     });
   });
 });

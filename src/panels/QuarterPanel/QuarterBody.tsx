@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { GenerateConfig } from '../../generate';
 import { Locale } from '../../interface';
-import { isSameQuarter } from '../../utils/dateUtil';
+import { formatValue, isSameQuarter } from '../../utils/dateUtil';
 import RangeContext from '../../RangeContext';
 import useCellClassName from '../../hooks/useCellClassName';
 import PanelBody from '../PanelBody';
@@ -46,11 +46,21 @@ function QuarterBody<DateType>(props: QuarterBodyProps<DateType>) {
       colNum={QUARTER_COL_COUNT}
       baseDate={baseQuarter}
       getCellText={date =>
-        generateConfig.locale.format(locale.locale, date, locale.quarterFormat || '[Q]Q')
+        formatValue(date, {
+          locale,
+          format: locale.quarterFormat || '[Q]Q',
+          generateConfig,
+        })
       }
       getCellClassName={getCellClassName}
       getCellDate={(date, offset) => generateConfig.addMonth(date, offset * 3)}
-      titleCell={date => generateConfig.locale.format(locale.locale, date, 'YYYY-[Q]Q')}
+      titleCell={date =>
+        formatValue(date, {
+          locale,
+          format: 'YYYY-[Q]Q',
+          generateConfig,
+        })
+      }
     />
   );
 }

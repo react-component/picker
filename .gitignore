@@ -30,4 +30,5 @@ yarn.lock
 package-lock.json
 coverage/
 .doc
+.history
 tsconfig.json

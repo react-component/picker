@@ -5,6 +5,11 @@ import { GenerateConfig } from '.';
 const generateConfig: GenerateConfig<Moment> = {
   // get
   getNow: () => moment(),
+  getFixedDate: string => moment(string, 'YYYY-MM-DD'),
+  getEndDate: date => {
+    const clone = date.clone();
+    return clone.endOf('month');
+  },
   getWeekDay: date => {
     const clone = date.clone().locale('en_US');
     return clone.weekday() + clone.localeData().firstDayOfWeek();
@@ -62,6 +67,11 @@ const generateConfig: GenerateConfig<Moment> = {
     getWeekFirstDay: locale => {
       const date = moment().locale(locale);
       return date.localeData().firstDayOfWeek();
+    },
+    getWeekFirstDate: (locale, date) => {
+      const clone = date.clone();
+      const result = clone.locale(locale);
+      return result.weekday(0);
     },
     getWeek: (locale, date) => {
       const clone = date.clone();
