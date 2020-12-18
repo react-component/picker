@@ -33,7 +33,6 @@ export default function usePickerInput({
 }): [React.DOMAttributes<HTMLInputElement>, { focused: boolean; typing: boolean }] {
   const [typing, setTyping] = useState(false);
   const [focused, setFocused] = useState(false);
-  const [preventDefault, setPreventDefault] = useState(false);
 
   /**
    * We will prevent blur to handle open event when user click outside,
@@ -43,6 +42,8 @@ export default function usePickerInput({
 
   const valueChangedRef = useRef<boolean>(false);
 
+  const preventDefaultRef = useRef<boolean>(false);
+
   const inputProps: React.DOMAttributes<HTMLInputElement> = {
     onMouseDown: () => {
       setTyping(true);
@@ -50,52 +51,52 @@ export default function usePickerInput({
     },
     onKeyDown: e => {
       if (onKeyDown) {
-        const preventDefaultBehaviors = (): void => {
-          setPreventDefault(true);
+        const preventDefault = (): void => {
+          preventDefaultRef.current = true;
         };
 
-        onKeyDown(e, preventDefaultBehaviors);
+        onKeyDown(e, preventDefault);
       }
 
-      if (preventDefault === false) {
-        switch (e.which) {
-          case KeyCode.ENTER: {
-            if (!open) {
-              triggerOpen(true);
-            } else if (onSubmit() !== false) {
-              setTyping(true);
-            }
+      if (preventDefaultRef.current) return;
 
-            e.preventDefault();
-            return;
-          }
-
-          case KeyCode.TAB: {
-            if (typing && open && !e.shiftKey) {
-              setTyping(false);
-              e.preventDefault();
-            } else if (!typing && open) {
-              if (!forwardKeyDown(e) && e.shiftKey) {
-                setTyping(true);
-                e.preventDefault();
-              }
-            }
-            return;
-          }
-
-          case KeyCode.ESC: {
+      switch (e.which) {
+        case KeyCode.ENTER: {
+          if (!open) {
+            triggerOpen(true);
+          } else if (onSubmit() !== false) {
             setTyping(true);
-            onCancel();
-            return;
           }
+
+          e.preventDefault();
+          return;
         }
 
-        if (!open && ![KeyCode.SHIFT].includes(e.which)) {
-          triggerOpen(true);
-        } else if (!typing) {
-          // Let popup panel handle keyboard
-          forwardKeyDown(e);
+        case KeyCode.TAB: {
+          if (typing && open && !e.shiftKey) {
+            setTyping(false);
+            e.preventDefault();
+          } else if (!typing && open) {
+            if (!forwardKeyDown(e) && e.shiftKey) {
+              setTyping(true);
+              e.preventDefault();
+            }
+          }
+          return;
         }
+
+        case KeyCode.ESC: {
+          setTyping(true);
+          onCancel();
+          return;
+        }
+      }
+
+      if (!open && ![KeyCode.SHIFT].includes(e.which)) {
+        triggerOpen(true);
+      } else if (!typing) {
+        // Let popup panel handle keyboard
+        forwardKeyDown(e);
       }
     },
 

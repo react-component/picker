@@ -30,8 +30,7 @@ export default () => {
   };
 
   const keyDown = (e, preventDefaultBehaviors) => {
-    preventDefaultBehaviors();
-    console.log(e.keyCode);
+    if(e.keyCode === 13) preventDefaultBehaviors();
   };
 
   return (
@@ -65,7 +64,7 @@ export default () => {
               defaultValue: moment('11:28:39', 'HH:mm:ss'),
             }}
             showToday
-            disabledTime={(date) => {
+            disabledTime={date => {
               if (date && date.isSame(defaultValue, 'date')) {
                 return {
                   disabledHours: () => [1, 3, 5, 7, 9, 11],
@@ -132,7 +131,7 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Keyboard event with disabled key</h3>
-          <Picker<Moment> {...sharedProps} locale={enUS} onKeyDown={keyDown} tabIndex={-1} />
+          <Picker<Moment> {...sharedProps} locale={enUS} onKeyDown={keyDown} />
         </div>
       </div>
     </div>

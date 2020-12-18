@@ -312,8 +312,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       setSelectedValue(mergedValue);
       resetText();
     },
-    onKeyDown: (e, preventDefaultBehaviors) => {
-      if (onKeyDown) onKeyDown(e, preventDefaultBehaviors);
+    onKeyDown: (e, preventDefault) => {
+      onKeyDown?.(e, preventDefault);
     },
     onFocus,
     onBlur,

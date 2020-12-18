@@ -611,8 +611,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     ...getSharedInputHookProps(0, resetStartText),
     open: startOpen,
     value: startText,
-    onKeyDown: (e, preventDefaultBehaviors) => {
-      if (onKeyDown) onKeyDown(e, preventDefaultBehaviors);
+    onKeyDown: (e, preventDefault) => {
+      onKeyDown?.(e, preventDefault);
     },
   });
 
