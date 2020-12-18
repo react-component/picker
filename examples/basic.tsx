@@ -29,8 +29,8 @@ export default () => {
     onChange,
   };
 
-  const keyDown = (e, preventDefaultBehaviors) => {
-    if(e.keyCode === 13) preventDefaultBehaviors();
+  const keyDown = (e, preventDefault) => {
+    if(e.keyCode === 13) preventDefault();
   };
 
   return (

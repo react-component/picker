@@ -23,7 +23,7 @@ export default function usePickerInput({
   forwardKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => boolean;
   onKeyDown: (
     e: React.KeyboardEvent<HTMLInputElement>,
-    preventDefaultBehaviors: () => void,
+    preventDefault: () => void,
   ) => void;
   blurToCancel?: boolean;
   onSubmit: () => void | boolean;
@@ -50,13 +50,11 @@ export default function usePickerInput({
       triggerOpen(true);
     },
     onKeyDown: e => {
-      if (onKeyDown) {
-        const preventDefault = (): void => {
-          preventDefaultRef.current = true;
-        };
+      const preventDefault = (): void => {
+        preventDefaultRef.current = true;
+      };
 
-        onKeyDown(e, preventDefault);
-      }
+      onKeyDown(e, preventDefault);
 
       if (preventDefaultRef.current) return;
 

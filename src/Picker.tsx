@@ -77,7 +77,7 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onContextMenu?: React.MouseEventHandler<HTMLDivElement>;
-  onKeyDown?: (e, preventDefaultBehaviors) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>, preventDefault: () => void) => void;
 
   // Internal
   /** @private Internal usage, do not use in production mode!!! */
