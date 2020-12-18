@@ -30,7 +30,7 @@ export default () => {
   };
 
   const keyDown = (e, preventDefault) => {
-    if(e.keyCode === 13) preventDefault();
+    if (e.keyCode === 13) preventDefault();
   };
 
   return (
@@ -130,7 +130,7 @@ export default () => {
           <Picker<Moment> {...sharedProps} locale={enUS} tabIndex={-1} />
         </div>
         <div style={{ margin: '0 8px' }}>
-          <h3>Keyboard event with disabled key</h3>
+          <h3>Keyboard event with prevent default behaviors</h3>
           <Picker<Moment> {...sharedProps} locale={enUS} onKeyDown={keyDown} />
         </div>
       </div>
