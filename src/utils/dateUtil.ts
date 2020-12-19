@@ -1,5 +1,6 @@
+import { DECADE_UNIT_DIFF } from '../panels/DecadePanel/index';
+import { PanelMode, NullableDateType, PickerMode, Locale, CustomFormat } from '../interface';
 import { GenerateConfig } from '../generate';
-import { NullableDateType, PickerMode, Locale, CustomFormat } from '../interface';
 
 export const WEEK_DAY_COUNT = 7;
 
@@ -227,4 +228,99 @@ export function parseValue<DateType>(
   }
 
   return generateConfig.locale.parse(locale.locale, value, formatList as string[]);
+}
+
+export function getCellDateDisabled<DateType>({
+  cellDate,
+  mode,
+  disabledDate,
+  generateConfig,
+}: {
+  cellDate: DateType;
+  mode: PanelMode;
+  generateConfig: GenerateConfig<DateType>;
+  disabledDate?: (date: DateType) => boolean;
+}): boolean {
+  if (!disabledDate) return false;
+  switch (mode) {
+    case 'date':
+    case 'week': {
+      return disabledDate(cellDate);
+    }
+    case 'month': {
+      const startDate = 1;
+      const endDate = generateConfig.getDate(generateConfig.getEndDate(cellDate));
+      let currentDate = startDate;
+      while (currentDate <= endDate) {
+        const date = generateConfig.setDate(cellDate, currentDate);
+        if (!disabledDate(date)) {
+          return false;
+        }
+        currentDate += 1;
+      }
+      return true;
+    }
+    case 'quarter': {
+      const startMonth = Math.floor(generateConfig.getMonth(cellDate) / 3) * 3;
+      const endMonth = startMonth + 2;
+      let currentMonth = startMonth;
+      while (currentMonth <= endMonth) {
+        const date = generateConfig.setMonth(cellDate, currentMonth);
+        if (
+          !getCellDateDisabled({
+            cellDate: date,
+            mode: 'month',
+            generateConfig,
+            disabledDate,
+          })
+        ) {
+          return false;
+        }
+        currentMonth += 1;
+      }
+      return true;
+    }
+    case 'year': {
+      const startMonth = 0;
+      const endMonth = 11;
+      let currentMonth = startMonth;
+      while (currentMonth <= endMonth) {
+        const date = generateConfig.setMonth(cellDate, currentMonth);
+        if (
+          !getCellDateDisabled({
+            cellDate: date,
+            mode: 'month',
+            generateConfig,
+            disabledDate,
+          })
+        ) {
+          return false;
+        }
+        currentMonth += 1;
+      }
+      return true;
+    }
+    case 'decade': {
+      const year = generateConfig.getYear(cellDate);
+      const startYear = Math.floor(year / DECADE_UNIT_DIFF) * DECADE_UNIT_DIFF;
+      const endYear = startYear + DECADE_UNIT_DIFF - 1;
+      let currentYear = startYear;
+      while (currentYear <= endYear) {
+        const date = generateConfig.setYear(cellDate, currentYear);
+        if (
+          !getCellDateDisabled({
+            cellDate: date,
+            mode: 'year',
+            generateConfig,
+            disabledDate,
+          })
+        ) {
+          return false;
+        }
+        currentYear += 1;
+      }
+      return true;
+    }
+  }
+  return false;
 }

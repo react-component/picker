@@ -347,7 +347,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onViewDateChange: setViewDate,
     sourceMode,
     onPanelChange: onInternalPanelChange,
-    disabledDate: mergedMode !== 'decade' ? disabledDate : undefined,
+    disabledDate,
   };
   delete pickerProps.onChange;
   delete pickerProps.onSelect;
@@ -521,6 +521,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     <PanelContext.Provider
       value={{
         ...panelContext,
+        mode: mergedMode,
         hideHeader: 'hideHeader' in props ? hideHeader : panelContext.hideHeader,
         hidePrevBtn: inRange && panelPosition === 'right',
         hideNextBtn: inRange && panelPosition === 'left',
