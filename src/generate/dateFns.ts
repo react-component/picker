@@ -4,7 +4,6 @@ import {
   getMonth,
   getDate,
   endOfMonth,
-  endOfYear,
   getHours,
   getMinutes,
   getSeconds,
@@ -63,8 +62,6 @@ const generateConfig: GenerateConfig<Date> = {
   setHour: (date, hour) => setHours(date, hour),
   setMinute: (date, minute) => setMinutes(date, minute),
   setSecond: (date, second) => setSeconds(date, second),
-  addEndMonth: (date, diff) => addMonths(endOfMonth(date), diff),
-  addEndYear: (date, diff) => addYears(endOfYear(date), diff),
 
   // Compare
   isAfter: (date1, date2) => isAfter(date1, date2),

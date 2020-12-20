@@ -347,11 +347,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onViewDateChange: setViewDate,
     sourceMode,
     onPanelChange: onInternalPanelChange,
-<<<<<<< HEAD
-    disabledDate,
-=======
     disabledDate: mergedMode !== 'decade' ? disabledDate : undefined,
->>>>>>> parent of 7cc3425... fix: select Panel
   };
   delete pickerProps.onChange;
   delete pickerProps.onSelect;

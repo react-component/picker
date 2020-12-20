@@ -65,13 +65,6 @@ describe('Picker.Generate', () => {
         expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD')).toEqual('1992-11-05');
       });
 
-      it('end', () => {
-        let date = generateConfig.getNow();
-        date = generateConfig.addEndMonth(date, 2);
-        date = generateConfig.addEndYear(date, 2);
-        expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD')).toEqual('1992-12-31');
-      });
-
       it('isAfter', () => {
         const now = generateConfig.getNow();
         const prev = generateConfig.addDate(now, -1);
