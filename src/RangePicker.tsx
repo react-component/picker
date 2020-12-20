@@ -744,6 +744,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     };
   });
 
+  const getMergedPickerDate = (mergedIndex: typeof mergedActivePickerIndex) => {
+    if (mergedIndex === 1 && getViewDate(1) <= getViewDate(0)) {
+      return getViewDate(0);
+    }
+    return getViewDate(mergedIndex);
+  };
+
   // ============================= Panel =============================
   function renderPanel(
     panelPosition: 'left' | 'right' | false = false,
@@ -883,7 +890,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     });
 
     if (picker !== 'time' && !showTime) {
-      const viewDate = getViewDate(mergedActivePickerIndex);
+      const viewDate = getMergedPickerDate(mergedActivePickerIndex);
       const nextViewDate = getClosingViewDate(viewDate, picker, generateConfig);
       const currentMode = mergedModes[mergedActivePickerIndex];
 
