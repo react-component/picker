@@ -744,7 +744,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     };
   });
 
-  const getMergedPickerDate = (mergedIndex: typeof mergedActivePickerIndex) => {
+  const getMergedPickerDate = (mergedIndex: 0 | 1) => {
     if (mergedIndex === 1 && getViewDate(1) <= getViewDate(0)) {
       return getViewDate(0);
     }

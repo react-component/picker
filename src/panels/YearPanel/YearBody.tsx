@@ -60,7 +60,6 @@ function YearBody<DateType>(props: YearBodyProps<DateType>) {
       getCellText={generateConfig.getYear}
       getCellClassName={getCellClassName}
       getCellDate={generateConfig.addYear}
-      getCompareDate={generateConfig.addEndYear}
       titleCell={date =>
         formatValue(date, {
           locale,

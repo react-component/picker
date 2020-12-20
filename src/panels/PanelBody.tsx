@@ -18,7 +18,6 @@ export interface PanelBodyProps<DateType> {
   baseDate: DateType;
   getCellClassName: (date: DateType) => Record<string, boolean | undefined>;
   getCellDate: (date: DateType, offset: number) => DateType;
-  getCompareDate: (date: DateType, offset: number) => DateType;
   getCellText: (date: DateType) => React.ReactNode;
   getCellNode?: (date: DateType) => React.ReactNode;
   titleCell?: (date: DateType) => string;
@@ -43,7 +42,6 @@ export default function PanelBody<DateType>({
   getCellText,
   getCellNode,
   getCellDate,
-  getCompareDate,
   generateConfig,
   titleCell,
   headerCells,
@@ -62,8 +60,7 @@ export default function PanelBody<DateType>({
     for (let j = 0; j < colNum; j += 1) {
       const offset = i * colNum + j;
       const currentDate = getCellDate(baseDate, offset);
-      const compareDate = getCompareDate(baseDate, offset);
-      const disabled = disabledDate && disabledDate(compareDate);
+      const disabled = disabledDate && disabledDate(currentDate);
 
       if (j === 0) {
         rowStartDate = currentDate;
@@ -81,11 +78,8 @@ export default function PanelBody<DateType>({
           title={title}
           className={classNames(cellPrefixCls, {
             [`${cellPrefixCls}-disabled`]: disabled,
-            [`${cellPrefixCls}-start`]:
-              getCellText(currentDate) === 1 || (picker === 'year' && Number(title) % 10 === 0),
-            [`${cellPrefixCls}-end`]:
-              title === getLastDay(generateConfig, currentDate) ||
-              (picker === 'year' && Number(title) % 10 === 9),
+            [`${cellPrefixCls}-start`]: getCellText(currentDate) === 1 || picker === 'year' && Number(title) % 10 === 0,
+            [`${cellPrefixCls}-end`]: title === getLastDay(generateConfig, currentDate) || picker === 'year' && Number(title) % 10 === 9,
             ...getCellClassName(currentDate),
           })}
           onClick={() => {
