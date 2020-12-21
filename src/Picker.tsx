@@ -77,6 +77,7 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onContextMenu?: React.MouseEventHandler<HTMLDivElement>;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>, preventDefault: () => void) => void;
 
   // Internal
   /** @private Internal usage, do not use in production mode!!! */
@@ -170,6 +171,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onMouseLeave,
     onContextMenu,
     onClick,
+    onKeyDown,
     onSelect,
     direction,
     autoComplete = 'off',
@@ -309,6 +311,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       triggerOpen(false);
       setSelectedValue(mergedValue);
       resetText();
+    },
+    onKeyDown: (e, preventDefault) => {
+      onKeyDown?.(e, preventDefault);
     },
     onFocus,
     onBlur,

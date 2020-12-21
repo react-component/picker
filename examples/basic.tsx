@@ -29,6 +29,10 @@ export default () => {
     onChange,
   };
 
+  const keyDown = (e, preventDefault) => {
+    if (e.keyCode === 13) preventDefault();
+  };
+
   return (
     <div>
       <h1>Value: {value ? value.format('YYYY-MM-DD HH:mm:ss') : 'null'}</h1>
@@ -124,6 +128,10 @@ export default () => {
         <div style={{ margin: '0 8px' }}>
           <h3>Keyboard navigation (Tab key) disabled</h3>
           <Picker<Moment> {...sharedProps} locale={enUS} tabIndex={-1} />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Keyboard event with prevent default behaviors</h3>
+          <Picker<Moment> {...sharedProps} locale={enUS} onKeyDown={keyDown} />
         </div>
       </div>
     </div>

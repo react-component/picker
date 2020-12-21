@@ -210,6 +210,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     onFocus,
     onBlur,
     onOk,
+    onKeyDown,
     components,
     order,
     direction,
@@ -610,12 +611,18 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     ...getSharedInputHookProps(0, resetStartText),
     open: startOpen,
     value: startText,
+    onKeyDown: (e, preventDefault) => {
+      onKeyDown?.(e, preventDefault);
+    },
   });
 
   const [endInputProps, { focused: endFocused, typing: endTyping }] = usePickerInput({
     ...getSharedInputHookProps(1, resetEndText),
     open: endOpen,
     value: endText,
+    onKeyDown: (e, preventDefault) => {
+      onKeyDown?.(e, preventDefault);
+    },
   });
 
   // ========================== Click Picker ==========================
