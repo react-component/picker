@@ -23,7 +23,7 @@ export interface PanelBodyProps<DateType> {
   getCellNode?: (date: DateType) => React.ReactNode;
   titleCell?: (date: DateType) => string;
   generateConfig: GenerateConfig<DateType>;
-
+  disablePanelChange: (newMode: PanelMode | null, viewValue: DateType) => void;
   // Used for week panel
   prefixColumn?: (date: DateType) => React.ReactNode;
   rowClassName?: (date: DateType) => string;
@@ -46,6 +46,7 @@ export default function PanelBody<DateType>({
   generateConfig,
   titleCell,
   headerCells,
+  disablePanelChange,
 }: PanelBodyProps<DateType>) {
   const { onDateMouseEnter, onDateMouseLeave, mode } = React.useContext(PanelContext);
 
@@ -92,8 +93,10 @@ export default function PanelBody<DateType>({
             ...getCellClassName(currentDate),
           })}
           onClick={() => {
-            if (!disabled) {
+            if (!disabled && !disabledDate(currentDate)) {
               onSelect(currentDate);
+            } else {
+              disablePanelChange(mode, currentDate);
             }
           }}
           onMouseEnter={() => {

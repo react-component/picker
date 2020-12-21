@@ -254,6 +254,23 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     }
   };
 
+  const getDisableNextMode = (mode: PanelMode): PanelMode => {
+    switch (mode){
+      case 'year': return 'month';
+      case 'quarter': return 'month';
+      case 'decade': return 'year';
+      case 'month': return 'date';
+    }
+    return mode
+  }
+
+  const disablePanelChange = (newMode: PanelMode | null, viewValue: DateType) => {
+    const nextMode = getDisableNextMode(newMode || mergedMode);
+    setInnerMode(nextMode);
+    
+    setInnerViewDate(viewValue)
+  }
+
   const triggerSelect = (
     date: DateType,
     type: 'key' | 'mouse' | 'submit',
@@ -347,6 +364,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     onViewDateChange: setViewDate,
     sourceMode,
     onPanelChange: onInternalPanelChange,
+    disablePanelChange,
     disabledDate,
   };
   delete pickerProps.onChange;
