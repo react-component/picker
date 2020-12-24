@@ -357,6 +357,11 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     };
   }
 
+  const [hoverValue, onEnter, onLeave] = useHoverValue(text, {
+    formatList,
+    generateConfig,
+    locale,
+  });
 
   // ============================= Panel =============================
   const panelProps = {
@@ -384,6 +389,11 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         setSelectedValue(date);
       }}
       direction={direction}
+      onPanelChange={(viewDate, mode) => {
+        const { onPanelChange } = panelProps;
+        onLeave(true);
+        onPanelChange?.(viewDate, mode);
+      }}
     />
   );
 
@@ -435,12 +445,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       '`defaultOpenValue` may confuse user for the current value status. Please use `defaultValue` instead.',
     );
   }
-
-  const [hoverValue, onEnter, onLeave] = useHoverValue(text, {
-    formatList,
-    generateConfig,
-    locale,
-  });
 
 
   // ============================ Return =============================

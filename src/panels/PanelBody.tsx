@@ -93,7 +93,7 @@ export default function PanelBody<DateType>({
             ...getCellClassName(currentDate),
           })}
           onClick={() => {
-            if (!disabled && !disabledDate(currentDate)) {
+            if (!disabled && !disabledDate?.(currentDate)) {
               onSelect(currentDate);
             } else {
               disablePanelChange(mode, currentDate);

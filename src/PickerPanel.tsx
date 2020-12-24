@@ -30,7 +30,7 @@ import {
   OnPanelChange,
   Components,
 } from './interface';
-import { isEqual } from './utils/dateUtil';
+import { isEqual, getDisableNextMode } from './utils/dateUtil';
 import PanelContext from './PanelContext';
 import { DateRender } from './panels/DatePanel/DateBody';
 import { PickerModeMap } from './utils/uiUtil';
@@ -253,16 +253,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       onPanelChange(viewValue, nextMode);
     }
   };
-
-  const getDisableNextMode = (mode: PanelMode): PanelMode => {
-    switch (mode){
-      case 'year': return 'month';
-      case 'quarter': return 'month';
-      case 'decade': return 'year';
-      case 'month': return 'date';
-    }
-    return mode
-  }
 
   const disablePanelChange = (newMode: PanelMode | null, viewValue: DateType) => {
     const nextMode = getDisableNextMode(newMode || mergedMode);

@@ -324,3 +324,13 @@ export function getCellDateDisabled<DateType>({
   }
   return false;
 }
+
+export function getDisableNextMode( mode: PanelMode ) {
+  switch (mode) {
+    case 'month': return 'date';
+    case 'year': return 'month';
+    case 'quarter': return 'month';
+    case 'decade': return 'year';
+  }
+  return mode
+}
