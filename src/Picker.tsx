@@ -446,7 +446,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     );
   }
 
-
   // ============================ Return =============================
   const onContextSelect = (date: DateType, type: 'key' | 'mouse' | 'submit') => {
     if (type === 'submit' || (type !== 'key' && !needConfirmButton)) {
