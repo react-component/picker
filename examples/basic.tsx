@@ -13,11 +13,6 @@ export default () => {
   const [value, setValue] = React.useState<Moment | null>(defaultValue);
   const weekRef = React.useRef<Picker<Moment>>(null);
 
-  const disabledDate = (current: Moment) => {
-    // Can not select days before today and today
-    return current && current <= moment().endOf('day');
-  };
-
   const onSelect = (newValue: Moment) => {
     console.log('Select:', newValue);
   };
@@ -41,7 +36,7 @@ export default () => {
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
-          <Picker<Moment> {...sharedProps} picker="date" value={undefined} disabledDate={disabledDate} locale={zhCN} />
+          <Picker<Moment> {...sharedProps} locale={zhCN} />
           <Picker<Moment> {...sharedProps} locale={enUS} />
         </div>
         <div style={{ margin: '0 8px' }}>
@@ -108,7 +103,7 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Week</h3>
-          <Picker<Moment> disabledDate={disabledDate} generateConfig={momentGenerateConfig} locale={enUS} picker="week" />
+          <Picker<Moment> generateConfig={momentGenerateConfig} locale={enUS} picker="week" />
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Quarter</h3>
