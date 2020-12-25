@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { GenerateConfig } from '../../generate';
-import { Locale } from '../../interface';
+import type { GenerateConfig } from '../../generate';
+import type { Locale } from '../../interface';
 import { formatValue, isSameMonth } from '../../utils/dateUtil';
 import RangeContext from '../../RangeContext';
 import useCellClassName from '../../hooks/useCellClassName';
@@ -11,7 +11,7 @@ const MONTH_ROW_COUNT = 4;
 
 export type MonthCellRender<DateType> = (currentDate: DateType, locale: Locale) => React.ReactNode;
 
-export interface MonthBodyProps<DateType> {
+export type MonthBodyProps<DateType> = {
   prefixCls: string;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
@@ -20,7 +20,7 @@ export interface MonthBodyProps<DateType> {
   disabledDate?: (date: DateType) => boolean;
   monthCellRender?: MonthCellRender<DateType>;
   onSelect: (value: DateType) => void;
-}
+};
 
 function MonthBody<DateType>(props: MonthBodyProps<DateType>) {
   const { prefixCls, locale, value, viewDate, generateConfig, monthCellRender } = props;

@@ -1,4 +1,4 @@
-import { GenerateConfig } from '../generate';
+import type { GenerateConfig } from '../generate';
 
 export function setTime<DateType>(
   generateConfig: GenerateConfig<DateType>,

@@ -1,6 +1,6 @@
-import { GenerateConfig } from './generate';
+import type { GenerateConfig } from './generate';
 
-export interface Locale {
+export type Locale = {
   locale: string;
 
   // ===================== Date Panel =====================
@@ -38,23 +38,23 @@ export interface Locale {
 
   shortWeekDays?: string[];
   shortMonths?: string[];
-}
+};
 
 export type PanelMode = 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year' | 'decade';
 
 export type PickerMode = Exclude<PanelMode, 'datetime' | 'decade'>;
 
-export interface PanelRefProps {
+export type PanelRefProps = {
   onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => boolean;
   onBlur?: React.FocusEventHandler<HTMLElement>;
   onClose?: () => void;
-}
+};
 
 export type NullableDateType<DateType> = DateType | null | undefined;
 
 export type OnSelect<DateType> = (value: DateType, type: 'key' | 'mouse' | 'submit') => void;
 
-export interface PanelSharedProps<DateType> {
+export type PanelSharedProps<DateType> = {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
   value?: NullableDateType<DateType>;
@@ -79,13 +79,13 @@ export interface PanelSharedProps<DateType> {
   onSelect: OnSelect<DateType>;
   onViewDateChange: (value: DateType) => void;
   onPanelChange: (mode: PanelMode | null, viewValue: DateType) => void;
-}
+};
 
-export interface DisabledTimes {
+export type DisabledTimes = {
   disabledHours?: () => number[];
   disabledMinutes?: (hour: number) => number[];
   disabledSeconds?: (hour: number, minute: number) => number[];
-}
+};
 
 export type DisabledTime<DateType> = (date: DateType | null) => DisabledTimes;
 
@@ -94,10 +94,10 @@ export type OnPanelChange<DateType> = (value: DateType, mode: PanelMode) => void
 export type EventValue<DateType> = DateType | null;
 export type RangeValue<DateType> = [EventValue<DateType>, EventValue<DateType>] | null;
 
-export interface Components {
+export type Components = {
   button?: React.ComponentType | string;
   rangeItem?: React.ComponentType | string;
-}
+};
 
 export type RangeList = {
   label: string;

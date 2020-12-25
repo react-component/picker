@@ -1,10 +1,11 @@
 import * as React from 'react';
 import useMemo from 'rc-util/lib/hooks/useMemo';
-import { GenerateConfig } from '../../generate';
-import { Locale, OnSelect } from '../../interface';
-import TimeUnitColumn, { Unit } from './TimeUnitColumn';
+import type { GenerateConfig } from '../../generate';
+import type { Locale, OnSelect } from '../../interface';
+import type { Unit } from './TimeUnitColumn';
+import TimeUnitColumn from './TimeUnitColumn';
 import { leftPad } from '../../utils/miscUtil';
-import { SharedTimeProps } from '.';
+import type { SharedTimeProps } from '.';
 import { setTime as utilSetTime } from '../../utils/timeUtil';
 
 function shouldUnitsUpdate(prevUnits: Unit[], nextUnits: Unit[]) {
@@ -33,11 +34,11 @@ function generateUnits(
   return units;
 }
 
-export interface BodyOperationRef {
+export type BodyOperationRef = {
   onUpDown: (diff: number) => void;
-}
+};
 
-export interface TimeBodyProps<DateType> extends SharedTimeProps<DateType> {
+export type TimeBodyProps<DateType> = {
   prefixCls: string;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
@@ -45,7 +46,7 @@ export interface TimeBodyProps<DateType> extends SharedTimeProps<DateType> {
   onSelect: OnSelect<DateType>;
   activeColumnIndex: number;
   operationRef: React.MutableRefObject<BodyOperationRef | undefined>;
-}
+} & SharedTimeProps<DateType>;
 
 function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   const {

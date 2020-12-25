@@ -1,23 +1,23 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import DateBody, { DateBodyPassProps, DateRender } from './DateBody';
+import type { DateBodyPassProps, DateRender } from './DateBody';
+import DateBody from './DateBody';
 import DateHeader from './DateHeader';
-import { PanelSharedProps } from '../../interface';
+import type { PanelSharedProps } from '../../interface';
 import { WEEK_DAY_COUNT } from '../../utils/dateUtil';
-import { createKeyDownHandler, KeyboardConfig } from '../../utils/uiUtil';
+import type { KeyboardConfig } from '../../utils/uiUtil';
+import { createKeyDownHandler } from '../../utils/uiUtil';
 
 const DATE_ROW_COUNT = 6;
 
-export interface DatePanelProps<DateType>
-  extends PanelSharedProps<DateType>,
-    DateBodyPassProps<DateType> {
+export type DatePanelProps<DateType> = {
   active?: boolean;
   dateRender?: DateRender<DateType>;
 
   // Used for week panel
   panelName?: string;
   keyboardConfig?: KeyboardConfig;
-}
+} & PanelSharedProps<DateType> & DateBodyPassProps<DateType>;
 
 function DatePanel<DateType>(props: DatePanelProps<DateType>) {
   const {

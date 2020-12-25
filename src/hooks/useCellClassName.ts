@@ -1,6 +1,6 @@
 import { isInRange } from '../utils/dateUtil';
-import { GenerateConfig } from '../generate';
-import { RangeValue, NullableDateType } from '../interface';
+import type { GenerateConfig } from '../generate';
+import type { RangeValue, NullableDateType } from '../interface';
 import { getValue } from '../utils/miscUtil';
 
 export default function useCellClassName<DateType>({

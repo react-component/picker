@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { GenerateConfig } from '../../generate';
-import { Locale } from '../../interface';
+import type { GenerateConfig } from '../../generate';
+import type { Locale } from '../../interface';
 import { formatValue, isSameQuarter } from '../../utils/dateUtil';
 import RangeContext from '../../RangeContext';
 import useCellClassName from '../../hooks/useCellClassName';
@@ -9,7 +9,7 @@ import PanelBody from '../PanelBody';
 export const QUARTER_COL_COUNT = 4;
 const QUARTER_ROW_COUNT = 1;
 
-export interface QuarterBodyProps<DateType> {
+export type QuarterBodyProps<DateType> = {
   prefixCls: string;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
@@ -17,7 +17,7 @@ export interface QuarterBodyProps<DateType> {
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;
-}
+};
 
 function QuarterBody<DateType>(props: QuarterBodyProps<DateType>) {
   const { prefixCls, locale, value, viewDate, generateConfig } = props;

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { RangeValue, PickerMode } from '../interface';
-import { GenerateConfig } from '../generate';
+import type { RangeValue, PickerMode } from '../interface';
+import type { GenerateConfig } from '../generate';
 import { getValue, updateValues } from '../utils/miscUtil';
 import { getClosingViewDate, isSameYear, isSameMonth, isSameDecade } from '../utils/dateUtil';
 

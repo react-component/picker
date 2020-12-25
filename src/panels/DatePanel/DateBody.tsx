@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GenerateConfig } from '../../generate';
+import type { GenerateConfig } from '../../generate';
 import {
   WEEK_DAY_COUNT,
   getWeekStartDate,
@@ -7,23 +7,23 @@ import {
   isSameMonth,
   formatValue,
 } from '../../utils/dateUtil';
-import { Locale } from '../../interface';
+import type { Locale } from '../../interface';
 import RangeContext from '../../RangeContext';
 import useCellClassName from '../../hooks/useCellClassName';
 import PanelBody from '../PanelBody';
 
 export type DateRender<DateType> = (currentDate: DateType, today: DateType) => React.ReactNode;
 
-export interface DateBodyPassProps<DateType> {
+export type DateBodyPassProps<DateType> = {
   dateRender?: DateRender<DateType>;
   disabledDate?: (date: DateType) => boolean;
 
   // Used for week panel
   prefixColumn?: (date: DateType) => React.ReactNode;
   rowClassName?: (date: DateType) => string;
-}
+};
 
-export interface DateBodyProps<DateType> extends DateBodyPassProps<DateType> {
+export type DateBodyProps<DateType> = {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
   value?: DateType | null;
@@ -31,7 +31,7 @@ export interface DateBodyProps<DateType> extends DateBodyPassProps<DateType> {
   locale: Locale;
   rowCount: number;
   onSelect: (value: DateType) => void;
-}
+} & DateBodyPassProps<DateType>;
 
 function DateBody<DateType>(props: DateBodyProps<DateType>) {
   const {

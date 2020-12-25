@@ -4,20 +4,20 @@ import classNames from 'classnames';
 import { scrollTo, waitElementReady } from '../../utils/uiUtil';
 import PanelContext from '../../PanelContext';
 
-export interface Unit {
+export type Unit = {
   label: React.ReactText;
   value: number;
   disabled: boolean;
-}
+};
 
-export interface TimeUnitColumnProps {
+export type TimeUnitColumnProps = {
   prefixCls?: string;
   units?: Unit[];
   value?: number;
   active?: boolean;
   hideDisabledOptions?: boolean;
   onSelect?: (value: number) => void;
-}
+};
 
 function TimeUnitColumn(props: TimeUnitColumnProps) {
   const { prefixCls, units, onSelect, value, active, hideDisabledOptions } = props;

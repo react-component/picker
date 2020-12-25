@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Header from '../Header';
-import { GenerateConfig } from '../../generate';
+import type { GenerateConfig } from '../../generate';
 import { YEAR_DECADE_COUNT } from '.';
 import PanelContext from '../../PanelContext';
 
-export interface YearHeaderProps<DateType> {
+export type YearHeaderProps<DateType> = {
   prefixCls: string;
   viewDate: DateType;
   value?: DateType | null;
@@ -13,7 +13,7 @@ export interface YearHeaderProps<DateType> {
   onPrevDecade: () => void;
   onNextDecade: () => void;
   onDecadeClick: () => void;
-}
+};
 
 function YearHeader<DateType>(props: YearHeaderProps<DateType>) {
   const { prefixCls, generateConfig, viewDate, onPrevDecade, onNextDecade, onDecadeClick } = props;

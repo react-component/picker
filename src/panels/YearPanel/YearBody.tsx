@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { GenerateConfig } from '../../generate';
+import type { GenerateConfig } from '../../generate';
 import { YEAR_DECADE_COUNT } from '.';
-import { Locale, NullableDateType } from '../../interface';
+import type { Locale, NullableDateType } from '../../interface';
 import useCellClassName from '../../hooks/useCellClassName';
 import { formatValue, isSameYear } from '../../utils/dateUtil';
 import RangeContext from '../../RangeContext';
@@ -10,7 +10,7 @@ import PanelBody from '../PanelBody';
 export const YEAR_COL_COUNT = 3;
 const YEAR_ROW_COUNT = 4;
 
-export interface YearBodyProps<DateType> {
+export type YearBodyProps<DateType> = {
   prefixCls: string;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
@@ -18,7 +18,7 @@ export interface YearBodyProps<DateType> {
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;
-}
+};
 
 function YearBody<DateType>(props: YearBodyProps<DateType>) {
   const { prefixCls, value, viewDate, locale, generateConfig } = props;

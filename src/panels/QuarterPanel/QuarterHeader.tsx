@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Header from '../Header';
-import { Locale } from '../../interface';
-import { GenerateConfig } from '../../generate';
+import type { Locale } from '../../interface';
+import type { GenerateConfig } from '../../generate';
 import PanelContext from '../../PanelContext';
 import { formatValue } from '../../utils/dateUtil';
 
-export interface QuarterHeaderProps<DateType> {
+export type QuarterHeaderProps<DateType> = {
   prefixCls: string;
   viewDate: DateType;
   locale: Locale;
@@ -14,7 +14,7 @@ export interface QuarterHeaderProps<DateType> {
   onPrevYear: () => void;
   onNextYear: () => void;
   onYearClick: () => void;
-}
+};
 
 function QuarterHeader<DateType>(props: QuarterHeaderProps<DateType>) {
   const {

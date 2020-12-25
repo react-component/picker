@@ -13,31 +13,33 @@
 
 import * as React from 'react';
 import classNames from 'classnames';
-import { AlignType } from 'rc-trigger/lib/interface';
+import type { AlignType } from 'rc-trigger/lib/interface';
 import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import PickerPanel, {
+import type {
   PickerPanelBaseProps,
   PickerPanelDateProps,
   PickerPanelTimeProps,
 } from './PickerPanel';
+import PickerPanel from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
 import { formatValue, isEqual, parseValue } from './utils/dateUtil';
 import getDataOrAriaProps, { toArray } from './utils/miscUtil';
-import PanelContext, { ContextOperationRefProps } from './PanelContext';
-import { CustomFormat, PickerMode } from './interface';
+import type { ContextOperationRefProps } from './PanelContext';
+import PanelContext from './PanelContext';
+import type { CustomFormat, PickerMode } from './interface';
 import { getDefaultFormat, getInputSize, elementsContains } from './utils/uiUtil';
 import usePickerInput from './hooks/usePickerInput';
 import useTextValueMapping from './hooks/useTextValueMapping';
 import useValueTexts from './hooks/useValueTexts';
 import useHoverValue from './hooks/useHoverValue';
 
-export interface PickerRefConfig {
+export type PickerRefConfig = {
   focus: () => void;
   blur: () => void;
-}
+};
 
-export interface PickerSharedProps<DateType> extends React.AriaAttributes {
+export type PickerSharedProps<DateType> = {
   dropdownClassName?: string;
   dropdownAlign?: AlignType;
   popupStyle?: React.CSSProperties;
@@ -54,7 +56,7 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
   id?: string;
 
   // Value
-  format?: string | CustomFormat<DateType> | Array<string | CustomFormat<DateType>>;
+  format?: string | CustomFormat<DateType> | (string | CustomFormat<DateType>)[];
 
   // Render
   suffixIcon?: React.ReactNode;
@@ -89,31 +91,25 @@ export interface PickerSharedProps<DateType> extends React.AriaAttributes {
 
   autoComplete?: string;
   direction?: 'ltr' | 'rtl';
-}
+} & React.AriaAttributes;
 
 type OmitPanelProps<Props> = Omit<
   Props,
   'onChange' | 'hideHeader' | 'pickerValue' | 'onPickerValueChange'
 >;
 
-export interface PickerBaseProps<DateType>
-  extends PickerSharedProps<DateType>,
-    OmitPanelProps<PickerPanelBaseProps<DateType>> {}
+export type PickerBaseProps<DateType> = {} & PickerSharedProps<DateType> & OmitPanelProps<PickerPanelBaseProps<DateType>>;
 
-export interface PickerDateProps<DateType>
-  extends PickerSharedProps<DateType>,
-    OmitPanelProps<PickerPanelDateProps<DateType>> {}
+export type PickerDateProps<DateType> = {} & PickerSharedProps<DateType> & OmitPanelProps<PickerPanelDateProps<DateType>>;
 
-export interface PickerTimeProps<DateType>
-  extends PickerSharedProps<DateType>,
-    Omit<OmitPanelProps<PickerPanelTimeProps<DateType>>, 'format'> {
+export type PickerTimeProps<DateType> = {
   picker: 'time';
   /**
    * @deprecated Please use `defaultValue` directly instead
    * since `defaultOpenValue` will confuse user of current value status
    */
   defaultOpenValue?: DateType;
-}
+} & PickerSharedProps<DateType> & Omit<OmitPanelProps<PickerPanelTimeProps<DateType>>, 'format'>;
 
 export type PickerProps<DateType> =
   | PickerBaseProps<DateType>
@@ -124,9 +120,9 @@ export type PickerProps<DateType> =
 type OmitType<DateType> = Omit<PickerBaseProps<DateType>, 'picker'> &
   Omit<PickerDateProps<DateType>, 'picker'> &
   Omit<PickerTimeProps<DateType>, 'picker'>;
-interface MergedPickerProps<DateType> extends OmitType<DateType> {
+type MergedPickerProps<DateType> = {
   picker?: PickerMode;
-}
+} & OmitType<DateType>;
 
 function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const {
