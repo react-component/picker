@@ -1,17 +1,17 @@
 import * as React from 'react';
 import Header from '../Header';
-import { Locale } from '../../interface';
-import { GenerateConfig } from '../../generate';
+import type { Locale } from '../../interface';
+import type { GenerateConfig } from '../../generate';
 import PanelContext from '../../PanelContext';
 import { formatValue } from '../../utils/dateUtil';
 
-export interface TimeHeaderProps<DateType> {
+export type TimeHeaderProps<DateType> = {
   prefixCls: string;
   value?: DateType | null;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
   format: string;
-}
+};
 
 function TimeHeader<DateType>(props: TimeHeaderProps<DateType>) {
   const { hideHeader } = React.useContext(PanelContext);

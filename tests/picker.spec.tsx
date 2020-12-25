@@ -866,4 +866,31 @@ describe('Picker.Basic', () => {
       wrapper.unmount();
     });
   });
+
+  describe('prevent default on keydown', () => {
+    it('should open picker panel if no prevent default', () => {
+      const keyDown = jest.fn();
+      const wrapper = mount(<MomentPicker onKeyDown={keyDown} />);
+
+      wrapper.closePicker();
+      wrapper.keyDown(KeyCode.ENTER);
+      expect(wrapper.isOpen()).toBeTruthy();
+    });
+
+    it('should not open if prevent default is called', () => {
+      const keyDown = jest.fn(({ which }, preventDefault) => {
+        if (which === 13) preventDefault();
+      });
+      const wrapper = mount(<MomentPicker onKeyDown={keyDown} />);
+
+      wrapper.openPicker();
+      expect(wrapper.isOpen()).toBeTruthy();
+
+      wrapper.keyDown(KeyCode.ESC);
+      expect(wrapper.isOpen()).toBeFalsy();
+
+      wrapper.keyDown(KeyCode.ENTER);
+      expect(wrapper.isOpen()).toBeFalsy();
+    });
+  });
 });

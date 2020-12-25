@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { addGlobalMouseDownEvent } from '../utils/uiUtil';
@@ -9,6 +9,7 @@ export default function usePickerInput({
   isClickOutside,
   triggerOpen,
   forwardKeyDown,
+  onKeyDown,
   blurToCancel,
   onSubmit,
   onCancel,
@@ -20,6 +21,10 @@ export default function usePickerInput({
   isClickOutside: (clickElement: EventTarget | null) => boolean;
   triggerOpen: (open: boolean) => void;
   forwardKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => boolean;
+  onKeyDown: (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    preventDefault: () => void,
+  ) => void;
   blurToCancel?: boolean;
   onSubmit: () => void | boolean;
   onCancel: () => void;
@@ -37,12 +42,22 @@ export default function usePickerInput({
 
   const valueChangedRef = useRef<boolean>(false);
 
+  const preventDefaultRef = useRef<boolean>(false);
+
   const inputProps: React.DOMAttributes<HTMLInputElement> = {
     onMouseDown: () => {
       setTyping(true);
       triggerOpen(true);
     },
     onKeyDown: e => {
+      const preventDefault = (): void => {
+        preventDefaultRef.current = true;
+      };
+
+      onKeyDown(e, preventDefault);
+
+      if (preventDefaultRef.current) return;
+
       switch (e.which) {
         case KeyCode.ENTER: {
           if (!open) {

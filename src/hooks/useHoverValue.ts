@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import useValueTexts, { ValueTextConfig } from './useValueTexts';
+import type { ValueTextConfig } from './useValueTexts';
+import useValueTexts from './useValueTexts';
 
 export default function useHoverValue<DateType>(
   valueText: string,

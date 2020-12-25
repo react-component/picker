@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import Trigger from 'rc-trigger';
-import { AlignType } from 'rc-trigger/lib/interface';
+import type { AlignType } from 'rc-trigger/lib/interface';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
@@ -40,7 +40,7 @@ const BUILT_IN_PLACEMENTS = {
 
 type Placement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 
-export interface PickerTriggerProps {
+export type PickerTriggerProps = {
   prefixCls: string;
   visible: boolean;
   popupElement: React.ReactElement;
@@ -53,7 +53,7 @@ export interface PickerTriggerProps {
   range?: boolean;
   popupPlacement?: Placement;
   direction?: 'ltr' | 'rtl';
-}
+};
 
 function PickerTrigger({
   prefixCls,

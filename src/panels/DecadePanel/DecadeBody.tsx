@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { GenerateConfig } from '../../generate';
+import type { GenerateConfig } from '../../generate';
 import { DECADE_DISTANCE_COUNT, DECADE_UNIT_DIFF } from '.';
 import PanelBody from '../PanelBody';
 
 export const DECADE_COL_COUNT = 3;
 const DECADE_ROW_COUNT = 4;
 
-export interface YearBodyProps<DateType> {
+export type YearBodyProps<DateType> = {
   prefixCls: string;
   generateConfig: GenerateConfig<DateType>;
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;
-}
+};
 
 function DecadeBody<DateType>(props: YearBodyProps<DateType>) {
   const DECADE_UNIT_DIFF_DES = DECADE_UNIT_DIFF - 1;

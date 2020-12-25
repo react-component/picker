@@ -24,7 +24,7 @@ import {
   parse as parseDate,
 } from 'date-fns';
 import * as Locale from 'date-fns/locale';
-import { GenerateConfig } from '.';
+import type { GenerateConfig } from '.';
 
 const dealLocal = (str: string) => {
   return str.replace(/_/g, '');

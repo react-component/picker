@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Header from '../Header';
-import { Locale } from '../../interface';
-import { GenerateConfig } from '../../generate';
+import type { Locale } from '../../interface';
+import type { GenerateConfig } from '../../generate';
 import PanelContext from '../../PanelContext';
 import { formatValue } from '../../utils/dateUtil';
 
-export interface DateHeaderProps<DateType> {
+export type DateHeaderProps<DateType> = {
   prefixCls: string;
   viewDate: DateType;
   value?: DateType | null;
@@ -18,7 +18,7 @@ export interface DateHeaderProps<DateType> {
   onNextMonth: () => void;
   onYearClick: () => void;
   onMonthClick: () => void;
-}
+};
 
 function DateHeader<DateType>(props: DateHeaderProps<DateType>) {
   const {

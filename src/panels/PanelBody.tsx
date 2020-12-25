@@ -1,12 +1,12 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import PanelContext from '../PanelContext';
-import { GenerateConfig } from '../generate';
+import type { GenerateConfig } from '../generate';
 import { getLastDay } from '../utils/timeUtil';
-import { PanelMode } from '../interface';
+import type { PanelMode } from '../interface';
 import { getCellDateDisabled } from '../utils/dateUtil';
 
-export interface PanelBodyProps<DateType> {
+export type PanelBodyProps<DateType> = {
   prefixCls: string;
   disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;
@@ -27,7 +27,7 @@ export interface PanelBodyProps<DateType> {
   // Used for week panel
   prefixColumn?: (date: DateType) => React.ReactNode;
   rowClassName?: (date: DateType) => string;
-}
+};
 
 export default function PanelBody<DateType>({
   prefixCls,

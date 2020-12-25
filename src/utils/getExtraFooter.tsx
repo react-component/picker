@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PanelMode } from '../interface';
+import type { PanelMode } from '../interface';
 
 export default function getExtraFooter(
   prefixCls: string,

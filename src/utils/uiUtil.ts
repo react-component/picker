@@ -1,8 +1,8 @@
 import KeyCode from 'rc-util/lib/KeyCode';
 import raf from 'rc-util/lib/raf';
 import isVisible from 'rc-util/lib/Dom/isVisible';
-import { GenerateConfig } from '../generate';
-import { CustomFormat, PanelMode, PickerMode } from '../interface';
+import type { GenerateConfig } from '../generate';
+import type { CustomFormat, PanelMode, PickerMode } from '../interface';
 
 const scrollIds = new Map<HTMLElement, number>();
 
@@ -59,13 +59,13 @@ export function scrollTo(element: HTMLElement, to: number, duration: number) {
 }
 /* eslint-enable */
 
-export interface KeyboardConfig {
+export type KeyboardConfig = {
   onLeftRight?: ((diff: number) => void) | null;
   onCtrlLeftRight?: ((diff: number) => void) | null;
   onUpDown?: ((diff: number) => void) | null;
   onPageUpDown?: ((diff: number) => void) | null;
   onEnter?: (() => void) | null;
-}
+};
 export function createKeyDownHandler(
   event: React.KeyboardEvent<HTMLElement>,
   { onLeftRight, onCtrlLeftRight, onUpDown, onPageUpDown, onEnter }: KeyboardConfig,
@@ -145,7 +145,7 @@ export function createKeyDownHandler(
 
 // ===================== Format =====================
 export function getDefaultFormat<DateType>(
-  format: string | CustomFormat<DateType> | Array<string | CustomFormat<DateType>> | undefined,
+  format: string | CustomFormat<DateType> | (string | CustomFormat<DateType>)[] | undefined,
   picker: PickerMode | undefined,
   showTime: boolean | object | undefined,
   use12Hours: boolean | undefined,

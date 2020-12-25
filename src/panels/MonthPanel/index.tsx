@@ -1,12 +1,13 @@
 import * as React from 'react';
 import MonthHeader from './MonthHeader';
-import MonthBody, { MONTH_COL_COUNT, MonthCellRender } from './MonthBody';
-import { PanelSharedProps } from '../../interface';
+import type { MonthCellRender } from './MonthBody';
+import MonthBody, { MONTH_COL_COUNT } from './MonthBody';
+import type { PanelSharedProps } from '../../interface';
 import { createKeyDownHandler } from '../../utils/uiUtil';
 
-export interface MonthPanelProps<DateType> extends PanelSharedProps<DateType> {
+export type MonthPanelProps<DateType> = {
   monthCellContentRender?: MonthCellRender<DateType>;
-}
+} & PanelSharedProps<DateType>;
 
 function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
   const {

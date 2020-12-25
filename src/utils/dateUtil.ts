@@ -1,6 +1,6 @@
 import { DECADE_UNIT_DIFF } from '../panels/DecadePanel/index';
-import { PanelMode, NullableDateType, PickerMode, Locale, CustomFormat } from '../interface';
-import { GenerateConfig } from '../generate';
+import type { PanelMode, NullableDateType, PickerMode, Locale, CustomFormat } from '../interface';
+import type { GenerateConfig } from '../generate';
 
 export const WEEK_DAY_COUNT = 7;
 
@@ -220,7 +220,7 @@ export function parseValue<DateType>(
   }: {
     generateConfig: GenerateConfig<DateType>;
     locale: Locale;
-    formatList: Array<string | CustomFormat<DateType>>;
+    formatList: (string | CustomFormat<DateType>)[];
   },
 ) {
   if (!value || typeof formatList[0] === 'function') {
@@ -242,6 +242,7 @@ export function getCellDateDisabled<DateType>({
   disabledDate?: (date: DateType) => boolean;
 }): boolean {
   if (!disabledDate) return false;
+  // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
   switch (mode) {
     case 'date':
     case 'week': {

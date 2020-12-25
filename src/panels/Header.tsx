@@ -5,7 +5,7 @@ const HIDDEN_STYLE: React.CSSProperties = {
   visibility: 'hidden',
 };
 
-export interface HeaderProps {
+export type HeaderProps = {
   prefixCls: string;
 
   // Icons
@@ -24,7 +24,7 @@ export interface HeaderProps {
   onSuperNext?: () => void;
 
   children?: React.ReactNode;
-}
+};
 
 function Header({
   prefixCls,

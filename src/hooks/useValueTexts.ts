@@ -1,14 +1,14 @@
 import shallowEqual from 'shallowequal';
 import useMemo from 'rc-util/lib/hooks/useMemo';
-import { GenerateConfig } from '../generate';
-import { CustomFormat, Locale } from '../interface';
+import type { GenerateConfig } from '../generate';
+import type { CustomFormat, Locale } from '../interface';
 import { formatValue } from '../utils/dateUtil';
 
-export interface ValueTextConfig<DateType> {
-  formatList: Array<string | CustomFormat<DateType>>;
+export type ValueTextConfig<DateType> = {
+  formatList: (string | CustomFormat<DateType>)[];
   generateConfig: GenerateConfig<DateType>;
   locale: Locale;
-}
+};
 
 export default function useValueTexts<DateType>(
   value: DateType | null,
