@@ -1,4 +1,5 @@
-import dayjs, { Dayjs } from 'dayjs';
+import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { noteOnce } from 'rc-util/lib/warning';
 import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
@@ -6,7 +7,7 @@ import weekOfYear from 'dayjs/plugin/weekOfYear';
 import weekYear from 'dayjs/plugin/weekYear';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { GenerateConfig } from '.';
+import type { GenerateConfig } from '.';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(advancedFormat);
@@ -25,7 +26,7 @@ dayjs.extend((o, c) => {
   };
 });
 
-type IlocaleMapObject = { [key: string]: string };
+type IlocaleMapObject = Record<string, string>;
 const localeMap: IlocaleMapObject = {
   en_GB: 'en-gb',
   en_US: 'en',

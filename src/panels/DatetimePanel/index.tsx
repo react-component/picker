@@ -1,11 +1,13 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import KeyCode from 'rc-util/lib/KeyCode';
-import DatePanel, { DatePanelProps } from '../DatePanel';
-import TimePanel, { SharedTimeProps } from '../TimePanel';
+import type { DatePanelProps } from '../DatePanel';
+import DatePanel from '../DatePanel';
+import type { SharedTimeProps } from '../TimePanel';
+import TimePanel from '../TimePanel';
 import { tuple } from '../../utils/miscUtil';
-import { PanelRefProps, DisabledTime, NullableDateType } from '../../interface';
-import { GenerateConfig } from '../../generate';
+import type { PanelRefProps, DisabledTime, NullableDateType } from '../../interface';
+import type { GenerateConfig } from '../../generate';
 
 function setTime<DateType>(
   generateConfig: GenerateConfig<DateType>,
@@ -32,15 +34,14 @@ function setTime<DateType>(
   return newDate;
 }
 
-export interface DatetimePanelProps<DateType>
-  extends Omit<
-    DatePanelProps<DateType>,
-    'disabledHours' | 'disabledMinutes' | 'disabledSeconds'
-  > {
+export type DatetimePanelProps<DateType> = {
   disabledTime?: DisabledTime<DateType>;
   showTime?: boolean | SharedTimeProps<DateType>;
   defaultValue?: DateType;
-}
+} & Omit<
+    DatePanelProps<DateType>,
+    'disabledHours' | 'disabledMinutes' | 'disabledSeconds'
+  >;
 
 const ACTIVE_PANEL = tuple('date', 'time');
 type ActivePanelType = typeof ACTIVE_PANEL[number];

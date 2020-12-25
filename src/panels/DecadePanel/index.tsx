@@ -1,7 +1,7 @@
 import * as React from 'react';
 import DecadeHeader from './DecadeHeader';
 import DecadeBody, { DECADE_COL_COUNT } from './DecadeBody';
-import { PanelSharedProps } from '../../interface';
+import type { PanelSharedProps } from '../../interface';
 import { createKeyDownHandler } from '../../utils/uiUtil';
 
 export type DecadePanelProps<DateType> = PanelSharedProps<DateType>;

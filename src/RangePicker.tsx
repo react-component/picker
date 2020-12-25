@@ -3,15 +3,16 @@ import { useRef, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import { DisabledTimes, PanelMode, PickerMode, RangeValue, EventValue } from './interface';
-import { PickerBaseProps, PickerDateProps, PickerTimeProps, PickerRefConfig } from './Picker';
-import { SharedTimeProps } from './panels/TimePanel';
+import type { DisabledTimes, PanelMode, PickerMode, RangeValue, EventValue } from './interface';
+import type { PickerBaseProps, PickerDateProps, PickerTimeProps, PickerRefConfig } from './Picker';
+import type { SharedTimeProps } from './panels/TimePanel';
 import PickerTrigger from './PickerTrigger';
 import PickerPanel from './PickerPanel';
 import usePickerInput from './hooks/usePickerInput';
 import getDataOrAriaProps, { toArray, getValue, updateValues } from './utils/miscUtil';
 import { getDefaultFormat, getInputSize, elementsContains } from './utils/uiUtil';
-import PanelContext, { ContextOperationRefProps } from './PanelContext';
+import type { ContextOperationRefProps } from './PanelContext';
+import PanelContext from './PanelContext';
 import {
   isEqual,
   getClosingViewDate,
@@ -23,14 +24,14 @@ import {
 } from './utils/dateUtil';
 import useValueTexts from './hooks/useValueTexts';
 import useTextValueMapping from './hooks/useTextValueMapping';
-import { GenerateConfig } from './generate';
-import { PickerPanelProps } from '.';
+import type { GenerateConfig } from './generate';
+import type { PickerPanelProps } from '.';
 import RangeContext from './RangeContext';
 import useRangeDisabled from './hooks/useRangeDisabled';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
 import useRangeViewDates from './hooks/useRangeViewDates';
-import { DateRender } from './panels/DatePanel/DateBody';
+import type { DateRender } from './panels/DatePanel/DateBody';
 import useHoverValue from './hooks/useHoverValue';
 
 function reorderValues<DateType>(
@@ -67,9 +68,9 @@ function canValueTrigger<DateType>(
 
 export type RangeType = 'start' | 'end';
 
-export interface RangeInfo {
+export type RangeInfo = {
   range: RangeType;
-}
+};
 
 export type RangeDateRender<DateType> = (
   currentDate: DateType,
@@ -77,7 +78,7 @@ export type RangeDateRender<DateType> = (
   info: RangeInfo,
 ) => React.ReactNode;
 
-export interface RangePickerSharedProps<DateType> {
+export type RangePickerSharedProps<DateType> = {
   id?: string;
   value?: RangeValue<DateType>;
   defaultValue?: RangeValue<DateType>;
@@ -108,7 +109,7 @@ export interface RangePickerSharedProps<DateType> {
   activePickerIndex?: 0 | 1;
   dateRender?: RangeDateRender<DateType>;
   panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
-}
+};
 
 type OmitPickerProps<Props> = Omit<
   Props,
@@ -134,21 +135,15 @@ type RangeShowTimeObject<DateType> = Omit<SharedTimeProps<DateType>, 'defaultVal
   defaultValue?: DateType[];
 };
 
-export interface RangePickerBaseProps<DateType>
-  extends RangePickerSharedProps<DateType>,
-    OmitPickerProps<PickerBaseProps<DateType>> {}
+export type RangePickerBaseProps<DateType> = {} & RangePickerSharedProps<DateType> & OmitPickerProps<PickerBaseProps<DateType>>;
 
-export interface RangePickerDateProps<DateType>
-  extends RangePickerSharedProps<DateType>,
-    OmitPickerProps<PickerDateProps<DateType>> {
+export type RangePickerDateProps<DateType> = {
   showTime?: boolean | RangeShowTimeObject<DateType>;
-}
+} & RangePickerSharedProps<DateType> & OmitPickerProps<PickerDateProps<DateType>>;
 
-export interface RangePickerTimeProps<DateType>
-  extends RangePickerSharedProps<DateType>,
-    OmitPickerProps<PickerTimeProps<DateType>> {
+export type RangePickerTimeProps<DateType> = {
   order?: boolean;
-}
+} & RangePickerSharedProps<DateType> & OmitPickerProps<PickerTimeProps<DateType>>;
 
 export type RangePickerProps<DateType> =
   | RangePickerBaseProps<DateType>
@@ -160,9 +155,9 @@ type OmitType<DateType> = Omit<RangePickerBaseProps<DateType>, 'picker'> &
   Omit<RangePickerDateProps<DateType>, 'picker'> &
   Omit<RangePickerTimeProps<DateType>, 'picker'>;
 
-interface MergedRangePickerProps<DateType> extends OmitType<DateType> {
+type MergedRangePickerProps<DateType> = {
   picker?: PickerMode;
-}
+} & OmitType<DateType>;
 
 function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { addGlobalMouseDownEvent } from '../utils/uiUtil';

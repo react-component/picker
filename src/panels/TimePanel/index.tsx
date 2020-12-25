@@ -1,11 +1,12 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import TimeHeader from './TimeHeader';
-import TimeBody, { BodyOperationRef } from './TimeBody';
-import { PanelSharedProps, DisabledTimes } from '../../interface';
+import type { BodyOperationRef } from './TimeBody';
+import TimeBody from './TimeBody';
+import type { PanelSharedProps, DisabledTimes } from '../../interface';
 import { createKeyDownHandler } from '../../utils/uiUtil';
 
-export interface SharedTimeProps<DateType> extends DisabledTimes {
+export type SharedTimeProps<DateType> = {
   format?: string;
   showNow?: boolean;
   showHour?: boolean;
@@ -17,14 +18,12 @@ export interface SharedTimeProps<DateType> extends DisabledTimes {
   secondStep?: number;
   hideDisabledOptions?: boolean;
   defaultValue?: DateType;
-}
+} & DisabledTimes;
 
-export interface TimePanelProps<DateType>
-  extends PanelSharedProps<DateType>,
-    SharedTimeProps<DateType> {
+export type TimePanelProps<DateType> = {
   format?: string;
   active?: boolean;
-}
+} & PanelSharedProps<DateType> & SharedTimeProps<DateType>;
 
 const countBoolean = (boolList: (boolean | undefined)[]) =>
   boolList.filter(bool => bool !== false).length;

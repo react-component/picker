@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Components, RangeList, Locale } from '../interface';
+import type { Components, RangeList, Locale } from '../interface';
 
-export interface RangesProps {
+export type RangesProps = {
   prefixCls: string;
   rangeList?: RangeList;
   components?: Components;
@@ -11,7 +11,7 @@ export interface RangesProps {
   okDisabled?: boolean;
   showNow?: boolean;
   locale: Locale;
-}
+};
 
 export default function getRanges({
   prefixCls,

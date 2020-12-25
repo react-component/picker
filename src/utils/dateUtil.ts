@@ -1,5 +1,5 @@
-import { GenerateConfig } from '../generate';
-import { NullableDateType, PickerMode, Locale, CustomFormat } from '../interface';
+import type { GenerateConfig } from '../generate';
+import type { NullableDateType, PickerMode, Locale, CustomFormat } from '../interface';
 
 export const WEEK_DAY_COUNT = 7;
 
@@ -219,7 +219,7 @@ export function parseValue<DateType>(
   }: {
     generateConfig: GenerateConfig<DateType>;
     locale: Locale;
-    formatList: Array<string | CustomFormat<DateType>>;
+    formatList: (string | CustomFormat<DateType>)[];
   },
 ) {
   if (!value || typeof formatList[0] === 'function') {

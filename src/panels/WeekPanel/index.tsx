@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import DatePanel from '../DatePanel';
-import { PanelSharedProps } from '../../interface';
+import type { PanelSharedProps } from '../../interface';
 import { isSameWeek } from '../../utils/dateUtil';
 
 export type WeekPanelProps<DateType> = PanelSharedProps<DateType>;

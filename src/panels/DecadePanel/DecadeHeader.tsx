@@ -1,17 +1,17 @@
 import * as React from 'react';
 import Header from '../Header';
-import { GenerateConfig } from '../../generate';
+import type { GenerateConfig } from '../../generate';
 import { DECADE_DISTANCE_COUNT } from '.';
 import PanelContext from '../../PanelContext';
 
-export interface YearHeaderProps<DateType> {
+export type YearHeaderProps<DateType> = {
   prefixCls: string;
   viewDate: DateType;
   generateConfig: GenerateConfig<DateType>;
 
   onPrevDecades: () => void;
   onNextDecades: () => void;
-}
+};
 
 function DecadeHeader<DateType>(props: YearHeaderProps<DateType>) {
   const {

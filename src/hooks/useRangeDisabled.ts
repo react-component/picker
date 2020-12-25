@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { RangeValue, PickerMode, Locale } from '../interface';
+import type { RangeValue, PickerMode, Locale } from '../interface';
 import { getValue } from '../utils/miscUtil';
-import { GenerateConfig } from '../generate';
+import type { GenerateConfig } from '../generate';
 import { isSameDate, getQuarter } from '../utils/dateUtil';
 
 export default function useRangeDisabled<DateType>(
