@@ -4,8 +4,8 @@ import { act } from 'react-dom/test-utils';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { resetWarned } from 'rc-util/lib/warning';
-import { Moment } from 'moment';
-import { PanelMode, PickerMode } from '../src/interface';
+import type { Moment } from 'moment';
+import type { PanelMode, PickerMode } from '../src/interface';
 import { mount, getMoment, isSame, MomentPicker } from './util/commonUtil';
 
 describe('Picker.Basic', () => {
