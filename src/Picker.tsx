@@ -391,7 +391,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       }}
       direction={direction}
       onPanelChange={(viewDate, mode) => {
-        const { onPanelChange } = panelProps;
+        const { onPanelChange } = props;
         onLeave(true);
         onPanelChange?.(viewDate, mode);
       }}

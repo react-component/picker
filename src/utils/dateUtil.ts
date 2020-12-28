@@ -242,6 +242,56 @@ export function getCellDateDisabled<DateType>({
   disabledDate?: (date: DateType) => boolean;
 }): boolean {
   if (!disabledDate) return false;
+  // Whether cellDate is disabled in range
+  const getDisabledFromRange = (
+    currentMode: 'date' | 'month' | 'year',
+    start: number,
+    end: number,
+  ) => {
+    let current = start;
+    while (current <= end) {
+      let date: DateType;
+      switch (currentMode) {
+        case 'date': {
+          date = generateConfig.setDate(cellDate, current);
+          if (!disabledDate(date)) {
+            return false;
+          }
+          break;
+        }
+        case 'month': {
+          date = generateConfig.setMonth(cellDate, current);
+          if (
+            !getCellDateDisabled({
+              cellDate: date,
+              mode: 'month',
+              generateConfig,
+              disabledDate,
+            })
+          ) {
+            return false;
+          }
+          break;
+        }
+        case 'year': {
+          date = generateConfig.setYear(cellDate, current);
+          if (
+            !getCellDateDisabled({
+              cellDate: date,
+              mode: 'year',
+              generateConfig,
+              disabledDate,
+            })
+          ) {
+            return false;
+          }
+          break;
+        }
+      }
+      current += 1;
+    }
+    return true;
+  };
   // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
   switch (mode) {
     case 'date':
@@ -251,76 +301,21 @@ export function getCellDateDisabled<DateType>({
     case 'month': {
       const startDate = 1;
       const endDate = generateConfig.getDate(generateConfig.getEndDate(cellDate));
-      let currentDate = startDate;
-      while (currentDate <= endDate) {
-        const date = generateConfig.setDate(cellDate, currentDate);
-        if (!disabledDate(date)) {
-          return false;
-        }
-        currentDate += 1;
-      }
-      return true;
+      return getDisabledFromRange('date', startDate, endDate);
     }
     case 'quarter': {
       const startMonth = Math.floor(generateConfig.getMonth(cellDate) / 3) * 3;
       const endMonth = startMonth + 2;
-      let currentMonth = startMonth;
-      while (currentMonth <= endMonth) {
-        const date = generateConfig.setMonth(cellDate, currentMonth);
-        if (
-          !getCellDateDisabled({
-            cellDate: date,
-            mode: 'month',
-            generateConfig,
-            disabledDate,
-          })
-        ) {
-          return false;
-        }
-        currentMonth += 1;
-      }
-      return true;
+      return getDisabledFromRange('month', startMonth, endMonth);
     }
     case 'year': {
-      const startMonth = 0;
-      const endMonth = 11;
-      let currentMonth = startMonth;
-      while (currentMonth <= endMonth) {
-        const date = generateConfig.setMonth(cellDate, currentMonth);
-        if (
-          !getCellDateDisabled({
-            cellDate: date,
-            mode: 'month',
-            generateConfig,
-            disabledDate,
-          })
-        ) {
-          return false;
-        }
-        currentMonth += 1;
-      }
-      return true;
+      return getDisabledFromRange('month', 0, 11);
     }
     case 'decade': {
       const year = generateConfig.getYear(cellDate);
       const startYear = Math.floor(year / DECADE_UNIT_DIFF) * DECADE_UNIT_DIFF;
       const endYear = startYear + DECADE_UNIT_DIFF - 1;
-      let currentYear = startYear;
-      while (currentYear <= endYear) {
-        const date = generateConfig.setYear(cellDate, currentYear);
-        if (
-          !getCellDateDisabled({
-            cellDate: date,
-            mode: 'year',
-            generateConfig,
-            disabledDate,
-          })
-        ) {
-          return false;
-        }
-        currentYear += 1;
-      }
-      return true;
+      return getDisabledFromRange('year', startYear, endYear);
     }
   }
   return false;
