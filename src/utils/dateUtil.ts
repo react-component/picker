@@ -230,6 +230,7 @@ export function parseValue<DateType>(
   return generateConfig.locale.parse(locale.locale, value, formatList as string[]);
 }
 
+// eslint-disable-next-line consistent-return
 export function getCellDateDisabled<DateType>({
   cellDate,
   mode,
@@ -237,7 +238,7 @@ export function getCellDateDisabled<DateType>({
   generateConfig,
 }: {
   cellDate: DateType;
-  mode: PanelMode;
+  mode: Omit<PanelMode, 'time'>;
   generateConfig: GenerateConfig<DateType>;
   disabledDate?: (date: DateType) => boolean;
 }): boolean {
@@ -292,7 +293,6 @@ export function getCellDateDisabled<DateType>({
     }
     return true;
   };
-  // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
   switch (mode) {
     case 'date':
     case 'week': {
@@ -318,5 +318,4 @@ export function getCellDateDisabled<DateType>({
       return getDisabledFromRange('year', startYear, endYear);
     }
   }
-  return false;
 }
