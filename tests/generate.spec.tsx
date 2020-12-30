@@ -9,7 +9,7 @@ import { GenerateConfig } from '../src/generate';
 
 describe('Picker.Generate', () => {
   beforeAll(() => {
-    MockDate.set(getMoment('1990-09-03 01:02:03').toDate());
+    MockDate.set(getMoment('1990-09-03 01:02:03.111').toDate());
   });
 
   afterAll(() => {
@@ -29,6 +29,7 @@ describe('Picker.Generate', () => {
         const fixedDate = generateConfig.getFixedDate('1990-09-03');
         const endDate = generateConfig.getEndDate(fixedDate);
         expect(generateConfig.getWeekDay(now)).toEqual(1);
+        expect(generateConfig.getMillisecond(now)).toEqual(111);
         expect(generateConfig.getSecond(now)).toEqual(3);
         expect(generateConfig.getMinute(now)).toEqual(2);
         expect(generateConfig.getHour(now)).toEqual(1);
@@ -51,9 +52,10 @@ describe('Picker.Generate', () => {
         date = generateConfig.setHour(date, 2);
         date = generateConfig.setMinute(date, 3);
         date = generateConfig.setSecond(date, 5);
+        date = generateConfig.setMillisecond(date, 333);
 
-        expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD HH:mm:ss')).toEqual(
-          '2020-10-23 02:03:05',
+        expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD HH:mm:ss.SSS')).toEqual(
+          '2020-10-23 02:03:05.333',
         );
       });
 
