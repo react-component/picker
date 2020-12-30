@@ -358,6 +358,12 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     };
   }
 
+  const [hoverValue, onEnter, onLeave] = useHoverValue(text, {
+    formatList,
+    generateConfig,
+    locale,
+  });
+
   // ============================= Panel =============================
   const panelProps = {
     // Remove `picker` & `format` here since TimePicker is little different with other panel
@@ -384,6 +390,11 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         setSelectedValue(date);
       }}
       direction={direction}
+      onPanelChange={(viewDate, mode) => {
+        const { onPanelChange } = props;
+        onLeave(true);
+        onPanelChange?.(viewDate, mode);
+      }}
     />
   );
 
@@ -445,12 +456,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }
   };
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
-
-  const [hoverValue, onEnter, onLeave] = useHoverValue(text, {
-    formatList,
-    generateConfig,
-    locale,
-  });
 
   return (
     <PanelContext.Provider

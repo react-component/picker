@@ -815,6 +815,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           locale={locale}
           tabIndex={-1}
           onPanelChange={(date, newMode) => {
+            // clear hover value when panel change
+            if (mergedActivePickerIndex === 0) {
+              onStartLeave(true);
+            }
+            if (mergedActivePickerIndex === 1) {
+              onEndLeave(true);
+            }
             triggerModesChange(
               updateValues(mergedModes, newMode, mergedActivePickerIndex),
               updateValues(selectedValue, date, mergedActivePickerIndex),

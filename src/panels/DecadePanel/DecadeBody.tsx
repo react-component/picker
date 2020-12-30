@@ -16,7 +16,7 @@ export type YearBodyProps<DateType> = {
 
 function DecadeBody<DateType>(props: YearBodyProps<DateType>) {
   const DECADE_UNIT_DIFF_DES = DECADE_UNIT_DIFF - 1;
-  const { prefixCls, viewDate, generateConfig, disabledDate } = props;
+  const { prefixCls, viewDate, generateConfig } = props;
 
   const cellPrefixCls = `${prefixCls}-cell`;
 
@@ -35,13 +35,10 @@ function DecadeBody<DateType>(props: YearBodyProps<DateType>) {
   );
 
   const getCellClassName = (date: DateType) => {
-    const disabled = disabledDate && disabledDate(date);
-
     const startDecadeNumber = generateConfig.getYear(date);
     const endDecadeNumber = startDecadeNumber + DECADE_UNIT_DIFF_DES;
 
     return {
-      [`${cellPrefixCls}-disabled`]: disabled,
       [`${cellPrefixCls}-in-view`]:
         startDecadeYear <= startDecadeNumber && endDecadeNumber <= endDecadeYear,
       [`${cellPrefixCls}-selected`]: startDecadeNumber === decadeYearNumber,

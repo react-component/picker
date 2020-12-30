@@ -4,8 +4,8 @@ import { act } from 'react-dom/test-utils';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { resetWarned } from 'rc-util/lib/warning';
-import { Moment } from 'moment';
-import { PanelMode, PickerMode } from '../src/interface';
+import type { Moment } from 'moment';
+import type { PanelMode, PickerMode } from '../src/interface';
 import { mount, getMoment, isSame, MomentPicker } from './util/commonUtil';
 
 describe('Picker.Basic', () => {
@@ -879,7 +879,7 @@ describe('Picker.Basic', () => {
 
     it('should not open if prevent default is called', () => {
       const keyDown = jest.fn(({ which }, preventDefault) => {
-        if(which === 13) preventDefault();
+        if (which === 13) preventDefault();
       });
       const wrapper = mount(<MomentPicker onKeyDown={keyDown} />);
 
@@ -892,5 +892,68 @@ describe('Picker.Basic', () => {
       wrapper.keyDown(KeyCode.ENTER);
       expect(wrapper.isOpen()).toBeFalsy();
     });
-  })
+  });
+
+  describe('disabledDate', () => {
+    function disabledDate(current: Moment) {
+      return current <= getMoment('2020-12-28 00:00:00').endOf('day');
+    }
+    const wrapper = mount(<MomentPicker open defaultValue={getMoment('2020-12-29 12:00:00')} disabledDate={disabledDate} />);
+    // Date Panel
+    Array.from({
+      length: 31
+    }).forEach((v, i) => {
+      const cell = wrapper.findCell(`${i + 1}`);
+      // >= 29
+      if (i >= 28) {
+        expect(cell.hasClass('rc-picker-cell-disabled')).toBeFalsy();
+      } else {
+        expect(cell.hasClass('rc-picker-cell-disabled')).toBeTruthy();
+      }
+    });
+    wrapper.find('.rc-picker-month-btn').simulate('click');
+    // Month Panel
+    Array.from({
+      length: 12
+    }).forEach((v, i) => {
+      const cell = wrapper.find('.rc-picker-cell-in-view').at(i);
+      // >= 12
+      if (i >= 11) {
+        expect(cell.hasClass('rc-picker-cell-disabled')).toBeFalsy();
+      } else {
+        expect(cell.hasClass('rc-picker-cell-disabled')).toBeTruthy();
+      }
+    });
+    wrapper.find('.rc-picker-year-btn').simulate('click');
+    // Year Panel
+    Array.from({
+      length: 10
+    }).forEach((v, i) => {
+      const cell = wrapper.find('.rc-picker-cell-in-view').at(i);
+      // >= 2020
+      expect(cell.hasClass('rc-picker-cell-disabled')).toBeFalsy();
+    });
+    // Decade Panel
+    Array.from({
+      length: 8
+    }).forEach((v, i) => {
+      const cell = wrapper.find('.rc-picker-cell-in-view').at(i);
+      // >= 2020
+      expect(cell.hasClass('rc-picker-cell-disabled')).toBeFalsy();
+    });
+
+    const quarterWrapper = mount(<MomentPicker picker="quarter" open defaultValue={getMoment('2020-12-29 12:00:00')} disabledDate={disabledDate} />);
+    // quarter Panel
+    Array.from({
+      length: 4
+    }).forEach((v, i) => {
+      const cell = quarterWrapper.find('.rc-picker-cell-in-view').at(i);
+      // >= 4
+      if (i >= 3) {
+        expect(cell.hasClass('rc-picker-cell-disabled')).toBeFalsy();
+      } else {
+        expect(cell.hasClass('rc-picker-cell-disabled')).toBeTruthy();
+      }
+    });
+  });
 });
