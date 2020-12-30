@@ -141,6 +141,10 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         selectedDate,
         generateConfig.getSecond(timeProps.defaultValue),
       );
+      selectedDate = generateConfig.setMillisecond(
+        selectedDate,
+        generateConfig.getMillisecond(timeProps.defaultValue),
+      );
     } else if (source === 'time' && !value && defaultValue) {
       selectedDate = generateConfig.setYear(
         selectedDate,
