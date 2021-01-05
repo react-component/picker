@@ -147,7 +147,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
           value: hourValue,
         };
       });
-  }, [use12Hours, memorizedRawHours]);
+  }, [use12Hours, isPM, memorizedRawHours]);
 
   const minutes = generateUnits(0, 59, minuteStep, disabledMinutes && disabledMinutes(originHour));
 
