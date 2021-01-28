@@ -78,12 +78,12 @@ describe('Picker.Range', () => {
       onCalendarChange.mockReset();
       wrapper.selectCell(14);
 
-      expect(isSame(onChange.mock.calls[0][0][0], '1990-09-13')).toBeTruthy();
-      expect(isSame(onChange.mock.calls[0][0][1], '1990-09-14')).toBeTruthy();
+      expect(isSame(onChange.mock.calls[0][0][0], '1990-09-13 00:00:00')).toBeTruthy();
+      expect(isSame(onChange.mock.calls[0][0][1], '1990-09-14 00:00:00')).toBeTruthy();
       expect(onChange.mock.calls[0][1]).toEqual(['1990-09-13', '1990-09-14']);
 
-      expect(isSame(onCalendarChange.mock.calls[0][0][0], '1990-09-13')).toBeTruthy();
-      expect(isSame(onCalendarChange.mock.calls[0][0][1], '1990-09-14')).toBeTruthy();
+      expect(isSame(onCalendarChange.mock.calls[0][0][0], '1990-09-13 00:00:00')).toBeTruthy();
+      expect(isSame(onCalendarChange.mock.calls[0][0][1], '1990-09-14 00:00:00')).toBeTruthy();
       expect(onCalendarChange.mock.calls[0][1]).toEqual(['1990-09-13', '1990-09-14']);
     });
   });

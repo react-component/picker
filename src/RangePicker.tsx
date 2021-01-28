@@ -451,7 +451,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         (!isEqual(generateConfig, getValue(mergedValue, 0), startValue) ||
           !isEqual(generateConfig, getValue(mergedValue, 1), endValue))
       ) {
-        values=[generateConfig.getStartDay(values[0]),generateConfig.getEndDay(values[0])];
+        if(values){
+          values = [
+            values[0] ? generateConfig.getStartDay(values[0]) : values[0],
+            values[1] ? generateConfig.getStartDay(values[1]) : values[1]
+          ];
+        }
         onChange(values, [startStr, endStr]);
       }
     }
