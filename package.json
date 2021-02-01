@@ -69,7 +69,7 @@
     "eslint-plugin-react-hooks": "^4.0.2",
     "eslint-plugin-unicorn": "^25.0.0",
     "father": "^2.13.4",
-    "less": "^3.10.3",
+    "less": "^4.1.1",
     "mockdate": "^3.0.2",
     "np": "^7.1.0",
     "prettier": "^2.0.5",
