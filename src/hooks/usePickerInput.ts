@@ -1,7 +1,7 @@
 import type * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
-import { addGlobalMouseDownEvent } from '../utils/uiUtil';
+import { addGlobalMouseDownEvent, getTargetFromEvent } from '../utils/uiUtil';
 
 export default function usePickerInput({
   open,
@@ -21,10 +21,7 @@ export default function usePickerInput({
   isClickOutside: (clickElement: EventTarget | null) => boolean;
   triggerOpen: (open: boolean) => void;
   forwardKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => boolean;
-  onKeyDown: (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    preventDefault: () => void,
-  ) => void;
+  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, preventDefault: () => void) => void;
   blurToCancel?: boolean;
   onSubmit: () => void | boolean;
   onCancel: () => void;
@@ -49,7 +46,7 @@ export default function usePickerInput({
       setTyping(true);
       triggerOpen(true);
     },
-    onKeyDown: e => {
+    onKeyDown: (e) => {
       const preventDefault = (): void => {
         preventDefaultRef.current = true;
       };
@@ -98,7 +95,7 @@ export default function usePickerInput({
       }
     },
 
-    onFocus: e => {
+    onFocus: (e) => {
       setTyping(true);
       setFocused(true);
 
@@ -107,7 +104,7 @@ export default function usePickerInput({
       }
     },
 
-    onBlur: e => {
+    onBlur: (e) => {
       if (preventBlurRef.current || !isClickOutside(document.activeElement)) {
         preventBlurRef.current = false;
         return;
@@ -145,16 +142,20 @@ export default function usePickerInput({
 
   // Global click handler
   useEffect(() =>
-    addGlobalMouseDownEvent(({ target }: MouseEvent) => {
+    addGlobalMouseDownEvent((e: MouseEvent) => {
+      const target = getTargetFromEvent(e);
+
       if (open) {
-        if (!isClickOutside(target)) {
+        const clickedOutside = isClickOutside(target);
+
+        if (!clickedOutside) {
           preventBlurRef.current = true;
 
           // Always set back in case `onBlur` prevented by user
           requestAnimationFrame(() => {
             preventBlurRef.current = false;
           });
-        } else if (!focused) {
+        } else if (!focused || clickedOutside) {
           triggerOpen(false);
         }
       }
