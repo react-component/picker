@@ -1,5 +1,6 @@
 import React from 'react';
-import moment, { Moment } from 'moment';
+import type { Moment } from 'moment';
+import moment from 'moment';
 import Picker from '../src/Picker';
 import momentGenerateConfig from '../src/generate/moment';
 import zhCN from '../src/locale/zh_CN';
@@ -57,6 +58,7 @@ export default () => {
           <h3>Datetime</h3>
           <Picker<Moment>
             {...sharedProps}
+            value={undefined}
             locale={zhCN}
             defaultPickerValue={defaultValue.clone().subtract(1, 'month')}
             showTime={{
