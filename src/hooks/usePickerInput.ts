@@ -112,7 +112,12 @@ export default function usePickerInput({
 
       if (blurToCancel) {
         setTimeout(() => {
-          if (isClickOutside(document.activeElement)) {
+          let { activeElement } = document;
+          while (activeElement && activeElement.shadowRoot) {
+            activeElement = activeElement.shadowRoot.activeElement;
+          }
+
+          if (isClickOutside(activeElement)) {
             onCancel();
           }
         }, 0);
