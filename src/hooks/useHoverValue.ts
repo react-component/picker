@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { setDateTime } from '../utils/timeUtil';
 import type { ValueTextConfig } from './useValueTexts';
 import useValueTexts from './useValueTexts';
 
@@ -28,11 +27,7 @@ export default function useHoverValue<DateType>(
   });
 
   function onEnter(date: DateType) {
-    let hoverDate = date;
-    if (!valueText) {
-      hoverDate = setDateTime(generateConfig, date, generateConfig.getNow())
-    }
-    setValue(hoverDate);
+    setValue(date);
   }
 
   function onLeave(immediately: boolean = false) {

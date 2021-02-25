@@ -58,7 +58,6 @@ export default () => {
           <h3>Datetime</h3>
           <Picker<Moment>
             {...sharedProps}
-            value={undefined}
             locale={zhCN}
             defaultPickerValue={defaultValue.clone().subtract(1, 'month')}
             showTime={{
