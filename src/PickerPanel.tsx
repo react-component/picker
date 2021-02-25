@@ -37,7 +37,7 @@ import type { MonthCellRender } from './panels/MonthPanel/MonthBody';
 import RangeContext from './RangeContext';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
-import { getLowerBoundTime, setTime } from './utils/timeUtil';
+import { getLowerBoundTime, setDateTime, setTime } from './utils/timeUtil';
 
 export type PickerPanelSharedProps<DateType> = {
   prefixCls?: string;
@@ -202,7 +202,21 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const [viewDate, setInnerViewDate] = useMergedState<DateType | null, DateType>(null, {
     value: pickerValue,
     defaultValue: defaultPickerValue || mergedValue,
-    postState: (date) => date || generateConfig.getNow(),
+    postState: (date) => {
+      const now = generateConfig.getNow();
+      if (!date) return now;
+      // When value is null and set showTime
+      if (!mergedValue && showTime) {
+        if (typeof showTime === 'object') {
+          return setDateTime(generateConfig, date, showTime.defaultValue || now);
+        }
+        if (defaultValue) {
+          return setDateTime(generateConfig, date, defaultValue);
+        }
+        return setDateTime(generateConfig, date, now);
+      }
+      return date;
+    },
   });
 
   const setViewDate = (date: DateType) => {

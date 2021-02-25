@@ -6,33 +6,8 @@ import DatePanel from '../DatePanel';
 import type { SharedTimeProps } from '../TimePanel';
 import TimePanel from '../TimePanel';
 import { tuple } from '../../utils/miscUtil';
-import type { PanelRefProps, DisabledTime, NullableDateType } from '../../interface';
-import type { GenerateConfig } from '../../generate';
-
-function setTime<DateType>(
-  generateConfig: GenerateConfig<DateType>,
-  date: DateType,
-  defaultDate: NullableDateType<DateType>,
-) {
-  if (!defaultDate) {
-    return date;
-  }
-
-  let newDate = date;
-  newDate = generateConfig.setHour(
-    newDate,
-    generateConfig.getHour(defaultDate),
-  );
-  newDate = generateConfig.setMinute(
-    newDate,
-    generateConfig.getMinute(defaultDate),
-  );
-  newDate = generateConfig.setSecond(
-    newDate,
-    generateConfig.getSecond(defaultDate),
-  );
-  return newDate;
-}
+import { setDateTime as setTime } from '../../utils/timeUtil';
+import type { PanelRefProps, DisabledTime } from '../../interface';
 
 export type DatetimePanelProps<DateType> = {
   disabledTime?: DisabledTime<DateType>;
