@@ -67,6 +67,7 @@ export type PickerSharedProps<DateType> = {
   superNextIcon?: React.ReactNode;
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
   panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
+  inputRender?: (props: React.InputHTMLAttributes<HTMLInputElement>) => React.ReactNode;
 
   // Events
   onChange?: (value: DateType | null, dateString: string) => void;
@@ -98,9 +99,11 @@ type OmitPanelProps<Props> = Omit<
   'onChange' | 'hideHeader' | 'pickerValue' | 'onPickerValueChange'
 >;
 
-export type PickerBaseProps<DateType> = {} & PickerSharedProps<DateType> & OmitPanelProps<PickerPanelBaseProps<DateType>>;
+export type PickerBaseProps<DateType> = {} & PickerSharedProps<DateType> &
+  OmitPanelProps<PickerPanelBaseProps<DateType>>;
 
-export type PickerDateProps<DateType> = {} & PickerSharedProps<DateType> & OmitPanelProps<PickerPanelDateProps<DateType>>;
+export type PickerDateProps<DateType> = {} & PickerSharedProps<DateType> &
+  OmitPanelProps<PickerPanelDateProps<DateType>>;
 
 export type PickerTimeProps<DateType> = {
   picker: 'time';
@@ -109,7 +112,8 @@ export type PickerTimeProps<DateType> = {
    * since `defaultOpenValue` will confuse user of current value status
    */
   defaultOpenValue?: DateType;
-} & PickerSharedProps<DateType> & Omit<OmitPanelProps<PickerPanelTimeProps<DateType>>, 'format'>;
+} & PickerSharedProps<DateType> &
+  Omit<OmitPanelProps<PickerPanelTimeProps<DateType>>, 'format'>;
 
 export type PickerProps<DateType> =
   | PickerBaseProps<DateType>
@@ -171,6 +175,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onSelect,
     direction,
     autoComplete = 'off',
+    inputRender,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -439,6 +444,31 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     );
   }
 
+  const mergedInputProps: React.InputHTMLAttributes<HTMLInputElement> = {
+    id,
+    tabIndex,
+    disabled,
+    readOnly: inputReadOnly || typeof formatList[0] === 'function' || !typing,
+    value: hoverValue || text,
+    onChange: (e) => {
+      triggerTextChange(e.target.value);
+    },
+    autoFocus,
+    placeholder,
+    ref: inputRef,
+    title: text,
+    ...inputProps,
+    size: getInputSize(picker, formatList[0], generateConfig),
+    ...getDataOrAriaProps(props),
+    autoComplete,
+  };
+
+  const inputNode: React.ReactNode = inputRender ? (
+    inputRender(mergedInputProps)
+  ) : (
+    <input {...mergedInputProps} />
+  );
+
   // ============================ Warning ============================
   if (process.env.NODE_ENV !== 'production') {
     warning(
@@ -502,24 +532,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
             })}
             ref={inputDivRef}
           >
-            <input
-              id={id}
-              tabIndex={tabIndex}
-              disabled={disabled}
-              readOnly={inputReadOnly || typeof formatList[0] === 'function' || !typing}
-              value={hoverValue || text}
-              onChange={(e) => {
-                triggerTextChange(e.target.value);
-              }}
-              autoFocus={autoFocus}
-              placeholder={placeholder}
-              ref={inputRef}
-              title={text}
-              {...inputProps}
-              size={getInputSize(picker, formatList[0], generateConfig)}
-              {...getDataOrAriaProps(props)}
-              autoComplete={autoComplete}
-            />
+            {inputNode}
             {suffixNode}
             {clearNode}
           </div>
