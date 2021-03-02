@@ -73,7 +73,7 @@ function MonthBody<DateType>(props: MonthBodyProps<DateType>) {
       titleCell={date =>
         formatValue(date, {
           locale,
-          format: 'YYYY-MM',
+          format: locale.monthTitleFormat || 'YYYY-MM',
           generateConfig,
         })
       }
