@@ -116,7 +116,7 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Time</h3>
-          <Picker<Moment> {...sharedProps} locale={zhCN} picker="time" />
+          <Picker<Moment> {...sharedProps} panelOffsetTop={90} locale={zhCN} picker="time" />
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Time 12</h3>

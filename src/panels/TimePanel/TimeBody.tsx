@@ -45,6 +45,7 @@ export type TimeBodyProps<DateType> = {
   value?: DateType | null;
   onSelect: OnSelect<DateType>;
   activeColumnIndex: number;
+  panelOffsetTop?: number;
   operationRef: React.MutableRefObject<BodyOperationRef | undefined>;
 } & SharedTimeProps<DateType>;
 
@@ -67,6 +68,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     disabledSeconds,
     hideDisabledOptions,
     onSelect,
+    panelOffsetTop,
   } = props;
 
   const columns: {
@@ -195,6 +197,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
           onSelect: onColumnSelect,
           units,
           hideDisabledOptions,
+          panelOffsetTop,
         }),
         onSelect: onColumnSelect,
         value: columnValue,
