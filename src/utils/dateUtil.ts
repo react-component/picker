@@ -218,10 +218,6 @@ export function setDate<DateType>(
   defaultDate: NullableDateType<DateType>,
   time: boolean = true
 ) {
-  if (!defaultDate) {
-    return date;
-  }
-
   let newDate = date;
   newDate = generateConfig.setYear(
     newDate,
