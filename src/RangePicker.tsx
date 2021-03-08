@@ -517,6 +517,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       locale,
       formatList,
       generateConfig,
+      date: mergedValue && mergedValue[index],
     });
 
     const disabledFunc = index === 0 ? disabledStartDate : disabledEndDate;

@@ -1,6 +1,7 @@
 import { DECADE_UNIT_DIFF } from '../panels/DecadePanel/index';
 import type { PanelMode, NullableDateType, PickerMode, Locale, CustomFormat } from '../interface';
 import type { GenerateConfig } from '../generate';
+import { setDateTime } from './timeUtil';
 
 export const WEEK_DAY_COUNT = 7;
 
@@ -211,23 +212,62 @@ export function formatValue<DateType>(
     : generateConfig.locale.format(locale.locale, value, format);
 }
 
+export function setDate<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  date: DateType,
+  defaultDate: NullableDateType<DateType>,
+  time: boolean = true
+) {
+  if (!defaultDate) {
+    return date;
+  }
+
+  let newDate = date;
+  newDate = generateConfig.setYear(
+    newDate,
+    generateConfig.getYear(defaultDate),
+  );
+  newDate = generateConfig.setMonth(
+    newDate,
+    generateConfig.getMonth(defaultDate),
+  );
+  newDate = generateConfig.setDate(
+    newDate,
+    generateConfig.getDate(defaultDate),
+  );
+
+  if (time) {
+    newDate = setDateTime(generateConfig, newDate, defaultDate);
+  }
+
+  return newDate;
+}
+
 export function parseValue<DateType>(
   value: string,
   {
     generateConfig,
     locale,
     formatList,
+    date
   }: {
     generateConfig: GenerateConfig<DateType>;
     locale: Locale;
     formatList: (string | CustomFormat<DateType>)[];
+    date: DateType
   },
 ) {
   if (!value || typeof formatList[0] === 'function') {
     return null;
   }
 
-  return generateConfig.locale.parse(locale.locale, value, formatList as string[]);
+  let newDate = generateConfig.locale.parse(locale.locale, value, formatList as string[]);
+  // keep origin state
+  if (newDate && date) {
+    newDate = setDate(generateConfig, date, newDate);
+  }
+
+  return newDate;
 }
 
 // eslint-disable-next-line consistent-return

@@ -956,4 +956,31 @@ describe('Picker.Basic', () => {
       }
     });
   });
+
+  describe('parse value', () => {
+    it('should work correctly', () => {
+      const wrapper = mount(<MomentPicker showTime />);
+      wrapper.openPicker();
+      wrapper.find('input').simulate('change', {
+        target: {
+          value: '1990-08-03 00:00:00',
+        },
+      });
+      wrapper.confirmOK();
+      expect(wrapper.find('input').prop('value')).toBe('1990-08-03 00:00:00');
+    });
+    it('should keep origin state', () => {
+      const onChange = jest.fn();
+      const defaultValue = getMoment('1990-09-03 00:00:00').utc();
+      const wrapper = mount(<MomentPicker defaultValue={defaultValue} onChange={onChange} showTime />);
+      wrapper.openPicker();
+      wrapper.find('input').simulate('change', {
+        target: {
+          value: '1990-08-03 00:00:00',
+        },
+      });
+      wrapper.confirmOK();
+      expect(onChange.mock.calls[0][0].isUTC()).toBeTruthy();
+    });
+  });
 });

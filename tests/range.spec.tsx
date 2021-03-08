@@ -3,10 +3,11 @@ import MockDate from 'mockdate';
 import { act } from 'react-dom/test-utils';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import { Moment } from 'moment';
-import { mount, getMoment, isSame, MomentRangePicker, Wrapper } from './util/commonUtil';
+import type { Moment } from 'moment';
+import type { Wrapper } from './util/commonUtil';
+import { mount, getMoment, isSame, MomentRangePicker } from './util/commonUtil';
 import zhCN from '../src/locale/zh_CN';
-import { PickerMode } from '../src/interface';
+import type { PickerMode } from '../src/interface';
 
 describe('Picker.Range', () => {
   function matchValues(wrapper: Wrapper, value1: string, value2: string) {
@@ -1899,5 +1900,82 @@ describe('Picker.Range', () => {
     wrapper.find('.rc-picker-ok button').simulate('click');
 
     matchValues(wrapper, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
+  });
+
+  describe('parse value', () => {
+    it('should work correctly', () => {
+      const defaultValue: [Moment, Moment] = [
+        getMoment('1989-11-28 00:00:00'),
+        getMoment('1990-09-03 00:00:00'),
+      ];
+      const wrapper = mount(<MomentRangePicker showTime defaultValue={defaultValue} />);
+      wrapper.openPicker(0);
+      wrapper
+        .find('input')
+        .first()
+        .simulate('change', {
+          target: {
+            value: '1989-10-28 00:00:00',
+          },
+        });
+      wrapper.confirmOK();
+
+      wrapper
+        .find('input')
+        .last()
+        .simulate('change', {
+          target: {
+            value: '1990-08-03 00:00:00',
+          },
+        });
+      wrapper.confirmOK();
+
+      expect(
+        wrapper
+          .find('input')
+          .first()
+          .prop('value'),
+      ).toBe('1989-10-28 00:00:00');
+      expect(
+        wrapper
+          .find('input')
+          .last()
+          .prop('value'),
+      ).toBe('1990-08-03 00:00:00');
+    });
+    it('should keep origin state', () => {
+      const onChange = jest.fn();
+      const defaultValue: [Moment, Moment] = [
+        getMoment('1989-11-28 00:00:00').utc(),
+        getMoment('1990-09-03 00:00:00').utc(),
+      ];
+      const wrapper = mount(
+        <MomentRangePicker defaultValue={defaultValue} onChange={onChange} showTime />,
+      );
+      wrapper.openPicker(0);
+      wrapper
+        .find('input')
+        .first()
+        .simulate('change', {
+          target: {
+            value: '1989-10-28 00:00:00',
+          },
+        });
+      wrapper.confirmOK();
+
+      wrapper
+        .find('input')
+        .last()
+        .simulate('change', {
+          target: {
+            value: '1990-08-03 00:00:00',
+          },
+        });
+      wrapper.confirmOK();
+
+      const changedValue = onChange.mock.calls[0][0];
+      expect(changedValue[0].isUTC()).toBeTruthy();
+      expect(changedValue[1].isUTC()).toBeTruthy();
+    });
   });
 });

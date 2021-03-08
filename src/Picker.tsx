@@ -228,6 +228,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         locale,
         formatList,
         generateConfig,
+        date: mergedValue,
       });
       if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
         setSelectedValue(inputDate);
