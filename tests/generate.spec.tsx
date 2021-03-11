@@ -6,7 +6,7 @@ import luxonGenerateConfig from '../src/generate/luxon';
 import { getMoment } from './util/commonUtil';
 
 import 'dayjs/locale/zh-cn';
-import type { GenerateConfig } from '../src/generate';
+import { GenerateConfig } from '../src/generate';
 
 describe('Picker.Generate', () => {
   beforeAll(() => {
@@ -82,7 +82,7 @@ describe('Picker.Generate', () => {
       describe('locale', () => {
         describe('parse', () => {
           it('basic', () => {
-            ['2000-01-02', '02/01/2000'].forEach((str) => {
+            ['2000-01-02', '02/01/2000'].forEach(str => {
               const date = generateConfig.locale.parse('en_US', str, ['YYYY-MM-DD', 'DD/MM/YYYY']);
 
               expect(generateConfig.locale.format('en_US', date!, 'YYYY-MM-DD')).toEqual(
