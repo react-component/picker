@@ -109,6 +109,7 @@ export type PickerTimeProps<DateType> = {
    * since `defaultOpenValue` will confuse user of current value status
    */
   defaultOpenValue?: DateType;
+  panelOffsetTop?: number;
 } & PickerSharedProps<DateType> & Omit<OmitPanelProps<PickerPanelTimeProps<DateType>>, 'format'>;
 
 export type PickerProps<DateType> =

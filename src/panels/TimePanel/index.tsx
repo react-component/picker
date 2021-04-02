@@ -23,6 +23,7 @@ export type SharedTimeProps<DateType> = {
 export type TimePanelProps<DateType> = {
   format?: string;
   active?: boolean;
+  panelOffsetTop?: number;
 } & PanelSharedProps<DateType> & SharedTimeProps<DateType>;
 
 const countBoolean = (boolList: (boolean | undefined)[]) =>
@@ -41,6 +42,7 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
     use12Hours = false,
     onSelect,
     value,
+    panelOffsetTop = 0,
   } = props;
   const panelPrefixCls = `${prefixCls}-time-panel`;
   const bodyOperationRef = React.useRef<BodyOperationRef>();
@@ -83,6 +85,7 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
       <TimeBody
         {...props}
         prefixCls={prefixCls}
+        panelOffsetTop={panelOffsetTop}
         activeColumnIndex={activeColumnIndex}
         operationRef={bodyOperationRef}
       />

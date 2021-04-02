@@ -17,10 +17,11 @@ export type TimeUnitColumnProps = {
   active?: boolean;
   hideDisabledOptions?: boolean;
   onSelect?: (value: number) => void;
+  panelOffsetTop?: number;
 };
 
 function TimeUnitColumn(props: TimeUnitColumnProps) {
-  const { prefixCls, units, onSelect, value, active, hideDisabledOptions } = props;
+  const { prefixCls, units, onSelect, value, active, hideDisabledOptions, panelOffsetTop } = props;
   const cellPrefixCls = `${prefixCls}-cell`;
   const { open } = React.useContext(PanelContext);
 
@@ -32,7 +33,7 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
   useLayoutEffect(() => {
     const li = liRefs.current.get(value!);
     if (li && open !== false) {
-      scrollTo(ulRef.current!, li.offsetTop, 120);
+      scrollTo(ulRef.current!, li.offsetTop - panelOffsetTop, 120);
     }
   }, [value]);
 
@@ -41,7 +42,7 @@ function TimeUnitColumn(props: TimeUnitColumnProps) {
       const li = liRefs.current.get(value!);
       if (li) {
         scrollRef.current = waitElementReady(li, () => {
-          scrollTo(ulRef.current!, li.offsetTop, 0);
+          scrollTo(ulRef.current!, li.offsetTop - panelOffsetTop, 0);
         });
       }
     }
