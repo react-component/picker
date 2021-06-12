@@ -1,5 +1,6 @@
 import React from 'react';
-import moment, { Moment } from 'moment';
+import type { Moment } from 'moment';
+import moment from 'moment';
 import Picker from '../src/Picker';
 import RangePicker from '../src/RangePicker';
 import momentGenerateConfig from '../src/generate/moment';
@@ -25,7 +26,7 @@ export default () => {
             locale={zhCN}
             allowClear
             defaultValue={defaultStartValue}
-            panelRender={node => (
+            panelRender={(node) => (
               <>
                 <button
                   type="button"
@@ -43,26 +44,23 @@ export default () => {
           />
         </div>
         <div>
-          <h3>RangePicker</h3>
+          <h3>RangePicker - Date</h3>
           <RangePicker<Moment>
             generateConfig={momentGenerateConfig}
             locale={zhCN}
             allowClear
             defaultValue={defaultValue}
-            panelRender={node => (
-              <>
-                <button
-                  type="button"
-                  style={{ display: 'block' }}
-                  onClick={() => {
-                    setCustomizeNode(!customizeNode);
-                  }}
-                >
-                  Change
-                </button>
-                {customizeNode ? <span>My Panel</span> : node}
-              </>
-            )}
+            panelRender={(node) => <>{customizeNode ? <span>My Panel</span> : node}</>}
+          />
+        </div>
+        <div>
+          <h3>RangePicker - Time</h3>
+          <RangePicker<Moment>
+            generateConfig={momentGenerateConfig}
+            locale={zhCN}
+            allowClear
+            defaultValue={defaultValue}
+            picker="time"
           />
         </div>
       </div>
