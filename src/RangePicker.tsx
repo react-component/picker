@@ -856,11 +856,15 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     mergedActivePickerIndex &&
     startInputDivRef.current &&
     separatorRef.current &&
-    panelDivRef.current
+    panelDivRef.current &&
+    rangeWrapperRef.current
   ) {
     // Arrow offset
     arrowLeft = startInputDivRef.current.offsetWidth + separatorRef.current.offsetWidth;
-    panelLeft = rangeWrapperRef.current.offsetWidth - panelDivRef.current.offsetWidth;
+    const panelDivOffsetLeft = panelDivRef.current.offsetLeft;
+    const distanceToWrapper = rangeWrapperRef.current.offsetWidth - panelDivRef.current.offsetWidth;
+
+    panelLeft = panelDivOffsetLeft === 0 ? distanceToWrapper : distanceToWrapper * -1;
   }
 
   const arrowPositionStyle = direction === 'rtl' ? { right: arrowLeft } : { left: arrowLeft };
@@ -953,7 +957,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     return (
       <div
         className={`${prefixCls}-panel-container`}
-        style={{ marginLeft: panelLeft }}
+        style={{ transform: `translateX(${panelLeft}px)` }}
         ref={panelDivRef}
         onMouseDown={(e) => {
           e.preventDefault();

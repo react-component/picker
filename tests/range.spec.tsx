@@ -675,8 +675,8 @@ describe('Picker.Range', () => {
       const wrapper = mount(<MomentRangePicker />);
       wrapper.openPicker(1);
       wrapper.update();
-      expect((wrapper.find('.rc-picker-panel-container').props() as any).style.marginLeft).toEqual(
-        200,
+      expect((wrapper.find('.rc-picker-panel-container').props() as any).style.transform).toEqual(
+        'translateX(200px)',
       );
     });
   });
