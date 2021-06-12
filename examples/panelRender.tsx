@@ -63,6 +63,36 @@ export default () => {
             picker="time"
           />
         </div>
+        <div>
+          <h3>RangePicker - week</h3>
+          <RangePicker<Moment>
+            generateConfig={momentGenerateConfig}
+            locale={zhCN}
+            allowClear
+            defaultValue={defaultValue}
+            picker="week"
+          />
+        </div>
+        <div>
+          <h3>RangePicker - month</h3>
+          <RangePicker<Moment>
+            generateConfig={momentGenerateConfig}
+            locale={zhCN}
+            allowClear
+            defaultValue={defaultValue}
+            picker="month"
+          />
+        </div>
+        <div>
+          <h3>RangePicker - year</h3>
+          <RangePicker<Moment>
+            generateConfig={momentGenerateConfig}
+            locale={zhCN}
+            allowClear
+            defaultValue={defaultValue}
+            picker="year"
+          />
+        </div>
       </div>
     </>
   );
