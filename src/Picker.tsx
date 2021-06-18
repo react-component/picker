@@ -98,9 +98,11 @@ type OmitPanelProps<Props> = Omit<
   'onChange' | 'hideHeader' | 'pickerValue' | 'onPickerValueChange'
 >;
 
-export type PickerBaseProps<DateType> = {} & PickerSharedProps<DateType> & OmitPanelProps<PickerPanelBaseProps<DateType>>;
+export type PickerBaseProps<DateType> = {} & PickerSharedProps<DateType> &
+  OmitPanelProps<PickerPanelBaseProps<DateType>>;
 
-export type PickerDateProps<DateType> = {} & PickerSharedProps<DateType> & OmitPanelProps<PickerPanelDateProps<DateType>>;
+export type PickerDateProps<DateType> = {} & PickerSharedProps<DateType> &
+  OmitPanelProps<PickerPanelDateProps<DateType>>;
 
 export type PickerTimeProps<DateType> = {
   picker: 'time';
@@ -109,7 +111,8 @@ export type PickerTimeProps<DateType> = {
    * since `defaultOpenValue` will confuse user of current value status
    */
   defaultOpenValue?: DateType;
-} & PickerSharedProps<DateType> & Omit<OmitPanelProps<PickerPanelTimeProps<DateType>>, 'format'>;
+} & PickerSharedProps<DateType> &
+  Omit<OmitPanelProps<PickerPanelTimeProps<DateType>>, 'format'>;
 
 export type PickerProps<DateType> =
   | PickerBaseProps<DateType>
@@ -194,9 +197,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const [selectedValue, setSelectedValue] = React.useState<DateType | null>(mergedValue);
 
   // Operation ref
-  const operationRef: React.MutableRefObject<ContextOperationRefProps | null> = React.useRef<ContextOperationRefProps>(
-    null,
-  );
+  const operationRef: React.MutableRefObject<ContextOperationRefProps | null> =
+    React.useRef<ContextOperationRefProps>(null);
 
   // Open
   const [mergedOpen, triggerInnerOpen] = useMergedState(false, {
@@ -433,6 +435,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
           triggerOpen(false);
         }}
         className={`${prefixCls}-clear`}
+        role="button"
       >
         {clearIcon || <span className={`${prefixCls}-clear-btn`} />}
       </span>

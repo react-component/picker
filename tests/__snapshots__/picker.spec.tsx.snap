@@ -20,6 +20,7 @@ exports[`Picker.Basic icon 1`] = `
   </span>
   <span
     class="rc-picker-clear"
+    role="button"
   >
     <span
       class="suffix-icon"
