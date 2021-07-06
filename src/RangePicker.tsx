@@ -227,6 +227,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const panelDivRef = useRef<HTMLDivElement>(null);
+  const rangeWrapperRef = useRef<HTMLDivElement>(null);
   const startInputDivRef = useRef<HTMLDivElement>(null);
   const endInputDivRef = useRef<HTMLDivElement>(null);
   const separatorRef = useRef<HTMLDivElement>(null);
@@ -860,14 +861,15 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     mergedActivePickerIndex &&
     startInputDivRef.current &&
     separatorRef.current &&
-    panelDivRef.current
+    panelDivRef.current &&
+    rangeWrapperRef.current
   ) {
     // Arrow offset
     arrowLeft = startInputDivRef.current.offsetWidth + separatorRef.current.offsetWidth;
+    const panelDivOffsetLeft = panelDivRef.current.offsetLeft;
+    const distanceToWrapper = rangeWrapperRef.current.offsetWidth - panelDivRef.current.offsetWidth;
 
-    if (panelDivRef.current.offsetWidth && arrowLeft > panelDivRef.current.offsetWidth) {
-      panelLeft = arrowLeft;
-    }
+    panelLeft = panelDivOffsetLeft === 0 ? distanceToWrapper : distanceToWrapper * -1;
   }
 
   const arrowPositionStyle = direction === 'rtl' ? { right: arrowLeft } : { left: arrowLeft };
@@ -960,7 +962,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     return (
       <div
         className={`${prefixCls}-panel-container`}
-        style={{ marginLeft: panelLeft }}
+        style={{ transform: `translateX(${panelLeft}px)` }}
         ref={panelDivRef}
         onMouseDown={(e) => {
           e.preventDefault();
@@ -975,6 +977,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     <div
       className={classNames(`${prefixCls}-range-wrapper`, `${prefixCls}-${picker}-range-wrapper`)}
       style={{ minWidth: popupMinWidth }}
+      ref={rangeWrapperRef}
     >
       <div className={`${prefixCls}-range-arrow`} style={arrowPositionStyle} />
 
