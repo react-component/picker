@@ -52,7 +52,7 @@ describe('Picker.Basic', () => {
     modeList.forEach(({ mode, componentNames }) => {
       it(mode, () => {
         const wrapper = mount(<MomentPicker mode={mode} open />);
-        componentNames.forEach(componentName => {
+        componentNames.forEach((componentName) => {
           expect(wrapper.find(componentName).length).toBeTruthy();
         });
       });
@@ -90,7 +90,7 @@ describe('Picker.Basic', () => {
     modeList.forEach(({ picker, componentNames }) => {
       it(picker, () => {
         const wrapper = mount(<MomentPicker picker={picker as any} open />);
-        componentNames.forEach(componentName => {
+        componentNames.forEach((componentName) => {
           expect(wrapper.find(componentName).length).toBeTruthy();
         });
       });
@@ -309,10 +309,7 @@ describe('Picker.Basic', () => {
     wrapper.openPicker();
 
     const preventDefault = jest.fn();
-    wrapper
-      .find('td')
-      .first()
-      .simulate('mouseDown', { preventDefault });
+    wrapper.find('td').first().simulate('mouseDown', { preventDefault });
 
     expect(preventDefault).toHaveBeenCalled();
   });
@@ -415,12 +412,7 @@ describe('Picker.Basic', () => {
       wrapper.openPicker();
 
       function selectColumn(colIndex: number, rowIndex: number) {
-        wrapper
-          .find('ul')
-          .at(colIndex)
-          .find('li')
-          .at(rowIndex)
-          .simulate('click');
+        wrapper.find('ul').at(colIndex).find('li').at(rowIndex).simulate('click');
       }
 
       selectColumn(0, 13);
@@ -435,7 +427,7 @@ describe('Picker.Basic', () => {
   });
 
   it('renderExtraFooter', () => {
-    const renderExtraFooter = jest.fn(mode => <div>{mode}</div>);
+    const renderExtraFooter = jest.fn((mode) => <div>{mode}</div>);
     const wrapper = mount(<MomentPicker renderExtraFooter={renderExtraFooter} />);
 
     function matchFooter(mode: string) {
@@ -482,7 +474,7 @@ describe('Picker.Basic', () => {
       expect(onSelect).not.toHaveBeenCalled();
     });
 
-    ['decade', 'year', 'quarter', 'month', 'week'].forEach(name => {
+    ['decade', 'year', 'quarter', 'month', 'week'].forEach((name) => {
       it(`not works on ${name}`, () => {
         const wrapper = mount(<MomentPicker picker={name as any} showToday />);
         wrapper.openPicker();
@@ -500,6 +492,12 @@ describe('Picker.Basic', () => {
         allowClear
       />,
     );
+
+    expect(wrapper.find('.rc-picker-input').render()).toMatchSnapshot();
+  });
+
+  it('inputRender', () => {
+    const wrapper = mount(<MomentPicker inputRender={(props) => <input {...props} />} />);
 
     expect(wrapper.find('.rc-picker-input').render()).toMatchSnapshot();
   });
@@ -706,13 +704,8 @@ describe('Picker.Basic', () => {
   });
 
   it('dateRender', () => {
-    const wrapper = mount(<MomentPicker open dateRender={date => date.format('YYYY-MM-DD')} />);
-    expect(
-      wrapper
-        .find('tbody td')
-        .last()
-        .text(),
-    ).toEqual('1990-10-06');
+    const wrapper = mount(<MomentPicker open dateRender={(date) => date.format('YYYY-MM-DD')} />);
+    expect(wrapper.find('tbody td').last().text()).toEqual('1990-10-06');
   });
 
   it('format', () => {
@@ -898,10 +891,16 @@ describe('Picker.Basic', () => {
     function disabledDate(current: Moment) {
       return current <= getMoment('2020-12-28 00:00:00').endOf('day');
     }
-    const wrapper = mount(<MomentPicker open defaultValue={getMoment('2020-12-29 12:00:00')} disabledDate={disabledDate} />);
+    const wrapper = mount(
+      <MomentPicker
+        open
+        defaultValue={getMoment('2020-12-29 12:00:00')}
+        disabledDate={disabledDate}
+      />,
+    );
     // Date Panel
     Array.from({
-      length: 31
+      length: 31,
     }).forEach((v, i) => {
       const cell = wrapper.findCell(`${i + 1}`);
       // >= 29
@@ -914,7 +913,7 @@ describe('Picker.Basic', () => {
     wrapper.find('.rc-picker-month-btn').simulate('click');
     // Month Panel
     Array.from({
-      length: 12
+      length: 12,
     }).forEach((v, i) => {
       const cell = wrapper.find('.rc-picker-cell-in-view').at(i);
       // >= 12
@@ -927,7 +926,7 @@ describe('Picker.Basic', () => {
     wrapper.find('.rc-picker-year-btn').simulate('click');
     // Year Panel
     Array.from({
-      length: 10
+      length: 10,
     }).forEach((v, i) => {
       const cell = wrapper.find('.rc-picker-cell-in-view').at(i);
       // >= 2020
@@ -935,17 +934,24 @@ describe('Picker.Basic', () => {
     });
     // Decade Panel
     Array.from({
-      length: 8
+      length: 8,
     }).forEach((v, i) => {
       const cell = wrapper.find('.rc-picker-cell-in-view').at(i);
       // >= 2020
       expect(cell.hasClass('rc-picker-cell-disabled')).toBeFalsy();
     });
 
-    const quarterWrapper = mount(<MomentPicker picker="quarter" open defaultValue={getMoment('2020-12-29 12:00:00')} disabledDate={disabledDate} />);
+    const quarterWrapper = mount(
+      <MomentPicker
+        picker="quarter"
+        open
+        defaultValue={getMoment('2020-12-29 12:00:00')}
+        disabledDate={disabledDate}
+      />,
+    );
     // quarter Panel
     Array.from({
-      length: 4
+      length: 4,
     }).forEach((v, i) => {
       const cell = quarterWrapper.find('.rc-picker-cell-in-view').at(i);
       // >= 4
