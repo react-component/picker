@@ -10,6 +10,8 @@ export type GenerateConfig<DateType> = {
   getNow: () => DateType;
   getFixedDate: (fixed: string) => DateType;
   getEndDate: (value: DateType) => DateType;
+  getStartDay: (value: DateType) => DateType;
+  getEndDay: (value: DateType) => DateType;
 
   // Set
   addYear: (value: DateType, diff: number) => DateType;

@@ -49,6 +49,8 @@ const generateConfig: GenerateConfig<Dayjs> = {
   getNow: () => dayjs(),
   getFixedDate: string => dayjs(string, 'YYYY-MM-DD'),
   getEndDate: date => date.endOf('month'),
+  getStartDay: date => date.startOf('day'),
+  getEndDay: date => date.endOf('day'),
   getWeekDay: date => {
     const clone = date.locale('en');
     return clone.weekday() + clone.localeData().firstDayOfWeek();

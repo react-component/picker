@@ -7,6 +7,14 @@ const generateConfig: GenerateConfig<Moment> = {
   // get
   getNow: () => moment(),
   getFixedDate: string => moment(string, 'YYYY-MM-DD'),
+  getStartDay: date => {
+    const clone = date.clone();
+    return clone.startOf('day');
+  },
+  getEndDay: date => {
+    const clone = date.clone();
+    return clone.endOf('day');
+  },
   getEndDate: date => {
     const clone = date.clone();
     return clone.endOf('month');
