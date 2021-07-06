@@ -1,6 +1,7 @@
 export type GenerateConfig<DateType> = {
   // Get
   getWeekDay: (value: DateType) => number;
+  getMillisecond: (value: DateType) => number;
   getSecond: (value: DateType) => number;
   getMinute: (value: DateType) => number;
   getHour: (value: DateType) => number;
@@ -21,6 +22,7 @@ export type GenerateConfig<DateType> = {
   setHour: (value: DateType, hour: number) => DateType;
   setMinute: (value: DateType, minute: number) => DateType;
   setSecond: (value: DateType, second: number) => DateType;
+  setMillisecond: (value: DateType, second: number) => DateType;
 
   // Compare
   isAfter: (date1: DateType, date2: DateType) => boolean;

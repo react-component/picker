@@ -21,6 +21,7 @@ const generateConfig: GenerateConfig<Moment> = {
   getHour: date => date.hour(),
   getMinute: date => date.minute(),
   getSecond: date => date.second(),
+  getMillisecond: date => date.millisecond(),
 
   // set
   addYear: (date, diff) => {
@@ -58,6 +59,10 @@ const generateConfig: GenerateConfig<Moment> = {
   setSecond: (date, second) => {
     const clone = date.clone();
     return clone.second(second);
+  },
+  setMillisecond: (date, millisecond) => {
+    const clone = date.clone();
+    return clone.millisecond(millisecond);
   },
 
   // Compare
