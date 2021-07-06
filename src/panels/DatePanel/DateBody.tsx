@@ -76,7 +76,7 @@ function DateBody<DateType>(props: DateBodyProps<DateType>) {
     rangedValue: prefixColumn ? null : rangedValue,
     hoverRangedValue: prefixColumn ? null : hoverRangedValue,
     isSameCell: (current, target) => isSameDate(generateConfig, current, target),
-    isInView: date => isSameMonth(generateConfig, date, viewDate),
+    isInView: (date) => isSameMonth(generateConfig, date, viewDate),
     offsetCell: (date, offset) => generateConfig.addDate(date, offset),
   });
 
@@ -92,10 +92,10 @@ function DateBody<DateType>(props: DateBodyProps<DateType>) {
       getCellText={generateConfig.getDate}
       getCellClassName={getCellClassName}
       getCellDate={generateConfig.addDate}
-      titleCell={date =>
+      titleCell={(date) =>
         formatValue(date, {
           locale,
-          format: 'YYYY-MM-DD',
+          format: locale.dateTitleFormat || 'YYYY-MM-DD',
           generateConfig,
         })
       }

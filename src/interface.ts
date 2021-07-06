@@ -9,6 +9,9 @@ export type Locale = {
   yearFormat: string;
   monthFormat?: string;
   quarterFormat?: string;
+  quarterTitleFormat?: string;
+  monthTitleFormat?: string;
+  dateTitleFormat?: string;
 
   today: string;
   now: string;
@@ -70,9 +73,8 @@ export type PanelSharedProps<DateType> = {
   superNextIcon?: React.ReactNode;
 
   /**
-   * Typescript can not handle generic type so we can not use `forwardRef` here.
-   * Thus, move ref into operationRef.
-   * This is little hack which should refactor after typescript support.
+   * Typescript can not handle generic type so we can not use `forwardRef` here. Thus, move ref into
+   * operationRef. This is little hack which should refactor after typescript support.
    */
   operationRef: React.MutableRefObject<PanelRefProps>;
 
