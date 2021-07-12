@@ -38,6 +38,7 @@ import RangeContext from './RangeContext';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
 import { getLowerBoundTime, setDateTime, setTime } from './utils/timeUtil';
+import type { CustomFormat } from './interface';
 
 export type PickerPanelSharedProps<DateType> = {
   prefixCls?: string;
@@ -83,6 +84,8 @@ export type PickerPanelSharedProps<DateType> = {
 
   /** @private Internal usage. Do not use in your production env */
   components?: Components;
+  
+  htmlTitle?: boolean | { format?: string | CustomFormat<DateType> };
 };
 
 export type PickerPanelBaseProps<DateType> = {
