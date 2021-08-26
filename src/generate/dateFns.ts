@@ -1,3 +1,6 @@
+import type {
+  Locale
+} from 'date-fns';
 import {
   addDays,
   addMonths,
@@ -24,15 +27,123 @@ import {
   setYear,
   startOfWeek,
 } from 'date-fns';
-import * as Locale from 'date-fns/locale';
+import {
+  ar,
+  az,
+  bg,
+  ca,
+  cs,
+  da,
+  de,
+  el,
+  enGB,
+  enUS,
+  es,
+  et,
+  faIR,
+  fi,
+  fr,
+  frCA,
+  gl,
+  he,
+  hi,
+  hr,
+  hu,
+  hy,
+  id,
+  is,
+  it,
+  ja,
+  kn,
+  kk,
+  ko,
+  lt,
+  lv,
+  mk,
+  mn,
+  ms,
+  nb,
+  nlBE,
+  nl,
+  pl,
+  ptBR,
+  pt,
+  ro,
+  ru,
+  sk,
+  sr,
+  sl,
+  sv,
+  ta,
+  th,
+  tr,
+  uk,
+  vi,
+  zhCN,
+  zhTW,
+} from 'date-fns/locale';
 import type { GenerateConfig } from '.';
 
-const localeMap: Record<string, string> = {
-  ko_KR: 'ko'
-};
-
-const dealLocal = (str: string) => {
-  return localeMap[str] || str.replace(/_/g, '');
+const LocaleMap: Record<string, Locale> = {
+  ar_EG: ar,
+  az_AZ: az,
+  bg_BG: bg,
+  // by_BY: by,
+  ca_ES: ca,
+  cs_CZ: cs,
+  da_DK: da,
+  de_DE: de,
+  el_GR: el,
+  en_GB: enGB,
+  en_US: enUS,
+  es_ES: es,
+  et_EE: et,
+  fa_IR: faIR,
+  fi_FI: fi,
+  fr_BE: fr,
+  fr_CA: frCA,
+  fr_FR: fr,
+  // ga_IE: ga,
+  gl_ES: gl,
+  he_IL: he,
+  hi_IN: hi,
+  hr_HR: hr,
+  hu_HU: hu,
+  hy_AM: hy,
+  id_ID: id,
+  it_IT: it,
+  is_IS: is,
+  ja_JP: ja,
+  // kmr_IQ: kmr,
+  kn_IN: kn,
+  kk_KZ: kk,
+  ko_KR: ko,
+  lt_LT: lt,
+  lv_LV: lv,
+  mk_MK: mk,
+  mn_MN: mn,
+  ms_MY: ms,
+  nb_NO: nb,
+  // ne_NP: ne,
+  nl_BE: nlBE,
+  nl_NL: nl,
+  pl_PL: pl,
+  pt_BR: ptBR,
+  pt_PT: pt,
+  ro_RO: ro,
+  ru_RU: ru,
+  sk_SK: sk,
+  sr_RS: sr,
+  sl_SI: sl,
+  sv_SE: sv,
+  ta_IN: ta,
+  th_TH: th,
+  tr_TR: tr,
+  uk_UA: uk,
+  vi_VN: vi,
+  zh_CN: zhCN,
+  zh_HK: zhCN,
+  zh_TW: zhTW,
 };
 
 const localeParse = (format: string) => {
@@ -76,23 +187,22 @@ const generateConfig: GenerateConfig<Date> = {
 
   locale: {
     getWeekFirstDay: (locale) => {
-      const clone = Locale[dealLocal(locale)];
-      return clone.options.weekStartsOn;
+      return LocaleMap[locale].options.weekStartsOn;
     },
     getWeekFirstDate: (locale, date) => {
-      return startOfWeek(date, { locale: Locale[dealLocal(locale)] });
+      return startOfWeek(date, { locale: LocaleMap[locale] });
     },
     getWeek: (locale, date) => {
-      return getWeek(date, { locale: Locale[dealLocal(locale)] });
+      return getWeek(date, { locale: LocaleMap[locale] });
     },
     getShortWeekDays: (locale) => {
-      const clone = Locale[dealLocal(locale)];
-      return Array.from({ length: 7 }).map((_, i) => clone.localize.day(i, { width: 'short' }));
+      return Array.from({ length: 7 }).map((_, i) =>
+        LocaleMap[locale].localize.day(i, { width: 'short' }),
+      );
     },
     getShortMonths: (locale) => {
-      const clone = Locale[dealLocal(locale)];
       return Array.from({ length: 12 }).map((_, i) =>
-        clone.localize.month(i, { width: 'abbreviated' }),
+        LocaleMap[locale].localize.month(i, { width: 'abbreviated' }),
       );
     },
     format: (locale, date, format) => {
@@ -100,7 +210,7 @@ const generateConfig: GenerateConfig<Date> = {
         return null;
       }
       return formatDate(date, localeParse(format), {
-        locale: Locale[dealLocal(locale)],
+        locale: LocaleMap[locale],
       });
     },
     parse: (locale, text, formats) => {
@@ -108,7 +218,7 @@ const generateConfig: GenerateConfig<Date> = {
         const format = localeParse(formats[i]);
         const formatText = text;
         const date = parseDate(formatText, format, new Date(), {
-          locale: Locale[dealLocal(locale)],
+          locale: LocaleMap[locale],
         });
         if (isValid(date)) {
           return date;
