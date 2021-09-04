@@ -31,7 +31,16 @@ describe('Picker.Range', () => {
 
       matchValues(wrapper, '1989-11-28', '1990-09-03');
     });
+    it('defaultPickerValue with showTime', () => {
+      const startDate = getMoment('1982-02-12');
+      const endDate = getMoment('1982-02-12');
 
+      const wrapper = mount(
+        <MomentRangePicker defaultPickerValue={[startDate, endDate]} showTime />,
+      );
+      wrapper.openPicker();
+      expect(wrapper.find('.rc-picker-year-btn').first().text()).toEqual(startDate.format('YYYY'));
+    });
     it('controlled', () => {
       const wrapper = mount(
         <MomentRangePicker value={[getMoment('1989-11-28'), getMoment('1990-09-03')]} />,

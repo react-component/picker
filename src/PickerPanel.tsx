@@ -101,7 +101,8 @@ export type PickerPanelDateProps<DateType> = {
 
 export type PickerPanelTimeProps<DateType> = {
   picker: 'time';
-} & PickerPanelSharedProps<DateType> & SharedTimeProps<DateType>;
+} & PickerPanelSharedProps<DateType> &
+  SharedTimeProps<DateType>;
 
 export type PickerPanelProps<DateType> =
   | PickerPanelBaseProps<DateType>
@@ -208,12 +209,16 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       // When value is null and set showTime
       if (!mergedValue && showTime) {
         if (typeof showTime === 'object') {
-          return setDateTime(generateConfig, date, showTime.defaultValue || now);
+          return setDateTime(
+            generateConfig,
+            Array.isArray(date) ? date[0] : date,
+            showTime.defaultValue || now,
+          );
         }
         if (defaultValue) {
-          return setDateTime(generateConfig, date, defaultValue);
+          return setDateTime(generateConfig, Array.isArray(date) ? date[0] : date, defaultValue);
         }
-        return setDateTime(generateConfig, date, now);
+        return setDateTime(generateConfig, Array.isArray(date) ? date[0] : date, now);
       }
       return date;
     },
