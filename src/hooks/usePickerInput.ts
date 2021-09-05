@@ -105,6 +105,8 @@ export default function usePickerInput({
     },
 
     onBlur: (e) => {
+      setFocused(false);
+
       if (preventBlurRef.current || !isClickOutside(document.activeElement)) {
         preventBlurRef.current = false;
         return;
@@ -128,7 +130,6 @@ export default function usePickerInput({
           onSubmit();
         }
       }
-      setFocused(false);
 
       if (onBlur) {
         onBlur(e);
