@@ -105,7 +105,7 @@ export type PickerDateProps<DateType> = {} & PickerSharedProps<DateType> &
   OmitPanelProps<PickerPanelDateProps<DateType>>;
 
 export type PickerTimeProps<DateType> = {
-  picker: 'time';
+  picker?: 'date' | 'week' | 'month' | 'quarter' | 'year';
   /**
    * @deprecated Please use `defaultValue` directly instead
    * since `defaultOpenValue` will confuse user of current value status
