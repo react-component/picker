@@ -300,7 +300,12 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         target as HTMLElement,
       ),
     onSubmit: () => {
-      if (disabledDate && disabledDate(selectedValue)) {
+      if (
+        // When user typing disabledDate with keyboard and enter, this value will be empty
+        !selectedValue ||
+        // Normal disabled check
+        (disabledDate && disabledDate(selectedValue))
+      ) {
         return false;
       }
 
