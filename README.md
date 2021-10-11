@@ -99,6 +99,7 @@ render(<Picker />, mountNode);
 | showToday | Boolean | false | whether to show today button |
 | disabledDate | Function(date:moment) => Boolean |  | whether to disable select of current date |
 | dateRender | Function(currentDate:moment, today:moment) => React.Node |  | custom rendering function for date cells |
+| weekDayLocaleCellRender | Function(weekDayLocale:string|React.Node) => React.Node |  | custom rendering function for week day locale cells |
 | monthCellRender | Function(currentDate:moment, locale:Locale) => React.Node |  | Custom month cell render method |
 | renderExtraFooter | (mode) => React.Node |  | extra footer |
 | onSelect | Function(date: moment) |  | a callback function, can be executed when the selected time |
