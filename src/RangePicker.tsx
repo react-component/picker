@@ -603,6 +603,15 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       triggerOpen(newOpen, index);
     },
     onSubmit: () => {
+      if (
+        // When user typing disabledDate with keyboard and enter, this value will be empty
+        !selectedValue ||
+        // Normal disabled check
+        (disabledDate && disabledDate(selectedValue[index]))
+      ) {
+        return false;
+      }
+
       triggerChange(selectedValue, index);
       resetText();
     },

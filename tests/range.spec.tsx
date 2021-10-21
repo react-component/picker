@@ -4,6 +4,7 @@ import { act } from 'react-dom/test-utils';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import type { Moment } from 'moment';
+import moment from 'moment';
 import type { Wrapper } from './util/commonUtil';
 import { mount, getMoment, isSame, MomentRangePicker } from './util/commonUtil';
 import zhCN from '../src/locale/zh_CN';
@@ -1543,5 +1544,29 @@ describe('Picker.Range', () => {
     expect(handleMouseEnter).toHaveBeenCalled();
     wrapper.simulate('mouseleave');
     expect(handleMouseLeave).toHaveBeenCalled();
+  });
+
+  // https://github.com/ant-design/ant-design/issues/31334
+  it('keyboard should not trigger on disabledDate', () => {
+    const onCalendarChange = jest.fn();
+    const now = moment();
+    const disabledDate = (current: Moment) => {
+      return current.diff(now, 'days') > 1 || current.diff(now, 'days') < -1;
+    };
+    const wrapper = mount(
+      <MomentRangePicker onCalendarChange={onCalendarChange} disabledDate={disabledDate} />,
+    );
+    wrapper.find('input').first().simulate('focus');
+    wrapper.keyDown(KeyCode.ENTER);
+    wrapper.keyDown(KeyCode.TAB);
+    // Make sure the selected value is disabledDate. Because only a few values are disabledDate
+    wrapper.keyDown(KeyCode.DOWN);
+    wrapper.keyDown(KeyCode.DOWN);
+    wrapper.keyDown(KeyCode.DOWN);
+    wrapper.keyDown(KeyCode.DOWN);
+    wrapper.keyDown(KeyCode.DOWN);
+    wrapper.keyDown(KeyCode.DOWN);
+    wrapper.keyDown(KeyCode.ENTER);
+    expect(onCalendarChange).not.toHaveBeenCalled();
   });
 });
