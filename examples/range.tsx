@@ -1,5 +1,6 @@
 import React from 'react';
-import moment, { Moment } from 'moment';
+import type { Moment } from 'moment';
+import moment from 'moment';
 import RangePicker from '../src/RangePicker';
 import momentGenerateConfig from '../src/generate/moment';
 import zhCN from '../src/locale/zh_CN';
@@ -67,7 +68,7 @@ export default () => {
             ranges={{
               ranges: [moment(), moment().add(10, 'day')],
             }}
-            onOk={dates => {
+            onOk={(dates) => {
               console.log('OK!!!', dates);
             }}
           />
