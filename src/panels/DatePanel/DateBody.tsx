@@ -95,7 +95,7 @@ function DateBody<DateType>(props: DateBodyProps<DateType>) {
       titleCell={date =>
         formatValue(date, {
           locale,
-          format: 'YYYY-MM-DD',
+          format: locale.dateFormat,
           generateConfig,
         })
       }
