@@ -1,12 +1,6 @@
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
-import {
-  WEEK_DAY_COUNT,
-  getWeekStartDate,
-  isSameDate,
-  isSameMonth,
-  formatValue,
-} from '../../utils/dateUtil';
+import { WEEK_DAY_COUNT, getWeekStartDate, isSameDate, isSameMonth } from '../../utils/dateUtil';
 import type { Locale } from '../../interface';
 import RangeContext from '../../RangeContext';
 import useCellClassName from '../../hooks/useCellClassName';
@@ -34,16 +28,8 @@ export type DateBodyProps<DateType> = {
 } & DateBodyPassProps<DateType>;
 
 function DateBody<DateType>(props: DateBodyProps<DateType>) {
-  const {
-    prefixCls,
-    generateConfig,
-    prefixColumn,
-    locale,
-    rowCount,
-    viewDate,
-    value,
-    dateRender,
-  } = props;
+  const { prefixCls, generateConfig, prefixColumn, locale, rowCount, viewDate, value, dateRender } =
+    props;
 
   const { rangedValue, hoverRangedValue } = React.useContext(RangeContext);
 
@@ -76,7 +62,7 @@ function DateBody<DateType>(props: DateBodyProps<DateType>) {
     rangedValue: prefixColumn ? null : rangedValue,
     hoverRangedValue: prefixColumn ? null : hoverRangedValue,
     isSameCell: (current, target) => isSameDate(generateConfig, current, target),
-    isInView: date => isSameMonth(generateConfig, date, viewDate),
+    isInView: (date) => isSameMonth(generateConfig, date, viewDate),
     offsetCell: (date, offset) => generateConfig.addDate(date, offset),
   });
 
@@ -92,13 +78,7 @@ function DateBody<DateType>(props: DateBodyProps<DateType>) {
       getCellText={generateConfig.getDate}
       getCellClassName={getCellClassName}
       getCellDate={generateConfig.addDate}
-      titleCell={date =>
-        formatValue(date, {
-          locale,
-          format: locale.dateFormat,
-          generateConfig,
-        })
-      }
+      titleCell={(date) => generateConfig.locale.format(locale.locale, date, locale.dateFormat)}
       headerCells={headerCells}
     />
   );
