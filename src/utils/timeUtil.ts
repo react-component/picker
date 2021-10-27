@@ -1,5 +1,6 @@
 import type { NullableDateType } from '../interface';
 import type { GenerateConfig } from '../generate';
+import type { Locale } from '../interface';
 
 export function setTime<DateType>(
   generateConfig: GenerateConfig<DateType>,
@@ -24,21 +25,11 @@ export function setDateTime<DateType>(
   }
 
   let newDate = date;
-  newDate = generateConfig.setHour(
-    newDate,
-    generateConfig.getHour(defaultDate),
-  );
-  newDate = generateConfig.setMinute(
-    newDate,
-    generateConfig.getMinute(defaultDate),
-  );
-  newDate = generateConfig.setSecond(
-    newDate,
-    generateConfig.getSecond(defaultDate),
-  );
+  newDate = generateConfig.setHour(newDate, generateConfig.getHour(defaultDate));
+  newDate = generateConfig.setMinute(newDate, generateConfig.getMinute(defaultDate));
+  newDate = generateConfig.setSecond(newDate, generateConfig.getSecond(defaultDate));
   return newDate;
 }
-
 
 export function getLowerBoundTime(
   hour: number,
@@ -60,11 +51,14 @@ export function getLowerBoundTime(
   return [lowerBoundHour, lowerBoundMinute, lowerBoundSecond];
 }
 
-export function getLastDay<DateType>(generateConfig: GenerateConfig<DateType>, date: DateType) {
+export function getLastDay<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  date: DateType,
+  locale: Locale,
+) {
   const year = generateConfig.getYear(date);
   const month = generateConfig.getMonth(date) + 1;
   const endDate = generateConfig.getEndDate(generateConfig.getFixedDate(`${year}-${month}-01`));
-  const lastDay = generateConfig.getDate(endDate);
-  const monthShow = month < 10 ? `0${month}` : `${month}`;
-  return `${year}-${monthShow}-${lastDay}`;
+
+  return generateConfig.locale.format(locale.locale, endDate, locale.dateFormat);
 }

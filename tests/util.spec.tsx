@@ -3,6 +3,8 @@ import { getLowerBoundTime, setTime, getLastDay } from '../src/utils/timeUtil';
 import { toArray } from '../src/utils/miscUtil';
 import { isSameTime, isSameDecade } from '../src/utils/dateUtil';
 import { getMoment } from './util/commonUtil';
+import koKR from '../src/locale/ko_KR';
+import enUS from '../src/locale/en_US';
 
 describe('Picker.Util', () => {
   it('toArray', () => {
@@ -66,11 +68,7 @@ describe('Picker.Util', () => {
   });
 
   describe('getLastDay', () => {
-    expect(
-      getLastDay(
-        momentGenerateConfig,
-        getMoment('2020-10-01'),
-      ),
-    ).toEqual('2020-10-31');
+    expect(getLastDay(momentGenerateConfig, getMoment('2020-10-01'), koKR)).toEqual('2020-10-31');
+    expect(getLastDay(momentGenerateConfig, getMoment('2020-10-01'), enUS)).toEqual('10/31/2020');
   });
 });
