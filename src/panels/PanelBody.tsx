@@ -82,7 +82,7 @@ export default function PanelBody<DateType>({
       const lastDateTitle =
         picker === 'year'
           ? Number(title) % 10 === 9
-          : getLastDay(generateConfig, currentDate, locale);
+          : locale && getLastDay(generateConfig, currentDate, locale);
 
       row.push(
         <td
