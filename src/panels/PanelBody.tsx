@@ -79,7 +79,10 @@ export default function PanelBody<DateType>({
       }
 
       const title = titleCell && titleCell(currentDate);
-      const lastDayTitle = locale && getLastDay(generateConfig, currentDate, locale);
+      const lastDateTitle =
+        picker === 'year'
+          ? Number(title) % 10 === 9
+          : getLastDay(generateConfig, currentDate, locale);
 
       row.push(
         <td
@@ -89,8 +92,7 @@ export default function PanelBody<DateType>({
             [`${cellPrefixCls}-disabled`]: disabled,
             [`${cellPrefixCls}-start`]:
               getCellText(currentDate) === 1 || (picker === 'year' && Number(title) % 10 === 0),
-            [`${cellPrefixCls}-end`]:
-              title === lastDayTitle || (picker === 'year' && Number(title) % 10 === 9),
+            [`${cellPrefixCls}-end`]: title === lastDateTitle,
             ...getCellClassName(currentDate),
           })}
           onClick={() => {
