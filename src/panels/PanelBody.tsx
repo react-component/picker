@@ -23,7 +23,7 @@ export type PanelBodyProps<DateType> = {
   getCellNode?: (date: DateType) => React.ReactNode;
   titleCell?: (date: DateType) => string;
   generateConfig: GenerateConfig<DateType>;
-  locale: Locale;
+  locale?: Locale;
 
   // Used for week panel
   prefixColumn?: (date: DateType) => React.ReactNode;
@@ -79,6 +79,7 @@ export default function PanelBody<DateType>({
       }
 
       const title = titleCell && titleCell(currentDate);
+      const lastDayTitle = locale && getLastDay(generateConfig, currentDate, locale);
 
       row.push(
         <td
@@ -89,8 +90,7 @@ export default function PanelBody<DateType>({
             [`${cellPrefixCls}-start`]:
               getCellText(currentDate) === 1 || (picker === 'year' && Number(title) % 10 === 0),
             [`${cellPrefixCls}-end`]:
-              title === getLastDay(generateConfig, currentDate, locale) ||
-              (picker === 'year' && Number(title) % 10 === 9),
+              title === lastDayTitle || (picker === 'year' && Number(title) % 10 === 9),
             ...getCellClassName(currentDate),
           })}
           onClick={() => {
