@@ -1,5 +1,6 @@
 import React from 'react';
-import moment, { Moment } from 'moment';
+import type { Moment } from 'moment';
+import moment from 'moment';
 import RangePicker from '../src/RangePicker';
 import momentGenerateConfig from '../src/generate/moment';
 import zhCN from '../src/locale/zh_CN';
@@ -40,6 +41,11 @@ export default () => {
 
   const rangePickerRef = React.useRef<RangePicker<Moment>>(null);
 
+  const now = momentGenerateConfig.getNow();
+  const disabledDate = (current: Moment) => {
+    return current.diff(now, 'days') > 1 || current.diff(now, 'days') < -1;
+  };
+
   return (
     <div>
       <h2>Value: {value ? `${formatDate(value[0])} ~ ${formatDate(value[1])}` : 'null'}</h2>
@@ -67,7 +73,7 @@ export default () => {
             ranges={{
               ranges: [moment(), moment().add(10, 'day')],
             }}
-            onOk={dates => {
+            onOk={(dates) => {
               console.log('OK!!!', dates);
             }}
           />
@@ -160,6 +166,16 @@ export default () => {
             value={undefined}
             locale={zhCN}
             placeholder={['start...', 'end...']}
+          />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>DisabledDate</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            placeholder={['start...', 'end...']}
+            disabledDate={disabledDate}
           />
         </div>
       </div>
