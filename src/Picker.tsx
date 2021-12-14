@@ -144,6 +144,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     allowClear,
     autoFocus,
     showTime,
+    showWeek,
     picker = 'date',
     format,
     use12Hours,
@@ -178,7 +179,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
+  const needConfirmButton: boolean =
+    (picker === 'date' && !!showTime) || (picker === 'date' && !!showWeek) || picker === 'time';
 
   // ============================= State =============================
   const formatList = toArray(getDefaultFormat(format, picker, showTime, use12Hours));

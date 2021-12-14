@@ -1,5 +1,6 @@
 import React from 'react';
-import moment, { Moment } from 'moment';
+import type { Moment } from 'moment';
+import moment from 'moment';
 import PickerPanel from '../src/PickerPanel';
 import momentGenerateConfig from '../src/generate/moment';
 import zhCN from '../src/locale/zh_CN';
@@ -102,6 +103,10 @@ export default () => {
         <div style={{ margin: '0 8px' }}>
           <h3>Datetime</h3>
           <PickerPanel<Moment> {...sharedProps} locale={zhCN} showTime />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Dateweek</h3>
+          <PickerPanel<Moment> {...sharedProps} locale={enUS} showWeek />
         </div>
       </div>
     </div>

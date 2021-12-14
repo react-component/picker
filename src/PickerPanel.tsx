@@ -11,8 +11,10 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import type { SharedTimeProps } from './panels/TimePanel';
+import type { WeekPanelProps } from './panels/WeekPanel';
 import TimePanel from './panels/TimePanel';
 import DatetimePanel from './panels/DatetimePanel';
+import DateweekPanel from './panels/DateweekPanel';
 import DatePanel from './panels/DatePanel';
 import WeekPanel from './panels/WeekPanel';
 import MonthPanel from './panels/MonthPanel';
@@ -96,6 +98,8 @@ export type PickerPanelDateProps<DateType> = {
 
   // Time
   showTime?: boolean | SharedTimeProps<DateType>;
+  // Week
+  showWeek?: boolean | WeekPanelProps<DateType>;
   disabledTime?: DisabledTime<DateType>;
 } & PickerPanelSharedProps<DateType>;
 
@@ -135,6 +139,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     showNow,
     showTime,
     showToday,
+    showWeek,
     renderExtraFooter,
     hideHeader,
     onSelect,
@@ -150,7 +155,8 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     secondStep = 1,
   } = props as MergedPickerPanelProps<DateType>;
 
-  const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
+  const needConfirmButton: boolean =
+    (picker === 'date' && !!showTime) || (picker === 'date' && !!showWeek) || picker === 'time';
 
   const isHourStepValid = 24 % hourStep === 0;
   const isMinuteStepValid = 60 % minuteStep === 0;
@@ -454,6 +460,16 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
             }}
           />
         );
+      } else if (showWeek) {
+        panelNode = (
+          <DateweekPanel
+            {...pickerProps}
+            onSelect={(date, type) => {
+              setViewDate(date);
+              triggerSelect(date, type);
+            }}
+          />
+        );
       } else {
         panelNode = (
           <DatePanel<DateType>
@@ -514,7 +530,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
 
   let todayNode: React.ReactNode;
 
-  if (showToday && mergedMode === 'date' && picker === 'date' && !showTime) {
+  if (showToday && mergedMode === 'date' && picker === 'date' && !showTime && !showWeek) {
     const now = generateConfig.getNow();
     const todayCls = `${prefixCls}-today-btn`;
     const disabled = disabledDate && disabledDate(now);
