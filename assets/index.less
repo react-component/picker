@@ -297,6 +297,32 @@
     }
   }
 
+  // ====================== Date Week =======================
+  &-dateweek-panel {
+    display: flex;
+
+    .@{prefix-cls}-week-panel {
+      border-left: 1px solid #999;
+    }
+
+    .@{prefix-cls}-date-panel,
+    .@{prefix-cls}-week-panel {
+      transition: opacity 0.3s;
+    }
+
+    // Keyboard
+    &-active {
+      .@{prefix-cls}-date-panel,
+      .@{prefix-cls}-week-panel {
+        opacity: 0.3;
+
+        &-active {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
   // ======================== Input =========================
   &-input {
     position: relative;

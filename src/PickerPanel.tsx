@@ -13,6 +13,7 @@ import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import type { SharedTimeProps } from './panels/TimePanel';
 import TimePanel from './panels/TimePanel';
 import DatetimePanel from './panels/DatetimePanel';
+import DateweekPanel from './panels/DateweekPanel';
 import DatePanel from './panels/DatePanel';
 import WeekPanel from './panels/WeekPanel';
 import MonthPanel from './panels/MonthPanel';
@@ -96,6 +97,8 @@ export type PickerPanelDateProps<DateType> = {
 
   // Time
   showTime?: boolean | SharedTimeProps<DateType>;
+  // Week
+  showWeek?: boolean;
   disabledTime?: DisabledTime<DateType>;
 } & PickerPanelSharedProps<DateType>;
 
@@ -135,6 +138,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     showNow,
     showTime,
     showToday,
+    showWeek,
     renderExtraFooter,
     hideHeader,
     onSelect,
@@ -447,6 +451,16 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       if (showTime) {
         panelNode = (
           <DatetimePanel
+            {...pickerProps}
+            onSelect={(date, type) => {
+              setViewDate(date);
+              triggerSelect(date, type);
+            }}
+          />
+        );
+      } else if (showWeek) {
+        panelNode = (
+          <DateweekPanel
             {...pickerProps}
             onSelect={(date, type) => {
               setViewDate(date);
