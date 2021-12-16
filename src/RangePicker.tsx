@@ -82,7 +82,7 @@ export type RangePickerSharedProps<DateType> = {
   id?: string;
   value?: RangeValue<DateType>;
   defaultValue?: RangeValue<DateType>;
-  defaultPickerValue?: [DateType, DateType];
+  defaultPickerValue?: RangeValue<DateType>;
   placeholder?: [string, string];
   disabled?: boolean | [boolean, boolean];
   disabledTime?: (date: EventValue<DateType>, type: RangeType) => DisabledTimes;
