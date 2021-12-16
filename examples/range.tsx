@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import type { Moment } from 'moment';
 import moment from 'moment';
 import RangePicker from '../src/RangePicker';
@@ -45,6 +45,11 @@ export default () => {
   const disabledDate = (current: Moment) => {
     return current.diff(now, 'days') > 1 || current.diff(now, 'days') < -1;
   };
+
+  const [defaultPickerValue, setDefaultPickerValue] = useState<any>();
+  useEffect(() => {
+    setDefaultPickerValue([moment('2021-06-01'), moment('2021-06-02')]);
+  }, []);
 
   return (
     <div>
@@ -176,6 +181,20 @@ export default () => {
             locale={zhCN}
             placeholder={['start...', 'end...']}
             disabledDate={disabledDate}
+          />
+        </div>
+
+        <div style={{ margin: '0 8px' }}>
+          <h3>DefaultPickerValue</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            allowClear
+            ref={rangePickerRef}
+            defaultPickerValue={defaultPickerValue}
+            clearIcon={<span>X</span>}
+            suffixIcon={<span>O</span>}
           />
         </div>
       </div>

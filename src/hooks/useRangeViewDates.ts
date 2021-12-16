@@ -75,6 +75,11 @@ export default function useRangeViewDates<DateType>({
   const [defaultViewDates, setDefaultViewDates] = React.useState<
     [DateType | null, DateType | null]
   >(() => [getValue(defaultDates, 0), getValue(defaultDates, 1)]);
+
+  React.useEffect(() => {
+    setDefaultViewDates([getValue(defaultDates, 0), getValue(defaultDates, 1)]);
+  }, [defaultDates]);
+
   const [viewDates, setInternalViewDates] = React.useState<RangeValue<DateType>>(null);
 
   const startDate = getValue(values, 0);
