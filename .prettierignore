@@ -10,3 +10,5 @@ public
 _site
 .umi
 .doc
+.umi-production
+.umi-test

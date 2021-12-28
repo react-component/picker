@@ -31,3 +31,8 @@ package-lock.json
 coverage/
 .doc
 .history
+# umi
+.umi
+.umi-production
+.umi-test
+.env.local
