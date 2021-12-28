@@ -1,10 +1,10 @@
 import React from 'react';
 import { Moment } from 'moment';
-import Picker from '../src/Picker';
-import PickerPanel from '../src/PickerPanel';
-import momentGenerateConfig from '../src/generate/moment';
-import zhCN from '../src/locale/zh_CN';
-import '../assets/index.less';
+import Picker from '../../src/Picker';
+import PickerPanel from '../../src/PickerPanel';
+import momentGenerateConfig from '../../src/generate/moment';
+import zhCN from '../../src/locale/zh_CN';
+import '../../assets/index.less';
 import './calendar.less';
 
 function dateRender(date: Moment, today: Moment) {

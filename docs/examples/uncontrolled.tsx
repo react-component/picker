@@ -1,9 +1,9 @@
 import React from 'react';
 import { Moment } from 'moment';
-import momentGenerateConfig from '../src/generate/moment';
-import zhCN from '../src/locale/zh_CN';
-import '../assets/index.less';
-import Picker, { RangePicker } from '../src';
+import momentGenerateConfig from '../../src/generate/moment';
+import zhCN from '../../src/locale/zh_CN';
+import '../../assets/index.less';
+import Picker, { RangePicker } from '../../src';
 
 export default () => (
   <div>
