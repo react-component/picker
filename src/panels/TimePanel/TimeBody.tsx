@@ -65,10 +65,12 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     disabledHours,
     disabledMinutes,
     disabledSeconds,
+    disabledTime,
     hideDisabledOptions,
     onSelect,
   } = props;
 
+  // Misc
   const columns: {
     node: React.ReactElement;
     value: number;
@@ -84,6 +86,22 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   const minute = value ? generateConfig.getMinute(value) : -1;
   const second = value ? generateConfig.getSecond(value) : -1;
 
+  // Disabled Time
+  const now = generateConfig.getNow();
+  const [mergedDisabledHours, mergedDisabledMinutes, mergedDisabledSeconds] = React.useMemo(() => {
+    if (disabledTime) {
+      const disabledConfig = disabledTime(now);
+      return [
+        disabledConfig.disabledHours,
+        disabledConfig.disabledMinutes,
+        disabledConfig.disabledSeconds,
+      ];
+    }
+
+    return [disabledHours, disabledMinutes, disabledSeconds];
+  }, [disabledHours, disabledMinutes, disabledSeconds, disabledTime, now]);
+
+  // Set Time
   const setTime = (
     isNewPM: boolean | undefined,
     newHour: number,
@@ -108,7 +126,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   };
 
   // ========================= Unit =========================
-  const rawHours = generateUnits(0, 23, hourStep, disabledHours && disabledHours());
+  const rawHours = generateUnits(0, 23, hourStep, mergedDisabledHours && mergedDisabledHours());
 
   const memorizedRawHours = useMemo(() => rawHours, rawHours, shouldUnitsUpdate);
 
@@ -137,8 +155,8 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   const hours = React.useMemo(() => {
     if (!use12Hours) return memorizedRawHours;
     return memorizedRawHours
-      .filter(isPM ? hourMeta => hourMeta.value >= 12 : hourMeta => hourMeta.value < 12)
-      .map(hourMeta => {
+      .filter(isPM ? (hourMeta) => hourMeta.value >= 12 : (hourMeta) => hourMeta.value < 12)
+      .map((hourMeta) => {
         const hourValue = hourMeta.value % 12;
         const hourLabel = hourValue === 0 ? '12' : leftPad(hourValue, 2);
         return {
@@ -149,21 +167,26 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
       });
   }, [use12Hours, isPM, memorizedRawHours]);
 
-  const minutes = generateUnits(0, 59, minuteStep, disabledMinutes && disabledMinutes(originHour));
+  const minutes = generateUnits(
+    0,
+    59,
+    minuteStep,
+    mergedDisabledMinutes && mergedDisabledMinutes(originHour),
+  );
 
   const seconds = generateUnits(
     0,
     59,
     secondStep,
-    disabledSeconds && disabledSeconds(originHour, minute),
+    mergedDisabledSeconds && mergedDisabledSeconds(originHour, minute),
   );
 
   // ====================== Operations ======================
   operationRef.current = {
-    onUpDown: diff => {
+    onUpDown: (diff) => {
       const column = columns[activeColumnIndex];
       if (column) {
-        const valueIndex = column.units.findIndex(unit => unit.value === column.value);
+        const valueIndex = column.units.findIndex((unit) => unit.value === column.value);
 
         const unitLen = column.units.length;
         for (let i = 1; i < unitLen; i += 1) {
@@ -204,17 +227,17 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   }
 
   // Hour
-  addColumnNode(showHour, <TimeUnitColumn key="hour" />, hour, hours, num => {
+  addColumnNode(showHour, <TimeUnitColumn key="hour" />, hour, hours, (num) => {
     onSelect(setTime(isPM, num, minute, second), 'mouse');
   });
 
   // Minute
-  addColumnNode(showMinute, <TimeUnitColumn key="minute" />, minute, minutes, num => {
+  addColumnNode(showMinute, <TimeUnitColumn key="minute" />, minute, minutes, (num) => {
     onSelect(setTime(isPM, hour, num, second), 'mouse');
   });
 
   // Second
-  addColumnNode(showSecond, <TimeUnitColumn key="second" />, second, seconds, num => {
+  addColumnNode(showSecond, <TimeUnitColumn key="second" />, second, seconds, (num) => {
     onSelect(setTime(isPM, hour, minute, num), 'mouse');
   });
 
@@ -232,7 +255,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
       { label: 'AM', value: 0, disabled: AMDisabled },
       { label: 'PM', value: 1, disabled: PMDisabled },
     ],
-    num => {
+    (num) => {
       onSelect(setTime(!!num, hour, minute, second), 'mouse');
     },
   );
