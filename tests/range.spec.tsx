@@ -370,54 +370,6 @@ describe('Picker.Range', () => {
     wrapper.closePicker(1);
   });
 
-  it('disabledTime', () => {
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    const disabledTime = jest.fn((_: Moment | null, __: 'start' | 'end') => ({
-      disabledHours: () => [11],
-    }));
-
-    const wrapper = mount(
-      <MomentRangePicker
-        showTime
-        disabledTime={disabledTime}
-        defaultValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
-      />,
-    );
-
-    // Start
-    wrapper.openPicker();
-    expect(
-      wrapper
-        .find('PickerPanel')
-        .first()
-        .find('.rc-picker-time-panel-column')
-        .first()
-        .find('li')
-        .at(11)
-        .hasClass('rc-picker-time-panel-cell-disabled'),
-    ).toBeTruthy();
-    expect(isSame(disabledTime.mock.calls[0][0], '1989-11-28')).toBeTruthy();
-    expect(disabledTime.mock.calls[0][1]).toEqual('start');
-    wrapper.closePicker();
-
-    // End
-    disabledTime.mockClear();
-    wrapper.openPicker(1);
-    expect(
-      wrapper
-        .find('PickerPanel')
-        .last()
-        .find('.rc-picker-time-panel-column')
-        .first()
-        .find('li')
-        .at(11)
-        .hasClass('rc-picker-time-panel-cell-disabled'),
-    ).toBeTruthy();
-    expect(isSame(disabledTime.mock.calls[0][0], '1990-09-03')).toBeTruthy();
-    expect(disabledTime.mock.calls[0][1]).toEqual('end');
-    wrapper.closePicker(1);
-  });
-
   describe('focus test', () => {
     let domMock: ReturnType<typeof spyElementPrototypes>;
     let focused = false;

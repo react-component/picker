@@ -103,7 +103,7 @@ render(<Picker />, mountNode);
 | renderExtraFooter | (mode) => React.Node |  | extra footer |
 | onSelect | Function(date: moment) |  | a callback function, can be executed when the selected time |
 | onPanelChange | Function(value: moment, mode) |  | callback when picker panel mode is changed |
-| onMouseDown | (event:React.MouseEvent\<HTMLInputElement>) => void |  | callback when executed onMouseDown evnent |
+| onMouseDown | (event:React.MouseEvent\<HTMLInputElement>) => void |  | callback when executed onMouseDown event |
 | direction | String: ltr or rtl |  | Layout direction of picker component, it supports RTL direction too. |
 
 ### RangePicker
