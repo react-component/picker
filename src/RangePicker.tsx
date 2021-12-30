@@ -33,6 +33,7 @@ import getRanges from './utils/getRanges';
 import useRangeViewDates from './hooks/useRangeViewDates';
 import type { DateRender } from './panels/DatePanel/DateBody';
 import useHoverValue from './hooks/useHoverValue';
+import { legacyPropsWarning } from './utils/warnUtil';
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -232,6 +233,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const separatorRef = useRef<HTMLDivElement>(null);
   const startInputRef = useRef<HTMLInputElement>(null);
   const endInputRef = useRef<HTMLInputElement>(null);
+
+  // ============================ Warning ============================
+  if (process.env.NODE_ENV !== 'production') {
+    legacyPropsWarning(props);
+  }
 
   // ============================= Misc ==============================
   const formatList = toArray(getDefaultFormat<DateType>(format, picker, showTime, use12Hours));

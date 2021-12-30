@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Moment } from 'moment';
+import { resetWarned } from 'rc-util/lib/warning';
 import { mount, getMoment, isSame, MomentPicker, MomentRangePicker } from './util/commonUtil';
 
 describe('Picker.DisabledTime', () => {
@@ -87,5 +88,31 @@ describe('Picker.DisabledTime', () => {
     expect(isSame(disabledTime.mock.calls[0][0], '1990-09-03')).toBeTruthy();
     expect(disabledTime.mock.calls[0][1]).toEqual('end');
     wrapper.closePicker(1);
+  });
+
+  describe('warning for legacy props', () => {
+    it('single', () => {
+      resetWarned();
+      const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      mount(<MomentPicker picker="time" disabledMinutes={() => []} />);
+      expect(errSpy).toHaveBeenCalledWith(
+        "Warning: 'disabledHours', 'disabledMinutes', 'disabledSeconds' will be removed in the next major version, please use 'disabledTime' instead.",
+      );
+
+      errSpy.mockRestore();
+    });
+
+    it('range', () => {
+      resetWarned();
+      const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      mount(<MomentRangePicker picker="time" disabledMinutes={() => []} />);
+      expect(errSpy).toHaveBeenCalledWith(
+        "Warning: 'disabledHours', 'disabledMinutes', 'disabledSeconds' will be removed in the next major version, please use 'disabledTime' instead.",
+      );
+
+      errSpy.mockRestore();
+    });
   });
 });
