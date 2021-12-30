@@ -33,6 +33,7 @@ import usePickerInput from './hooks/usePickerInput';
 import useTextValueMapping from './hooks/useTextValueMapping';
 import useValueTexts from './hooks/useValueTexts';
 import useHoverValue from './hooks/useHoverValue';
+import { legacyPropsWarning } from './utils/warnUtil';
 
 export type PickerRefConfig = {
   focus: () => void;
@@ -179,6 +180,11 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
+
+  // ============================ Warning ============================
+  if (process.env.NODE_ENV !== 'production') {
+    legacyPropsWarning(props);
+  }
 
   // ============================= State =============================
   const formatList = toArray(getDefaultFormat(format, picker, showTime, use12Hours));

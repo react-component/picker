@@ -30,10 +30,10 @@
     border: 1px solid blue;
   }
   &-panel {
-    border: 1px solid #666;
-    background: @background-color;
     display: inline-block;
     vertical-align: top;
+    background: @background-color;
+    border: 1px solid #666;
 
     &-focused {
       border-color: blue;
@@ -73,8 +73,8 @@
       text-align: center;
 
       > button {
-        border: 0;
         padding: 0;
+        border: 0;
       }
     }
   }
@@ -88,19 +88,19 @@
     }
 
     &-inner {
-      font-size: 12px;
-      width: 100%;
-      height: 20px;
-      line-height: 20px;
       display: inline-block;
       box-sizing: border-box;
-      border: 0;
-      padding: 0;
+      width: 100%;
+      height: 20px;
       margin: 0;
+      padding: 0;
+      font-size: 12px;
+      line-height: 20px;
       background: transparent;
-      cursor: pointer;
-      outline: none;
+      border: 0;
       border: none;
+      outline: none;
+      cursor: pointer;
       transition: background 0.3s, border 0.3s;
 
       &:hover {
@@ -120,15 +120,15 @@
     &-range-hover {
       position: relative;
       &::after {
-        content: '';
         position: absolute;
         top: 3px;
+        right: 0;
         bottom: 0;
         left: 0;
-        right: 0;
         border: 1px solid green;
-        border-left: 0;
         border-right: 0;
+        border-left: 0;
+        content: '';
         pointer-events: none;
       }
     }
@@ -200,9 +200,9 @@
     }
 
     .@{prefix-cls}-cell-week {
-      font-size: 12px;
       color: #999;
       font-weight: bold;
+      font-size: 12px;
     }
 
     .@{prefix-cls}-cell:hover > .@{prefix-cls}-cell-inner,
@@ -229,15 +229,15 @@
 
     &-column {
       flex: none;
-      text-align: left;
-      list-style: none;
+      width: 50px;
       margin: 0;
       padding: 0 0 180px 0;
-      overflow-y: hidden;
       overflow-x: hidden;
-      width: 50px;
-      transition: background 0.3s;
+      overflow-y: hidden;
       font-size: 12px;
+      text-align: left;
+      list-style: none;
+      transition: background 0.3s;
 
       &-active {
         background: rgba(0, 0, 255, 0.1);
@@ -248,18 +248,24 @@
       }
 
       > li {
-        padding: 0;
         margin: 0;
+        padding: 0;
         cursor: pointer;
 
+        &.@{prefix-cls}-time-panel-cell {
+          &-disabled {
+            opacity: 0.5;
+          }
+        }
+
         .@{prefix-cls}-time-panel-cell-inner {
-          color: #333;
-          padding: 0 0 0 12px;
-          margin: 0;
-          height: 20px;
-          line-height: 20px;
           display: block;
           width: 100%;
+          height: 20px;
+          margin: 0;
+          padding: 0 0 0 12px;
+          color: #333;
+          line-height: 20px;
           text-align: left;
 
           .@{prefix-cls}-panel-rtl & {
@@ -321,8 +327,8 @@
 
   &-clear {
     position: absolute;
-    right: 4px;
     top: 0;
+    right: 4px;
     cursor: pointer;
 
     .@{prefix-cls}-rtl & {
@@ -368,28 +374,28 @@
 
     .@{prefix-cls}-range-arrow {
       position: absolute;
+      left: @arrow-size;
+      z-index: 1;
       width: @arrow-size;
       height: @arrow-size;
-      z-index: 1;
-      left: @arrow-size;
       margin-left: 10px;
       transition: all 0.3s;
 
       .@{prefix-cls}-dropdown-rtl& {
         right: @arrow-size;
         left: auto;
-        margin-left: 0;
         margin-right: 10px;
+        margin-left: 0;
       }
 
       &::before,
       &::after {
-        content: '';
         position: absolute;
-        box-sizing: border-box;
         top: 50%;
         left: 50%;
+        box-sizing: border-box;
         transform: translate(-50%, -50%);
+        content: '';
 
         .@{prefix-cls}-dropdown-rtl& {
           right: 50%;
@@ -408,8 +414,7 @@
         width: @arrow-size - 2px;
         height: @arrow-size - 2px;
         border: (@arrow-size - 2px) / 2 solid blue;
-        border-color: @background-color @background-color transparent
-          transparent;
+        border-color: @background-color @background-color transparent transparent;
       }
     }
   }
@@ -418,20 +423,20 @@
   // =                     Range Picker                     =
   // ========================================================
   &-range {
-    display: inline-flex;
     position: relative;
+    display: inline-flex;
 
     &-wrapper {
       display: flex;
     }
 
     .@{prefix-cls}-active-bar {
-      background: green;
       bottom: 0;
       height: 3px;
-      pointer-events: none;
-      transition: all 0.3s;
+      background: green;
       opacity: 0;
+      transition: all 0.3s;
+      pointer-events: none;
     }
 
     &.@{prefix-cls}-focused {

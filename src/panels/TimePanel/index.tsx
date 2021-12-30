@@ -18,15 +18,25 @@ export type SharedTimeProps<DateType> = {
   secondStep?: number;
   hideDisabledOptions?: boolean;
   defaultValue?: DateType;
-} & DisabledTimes;
+
+  /** @deprecated Please use `disabledTime` instead. */
+  disabledHours?: DisabledTimes['disabledHours'];
+  /** @deprecated Please use `disabledTime` instead. */
+  disabledMinutes?: DisabledTimes['disabledMinutes'];
+  /** @deprecated Please use `disabledTime` instead. */
+  disabledSeconds?: DisabledTimes['disabledSeconds'];
+
+  disabledTime?: (date: DateType) => DisabledTimes;
+};
 
 export type TimePanelProps<DateType> = {
   format?: string;
   active?: boolean;
-} & PanelSharedProps<DateType> & SharedTimeProps<DateType>;
+} & PanelSharedProps<DateType> &
+  SharedTimeProps<DateType>;
 
 const countBoolean = (boolList: (boolean | undefined)[]) =>
-  boolList.filter(bool => bool !== false).length;
+  boolList.filter((bool) => bool !== false).length;
 
 function TimePanel<DateType>(props: TimePanelProps<DateType>) {
   const {
@@ -50,12 +60,12 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
   const columnsCount = countBoolean([showHour, showMinute, showSecond, use12Hours]);
 
   operationRef.current = {
-    onKeyDown: event =>
+    onKeyDown: (event) =>
       createKeyDownHandler(event, {
-        onLeftRight: diff => {
+        onLeftRight: (diff) => {
           setActiveColumnIndex((activeColumnIndex + diff + columnsCount) % columnsCount);
         },
-        onUpDown: diff => {
+        onUpDown: (diff) => {
           if (activeColumnIndex === -1) {
             setActiveColumnIndex(0);
           } else if (bodyOperationRef.current) {
