@@ -71,7 +71,10 @@ describe('Picker.Panel', () => {
       expect(wrapper.find('.rc-picker-year-panel').length).toBeTruthy();
     });
 
-    [['month', 'Aug'], ['quarter', 'Q3']].forEach(([picker, cell]) => {
+    [
+      ['month', 'Aug'],
+      ['quarter', 'Q3'],
+    ].forEach(([picker, cell]) => {
       it(picker, () => {
         const wrapper = mount(<MomentPickerPanel picker={picker as any} />);
         wrapper.find('.rc-picker-year-btn').simulate('click');
@@ -91,7 +94,7 @@ describe('Picker.Panel', () => {
   });
 
   describe('time click to scroll', () => {
-    [true, false].forEach(bool => {
+    [true, false].forEach((bool) => {
       it(`spy requestAnimationFrame: ${bool}`, () => {
         let scrollTop = 90;
         const domSpy = spyElementPrototypes(HTMLElement, {
@@ -116,19 +119,9 @@ describe('Picker.Panel', () => {
         const wrapper = mount(<MomentPickerPanel picker="time" />);
 
         // Multiple times should only one work
-        wrapper
-          .find('ul')
-          .first()
-          .find('li')
-          .at(3)
-          .simulate('click');
+        wrapper.find('ul').first().find('li').at(3).simulate('click');
 
-        wrapper
-          .find('ul')
-          .first()
-          .find('li')
-          .at(11)
-          .simulate('click');
+        wrapper.find('ul').first().find('li').at(11).simulate('click');
         jest.runAllTimers();
 
         expect(requestAnimationFrameSpy).toHaveBeenCalled();
@@ -158,7 +151,7 @@ describe('Picker.Panel', () => {
       expect(wrapper.find('.rc-picker-header-view').text()).toEqual('Sep1990');
     });
 
-    ['month', 'quarter'].forEach(picker => {
+    ['month', 'quarter'].forEach((picker) => {
       it(picker, () => {
         const wrapper = mount(
           <MomentPickerPanel defaultValue={getMoment('1990-09-03')} picker={picker as any} />,
@@ -215,14 +208,9 @@ describe('Picker.Panel', () => {
     );
 
     expect(wrapper.find('.rc-picker-time-panel-column')).toHaveLength(2);
-    expect(
-      wrapper
-        .find('.rc-picker-time-panel-column')
-        .first()
-        .find('li')
-        .first()
-        .text(),
-    ).toEqual('04');
+    expect(wrapper.find('.rc-picker-time-panel-column').first().find('li').first().text()).toEqual(
+      '04',
+    );
 
     // Click on date
     wrapper.selectCell(5);
@@ -230,13 +218,51 @@ describe('Picker.Panel', () => {
 
     // Click on time
     onSelect.mockReset();
-    wrapper
-      .find('ul')
-      .first()
-      .find('li')
-      .at(11)
-      .simulate('click');
+    wrapper.find('ul').first().find('li').at(11).simulate('click');
     expect(isSame(onSelect.mock.calls[0][0], '2001-01-02 11:00:00')).toBeTruthy();
+  });
+
+  it('showTime.defaultValue only works at first render', () => {
+    const onSelect = jest.fn();
+    const wrapper = mount(
+      <MomentPickerPanel
+        showTime={{
+          defaultValue: getMoment('2001-01-02 01:03:07'),
+        }}
+        onSelect={onSelect}
+      />,
+    );
+
+    wrapper.selectCell(5);
+    // use showTime.defaultValue
+    expect(isSame(onSelect.mock.calls[0][0], '1990-09-05 01:03:07')).toBeTruthy();
+
+    // set hour to 10
+    wrapper.find('ul').first().find('li').at(10).simulate('click');
+
+    // expect hour changed
+    expect(isSame(onSelect.mock.calls[1][0], '1990-09-05 10:03:07')).toBeTruthy();
+
+    wrapper.selectCell(20);
+    // expect using last selection time
+    expect(isSame(onSelect.mock.calls[2][0], '1990-09-20 10:03:07')).toBeTruthy();
+  });
+
+  it('datepicker has defaultValue and showTime.defaultValue ', () => {
+    const onSelect = jest.fn();
+    const wrapper = mount(
+      <MomentPickerPanel
+        value={getMoment('2001-01-02 10:10:10')}
+        showTime={{
+          defaultValue: getMoment('2001-01-02 09:09:09'),
+        }}
+        onSelect={onSelect}
+      />,
+    );
+
+    wrapper.selectCell(5);
+    // showTime.defaultValue not used
+    expect(isSame(onSelect.mock.calls[0][0], '2001-01-05 10:10:10')).toBeTruthy();
   });
 
   describe('not trigger onSelect when cell disabled', () => {
@@ -247,17 +273,11 @@ describe('Picker.Panel', () => {
       );
 
       // Disabled
-      wrapper
-        .find('li')
-        .first()
-        .simulate('click');
+      wrapper.find('li').first().simulate('click');
       expect(onSelect).not.toHaveBeenCalled();
 
       // Enabled
-      wrapper
-        .find('li')
-        .at(1)
-        .simulate('click');
+      wrapper.find('li').at(1).simulate('click');
       expect(onSelect).toHaveBeenCalled();
     });
 
@@ -267,7 +287,7 @@ describe('Picker.Panel', () => {
         <MomentPickerPanel
           picker="month"
           onSelect={onSelect}
-          disabledDate={date => date.month() === 0}
+          disabledDate={(date) => date.month() === 0}
         />,
       );
 
@@ -284,7 +304,7 @@ describe('Picker.Panel', () => {
         <MomentPickerPanel
           picker="year"
           onSelect={onSelect}
-          disabledDate={date => date.year() === 1990}
+          disabledDate={(date) => date.year() === 1990}
         />,
       );
 
@@ -302,7 +322,7 @@ describe('Picker.Panel', () => {
           <MomentPickerPanel
             mode="decade"
             onPanelChange={onPanelChange}
-            disabledDate={date => date.year() === 1900}
+            disabledDate={(date) => date.year() === 1900}
           />,
         );
 
@@ -337,12 +357,7 @@ describe('Picker.Panel', () => {
         />,
       );
 
-      wrapper
-        .find('.rc-picker-time-panel-column')
-        .last()
-        .find('li')
-        .last()
-        .simulate('click');
+      wrapper.find('.rc-picker-time-panel-column').last().find('li').last().simulate('click');
       expect(isSame(onChange.mock.calls[0][0], '2000-01-01 12:01:02', 'second')).toBeTruthy();
     });
 
@@ -474,7 +489,7 @@ describe('Picker.Panel', () => {
   });
 
   describe('hideHeader', () => {
-    ['decade', 'year', 'month', 'quarter', 'date', 'time'].forEach(mode => {
+    ['decade', 'year', 'month', 'quarter', 'date', 'time'].forEach((mode) => {
       it(mode, () => {
         const wrapper = mount(<MomentPickerPanel mode={mode as any} hideHeader />);
         expect(wrapper.find('.rc-picker-header')).toHaveLength(0);
@@ -499,51 +514,41 @@ describe('Picker.Panel', () => {
 
   it('monthCellRender', () => {
     const wrapper = mount(
-      <MomentPickerPanel picker="month" monthCellRender={date => date.format('YYYY-MM')} />,
+      <MomentPickerPanel picker="month" monthCellRender={(date) => date.format('YYYY-MM')} />,
     );
 
     expect(wrapper.find('tbody').render()).toMatchSnapshot();
   });
 
   describe('start weekday should be correct', () => {
-    [{ locale: zhCN, startDate: '30' }, { locale: enUS, startDate: '29' }].forEach(
-      ({ locale, startDate }) => {
-        it(locale.locale, () => {
-          const wrapper = mount(
-            <MomentPickerPanel defaultValue={getMoment('2020-04-02')} locale={locale} />,
-          );
+    [
+      { locale: zhCN, startDate: '30' },
+      { locale: enUS, startDate: '29' },
+    ].forEach(({ locale, startDate }) => {
+      it(locale.locale, () => {
+        const wrapper = mount(
+          <MomentPickerPanel defaultValue={getMoment('2020-04-02')} locale={locale} />,
+        );
 
-          expect(
-            wrapper
-              .find('td')
-              .first()
-              .text(),
-          ).toEqual(startDate);
-        });
-      },
-    );
+        expect(wrapper.find('td').first().text()).toEqual(startDate);
+      });
+    });
 
-    [{ locale: zhCN, startDate: '24' }, { locale: enUS, startDate: '1' }].forEach(
-      ({ locale, startDate }) => {
-        it(`another align test of ${locale.locale}`, () => {
-          const wrapper = mount(
-            <MomentPickerPanel defaultValue={getMoment('2020-03-01')} locale={locale} />,
-          );
+    [
+      { locale: zhCN, startDate: '24' },
+      { locale: enUS, startDate: '1' },
+    ].forEach(({ locale, startDate }) => {
+      it(`another align test of ${locale.locale}`, () => {
+        const wrapper = mount(
+          <MomentPickerPanel defaultValue={getMoment('2020-03-01')} locale={locale} />,
+        );
 
-          expect(
-            wrapper
-              .find('td')
-              .first()
-              .text(),
-          ).toEqual(startDate);
-        });
-      },
-    );
+        expect(wrapper.find('td').first().text()).toEqual(startDate);
+      });
+    });
 
     it('update firstDayOfWeek', () => {
-      const defaultFirstDay = moment(enUS.locale)
-        .localeData()
-        .firstDayOfWeek();
+      const defaultFirstDay = moment(enUS.locale).localeData().firstDayOfWeek();
       moment.updateLocale(enUS.locale, {
         week: {
           dow: 5,
@@ -555,12 +560,7 @@ describe('Picker.Panel', () => {
         <MomentPickerPanel defaultValue={getMoment('2020-04-02')} locale={enUS} />,
       );
 
-      expect(
-        wrapper
-          .find('td')
-          .first()
-          .text(),
-      ).toEqual('27');
+      expect(wrapper.find('td').first().text()).toEqual('27');
 
       moment.updateLocale(enUS.locale, {
         week: {
