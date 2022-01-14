@@ -1521,4 +1521,19 @@ describe('Picker.Range', () => {
     wrapper.keyDown(KeyCode.ENTER);
     expect(onCalendarChange).not.toHaveBeenCalled();
   });
+
+  // https://github.com/ant-design/ant-design/issues/33662
+  it('range picker should have onClick event', () => {
+    const handleClick = jest.fn();
+    const wrapper = mount(<MomentRangePicker onClick={handleClick} />);
+    wrapper.simulate('click');
+    expect(handleClick).toHaveBeenCalled();
+  });
+
+  it('range picker should have onMouseDown event', () => {
+    const handleMouseDown = jest.fn();
+    const wrapper = mount(<MomentRangePicker onMouseDown={handleMouseDown} />);
+    wrapper.simulate('mousedown');
+    expect(handleMouseDown).toHaveBeenCalled();
+  });
 });
