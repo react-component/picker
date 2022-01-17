@@ -103,8 +103,11 @@ export type RangePickerSharedProps<DateType> = {
   onPanelChange?: (values: RangeValue<DateType>, modes: [PanelMode, PanelMode]) => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseUp?: React.MouseEventHandler<HTMLDivElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
   onOk?: (dates: RangeValue<DateType>) => void;
   direction?: 'ltr' | 'rtl';
   autoComplete?: string;
@@ -210,8 +213,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     onCalendarChange,
     onFocus,
     onBlur,
+    onMouseDown,
+    onMouseUp,
     onMouseEnter,
     onMouseLeave,
+    onClick,
     onOk,
     onKeyDown,
     components,
@@ -647,9 +653,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   });
 
   // ========================== Click Picker ==========================
-  const onPickerClick = (e: MouseEvent) => {
+  const onPickerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     // When click inside the picker & outside the picker's input elements
     // the panel should still be opened
+    if (onClick) {
+      onClick(e);
+    }
     if (
       !mergedOpen &&
       !startInputRef.current.contains(e.target as Node) &&
@@ -663,8 +672,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   };
 
-  const onPickerMouseDown = (e: MouseEvent) => {
+  const onPickerMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     // shouldn't affect input elements if picker is active
+    if (onMouseDown) {
+      onMouseDown(e);
+    }
     if (
       mergedOpen &&
       (startFocused || endFocused) &&
@@ -1107,6 +1119,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
           onMouseDown={onPickerMouseDown}
+          onMouseUp={onMouseUp}
           {...getDataOrAriaProps(props)}
         >
           <div
