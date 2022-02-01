@@ -115,7 +115,7 @@ const generateConfig: GenerateConfig<Dayjs> = {
           parseNoMatchNotice();
           return null;
         }
-        const date = dayjs(formatText, format).locale(localeStr);
+        const date = dayjs(formatText, format, null, true).locale(localeStr);
         if (date.isValid()) {
           return date;
         }
