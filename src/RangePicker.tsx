@@ -220,6 +220,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     onClick,
     onOk,
     onKeyDown,
+    onPresetChange,
     components,
     order,
     direction,
@@ -772,6 +773,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     return {
       label,
       onClick: () => {
+        onPresetChange(label, newValues);
         triggerChange(newValues, null);
         triggerOpen(false, mergedActivePickerIndex);
       },
