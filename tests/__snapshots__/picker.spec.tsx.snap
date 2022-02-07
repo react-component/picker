@@ -29,6 +29,20 @@ exports[`Picker.Basic icon 1`] = `
 </div>
 `;
 
+exports[`Picker.Basic inputRender 1`] = `
+<div
+  class="rc-picker-input"
+>
+  <input
+    autocomplete="off"
+    readonly=""
+    size="12"
+    title=""
+    value=""
+  />
+</div>
+`;
+
 exports[`Picker.Basic panelRender 1`] = `
 Array [
   <div

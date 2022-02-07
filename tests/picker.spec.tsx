@@ -497,6 +497,12 @@ describe('Picker.Basic', () => {
     expect(wrapper.find('.rc-picker-input').render()).toMatchSnapshot();
   });
 
+  it('inputRender', () => {
+    const wrapper = mount(<MomentPicker inputRender={(props) => <input {...props} />} />);
+
+    expect(wrapper.find('.rc-picker-input').render()).toMatchSnapshot();
+  });
+
   describe('showNow', () => {
     it('datetime should display now', () => {
       const onSelect = jest.fn();

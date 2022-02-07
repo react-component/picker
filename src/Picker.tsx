@@ -68,6 +68,7 @@ export type PickerSharedProps<DateType> = {
   superNextIcon?: React.ReactNode;
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
   panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
+  inputRender?: (props: React.InputHTMLAttributes<HTMLInputElement>) => React.ReactNode;
 
   // Events
   onChange?: (value: DateType | null, dateString: string) => void;
@@ -175,6 +176,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onSelect,
     direction,
     autoComplete = 'off',
+    inputRender,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -457,6 +459,31 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     );
   }
 
+  const mergedInputProps: React.InputHTMLAttributes<HTMLInputElement> = {
+    id,
+    tabIndex,
+    disabled,
+    readOnly: inputReadOnly || typeof formatList[0] === 'function' || !typing,
+    value: hoverValue || text,
+    onChange: (e) => {
+      triggerTextChange(e.target.value);
+    },
+    autoFocus,
+    placeholder,
+    ref: inputRef,
+    title: text,
+    ...inputProps,
+    size: getInputSize(picker, formatList[0], generateConfig),
+    ...getDataOrAriaProps(props),
+    autoComplete,
+  };
+
+  const inputNode: React.ReactNode = inputRender ? (
+    inputRender(mergedInputProps)
+  ) : (
+    <input {...mergedInputProps} />
+  );
+
   // ============================ Warning ============================
   if (process.env.NODE_ENV !== 'production') {
     warning(
@@ -521,24 +548,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
             })}
             ref={inputDivRef}
           >
-            <input
-              id={id}
-              tabIndex={tabIndex}
-              disabled={disabled}
-              readOnly={inputReadOnly || typeof formatList[0] === 'function' || !typing}
-              value={hoverValue || text}
-              onChange={(e) => {
-                triggerTextChange(e.target.value);
-              }}
-              autoFocus={autoFocus}
-              placeholder={placeholder}
-              ref={inputRef}
-              title={text}
-              {...inputProps}
-              size={getInputSize(picker, formatList[0], generateConfig)}
-              {...getDataOrAriaProps(props)}
-              autoComplete={autoComplete}
-            />
+            {inputNode}
             {suffixNode}
             {clearNode}
           </div>
