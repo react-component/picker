@@ -87,6 +87,14 @@ export default () => {
               test: [moment(), moment().add(1, 'hour')],
             }}
           />
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            allowClear
+            picker="time"
+            style={{ width: 280 }}
+          />
         </div>
 
         <div style={{ margin: '0 8px' }}>
