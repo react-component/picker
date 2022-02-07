@@ -239,6 +239,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const separatorRef = useRef<HTMLDivElement>(null);
   const startInputRef = useRef<HTMLInputElement>(null);
   const endInputRef = useRef<HTMLInputElement>(null);
+  const arrowRef = useRef<HTMLDivElement>(null);
 
   // ============================ Warning ============================
   if (process.env.NODE_ENV !== 'production') {
@@ -892,7 +893,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     // Arrow offset
     arrowLeft = startInputDivRef.current.offsetWidth + separatorRef.current.offsetWidth;
 
-    if (panelDivRef.current.offsetWidth && arrowLeft > panelDivRef.current.offsetWidth) {
+    if (
+      panelDivRef.current.offsetWidth &&
+      arrowRef.current.offsetWidth &&
+      arrowLeft > panelDivRef.current.offsetWidth - arrowRef.current.offsetWidth
+    ) {
       panelLeft = arrowLeft;
     }
   }
@@ -1003,7 +1008,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       className={classNames(`${prefixCls}-range-wrapper`, `${prefixCls}-${picker}-range-wrapper`)}
       style={{ minWidth: popupMinWidth }}
     >
-      <div className={`${prefixCls}-range-arrow`} style={arrowPositionStyle} />
+      <div ref={arrowRef} className={`${prefixCls}-range-arrow`} style={arrowPositionStyle} />
 
       {renderPanels()}
     </div>
