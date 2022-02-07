@@ -896,7 +896,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     if (
       panelDivRef.current.offsetWidth &&
       arrowRef.current.offsetWidth &&
-      arrowLeft > panelDivRef.current.offsetWidth - arrowRef.current.offsetWidth
+      arrowLeft >
+        panelDivRef.current.offsetWidth -
+          arrowRef.current.offsetWidth -
+          parseInt(arrowRef.current.style?.marginLeft || '0')
     ) {
       panelLeft = arrowLeft;
     }
