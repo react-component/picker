@@ -899,7 +899,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       arrowLeft >
         panelDivRef.current.offsetWidth -
           arrowRef.current.offsetWidth -
-          parseInt(arrowRef.current.style.marginLeft || '')
+          parseInt(arrowRef.current.style?.marginLeft || '0')
     ) {
       panelLeft = arrowLeft;
     }
