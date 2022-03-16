@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import Trigger from 'rc-trigger';
 import type { AlignType } from 'rc-trigger/lib/interface';
 
-const BUILT_IN_PLACEMENTS = {
+export const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
     points: ['tl', 'bl'],
     offset: [0, 4],

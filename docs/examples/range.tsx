@@ -46,6 +46,11 @@ export default () => {
     return current.diff(now, 'days') > 1 || current.diff(now, 'days') < -1;
   };
 
+  const overflow = {
+    adjustX: 1,
+    adjustY: 1,
+  };
+
   return (
     <div>
       <h2>Value: {value ? `${formatDate(value[0])} ~ ${formatDate(value[1])}` : 'null'}</h2>
@@ -184,6 +189,62 @@ export default () => {
             locale={zhCN}
             placeholder={['start...', 'end...']}
             disabledDate={disabledDate}
+          />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Dropdown Align Top Left</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            placeholder={['start...', 'end...']}
+            dropdownAlign={{
+              points: ['bl', 'tl'],
+              offset: [0, -4],
+              overflow,
+            }}
+          />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Dropdown Align Top Right</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            placeholder={['start...', 'end...']}
+            dropdownAlign={{
+              points: ['br', 'tr'],
+              offset: [0, -4],
+              overflow,
+            }}
+          />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Dropdown Align Bottom Left</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            placeholder={['start...', 'end...']}
+            dropdownAlign={{
+              points: ['tl', 'bl'],
+              offset: [0, 4],
+              overflow,
+            }}
+          />
+        </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Dropdown Align Bottom Right</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            placeholder={['start...', 'end...']}
+            dropdownAlign={{
+              points: ['tr', 'br'],
+              offset: [0, 4],
+              overflow,
+            }}
           />
         </div>
       </div>

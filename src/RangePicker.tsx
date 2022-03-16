@@ -1,38 +1,39 @@
-import * as React from 'react';
-import { useRef, useEffect, useState } from 'react';
 import classNames from 'classnames';
-import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import type { DisabledTimes, PanelMode, PickerMode, RangeValue, EventValue } from './interface';
-import type { PickerBaseProps, PickerDateProps, PickerTimeProps, PickerRefConfig } from './Picker';
-import type { SharedTimeProps } from './panels/TimePanel';
-import PickerTrigger from './PickerTrigger';
-import PickerPanel from './PickerPanel';
+import warning from 'rc-util/lib/warning';
+import * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import shallowEqual from 'shallowequal';
+import type { PickerPanelProps } from '.';
+import type { GenerateConfig } from './generate';
+import useHoverValue from './hooks/useHoverValue';
 import usePickerInput from './hooks/usePickerInput';
-import getDataOrAriaProps, { toArray, getValue, updateValues } from './utils/miscUtil';
-import { getDefaultFormat, getInputSize, elementsContains } from './utils/uiUtil';
+import useRangeDisabled from './hooks/useRangeDisabled';
+import useRangeViewDates from './hooks/useRangeViewDates';
+import useTextValueMapping from './hooks/useTextValueMapping';
+import useValueTexts from './hooks/useValueTexts';
+import type { DisabledTimes, EventValue, PanelMode, PickerMode, RangeValue } from './interface';
 import type { ContextOperationRefProps } from './PanelContext';
 import PanelContext from './PanelContext';
+import type { DateRender } from './panels/DatePanel/DateBody';
+import type { SharedTimeProps } from './panels/TimePanel';
+import type { PickerBaseProps, PickerDateProps, PickerRefConfig, PickerTimeProps } from './Picker';
+import PickerPanel from './PickerPanel';
+import PickerTrigger, { BUILT_IN_PLACEMENTS } from './PickerTrigger';
+import RangeContext from './RangeContext';
 import {
-  isEqual,
-  getClosingViewDate,
-  isSameDate,
-  isSameWeek,
-  isSameQuarter,
   formatValue,
+  getClosingViewDate,
+  isEqual,
+  isSameDate,
+  isSameQuarter,
+  isSameWeek,
   parseValue,
 } from './utils/dateUtil';
-import useValueTexts from './hooks/useValueTexts';
-import useTextValueMapping from './hooks/useTextValueMapping';
-import type { GenerateConfig } from './generate';
-import type { PickerPanelProps } from '.';
-import RangeContext from './RangeContext';
-import useRangeDisabled from './hooks/useRangeDisabled';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
-import useRangeViewDates from './hooks/useRangeViewDates';
-import type { DateRender } from './panels/DatePanel/DateBody';
-import useHoverValue from './hooks/useHoverValue';
+import getDataOrAriaProps, { getValue, toArray, updateValues } from './utils/miscUtil';
+import { elementsContains, getDefaultFormat, getInputSize } from './utils/uiUtil';
 import { legacyPropsWarning } from './utils/warnUtil';
 
 function reorderValues<DateType>(
@@ -882,8 +883,22 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     );
   }
 
-  let arrowLeft: number = 0;
+  let arrowOffset: number = 0;
   let panelLeft: number = 0;
+
+  let rightArrowOffset: number | string = 0;
+  if (mergedActivePickerIndex && endInputDivRef.current) {
+    rightArrowOffset = `calc(100% - ${endInputDivRef.current.offsetWidth}px)`;
+  }
+  if (
+    mergedActivePickerIndex === 0 &&
+    startInputDivRef.current &&
+    separatorRef.current &&
+    endInputDivRef.current
+  ) {
+    rightArrowOffset = `calc(100% - ${startInputDivRef.current.offsetWidth}px - ${separatorRef.current.offsetWidth}px - ${endInputDivRef.current.offsetWidth}px)`;
+  }
+
   if (
     mergedActivePickerIndex &&
     startInputDivRef.current &&
@@ -891,21 +906,46 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     panelDivRef.current
   ) {
     // Arrow offset
-    arrowLeft = startInputDivRef.current.offsetWidth + separatorRef.current.offsetWidth;
+    arrowOffset = startInputDivRef.current.offsetWidth + separatorRef.current.offsetWidth;
 
     if (
       panelDivRef.current.offsetWidth &&
       arrowRef.current.offsetWidth &&
-      arrowLeft >
+      arrowOffset >
         panelDivRef.current.offsetWidth -
           arrowRef.current.offsetWidth -
           (direction === 'rtl' ? 0 : arrowRef.current.offsetLeft)
     ) {
-      panelLeft = arrowLeft;
+      panelLeft = arrowOffset;
     }
   }
 
-  const arrowPositionStyle = direction === 'rtl' ? { right: arrowLeft } : { left: arrowLeft };
+  function getBuiltInPlacement() {
+    if (dropdownAlign) {
+      for (const builtInPlacementsKey in BUILT_IN_PLACEMENTS) {
+        if (shallowEqual(BUILT_IN_PLACEMENTS[builtInPlacementsKey].points, dropdownAlign.points)) {
+          return builtInPlacementsKey;
+        }
+      }
+    }
+
+    return undefined;
+  }
+
+  function getArrowPositionStyle() {
+    const builtInPlacement = getBuiltInPlacement();
+
+    switch (builtInPlacement) {
+      case 'topLeft':
+      case 'bottomLeft':
+        return { left: arrowOffset };
+      case 'topRight':
+      case 'bottomRight':
+        return { left: rightArrowOffset };
+      default:
+        return direction === 'rtl' ? { right: arrowOffset } : { left: arrowOffset };
+    }
+  }
 
   function renderPanels() {
     let panels: React.ReactNode;
@@ -1011,7 +1051,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       className={classNames(`${prefixCls}-range-wrapper`, `${prefixCls}-${picker}-range-wrapper`)}
       style={{ minWidth: popupMinWidth }}
     >
-      <div ref={arrowRef} className={`${prefixCls}-range-arrow`} style={arrowPositionStyle} />
+      <div ref={arrowRef} className={`${prefixCls}-range-arrow`} style={getArrowPositionStyle()} />
 
       {renderPanels()}
     </div>
@@ -1067,7 +1107,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     if (mergedActivePickerIndex === 0) {
       activeBarWidth = startInputDivRef.current.offsetWidth;
     } else {
-      activeBarLeft = arrowLeft;
+      activeBarLeft = arrowOffset;
       activeBarWidth = endInputDivRef.current.offsetWidth;
     }
   }
