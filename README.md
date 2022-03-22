@@ -105,6 +105,7 @@ render(<Picker />, mountNode);
 | onPanelChange | Function(value: moment, mode) |  | callback when picker panel mode is changed |
 | onMouseDown | (event:React.MouseEvent\<HTMLInputElement>) => void |  | callback when executed onMouseDown event |
 | direction | String: ltr or rtl |  | Layout direction of picker component, it supports RTL direction too. |
+| iso | Boolean |  | Display in [ISO](https://en.wikipedia.org/wiki/ISO_week_date) standard when picker is week. |
 
 ### RangePicker
 
