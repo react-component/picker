@@ -619,6 +619,11 @@ describe('Picker.Basic', () => {
     expect(wrapper.find('input').prop('value')).toEqual('2020-1st');
   });
 
+  it('show correct week number in ISO standard', () => {
+    const wrapper = mount(<MomentPicker value={getMoment('2022-01-01')} picker="week" iso />);
+    expect(wrapper.find('input').prop('value')).toEqual('2022-52nd');
+  });
+
   it('click outside should also focus', () => {
     const onMouseUp = jest.fn();
     const wrapper = mount(<MomentPicker onMouseUp={onMouseUp} />);

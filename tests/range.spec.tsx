@@ -1013,6 +1013,18 @@ describe('Picker.Range', () => {
     expect(wrapper.findCell('15').hasClass('rc-picker-cell-disabled')).toBeFalsy();
   });
 
+  it('show correct week number in ISO standard', () => {
+    const wrapper = mount(
+      <MomentRangePicker
+        picker="week"
+        defaultValue={[getMoment('2021-01-01'), getMoment('2022-01-01')]}
+        iso
+      />,
+    );
+    expect(wrapper.find('input').first().prop('value')).toEqual('2021-53rd');
+    expect(wrapper.find('input').last().prop('value')).toEqual('2022-52nd');
+  });
+
   it('format', () => {
     const wrapper = mount(
       <MomentRangePicker
