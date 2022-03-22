@@ -5,7 +5,7 @@ import dateFnsGenerateConfig from '../src/generate/dateFns';
 import { getMoment } from './util/commonUtil';
 
 import 'dayjs/locale/zh-cn';
-import { GenerateConfig } from '../src/generate';
+import type { GenerateConfig } from '../src/generate';
 
 describe('Picker.Generate', () => {
   beforeAll(() => {
@@ -80,7 +80,7 @@ describe('Picker.Generate', () => {
       describe('locale', () => {
         describe('parse', () => {
           it('basic', () => {
-            ['2000-01-02', '02/01/2000'].forEach(str => {
+            ['2000-01-02', '02/01/2000'].forEach((str) => {
               const date = generateConfig.locale.parse('en_US', str, ['YYYY-MM-DD', 'DD/MM/YYYY']);
 
               expect(generateConfig.locale.format('en_US', date!, 'YYYY-MM-DD')).toEqual(
@@ -245,5 +245,14 @@ describe('Generate:moment', () => {
 
     momentGenerateConfig.getWeekDay(now);
     expect(now.locale()).toEqual('zh-cn');
+  });
+});
+
+describe('Generate:dayjs', () => {
+  it('getFixedDate', () => {
+    const timea = dayjsGenerateConfig.getFixedDate('2019-2-08');
+    const timeb = dayjsGenerateConfig.getFixedDate('2019-02-08');
+    expect(timea.isValid()).toBeTruthy();
+    expect(timea.valueOf()).toEqual(timeb.valueOf());
   });
 });
