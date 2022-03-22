@@ -149,6 +149,7 @@ export function getDefaultFormat<DateType>(
   picker: PickerMode | undefined,
   showTime: boolean | object | undefined,
   use12Hours: boolean | undefined,
+  iso: boolean | undefined,
 ) {
   let mergedFormat = format;
   if (!mergedFormat) {
@@ -158,7 +159,7 @@ export function getDefaultFormat<DateType>(
         break;
 
       case 'week':
-        mergedFormat = 'gggg-wo';
+        mergedFormat = iso ? 'gggg-Wo' : 'gggg-wo';
         break;
 
       case 'month':

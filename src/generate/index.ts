@@ -30,6 +30,7 @@ export type GenerateConfig<DateType> = {
     getWeekFirstDay: (locale: string) => number;
     getWeekFirstDate: (locale: string, value: DateType) => DateType;
     getWeek: (locale: string, value: DateType) => number;
+    getISOWeek: (locale: string, value: DateType) => number;
 
     format: (locale: string, date: DateType, format: string) => string;
 

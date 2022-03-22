@@ -4,19 +4,20 @@ import DatePanel from '../DatePanel';
 import type { PanelSharedProps } from '../../interface';
 import { isSameWeek } from '../../utils/dateUtil';
 
-export type WeekPanelProps<DateType> = PanelSharedProps<DateType>;
+export type WeekPanelProps<DateType> = PanelSharedProps<DateType> & {
+  iso?: boolean;
+};
 
 function WeekPanel<DateType>(props: WeekPanelProps<DateType>) {
-  const { prefixCls, generateConfig, locale, value } = props;
+  const { prefixCls, generateConfig, locale, value, iso } = props;
 
   // Render additional column
   const cellPrefixCls = `${prefixCls}-cell`;
   const prefixColumn = (date: DateType) => (
-    <td
-      key="week"
-      className={classNames(cellPrefixCls, `${cellPrefixCls}-week`)}
-    >
-      {generateConfig.locale.getWeek(locale.locale, date)}
+    <td key="week" className={classNames(cellPrefixCls, `${cellPrefixCls}-week`)}>
+      {iso
+        ? generateConfig.locale.getISOWeek(locale.locale, date)
+        : generateConfig.locale.getWeek(locale.locale, date)}
     </td>
   );
 

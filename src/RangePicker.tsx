@@ -225,6 +225,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     direction,
     activePickerIndex,
     autoComplete = 'off',
+    iso,
   } = props as MergedRangePickerProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
@@ -247,7 +248,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }
 
   // ============================= Misc ==============================
-  const formatList = toArray(getDefaultFormat<DateType>(format, picker, showTime, use12Hours));
+  const formatList = toArray(getDefaultFormat<DateType>(format, picker, showTime, use12Hours, iso));
 
   // Active picker
   const [mergedActivePickerIndex, setMergedActivePickerIndex] = useMergedState<0 | 1>(0, {

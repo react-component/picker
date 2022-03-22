@@ -93,6 +93,7 @@ export type PickerSharedProps<DateType> = {
 
   autoComplete?: string;
   direction?: 'ltr' | 'rtl';
+  iso?: boolean;
 } & React.AriaAttributes;
 
 type OmitPanelProps<Props> = Omit<
@@ -177,6 +178,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     direction,
     autoComplete = 'off',
     inputRender,
+    iso,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -189,7 +191,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   }
 
   // ============================= State =============================
-  const formatList = toArray(getDefaultFormat(format, picker, showTime, use12Hours));
+  const formatList = toArray(getDefaultFormat(format, picker, showTime, use12Hours, iso));
 
   // Panel ref
   const panelDivRef = React.useRef<HTMLDivElement>(null);

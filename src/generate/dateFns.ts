@@ -19,6 +19,7 @@ import {
   isAfter,
   isValid,
   getWeek,
+  getISOWeek,
   startOfWeek,
   format as formatDate,
   parse as parseDate,
@@ -77,6 +78,9 @@ const generateConfig: GenerateConfig<Date> = {
     },
     getWeek: (locale, date) => {
       return getWeek(date, { locale: Locale[dealLocal(locale)] });
+    },
+    getISOWeek: (_, date) => {
+      return getISOWeek(date);
     },
     getShortWeekDays: locale => {
       const clone = Locale[dealLocal(locale)];
