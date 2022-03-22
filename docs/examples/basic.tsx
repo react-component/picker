@@ -111,6 +111,10 @@ export default () => {
           <Picker<Moment> generateConfig={momentGenerateConfig} locale={enUS} picker="week" />
         </div>
         <div style={{ margin: '0 8px' }}>
+          <h3>ISO Week</h3>
+          <Picker<Moment> generateConfig={momentGenerateConfig} locale={enUS} picker="week" iso />
+        </div>
+        <div style={{ margin: '0 8px' }}>
           <h3>Quarter</h3>
           <Picker<Moment> generateConfig={momentGenerateConfig} locale={enUS} picker="quarter" />
         </div>

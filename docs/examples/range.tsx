@@ -4,6 +4,7 @@ import moment from 'moment';
 import RangePicker from '../../src/RangePicker';
 import momentGenerateConfig from '../../src/generate/moment';
 import zhCN from '../../src/locale/zh_CN';
+import enUS from '../../src/locale/en_US';
 import '../../assets/index.less';
 import './common.less';
 
@@ -134,6 +135,11 @@ export default () => {
         <div style={{ margin: '0 8px' }}>
           <h3>Week</h3>
           <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="week" />
+        </div>
+
+        <div style={{ margin: '0 8px' }}>
+          <h3>ISO Week</h3>
+          <RangePicker<Moment> {...sharedProps} locale={enUS} picker="week" iso />
         </div>
 
         <div style={{ margin: '0 8px' }}>
