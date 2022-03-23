@@ -16,7 +16,7 @@ import RangePicker, {
   RangePickerTimeProps,
 } from '../../src/RangePicker';
 
-const FULL_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+const FILLFULL_FORMAT = 'YYYY-MM-DD HH:mm:ss.SSS';
 
 export type Wrapper = ReactWrapper & {
   confirmOK: () => void;
@@ -34,7 +34,14 @@ export type Wrapper = ReactWrapper & {
 export const mount = originMount as (...args: Parameters<typeof originMount>) => Wrapper;
 
 export function getMoment(str: string): Moment {
-  const formatList = [FULL_FORMAT, 'YYYY-MM-DD', 'HH:mm:ss', 'YYYY'];
+  const formatList = [
+    FILLFULL_FORMAT,
+    'YYYY-MM-DD HH:mm:ss',
+    'YYYY-MM-DD',
+    'HH:mm:ss',
+    'HH:mm:ss.SSS',
+    'YYYY',
+  ];
   for (let i = 0; i < formatList.length; i += 1) {
     const date = moment(str, formatList[i], true);
     if (date.isValid()) {
@@ -53,7 +60,7 @@ export function isSame(date: Moment | null, dateStr: string, type: unitOfTime.St
     return true;
   }
 
-  throw new Error(`${date.format(FULL_FORMAT)} is not same as expected: ${dateStr}`);
+  throw new Error(`${date.format(FILLFULL_FORMAT)} is not same as expected: ${dateStr}`);
 }
 
 interface MomentDefaultProps {

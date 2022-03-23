@@ -7,6 +7,7 @@ import {
   getHours,
   getMinutes,
   getSeconds,
+  getMilliseconds,
   addYears,
   addMonths,
   addDays,
@@ -16,6 +17,7 @@ import {
   setHours,
   setMinutes,
   setSeconds,
+  setMilliseconds,
   isAfter,
   isValid,
   getWeek,
@@ -51,6 +53,7 @@ const generateConfig: GenerateConfig<Date> = {
   getHour: date => getHours(date),
   getMinute: date => getMinutes(date),
   getSecond: date => getSeconds(date),
+  getMillisecond: date => getMilliseconds(date),
 
   // set
   addYear: (date, diff) => addYears(date, diff),
@@ -62,6 +65,7 @@ const generateConfig: GenerateConfig<Date> = {
   setHour: (date, hour) => setHours(date, hour),
   setMinute: (date, minute) => setMinutes(date, minute),
   setSecond: (date, second) => setSeconds(date, second),
+  setMillisecond: (date, millisecond) => setMilliseconds(date, millisecond),
 
   // Compare
   isAfter: (date1, date2) => isAfter(date1, date2),
