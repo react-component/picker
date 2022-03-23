@@ -60,10 +60,10 @@ function YearBody<DateType>(props: YearBodyProps<DateType>) {
       getCellText={generateConfig.getYear}
       getCellClassName={getCellClassName}
       getCellDate={generateConfig.addYear}
-      titleCell={date =>
+      titleCell={(date) =>
         formatValue(date, {
           locale,
-          format: 'YYYY',
+          format: locale.yearFormat || 'YYYY',
           generateConfig,
         })
       }
