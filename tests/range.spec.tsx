@@ -1537,7 +1537,7 @@ describe('Picker.Range', () => {
     expect(handleMouseDown).toHaveBeenCalled();
   });
 
-  it('panel should be stable 1', () => {
+  it('panel should be stable: left', () => {
     const mock = spyElementPrototypes(HTMLElement, {
       offsetWidth: {
         get() {
