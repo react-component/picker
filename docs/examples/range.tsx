@@ -187,6 +187,18 @@ export default () => {
           />
         </div>
       </div>
+
+      <RangePicker<Moment>
+        {...sharedProps}
+        style={{width: '100%'}}
+        value={undefined}
+        locale={zhCN}
+        allowClear
+        ref={rangePickerRef}
+        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        clearIcon={<span>X</span>}
+        suffixIcon={<span>O</span>}
+      />
     </div>
   );
 };
