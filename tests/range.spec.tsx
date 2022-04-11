@@ -1536,4 +1536,76 @@ describe('Picker.Range', () => {
     wrapper.simulate('mousedown');
     expect(handleMouseDown).toHaveBeenCalled();
   });
+
+  it('panel should be stable 1', () => {
+    const mock = spyElementPrototypes(HTMLElement, {
+      offsetWidth: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 14;
+          } else if (this.className.includes('panel-container')) {
+            return 312;
+          } else if (this.className.includes('input')) {
+            return 236;
+          } else if (this.className.includes('range-separator')) {
+            return 10;
+          }
+        },
+      },
+      offsetLeft: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 16;
+          }
+        },
+      },
+    });
+    const wrapper = mount(
+      <MomentRangePicker
+        allowClear
+        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        clearIcon={<span>X</span>}
+        suffixIcon={<span>O</span>}
+      />,
+    );
+    wrapper.openPicker(1);
+    expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('0px');
+    mock.mockRestore();
+  });
+
+  it('panel should be stable: right', () => {
+    const mock = spyElementPrototypes(HTMLElement, {
+      offsetWidth: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 14;
+          } else if (this.className.includes('panel-container')) {
+            return 312;
+          } else if (this.className.includes('input')) {
+            return 236;
+          } else if (this.className.includes('range-separator')) {
+            return 10;
+          }
+        },
+      },
+      offsetLeft: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 262;
+          }
+        },
+      },
+    });
+    const wrapper = mount(
+      <MomentRangePicker
+        allowClear
+        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        clearIcon={<span>X</span>}
+        suffixIcon={<span>O</span>}
+      />,
+    );
+    wrapper.openPicker(1);
+    expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('0px');
+    mock.mockRestore();
+  });
 });
