@@ -5,7 +5,7 @@ const locale: Locale = {
   today: 'Tänään',
   now: 'Nyt',
   backToToday: 'Tämä päivä',
-  ok: 'Ok',
+  ok: 'OK',
   clear: 'Tyhjennä',
   month: 'Kuukausi',
   year: 'Vuosi',
