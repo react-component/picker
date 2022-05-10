@@ -85,6 +85,37 @@ exports[`Picker.Panel monthCellRender 1`] = `
 </tbody>
 `;
 
+exports[`Picker.Panel quarterCellRender 1`] = `
+<tbody>
+  <tr>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-Q1"
+    >
+      1990-11
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-Q2"
+    >
+      1990-22
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-Q3"
+    >
+      1990-33
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-Q4"
+    >
+      1990-44
+    </td>
+  </tr>
+</tbody>
+`;
+
 exports[`Picker.Panel should render correctly in rtl 1`] = `
 <div
   class="rc-picker-panel rc-picker-panel-rtl"
@@ -1948,4 +1979,89 @@ exports[`Picker.Panel time disabled columns basic 1`] = `
     </div>
   </div>
 </div>
+`;
+
+exports[`Picker.Panel yearCellRender 1`] = `
+<tbody>
+  <tr>
+    <td
+      class="rc-picker-cell rc-picker-cell-end"
+      title="1989"
+    >
+      1989
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-start rc-picker-cell-in-view"
+      title="1990"
+    >
+      1990
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1991"
+    >
+      1991
+    </td>
+  </tr>
+  <tr>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1992"
+    >
+      1992
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1993"
+    >
+      1993
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1994"
+    >
+      1994
+    </td>
+  </tr>
+  <tr>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1995"
+    >
+      1995
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1996"
+    >
+      1996
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1997"
+    >
+      1997
+    </td>
+  </tr>
+  <tr>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1998"
+    >
+      1998
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-end rc-picker-cell-in-view"
+      title="1999"
+    >
+      1999
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-start"
+      title="2000"
+    >
+      2000
+    </td>
+  </tr>
+</tbody>
 `;
