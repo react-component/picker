@@ -5,7 +5,7 @@ const locale: Locale = {
   today: 'Σήμερα',
   now: 'Τώρα',
   backToToday: 'Πίσω στη σημερινή μέρα',
-  ok: 'Ok',
+  ok: 'OK',
   clear: 'Καθαρισμός',
   month: 'Μήνας',
   year: 'Έτος',
