@@ -115,6 +115,7 @@ export type RangePickerSharedProps<DateType> = {
   activePickerIndex?: 0 | 1;
   dateRender?: RangeDateRender<DateType>;
   panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
+  onRangePickerActiveChange?: (activePicker?: 'start' | 'end') => void;
 };
 
 type OmitPickerProps<Props> = Omit<
@@ -225,6 +226,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     direction,
     activePickerIndex,
     autoComplete = 'off',
+    onRangePickerActiveChange,
   } = props as MergedRangePickerProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
@@ -388,6 +390,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         }
       });
     }
+    onRangePickerActiveChange?.(newOpen ? (index === 0 ? 'start' : 'end') : undefined);
   }
 
   function triggerOpenAndFocus(index: 0 | 1) {
