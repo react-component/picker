@@ -1608,4 +1608,32 @@ describe('Picker.Range', () => {
     expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('0px');
     mock.mockRestore();
   });
+
+  describe('onRangePickerActiveChange', () => {
+    it('date panel open and close', () => {
+      const onChange = jest.fn();
+      const onRangePickerActiveChange = jest.fn();
+      const wrapper = mount(
+        <MomentRangePicker
+          onChange={onChange}
+          onRangePickerActiveChange={onRangePickerActiveChange}
+        />,
+      );
+      // open start panel
+      wrapper.openPicker();
+      expect(onRangePickerActiveChange.mock.calls[0][0]).toBe('start');
+
+      // close start panel
+      wrapper.closePicker();
+      expect(onRangePickerActiveChange.mock.calls[1][0]).toBe(undefined);
+
+      // open end panel
+      wrapper.openPicker(1);
+      expect(onRangePickerActiveChange.mock.calls[2][0]).toBe('end');
+
+      // close end panel
+      wrapper.closePicker(1);
+      expect(onRangePickerActiveChange.mock.calls[3][0]).toBe(undefined);
+    });
+  });
 });
