@@ -218,7 +218,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
           defaultDateObject || now,
         );
       }
-      return date;
+      return Array.isArray(date) ? date[0] : date;
     },
   });
 
