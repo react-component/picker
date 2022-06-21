@@ -32,16 +32,7 @@ describe('Picker.Range', () => {
 
       matchValues(wrapper, '1989-11-28', '1990-09-03');
     });
-    it('defaultPickerValue with showTime', () => {
-      const startDate = getMoment('1982-02-12');
-      const endDate = getMoment('1982-02-12');
 
-      const wrapper = mount(
-        <MomentRangePicker defaultPickerValue={[startDate, endDate]} showTime />,
-      );
-      wrapper.openPicker();
-      expect(wrapper.find('.rc-picker-year-btn').first().text()).toEqual(startDate.format('YYYY'));
-    });
     it('controlled', () => {
       const wrapper = mount(
         <MomentRangePicker value={[getMoment('1989-11-28'), getMoment('1990-09-03')]} />,
@@ -352,22 +343,54 @@ describe('Picker.Range', () => {
     expect(wrapper.find('input').last().props().placeholder).toEqual('bamboo');
   });
 
-  it('defaultPickerValue', () => {
-    const wrapper = mount(
-      <MomentRangePicker defaultPickerValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]} />,
-    );
+  describe('defaultPickerValue', () => {
+    it('defaultPickerValue works', () => {
+      const wrapper = mount(
+        <MomentRangePicker
+          defaultPickerValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
+        />,
+      );
 
-    wrapper.openPicker();
-    expect(wrapper.find('PickerPanel').first().find('.rc-picker-header-view').text()).toEqual(
-      'Nov1989',
-    );
-    wrapper.closePicker();
+      wrapper.openPicker();
+      expect(wrapper.find('PickerPanel').first().find('.rc-picker-header-view').text()).toEqual(
+        'Nov1989',
+      );
+      wrapper.closePicker();
 
-    wrapper.openPicker(1);
-    expect(wrapper.find('PickerPanel').last().find('.rc-picker-header-view').text()).toEqual(
-      'Oct1990',
-    );
-    wrapper.closePicker(1);
+      wrapper.openPicker(1);
+      expect(wrapper.find('PickerPanel').last().find('.rc-picker-header-view').text()).toEqual(
+        'Oct1990',
+      );
+      wrapper.closePicker(1);
+    });
+
+    it('defaultPickerValue with showTime', () => {
+      const startDate = getMoment('1982-02-12');
+      const endDate = getMoment('1982-02-12');
+
+      const wrapper = mount(
+        <MomentRangePicker defaultPickerValue={[startDate, endDate]} showTime />,
+      );
+      wrapper.openPicker();
+      expect(wrapper.find('.rc-picker-year-btn').first().text()).toEqual(startDate.format('YYYY'));
+    });
+
+    it('defaultPickerValue with showTime should works when open panel', () => {
+      const startDate = getMoment('1982-02-12');
+      const endDate = getMoment('1982-02-12');
+
+      const wrapper = mount(
+        <MomentRangePicker
+          defaultValue={[startDate, endDate]}
+          defaultPickerValue={[startDate, endDate]}
+          showTime
+        />,
+      );
+      expect(() => {
+        wrapper.openPicker();
+      }).not.toThrow();
+      expect(wrapper.find('.rc-picker-year-btn').first().text()).toEqual(startDate.format('YYYY'));
+    });
   });
 
   describe('focus test', () => {
