@@ -205,18 +205,18 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     defaultValue: defaultPickerValue || mergedValue,
     postState: (date) => {
       const now = generateConfig.getNow();
-      if (!date) return now;
+      if (!date) {
+        return now;
+      }
       // When value is null and set showTime
       if (!mergedValue && showTime) {
-        let defaultDateObject;
-        if (typeof showTime === 'object') {
-          defaultDateObject = showTime.defaultValue;
-        } else if (defaultValue) {
-          defaultDateObject = defaultValue;
-        } else {
-          defaultDateObject = now;
-        }
-        return setDateTime(generateConfig, Array.isArray(date) ? date[0] : date, defaultDateObject);
+        const defaultDateObject =
+          typeof showTime === 'object' ? showTime.defaultValue : defaultValue;
+        return setDateTime(
+          generateConfig,
+          Array.isArray(date) ? date[0] : date,
+          defaultDateObject || now,
+        );
       }
       return date;
     },
