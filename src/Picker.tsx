@@ -48,6 +48,7 @@ export type PickerSharedProps<DateType> = {
   placeholder?: string;
   allowClear?: boolean;
   autoFocus?: boolean;
+  submitOnFocus?: boolean;
   disabled?: boolean;
   tabIndex?: number;
   open?: boolean;
@@ -177,6 +178,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     direction,
     autoComplete = 'off',
     inputRender,
+    submitOnFocus,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -232,20 +234,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     locale,
   });
 
-  const [text, triggerTextChange, resetText] = useTextValueMapping({
-    valueTexts,
-    onTextChange: (newText) => {
-      const inputDate = parseValue(newText, {
-        locale,
-        formatList,
-        generateConfig,
-      });
-      if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
-        setSelectedValue(inputDate);
-      }
-    },
-  });
-
   // ============================ Trigger ============================
   const triggerChange = (newValue: DateType | null) => {
     setSelectedValue(newValue);
@@ -258,6 +246,23 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       );
     }
   };
+
+  const [text, triggerTextChange, resetText] = useTextValueMapping({
+    valueTexts,
+    onTextChange: (newText) => {
+      const inputDate = parseValue(newText, {
+        locale,
+        formatList,
+        generateConfig,
+      });
+      if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
+        if (submitOnFocus) {
+          return triggerChange(inputDate);
+        }
+        setSelectedValue(inputDate);
+      }
+    },
+  });
 
   const triggerOpen = (newOpen: boolean) => {
     if (disabled && newOpen) {
