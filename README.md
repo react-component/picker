@@ -74,7 +74,7 @@ render(<Picker />, mountNode);
 | onBlur | (event:React.FocusEvent\<HTMLInputElement>) => void |  | called like input's on blur |
 | onKeyDown | (event:React.KeyboardEvent\<HTMLInputElement>, preventDefault: () => void) => void |  | input on keydown event |
 | direction | String: ltr or rtl |  | Layout direction of picker component, it supports RTL direction too. |
-| submitOnFocus | Boolean | false | Trigger to select value when typing valid date |
+| selectAfterChange | Boolean | false | Trigger to select value when typing valid date |
 
 ### PickerPanel
 

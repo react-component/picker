@@ -48,7 +48,7 @@ export type PickerSharedProps<DateType> = {
   placeholder?: string;
   allowClear?: boolean;
   autoFocus?: boolean;
-  submitOnFocus?: boolean;
+  selectAfterChange?: boolean;
   disabled?: boolean;
   tabIndex?: number;
   open?: boolean;
@@ -178,7 +178,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     direction,
     autoComplete = 'off',
     inputRender,
-    submitOnFocus,
+    selectAfterChange,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -256,7 +256,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         generateConfig,
       });
       if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
-        if (submitOnFocus) {
+        if (selectAfterChange) {
           return triggerChange(inputDate);
         }
         setSelectedValue(inputDate);
