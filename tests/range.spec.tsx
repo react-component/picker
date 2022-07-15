@@ -1596,7 +1596,7 @@ describe('Picker.Range', () => {
     mock.mockRestore();
   });
 
-  it('panel should be stable: right', () => {
+  it('panel should be stable: arrow right and panel left', () => {
     const mock = spyElementPrototypes(HTMLElement, {
       offsetWidth: {
         get() {
@@ -1629,6 +1629,42 @@ describe('Picker.Range', () => {
     );
     wrapper.openPicker(1);
     expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('0px');
+    mock.mockRestore();
+  });
+
+  it('panel should be stable: arrow right and panel right', () => {
+    const mock = spyElementPrototypes(HTMLElement, {
+      offsetWidth: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 14;
+          } else if (this.className.includes('panel-container')) {
+            return 311;
+          } else if (this.className.includes('input')) {
+            return 285;
+          } else if (this.className.includes('range-separator')) {
+            return 10;
+          }
+        },
+      },
+      offsetLeft: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 305;
+          }
+        },
+      },
+    });
+    const wrapper = mount(
+      <MomentRangePicker
+        allowClear
+        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        clearIcon={<span>X</span>}
+        suffixIcon={<span>O</span>}
+      />,
+    );
+    wrapper.openPicker(1);
+    expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('295px');
     mock.mockRestore();
   });
 });
