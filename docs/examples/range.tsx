@@ -69,7 +69,7 @@ export default () => {
             allowClear
             ref={rangePickerRef}
             showTime
-            style={{ width: 700 }}
+            style={{ width: 580 }}
             ranges={{
               ranges: [moment(), moment().add(10, 'day')],
             }}
