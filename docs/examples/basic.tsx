@@ -52,8 +52,6 @@ export default () => {
             allowClear
             showToday
             renderExtraFooter={() => 'extra'}
-            open
-            onOpenChange={() => console.log('Open')}
           />
         </div>
         <div style={{ margin: '0 8px' }}>
