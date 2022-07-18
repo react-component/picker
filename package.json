@@ -51,6 +51,7 @@
     "node": ">=8.x"
   },
   "devDependencies": {
+    "@testing-library/react": "^12",
     "@types/classnames": "^2.2.9",
     "@types/enzyme": "^3.10.3",
     "@types/jest": "^26.0.0",
