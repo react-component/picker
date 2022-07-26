@@ -32,16 +32,7 @@ describe('Picker.Range', () => {
 
       matchValues(wrapper, '1989-11-28', '1990-09-03');
     });
-    it('defaultPickerValue with showTime', () => {
-      const startDate = getMoment('1982-02-12');
-      const endDate = getMoment('1982-02-12');
 
-      const wrapper = mount(
-        <MomentRangePicker defaultPickerValue={[startDate, endDate]} showTime />,
-      );
-      wrapper.openPicker();
-      expect(wrapper.find('.rc-picker-year-btn').first().text()).toEqual(startDate.format('YYYY'));
-    });
     it('controlled', () => {
       const wrapper = mount(
         <MomentRangePicker value={[getMoment('1989-11-28'), getMoment('1990-09-03')]} />,
@@ -352,22 +343,54 @@ describe('Picker.Range', () => {
     expect(wrapper.find('input').last().props().placeholder).toEqual('bamboo');
   });
 
-  it('defaultPickerValue', () => {
-    const wrapper = mount(
-      <MomentRangePicker defaultPickerValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]} />,
-    );
+  describe('defaultPickerValue', () => {
+    it('defaultPickerValue works', () => {
+      const wrapper = mount(
+        <MomentRangePicker
+          defaultPickerValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
+        />,
+      );
 
-    wrapper.openPicker();
-    expect(wrapper.find('PickerPanel').first().find('.rc-picker-header-view').text()).toEqual(
-      'Nov1989',
-    );
-    wrapper.closePicker();
+      wrapper.openPicker();
+      expect(wrapper.find('PickerPanel').first().find('.rc-picker-header-view').text()).toEqual(
+        'Nov1989',
+      );
+      wrapper.closePicker();
 
-    wrapper.openPicker(1);
-    expect(wrapper.find('PickerPanel').last().find('.rc-picker-header-view').text()).toEqual(
-      'Oct1990',
-    );
-    wrapper.closePicker(1);
+      wrapper.openPicker(1);
+      expect(wrapper.find('PickerPanel').last().find('.rc-picker-header-view').text()).toEqual(
+        'Oct1990',
+      );
+      wrapper.closePicker(1);
+    });
+
+    it('defaultPickerValue with showTime', () => {
+      const startDate = getMoment('1982-02-12');
+      const endDate = getMoment('1982-02-12');
+
+      const wrapper = mount(
+        <MomentRangePicker defaultPickerValue={[startDate, endDate]} showTime />,
+      );
+      wrapper.openPicker();
+      expect(wrapper.find('.rc-picker-year-btn').first().text()).toEqual(startDate.format('YYYY'));
+    });
+
+    it('defaultPickerValue with showTime should works when open panel', () => {
+      const startDate = getMoment('1982-02-12');
+      const endDate = getMoment('1982-02-12');
+
+      const wrapper = mount(
+        <MomentRangePicker
+          defaultValue={[startDate, endDate]}
+          defaultPickerValue={[startDate, endDate]}
+          showTime
+        />,
+      );
+      expect(() => {
+        wrapper.openPicker();
+      }).not.toThrow();
+      expect(wrapper.find('.rc-picker-year-btn').first().text()).toEqual(startDate.format('YYYY'));
+    });
   });
 
   describe('focus test', () => {
@@ -1535,5 +1558,77 @@ describe('Picker.Range', () => {
     const wrapper = mount(<MomentRangePicker onMouseDown={handleMouseDown} />);
     wrapper.simulate('mousedown');
     expect(handleMouseDown).toHaveBeenCalled();
+  });
+
+  it('panel should be stable: left', () => {
+    const mock = spyElementPrototypes(HTMLElement, {
+      offsetWidth: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 14;
+          } else if (this.className.includes('panel-container')) {
+            return 312;
+          } else if (this.className.includes('input')) {
+            return 236;
+          } else if (this.className.includes('range-separator')) {
+            return 10;
+          }
+        },
+      },
+      offsetLeft: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 16;
+          }
+        },
+      },
+    });
+    const wrapper = mount(
+      <MomentRangePicker
+        allowClear
+        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        clearIcon={<span>X</span>}
+        suffixIcon={<span>O</span>}
+      />,
+    );
+    wrapper.openPicker(1);
+    expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('0px');
+    mock.mockRestore();
+  });
+
+  it('panel should be stable: right', () => {
+    const mock = spyElementPrototypes(HTMLElement, {
+      offsetWidth: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 14;
+          } else if (this.className.includes('panel-container')) {
+            return 312;
+          } else if (this.className.includes('input')) {
+            return 236;
+          } else if (this.className.includes('range-separator')) {
+            return 10;
+          }
+        },
+      },
+      offsetLeft: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 262;
+          }
+        },
+      },
+    });
+    const wrapper = mount(
+      <MomentRangePicker
+        allowClear
+        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        clearIcon={<span>X</span>}
+        suffixIcon={<span>O</span>}
+      />,
+    );
+    wrapper.openPicker(1);
+    expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('0px');
+    mock.mockRestore();
   });
 });
