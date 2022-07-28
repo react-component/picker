@@ -8,6 +8,7 @@ import moment from 'moment';
 import type { Moment } from 'moment';
 import type { PanelMode, PickerMode } from '../src/interface';
 import { mount, getMoment, isSame, MomentPicker } from './util/commonUtil';
+import { fireEvent, render } from '@testing-library/react';
 
 describe('Picker.Basic', () => {
   beforeAll(() => {
@@ -125,17 +126,14 @@ describe('Picker.Basic', () => {
     it('fixed open need repeat trigger onOpenChange', () => {
       jest.useFakeTimers();
       const onOpenChange = jest.fn();
-      mount(<MomentPicker onOpenChange={onOpenChange} open />);
+      render(<MomentPicker onOpenChange={onOpenChange} open />);
+      expect(onOpenChange).toHaveBeenCalledTimes(0);
 
       for (let i = 0; i < 10; i += 1) {
-        const clickEvent = new Event('mousedown');
-        Object.defineProperty(clickEvent, 'target', {
-          get: () => document.body,
-        });
         act(() => {
-          window.dispatchEvent(clickEvent);
+          fireEvent.mouseDown(document.body);
         });
-        expect(onOpenChange).toHaveBeenCalledTimes(i + 1);
+        expect(onOpenChange).toHaveBeenCalledTimes(1);
       }
       act(() => {
         jest.runAllTimers();
