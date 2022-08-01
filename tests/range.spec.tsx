@@ -9,6 +9,7 @@ import type { Wrapper } from './util/commonUtil';
 import { mount, getMoment, isSame, MomentRangePicker } from './util/commonUtil';
 import zhCN from '../src/locale/zh_CN';
 import type { PickerMode } from '../src/interface';
+import { fireEvent, render } from '@testing-library/react';
 
 describe('Picker.Range', () => {
   function matchValues(wrapper: Wrapper, value1: string, value2: string) {
@@ -693,23 +694,15 @@ describe('Picker.Range', () => {
   it('fixed open need repeat trigger onOpenChange', () => {
     jest.useFakeTimers();
     const onOpenChange = jest.fn();
-    const wrapper = mount(<MomentRangePicker onOpenChange={onOpenChange} open />);
+    render(<MomentRangePicker onOpenChange={onOpenChange} open />);
+
+    expect(onOpenChange).toHaveBeenCalledTimes(0);
 
     for (let i = 0; i < 10; i += 1) {
-      const clickEvent = new Event('mousedown');
-      Object.defineProperty(clickEvent, 'target', {
-        get: () => document.body,
-      });
-
-      const current = onOpenChange.mock.calls.length;
       act(() => {
-        window.dispatchEvent(clickEvent);
-        wrapper.find('input').first().simulate('blur');
+        fireEvent.mouseDown(document.body);
       });
-      const next = onOpenChange.mock.calls.length;
-
-      // Maybe not good since onOpenChange trigger twice
-      expect(current < next).toBeTruthy();
+      expect(onOpenChange).toHaveBeenCalledTimes(1);
     }
     act(() => {
       jest.runAllTimers();
