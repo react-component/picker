@@ -195,6 +195,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     open,
     defaultOpen,
     disabledDate,
+    limitBeginAndEnd=true,
     disabledTime,
     dateRender,
     panelRender,
@@ -329,8 +330,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       disabledDate,
       generateConfig,
     },
-    openRecordsRef.current[1],
-    openRecordsRef.current[0],
+    limitBeginAndEnd&&openRecordsRef.current[1],
+    limitBeginAndEnd&&openRecordsRef.current[0],
   );
 
   // ============================= Open ==============================
@@ -405,6 +406,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     let values = newValue;
     let startValue = getValue(values, 0);
     let endValue = getValue(values, 1);
+    
+    // change startValue and endValue ,if start > end
+    if(startValue && endValue &&!generateConfig.isAfter(endValue,startValue,)){
+      const tmp=endValue
+      endValue=startValue
+      startValue=tmp
+    }
 
     // >>>>> Format start & end values
     if (startValue && endValue && generateConfig.isAfter(startValue, endValue)) {
