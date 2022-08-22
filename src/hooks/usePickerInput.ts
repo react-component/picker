@@ -111,6 +111,7 @@ export default function usePickerInput({
       }
 
       if (blurToCancel) {
+        const isValueChanged = valueChangedRef.current;
         setTimeout(() => {
           let { activeElement } = document;
           while (activeElement && activeElement.shadowRoot) {
@@ -119,6 +120,8 @@ export default function usePickerInput({
 
           if (isClickOutside(activeElement)) {
             onCancel();
+          } else if (isValueChanged) {
+            onSubmit();
           }
         }, 0);
       } else if (open) {
