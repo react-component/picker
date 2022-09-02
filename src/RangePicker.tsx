@@ -115,6 +115,10 @@ export type RangePickerSharedProps<DateType> = {
   activePickerIndex?: 0 | 1;
   dateRender?: RangeDateRender<DateType>;
   panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
+  /** don't use popup **/
+  inline?: boolean;
+  /** just display one panel **/
+  showOnePanel?: boolean;
 };
 
 type OmitPickerProps<Props> = Omit<
@@ -225,6 +229,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     direction,
     activePickerIndex,
     autoComplete = 'off',
+    inline,
+    showOnePanel,
   } = props as MergedRangePickerProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
@@ -947,7 +953,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       const nextViewDate = getClosingViewDate(viewDate, picker, generateConfig);
       const currentMode = mergedModes[mergedActivePickerIndex];
 
-      const showDoublePanel = currentMode === picker;
+      const showDoublePanel = showOnePanel ? false : currentMode === picker;
       const leftPanel = renderPanel(showDoublePanel ? 'left' : false, {
         pickerValue: viewDate,
         onPickerValueChange: (newViewDate) => {
@@ -1097,7 +1103,81 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       setSelectedValue(values);
     }
   };
-
+  const inputNode = (
+    <div
+      ref={containerRef}
+      className={classNames(prefixCls, `${prefixCls}-range`, className, {
+        [`${prefixCls}-disabled`]: mergedDisabled[0] && mergedDisabled[1],
+        [`${prefixCls}-focused`]: mergedActivePickerIndex === 0 ? startFocused : endFocused,
+        [`${prefixCls}-rtl`]: direction === 'rtl',
+      })}
+      style={style}
+      onClick={onPickerClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onMouseDown={onPickerMouseDown}
+      onMouseUp={onMouseUp}
+      {...getDataOrAriaProps(props)}
+    >
+      <div
+        className={classNames(`${prefixCls}-input`, {
+          [`${prefixCls}-input-active`]: mergedActivePickerIndex === 0,
+          [`${prefixCls}-input-placeholder`]: !!startHoverValue,
+        })}
+        ref={startInputDivRef}
+      >
+        <input
+          id={id}
+          disabled={mergedDisabled[0]}
+          readOnly={inputReadOnly || typeof formatList[0] === 'function' || !startTyping}
+          value={startHoverValue || startText}
+          onChange={(e) => {
+            triggerStartTextChange(e.target.value);
+          }}
+          autoFocus={autoFocus}
+          placeholder={getValue(placeholder, 0) || ''}
+          ref={startInputRef}
+          {...startInputProps}
+          {...inputSharedProps}
+          autoComplete={autoComplete}
+        />
+      </div>
+      <div className={`${prefixCls}-range-separator`} ref={separatorRef}>
+        {separator}
+      </div>
+      <div
+        className={classNames(`${prefixCls}-input`, {
+          [`${prefixCls}-input-active`]: mergedActivePickerIndex === 1,
+          [`${prefixCls}-input-placeholder`]: !!endHoverValue,
+        })}
+        ref={endInputDivRef}
+      >
+        <input
+          disabled={mergedDisabled[1]}
+          readOnly={inputReadOnly || typeof formatList[0] === 'function' || !endTyping}
+          value={endHoverValue || endText}
+          onChange={(e) => {
+            triggerEndTextChange(e.target.value);
+          }}
+          placeholder={getValue(placeholder, 1) || ''}
+          ref={endInputRef}
+          {...endInputProps}
+          {...inputSharedProps}
+          autoComplete={autoComplete}
+        />
+      </div>
+      <div
+        className={`${prefixCls}-active-bar`}
+        style={{
+          ...activeBarPositionStyle,
+          width: activeBarWidth,
+          position: 'absolute',
+        }}
+      />
+      {suffixNode}
+      {clearNode}
+    </div>
+  );
   return (
     <PanelContext.Provider
       value={{
@@ -1110,92 +1190,27 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         open: mergedOpen,
       }}
     >
-      <PickerTrigger
-        visible={mergedOpen}
-        popupElement={rangePanel}
-        popupStyle={popupStyle}
-        prefixCls={prefixCls}
-        dropdownClassName={dropdownClassName}
-        dropdownAlign={dropdownAlign}
-        getPopupContainer={getPopupContainer}
-        transitionName={transitionName}
-        range
-        direction={direction}
-      >
-        <div
-          ref={containerRef}
-          className={classNames(prefixCls, `${prefixCls}-range`, className, {
-            [`${prefixCls}-disabled`]: mergedDisabled[0] && mergedDisabled[1],
-            [`${prefixCls}-focused`]: mergedActivePickerIndex === 0 ? startFocused : endFocused,
-            [`${prefixCls}-rtl`]: direction === 'rtl',
-          })}
-          style={style}
-          onClick={onPickerClick}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          onMouseDown={onPickerMouseDown}
-          onMouseUp={onMouseUp}
-          {...getDataOrAriaProps(props)}
+      {!inline ? (
+        <PickerTrigger
+          visible={mergedOpen}
+          popupElement={rangePanel}
+          popupStyle={popupStyle}
+          prefixCls={prefixCls}
+          dropdownClassName={dropdownClassName}
+          dropdownAlign={dropdownAlign}
+          getPopupContainer={getPopupContainer}
+          transitionName={transitionName}
+          range
+          direction={direction}
         >
-          <div
-            className={classNames(`${prefixCls}-input`, {
-              [`${prefixCls}-input-active`]: mergedActivePickerIndex === 0,
-              [`${prefixCls}-input-placeholder`]: !!startHoverValue,
-            })}
-            ref={startInputDivRef}
-          >
-            <input
-              id={id}
-              disabled={mergedDisabled[0]}
-              readOnly={inputReadOnly || typeof formatList[0] === 'function' || !startTyping}
-              value={startHoverValue || startText}
-              onChange={(e) => {
-                triggerStartTextChange(e.target.value);
-              }}
-              autoFocus={autoFocus}
-              placeholder={getValue(placeholder, 0) || ''}
-              ref={startInputRef}
-              {...startInputProps}
-              {...inputSharedProps}
-              autoComplete={autoComplete}
-            />
-          </div>
-          <div className={`${prefixCls}-range-separator`} ref={separatorRef}>
-            {separator}
-          </div>
-          <div
-            className={classNames(`${prefixCls}-input`, {
-              [`${prefixCls}-input-active`]: mergedActivePickerIndex === 1,
-              [`${prefixCls}-input-placeholder`]: !!endHoverValue,
-            })}
-            ref={endInputDivRef}
-          >
-            <input
-              disabled={mergedDisabled[1]}
-              readOnly={inputReadOnly || typeof formatList[0] === 'function' || !endTyping}
-              value={endHoverValue || endText}
-              onChange={(e) => {
-                triggerEndTextChange(e.target.value);
-              }}
-              placeholder={getValue(placeholder, 1) || ''}
-              ref={endInputRef}
-              {...endInputProps}
-              {...inputSharedProps}
-              autoComplete={autoComplete}
-            />
-          </div>
-          <div
-            className={`${prefixCls}-active-bar`}
-            style={{
-              ...activeBarPositionStyle,
-              width: activeBarWidth,
-              position: 'absolute',
-            }}
-          />
-          {suffixNode}
-          {clearNode}
-        </div>
-      </PickerTrigger>
+          {inputNode}
+        </PickerTrigger>
+      ) : (
+        <>
+          {inputNode}
+          {rangePanel}
+        </>
+      )}
     </PanelContext.Provider>
   );
 }

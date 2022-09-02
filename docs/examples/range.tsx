@@ -51,9 +51,9 @@ export default () => {
       <h2>Value: {value ? `${formatDate(value[0])} ~ ${formatDate(value[1])}` : 'null'}</h2>
 
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        <div style={{ margin: '0 8px' }}>
-          <h3>Basic</h3>
-          <RangePicker<Moment>
+        {/* <div style={{ margin: '0 8px' }}> */}
+        {/* <h3>Basic</h3> */}
+        {/* <RangePicker<Moment>
             {...sharedProps}
             value={undefined}
             locale={zhCN}
@@ -134,28 +134,35 @@ export default () => {
         <div style={{ margin: '0 8px' }}>
           <h3>Week</h3>
           <RangePicker<Moment> {...sharedProps} locale={zhCN} picker="week" />
-        </div>
+        </div> */}
 
         <div style={{ margin: '0 8px' }}>
           <h3>Allow Empty</h3>
           <RangePicker<Moment>
             {...sharedProps}
             locale={zhCN}
-            allowClear
+            onOk={(dates) => {
+              console.log('OK!!!', dates);
+            }}
+            showOnePanel
+            inline
             allowEmpty={[true, true]}
+            renderExtraFooter={() => {
+              return <span>hello</span>;
+            }}
           />
         </div>
 
-        <div style={{ margin: '0 8px' }}>
+        {/* <div style={{ margin: '0 8px' }}>
           <h3>Start disabled</h3>
           <RangePicker<Moment> {...sharedProps} locale={zhCN} allowClear disabled={[true, false]} />
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>End disabled</h3>
           <RangePicker<Moment> {...sharedProps} locale={zhCN} allowClear disabled={[false, true]} />
-        </div>
+        </div> */}
 
-        <div style={{ margin: '0 8px' }}>
+        {/* <div style={{ margin: '0 8px' }}>
           <h3>Uncontrolled</h3>
           <RangePicker<Moment>
             {...sharedProps}
@@ -185,7 +192,7 @@ export default () => {
             placeholder={['start...', 'end...']}
             disabledDate={disabledDate}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
