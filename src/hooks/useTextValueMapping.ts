@@ -1,4 +1,5 @@
 import * as React from 'react';
+import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 
 export default function useTextValueMapping({
   valueTexts,
@@ -21,8 +22,8 @@ export default function useTextValueMapping({
     setInnerText(valueTextsRef.current[0]);
   }
 
-  React.useEffect(() => {
-    if (valueTexts.every(valText => valText !== text)) {
+  useLayoutEffect(() => {
+    if (valueTexts.every((valText) => valText !== text)) {
       resetText();
     }
   }, [valueTexts.join('||')]);
