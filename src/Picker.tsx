@@ -284,9 +284,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     }
   };
 
-  const onInternalMouseUp: React.MouseEventHandler<HTMLDivElement> = (...args) => {
-    if (onMouseUp) {
-      onMouseUp(...args);
+  const onInternalClick: React.MouseEventHandler<HTMLDivElement> = (...args) => {
+    if (onClick) {
+      onClick(...args);
     }
 
     if (inputRef.current) {
@@ -536,11 +536,11 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
           })}
           style={style}
           onMouseDown={onMouseDown}
-          onMouseUp={onInternalMouseUp}
+          onMouseUp={onMouseUp}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
           onContextMenu={onContextMenu}
-          onClick={onClick}
+          onClick={onInternalClick}
         >
           <div
             className={classNames(`${prefixCls}-input`, {

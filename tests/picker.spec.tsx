@@ -617,22 +617,22 @@ describe('Picker.Basic', () => {
     expect(wrapper.find('input').prop('value')).toEqual('2020-1st');
   });
 
-  it('click outside should also focus', () => {
-    const onMouseUp = jest.fn();
-    const wrapper = mount(<MomentPicker onMouseUp={onMouseUp} />);
+  it('Picker should open when click inside', () => {
+    const onClick = jest.fn();
+    const wrapper = mount(<MomentPicker onClick={onClick} />);
     const inputElement = wrapper.find('input').instance() as any as HTMLInputElement;
     inputElement.focus = jest.fn();
 
-    wrapper.find('.rc-picker').simulate('mouseUp');
+    wrapper.find('.rc-picker').simulate('click');
     expect(inputElement.focus).toHaveBeenCalled();
     expect(wrapper.isOpen()).toBeTruthy();
 
-    expect(onMouseUp).toHaveBeenCalled();
+    expect(onClick).toHaveBeenCalled();
   });
 
   it('not open when disabled', () => {
     const wrapper = mount(<MomentPicker disabled />);
-    wrapper.find('.rc-picker').simulate('mouseUp');
+    wrapper.find('.rc-picker').simulate('click');
     expect(wrapper.isOpen()).toBeFalsy();
 
     wrapper.setProps({ disabled: false });
