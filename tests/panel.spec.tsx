@@ -1,19 +1,31 @@
-import React from 'react';
-import MockDate from 'mockdate';
 import moment from 'moment';
-import { resetWarned } from 'rc-util/lib/warning';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import { mount, getMoment, isSame, MomentPickerPanel } from './util/commonUtil';
-import zhCN from '../src/locale/zh_CN';
+import { resetWarned } from 'rc-util/lib/warning';
 import enUS from '../src/locale/en_US';
+import zhCN from '../src/locale/zh_CN';
+import { getMoment, isSame, MomentPickerPanel, mount } from './util/commonUtil';
+
+jest.mock('../src/utils/uiUtil', () => {
+  const origin = jest.requireActual('../src/utils/uiUtil');
+
+  return {
+    ...origin,
+    scrollTo: (...args) => {
+      global.scrollCalled = true;
+      return origin.scrollTo(...args);
+    },
+  };
+});
 
 describe('Picker.Panel', () => {
-  beforeAll(() => {
-    MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
+  beforeEach(() => {
+    global.scrollCalled = false;
+    jest.useFakeTimers().setSystemTime(getMoment('1990-09-03 00:00:00').valueOf());
   });
 
   afterAll(() => {
-    MockDate.reset();
+    jest.clearAllTimers();
+    jest.useRealTimers();
   });
 
   describe('value', () => {
@@ -93,45 +105,31 @@ describe('Picker.Panel', () => {
     });
   });
 
-  describe('time click to scroll', () => {
-    [true, false].forEach((bool) => {
-      it(`spy requestAnimationFrame: ${bool}`, () => {
-        let scrollTop = 90;
-        const domSpy = spyElementPrototypes(HTMLElement, {
-          scrollTop: {
-            get: () => scrollTop,
-            set: ((_: Function, value: number) => {
-              scrollTop = value;
-            }) as any,
-          },
-        });
+  it('time click to scroll', () => {
+    let scrollTop = 90;
 
-        let requestAnimationFrameSpy = jest.spyOn(global, 'requestAnimationFrame' as any);
-
-        // Spy to trigger 2 way of test for checking case cover
-        if (bool) {
-          requestAnimationFrameSpy = requestAnimationFrameSpy.mockImplementation(
-            window.setTimeout as any,
-          );
-        }
-
-        jest.useFakeTimers();
-        const wrapper = mount(<MomentPickerPanel picker="time" />);
-
-        // Multiple times should only one work
-        wrapper.find('ul').first().find('li').at(3).simulate('click');
-
-        wrapper.find('ul').first().find('li').at(11).simulate('click');
-        jest.runAllTimers();
-
-        expect(requestAnimationFrameSpy).toHaveBeenCalled();
-
-        jest.useRealTimers();
-
-        domSpy.mockRestore();
-        requestAnimationFrameSpy.mockRestore();
-      });
+    const domSpy = spyElementPrototypes(HTMLElement, {
+      scrollTop: {
+        get: () => scrollTop,
+        set: ((_: Function, value: number) => {
+          scrollTop = value;
+        }) as any,
+      },
     });
+
+    jest.useFakeTimers();
+    const wrapper = mount(<MomentPickerPanel picker="time" />);
+
+    // Multiple times should only one work
+    wrapper.find('ul').first().find('li').at(3).simulate('click');
+
+    wrapper.find('ul').first().find('li').at(11).simulate('click');
+    jest.runAllTimers();
+    expect(global.scrollCalled).toBeTruthy();
+
+    jest.useRealTimers();
+
+    domSpy.mockRestore();
   });
 
   describe('click button to switch', () => {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { Components, RangeList, Locale } from '../interface';
+import type { Components, Locale, RangeList } from '../interface';
 
 export type RangesProps = {
   prefixCls: string;
