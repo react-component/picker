@@ -1,5 +1,6 @@
-import type { PresetDate } from '../interface';
 import * as React from 'react';
+import warning from 'rc-util/lib/warning';
+import type { PresetDate } from '../interface';
 
 export default function usePresets<T>(
   presets?: PresetDate<T>[],
@@ -11,6 +12,8 @@ export default function usePresets<T>(
     }
 
     if (legacyRanges) {
+      warning(false, '`ranges` is deprecated. Please use `presets` instead.');
+
       const rangeLabels = Object.keys(legacyRanges);
 
       return rangeLabels.map((label) => {

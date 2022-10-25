@@ -42,6 +42,7 @@ import type { DateRender } from './panels/DatePanel/DateBody';
 import useHoverValue from './hooks/useHoverValue';
 import { legacyPropsWarning } from './utils/warnUtil';
 import usePresets from './hooks/usePresets';
+import PresetPanel from './PresetPanel';
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -777,21 +778,21 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   // ============================ Ranges =============================
   const presetList = usePresets(presets, ranges);
 
-  const rangeList = presetList.map((preset) => {
-    return {
-      label: preset.label,
-      onClick: () => {
-        triggerChange(preset.value, null);
-        triggerOpen(false, mergedActivePickerIndex);
-      },
-      onMouseEnter: () => {
-        setRangeHoverValue(preset.value);
-      },
-      onMouseLeave: () => {
-        setRangeHoverValue(null);
-      },
-    };
-  });
+  // const rangeList = presetList.map((preset) => {
+  //   return {
+  //     label: preset.label,
+  //     onClick: () => {
+  //       triggerChange(preset.value, null);
+  //       triggerOpen(false, mergedActivePickerIndex);
+  //     },
+  //     onMouseEnter: () => {
+  //       setRangeHoverValue(preset.value);
+  //     },
+  //     onMouseLeave: () => {
+  //       setRangeHoverValue(null);
+  //     },
+  //   };
+  // });
 
   // ============================= Panel =============================
   function renderPanel(
@@ -935,7 +936,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         !getValue(selectedValue, mergedActivePickerIndex) ||
         (disabledDate && disabledDate(selectedValue[mergedActivePickerIndex])),
       locale,
-      rangeList,
+      // rangeList,
       onOk: () => {
         if (getValue(selectedValue, mergedActivePickerIndex)) {
           // triggerChangeOld(selectedValue);
@@ -989,15 +990,28 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
 
     let mergedNodes: React.ReactNode = (
-      <>
-        <div className={`${prefixCls}-panels`}>{panels}</div>
-        {(extraNode || rangesNode) && (
-          <div className={`${prefixCls}-footer`}>
-            {extraNode}
-            {rangesNode}
-          </div>
-        )}
-      </>
+      <div style={{ display: 'flex', flexWrap: 'nowrap', alignItems: 'stretch' }}>
+        <PresetPanel
+          prefixCls={prefixCls}
+          presets={presetList}
+          onClick={(nextValue) => {
+            triggerChange(nextValue, null);
+            triggerOpen(false, mergedActivePickerIndex);
+          }}
+          onHover={(hoverValue) => {
+            setRangeHoverValue(hoverValue);
+          }}
+        />
+        <div>
+          <div className={`${prefixCls}-panels`}>{panels}</div>
+          {(extraNode || rangesNode) && (
+            <div className={`${prefixCls}-footer`}>
+              {extraNode}
+              {rangesNode}
+            </div>
+          )}
+        </div>
+      </div>
     );
 
     if (panelRender) {

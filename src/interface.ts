@@ -101,7 +101,7 @@ export type Components = {
 };
 
 export type RangeList = {
-  label: string;
+  label: React.ReactNode;
   onClick: () => void;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
