@@ -146,6 +146,7 @@ type OmitPickerProps<Props> = Omit<
   | 'onPickerValueChange'
   | 'onOk'
   | 'dateRender'
+  | 'presets'
 >;
 
 type RangeShowTimeObject<DateType> = Omit<SharedTimeProps<DateType>, 'defaultValue'> & {
@@ -171,7 +172,7 @@ export type RangePickerProps<DateType> =
   | RangePickerTimeProps<DateType>;
 
 // TMP type to fit for ts 3.9.2
-type OmitType<DateType> = Omit<RangePickerBaseProps<DateType>, 'picker'> &
+type OmitType<DateType> = Omit<RangePickerBaseProps<DateType>, 'picker' | 'presets'> &
   Omit<RangePickerDateProps<DateType>, 'picker'> &
   Omit<RangePickerTimeProps<DateType>, 'picker'>;
 
@@ -990,7 +991,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
 
     let mergedNodes: React.ReactNode = (
-      <div style={{ display: 'flex', flexWrap: 'nowrap', alignItems: 'stretch' }}>
+      <div className={`${prefixCls}-panel-layout`}>
         <PresetPanel
           prefixCls={prefixCls}
           presets={presetList}

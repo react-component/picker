@@ -5,7 +5,7 @@ export interface PresetPanelProps<T> {
   prefixCls: string;
   presets: PresetDate<T>[];
   onClick: (value: T) => void;
-  onHover: (value: T) => void;
+  onHover?: (value: T) => void;
 }
 
 export default function PresetPanel<T>(props: PresetPanelProps<T>) {
@@ -24,10 +24,10 @@ export default function PresetPanel<T>(props: PresetPanelProps<T>) {
             onClick(value);
           }}
           onMouseEnter={() => {
-            onHover(value);
+            onHover?.(value);
           }}
           onMouseLeave={() => {
-            onHover(null);
+            onHover?.(null);
           }}
         >
           {label}
