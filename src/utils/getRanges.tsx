@@ -30,7 +30,7 @@ export default function getRanges({
   if (needConfirmButton) {
     const Button = (components.button || 'button') as any;
 
-    if (onNow && !presetNode && showNow !== false) {
+    if (onNow && showNow !== false) {
       presetNode = (
         <li className={`${prefixCls}-now`}>
           <a className={`${prefixCls}-now-btn`} onClick={onNow}>
