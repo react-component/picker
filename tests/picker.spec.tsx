@@ -1,22 +1,24 @@
-import React from 'react';
-import MockDate from 'mockdate';
-import { act } from 'react-dom/test-utils';
-import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import KeyCode from 'rc-util/lib/KeyCode';
-import { resetWarned } from 'rc-util/lib/warning';
-import moment from 'moment';
-import type { Moment } from 'moment';
-import type { PanelMode, PickerMode } from '../src/interface';
-import { mount, getMoment, isSame, MomentPicker } from './util/commonUtil';
 import { fireEvent, render } from '@testing-library/react';
+import type { Moment } from 'moment';
+import moment from 'moment';
+import KeyCode from 'rc-util/lib/KeyCode';
+import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
+import { resetWarned } from 'rc-util/lib/warning';
+import React from 'react';
+import { act } from 'react-dom/test-utils';
+import type { PanelMode, PickerMode } from '../src/interface';
+import { getMoment, isSame, MomentPicker, mount } from './util/commonUtil';
+
+const fakeTime = getMoment('1990-09-03 00:00:00').valueOf();
 
 describe('Picker.Basic', () => {
-  beforeAll(() => {
-    MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(fakeTime);
   });
 
   afterAll(() => {
-    MockDate.reset();
+    jest.clearAllTimers();
+    jest.useRealTimers();
   });
 
   describe('mode', () => {
@@ -544,13 +546,13 @@ describe('Picker.Basic', () => {
 
   describe('time step', () => {
     it('work with now', () => {
-      MockDate.set(getMoment('1990-09-03 00:09:00').toDate());
+      jest.setSystemTime(getMoment('1990-09-03 00:09:00').valueOf())
       const onSelect = jest.fn();
       const wrapper = mount(<MomentPicker onSelect={onSelect} picker="time" minuteStep={10} />);
       wrapper.openPicker();
       wrapper.find('.rc-picker-now > a').simulate('click');
       expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:59', 'second')).toBeTruthy();
-      MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
+      jest.setSystemTime(getMoment('1990-09-03 00:00:00').valueOf())
     });
     it('should show warning when hour step is invalid', () => {
       const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
