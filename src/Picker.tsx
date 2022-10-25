@@ -285,9 +285,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   };
 
   const onInternalClick: React.MouseEventHandler<HTMLDivElement> = (...args) => {
-    if (onClick) {
-      onClick(...args);
-    }
+    onClick?.(...args);
 
     if (inputRef.current) {
       inputRef.current.focus();
