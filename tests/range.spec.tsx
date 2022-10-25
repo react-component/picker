@@ -295,7 +295,7 @@ describe('Picker.Range', () => {
 
       // Basic
       wrapper.openPicker();
-      testNode = wrapper.find('.rc-picker-ranges li span').first();
+      testNode = wrapper.find('.rc-picker-presets li').first();
       expect(testNode.text()).toEqual('test');
       testNode.simulate('click');
       expect(onChange).toHaveBeenCalledWith(
@@ -306,7 +306,7 @@ describe('Picker.Range', () => {
 
       // Function
       wrapper.openPicker();
-      testNode = wrapper.find('.rc-picker-ranges li span').last();
+      testNode = wrapper.find('.rc-picker-presets li').last();
       expect(testNode.text()).toEqual('func');
       testNode.simulate('click');
       expect(onChange).toHaveBeenCalledWith(
@@ -326,12 +326,12 @@ describe('Picker.Range', () => {
       );
 
       wrapper.openPicker();
-      wrapper.find('.rc-picker-preset > *').simulate('mouseEnter');
+      wrapper.find('.rc-picker-presets li').simulate('mouseEnter');
       expect(wrapper.findCell(11).hasClass('rc-picker-cell-range-start')).toBeTruthy();
       expect(wrapper.findCell(12).hasClass('rc-picker-cell-in-range')).toBeTruthy();
       expect(wrapper.findCell(13).hasClass('rc-picker-cell-range-end')).toBeTruthy();
 
-      wrapper.find('.rc-picker-preset > *').simulate('mouseLeave');
+      wrapper.find('.rc-picker-presets li').simulate('mouseLeave');
       expect(wrapper.findCell(11).hasClass('rc-picker-cell-range-start')).toBeFalsy();
       expect(wrapper.findCell(12).hasClass('rc-picker-cell-in-range')).toBeFalsy();
       expect(wrapper.findCell(13).hasClass('rc-picker-cell-range-end')).toBeFalsy();

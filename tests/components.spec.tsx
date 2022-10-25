@@ -18,14 +18,14 @@ describe('Picker.Components', () => {
   });
 
   [
-    { name: 'RangePicker', component: MomentRangePicker, ranges: true },
+    { name: 'RangePicker', component: MomentRangePicker },
     { name: 'Picker', component: MomentPicker },
     { name: 'PickerPanel', component: MomentPickerPanel },
-  ].forEach(({ name, component, ranges }) => {
+  ].forEach(({ name, component }) => {
     it(name, () => {
       const Component = component as any;
-      const Button: React.FC<any> = props => <h1 {...props} />;
-      const Item: React.FC<any> = props => <h2 {...props} />;
+      const Button: React.FC<any> = (props) => <h1 {...props} />;
+      const Item: React.FC<any> = (props) => <h2 {...props} />;
 
       const wrapper = mount(
         <Component
@@ -42,9 +42,6 @@ describe('Picker.Components', () => {
       );
 
       expect(wrapper.find('.rc-picker-footer').find('h1')).toHaveLength(1);
-      if (ranges) {
-        expect(wrapper.find('.rc-picker-footer').find('h2')).toHaveLength(1);
-      }
     });
   });
 });

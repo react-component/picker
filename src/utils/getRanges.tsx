@@ -27,22 +27,6 @@ export default function getRanges({
   let presetNode: React.ReactNode;
   let okNode: React.ReactNode;
 
-  // if (rangeList.length) {
-  //   const Item = (components.rangeItem || 'span') as any;
-
-  //   presetNode = (
-  //     <>
-  //       {rangeList.map(({ label, onClick, onMouseEnter, onMouseLeave }, index) => (
-  //         <li key={index} className={`${prefixCls}-preset`}>
-  //           <Item onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-  //             {label}
-  //           </Item>
-  //         </li>
-  //       ))}
-  //     </>
-  //   );
-  // }
-
   if (needConfirmButton) {
     const Button = (components.button || 'button') as any;
 
