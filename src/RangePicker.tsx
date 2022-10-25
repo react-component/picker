@@ -87,6 +87,7 @@ export type RangePickerSharedProps<DateType> = {
   placeholder?: [string, string];
   disabled?: boolean | [boolean, boolean];
   disabledTime?: (date: EventValue<DateType>, type: RangeType) => DisabledTimes;
+  presets?: any[];
   ranges?: Record<
     string,
     Exclude<RangeValue<DateType>, null> | (() => Exclude<RangeValue<DateType>, null>)
