@@ -970,4 +970,21 @@ describe('Picker.Basic', () => {
 
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
   });
+
+  it('presets', () => {
+    const onChange = jest.fn();
+
+    const wrapper = mount(
+      <MomentPicker
+        onChange={onChange}
+        open
+        presets={[{ label: 'Bamboo', value: moment('2000-09-03') }]}
+      />,
+    );
+
+    expect(wrapper.find('.rc-picker-presets li').text()).toBe('Bamboo');
+    wrapper.find('.rc-picker-presets li').simulate('click');
+
+    expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('2000-09-03');
+  });
 });
