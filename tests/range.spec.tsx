@@ -21,7 +21,7 @@ describe('Picker.Range', () => {
     jest.useFakeTimers().setSystemTime(getMoment('1990-09-03 00:00:00').valueOf());
   });
 
-  afterAll(() => {
+  afterEach(() => {
     jest.clearAllTimers();
     jest.useRealTimers();
   });
