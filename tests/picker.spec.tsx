@@ -639,6 +639,16 @@ describe('Picker.Basic', () => {
     expect(wrapper.isOpen()).toBeFalsy();
   });
 
+  it('not open when mouseup', () => {
+    const wrapper = mount(<MomentPicker />);
+    const inputElement = wrapper.find('input').instance() as any as HTMLInputElement;
+    inputElement.focus = jest.fn();
+
+    wrapper.find('.rc-picker').simulate('mouseup');
+    expect(inputElement.focus).toHaveBeenCalledTimes(0);
+    expect(wrapper.isOpen()).toBeFalsy();
+  });
+
   it('defaultOpenValue in timePicker', () => {
     resetWarned();
     const onChange = jest.fn();
