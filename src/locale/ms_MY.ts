@@ -5,7 +5,7 @@ const locale: Locale = {
   today: 'Hari ini',
   now: 'Sekarang',
   backToToday: 'Kembali ke hari ini',
-  ok: 'Ok',
+  ok: 'OK',
   timeSelect: 'Pilih masa',
   dateSelect: 'Pilih tarikh',
   weekSelect: 'Pilih minggu',

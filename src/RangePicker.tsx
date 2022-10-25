@@ -904,16 +904,19 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     arrowLeft = startInputDivRef.current.offsetWidth + separatorRef.current.offsetWidth;
 
     // If panelWidth - arrowWidth - arrowMarginLeft < arrowLeft, panel should move to right side.
-    // If offsetLeft > arrowLeft, arrow position is absolutely right, because arrowLeft is not calculated with arrow margin.
+    // If arrowOffsetLeft > arrowLeft, arrowMarginLeft = arrowOffsetLeft - arrowLeft
+    const arrowMarginLeft =
+      arrowRef.current.offsetLeft > arrowLeft
+        ? arrowRef.current.offsetLeft - arrowLeft
+        : arrowRef.current.offsetLeft;
+
     if (
       panelDivRef.current.offsetWidth &&
       arrowRef.current.offsetWidth &&
       arrowLeft >
         panelDivRef.current.offsetWidth -
           arrowRef.current.offsetWidth -
-          (direction === 'rtl' || arrowRef.current.offsetLeft > arrowLeft
-            ? 0
-            : arrowRef.current.offsetLeft)
+          (direction === 'rtl' ? 0 : arrowMarginLeft)
     ) {
       panelLeft = arrowLeft;
     }

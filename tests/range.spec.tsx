@@ -9,6 +9,7 @@ import type { Wrapper } from './util/commonUtil';
 import { mount, getMoment, isSame, MomentRangePicker } from './util/commonUtil';
 import zhCN from '../src/locale/zh_CN';
 import type { PickerMode } from '../src/interface';
+import { fireEvent, render } from '@testing-library/react';
 
 describe('Picker.Range', () => {
   function matchValues(wrapper: Wrapper, value1: string, value2: string) {
@@ -32,16 +33,7 @@ describe('Picker.Range', () => {
 
       matchValues(wrapper, '1989-11-28', '1990-09-03');
     });
-    it('defaultPickerValue with showTime', () => {
-      const startDate = getMoment('1982-02-12');
-      const endDate = getMoment('1982-02-12');
 
-      const wrapper = mount(
-        <MomentRangePicker defaultPickerValue={[startDate, endDate]} showTime />,
-      );
-      wrapper.openPicker();
-      expect(wrapper.find('.rc-picker-year-btn').first().text()).toEqual(startDate.format('YYYY'));
-    });
     it('controlled', () => {
       const wrapper = mount(
         <MomentRangePicker value={[getMoment('1989-11-28'), getMoment('1990-09-03')]} />,
@@ -352,22 +344,54 @@ describe('Picker.Range', () => {
     expect(wrapper.find('input').last().props().placeholder).toEqual('bamboo');
   });
 
-  it('defaultPickerValue', () => {
-    const wrapper = mount(
-      <MomentRangePicker defaultPickerValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]} />,
-    );
+  describe('defaultPickerValue', () => {
+    it('defaultPickerValue works', () => {
+      const wrapper = mount(
+        <MomentRangePicker
+          defaultPickerValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
+        />,
+      );
 
-    wrapper.openPicker();
-    expect(wrapper.find('PickerPanel').first().find('.rc-picker-header-view').text()).toEqual(
-      'Nov1989',
-    );
-    wrapper.closePicker();
+      wrapper.openPicker();
+      expect(wrapper.find('PickerPanel').first().find('.rc-picker-header-view').text()).toEqual(
+        'Nov1989',
+      );
+      wrapper.closePicker();
 
-    wrapper.openPicker(1);
-    expect(wrapper.find('PickerPanel').last().find('.rc-picker-header-view').text()).toEqual(
-      'Oct1990',
-    );
-    wrapper.closePicker(1);
+      wrapper.openPicker(1);
+      expect(wrapper.find('PickerPanel').last().find('.rc-picker-header-view').text()).toEqual(
+        'Oct1990',
+      );
+      wrapper.closePicker(1);
+    });
+
+    it('defaultPickerValue with showTime', () => {
+      const startDate = getMoment('1982-02-12');
+      const endDate = getMoment('1982-02-12');
+
+      const wrapper = mount(
+        <MomentRangePicker defaultPickerValue={[startDate, endDate]} showTime />,
+      );
+      wrapper.openPicker();
+      expect(wrapper.find('.rc-picker-year-btn').first().text()).toEqual(startDate.format('YYYY'));
+    });
+
+    it('defaultPickerValue with showTime should works when open panel', () => {
+      const startDate = getMoment('1982-02-12');
+      const endDate = getMoment('1982-02-12');
+
+      const wrapper = mount(
+        <MomentRangePicker
+          defaultValue={[startDate, endDate]}
+          defaultPickerValue={[startDate, endDate]}
+          showTime
+        />,
+      );
+      expect(() => {
+        wrapper.openPicker();
+      }).not.toThrow();
+      expect(wrapper.find('.rc-picker-year-btn').first().text()).toEqual(startDate.format('YYYY'));
+    });
   });
 
   describe('focus test', () => {
@@ -670,23 +694,15 @@ describe('Picker.Range', () => {
   it('fixed open need repeat trigger onOpenChange', () => {
     jest.useFakeTimers();
     const onOpenChange = jest.fn();
-    const wrapper = mount(<MomentRangePicker onOpenChange={onOpenChange} open />);
+    render(<MomentRangePicker onOpenChange={onOpenChange} open />);
+
+    expect(onOpenChange).toHaveBeenCalledTimes(0);
 
     for (let i = 0; i < 10; i += 1) {
-      const clickEvent = new Event('mousedown');
-      Object.defineProperty(clickEvent, 'target', {
-        get: () => document.body,
-      });
-
-      const current = onOpenChange.mock.calls.length;
       act(() => {
-        window.dispatchEvent(clickEvent);
-        wrapper.find('input').first().simulate('blur');
+        fireEvent.mouseDown(document.body);
       });
-      const next = onOpenChange.mock.calls.length;
-
-      // Maybe not good since onOpenChange trigger twice
-      expect(current < next).toBeTruthy();
+      expect(onOpenChange).toHaveBeenCalledTimes(1);
     }
     act(() => {
       jest.runAllTimers();
@@ -1573,7 +1589,7 @@ describe('Picker.Range', () => {
     mock.mockRestore();
   });
 
-  it('panel should be stable: right', () => {
+  it('panel should be stable: arrow right and panel left', () => {
     const mock = spyElementPrototypes(HTMLElement, {
       offsetWidth: {
         get() {
@@ -1606,6 +1622,42 @@ describe('Picker.Range', () => {
     );
     wrapper.openPicker(1);
     expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('0px');
+    mock.mockRestore();
+  });
+
+  it('panel should be stable: arrow right and panel right', () => {
+    const mock = spyElementPrototypes(HTMLElement, {
+      offsetWidth: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 14;
+          } else if (this.className.includes('panel-container')) {
+            return 311;
+          } else if (this.className.includes('input')) {
+            return 285;
+          } else if (this.className.includes('range-separator')) {
+            return 10;
+          }
+        },
+      },
+      offsetLeft: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 305;
+          }
+        },
+      },
+    });
+    const wrapper = mount(
+      <MomentRangePicker
+        allowClear
+        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        clearIcon={<span>X</span>}
+        suffixIcon={<span>O</span>}
+      />,
+    );
+    wrapper.openPicker(1);
+    expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('295px');
     mock.mockRestore();
   });
 });
