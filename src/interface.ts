@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { GenerateConfig } from './generate';
 
 export type Locale = {
@@ -107,3 +108,8 @@ export type RangeList = {
 }[];
 
 export type CustomFormat<DateType> = (value: DateType) => string;
+
+export interface PresetDate<T> {
+  label: React.ReactNode;
+  value: T;
+}

@@ -3,7 +3,14 @@ import { useRef, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import type { DisabledTimes, PanelMode, PickerMode, RangeValue, EventValue } from './interface';
+import type {
+  DisabledTimes,
+  PanelMode,
+  PickerMode,
+  RangeValue,
+  EventValue,
+  PresetDate,
+} from './interface';
 import type { PickerBaseProps, PickerDateProps, PickerTimeProps, PickerRefConfig } from './Picker';
 import type { SharedTimeProps } from './panels/TimePanel';
 import PickerTrigger from './PickerTrigger';
@@ -34,6 +41,7 @@ import useRangeViewDates from './hooks/useRangeViewDates';
 import type { DateRender } from './panels/DatePanel/DateBody';
 import useHoverValue from './hooks/useHoverValue';
 import { legacyPropsWarning } from './utils/warnUtil';
+import usePresets from './hooks/usePresets';
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -87,7 +95,8 @@ export type RangePickerSharedProps<DateType> = {
   placeholder?: [string, string];
   disabled?: boolean | [boolean, boolean];
   disabledTime?: (date: EventValue<DateType>, type: RangeType) => DisabledTimes;
-  presets?: any[];
+  presets?: PresetDate<Exclude<RangeValue<DateType>, null>>[];
+  /** @deprecated Please use `presets` instead */
   ranges?: Record<
     string,
     Exclude<RangeValue<DateType>, null> | (() => Exclude<RangeValue<DateType>, null>)
@@ -199,6 +208,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     disabledTime,
     dateRender,
     panelRender,
+    presets,
     ranges,
     allowEmpty,
     allowClear,
@@ -765,20 +775,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }
 
   // ============================ Ranges =============================
-  const rangeLabels = Object.keys(ranges || {});
+  const presetList = usePresets(presets, ranges);
 
-  const rangeList = rangeLabels.map((label) => {
-    const range = ranges![label];
-    const newValues = typeof range === 'function' ? range() : range;
-
+  const rangeList = presetList.map((preset) => {
     return {
-      label,
+      label: preset.label,
       onClick: () => {
-        triggerChange(newValues, null);
+        triggerChange(preset.value, null);
         triggerOpen(false, mergedActivePickerIndex);
       },
       onMouseEnter: () => {
-        setRangeHoverValue(newValues);
+        setRangeHoverValue(preset.value);
       },
       onMouseLeave: () => {
         setRangeHoverValue(null);
