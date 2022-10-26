@@ -27,15 +27,18 @@
   "license": "MIT",
   "scripts": {
     "start": "dumi dev",
-    "build": "dumi build",
+    "docs:build": "dumi build",
+    "docs:deploy": "gh-pages -d .doc",
     "compile": "father build && lessc assets/index.less assets/index.css",
-    "gh-pages": "npm run build && father doc deploy",
+    "gh-pages": "npm run docs:build && npm run docs:deploy",
     "prepublishOnly": "npm run compile && np --yolo --no-publish",
     "lint": "eslint src/ --ext .ts,.tsx,.jsx,.js,.md",
     "prettier": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "test": "father test",
-    "coverage": "father test --coverage",
-    "now-build": "npm run build"
+    "now-build": "npm run docs:build",
+    "lint-staged": "lint-staged",
+    "test": "umi-test test",
+    "coverage": "umi-test test --coverage",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@babel/runtime": "^7.10.1",
@@ -70,7 +73,9 @@
     "eslint-plugin-jest": "^26.8.2",
     "eslint-plugin-react-hooks": "^4.0.2",
     "eslint-plugin-unicorn": "^40.0.0",
-    "father": "^2.13.4",
+    "father": "^4",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "glob": "^7.2.0",
     "less": "^3.10.3",
     "mockdate": "^3.0.2",
@@ -79,8 +84,15 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.3",
+    "umi-test": "^1.9.7"
   },
+  "lint-staged": {
+  "**/*.{js,jsx,tsx,ts,md,json}": [
+    "prettier --write",
+    "git add"
+  ]
+},
   "cnpm": {
     "mode": "npm"
   },
