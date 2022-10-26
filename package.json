@@ -88,11 +88,11 @@
     "umi-test": "^1.9.7"
   },
   "lint-staged": {
-  "**/*.{js,jsx,tsx,ts,md,json}": [
-    "prettier --write",
-    "git add"
-  ]
-},
+    "**/*.{js,jsx,tsx,ts,md,json}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "cnpm": {
     "mode": "npm"
   },
