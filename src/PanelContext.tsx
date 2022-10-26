@@ -10,7 +10,6 @@ export type PanelContextProps = {
   operationRef?: React.MutableRefObject<ContextOperationRefProps | null>;
   /** Only work with time panel */
   hideHeader?: boolean;
-  panelRef?: React.Ref<HTMLDivElement>;
   hidePrevBtn?: boolean;
   hideNextBtn?: boolean;
   onDateMouseEnter?: (date: any) => void;

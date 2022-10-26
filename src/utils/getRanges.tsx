@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { Components, RangeList, Locale } from '../interface';
+import type { Components, Locale, RangeList } from '../interface';
 
 export type RangesProps = {
   prefixCls: string;
@@ -15,7 +15,7 @@ export type RangesProps = {
 
 export default function getRanges({
   prefixCls,
-  rangeList = [],
+  // rangeList = [],
   components = {},
   needConfirmButton,
   onNow,
@@ -27,26 +27,10 @@ export default function getRanges({
   let presetNode: React.ReactNode;
   let okNode: React.ReactNode;
 
-  if (rangeList.length) {
-    const Item = (components.rangeItem || 'span') as any;
-
-    presetNode = (
-      <>
-        {rangeList.map(({ label, onClick, onMouseEnter, onMouseLeave }) => (
-          <li key={label} className={`${prefixCls}-preset`}>
-            <Item onClick={onClick} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-              {label}
-            </Item>
-          </li>
-        ))}
-      </>
-    );
-  }
-
   if (needConfirmButton) {
     const Button = (components.button || 'button') as any;
 
-    if (onNow && !presetNode && showNow !== false) {
+    if (onNow && showNow !== false) {
       presetNode = (
         <li className={`${prefixCls}-now`}>
           <a className={`${prefixCls}-now-btn`} onClick={onNow}>

@@ -3,7 +3,14 @@ import { useRef, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import type { DisabledTimes, PanelMode, PickerMode, RangeValue, EventValue } from './interface';
+import type {
+  DisabledTimes,
+  PanelMode,
+  PickerMode,
+  RangeValue,
+  EventValue,
+  PresetDate,
+} from './interface';
 import type { PickerBaseProps, PickerDateProps, PickerTimeProps, PickerRefConfig } from './Picker';
 import type { SharedTimeProps } from './panels/TimePanel';
 import PickerTrigger from './PickerTrigger';
@@ -34,6 +41,8 @@ import useRangeViewDates from './hooks/useRangeViewDates';
 import type { DateRender } from './panels/DatePanel/DateBody';
 import useHoverValue from './hooks/useHoverValue';
 import { legacyPropsWarning } from './utils/warnUtil';
+import usePresets from './hooks/usePresets';
+import PresetPanel from './PresetPanel';
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -87,6 +96,8 @@ export type RangePickerSharedProps<DateType> = {
   placeholder?: [string, string];
   disabled?: boolean | [boolean, boolean];
   disabledTime?: (date: EventValue<DateType>, type: RangeType) => DisabledTimes;
+  presets?: PresetDate<Exclude<RangeValue<DateType>, null>>[];
+  /** @deprecated Please use `presets` instead */
   ranges?: Record<
     string,
     Exclude<RangeValue<DateType>, null> | (() => Exclude<RangeValue<DateType>, null>)
@@ -135,6 +146,7 @@ type OmitPickerProps<Props> = Omit<
   | 'onPickerValueChange'
   | 'onOk'
   | 'dateRender'
+  | 'presets'
 >;
 
 type RangeShowTimeObject<DateType> = Omit<SharedTimeProps<DateType>, 'defaultValue'> & {
@@ -160,7 +172,7 @@ export type RangePickerProps<DateType> =
   | RangePickerTimeProps<DateType>;
 
 // TMP type to fit for ts 3.9.2
-type OmitType<DateType> = Omit<RangePickerBaseProps<DateType>, 'picker'> &
+type OmitType<DateType> = Omit<RangePickerBaseProps<DateType>, 'picker' | 'presets'> &
   Omit<RangePickerDateProps<DateType>, 'picker'> &
   Omit<RangePickerTimeProps<DateType>, 'picker'>;
 
@@ -198,6 +210,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     disabledTime,
     dateRender,
     panelRender,
+    presets,
     ranges,
     allowEmpty,
     allowClear,
@@ -764,26 +777,23 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }
 
   // ============================ Ranges =============================
-  const rangeLabels = Object.keys(ranges || {});
+  const presetList = usePresets(presets, ranges);
 
-  const rangeList = rangeLabels.map((label) => {
-    const range = ranges![label];
-    const newValues = typeof range === 'function' ? range() : range;
-
-    return {
-      label,
-      onClick: () => {
-        triggerChange(newValues, null);
-        triggerOpen(false, mergedActivePickerIndex);
-      },
-      onMouseEnter: () => {
-        setRangeHoverValue(newValues);
-      },
-      onMouseLeave: () => {
-        setRangeHoverValue(null);
-      },
-    };
-  });
+  // const rangeList = presetList.map((preset) => {
+  //   return {
+  //     label: preset.label,
+  //     onClick: () => {
+  //       triggerChange(preset.value, null);
+  //       triggerOpen(false, mergedActivePickerIndex);
+  //     },
+  //     onMouseEnter: () => {
+  //       setRangeHoverValue(preset.value);
+  //     },
+  //     onMouseLeave: () => {
+  //       setRangeHoverValue(null);
+  //     },
+  //   };
+  // });
 
   // ============================= Panel =============================
   function renderPanel(
@@ -930,7 +940,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         !getValue(selectedValue, mergedActivePickerIndex) ||
         (disabledDate && disabledDate(selectedValue[mergedActivePickerIndex])),
       locale,
-      rangeList,
+      // rangeList,
       onOk: () => {
         if (getValue(selectedValue, mergedActivePickerIndex)) {
           // triggerChangeOld(selectedValue);
@@ -984,15 +994,28 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
 
     let mergedNodes: React.ReactNode = (
-      <>
-        <div className={`${prefixCls}-panels`}>{panels}</div>
-        {(extraNode || rangesNode) && (
-          <div className={`${prefixCls}-footer`}>
-            {extraNode}
-            {rangesNode}
-          </div>
-        )}
-      </>
+      <div className={`${prefixCls}-panel-layout`}>
+        <PresetPanel
+          prefixCls={prefixCls}
+          presets={presetList}
+          onClick={(nextValue) => {
+            triggerChange(nextValue, null);
+            triggerOpen(false, mergedActivePickerIndex);
+          }}
+          onHover={(hoverValue) => {
+            setRangeHoverValue(hoverValue);
+          }}
+        />
+        <div>
+          <div className={`${prefixCls}-panels`}>{panels}</div>
+          {(extraNode || rangesNode) && (
+            <div className={`${prefixCls}-footer`}>
+              {extraNode}
+              {rangesNode}
+            </div>
+          )}
+        </div>
+      </div>
     );
 
     if (panelRender) {
