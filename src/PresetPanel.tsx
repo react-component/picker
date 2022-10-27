@@ -1,3 +1,4 @@
+import * as React from 'react';
 import type { PresetDate } from './interface';
 
 export interface PresetPanelProps<T> {
