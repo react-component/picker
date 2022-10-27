@@ -69,7 +69,7 @@
     "eslint-plugin-eslint-comments": "^3.1.2",
     "eslint-plugin-jest": "^26.8.2",
     "eslint-plugin-react-hooks": "^4.0.2",
-    "eslint-plugin-unicorn": "^40.0.0",
+    "eslint-plugin-unicorn": "^44.0.2",
     "father": "^4.0.0",
     "glob": "^7.2.0",
     "less": "^3.10.3",
