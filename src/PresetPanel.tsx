@@ -1,4 +1,3 @@
-import * as React from 'react';
 import type { PresetDate } from './interface';
 
 export interface PresetPanelProps<T> {
@@ -16,23 +15,25 @@ export default function PresetPanel<T>(props: PresetPanelProps<T>) {
   }
 
   return (
-    <ul className={`${prefixCls}-presets`}>
-      {presets.map(({ label, value }, index) => (
-        <li
-          key={index}
-          onClick={() => {
-            onClick(value);
-          }}
-          onMouseEnter={() => {
-            onHover?.(value);
-          }}
-          onMouseLeave={() => {
-            onHover?.(null);
-          }}
-        >
-          {label}
-        </li>
-      ))}
-    </ul>
+    <div className={`${prefixCls}-presets`}>
+      <ul>
+        {presets.map(({ label, value }, index) => (
+          <li
+            key={index}
+            onClick={() => {
+              onClick(value);
+            }}
+            onMouseEnter={() => {
+              onHover?.(value);
+            }}
+            onMouseLeave={() => {
+              onHover?.(null);
+            }}
+          >
+            {label}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
