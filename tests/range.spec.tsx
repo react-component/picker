@@ -1128,6 +1128,32 @@ describe('Picker.Range', () => {
         expect(wrapper.isOpen()).toBeFalsy();
       });
 
+      it('blur in range', (done) => {
+        const ref = React.createRef<MomentRangePicker>();
+        const blurFn = jest.fn();
+        const wrapper = mount(
+          <MomentRangePicker ref={ref} defaultValue={[getMoment('1989-01-01'), getMoment('1990-01-01')]} onBlur={blurFn} />,
+        );
+
+        wrapper.openPicker(0);
+        wrapper.inputValue('1990-11-28');
+        wrapper.closePicker(0);
+        expect(wrapper.isOpen()).toBeTruthy();
+        expect(blurFn).toBeCalledTimes(0);
+
+        wrapper.inputValue('1990-12-23');
+        wrapper.closePicker(1);
+        expect(wrapper.isOpen()).toBeFalsy();
+        expect(blurFn).toBeCalledTimes(0);
+
+        ref.current!.rangePickerRef.current!.blur();
+        setTimeout(() => {
+          expect(blurFn).toBeCalledTimes(1);
+          done();
+        }, 120);
+        
+      });
+
       it('new start is after end', () => {
         const wrapper = mount(
           <MomentRangePicker defaultValue={[getMoment('1989-01-10'), getMoment('1989-01-15')]} />,

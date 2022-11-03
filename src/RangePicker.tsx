@@ -648,10 +648,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     },
   });
 
+  const currentFocusedKey = useRef<string>('');
   const [startInputProps, { focused: startFocused, typing: startTyping }] = usePickerInput({
     ...getSharedInputHookProps(0, resetStartText),
     open: startOpen,
     value: startText,
+    currentFocusedKey,
+    key: "start",
     onKeyDown: (e, preventDefault) => {
       onKeyDown?.(e, preventDefault);
     },
@@ -661,10 +664,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     ...getSharedInputHookProps(1, resetEndText),
     open: endOpen,
     value: endText,
+    currentFocusedKey,
+    key: "end",
     onKeyDown: (e, preventDefault) => {
       onKeyDown?.(e, preventDefault);
     },
   });
+
 
   // ========================== Click Picker ==========================
   const onPickerClick = (e: React.MouseEvent<HTMLDivElement>) => {
