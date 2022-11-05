@@ -15,6 +15,8 @@ export default function usePickerInput({
   onCancel,
   onFocus,
   onBlur,
+  currentFocusedKey,
+  key = 'start',
 }: {
   open: boolean;
   value: string;
@@ -27,9 +29,12 @@ export default function usePickerInput({
   onCancel: () => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  currentFocusedKey?: React.MutableRefObject<string>;
+  key: string;
 }): [React.DOMAttributes<HTMLInputElement>, { focused: boolean; typing: boolean }] {
   const [typing, setTyping] = useState(false);
   const [focused, setFocused] = useState(false);
+  const delayBlurTimer = useRef<NodeJS.Timeout>();
 
   /**
    * We will prevent blur to handle open event when user click outside,
@@ -99,6 +104,8 @@ export default function usePickerInput({
       setTyping(true);
       setFocused(true);
 
+      currentFocusedKey.current = key;
+      clearTimeout(delayBlurTimer.current);
       if (onFocus) {
         onFocus(e);
       }
@@ -130,9 +137,15 @@ export default function usePickerInput({
       }
       setFocused(false);
 
-      if (onBlur) {
-        onBlur(e);
-      }
+      currentFocusedKey.current = '';
+      // Delay to prevent 'range' focus transitions from firing resulting in incorrect out-of-focus events
+      delayBlurTimer.current = setTimeout(() => {
+        // Prevent the 'blur' event from firing when there is currently a focused input
+        if (currentFocusedKey.current) return;
+        if (onBlur) {
+          onBlur(e);
+        }
+      }, 100);
     },
   };
 
@@ -166,6 +179,8 @@ export default function usePickerInput({
       }
     }),
   );
+
+  useEffect(() => () => clearTimeout(delayBlurTimer.current), []);
 
   return [inputProps, { focused, typing }];
 }
