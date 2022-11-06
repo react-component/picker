@@ -104,7 +104,7 @@ export default function usePickerInput({
       setTyping(true);
       setFocused(true);
 
-      if (currentFocusedKey.current) {
+      if (currentFocusedKey) {
         currentFocusedKey.current = key;
       }
       clearTimeout(delayBlurTimer.current);
