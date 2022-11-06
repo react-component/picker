@@ -30,7 +30,7 @@ export default function usePickerInput({
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   currentFocusedKey?: React.MutableRefObject<string>;
-  key: string;
+  key?: string;
 }): [React.DOMAttributes<HTMLInputElement>, { focused: boolean; typing: boolean }] {
   const [typing, setTyping] = useState(false);
   const [focused, setFocused] = useState(false);
