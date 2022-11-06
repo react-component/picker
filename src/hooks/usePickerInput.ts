@@ -149,9 +149,7 @@ export default function usePickerInput({
           }
         }, 100);
       } else {
-        if (onBlur) {
-          onBlur(e);
-        }
+        onBlur?.(e);
       }
     },
   };
