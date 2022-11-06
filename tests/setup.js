@@ -41,7 +41,6 @@ Object.assign(Enzyme.ReactWrapper.prototype, {
       }
     });
     if (!matchCell) {
-      console.log(table.html());
       throw new Error('Cell not match in picker panel.');
     }
 

@@ -1,15 +1,14 @@
-import React from 'react';
-import MockDate from 'mockdate';
-import { act } from 'react-dom/test-utils';
-import KeyCode from 'rc-util/lib/KeyCode';
-import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
+import { fireEvent, render } from '@testing-library/react';
 import type { Moment } from 'moment';
 import moment from 'moment';
-import type { Wrapper } from './util/commonUtil';
-import { mount, getMoment, isSame, MomentRangePicker } from './util/commonUtil';
-import zhCN from '../src/locale/zh_CN';
+import KeyCode from 'rc-util/lib/KeyCode';
+import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
+import React from 'react';
+import { act } from 'react-dom/test-utils';
 import type { PickerMode } from '../src/interface';
-import { fireEvent, render } from '@testing-library/react';
+import zhCN from '../src/locale/zh_CN';
+import type { Wrapper } from './util/commonUtil';
+import { getMoment, isSame, MomentRangePicker, mount } from './util/commonUtil';
 
 describe('Picker.Range', () => {
   function matchValues(wrapper: Wrapper, value1: string, value2: string) {
@@ -17,12 +16,14 @@ describe('Picker.Range', () => {
     expect(wrapper.find('input').last().props().value).toEqual(value2);
   }
 
-  beforeAll(() => {
-    MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
+  beforeEach(() => {
+    global.scrollCalled = false;
+    jest.useFakeTimers().setSystemTime(getMoment('1990-09-03 00:00:00').valueOf());
   });
 
-  afterAll(() => {
-    MockDate.reset();
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
   });
 
   describe('value', () => {
@@ -295,7 +296,7 @@ describe('Picker.Range', () => {
 
       // Basic
       wrapper.openPicker();
-      testNode = wrapper.find('.rc-picker-ranges li span').first();
+      testNode = wrapper.find('.rc-picker-presets li').first();
       expect(testNode.text()).toEqual('test');
       testNode.simulate('click');
       expect(onChange).toHaveBeenCalledWith(
@@ -306,7 +307,7 @@ describe('Picker.Range', () => {
 
       // Function
       wrapper.openPicker();
-      testNode = wrapper.find('.rc-picker-ranges li span').last();
+      testNode = wrapper.find('.rc-picker-presets li').last();
       expect(testNode.text()).toEqual('func');
       testNode.simulate('click');
       expect(onChange).toHaveBeenCalledWith(
@@ -326,12 +327,12 @@ describe('Picker.Range', () => {
       );
 
       wrapper.openPicker();
-      wrapper.find('.rc-picker-preset > *').simulate('mouseEnter');
+      wrapper.find('.rc-picker-presets li').simulate('mouseEnter');
       expect(wrapper.findCell(11).hasClass('rc-picker-cell-range-start')).toBeTruthy();
       expect(wrapper.findCell(12).hasClass('rc-picker-cell-in-range')).toBeTruthy();
       expect(wrapper.findCell(13).hasClass('rc-picker-cell-range-end')).toBeTruthy();
 
-      wrapper.find('.rc-picker-preset > *').simulate('mouseLeave');
+      wrapper.find('.rc-picker-presets li').simulate('mouseLeave');
       expect(wrapper.findCell(11).hasClass('rc-picker-cell-range-start')).toBeFalsy();
       expect(wrapper.findCell(12).hasClass('rc-picker-cell-in-range')).toBeFalsy();
       expect(wrapper.findCell(13).hasClass('rc-picker-cell-range-end')).toBeFalsy();
@@ -1230,20 +1231,21 @@ describe('Picker.Range', () => {
   describe('click at non-input elements', () => {
     it('should focus on the first element by default', () => {
       jest.useFakeTimers();
-      const wrapper = mount(<MomentRangePicker />);
-      wrapper.find('.rc-picker').simulate('click');
-      expect(wrapper.isOpen()).toBeTruthy();
+      const { container } = render(<MomentRangePicker />);
+      fireEvent.click(container.querySelector('.rc-picker'));
+      expect(document.querySelector('.rc-picker-dropdown')).toBeTruthy();
       jest.runAllTimers();
-      expect(document.activeElement).toStrictEqual(wrapper.find('input').first().getDOMNode());
+      expect(document.activeElement).toBe(container.querySelector('input'));
       jest.useRealTimers();
     });
+
     it('should focus on the second element if first is disabled', () => {
       jest.useFakeTimers();
-      const wrapper = mount(<MomentRangePicker disabled={[true, false]} />);
-      wrapper.find('.rc-picker').simulate('click');
-      expect(wrapper.isOpen()).toBeTruthy();
+      const { container } = render(<MomentRangePicker disabled={[true, false]} />);
+      fireEvent.click(container.querySelector('.rc-picker'));
+      expect(document.querySelector('.rc-picker-dropdown')).toBeTruthy();
       jest.runAllTimers();
-      expect(document.activeElement).toStrictEqual(wrapper.find('input').last().getDOMNode());
+      expect(document.activeElement).toBe(container.querySelectorAll('input')[1]);
       jest.useRealTimers();
     });
     it("shouldn't let mousedown blur the input", () => {
@@ -1614,7 +1616,9 @@ describe('Picker.Range', () => {
       />,
     );
     wrapper.openPicker(1);
-    expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('0px');
+    expect(
+      wrapper.find('.rc-picker-panel-container').getDOMNode<HTMLElement>().style.marginLeft,
+    ).toBe('0px');
     mock.mockRestore();
   });
 
@@ -1650,7 +1654,9 @@ describe('Picker.Range', () => {
       />,
     );
     wrapper.openPicker(1);
-    expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('0px');
+    expect(
+      wrapper.find('.rc-picker-panel-container').getDOMNode<HTMLElement>().style.marginLeft,
+    ).toBe('0px');
     mock.mockRestore();
   });
 
@@ -1686,7 +1692,9 @@ describe('Picker.Range', () => {
       />,
     );
     wrapper.openPicker(1);
-    expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('295px');
+    expect(
+      wrapper.find('.rc-picker-panel-container').getDOMNode<HTMLElement>().style.marginLeft,
+    ).toBe('295px');
     mock.mockRestore();
   });
 });

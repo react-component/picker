@@ -1,15 +1,13 @@
-import React from 'react';
-import MockDate from 'mockdate';
-import { act } from 'react-dom/test-utils';
 import KeyCode from 'rc-util/lib/KeyCode';
+import { act } from 'react-dom/test-utils';
 import {
-  mount,
   getMoment,
   isSame,
   MomentPicker,
   MomentPickerPanel,
-  Wrapper,
   MomentRangePicker,
+  mount,
+  Wrapper,
 } from './util/commonUtil';
 
 describe('Picker.Keyboard', () => {
@@ -17,12 +15,13 @@ describe('Picker.Keyboard', () => {
     wrapper.find('.rc-picker-panel').simulate('keyDown', { which: keyCode, ...info });
   }
 
-  beforeAll(() => {
-    MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(getMoment('1990-09-03 00:00:00').valueOf());
   });
 
-  afterAll(() => {
-    MockDate.reset();
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
   });
 
   it('open to select', () => {
@@ -396,10 +395,7 @@ describe('Picker.Keyboard', () => {
         jest.runAllTimers();
       });
       expect(
-        wrapper
-          .find('.rc-picker-input')
-          .last()
-          .hasClass('rc-picker-input-active'),
+        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-active'),
       ).toBeTruthy();
       onCalendarChange.mockReset();
 
@@ -436,16 +432,10 @@ describe('Picker.Keyboard', () => {
         .first()
         .simulate('change', { target: { value: '2000-01-01' } });
       wrapper.keyDown(KeyCode.ESC);
-      expect(
-        wrapper
-          .find('input')
-          .first()
-          .props().value,
-      ).toEqual('');
+      expect(wrapper.find('input').first().props().value).toEqual('');
     });
 
     it('move based on current date on first keyboard event', () => {
-      jest.useFakeTimers();
       const onCalendarChange = jest.fn();
       const onChange = jest.fn();
       const wrapper = mount(
@@ -486,7 +476,7 @@ describe('Picker.Keyboard', () => {
           showTime
           onSelect={onSelect}
           onChange={onChange}
-          disabledDate={date => date.date() % 2 === 0}
+          disabledDate={(date) => date.date() % 2 === 0}
         />,
       );
       wrapper.find('input').simulate('focus');
@@ -517,7 +507,7 @@ describe('Picker.Keyboard', () => {
         <MomentPickerPanel
           onSelect={onSelect}
           onChange={onChange}
-          disabledDate={date => date.date() % 2 === 0}
+          disabledDate={(date) => date.date() % 2 === 0}
         />,
       );
 

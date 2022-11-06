@@ -91,7 +91,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in rtl
 `;
 
 exports[`Picker.Range panelRender 1`] = `
-Array [
+[
   <div
     class="rc-picker rc-picker-range"
   >

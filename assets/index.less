@@ -150,6 +150,17 @@
     }
   }
 
+  // Preset
+  &-presets {
+    background: #ccccff;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+  }
+
   &-footer,
   &-picker-footer {
     background: green;
@@ -450,5 +461,11 @@
     display: inline-block;
     vertical-align: top;
     transition: margin 0.3s;
+  }
+
+  &-panel-layout {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: stretch;
   }
 }
