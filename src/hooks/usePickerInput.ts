@@ -104,7 +104,9 @@ export default function usePickerInput({
       setTyping(true);
       setFocused(true);
 
-      currentFocusedKey.current = key!;
+      if (currentFocusedKey) {
+        currentFocusedKey.current = key;
+      }
       clearTimeout(delayBlurTimer.current);
       if (onFocus) {
         onFocus(e);
@@ -136,16 +138,21 @@ export default function usePickerInput({
         }
       }
       setFocused(false);
-
-      currentFocusedKey.current = '';
-      // Delay to prevent 'range' focus transitions from firing resulting in incorrect out-of-focus events
-      delayBlurTimer.current = setTimeout(() => {
-        // Prevent the 'blur' event from firing when there is currently a focused input
-        if (currentFocusedKey.current) return;
+      if (currentFocusedKey) {
+        currentFocusedKey.current = '';
+        // Delay to prevent 'range' focus transitions from firing resulting in incorrect out-of-focus events
+        delayBlurTimer.current = setTimeout(() => {
+          // Prevent the 'blur' event from firing when there is currently a focused input
+          if (currentFocusedKey.current) return;
+          if (onBlur) {
+            onBlur(e);
+          }
+        }, 100);
+      } else {
         if (onBlur) {
           onBlur(e);
         }
-      }, 100);
+      }
     },
   };
 
