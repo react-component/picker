@@ -143,10 +143,10 @@ export default function usePickerInput({
         // Delay to prevent 'range' focus transitions from firing resulting in incorrect out-of-focus events
         delayBlurTimer.current = setTimeout(() => {
           // Prevent the 'blur' event from firing when there is currently a focused input
-          if (currentFocusedKey.current) return;
-          if (onBlur) {
-            onBlur(e);
+          if (currentFocusedKey.current) {
+            return;
           }
+          onBlur?.(e);
         }, 100);
       } else {
         onBlur?.(e);
