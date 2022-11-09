@@ -196,7 +196,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   }
 
   // ============================= State =============================
-  const formatList = toArray(getDefaultFormat(format, picker, showTime, use12Hours));
+  const formatList = toArray(getDefaultFormat(format, picker, showTime, use12Hours, locale));
 
   // Panel ref
   const panelDivRef = React.useRef<HTMLDivElement>(null);

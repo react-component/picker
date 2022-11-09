@@ -2,7 +2,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import raf from 'rc-util/lib/raf';
 import isVisible from 'rc-util/lib/Dom/isVisible';
 import type { GenerateConfig } from '../generate';
-import type { CustomFormat, PanelMode, PickerMode } from '../interface';
+import type { CustomFormat, PanelMode, PickerMode, Locale } from '../interface';
 
 const scrollIds = new Map<HTMLElement, number>();
 
@@ -149,6 +149,7 @@ export function getDefaultFormat<DateType>(
   picker: PickerMode | undefined,
   showTime: boolean | object | undefined,
   use12Hours: boolean | undefined,
+  locale: Locale,
 ) {
   let mergedFormat = format;
   if (!mergedFormat) {
@@ -170,11 +171,11 @@ export function getDefaultFormat<DateType>(
         break;
 
       case 'year':
-        mergedFormat = 'YYYY';
+        mergedFormat = locale.yearFormat;
         break;
 
       default:
-        mergedFormat = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
+        mergedFormat = showTime ? locale.dateTimeFormat : locale.dateFormat;
     }
   }
 

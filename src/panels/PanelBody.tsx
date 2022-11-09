@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PanelContext from '../PanelContext';
 import type { GenerateConfig } from '../generate';
 import { getLastDay } from '../utils/timeUtil';
-import type { PanelMode } from '../interface';
+import type { PanelMode, Locale } from '../interface';
 import { getCellDateDisabled } from '../utils/dateUtil';
 
 export type PanelBodyProps<DateType> = {
@@ -23,6 +23,7 @@ export type PanelBodyProps<DateType> = {
   getCellNode?: (date: DateType) => React.ReactNode;
   titleCell?: (date: DateType) => string;
   generateConfig: GenerateConfig<DateType>;
+  locale?: Locale;
 
   // Used for week panel
   prefixColumn?: (date: DateType) => React.ReactNode;
@@ -44,6 +45,7 @@ export default function PanelBody<DateType>({
   getCellNode,
   getCellDate,
   generateConfig,
+  locale,
   titleCell,
   headerCells,
 }: PanelBodyProps<DateType>) {
@@ -77,6 +79,10 @@ export default function PanelBody<DateType>({
       }
 
       const title = titleCell && titleCell(currentDate);
+      const lastDateTitle =
+        picker === 'year'
+          ? Number(title) % 10 === 9
+          : locale && getLastDay(generateConfig, currentDate, locale);
 
       row.push(
         <td
@@ -86,9 +92,7 @@ export default function PanelBody<DateType>({
             [`${cellPrefixCls}-disabled`]: disabled,
             [`${cellPrefixCls}-start`]:
               getCellText(currentDate) === 1 || (picker === 'year' && Number(title) % 10 === 0),
-            [`${cellPrefixCls}-end`]:
-              title === getLastDay(generateConfig, currentDate) ||
-              (picker === 'year' && Number(title) % 10 === 9),
+            [`${cellPrefixCls}-end`]: title === lastDateTitle,
             ...getCellClassName(currentDate),
           })}
           onClick={() => {
