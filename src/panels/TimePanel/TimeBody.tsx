@@ -68,7 +68,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     disabledTime,
     hideDisabledOptions,
     onSelect,
-    show24 = false,
+    format,
   } = props;
 
   // Misc
@@ -128,8 +128,8 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
 
   // ========================= Unit =========================
   const rawHours = generateUnits(
-    show24 ? 1 : 0,
-    show24 ? 24 : 23,
+    format?.includes('k') ? 1 : 0,
+    format?.includes('k') ? 24 : 23,
     hourStep,
     mergedDisabledHours && mergedDisabledHours()
   );
