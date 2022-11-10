@@ -68,6 +68,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     disabledTime,
     hideDisabledOptions,
     onSelect,
+    format,
   } = props;
 
   // Misc
@@ -126,7 +127,12 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   };
 
   // ========================= Unit =========================
-  const rawHours = generateUnits(0, 23, hourStep, mergedDisabledHours && mergedDisabledHours());
+  const rawHours = generateUnits(
+    format?.includes('k') ? 1 : 0,
+    format?.includes('k') ? 24 : 23,
+    hourStep,
+    mergedDisabledHours && mergedDisabledHours()
+  );
 
   const memorizedRawHours = useMemo(() => rawHours, rawHours, shouldUnitsUpdate);
 

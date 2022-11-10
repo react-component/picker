@@ -92,6 +92,7 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
       <TimeHeader {...props} format={format} prefixCls={prefixCls} />
       <TimeBody
         {...props}
+        format={format}
         prefixCls={prefixCls}
         activeColumnIndex={activeColumnIndex}
         operationRef={bodyOperationRef}
