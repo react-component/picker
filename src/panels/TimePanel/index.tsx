@@ -13,6 +13,7 @@ export type SharedTimeProps<DateType> = {
   showMinute?: boolean;
   showSecond?: boolean;
   use12Hours?: boolean;
+  show24?: boolean;
   hourStep?: number;
   minuteStep?: number;
   secondStep?: number;
