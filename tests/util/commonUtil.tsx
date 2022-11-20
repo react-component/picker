@@ -179,3 +179,7 @@ export function clearValue() {
   fireEvent.mouseDown(clearBtn);
   fireEvent.mouseUp(clearBtn);
 }
+
+export function inputValue(text: string, index = 0) {
+  fireEvent.change(document.querySelectorAll('input')[index], { target: { value: text } });
+}
