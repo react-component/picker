@@ -1,11 +1,19 @@
-import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
 import type { Moment } from 'moment';
 import { resetWarned } from 'rc-util/lib/warning';
-import { mount, getMoment, isSame, MomentPicker, MomentRangePicker } from './util/commonUtil';
+import React from 'react';
+import {
+  closePicker,
+  getMoment,
+  isSame,
+  MomentPicker,
+  MomentRangePicker,
+  openPicker,
+} from './util/commonUtil';
 
 describe('Picker.DisabledTime', () => {
   it('disabledTime on TimePicker', () => {
-    const wrapper = mount(
+    render(
       <MomentPicker
         open
         picker="time"
@@ -16,12 +24,14 @@ describe('Picker.DisabledTime', () => {
     );
 
     expect(
-      wrapper.find('ul.rc-picker-time-panel-column li.rc-picker-time-panel-cell-disabled'),
+      document.querySelectorAll(
+        'ul.rc-picker-time-panel-column li.rc-picker-time-panel-cell-disabled',
+      ),
     ).toHaveLength(59);
   });
 
   it('disabledTime on TimeRangePicker', () => {
-    const wrapper = mount(
+    const { container } = render(
       <MomentRangePicker
         open
         picker="time"
@@ -32,13 +42,17 @@ describe('Picker.DisabledTime', () => {
     );
 
     expect(
-      wrapper.find('ul.rc-picker-time-panel-column li.rc-picker-time-panel-cell-disabled'),
+      document.querySelectorAll(
+        'ul.rc-picker-time-panel-column li.rc-picker-time-panel-cell-disabled',
+      ),
     ).toHaveLength(3);
 
     // Click another one
-    wrapper.find('input').last().simulate('mouseDown');
+    fireEvent.mouseDown(container.querySelectorAll('input')[1]);
     expect(
-      wrapper.find('ul.rc-picker-time-panel-column li.rc-picker-time-panel-cell-disabled'),
+      document.querySelectorAll(
+        'ul.rc-picker-time-panel-column li.rc-picker-time-panel-cell-disabled',
+      ),
     ).toHaveLength(2);
   });
 
@@ -48,7 +62,7 @@ describe('Picker.DisabledTime', () => {
       disabledHours: () => [11],
     }));
 
-    const wrapper = mount(
+    const { container } = render(
       <MomentRangePicker
         showTime
         disabledTime={disabledTime}
@@ -57,37 +71,26 @@ describe('Picker.DisabledTime', () => {
     );
 
     // Start
-    wrapper.openPicker();
+    openPicker(container);
     expect(
-      wrapper
-        .find('PickerPanel')
-        .first()
-        .find('.rc-picker-time-panel-column')
-        .first()
-        .find('li')
-        .at(11)
-        .hasClass('rc-picker-time-panel-cell-disabled'),
-    ).toBeTruthy();
+      document
+        .querySelector('.rc-picker-time-panel-column')
+        .querySelectorAll('li')[11],
+    ).toHaveClass('rc-picker-time-panel-cell-disabled');
     expect(isSame(disabledTime.mock.calls[0][0], '1989-11-28')).toBeTruthy();
     expect(disabledTime.mock.calls[0][1]).toEqual('start');
-    wrapper.closePicker();
+    closePicker(container);
 
     // End
     disabledTime.mockClear();
-    wrapper.openPicker(1);
+    openPicker(container, 1);
     expect(
-      wrapper
-        .find('PickerPanel')
-        .last()
-        .find('.rc-picker-time-panel-column')
-        .first()
-        .find('li')
-        .at(11)
-        .hasClass('rc-picker-time-panel-cell-disabled'),
-    ).toBeTruthy();
+      document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[11],
+    ).toHaveClass('rc-picker-time-panel-cell-disabled');
+
     expect(isSame(disabledTime.mock.calls[0][0], '1990-09-03')).toBeTruthy();
     expect(disabledTime.mock.calls[0][1]).toEqual('end');
-    wrapper.closePicker(1);
+    closePicker(container, 1);
   });
 
   describe('warning for legacy props', () => {
@@ -95,7 +98,7 @@ describe('Picker.DisabledTime', () => {
       resetWarned();
       const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      mount(<MomentPicker picker="time" disabledMinutes={() => []} />);
+      render(<MomentPicker picker="time" disabledMinutes={() => []} />);
       expect(errSpy).toHaveBeenCalledWith(
         "Warning: 'disabledHours', 'disabledMinutes', 'disabledSeconds' will be removed in the next major version, please use 'disabledTime' instead.",
       );
@@ -107,7 +110,7 @@ describe('Picker.DisabledTime', () => {
       resetWarned();
       const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      mount(<MomentRangePicker picker="time" disabledMinutes={() => []} />);
+      render(<MomentRangePicker picker="time" disabledMinutes={() => []} />);
       expect(errSpy).toHaveBeenCalledWith(
         "Warning: 'disabledHours', 'disabledMinutes', 'disabledSeconds' will be removed in the next major version, please use 'disabledTime' instead.",
       );

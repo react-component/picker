@@ -1,7 +1,8 @@
 import React from 'react';
-import { mount as originMount, ReactWrapper } from 'enzyme';
+// import { mount as originMount, ReactWrapper } from 'enzyme';
+import { fireEvent } from '@testing-library/react';
 import moment, { Moment, unitOfTime } from 'moment';
-import Picker, { PickerProps, PickerPanel } from '../../src';
+import Picker, { PickerPanel, PickerProps } from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
 import enUS from '../../src/locale/en_US';
 import { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
@@ -18,20 +19,20 @@ import RangePicker, {
 
 const FULL_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
-export type Wrapper = ReactWrapper & {
-  confirmOK: () => void;
-  openPicker: (index?: number) => void;
-  closePicker: (index?: number) => void;
-  isOpen: () => boolean;
-  findCell: (text: number | string, index?: number) => Wrapper;
-  selectCell: (text: number | string, index?: number) => Wrapper;
-  clearValue: (index?: number) => void;
-  keyDown: (which: number, info?: object, index?: number) => void;
-  clickButton: (type: 'prev' | 'next' | 'super-prev' | 'super-next') => Wrapper;
-  inputValue: (text: string, index?: number) => Wrapper;
-};
+// export type Wrapper = ReactWrapper & {
+//   confirmOK: () => void;
+//   openPicker: (index?: number) => void;
+//   closePicker: (index?: number) => void;
+//   isOpen: () => boolean;
+//   findCell: (text: number | string, index?: number) => Wrapper;
+//   selectCell: (text: number | string, index?: number) => Wrapper;
+//   clearValue: (index?: number) => void;
+//   keyDown: (which: number, info?: object, index?: number) => void;
+//   clickButton: (type: 'prev' | 'next' | 'super-prev' | 'super-next') => Wrapper;
+//   inputValue: (text: string, index?: number) => Wrapper;
+// };
 
-export const mount = originMount as (...args: Parameters<typeof originMount>) => Wrapper;
+// export const mount = originMount as (...args: Parameters<typeof originMount>) => Wrapper;
 
 export function getMoment(str: string): Moment {
   const formatList = [FULL_FORMAT, 'YYYY-MM-DD', 'HH:mm:ss', 'YYYY'];
@@ -113,4 +114,16 @@ export class MomentRangePicker extends React.Component<MomentRangePickerProps> {
       />
     );
   }
+}
+
+// ====================================== UTIL ======================================
+export function openPicker(container: HTMLElement, index = 0) {
+  const input = container.querySelectorAll('input')[index];
+  fireEvent.mouseDown(input);
+  fireEvent.focus(input);
+}
+
+export function closePicker(container: HTMLElement, index = 0) {
+  const input = container.querySelectorAll('input')[index];
+  fireEvent.blur(input);
 }

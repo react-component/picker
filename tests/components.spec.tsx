@@ -1,12 +1,7 @@
-import React from 'react';
+import { render } from '@testing-library/react';
 import MockDate from 'mockdate';
-import {
-  mount,
-  getMoment,
-  MomentRangePicker,
-  MomentPicker,
-  MomentPickerPanel,
-} from './util/commonUtil';
+import React from 'react';
+import { getMoment, MomentPicker, MomentPickerPanel, MomentRangePicker } from './util/commonUtil';
 
 describe('Picker.Components', () => {
   beforeAll(() => {
@@ -27,7 +22,7 @@ describe('Picker.Components', () => {
       const Button: React.FC<any> = (props) => <h1 {...props} />;
       const Item: React.FC<any> = (props) => <h2 {...props} />;
 
-      const wrapper = mount(
+      render(
         <Component
           ranges={{
             good: [null, null],
@@ -41,7 +36,7 @@ describe('Picker.Components', () => {
         />,
       );
 
-      expect(wrapper.find('.rc-picker-footer').find('h1')).toHaveLength(1);
+      expect(document.querySelector('.rc-picker-footer').querySelectorAll('h1')).toHaveLength(1);
     });
   });
 });
