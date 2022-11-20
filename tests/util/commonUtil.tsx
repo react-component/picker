@@ -132,3 +132,44 @@ export function isOpen() {
   const dropdown = document.querySelector('.rc-picker-dropdown');
   return dropdown && !dropdown.classList.contains('rc-picker-dropdown-hidden');
 }
+
+export function findCell(text: string | number, index = 0) {
+  let matchCell: HTMLElement;
+
+  const table = document.querySelectorAll('table')[index];
+
+  Array.from(table.querySelectorAll('td')).forEach((td) => {
+    if (td.textContent === String(text) && td.className.includes('-in-view')) {
+      matchCell = td;
+    }
+  });
+  if (!matchCell) {
+    throw new Error('Cell not match in picker panel.');
+  }
+
+  return matchCell;
+}
+
+export function selectCell(text: string | number, index = 0) {
+  const td = findCell(text, index);
+  fireEvent.click(td);
+
+  return td;
+}
+
+export function clickButton(type: string) {
+  let matchBtn: HTMLButtonElement;
+  Array.from(document.querySelectorAll('button')).forEach((btn) => {
+    if (btn.className.includes(`-header-${type}-btn`)) {
+      matchBtn = btn;
+    }
+  });
+
+  fireEvent.click(matchBtn);
+
+  return matchBtn;
+}
+
+export function confirmOK() {
+  fireEvent.click(document.querySelector('.rc-picker-ok > *'));
+}
