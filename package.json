@@ -37,11 +37,6 @@
     "coverage": "father test --coverage",
     "now-build": "npm run build"
   },
-  "optionalDependencies": {
-    "date-fns": "2.x",
-    "dayjs": "1.x",
-    "moment": "^2.24.0"
-  },
   "dependencies": {
     "@babel/runtime": "^7.10.1",
     "classnames": "^2.2.1",
@@ -84,6 +79,20 @@
   },
   "peerDependencies": {
     "react": ">=16.9.0",
-    "react-dom": ">=16.9.0"
+    "react-dom": ">=16.9.0",
+    "date-fns": ">= 2.x",
+    "dayjs": ">= 1.x",
+    "moment": ">= 2.x"
+  },
+  "peerDependenciesMeta": {
+    "date-fns": {
+      "optional": true
+    },
+    "dayjs": {
+      "optional": true
+    },
+    "moment": {
+      "optional": true
+    }
   }
 }
