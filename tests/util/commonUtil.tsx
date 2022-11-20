@@ -127,3 +127,8 @@ export function closePicker(container: HTMLElement, index = 0) {
   const input = container.querySelectorAll('input')[index];
   fireEvent.blur(input);
 }
+
+export function isOpen() {
+  const dropdown = document.querySelector('.rc-picker-dropdown');
+  return dropdown && !dropdown.classList.contains('rc-picker-dropdown-hidden');
+}
