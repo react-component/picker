@@ -173,3 +173,9 @@ export function clickButton(type: string) {
 export function confirmOK() {
   fireEvent.click(document.querySelector('.rc-picker-ok > *'));
 }
+
+export function clearValue() {
+  const clearBtn = document.querySelector('.rc-picker-clear-btn');
+  fireEvent.mouseDown(clearBtn);
+  fireEvent.mouseUp(clearBtn);
+}
