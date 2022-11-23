@@ -8,10 +8,13 @@ import zhCN from '../src/locale/zh_CN';
 import {
   clickButton,
   confirmOK,
+  findCell,
   getMoment,
+  isOpen,
   isSame,
   MomentPickerPanel,
   selectCell,
+  Calendar
 } from './util/commonUtil';
 
 jest.mock('../src/utils/uiUtil', () => {
@@ -556,5 +559,38 @@ describe('Picker.Panel', () => {
         } as any,
       });
     });
+  });
+
+  it('calendar', () => {
+    const { container } = render(<Calendar />);
+    expect(container.querySelector('.rc-picker-month-panel')).toBeTruthy();
+    const inputElements: any = container.querySelectorAll('.rc-picker-month-panel input');
+    expect(inputElements.length).toBe(12);
+    const inputElement = inputElements[0];
+    expect(inputElement.value).toBe("");
+
+    fireEvent.mouseDown(inputElement);
+    fireEvent.focus(inputElement);
+    expect(isOpen()).toBeTruthy();
+    const monthDOM = document.querySelector('.rc-picker-header-view > .rc-picker-month-btn') as HTMLElement;
+    const lastMonthBtnValue = monthDOM.innerHTML;
+    fireEvent.click(document.querySelector('.rc-picker-dropdown .rc-picker-header-prev-btn'));
+    const currentMonthBtnValue = monthDOM.innerHTML;
+    expect(lastMonthBtnValue !== currentMonthBtnValue).toBeTruthy();
+
+    const cell = findCell(2, 1);
+    fireEvent.click(cell);
+    jest.runAllTimers();
+    expect(inputElement.value).not.toBeNull();
+    expect(isOpen()).toBeFalsy();
+
+    fireEvent.mouseDown(inputElement);
+    fireEvent.focus(inputElement);
+    expect(isOpen()).toBeTruthy();
+    const monthDOMNew = document.querySelector('.rc-picker-header-view > .rc-picker-month-btn') as HTMLElement;
+    const lastMonthBtnValueNew = monthDOMNew.innerHTML;
+    fireEvent.click(document.querySelector('.rc-picker-dropdown .rc-picker-header-prev-btn'));
+    const currentMonthBtnValueNew = monthDOMNew.innerHTML;
+    expect(lastMonthBtnValueNew !== currentMonthBtnValueNew).toBeTruthy();
   });
 });
