@@ -1,48 +1,48 @@
-import * as React from 'react';
-import { useRef, useEffect, useState } from 'react';
 import classNames from 'classnames';
-import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import warning from 'rc-util/lib/warning';
+import * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { PickerPanelProps } from '.';
+import type { GenerateConfig } from './generate';
+import useHoverValue from './hooks/useHoverValue';
+import usePickerInput from './hooks/usePickerInput';
+import usePresets from './hooks/usePresets';
+import useRangeDisabled from './hooks/useRangeDisabled';
+import useRangeViewDates from './hooks/useRangeViewDates';
+import useTextValueMapping from './hooks/useTextValueMapping';
+import useValueTexts from './hooks/useValueTexts';
 import type {
   DisabledTimes,
+  EventValue,
   PanelMode,
   PickerMode,
-  RangeValue,
-  EventValue,
   PresetDate,
+  RangeValue,
 } from './interface';
-import type { PickerBaseProps, PickerDateProps, PickerTimeProps, PickerRefConfig } from './Picker';
-import type { SharedTimeProps } from './panels/TimePanel';
-import PickerTrigger from './PickerTrigger';
-import PickerPanel from './PickerPanel';
-import usePickerInput from './hooks/usePickerInput';
-import getDataOrAriaProps, { toArray, getValue, updateValues } from './utils/miscUtil';
-import { getDefaultFormat, getInputSize, elementsContains } from './utils/uiUtil';
 import type { ContextOperationRefProps } from './PanelContext';
 import PanelContext from './PanelContext';
+import type { DateRender } from './panels/DatePanel/DateBody';
+import type { SharedTimeProps } from './panels/TimePanel';
+import type { PickerBaseProps, PickerDateProps, PickerRefConfig, PickerTimeProps } from './Picker';
+import PickerPanel from './PickerPanel';
+import PickerTrigger from './PickerTrigger';
+import PresetPanel from './PresetPanel';
+import RangeContext from './RangeContext';
 import {
-  isEqual,
-  getClosingViewDate,
-  isSameDate,
-  isSameWeek,
-  isSameQuarter,
   formatValue,
+  getClosingViewDate,
+  isEqual,
+  isSameDate,
+  isSameQuarter,
+  isSameWeek,
   parseValue,
 } from './utils/dateUtil';
-import useValueTexts from './hooks/useValueTexts';
-import useTextValueMapping from './hooks/useTextValueMapping';
-import type { GenerateConfig } from './generate';
-import type { PickerPanelProps } from '.';
-import RangeContext from './RangeContext';
-import useRangeDisabled from './hooks/useRangeDisabled';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
-import useRangeViewDates from './hooks/useRangeViewDates';
-import type { DateRender } from './panels/DatePanel/DateBody';
-import useHoverValue from './hooks/useHoverValue';
+import getDataOrAriaProps, { getValue, toArray, updateValues } from './utils/miscUtil';
+import { elementsContains, getDefaultFormat, getInputSize } from './utils/uiUtil';
 import { legacyPropsWarning } from './utils/warnUtil';
-import usePresets from './hooks/usePresets';
-import PresetPanel from './PresetPanel';
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -779,22 +779,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   // ============================ Ranges =============================
   const presetList = usePresets(presets, ranges);
 
-  // const rangeList = presetList.map((preset) => {
-  //   return {
-  //     label: preset.label,
-  //     onClick: () => {
-  //       triggerChange(preset.value, null);
-  //       triggerOpen(false, mergedActivePickerIndex);
-  //     },
-  //     onMouseEnter: () => {
-  //       setRangeHoverValue(preset.value);
-  //     },
-  //     onMouseLeave: () => {
-  //       setRangeHoverValue(null);
-  //     },
-  //   };
-  // });
-
   // ============================= Panel =============================
   function renderPanel(
     panelPosition: 'left' | 'right' | false = false,
@@ -911,8 +895,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         : arrowRef.current.offsetLeft;
 
     if (
-      panelDivRef.current.offsetWidth &&
-      arrowRef.current.offsetWidth &&
+      panelDivRef.current.offsetWidth !== undefined &&
+      arrowRef.current.offsetWidth !== undefined &&
       arrowLeft >
         panelDivRef.current.offsetWidth -
           arrowRef.current.offsetWidth -
