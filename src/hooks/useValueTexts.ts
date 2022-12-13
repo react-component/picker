@@ -2,7 +2,7 @@ import useMemo from 'rc-util/lib/hooks/useMemo';
 import shallowEqual from 'shallowequal';
 import type { GenerateConfig } from '../generate';
 import type { CustomFormat, Locale } from '../interface';
-import { formatValue } from '../utils/dateUtil';
+import { formatValue, isEqual } from '../utils/dateUtil';
 
 export type ValueTextConfig<DateType> = {
   formatList: (string | CustomFormat<DateType>)[];
@@ -37,18 +37,10 @@ export default function useValueTexts<DateType>(
       return [fullValueTexts, firstValueText];
     },
     [value, formatList],
-    (prev, next) => {
-      const prevDate = prev[0];
-      const nextDate = next[0];
-
-      const notSameDate =
-        prevDate && nextDate
-          ? generateConfig.isAfter(prev[0], next[0]) || generateConfig.isAfter(next[0], prev[0])
-          : prevDate !== nextDate;
-
-      const notSameFormatList = !shallowEqual(prev[1], next[1]);
-
-      return notSameDate || notSameFormatList;
-    },
+    (prev, next) =>
+      // Not Same Date
+      !isEqual(generateConfig, prev[0], next[0]) ||
+      // Not Same format
+      !shallowEqual(prev[1], next[1]),
   );
 }
