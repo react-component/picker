@@ -271,6 +271,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       return;
     }
 
+    console.trace('New Open:', newOpen)
     triggerInnerOpen(newOpen);
   };
 
