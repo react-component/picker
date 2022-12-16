@@ -11,11 +11,19 @@
  * Tips: Should add faq about `datetime` mode with `defaultValue`
  */
 
-import * as React from 'react';
 import classNames from 'classnames';
 import type { AlignType } from 'rc-trigger/lib/interface';
-import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import warning from 'rc-util/lib/warning';
+import * as React from 'react';
+import useHoverValue from './hooks/useHoverValue';
+import usePickerInput from './hooks/usePickerInput';
+import usePresets from './hooks/usePresets';
+import useTextValueMapping from './hooks/useTextValueMapping';
+import useValueTexts from './hooks/useValueTexts';
+import type { CustomFormat, PickerMode, PresetDate } from './interface';
+import type { ContextOperationRefProps } from './PanelContext';
+import PanelContext from './PanelContext';
 import type {
   PickerPanelBaseProps,
   PickerPanelDateProps,
@@ -23,19 +31,11 @@ import type {
 } from './PickerPanel';
 import PickerPanel from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
+import PresetPanel from './PresetPanel';
 import { formatValue, isEqual, parseValue } from './utils/dateUtil';
 import getDataOrAriaProps, { toArray } from './utils/miscUtil';
-import type { ContextOperationRefProps } from './PanelContext';
-import PanelContext from './PanelContext';
-import type { CustomFormat, PickerMode, PresetDate } from './interface';
-import { getDefaultFormat, getInputSize, elementsContains } from './utils/uiUtil';
-import usePickerInput from './hooks/usePickerInput';
-import useTextValueMapping from './hooks/useTextValueMapping';
-import useValueTexts from './hooks/useValueTexts';
-import useHoverValue from './hooks/useHoverValue';
+import { elementsContains, getDefaultFormat, getInputSize } from './utils/uiUtil';
 import { legacyPropsWarning } from './utils/warnUtil';
-import usePresets from './hooks/usePresets';
-import PresetPanel from './PresetPanel';
 
 export type PickerRefConfig = {
   focus: () => void;
@@ -271,7 +271,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       return;
     }
 
-    console.trace('New Open:', newOpen)
     triggerInnerOpen(newOpen);
   };
 
