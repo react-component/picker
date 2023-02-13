@@ -36,7 +36,6 @@
     "prettier": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "test": "rc-test",
     "coverage": "rc-test --coverage",
-    "now-build": "npm run docs:build",
     "lint-staged": "lint-staged",
     "prepare": "husky install"
   },
@@ -58,7 +57,7 @@
     "@types/react-dom": "^17.0.8",
     "coveralls": "^3.0.6",
     "cross-env": "^7.0.2",
-    "dumi": "^1.1.37",
+    "dumi": "^2.1.9",
     "eslint": "~7.32.0",
     "eslint-plugin-eslint-comments": "^3.1.2",
     "eslint-plugin-jest": "^26.8.2",
@@ -86,12 +85,6 @@
       "prettier --write",
       "git add"
     ]
-  },
-  "cnpm": {
-    "mode": "npm"
-  },
-  "tnpm": {
-    "mode": "npm"
   },
   "peerDependencies": {
     "react": ">=16.9.0",
