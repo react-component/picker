@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@rc-component/father-plugin": "^1.0.0",
-    "@testing-library/react": "^12",
+    "@testing-library/react": "^13.4.0",
     "@types/classnames": "^2.2.9",
     "@types/jest": "^26.0.0",
     "@types/react": "^18.0.28",
