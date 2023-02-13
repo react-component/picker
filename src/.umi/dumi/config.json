@@ -1,0 +1,98 @@
+{
+  "menus": {
+    "en-US": {
+      "*": [
+        {
+          "path": "/",
+          "title": "rc-picker",
+          "meta": {
+            "order": null
+          }
+        },
+        {
+          "title": "Demo",
+          "path": "/demo",
+          "meta": {},
+          "children": [
+            {
+              "path": "/demo/basic",
+              "title": "basic",
+              "meta": {}
+            },
+            {
+              "path": "/demo/calendar",
+              "title": "calendar",
+              "meta": {}
+            },
+            {
+              "path": "/demo/customize",
+              "title": "customize",
+              "meta": {}
+            },
+            {
+              "path": "/demo/disabled-date",
+              "title": "disabledDate",
+              "meta": {}
+            },
+            {
+              "path": "/demo/modes",
+              "title": "modes",
+              "meta": {}
+            },
+            {
+              "path": "/demo/panel",
+              "title": "panel",
+              "meta": {}
+            },
+            {
+              "path": "/demo/panel-render",
+              "title": "panelRender",
+              "meta": {}
+            },
+            {
+              "path": "/demo/range",
+              "title": "range",
+              "meta": {}
+            },
+            {
+              "path": "/demo/rtl",
+              "title": "rtl",
+              "meta": {}
+            },
+            {
+              "path": "/demo/switch-type",
+              "title": "switchType",
+              "meta": {}
+            },
+            {
+              "path": "/demo/time",
+              "title": "time",
+              "meta": {}
+            },
+            {
+              "path": "/demo/uncontrolled",
+              "title": "uncontrolled",
+              "meta": {}
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "locales": [
+    {
+      "name": "en-US",
+      "label": "English"
+    }
+  ],
+  "navs": {},
+  "title": "rc-picker",
+  "logo": "https://avatars0.githubusercontent.com/u/9441414?s=200&v=4",
+  "mode": "doc",
+  "repository": {
+    "url": "https://github.com/react-component/picker",
+    "branch": "master"
+  },
+  "theme": {},
+  "exportStatic": {}
+}
