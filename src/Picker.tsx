@@ -11,11 +11,19 @@
  * Tips: Should add faq about `datetime` mode with `defaultValue`
  */
 
-import * as React from 'react';
 import classNames from 'classnames';
 import type { AlignType } from 'rc-trigger/lib/interface';
-import warning from 'rc-util/lib/warning';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import warning from 'rc-util/lib/warning';
+import * as React from 'react';
+import useHoverValue from './hooks/useHoverValue';
+import usePickerInput from './hooks/usePickerInput';
+import usePresets from './hooks/usePresets';
+import useTextValueMapping from './hooks/useTextValueMapping';
+import useValueTexts from './hooks/useValueTexts';
+import type { CustomFormat, PickerMode, PresetDate } from './interface';
+import type { ContextOperationRefProps } from './PanelContext';
+import PanelContext from './PanelContext';
 import type {
   PickerPanelBaseProps,
   PickerPanelDateProps,
@@ -23,16 +31,10 @@ import type {
 } from './PickerPanel';
 import PickerPanel from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
+import PresetPanel from './PresetPanel';
 import { formatValue, isEqual, parseValue } from './utils/dateUtil';
 import getDataOrAriaProps, { toArray } from './utils/miscUtil';
-import type { ContextOperationRefProps } from './PanelContext';
-import PanelContext from './PanelContext';
-import type { CustomFormat, PickerMode } from './interface';
-import { getDefaultFormat, getInputSize, elementsContains } from './utils/uiUtil';
-import usePickerInput from './hooks/usePickerInput';
-import useTextValueMapping from './hooks/useTextValueMapping';
-import useValueTexts from './hooks/useValueTexts';
-import useHoverValue from './hooks/useHoverValue';
+import { elementsContains, getDefaultFormat, getInputSize } from './utils/uiUtil';
 import { legacyPropsWarning } from './utils/warnUtil';
 
 export type PickerRefConfig = {
@@ -55,6 +57,8 @@ export type PickerSharedProps<DateType> = {
   /** Make input readOnly to avoid popup keyboard in mobile */
   inputReadOnly?: boolean;
   id?: string;
+
+  presets?: PresetDate<DateType>[];
 
   // Value
   format?: string | CustomFormat<DateType> | (string | CustomFormat<DateType>)[];
@@ -151,6 +155,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     use12Hours,
     value,
     defaultValue,
+    presets,
     open,
     defaultOpen,
     defaultOpenValue,
@@ -182,6 +187,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
+
+  const presetList = usePresets(presets);
 
   // ============================ Warning ============================
   if (process.env.NODE_ENV !== 'production') {
@@ -393,26 +400,36 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   };
 
   let panelNode: React.ReactNode = (
-    <PickerPanel<DateType>
-      {...panelProps}
-      generateConfig={generateConfig}
-      className={classNames({
-        [`${prefixCls}-panel-focused`]: !typing,
-      })}
-      value={selectedValue}
-      locale={locale}
-      tabIndex={-1}
-      onSelect={(date) => {
-        onSelect?.(date);
-        setSelectedValue(date);
-      }}
-      direction={direction}
-      onPanelChange={(viewDate, mode) => {
-        const { onPanelChange } = props;
-        onLeave(true);
-        onPanelChange?.(viewDate, mode);
-      }}
-    />
+    <div className={`${prefixCls}-panel-layout`}>
+      <PresetPanel
+        prefixCls={prefixCls}
+        presets={presetList}
+        onClick={(nextValue) => {
+          triggerChange(nextValue);
+          triggerOpen(false);
+        }}
+      />
+      <PickerPanel<DateType>
+        {...panelProps}
+        generateConfig={generateConfig}
+        className={classNames({
+          [`${prefixCls}-panel-focused`]: !typing,
+        })}
+        value={selectedValue}
+        locale={locale}
+        tabIndex={-1}
+        onSelect={(date) => {
+          onSelect?.(date);
+          setSelectedValue(date);
+        }}
+        direction={direction}
+        onPanelChange={(viewDate, mode) => {
+          const { onPanelChange } = props;
+          onLeave(true);
+          onPanelChange?.(viewDate, mode);
+        }}
+      />
+    </div>
   );
 
   if (panelRender) {
@@ -422,6 +439,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const panel = (
     <div
       className={`${prefixCls}-panel-container`}
+      ref={panelDivRef}
       onMouseDown={(e) => {
         e.preventDefault();
       }}
@@ -505,7 +523,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       value={{
         operationRef,
         hideHeader: picker === 'time',
-        panelRef: panelDivRef,
         onSelect: onContextSelect,
         open: mergedOpen,
         defaultOpenValue,

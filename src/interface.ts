@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { GenerateConfig } from './generate';
 
 export type Locale = {
@@ -96,14 +97,18 @@ export type RangeValue<DateType> = [EventValue<DateType>, EventValue<DateType>] 
 
 export type Components = {
   button?: React.ComponentType | string;
-  rangeItem?: React.ComponentType | string;
 };
 
 export type RangeList = {
-  label: string;
+  label: React.ReactNode;
   onClick: () => void;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 }[];
 
 export type CustomFormat<DateType> = (value: DateType) => string;
+
+export interface PresetDate<T> {
+  label: React.ReactNode;
+  value: T;
+}

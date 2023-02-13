@@ -255,4 +255,17 @@ describe('Generate:dayjs', () => {
     expect(timea.isValid()).toBeTruthy();
     expect(timea.valueOf()).toEqual(timeb.valueOf());
   });
+
+  it('parse', () => {
+    const timea = dayjsGenerateConfig.locale.parse('en_US', '2022-11-23 13:5', [
+      'YYYY-MM-DD HH:mm',
+    ]);
+    expect(timea).toEqual(null);
+
+    const timeb = dayjsGenerateConfig.locale.parse('en_US', '2022-11-23 13:05', [
+      'YYYY-MM-DD HH:mm',
+    ]);
+    const dateb = dayjsGenerateConfig.locale.format('en_US', timeb, 'YYYY-MM-DD HH:mm');
+    expect(dateb).toEqual('2022-11-23 13:05');
+  });
 });
