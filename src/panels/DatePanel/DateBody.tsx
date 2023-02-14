@@ -15,6 +15,7 @@ import PanelBody from '../PanelBody';
 export type DateRender<DateType> = (currentDate: DateType, today: DateType) => React.ReactNode;
 
 export type DateBodyPassProps<DateType> = {
+  weekDayLocaleCellRender?: (weekDayLocale: string|React.ReactNode) => React.ReactNode;
   dateRender?: DateRender<DateType>;
   disabledDate?: (date: DateType) => boolean;
 
@@ -43,6 +44,7 @@ function DateBody<DateType>(props: DateBodyProps<DateType>) {
     viewDate,
     value,
     dateRender,
+    weekDayLocaleCellRender,
   } = props;
 
   const { rangedValue, hoverRangedValue } = React.useContext(RangeContext);
@@ -64,7 +66,12 @@ function DateBody<DateType>(props: DateBodyProps<DateType>) {
     headerCells.push(<th key="empty" aria-label="empty cell" />);
   }
   for (let i = 0; i < WEEK_DAY_COUNT; i += 1) {
-    headerCells.push(<th key={i}>{weekDaysLocale[(i + weekFirstDay) % WEEK_DAY_COUNT]}</th>);
+    let weekDayLocale: string|React.ReactNode = weekDaysLocale[(i + weekFirstDay) % WEEK_DAY_COUNT];
+
+    if(weekDayLocaleCellRender){
+      weekDayLocale = weekDayLocaleCellRender(weekDayLocale);
+    }
+    headerCells.push(<th key={i}>{weekDayLocale}</th>);
   }
 
   // =============================== Body ===============================
