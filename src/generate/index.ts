@@ -24,6 +24,7 @@ export type GenerateConfig<DateType> = {
 
   // Compare
   isAfter: (date1: DateType, date2: DateType) => boolean;
+  isBefore: (date1: DateType, date2: DateType) => boolean;
   isValidate: (date: DateType) => boolean;
 
   locale: {
