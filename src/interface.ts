@@ -80,6 +80,8 @@ export type PanelSharedProps<DateType> = {
   onSelect: OnSelect<DateType>;
   onViewDateChange: (value: DateType) => void;
   onPanelChange: (mode: PanelMode | null, viewValue: DateType) => void;
+  
+  htmlTitle?: boolean | { format?: string | CustomFormat<DateType>; useCustomFormat?: boolean };
 };
 
 export type DisabledTimes = {

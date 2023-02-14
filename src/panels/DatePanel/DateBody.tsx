@@ -11,6 +11,7 @@ import type { Locale } from '../../interface';
 import RangeContext from '../../RangeContext';
 import useCellClassName from '../../hooks/useCellClassName';
 import PanelBody from '../PanelBody';
+import type { CustomFormat } from '../../interface';
 
 export type DateRender<DateType> = (currentDate: DateType, today: DateType) => React.ReactNode;
 
@@ -31,6 +32,7 @@ export type DateBodyProps<DateType> = {
   locale: Locale;
   rowCount: number;
   onSelect: (value: DateType) => void;
+  htmlTitle?: boolean | { format?: string | CustomFormat<DateType> };
 } & DateBodyPassProps<DateType>;
 
 function DateBody<DateType>(props: DateBodyProps<DateType>) {
@@ -43,6 +45,7 @@ function DateBody<DateType>(props: DateBodyProps<DateType>) {
     viewDate,
     value,
     dateRender,
+    htmlTitle,
   } = props;
 
   const { rangedValue, hoverRangedValue } = React.useContext(RangeContext);
@@ -92,12 +95,15 @@ function DateBody<DateType>(props: DateBodyProps<DateType>) {
       getCellText={generateConfig.getDate}
       getCellClassName={getCellClassName}
       getCellDate={generateConfig.addDate}
-      titleCell={date =>
-        formatValue(date, {
-          locale,
-          format: 'YYYY-MM-DD',
-          generateConfig,
-        })
+      titleCell={
+        typeof htmlTitle === 'boolean' && !htmlTitle
+          ? undefined
+          : (date) =>
+            formatValue(date, {
+              locale,
+              format: typeof htmlTitle !== 'boolean' && (htmlTitle?.format ?? 'YYYY-MM-DD'),
+              generateConfig,
+            })
       }
       headerCells={headerCells}
     />

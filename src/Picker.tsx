@@ -62,7 +62,10 @@ export type PickerSharedProps<DateType> = {
 
   // Value
   format?: string | CustomFormat<DateType> | (string | CustomFormat<DateType>)[];
-
+  
+  // cell tittle
+  htmlTitle?: boolean | { format?: string | CustomFormat<DateType> };
+  
   // Render
   suffixIcon?: React.ReactNode;
   clearIcon?: React.ReactNode;
