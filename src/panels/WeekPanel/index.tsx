@@ -84,6 +84,8 @@ function WeekPanel<DateType>(props: WeekPanelProps<DateType>) {
       keyboardConfig={{
         onLeftRight: null,
       }}
+      // No need check cell level
+      isSameCell={() => false}
     />
   );
 }
