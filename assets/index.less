@@ -203,6 +203,21 @@
           background: rgba(0, 0, 255, 0.3);
         }
       }
+
+      &-range {
+        &-hover {
+          .@{prefix-cls}-cell {
+            background: rgba(0, 255, 0, 0.1);
+          }
+        }
+
+        &-start,
+        &-end {
+          .@{prefix-cls}-cell {
+            background: rgba(0, 255, 0, 0.3);
+          }
+        }
+      }
     }
 
     .@{prefix-cls}-cell,
