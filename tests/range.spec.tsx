@@ -1772,5 +1772,8 @@ describe('Picker.Range', () => {
     fireEvent.mouseLeave(findWeekCell('37'));
 
     expect(findWeekCell('37').parentElement).toHaveClass('rc-picker-week-panel-row-range-end');
+
+    // No selected cell
+    expect(document.querySelector('.rc-picker-cell-selected')).toBeFalsy();
   });
 });
