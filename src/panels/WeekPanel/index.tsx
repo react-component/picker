@@ -64,7 +64,8 @@ function WeekPanel<DateType>(props: WeekPanelProps<DateType>) {
     const isRangeStart = isSameWeek(generateConfig, locale.locale, rangeStart, date);
     const isRangeEnd = isSameWeek(generateConfig, locale.locale, rangeEnd, date);
     return classNames(rowPrefixCls, {
-      [`${rowPrefixCls}-selected`]: isSameWeek(generateConfig, locale.locale, value, date),
+      [`${rowPrefixCls}-selected`]:
+        !rangedValue && isSameWeek(generateConfig, locale.locale, value, date),
 
       // Patch for hover range
       [`${rowPrefixCls}-range-start`]: isRangeStart,
