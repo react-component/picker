@@ -14,8 +14,8 @@ function WeekPanel<DateType>(props: WeekPanelProps<DateType>) {
   const { rangedValue, hoverRangedValue } = React.useContext(RangeContext);
   const { onDateMouseEnter, onDateMouseLeave } = React.useContext(PanelContext);
 
-  const rangeStart = rangedValue?.[0] || hoverRangedValue?.[0];
-  const rangeEnd = rangedValue?.[1] || hoverRangedValue?.[1];
+  const rangeStart = hoverRangedValue?.[0] || rangedValue?.[0];
+  const rangeEnd = hoverRangedValue?.[1] || rangedValue?.[1];
 
   // Render additional column
   const cellPrefixCls = `${prefixCls}-cell`;

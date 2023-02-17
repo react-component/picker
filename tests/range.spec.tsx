@@ -1756,8 +1756,6 @@ describe('Picker.Range', () => {
       return Array.from(list).find((cell) => cell.textContent == val);
     }
 
-    console.log(document.body.innerHTML);
-
     // Start
     fireEvent.mouseEnter(findWeekCell('35'));
     fireEvent.click(findWeekCell('35'));
