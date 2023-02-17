@@ -50,7 +50,9 @@ function WeekPanel<DateType>(props: WeekPanelProps<DateType>) {
           }
         }}
       >
-        {generateConfig.locale.getWeek(locale.locale, date)}
+        <div className={`${cellPrefixCls}-inner`}>
+          {generateConfig.locale.getWeek(locale.locale, date)}
+        </div>
       </td>
     );
   };
