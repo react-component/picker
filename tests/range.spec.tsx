@@ -1746,4 +1746,33 @@ describe('Picker.Range', () => {
     });
     mock.mockRestore();
   });
+
+  it('week range selection style', () => {
+    const { container } = render(<MomentRangePicker picker="week" />);
+    openPicker(container);
+
+    function findWeekCell(val: string) {
+      const list = document.querySelectorAll('.rc-picker-cell-week');
+      return Array.from(list).find((cell) => cell.textContent == val);
+    }
+
+    console.log(document.body.innerHTML);
+
+    // Start
+    fireEvent.mouseEnter(findWeekCell('35'));
+    fireEvent.click(findWeekCell('35'));
+    fireEvent.mouseLeave(findWeekCell('35'));
+
+    expect(findWeekCell('35').parentElement).toHaveClass('rc-picker-week-panel-row-range-start');
+
+    // End Hover
+    fireEvent.mouseEnter(findWeekCell('37'));
+    expect(findWeekCell('36').parentElement).toHaveClass('rc-picker-week-panel-row-range-hover');
+
+    // End Click
+    fireEvent.click(findWeekCell('37'));
+    fireEvent.mouseLeave(findWeekCell('37'));
+
+    expect(findWeekCell('37').parentElement).toHaveClass('rc-picker-week-panel-row-range-end');
+  });
 });
