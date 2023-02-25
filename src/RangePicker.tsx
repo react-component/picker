@@ -307,7 +307,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
       // Fill disabled unit
       for (let i = 0; i < 2; i += 1) {
-        if (mergedDisabled[i] && !getValue(postValues, i) && !getValue(allowEmpty, i)) {
+        if (mergedDisabled[i] && !postValues && !getValue(postValues, i) && !getValue(allowEmpty, i)) {
           postValues = updateValues(postValues, generateConfig.getNow(), i);
         }
       }
