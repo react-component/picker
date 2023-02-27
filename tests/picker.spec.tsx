@@ -616,6 +616,18 @@ describe('Picker.Basic', () => {
       );
       spy.mockRestore();
     });
+
+    // https://github.com/ant-design/ant-design/issues/40914
+    ;['hour', 'minute', 'second'].forEach((unit, index) => {
+      it(`should show integer when step is not integer (${unit})`, () => {
+        const props = {
+          [`${unit}Step`]: 5.5,
+        }
+        const { container } = render(<MomentPicker picker="time" {...props} />);
+        openPicker(container);
+        expect(document.querySelectorAll('.rc-picker-time-panel-column')[index]).toMatchSnapshot();
+      });
+    });
   });
 
   it('pass data- & aria- & role', () => {
