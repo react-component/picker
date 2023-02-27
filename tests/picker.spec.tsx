@@ -628,6 +628,13 @@ describe('Picker.Basic', () => {
         expect(document.querySelectorAll('.rc-picker-time-panel-column')[index]).toMatchSnapshot();
       });
     });
+
+    it('should work when hourStep < 0', () => {
+      // @ts-ignore
+      const { container } = render(<MomentPicker picker="time" hourStep={-1} />);
+      openPicker(container);
+      expect(document.querySelectorAll('.rc-picker-time-panel-column')[0].children.length).toBe(24);
+    });
   });
 
   it('pass data- & aria- & role', () => {
