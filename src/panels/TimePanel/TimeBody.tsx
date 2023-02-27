@@ -24,7 +24,8 @@ function generateUnits(
   disabledUnits: number[] | undefined,
 ) {
   const units: Unit[] = [];
-  for (let i = start; i <= end; i += step) {
+  const integerStep = Math.floor(step);
+  for (let i = start; i <= end; i += integerStep) {
     units.push({
       label: leftPad(i, 2),
       value: i,
