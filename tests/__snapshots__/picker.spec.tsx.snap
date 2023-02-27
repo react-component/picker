@@ -124,7 +124,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (ho
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      5.5
+      05
     </div>
   </li>
   <li
@@ -133,7 +133,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (ho
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      11
+      10
     </div>
   </li>
   <li
@@ -142,7 +142,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (ho
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      16.5
+      15
     </div>
   </li>
   <li
@@ -151,7 +151,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (ho
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      22
+      20
     </div>
   </li>
 </ul>
@@ -177,7 +177,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (mi
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      5.5
+      05
     </div>
   </li>
   <li
@@ -186,7 +186,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (mi
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      11
+      10
     </div>
   </li>
   <li
@@ -195,7 +195,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (mi
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      16.5
+      15
     </div>
   </li>
   <li
@@ -204,7 +204,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (mi
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      22
+      20
     </div>
   </li>
   <li
@@ -213,7 +213,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (mi
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      27.5
+      25
     </div>
   </li>
   <li
@@ -222,7 +222,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (mi
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      33
+      30
     </div>
   </li>
   <li
@@ -231,7 +231,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (mi
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      38.5
+      35
     </div>
   </li>
   <li
@@ -240,7 +240,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (mi
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      44
+      40
     </div>
   </li>
   <li
@@ -249,7 +249,16 @@ exports[`Picker.Basic time step should show integer when step is not integer (mi
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      49.5
+      45
+    </div>
+  </li>
+  <li
+    class="rc-picker-time-panel-cell"
+  >
+    <div
+      class="rc-picker-time-panel-cell-inner"
+    >
+      50
     </div>
   </li>
   <li
@@ -284,7 +293,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (se
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      5.5
+      05
     </div>
   </li>
   <li
@@ -293,7 +302,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (se
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      11
+      10
     </div>
   </li>
   <li
@@ -302,7 +311,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (se
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      16.5
+      15
     </div>
   </li>
   <li
@@ -311,7 +320,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (se
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      22
+      20
     </div>
   </li>
   <li
@@ -320,7 +329,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (se
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      27.5
+      25
     </div>
   </li>
   <li
@@ -329,7 +338,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (se
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      33
+      30
     </div>
   </li>
   <li
@@ -338,7 +347,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (se
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      38.5
+      35
     </div>
   </li>
   <li
@@ -347,7 +356,7 @@ exports[`Picker.Basic time step should show integer when step is not integer (se
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      44
+      40
     </div>
   </li>
   <li
@@ -356,7 +365,16 @@ exports[`Picker.Basic time step should show integer when step is not integer (se
     <div
       class="rc-picker-time-panel-cell-inner"
     >
-      49.5
+      45
+    </div>
+  </li>
+  <li
+    class="rc-picker-time-panel-cell"
+  >
+    <div
+      class="rc-picker-time-panel-cell-inner"
+    >
+      50
     </div>
   </li>
   <li
