@@ -12,7 +12,7 @@
  */
 
 import classNames from 'classnames';
-import type { AlignType } from 'rc-trigger/lib/interface';
+import type { AlignType } from '@rc-component/trigger/lib/interface';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import warning from 'rc-util/lib/warning';
 import * as React from 'react';
