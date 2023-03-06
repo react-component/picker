@@ -133,30 +133,26 @@ exports[`Picker.Range panelRender 1`] = `
       />
     </div>
   </div>
-  <div
-    style="position: absolute; top: 0px; left: 0px; width: 100%;"
-  >
-    <div>
+  <div>
+    <div
+      class="rc-picker-dropdown rc-picker-dropdown-range rc-picker-dropdown-placement-bottomLeft"
+      style="left: -1000vw; top: -1000vh; box-sizing: border-box;"
+    >
       <div
-        class="rc-picker-dropdown rc-picker-dropdown-range"
-        style="opacity: 0;"
+        class="rc-picker-range-wrapper rc-picker-date-range-wrapper"
+        style="min-width: 0;"
       >
         <div
-          class="rc-picker-range-wrapper rc-picker-date-range-wrapper"
-          style="min-width: 0;"
+          class="rc-picker-range-arrow"
+          style="left: 0px;"
+        />
+        <div
+          class="rc-picker-panel-container"
+          style="margin-left: 0px;"
         >
-          <div
-            class="rc-picker-range-arrow"
-            style="left: 0px;"
-          />
-          <div
-            class="rc-picker-panel-container"
-            style="margin-left: 0px;"
-          >
-            <h1>
-              Light
-            </h1>
-          </div>
+          <h1>
+            Light
+          </h1>
         </div>
       </div>
     </div>
