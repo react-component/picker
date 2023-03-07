@@ -894,13 +894,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         ? arrowRef.current.offsetLeft - arrowLeft
         : arrowRef.current.offsetLeft;
 
+    const panelWidth = panelDivRef.current.offsetWidth;
+    const arrowWidth = arrowRef.current.offsetWidth;
+
     if (
-      panelDivRef.current.offsetWidth !== undefined &&
-      arrowRef.current.offsetWidth !== undefined &&
-      arrowLeft >
-        panelDivRef.current.offsetWidth -
-          arrowRef.current.offsetWidth -
-          (direction === 'rtl' ? 0 : arrowMarginLeft)
+      panelWidth &&
+      arrowWidth &&
+      arrowLeft > panelWidth - arrowWidth - (direction === 'rtl' ? 0 : arrowMarginLeft)
     ) {
       panelLeft = arrowLeft;
     }
