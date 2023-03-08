@@ -26,8 +26,12 @@ import {
 import * as Locale from 'date-fns/locale';
 import type { GenerateConfig } from '.';
 
+const localeMap: Record<string, string> = {
+  ko_KR: 'ko'
+};
+
 const dealLocal = (str: string) => {
-  return str.replace(/_/g, '');
+  return localeMap[str] || str.replace(/_/g, '');
 };
 
 const localeParse = (format: string) => {
