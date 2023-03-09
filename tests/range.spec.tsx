@@ -1776,4 +1776,10 @@ describe('Picker.Range', () => {
     // No selected cell
     expect(document.querySelector('.rc-picker-cell-selected')).toBeFalsy();
   });
+
+  it('range picker should use the passed in default when part is disabled', () => {
+    render(<MomentRangePicker defaultValue={[null, null]} disabled={[false, true]} />);
+
+    expect(document.querySelectorAll('input')[1].value).toBeFalsy();
+  });
 });
