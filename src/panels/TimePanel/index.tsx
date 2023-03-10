@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import TimeHeader from './TimeHeader';
 import type { BodyOperationRef } from './TimeBody';
 import TimeBody from './TimeBody';
-import type { PanelSharedProps, DisabledTimes, IntRange } from '../../interface';
+import type { PanelSharedProps, DisabledTimes } from '../../interface';
 import { createKeyDownHandler } from '../../utils/uiUtil';
 
 export type SharedTimeProps<DateType> = {
@@ -13,9 +13,9 @@ export type SharedTimeProps<DateType> = {
   showMinute?: boolean;
   showSecond?: boolean;
   use12Hours?: boolean;
-  hourStep?: IntRange<1, 23>;
-  minuteStep?: IntRange<1, 59>;
-  secondStep?: IntRange<1, 59>;
+  hourStep?: number;
+  minuteStep?: number;
+  secondStep?: number;
   hideDisabledOptions?: boolean;
   defaultValue?: DateType;
 
