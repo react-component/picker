@@ -79,7 +79,7 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
         {...props}
         prefixCls={prefixCls}
         onSelect={date => {
-          onPanelChange(sourceMode === 'date' ? 'date' : 'month', date);
+          onPanelChange('month', date);
           onSelect(date, 'mouse');
         }}
       />

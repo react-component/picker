@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-loop-func */
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
-import moment, { Moment } from 'moment';
+import type { Moment } from 'moment';
+import moment from 'moment';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
@@ -424,11 +425,13 @@ describe('Picker.Basic', () => {
       });
     });
 
-    it('date -> year -> date', () => {
+    it('date -> year -> month -> date', () => {
       const { container } = render(<MomentPicker />);
       openPicker(container);
       fireEvent.click(document.querySelector('.rc-picker-year-btn'));
       selectCell(1990);
+      expect(document.querySelector('.rc-picker-month-panel')).toBeTruthy();
+      selectCell('Aug');
       expect(document.querySelector('.rc-picker-date-panel')).toBeTruthy();
     });
 
