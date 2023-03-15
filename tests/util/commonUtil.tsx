@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import { mount as originMount, ReactWrapper } from 'enzyme';
 import { fireEvent } from '@testing-library/react';
 import moment, { Moment, unitOfTime } from 'moment';
 import Picker, { PickerPanel, PickerProps } from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
 import enUS from '../../src/locale/en_US';
+import zhCN from '../../src/locale/zh_CN';
 import { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
 import {
   PickerPanelBaseProps,
@@ -94,6 +95,30 @@ export type MomentPickerPanelProps =
 export const MomentPickerPanel = (props: MomentPickerPanelProps) => (
   <PickerPanel<Moment> generateConfig={momentGenerateConfig} locale={enUS} {...props} />
 );
+
+export const Calendar = () => {
+  const [date, setDate] = useState<Moment | null>(null);
+  return (
+    <PickerPanel<Moment>
+      locale={zhCN}
+      mode="month"
+      generateConfig={momentGenerateConfig}
+      monthCellRender={(value) => {
+        return (
+          <Picker<Moment>
+            locale={zhCN}
+            generateConfig={momentGenerateConfig}
+            value={date ? moment(date) : null}
+            onChange={(dateValue) => {
+              setDate(dateValue);
+            }}
+          />
+        )
+      }}
+      hideHeader
+    />
+  )
+}
 
 // Moment Range Picker
 export type MomentRangePickerProps =
