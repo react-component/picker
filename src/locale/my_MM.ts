@@ -1,7 +1,7 @@
 import type { Locale } from '../interface';
 
 const locale: Locale = {
-  locale: 'mm_MM',
+  locale: 'my_MM',
   today: 'ယနေ့',
   now: 'ယခု',
   backToToday: 'ယနေ့ မတိုင်ခင် သို့',
