@@ -43,7 +43,7 @@ export type PickerPanelSharedProps<DateType> = {
   prefixCls?: string;
   className?: string;
   style?: React.CSSProperties;
-  /** @deprecated Will be removed in next big version. Please use `mode` instead */
+  /** @deprecated Will be removed in next big version. Please use `picker` instead */
   mode?: PanelMode;
   tabIndex?: number;
 
