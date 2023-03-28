@@ -13,6 +13,7 @@ import useRangeViewDates from './hooks/useRangeViewDates';
 import useTextValueMapping from './hooks/useTextValueMapping';
 import useValueTexts from './hooks/useValueTexts';
 import type {
+  CellRender,
   DisabledTimes,
   EventValue,
   PanelMode,
@@ -22,7 +23,6 @@ import type {
 } from './interface';
 import type { ContextOperationRefProps } from './PanelContext';
 import PanelContext from './PanelContext';
-import type { DateRender } from './panels/DatePanel/DateBody';
 import type { SharedTimeProps } from './panels/TimePanel';
 import type { PickerBaseProps, PickerDateProps, PickerRefConfig, PickerTimeProps } from './Picker';
 import PickerPanel from './PickerPanel';
@@ -124,7 +124,9 @@ export type RangePickerSharedProps<DateType> = {
   autoComplete?: string;
   /** @private Internal control of active picker. Do not use since it's private usage */
   activePickerIndex?: 0 | 1;
+  /** @deprecated use cellRender instead of dateRender */
   dateRender?: RangeDateRender<DateType>;
+  cellRender?: CellRender<DateType>;
   panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
 };
 
@@ -145,7 +147,7 @@ type OmitPickerProps<Props> = Omit<
   | 'pickerValue'
   | 'onPickerValueChange'
   | 'onOk'
-  | 'dateRender'
+  | 'cellRender'
   | 'presets'
 >;
 
@@ -209,6 +211,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     disabledDate,
     disabledTime,
     dateRender,
+    monthCellRender,
+    cellRender,
     panelRender,
     presets,
     ranges,
@@ -307,7 +311,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
       // Fill disabled unit
       for (let i = 0; i < 2; i += 1) {
-        if (mergedDisabled[i] && !postValues && !getValue(postValues, i) && !getValue(allowEmpty, i)) {
+        if (
+          mergedDisabled[i] &&
+          !postValues &&
+          !getValue(postValues, i) &&
+          !getValue(allowEmpty, i)
+        ) {
           postValues = updateValues(postValues, generateConfig.getNow(), i);
         }
       }
@@ -319,6 +328,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const [mergedModes, setInnerModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
     value: mode,
   });
+
+  const mergedCellRender =
+    cellRender ||
+    (mergedModes[mergedActivePickerIndex] === 'month'
+      ? monthCellRender && ((date: DateType, info) => monthCellRender(date, info.locale))
+      : dateRender && ((date: DateType, info) => dateRender(date, info.today)));
+
 
   useEffect(() => {
     setInnerModes([picker, picker]);
@@ -755,6 +771,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         '`disabled` should not set with empty `value`. You should set `allowEmpty` or `value` instead.',
       );
     }
+    warning(!!dateRender, `'dateRender' is deprecated. Please use 'cellRender' instead.`);
+    warning(!!monthCellRender, `'monthCellRender' is deprecated. Please use 'cellRender' instead.`);
   }
 
   // ============================ Private ============================
@@ -805,10 +823,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       };
     }
 
-    let panelDateRender: DateRender<DateType> | null = null;
-    if (dateRender) {
-      panelDateRender = (date, today) =>
-        dateRender(date, today, {
+    let panelDateRender: CellRender<DateType> | null = null;
+    if (mergedCellRender) {
+      panelDateRender = (date, info) =>
+        mergedCellRender(date, {
+          ...info,
           range: mergedActivePickerIndex ? 'end' : 'start',
         });
     }
@@ -825,7 +844,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         <PickerPanel<DateType>
           {...(props as any)}
           {...panelProps}
-          dateRender={panelDateRender}
+          cellRender={panelDateRender}
           showTime={panelShowTime}
           mode={mergedModes[mergedActivePickerIndex]}
           generateConfig={generateConfig}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import useCellClassName from '../../hooks/useCellClassName';
-import type { Locale } from '../../interface';
+import type { CellRender, Locale } from '../../interface';
 import RangeContext from '../../RangeContext';
 import {
   formatValue,
@@ -15,7 +15,7 @@ import PanelBody from '../PanelBody';
 export type DateRender<DateType> = (currentDate: DateType, today: DateType) => React.ReactNode;
 
 export type DateBodyPassProps<DateType> = {
-  dateRender?: DateRender<DateType>;
+  cellRender?: CellRender<DateType>;
   disabledDate?: (date: DateType) => boolean;
 
   // Used for week panel
@@ -43,7 +43,7 @@ function DateBody<DateType>(props: DateBodyProps<DateType>) {
     rowCount,
     viewDate,
     value,
-    dateRender,
+    cellRender,
     isSameCell,
   } = props;
 
@@ -82,7 +82,15 @@ function DateBody<DateType>(props: DateBodyProps<DateType>) {
     offsetCell: (date, offset) => generateConfig.addDate(date, offset),
   });
 
-  const getCellNode = dateRender ? (date: DateType) => dateRender(date, today) : undefined;
+  const getCellNode = cellRender
+    ? (date: DateType, wrapperNode: React.ReactElement) =>
+        cellRender(date, {
+          originNode: wrapperNode,
+          today,
+          type: 'date',
+          locale
+        })
+    : undefined;
 
   return (
     <PanelBody

@@ -1,5 +1,6 @@
+import { PickerMode } from '@/interface';
 import { fireEvent, render } from '@testing-library/react';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
@@ -502,7 +503,7 @@ describe('Picker.Panel', () => {
 
   it('monthCellRender', () => {
     const { container } = render(
-      <MomentPickerPanel picker="month" monthCellRender={(date) => date.format('YYYY-MM')} />,
+      <MomentPickerPanel picker="month" cellRender={(date) => date.format('YYYY-MM')} />,
     );
 
     expect(container.querySelector('tbody')).toMatchSnapshot();
@@ -555,6 +556,70 @@ describe('Picker.Panel', () => {
           dow: defaultFirstDay,
         } as any,
       });
+    });
+  });
+
+  const supportCellRenderPicker: PickerMode[] = [
+    'year',
+    'month',
+    'date',
+    'quarter',
+    'week',
+    'time',
+  ];
+
+  const getCurText = (picker: PickerMode, current: Moment | number) => {
+    switch (picker) {
+      case 'time':
+        return current;
+      case 'date':
+      case 'year':
+      case 'month':
+      case 'quarter':
+      case 'week':
+        return (current as Moment).get(picker);
+    }
+  };
+  supportCellRenderPicker.forEach((picker) => {
+    it(`override cell with cellRender in ${picker}`, () => {
+      const App = () => (
+        <MomentPickerPanel
+          picker={picker}
+          cellRender={(current) => (
+            <div className="customWrapper">{getCurText(picker, current)}</div>
+          )}
+        />
+      );
+
+      const { container } = render(<App />);
+
+      expect(container.querySelector('.customWrapper')).toBeTruthy();
+      expect(container.querySelector(`.rc-picker-${picker}-panel`)).toBeTruthy();
+      expect(container).toMatchSnapshot();
+    });
+    it(`append cell with cellRender in ${picker}`, () => {
+      const App = () => (
+        <MomentPickerPanel
+          picker={picker}
+          cellRender={(current, info) =>
+            React.cloneElement(
+              info.originNode,
+              {
+                ...info.originNode.props,
+                className: `${info.originNode.props.className} customInner`,
+              },
+              <div className="customWrapper">{getCurText(picker, current)}</div>,
+            )
+          }
+        />
+      );
+
+      const { container } = render(<App />);
+
+      expect(container.querySelector('.customWrapper')).toBeTruthy();
+      expect(container.querySelector('.customInner')).toBeTruthy();
+      expect(container.querySelector(`.rc-picker-${picker}-panel`)).toBeTruthy();
+      expect(container).toMatchSnapshot();
     });
   });
 });

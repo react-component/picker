@@ -996,7 +996,7 @@ describe('Picker.Range', () => {
     const { container } = render(
       <MomentRangePicker
         open
-        dateRender={(date, _, info) => {
+        cellRender={(date, info) => {
           expect(info.range).toEqual(range);
           return date.format('YYYY-MM-DD');
         }}

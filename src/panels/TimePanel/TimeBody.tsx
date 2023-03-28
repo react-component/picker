@@ -1,7 +1,7 @@
 import * as React from 'react';
 import useMemo from 'rc-util/lib/hooks/useMemo';
 import type { GenerateConfig } from '../../generate';
-import type { Locale, OnSelect } from '../../interface';
+import type { CellRender, Locale, OnSelect } from '../../interface';
 import type { Unit } from './TimeUnitColumn';
 import TimeUnitColumn from './TimeUnitColumn';
 import { leftPad } from '../../utils/miscUtil';
@@ -46,6 +46,7 @@ export type TimeBodyProps<DateType> = {
   onSelect: OnSelect<DateType>;
   activeColumnIndex: number;
   operationRef: React.MutableRefObject<BodyOperationRef | undefined>;
+  cellRender?: CellRender<DateType, number>;
 } & SharedTimeProps<DateType>;
 
 function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
@@ -68,6 +69,8 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     disabledTime,
     hideDisabledOptions,
     onSelect,
+    cellRender,
+    locale,
   } = props;
 
   // Misc
@@ -227,17 +230,17 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   }
 
   // Hour
-  addColumnNode(showHour, <TimeUnitColumn key="hour" />, hour, hours, (num) => {
+  addColumnNode(showHour, <TimeUnitColumn<DateType> key="hour" type="hour" info={{today: now, locale, cellRender }} />, hour, hours, (num) => {
     onSelect(setTime(isPM, num, minute, second), 'mouse');
   });
 
   // Minute
-  addColumnNode(showMinute, <TimeUnitColumn key="minute" />, minute, minutes, (num) => {
+  addColumnNode(showMinute, <TimeUnitColumn<DateType> key="minute" type="minute" info={{today: now, locale, cellRender }} />, minute, minutes, (num) => {
     onSelect(setTime(isPM, hour, num, second), 'mouse');
   });
 
   // Second
-  addColumnNode(showSecond, <TimeUnitColumn key="second" />, second, seconds, (num) => {
+  addColumnNode(showSecond, <TimeUnitColumn<DateType> key="second" type="second" info={{today: now, locale, cellRender }} />, second, seconds, (num) => {
     onSelect(setTime(isPM, hour, minute, num), 'mouse');
   });
 
@@ -249,7 +252,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
 
   addColumnNode(
     use12Hours === true,
-    <TimeUnitColumn key="12hours" />,
+    <TimeUnitColumn key="12hours" type="12hours" info={{today: now, locale, cellRender }} />,
     PMIndex,
     [
       { label: 'AM', value: 0, disabled: AMDisabled },

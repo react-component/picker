@@ -45,6 +45,19 @@ export type PanelMode = 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year' 
 
 export type PickerMode = Exclude<PanelMode, 'datetime' | 'decade'>;
 
+type CellRenderInfo<DateType> = {
+  // The cell wrapper element
+  originNode: React.ReactElement,
+  today: DateType,
+  // mask current cell as start or end when range picker
+  range?: 'start' | 'end',
+  type: PickerMode,
+  locale?: Locale,
+  subType?: 'hour' | 'minute' | 'second' | '12hours'
+};
+
+export type CellRender<DateType, CurrentType = DateType> = (current: CurrentType, info: CellRenderInfo<DateType>) => React.ReactNode;
+
 export type PanelRefProps = {
   onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => boolean;
   onBlur?: React.FocusEventHandler<HTMLElement>;
