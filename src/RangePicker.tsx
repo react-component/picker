@@ -14,6 +14,7 @@ import useTextValueMapping from './hooks/useTextValueMapping';
 import useValueTexts from './hooks/useValueTexts';
 import type {
   CellRender,
+  CellRenderInfo,
   DisabledTimes,
   EventValue,
   PanelMode,
@@ -329,12 +330,21 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     value: mode,
   });
 
-  const mergedCellRender =
-    cellRender ||
-    (mergedModes[mergedActivePickerIndex] === 'month'
-      ? monthCellRender && ((date: DateType, info) => monthCellRender(date, info.locale))
-      : dateRender && ((date: DateType, info) => dateRender(date, info.today)));
-
+  const mergedCellRender = React.useMemo(() => {
+    if (!cellRender && !monthCellRender && !dateRender) return undefined;
+    return (current: DateType | number, info: CellRenderInfo<DateType>) => {
+      const date = current as DateType;
+      if (cellRender) {
+        return cellRender(date, info);
+      }
+      if (dateRender && info.type === 'date') {
+        return dateRender(date, info.today);
+      }
+      if (monthCellRender && info.type === 'month') {
+        return monthCellRender(date, info.locale);
+      }
+    };
+  }, [cellRender, monthCellRender, dateRender]);
 
   useEffect(() => {
     setInnerModes([picker, picker]);
