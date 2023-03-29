@@ -380,10 +380,10 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       if(cellRender) {
         return cellRender(date, info);
       }
-      if (dateRender) {
+      if (dateRender && info.type === "date") {
         return dateRender(date, info.today);
       }
-      if (monthCellRender) {
+      if (monthCellRender && info.type === "month") {
         return monthCellRender(date, info.locale);
       }
     }
