@@ -45,7 +45,7 @@ export type PanelMode = 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year' 
 
 export type PickerMode = Exclude<PanelMode, 'datetime' | 'decade'>;
 
-type CellRenderInfo<DateType> = {
+export type CellRenderInfo<DateType> = {
   // The cell wrapper element
   originNode: React.ReactElement,
   today: DateType,

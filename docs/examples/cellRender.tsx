@@ -72,7 +72,7 @@ export default () => {
                 {
                   ...info.originNode.props,
                 },
-                <div style={{ background: 'orange' }}>{(current as Moment).get('date')}</div>,
+                <div style={{ background: 'orange' }}>{current.get('date')}</div>,
               )
             }
           />
@@ -85,7 +85,7 @@ export default () => {
                 {
                   className: `${info.originNode.props.className} testWrapper`,
                 },
-                <div style={{ background: 'orange' }}>{(current as Moment).get('date')}</div>,
+                <div style={{ background: 'orange' }}>{current.get('date')}</div>,
               )
             }
           />
@@ -99,7 +99,7 @@ export default () => {
                 {
                   ...info.originNode.props,
                 },
-                <div style={{ background: 'orange' }}>{(current as Moment).get('week')}</div>,
+                <div style={{ background: 'orange' }}>{current.get('week')}</div>,
               )
             }
           />
@@ -113,7 +113,7 @@ export default () => {
                 {
                   ...info.originNode.props,
                 },
-                <div style={{ background: 'orange' }}>{(current as Moment).get('year')}</div>,
+                <div style={{ background: 'orange' }}>{current.get('year')}</div>,
               )
             }
           />
@@ -127,7 +127,7 @@ export default () => {
                 {
                   ...info.originNode.props,
                 },
-                <div style={{ background: 'orange' }}>{(current as Moment).get('month') + 1}</div>,
+                <div style={{ background: 'orange' }}>{current.get('month') + 1}</div>,
               )
             }
           />
@@ -141,7 +141,7 @@ export default () => {
                 {
                   ...info.originNode.props,
                 },
-                <div style={{ background: 'orange' }}>Q{(current as Moment).get('quarter')}</div>,
+                <div style={{ background: 'orange' }}>Q{current.get('quarter')}</div>,
               )
             }
           />

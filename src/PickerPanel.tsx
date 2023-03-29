@@ -13,6 +13,7 @@ import * as React from 'react';
 import type { GenerateConfig } from './generate';
 import type {
   CellRender,
+  CellRenderInfo,
   Components,
   DisabledTime,
   Locale,
@@ -86,6 +87,7 @@ export type PickerPanelSharedProps<DateType> = {
 
   /** @private Internal usage. Do not use in your production env */
   components?: Components;
+  cellRender?: CellRender<DateType>;
 };
 
 export type PickerPanelBaseProps<DateType> = {
@@ -371,6 +373,11 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   delete pickerProps.onChange;
   delete pickerProps.onSelect;
 
+  const mergedCellRender =
+    cellRender ??
+    (dateRender && ((date: DateType, info: CellRenderInfo<DateType>) => dateRender(date, info.today))) ??
+    (monthCellRender && ((date: DateType, info: CellRenderInfo<DateType>) => monthCellRender(date, info.locale)));
+
   switch (mergedMode) {
     case 'decade':
       panelNode = (
@@ -388,7 +395,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       panelNode = (
         <YearPanel<DateType>
           {...pickerProps}
-          cellRender={cellRender}
+          cellRender={mergedCellRender}
           onSelect={(date, type) => {
             setViewDate(date);
             triggerSelect(date, type);
@@ -401,10 +408,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       panelNode = (
         <MonthPanel<DateType>
           {...pickerProps}
-          cellRender={
-            cellRender ||
-            (monthCellRender && ((date: DateType, info) => monthCellRender(date, info.locale)))
-          }
+          cellRender={mergedCellRender}
           onSelect={(date, type) => {
             setViewDate(date);
             triggerSelect(date, type);
@@ -417,7 +421,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       panelNode = (
         <QuarterPanel<DateType>
           {...pickerProps}
-          cellRender={cellRender}
+          cellRender={mergedCellRender}
           onSelect={(date, type) => {
             setViewDate(date);
             triggerSelect(date, type);
@@ -430,7 +434,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       panelNode = (
         <WeekPanel<DateType>
           {...pickerProps}
-          cellRender={cellRender}
+          cellRender={mergedCellRender}
           onSelect={(date, type) => {
             setViewDate(date);
             triggerSelect(date, type);
@@ -445,7 +449,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         <TimePanel<DateType>
           {...pickerProps}
           {...(typeof showTime === 'object' ? showTime : null)}
-          cellRender={cellRender}
+          cellRender={
+            mergedCellRender ? (current, info) => mergedCellRender(current as any, info) : undefined
+          }
           onSelect={(date, type) => {
             setViewDate(date);
             triggerSelect(date, type);
@@ -457,9 +463,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     default:
       if (showTime) {
         panelNode = (
-          <DatetimePanel
+          <DatetimePanel<DateType>
             {...pickerProps}
-            cellRender={cellRender}
+            cellRender={mergedCellRender}
             onSelect={(date, type) => {
               setViewDate(date);
               triggerSelect(date, type);
@@ -470,9 +476,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         panelNode = (
           <DatePanel<DateType>
             {...pickerProps}
-            cellRender={
-              cellRender || (dateRender && ((date: DateType, info) => dateRender(date, info.today)))
-            }
+            cellRender={mergedCellRender}
             onSelect={(date, type) => {
               setViewDate(date);
               triggerSelect(date, type);
