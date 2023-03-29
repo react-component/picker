@@ -580,11 +580,28 @@ describe('Picker.Panel', () => {
         return (current as Moment).get(picker);
     }
   };
+  it(`override cell with cellRender when pass showTime`, () => {
+    const App = () => (
+      <MomentPickerPanel
+        showTime
+        cellRender={(current, info) => (
+          <div className="customWrapper">{getCurText(info.type, current)}</div>
+        )}
+      />
+    );
+
+    const { container } = render(<App />);
+
+    expect(container.querySelector('.customWrapper')).toBeTruthy();
+    expect(container.querySelector(`.rc-picker-date-panel`)).toBeTruthy();
+    expect(container.querySelector(`.rc-picker-time-panel`)).toBeTruthy();
+    expect(container).toMatchSnapshot();
+  });
   supportCellRenderPicker.forEach((picker) => {
     it(`override cell with cellRender in ${picker}`, () => {
       const App = () => (
         <MomentPickerPanel
-          picker={picker}
+          picker={picker as any}
           cellRender={(current) => (
             <div className="customWrapper">{getCurText(picker, current)}</div>
           )}
@@ -600,7 +617,7 @@ describe('Picker.Panel', () => {
     it(`append cell with cellRender in ${picker}`, () => {
       const App = () => (
         <MomentPickerPanel
-          picker={picker}
+          picker={picker as any}
           cellRender={(current, info) =>
             React.cloneElement(
               info.originNode,
