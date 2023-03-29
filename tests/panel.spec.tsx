@@ -503,7 +503,7 @@ describe('Picker.Panel', () => {
 
   it('monthCellRender', () => {
     const { container } = render(
-      <MomentPickerPanel picker="month" cellRender={(date) => date.format('YYYY-MM')} />,
+      <MomentPickerPanel picker="month" monthCellRender={(date) => date.format('YYYY-MM')} />,
     );
 
     expect(container.querySelector('tbody')).toMatchSnapshot();
