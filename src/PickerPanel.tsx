@@ -373,7 +373,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   delete pickerProps.onChange;
   delete pickerProps.onSelect;
 
-  const getMergedCellRender = React.useCallback(() => {
+  const mergedCellRender = React.useMemo(() => {
     if (!cellRender && !monthCellRender && !dateRender) return undefined;
     return (current: DateType | number, info: CellRenderInfo<DateType>) => {
       const date = current as DateType;
@@ -388,8 +388,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       }
     }
   }, [cellRender, monthCellRender, dateRender]);
-
-  const mergedCellRender = getMergedCellRender();
 
   switch (mergedMode) {
     case 'decade':
