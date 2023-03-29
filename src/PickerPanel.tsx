@@ -374,8 +374,8 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   delete pickerProps.onSelect;
 
   const mergedCellRender = React.useMemo(() => {
-    if (!cellRender && !monthCellRender && !dateRender) return undefined;
     if (cellRender) return cellRender;
+    if (!monthCellRender && !dateRender) return undefined;
     return (current: DateType | number, info: CellRenderInfo<DateType>) => {
       const date = current as DateType;
       if (dateRender && info.type === "date") {

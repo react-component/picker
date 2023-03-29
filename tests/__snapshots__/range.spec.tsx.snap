@@ -159,3 +159,43 @@ exports[`Picker.Range panelRender 1`] = `
   </div>
 </body>
 `;
+
+exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
+<div>
+  <div
+    class="rc-picker rc-picker-range"
+  >
+    <div
+      class="rc-picker-input rc-picker-input-active"
+    >
+      <input
+        autocomplete="off"
+        placeholder=""
+        readonly=""
+        size="12"
+        value=""
+      />
+    </div>
+    <div
+      class="rc-picker-range-separator"
+    >
+      ~
+    </div>
+    <div
+      class="rc-picker-input"
+    >
+      <input
+        autocomplete="off"
+        placeholder=""
+        readonly=""
+        size="12"
+        value=""
+      />
+    </div>
+    <div
+      class="rc-picker-active-bar"
+      style="left: 0px; width: 0px; position: absolute;"
+    />
+  </div>
+</div>
+`;
