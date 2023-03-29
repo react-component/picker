@@ -332,11 +332,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   const mergedCellRender = React.useMemo(() => {
     if (!cellRender && !monthCellRender && !dateRender) return undefined;
+    if (cellRender) return cellRender;
     return (current: DateType | number, info: CellRenderInfo<DateType>) => {
       const date = current as DateType;
-      if (cellRender) {
-        return cellRender(date, info);
-      }
       if (dateRender && info.type === 'date') {
         return dateRender(date, info.today);
       }
