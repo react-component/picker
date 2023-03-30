@@ -1,4 +1,4 @@
-import { PickerMode } from '@/interface';
+import { PanelMode } from '@/interface';
 import { fireEvent, render } from '@testing-library/react';
 import moment, { Moment } from 'moment';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
@@ -567,18 +567,12 @@ describe('Picker.Panel', () => {
     });
   });
 
-  const supportCellRenderPicker: PickerMode[] = [
-    'year',
-    'month',
-    'date',
-    'quarter',
-    'week',
-    'time',
-  ];
+  const supportCellRenderPicker: PanelMode[] = ['year', 'month', 'date', 'quarter', 'week', 'time'];
 
-  const getCurText = (picker: PickerMode, current: Moment | number) => {
+  const getCurText = (picker: PanelMode, current: Moment | number) => {
     switch (picker) {
       case 'time':
+      case 'decade':
         return current;
       case 'date':
       case 'year':

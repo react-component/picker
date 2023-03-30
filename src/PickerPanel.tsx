@@ -40,6 +40,7 @@ import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
 import { getLowerBoundTime, setDateTime, setTime } from './utils/timeUtil';
 import { PickerModeMap } from './utils/uiUtil';
+import { useCellRender } from './hooks/useCellRender';
 
 export type PickerPanelSharedProps<DateType> = {
   prefixCls?: string;
@@ -156,7 +157,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     hourStep = 1,
     minuteStep = 1,
     secondStep = 1,
-    cellRender,
     dateRender,
     monthCellRender,
   } = props as MergedPickerPanelProps<DateType>;
@@ -359,8 +359,10 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   // ============================ Panels ============================
   let panelNode: React.ReactNode;
 
+  const mergedCellRender = useCellRender<DateType>(props);
   const pickerProps = {
     ...(props as MergedPickerPanelProps<DateType>),
+    cellRender: mergedCellRender,
     operationRef: panelRef,
     prefixCls,
     viewDate,
@@ -373,20 +375,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   delete pickerProps.onChange;
   delete pickerProps.onSelect;
 
-  const mergedCellRender = React.useMemo(() => {
-    if (cellRender) return cellRender;
-    if (!monthCellRender && !dateRender) return undefined;
-    return (current: DateType | number, info: CellRenderInfo<DateType>) => {
-      const date = current as DateType;
-      if (dateRender && info.type === "date") {
-        return dateRender(date, info.today);
-      }
-      if (monthCellRender && info.type === "month") {
-        return monthCellRender(date, info.locale);
-      }
-      return info.originNode;
-    }
-  }, [cellRender, monthCellRender, dateRender]);
 
   switch (mergedMode) {
     case 'decade':
@@ -405,7 +393,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       panelNode = (
         <YearPanel<DateType>
           {...pickerProps}
-          cellRender={mergedCellRender}
           onSelect={(date, type) => {
             setViewDate(date);
             triggerSelect(date, type);
@@ -418,7 +405,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       panelNode = (
         <MonthPanel<DateType>
           {...pickerProps}
-          cellRender={mergedCellRender}
           onSelect={(date, type) => {
             setViewDate(date);
             triggerSelect(date, type);
@@ -431,7 +417,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       panelNode = (
         <QuarterPanel<DateType>
           {...pickerProps}
-          cellRender={mergedCellRender}
           onSelect={(date, type) => {
             setViewDate(date);
             triggerSelect(date, type);
@@ -444,7 +429,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       panelNode = (
         <WeekPanel<DateType>
           {...pickerProps}
-          cellRender={mergedCellRender}
           onSelect={(date, type) => {
             setViewDate(date);
             triggerSelect(date, type);
@@ -459,7 +443,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         <TimePanel<DateType>
           {...pickerProps}
           {...(typeof showTime === 'object' ? showTime : null)}
-          cellRender={mergedCellRender}
           onSelect={(date, type) => {
             setViewDate(date);
             triggerSelect(date, type);
@@ -473,7 +456,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         panelNode = (
           <DatetimePanel<DateType>
             {...pickerProps}
-            cellRender={mergedCellRender}
             onSelect={(date, type) => {
               setViewDate(date);
               triggerSelect(date, type);
@@ -484,7 +466,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
         panelNode = (
           <DatePanel<DateType>
             {...pickerProps}
-            cellRender={mergedCellRender}
             onSelect={(date, type) => {
               setViewDate(date);
               triggerSelect(date, type);

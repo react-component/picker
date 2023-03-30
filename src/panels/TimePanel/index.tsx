@@ -27,7 +27,6 @@ export type SharedTimeProps<DateType> = {
   disabledSeconds?: DisabledTimes['disabledSeconds'];
 
   disabledTime?: (date: DateType) => DisabledTimes;
-  cellRender?: CellRender<DateType, number>;
 };
 
 export type TimePanelProps<DateType> = {

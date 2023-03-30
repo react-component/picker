@@ -2,6 +2,7 @@ import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import { DECADE_DISTANCE_COUNT, DECADE_UNIT_DIFF } from '.';
 import PanelBody from '../PanelBody';
+import type { CellRender, Locale } from '@/interface';
 
 export const DECADE_COL_COUNT = 3;
 const DECADE_ROW_COUNT = 4;
@@ -12,11 +13,13 @@ export type YearBodyProps<DateType> = {
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;
+  cellRender?: CellRender<DateType>;
+  locale: Locale;
 };
 
 function DecadeBody<DateType>(props: YearBodyProps<DateType>) {
   const DECADE_UNIT_DIFF_DES = DECADE_UNIT_DIFF - 1;
-  const { prefixCls, viewDate, generateConfig } = props;
+  const { prefixCls, viewDate, generateConfig, cellRender, locale } = props;
 
   const cellPrefixCls = `${prefixCls}-cell`;
 
@@ -45,12 +48,23 @@ function DecadeBody<DateType>(props: YearBodyProps<DateType>) {
     };
   };
 
+  const getCellNode = cellRender
+    ? (date: DateType, wrapperNode: React.ReactElement) =>
+        cellRender(date, {
+          originNode: wrapperNode,
+          today: generateConfig.getNow(),
+          type: 'decade',
+          locale
+        })
+    : undefined;
+
   return (
     <PanelBody
       {...props}
       rowNum={DECADE_ROW_COUNT}
       colNum={DECADE_COL_COUNT}
       baseDate={baseDecadeYear}
+      getCellNode={getCellNode}
       getCellText={date => {
         const startDecadeNumber = generateConfig.getYear(date);
         return `${startDecadeNumber}-${startDecadeNumber + DECADE_UNIT_DIFF_DES}`;

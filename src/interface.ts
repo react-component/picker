@@ -51,7 +51,7 @@ export type CellRenderInfo<DateType> = {
   today: DateType,
   // mask current cell as start or end when range picker
   range?: 'start' | 'end',
-  type: PickerMode,
+  type: PanelMode,
   locale?: Locale,
   subType?: 'hour' | 'minute' | 'second' | '12hours'
 };

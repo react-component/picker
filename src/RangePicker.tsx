@@ -5,6 +5,7 @@ import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import type { PickerPanelProps } from '.';
 import type { GenerateConfig } from './generate';
+import { useCellRender } from './hooks/useCellRender';
 import useHoverValue from './hooks/useHoverValue';
 import usePickerInput from './hooks/usePickerInput';
 import usePresets from './hooks/usePresets';
@@ -213,7 +214,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     disabledTime,
     dateRender,
     monthCellRender,
-    cellRender,
     panelRender,
     presets,
     ranges,
@@ -329,21 +329,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const [mergedModes, setInnerModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
     value: mode,
   });
-
-  const mergedCellRender = React.useMemo(() => {
-    if (cellRender) return cellRender;
-    if (!monthCellRender && !dateRender) return undefined;
-    
-    return (current: DateType | number, info: CellRenderInfo<DateType>) => {
-      const date = current as DateType;
-      if (dateRender && info.type === 'date') {
-        return dateRender(date, info.today);
-      }
-      if (monthCellRender && info.type === 'month') {
-        return monthCellRender(date, info.locale);
-      }
-    };
-  }, [cellRender, monthCellRender, dateRender]);
 
   useEffect(() => {
     setInnerModes([picker, picker]);
@@ -767,6 +752,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     setSelectedValue(mergedValue);
   }, [startStr, endStr]);
 
+  const mergedCellRender: CellRender<DateType> = useCellRender(props);
+  const panelDateRender = React.useMemo(() => {
+    if (!mergedCellRender) return undefined;
+    return (date: DateType, info: CellRenderInfo<DateType>) =>
+      mergedCellRender(date, { ...info, range: mergedActivePickerIndex ? 'end' : 'start' });
+  }, [mergedActivePickerIndex, mergedCellRender]);
+
   // ============================ Warning ============================
   if (process.env.NODE_ENV !== 'production') {
     if (
@@ -830,15 +822,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         ...showTime,
         defaultValue: getValue(timeDefaultValues, mergedActivePickerIndex) || undefined,
       };
-    }
-
-    let panelDateRender: CellRender<DateType> | null = null;
-    if (mergedCellRender) {
-      panelDateRender = (date, info) =>
-        mergedCellRender(date, {
-          ...info,
-          range: mergedActivePickerIndex ? 'end' : 'start',
-        });
     }
 
     return (
