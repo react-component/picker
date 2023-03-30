@@ -13,7 +13,6 @@ import * as React from 'react';
 import type { GenerateConfig } from './generate';
 import type {
   CellRender,
-  CellRenderInfo,
   Components,
   DisabledTime,
   Locale,

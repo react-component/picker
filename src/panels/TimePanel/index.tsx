@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import TimeHeader from './TimeHeader';
 import type { BodyOperationRef } from './TimeBody';
 import TimeBody from './TimeBody';
-import type { PanelSharedProps, DisabledTimes, CellRender } from '../../interface';
+import type { PanelSharedProps, DisabledTimes } from '../../interface';
 import { createKeyDownHandler } from '../../utils/uiUtil';
 
 export type SharedTimeProps<DateType> = {
