@@ -1785,6 +1785,7 @@ describe('Picker.Range', () => {
   it('use dateRender and monthCellRender in range picker', () => {
     const { container, baseElement } = render(
       <MomentRangePicker
+        picker='month'
         dateRender={(date) => <div>{date.get('date')}</div>}
         monthCellRender={(date) => <div>{date.get('month') + 1}</div>}
       />,

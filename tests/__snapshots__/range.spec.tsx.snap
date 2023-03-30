@@ -204,7 +204,7 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
       style="left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div
-        class="rc-picker-range-wrapper rc-picker-date-range-wrapper"
+        class="rc-picker-range-wrapper rc-picker-month-range-wrapper"
         style="min-width: 0;"
       >
         <div
@@ -227,7 +227,7 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                   tabindex="-1"
                 >
                   <div
-                    class="rc-picker-date-panel"
+                    class="rc-picker-month-panel"
                   >
                     <div
                       class="rc-picker-header"
@@ -239,39 +239,16 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                       >
                         «
                       </button>
-                      <button
-                        class="rc-picker-header-prev-btn"
-                        tabindex="-1"
-                        type="button"
-                      >
-                        ‹
-                      </button>
                       <div
                         class="rc-picker-header-view"
                       >
                         <button
-                          class="rc-picker-month-btn"
-                          tabindex="-1"
-                          type="button"
-                        >
-                          Sep
-                        </button>
-                        <button
                           class="rc-picker-year-btn"
-                          tabindex="-1"
                           type="button"
                         >
                           1990
                         </button>
                       </div>
-                      <button
-                        class="rc-picker-header-next-btn"
-                        style="visibility: hidden;"
-                        tabindex="-1"
-                        type="button"
-                      >
-                        ›
-                      </button>
                       <button
                         class="rc-picker-header-super-next-btn"
                         style="visibility: hidden;"
@@ -287,110 +264,37 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                       <table
                         class="rc-picker-content"
                       >
-                        <thead>
-                          <tr>
-                            <th>
-                              Su
-                            </th>
-                            <th>
-                              Mo
-                            </th>
-                            <th>
-                              Tu
-                            </th>
-                            <th>
-                              We
-                            </th>
-                            <th>
-                              Th
-                            </th>
-                            <th>
-                              Fr
-                            </th>
-                            <th>
-                              Sa
-                            </th>
-                          </tr>
-                        </thead>
                         <tbody>
                           <tr>
                             <td
-                              class="rc-picker-cell"
-                              title="1990-08-26"
-                            >
-                              <div>
-                                26
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-08-27"
-                            >
-                              <div>
-                                27
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-08-28"
-                            >
-                              <div>
-                                28
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-08-29"
-                            >
-                              <div>
-                                29
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-08-30"
-                            >
-                              <div>
-                                30
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-end"
-                              title="1990-08-31"
-                            >
-                              <div>
-                                31
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-start rc-picker-cell-in-view"
-                              title="1990-09-01"
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-01"
                             >
                               <div>
                                 1
                               </div>
                             </td>
-                          </tr>
-                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-02"
+                              title="1990-02"
                             >
                               <div>
                                 2
                               </div>
                             </td>
                             <td
-                              class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
-                              title="1990-09-03"
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-03"
                             >
                               <div>
                                 3
                               </div>
                             </td>
+                          </tr>
+                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-04"
+                              title="1990-04"
                             >
                               <div>
                                 4
@@ -398,7 +302,7 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-05"
+                              title="1990-05"
                             >
                               <div>
                                 5
@@ -406,15 +310,17 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-06"
+                              title="1990-06"
                             >
                               <div>
                                 6
                               </div>
                             </td>
+                          </tr>
+                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-07"
+                              title="1990-07"
                             >
                               <div>
                                 7
@@ -422,25 +328,25 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-08"
+                              title="1990-08"
                             >
                               <div>
                                 8
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09"
+                            >
+                              <div>
+                                9
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-09"
-                            >
-                              <div>
-                                9
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-10"
+                              title="1990-10"
                             >
                               <div>
                                 10
@@ -448,7 +354,7 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-11"
+                              title="1990-11"
                             >
                               <div>
                                 11
@@ -456,208 +362,10 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-12"
+                              title="1990-12"
                             >
                               <div>
                                 12
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-13"
-                            >
-                              <div>
-                                13
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-14"
-                            >
-                              <div>
-                                14
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-15"
-                            >
-                              <div>
-                                15
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-16"
-                            >
-                              <div>
-                                16
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-17"
-                            >
-                              <div>
-                                17
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-18"
-                            >
-                              <div>
-                                18
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-19"
-                            >
-                              <div>
-                                19
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-20"
-                            >
-                              <div>
-                                20
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-21"
-                            >
-                              <div>
-                                21
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-22"
-                            >
-                              <div>
-                                22
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-23"
-                            >
-                              <div>
-                                23
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-24"
-                            >
-                              <div>
-                                24
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-25"
-                            >
-                              <div>
-                                25
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-26"
-                            >
-                              <div>
-                                26
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-27"
-                            >
-                              <div>
-                                27
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-28"
-                            >
-                              <div>
-                                28
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-29"
-                            >
-                              <div>
-                                29
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-end rc-picker-cell-in-view"
-                              title="1990-09-30"
-                            >
-                              <div>
-                                30
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-start"
-                              title="1990-10-01"
-                            >
-                              <div>
-                                1
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-10-02"
-                            >
-                              <div>
-                                2
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-10-03"
-                            >
-                              <div>
-                                3
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-10-04"
-                            >
-                              <div>
-                                4
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-10-05"
-                            >
-                              <div>
-                                5
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-10-06"
-                            >
-                              <div>
-                                6
                               </div>
                             </td>
                           </tr>
@@ -671,7 +379,7 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                   tabindex="-1"
                 >
                   <div
-                    class="rc-picker-date-panel"
+                    class="rc-picker-month-panel"
                   >
                     <div
                       class="rc-picker-header"
@@ -684,39 +392,16 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                       >
                         «
                       </button>
-                      <button
-                        class="rc-picker-header-prev-btn"
-                        style="visibility: hidden;"
-                        tabindex="-1"
-                        type="button"
-                      >
-                        ‹
-                      </button>
                       <div
                         class="rc-picker-header-view"
                       >
                         <button
-                          class="rc-picker-month-btn"
-                          tabindex="-1"
-                          type="button"
-                        >
-                          Oct
-                        </button>
-                        <button
                           class="rc-picker-year-btn"
-                          tabindex="-1"
                           type="button"
                         >
-                          1990
+                          1991
                         </button>
                       </div>
-                      <button
-                        class="rc-picker-header-next-btn"
-                        tabindex="-1"
-                        type="button"
-                      >
-                        ›
-                      </button>
                       <button
                         class="rc-picker-header-super-next-btn"
                         tabindex="-1"
@@ -731,44 +416,11 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                       <table
                         class="rc-picker-content"
                       >
-                        <thead>
-                          <tr>
-                            <th>
-                              Su
-                            </th>
-                            <th>
-                              Mo
-                            </th>
-                            <th>
-                              Tu
-                            </th>
-                            <th>
-                              We
-                            </th>
-                            <th>
-                              Th
-                            </th>
-                            <th>
-                              Fr
-                            </th>
-                            <th>
-                              Sa
-                            </th>
-                          </tr>
-                        </thead>
                         <tbody>
                           <tr>
                             <td
-                              class="rc-picker-cell rc-picker-cell-end"
-                              title="1990-09-30"
-                            >
-                              <div>
-                                30
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-start rc-picker-cell-in-view"
-                              title="1990-10-01"
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1991-01"
                             >
                               <div>
                                 1
@@ -776,7 +428,7 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-02"
+                              title="1991-02"
                             >
                               <div>
                                 2
@@ -784,15 +436,17 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-03"
+                              title="1991-03"
                             >
                               <div>
                                 3
                               </div>
                             </td>
+                          </tr>
+                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-04"
+                              title="1991-04"
                             >
                               <div>
                                 4
@@ -800,7 +454,7 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-05"
+                              title="1991-05"
                             >
                               <div>
                                 5
@@ -808,7 +462,7 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-06"
+                              title="1991-06"
                             >
                               <div>
                                 6
@@ -818,7 +472,7 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                           <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-07"
+                              title="1991-07"
                             >
                               <div>
                                 7
@@ -826,7 +480,7 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-08"
+                              title="1991-08"
                             >
                               <div>
                                 8
@@ -834,15 +488,17 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-09"
+                              title="1991-09"
                             >
                               <div>
                                 9
                               </div>
                             </td>
+                          </tr>
+                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-10"
+                              title="1991-10"
                             >
                               <div>
                                 10
@@ -850,7 +506,7 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-11"
+                              title="1991-11"
                             >
                               <div>
                                 11
@@ -858,250 +514,10 @@ exports[`Picker.Range use dateRender and monthCellRender in range picker 1`] = `
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-12"
+                              title="1991-12"
                             >
                               <div>
                                 12
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-13"
-                            >
-                              <div>
-                                13
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-14"
-                            >
-                              <div>
-                                14
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-15"
-                            >
-                              <div>
-                                15
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-16"
-                            >
-                              <div>
-                                16
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-17"
-                            >
-                              <div>
-                                17
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-18"
-                            >
-                              <div>
-                                18
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-19"
-                            >
-                              <div>
-                                19
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-20"
-                            >
-                              <div>
-                                20
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-21"
-                            >
-                              <div>
-                                21
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-22"
-                            >
-                              <div>
-                                22
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-23"
-                            >
-                              <div>
-                                23
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-24"
-                            >
-                              <div>
-                                24
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-25"
-                            >
-                              <div>
-                                25
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-26"
-                            >
-                              <div>
-                                26
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-27"
-                            >
-                              <div>
-                                27
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-28"
-                            >
-                              <div>
-                                28
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-29"
-                            >
-                              <div>
-                                29
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-30"
-                            >
-                              <div>
-                                30
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-end rc-picker-cell-in-view"
-                              title="1990-10-31"
-                            >
-                              <div>
-                                31
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-start"
-                              title="1990-11-01"
-                            >
-                              <div>
-                                1
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-11-02"
-                            >
-                              <div>
-                                2
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-11-03"
-                            >
-                              <div>
-                                3
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-11-04"
-                            >
-                              <div>
-                                4
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-11-05"
-                            >
-                              <div>
-                                5
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-11-06"
-                            >
-                              <div>
-                                6
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-11-07"
-                            >
-                              <div>
-                                7
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-11-08"
-                            >
-                              <div>
-                                8
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-11-09"
-                            >
-                              <div>
-                                9
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-11-10"
-                            >
-                              <div>
-                                10
                               </div>
                             </td>
                           </tr>

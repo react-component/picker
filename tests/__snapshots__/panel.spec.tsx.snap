@@ -8900,6 +8900,139 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
 </div>
 `;
 
+exports[`Picker.Panel pass dateRender when picker is month 1`] = `
+<tbody>
+  <tr>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-01"
+    >
+      <div
+        class="rc-picker-cell-inner"
+      >
+        Jan
+      </div>
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-02"
+    >
+      <div
+        class="rc-picker-cell-inner"
+      >
+        Feb
+      </div>
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-03"
+    >
+      <div
+        class="rc-picker-cell-inner"
+      >
+        Mar
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-04"
+    >
+      <div
+        class="rc-picker-cell-inner"
+      >
+        Apr
+      </div>
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-05"
+    >
+      <div
+        class="rc-picker-cell-inner"
+      >
+        May
+      </div>
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-06"
+    >
+      <div
+        class="rc-picker-cell-inner"
+      >
+        Jun
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-07"
+    >
+      <div
+        class="rc-picker-cell-inner"
+      >
+        Jul
+      </div>
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-08"
+    >
+      <div
+        class="rc-picker-cell-inner"
+      >
+        Aug
+      </div>
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-09"
+    >
+      <div
+        class="rc-picker-cell-inner"
+      >
+        Sep
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-10"
+    >
+      <div
+        class="rc-picker-cell-inner"
+      >
+        Oct
+      </div>
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-11"
+    >
+      <div
+        class="rc-picker-cell-inner"
+      >
+        Nov
+      </div>
+    </td>
+    <td
+      class="rc-picker-cell rc-picker-cell-in-view"
+      title="1990-12"
+    >
+      <div
+        class="rc-picker-cell-inner"
+      >
+        Dec
+      </div>
+    </td>
+  </tr>
+</tbody>
+`;
+
 exports[`Picker.Panel should render correctly in rtl 1`] = `
 <div>
   <div

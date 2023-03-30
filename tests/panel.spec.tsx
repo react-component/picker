@@ -509,6 +509,14 @@ describe('Picker.Panel', () => {
     expect(container.querySelector('tbody')).toMatchSnapshot();
   });
 
+  it('pass dateRender when picker is month', () => {
+    const { container } = render(
+      <MomentPickerPanel picker="month" dateRender={(date) => date.format('YYYY-MM')} />,
+    );
+
+    expect(container.querySelector('tbody')).toMatchSnapshot();
+  });
+
   describe('start weekday should be correct', () => {
     [
       { locale: zhCN, startDate: '30' },
