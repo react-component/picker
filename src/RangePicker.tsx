@@ -214,6 +214,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     disabledTime,
     dateRender,
     monthCellRender,
+    cellRender,
     panelRender,
     presets,
     ranges,
@@ -753,9 +754,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }, [startStr, endStr]);
 
   const mergedCellRender: CellRender<DateType> = useCellRender({
-    cellRender: props.cellRender,
-    monthCellRender: props.monthCellRender,
-    dateRender: props.dateRender,
+    cellRender,
+    monthCellRender,
+    dateRender,
   });
   const panelDateRender = React.useMemo(() => {
     if (!mergedCellRender) return undefined;

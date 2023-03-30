@@ -158,6 +158,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     secondStep = 1,
     dateRender,
     monthCellRender,
+    cellRender,
   } = props as MergedPickerPanelProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
@@ -359,9 +360,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   let panelNode: React.ReactNode;
 
   const mergedCellRender = useCellRender<DateType>({
-    cellRender: props.cellRender,
-    monthCellRender: props.monthCellRender,
-    dateRender: props.dateRender,
+    cellRender,
+    monthCellRender,
+    dateRender,
   });
   const pickerProps = {
     ...(props as MergedPickerPanelProps<DateType>),
