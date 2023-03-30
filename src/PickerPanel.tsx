@@ -358,7 +358,11 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   // ============================ Panels ============================
   let panelNode: React.ReactNode;
 
-  const mergedCellRender = useCellRender<DateType>(props);
+  const mergedCellRender = useCellRender<DateType>({
+    cellRender: props.cellRender,
+    monthCellRender: props.monthCellRender,
+    dateRender: props.dateRender,
+  });
   const pickerProps = {
     ...(props as MergedPickerPanelProps<DateType>),
     cellRender: mergedCellRender,
