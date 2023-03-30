@@ -567,13 +567,14 @@ describe('Picker.Panel', () => {
     });
   });
 
-  const supportCellRenderPicker: PanelMode[] = ['year', 'month', 'date', 'quarter', 'week', 'time'];
+  const supportCellRenderPicker: PanelMode[] = ['year', 'month', 'date', 'quarter', 'week', 'time', 'decade'];
 
   const getCurText = (picker: PanelMode, current: Moment | number) => {
     switch (picker) {
       case 'time':
-      case 'decade':
         return current;
+      case 'decade':
+        return (current as Moment).get('year');
       case 'date':
       case 'year':
       case 'month':

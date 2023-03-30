@@ -699,6 +699,219 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
 </div>
 `;
 
+exports[`Picker.Panel append cell with cellRender in decade 1`] = `
+<div>
+  <div
+    class="rc-picker-panel"
+    tabindex="0"
+  >
+    <div
+      class="rc-picker-decade-panel"
+    >
+      <div
+        class="rc-picker-header"
+      >
+        <button
+          class="rc-picker-header-super-prev-btn"
+          tabindex="-1"
+          type="button"
+        >
+          «
+        </button>
+        <div
+          class="rc-picker-header-view"
+        >
+          1900
+          -
+          1999
+        </div>
+        <button
+          class="rc-picker-header-super-next-btn"
+          tabindex="-1"
+          type="button"
+        >
+          »
+        </button>
+      </div>
+      <div
+        class="rc-picker-body"
+      >
+        <table
+          class="rc-picker-content"
+        >
+          <tbody>
+            <tr>
+              <td
+                class="rc-picker-cell"
+              >
+                <div
+                  class="rc-picker-cell-inner customInner"
+                >
+                  <div
+                    class="customWrapper"
+                  >
+                    1890
+                  </div>
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="rc-picker-cell-inner customInner"
+                >
+                  <div
+                    class="customWrapper"
+                  >
+                    1900
+                  </div>
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="rc-picker-cell-inner customInner"
+                >
+                  <div
+                    class="customWrapper"
+                  >
+                    1910
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="rc-picker-cell-inner customInner"
+                >
+                  <div
+                    class="customWrapper"
+                  >
+                    1920
+                  </div>
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="rc-picker-cell-inner customInner"
+                >
+                  <div
+                    class="customWrapper"
+                  >
+                    1930
+                  </div>
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="rc-picker-cell-inner customInner"
+                >
+                  <div
+                    class="customWrapper"
+                  >
+                    1940
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="rc-picker-cell-inner customInner"
+                >
+                  <div
+                    class="customWrapper"
+                  >
+                    1950
+                  </div>
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="rc-picker-cell-inner customInner"
+                >
+                  <div
+                    class="customWrapper"
+                  >
+                    1960
+                  </div>
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="rc-picker-cell-inner customInner"
+                >
+                  <div
+                    class="customWrapper"
+                  >
+                    1970
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="rc-picker-cell-inner customInner"
+                >
+                  <div
+                    class="customWrapper"
+                  >
+                    1980
+                  </div>
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-selected"
+              >
+                <div
+                  class="rc-picker-cell-inner customInner"
+                >
+                  <div
+                    class="customWrapper"
+                  >
+                    1990
+                  </div>
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell"
+              >
+                <div
+                  class="rc-picker-cell-inner customInner"
+                >
+                  <div
+                    class="customWrapper"
+                  >
+                    2000
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Picker.Panel append cell with cellRender in month 1`] = `
 <div>
   <div
@@ -4580,6 +4793,171 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                   class="customWrapper"
                 >
                   6
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Picker.Panel override cell with cellRender in decade 1`] = `
+<div>
+  <div
+    class="rc-picker-panel"
+    tabindex="0"
+  >
+    <div
+      class="rc-picker-decade-panel"
+    >
+      <div
+        class="rc-picker-header"
+      >
+        <button
+          class="rc-picker-header-super-prev-btn"
+          tabindex="-1"
+          type="button"
+        >
+          «
+        </button>
+        <div
+          class="rc-picker-header-view"
+        >
+          1900
+          -
+          1999
+        </div>
+        <button
+          class="rc-picker-header-super-next-btn"
+          tabindex="-1"
+          type="button"
+        >
+          »
+        </button>
+      </div>
+      <div
+        class="rc-picker-body"
+      >
+        <table
+          class="rc-picker-content"
+        >
+          <tbody>
+            <tr>
+              <td
+                class="rc-picker-cell"
+              >
+                <div
+                  class="customWrapper"
+                >
+                  1890
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="customWrapper"
+                >
+                  1900
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="customWrapper"
+                >
+                  1910
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="customWrapper"
+                >
+                  1920
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="customWrapper"
+                >
+                  1930
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="customWrapper"
+                >
+                  1940
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="customWrapper"
+                >
+                  1950
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="customWrapper"
+                >
+                  1960
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="customWrapper"
+                >
+                  1970
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view"
+              >
+                <div
+                  class="customWrapper"
+                >
+                  1980
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-selected"
+              >
+                <div
+                  class="customWrapper"
+                >
+                  1990
+                </div>
+              </td>
+              <td
+                class="rc-picker-cell"
+              >
+                <div
+                  class="customWrapper"
+                >
+                  2000
                 </div>
               </td>
             </tr>
