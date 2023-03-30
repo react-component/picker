@@ -34,6 +34,8 @@ import PanelContext from './PanelContext';
 import type { DateRender } from './panels/DatePanel/DateBody';
 import { PickerModeMap } from './utils/uiUtil';
 import type { MonthCellRender } from './panels/MonthPanel/MonthBody';
+import type { QuarterCellRender } from './panels/QuarterPanel/QuarterBody';
+import type { YearCellRender } from './panels/YearPanel/YearBody';
 import RangeContext from './RangeContext';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
@@ -65,6 +67,8 @@ export type PickerPanelSharedProps<DateType> = {
   // Render
   dateRender?: DateRender<DateType>;
   monthCellRender?: MonthCellRender<DateType>;
+  quarterCellRender?: QuarterCellRender<DateType>;
+  yearCellRender?: YearCellRender<DateType>;
   renderExtraFooter?: (mode: PanelMode) => React.ReactNode;
 
   // Event

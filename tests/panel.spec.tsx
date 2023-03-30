@@ -508,6 +508,22 @@ describe('Picker.Panel', () => {
     expect(container.querySelector('tbody')).toMatchSnapshot();
   });
 
+  it('quarterCellRender', () => {
+    const wrapper = mount(
+      <MomentPickerPanel picker="quarter" quarterCellRender={(date) => date.format('YYYY-QQ')} />,
+    );
+
+    expect(wrapper.find('tbody').render()).toMatchSnapshot();
+  });
+
+  it('yearCellRender', () => {
+    const wrapper = mount(
+      <MomentPickerPanel picker="year" yearCellRender={(date) => date.format('YYYY')} />,
+    );
+
+    expect(wrapper.find('tbody').render()).toMatchSnapshot();
+  });
+
   describe('start weekday should be correct', () => {
     [
       { locale: zhCN, startDate: '30' },

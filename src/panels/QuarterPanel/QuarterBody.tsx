@@ -9,6 +9,11 @@ import PanelBody from '../PanelBody';
 export const QUARTER_COL_COUNT = 4;
 const QUARTER_ROW_COUNT = 1;
 
+export type QuarterCellRender<DateType> = (
+  currentDate: DateType,
+  locale: Locale,
+) => React.ReactNode;
+
 export type QuarterBodyProps<DateType> = {
   prefixCls: string;
   locale: Locale;
@@ -16,11 +21,12 @@ export type QuarterBodyProps<DateType> = {
   value?: DateType | null;
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
+  quarterCellRender?: QuarterCellRender<DateType>;
   onSelect: (value: DateType) => void;
 };
 
 function QuarterBody<DateType>(props: QuarterBodyProps<DateType>) {
-  const { prefixCls, locale, value, viewDate, generateConfig } = props;
+  const { prefixCls, locale, value, viewDate, generateConfig, quarterCellRender } = props;
 
   const { rangedValue, hoverRangedValue } = React.useContext(RangeContext);
 
@@ -39,13 +45,18 @@ function QuarterBody<DateType>(props: QuarterBodyProps<DateType>) {
 
   const baseQuarter = generateConfig.setDate(generateConfig.setMonth(viewDate, 0), 1);
 
+  const getCellNode = quarterCellRender
+    ? (date: DateType) => quarterCellRender(date, locale)
+    : undefined;
+
   return (
     <PanelBody
       {...props}
       rowNum={QUARTER_ROW_COUNT}
       colNum={QUARTER_COL_COUNT}
       baseDate={baseQuarter}
-      getCellText={date =>
+      getCellNode={getCellNode}
+      getCellText={(date) =>
         formatValue(date, {
           locale,
           format: locale.quarterFormat || '[Q]Q',
@@ -54,7 +65,7 @@ function QuarterBody<DateType>(props: QuarterBodyProps<DateType>) {
       }
       getCellClassName={getCellClassName}
       getCellDate={(date, offset) => generateConfig.addMonth(date, offset * 3)}
-      titleCell={date =>
+      titleCell={(date) =>
         formatValue(date, {
           locale,
           format: 'YYYY-[Q]Q',
