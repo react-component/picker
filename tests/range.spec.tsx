@@ -1782,10 +1782,21 @@ describe('Picker.Range', () => {
 
     expect(document.querySelectorAll('input')[1].value).toBeFalsy();
   });
-  it('use dateRender and monthCellRender in range picker', () => {
+  it('use dateRender and monthCellRender in month range picker', () => {
     const { container, baseElement } = render(
       <MomentRangePicker
         picker='month'
+        dateRender={(date) => <div>{date.get('date')}</div>}
+        monthCellRender={(date) => <div>{date.get('month') + 1}</div>}
+      />,
+    );
+    openPicker(container);
+    expect(baseElement).toMatchSnapshot();
+  });
+  it('use dateRender and monthCellRender in date range picker', () => {
+    const { container, baseElement } = render(
+      <MomentRangePicker
+        picker='date'
         dateRender={(date) => <div>{date.get('date')}</div>}
         monthCellRender={(date) => <div>{date.get('month') + 1}</div>}
       />,
