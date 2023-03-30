@@ -384,6 +384,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       if (monthCellRender && info.type === "month") {
         return monthCellRender(date, info.locale);
       }
+      return info.originNode;
     }
   }, [cellRender, monthCellRender, dateRender]);
 
