@@ -20,7 +20,7 @@ export type PanelBodyProps<DateType> = {
   getCellClassName: (date: DateType) => Record<string, boolean | undefined>;
   getCellDate: (date: DateType, offset: number) => DateType;
   getCellText: (date: DateType) => React.ReactNode;
-  getCellNode?: (date: DateType) => React.ReactNode;
+  getCellNode?: (date: DateType, wrapperNode: React.ReactElement) => React.ReactNode;
   titleCell?: (date: DateType) => string;
   generateConfig: GenerateConfig<DateType>;
 
@@ -77,7 +77,7 @@ export default function PanelBody<DateType>({
       }
 
       const title = titleCell && titleCell(currentDate);
-
+      const inner = <div className={`${cellPrefixCls}-inner`}>{getCellText(currentDate)}</div>;
       row.push(
         <td
           key={j}
@@ -107,11 +107,7 @@ export default function PanelBody<DateType>({
             }
           }}
         >
-          {getCellNode ? (
-            getCellNode(currentDate)
-          ) : (
-            <div className={`${cellPrefixCls}-inner`}>{getCellText(currentDate)}</div>
-          )}
+          {getCellNode ? getCellNode(currentDate, inner) : inner}
         </td>,
       );
     }

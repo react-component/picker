@@ -1,4 +1,6 @@
+import type { PanelMode } from '../src/interface';
 import { fireEvent, render } from '@testing-library/react';
+import type { Moment } from 'moment';
 import moment from 'moment';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
@@ -508,6 +510,14 @@ describe('Picker.Panel', () => {
     expect(container.querySelector('tbody')).toMatchSnapshot();
   });
 
+  it('pass dateRender when picker is month', () => {
+    const { container } = render(
+      <MomentPickerPanel picker="month" dateRender={(date) => date.format('YYYY-MM')} />,
+    );
+
+    expect(container.querySelector('tbody')).toMatchSnapshot();
+  });
+
   describe('start weekday should be correct', () => {
     [
       { locale: zhCN, startDate: '30' },
@@ -555,6 +565,82 @@ describe('Picker.Panel', () => {
           dow: defaultFirstDay,
         } as any,
       });
+    });
+  });
+
+  const supportCellRenderPicker: PanelMode[] = ['year', 'month', 'date', 'quarter', 'week', 'time', 'decade'];
+
+  const getCurText = (picker: PanelMode, current: Moment | number) => {
+    switch (picker) {
+      case 'time':
+        return current;
+      case 'decade':
+        return (current as Moment).get('year');
+      case 'date':
+      case 'year':
+      case 'month':
+      case 'quarter':
+      case 'week':
+        return (current as Moment).get(picker);
+    }
+  };
+  it(`override cell with cellRender when pass showTime`, () => {
+    const App = () => (
+      <MomentPickerPanel
+        showTime
+        cellRender={(current, info) => (
+          <div className="customWrapper">{getCurText(info.type, current)}</div>
+        )}
+      />
+    );
+
+    const { container } = render(<App />);
+
+    expect(container.querySelector('.customWrapper')).toBeTruthy();
+    expect(container.querySelector(`.rc-picker-date-panel`)).toBeTruthy();
+    expect(container.querySelector(`.rc-picker-time-panel`)).toBeTruthy();
+    expect(container).toMatchSnapshot();
+  });
+  supportCellRenderPicker.forEach((picker) => {
+    it(`override cell with cellRender in ${picker}`, () => {
+      const App = () => (
+        <MomentPickerPanel
+          picker={picker as any}
+          cellRender={(current) => (
+            <div className="customWrapper">{getCurText(picker, current)}</div>
+          )}
+        />
+      );
+
+      const { container } = render(<App />);
+
+      expect(container.querySelector('.customWrapper')).toBeTruthy();
+      expect(container.querySelector(`.rc-picker-${picker}-panel`)).toBeTruthy();
+      expect(container).toMatchSnapshot();
+    });
+    it(`append cell with cellRender in ${picker}`, () => {
+      const App = () => (
+        <MomentPickerPanel
+          picker={picker as any}
+          cellRender={(current, info) =>
+            React.cloneElement(
+              info.originNode,
+              {
+                ...info.originNode.props,
+                className: `${info.originNode.props.className} customInner`,
+              },
+              <div className="customWrapper">{getCurText(picker, current)}</div>,
+            )
+          }
+        />
+      );
+
+      const { container } = render(<App />);
+
+      expect(container.querySelector('.customWrapper')).toBeTruthy();
+      expect(container.querySelector('.customInner')).toBeTruthy();
+      expect(container.querySelector(`.rc-picker-${picker}-panel`)).toBeTruthy();
+      expect(container).toMatchSnapshot();
     });
   });
 });

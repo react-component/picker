@@ -5,39 +5,41 @@
  *  Panel change will not trigger `onSelect` but trigger `onPanelChange`
  */
 
-import * as React from 'react';
 import classNames from 'classnames';
+import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import KeyCode from 'rc-util/lib/KeyCode';
 import warning from 'rc-util/lib/warning';
-import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import type { SharedTimeProps } from './panels/TimePanel';
-import TimePanel from './panels/TimePanel';
-import DatetimePanel from './panels/DatetimePanel';
-import DatePanel from './panels/DatePanel';
-import WeekPanel from './panels/WeekPanel';
-import MonthPanel from './panels/MonthPanel';
-import QuarterPanel from './panels/QuarterPanel';
-import YearPanel from './panels/YearPanel';
-import DecadePanel from './panels/DecadePanel';
+import * as React from 'react';
 import type { GenerateConfig } from './generate';
 import type {
+  CellRender,
+  Components,
+  DisabledTime,
   Locale,
+  OnPanelChange,
   PanelMode,
   PanelRefProps,
   PickerMode,
-  DisabledTime,
-  OnPanelChange,
-  Components,
 } from './interface';
-import { isEqual } from './utils/dateUtil';
 import PanelContext from './PanelContext';
+import DatePanel from './panels/DatePanel';
 import type { DateRender } from './panels/DatePanel/DateBody';
-import { PickerModeMap } from './utils/uiUtil';
+import DatetimePanel from './panels/DatetimePanel';
+import DecadePanel from './panels/DecadePanel';
+import MonthPanel from './panels/MonthPanel';
 import type { MonthCellRender } from './panels/MonthPanel/MonthBody';
+import QuarterPanel from './panels/QuarterPanel';
+import type { SharedTimeProps } from './panels/TimePanel';
+import TimePanel from './panels/TimePanel';
+import WeekPanel from './panels/WeekPanel';
+import YearPanel from './panels/YearPanel';
 import RangeContext from './RangeContext';
+import { isEqual } from './utils/dateUtil';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
 import { getLowerBoundTime, setDateTime, setTime } from './utils/timeUtil';
+import { PickerModeMap } from './utils/uiUtil';
+import { useCellRender } from './hooks/useCellRender';
 
 export type PickerPanelSharedProps<DateType> = {
   prefixCls?: string;
@@ -63,7 +65,9 @@ export type PickerPanelSharedProps<DateType> = {
   disabledDate?: (date: DateType) => boolean;
 
   // Render
+  /** @deprecated use cellRender instead of dateRender */
   dateRender?: DateRender<DateType>;
+  /** @deprecated use cellRender instead of monthCellRender */
   monthCellRender?: MonthCellRender<DateType>;
   renderExtraFooter?: (mode: PanelMode) => React.ReactNode;
 
@@ -83,10 +87,12 @@ export type PickerPanelSharedProps<DateType> = {
 
   /** @private Internal usage. Do not use in your production env */
   components?: Components;
+  cellRender?: CellRender<DateType>;
 };
 
 export type PickerPanelBaseProps<DateType> = {
   picker: Exclude<PickerMode, 'date' | 'time'>;
+  cellRender?: CellRender<DateType>;
 } & PickerPanelSharedProps<DateType>;
 
 export type PickerPanelDateProps<DateType> = {
@@ -97,10 +103,12 @@ export type PickerPanelDateProps<DateType> = {
   // Time
   showTime?: boolean | SharedTimeProps<DateType>;
   disabledTime?: DisabledTime<DateType>;
+  cellRender?: CellRender<DateType>;
 } & PickerPanelSharedProps<DateType>;
 
 export type PickerPanelTimeProps<DateType> = {
   picker: 'time';
+  cellRender?: CellRender<DateType, number>;
 } & PickerPanelSharedProps<DateType> &
   SharedTimeProps<DateType>;
 
@@ -148,6 +156,9 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     hourStep = 1,
     minuteStep = 1,
     secondStep = 1,
+    dateRender,
+    monthCellRender,
+    cellRender,
   } = props as MergedPickerPanelProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
@@ -168,6 +179,8 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       isSecondStepValid,
       `\`secondStep\` ${secondStep} is invalid. It should be a factor of 60.`,
     );
+    warning(!!dateRender, `'dateRender' is deprecated. Please use 'cellRender' instead.`);
+    warning(!!monthCellRender, `'monthCellRender' is deprecated. Please use 'cellRender' instead.`);
   }
 
   // ============================ State =============================
@@ -346,8 +359,14 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   // ============================ Panels ============================
   let panelNode: React.ReactNode;
 
+  const mergedCellRender = useCellRender<DateType>({
+    cellRender,
+    monthCellRender,
+    dateRender,
+  });
   const pickerProps = {
     ...(props as MergedPickerPanelProps<DateType>),
+    cellRender: mergedCellRender,
     operationRef: panelRef,
     prefixCls,
     viewDate,
@@ -359,6 +378,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   };
   delete pickerProps.onChange;
   delete pickerProps.onSelect;
+
 
   switch (mergedMode) {
     case 'decade':
@@ -411,7 +431,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
 
     case 'week':
       panelNode = (
-        <WeekPanel
+        <WeekPanel<DateType>
           {...pickerProps}
           onSelect={(date, type) => {
             setViewDate(date);
@@ -438,7 +458,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     default:
       if (showTime) {
         panelNode = (
-          <DatetimePanel
+          <DatetimePanel<DateType>
             {...pickerProps}
             onSelect={(date, type) => {
               setViewDate(date);
