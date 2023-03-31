@@ -758,6 +758,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     monthCellRender,
     dateRender,
   });
+  
   const panelDateRender = React.useMemo(() => {
     if (!mergedCellRender) return undefined;
     return (date: DateType, info: CellRenderInfo<DateType>) =>
