@@ -18,7 +18,7 @@ export type TimeUnitColumnProps<DateType> = {
   active?: boolean;
   hideDisabledOptions?: boolean;
   onSelect?: (value: number) => void;
-  type: 'hour' | 'minute' | 'second' | '12hours';
+  type: 'hour' | 'minute' | 'second' | 'meridiem';
   info: {
     today: DateType,
     locale: Locale,

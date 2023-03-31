@@ -252,7 +252,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
 
   addColumnNode(
     use12Hours === true,
-    <TimeUnitColumn key="12hours" type="12hours" info={{today: now, locale, cellRender }} />,
+    <TimeUnitColumn key="meridiem" type="meridiem" info={{today: now, locale, cellRender }} />,
     PMIndex,
     [
       { label: 'AM', value: 0, disabled: AMDisabled },

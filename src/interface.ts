@@ -53,7 +53,7 @@ export type CellRenderInfo<DateType> = {
   range?: 'start' | 'end',
   type: PanelMode,
   locale?: Locale,
-  subType?: 'hour' | 'minute' | 'second' | '12hours'
+  subType?: 'hour' | 'minute' | 'second' | 'meridiem'
 };
 
 export type CellRender<DateType, CurrentType = DateType> = (current: CurrentType, info: CellRenderInfo<DateType>) => React.ReactNode;
