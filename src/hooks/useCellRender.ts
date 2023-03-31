@@ -1,6 +1,6 @@
-import type { CellRenderInfo } from '@/interface';
-import type { PickerPanelProps } from '@/PickerPanel';
-import type { RangePickerProps } from '@/RangePicker';
+import type { CellRenderInfo } from '../interface';
+import type { PickerPanelProps } from '../PickerPanel';
+import type { RangePickerProps } from '../RangePicker';
 import React from 'react';
 
 export type UseCellRenderOption<DateType> =

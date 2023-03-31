@@ -1,6 +1,7 @@
-import { PanelMode } from '@/interface';
+import type { PanelMode } from '../src/interface';
 import { fireEvent, render } from '@testing-library/react';
-import moment, { Moment } from 'moment';
+import type { Moment } from 'moment';
+import moment from 'moment';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';

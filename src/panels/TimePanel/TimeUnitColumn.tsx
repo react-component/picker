@@ -3,7 +3,7 @@ import { useRef, useLayoutEffect } from 'react';
 import classNames from 'classnames';
 import { scrollTo, waitElementReady } from '../../utils/uiUtil';
 import PanelContext from '../../PanelContext';
-import type { CellRender, Locale } from '@/interface';
+import type { CellRender, Locale } from '../../interface';
 
 export type Unit = {
   label: React.ReactText;

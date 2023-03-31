@@ -2,7 +2,7 @@ import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import { DECADE_DISTANCE_COUNT, DECADE_UNIT_DIFF } from '.';
 import PanelBody from '../PanelBody';
-import type { CellRender, Locale } from '@/interface';
+import type { CellRender, Locale } from '../../interface';
 
 export const DECADE_COL_COUNT = 3;
 const DECADE_ROW_COUNT = 4;
