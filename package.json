@@ -79,6 +79,7 @@
   "peerDependencies": {
     "date-fns": ">= 2.x",
     "dayjs": ">= 1.x",
+    "luxon": ">= 3.x",
     "moment": ">= 2.x",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"
@@ -88,6 +89,9 @@
       "optional": true
     },
     "dayjs": {
+      "optional": true
+    },
+    "luxon": {
       "optional": true
     },
     "moment": {
