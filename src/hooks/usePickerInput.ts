@@ -1,6 +1,6 @@
-import type * as React from 'react';
-import { useState, useEffect, useRef } from 'react';
 import KeyCode from 'rc-util/lib/KeyCode';
+import type * as React from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { addGlobalMouseDownEvent, getTargetFromEvent } from '../utils/uiUtil';
 
 export default function usePickerInput({
@@ -149,10 +149,9 @@ export default function usePickerInput({
   useEffect(() =>
     addGlobalMouseDownEvent((e: MouseEvent) => {
       const target = getTargetFromEvent(e);
+      const clickedOutside = isClickOutside(target);
 
       if (open) {
-        const clickedOutside = isClickOutside(target);
-
         if (!clickedOutside) {
           preventBlurRef.current = true;
 
@@ -163,6 +162,8 @@ export default function usePickerInput({
         } else if (!focused || clickedOutside) {
           triggerOpen(false);
         }
+      } else if (focused && !clickedOutside) {
+        preventBlurRef.current = true;
       }
     }),
   );
