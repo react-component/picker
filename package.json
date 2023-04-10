@@ -1,6 +1,6 @@
 {
   "name": "rc-picker",
-  "version": "3.5.1",
+  "version": "3.6.0-alpha.0",
   "description": "React date & time picker",
   "keywords": [
     "react",
