@@ -27,14 +27,14 @@ import type { DateRender } from './panels/DatePanel/DateBody';
 import DatetimePanel from './panels/DatetimePanel';
 import DecadePanel from './panels/DecadePanel';
 import MonthPanel from './panels/MonthPanel';
-import type { MonthCellRender } from './panels/MonthPanel/MonthBody';
+import { MONTH_COL_COUNT, type MonthCellRender } from './panels/MonthPanel/MonthBody';
 import QuarterPanel from './panels/QuarterPanel';
 import type { SharedTimeProps } from './panels/TimePanel';
 import TimePanel from './panels/TimePanel';
 import WeekPanel from './panels/WeekPanel';
 import YearPanel from './panels/YearPanel';
 import RangeContext from './RangeContext';
-import { isEqual } from './utils/dateUtil';
+import { isEqual, WEEK_DAY_COUNT } from './utils/dateUtil';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
 import { getLowerBoundTime, setDateTime, setTime } from './utils/timeUtil';
@@ -124,6 +124,9 @@ type OmitType<DateType> = Omit<PickerPanelBaseProps<DateType>, 'picker'> &
 type MergedPickerPanelProps<DateType> = {
   picker?: PickerMode;
 } & OmitType<DateType>;
+
+// Calendar picker type
+const CALENDAR_PANEL_MODE: PanelMode[] = ['date', 'month'];
 
 function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const {
@@ -297,9 +300,49 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     }
   };
 
+  const isSelectable = (key) => {
+    if (CALENDAR_PANEL_MODE.includes(mergedMode)) {
+      let date;
+      let operationFnc;
+      const isDateMode = mergedMode === 'date';
+      if (key === KeyCode.PAGE_UP || key === KeyCode.PAGE_DOWN) {
+        operationFnc = isDateMode ? generateConfig.addMonth : generateConfig.addYear;
+      } else {
+        operationFnc = isDateMode ? generateConfig.addDate : generateConfig.addMonth;
+      }
+
+      switch (key) {
+        case KeyCode.LEFT:
+        case KeyCode.PAGE_UP:
+          date = operationFnc(viewDate, -1);
+          break;
+        case KeyCode.RIGHT:
+        case KeyCode.PAGE_DOWN:
+          date = operationFnc(viewDate, 1);
+          break;
+        case KeyCode.UP:
+        case KeyCode.DOWN:
+          date = operationFnc(
+            viewDate,
+            Number(
+              `${key === KeyCode.UP ? '-' : ''}${isDateMode ? WEEK_DAY_COUNT : MONTH_COL_COUNT}`,
+            ),
+          );
+          break;
+      }
+
+      if (date) {
+        return !disabledDate?.(date);
+      }
+    }
+    return true;
+  };
+
   // ========================= Interactive ==========================
   const onInternalKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (panelRef.current && panelRef.current.onKeyDown) {
+      let selectable = true;
+      const { which } = e;
       if (
         [
           KeyCode.LEFT,
@@ -309,11 +352,18 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
           KeyCode.PAGE_UP,
           KeyCode.PAGE_DOWN,
           KeyCode.ENTER,
-        ].includes(e.which)
+        ].includes(which)
       ) {
         e.preventDefault();
+        if (which !== KeyCode.ENTER && tabIndex === 0) {
+          selectable = isSelectable(which);
+        }
       }
-      return panelRef.current.onKeyDown(e);
+
+      // Cannot use keyboard to select disabled date
+      if (selectable) {
+        return panelRef.current.onKeyDown(e);
+      }
     }
 
     /* istanbul ignore next */
@@ -378,7 +428,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   };
   delete pickerProps.onChange;
   delete pickerProps.onSelect;
-
 
   switch (mergedMode) {
     case 'decade':
