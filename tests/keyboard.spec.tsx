@@ -534,16 +534,56 @@ describe('Picker.Keyboard', () => {
       );
 
       fireEvent.focus(document.querySelector('.rc-picker-panel'));
-
-      // 9-10 is disabled
+      // 9-02、9-04、9-10 is disabled
+      panelKeyDown(KeyCode.LEFT);
+      panelKeyDown(KeyCode.RIGHT);
       panelKeyDown(KeyCode.DOWN);
-      expect(isSame(onSelect.mock.calls[0][0], '1990-09-10')).toBeTruthy();
-      expect(onChange).not.toHaveBeenCalled();
+      expect(onSelect).not.toHaveBeenCalled();
 
-      // 9-17 is enabled
+      // 7-27、8-27 is enabled
+      panelKeyDown(KeyCode.UP);
+      expect(isSame(onSelect.mock.calls[0][0], '1990-08-27')).toBeTruthy();
+      onSelect.mockReset();
+      panelKeyDown(KeyCode.PAGE_UP);
+      expect(isSame(onSelect.mock.calls[0][0], '1990-07-27')).toBeTruthy();
+      onSelect.mockReset();
+      panelKeyDown(KeyCode.PAGE_DOWN);
+      expect(isSame(onSelect.mock.calls[0][0], '1990-08-27')).toBeTruthy();
+    });
+
+    it('month panel', () => {
+      const onChange = jest.fn();
+      const onSelect = jest.fn();
+      const now = new Date();
+      render(
+        <MomentPickerPanel
+          picker="month"
+          onSelect={onSelect}
+          onChange={onChange}
+          disabledDate={(date) => date.month() < now.getMonth()}
+        />,
+      );
+
+      fireEvent.focus(document.querySelector('.rc-picker-panel'));
+
+      // PAGE_UP and PAGE_DOWN do not trigger the select
+      panelKeyDown(KeyCode.PAGE_UP);
+      panelKeyDown(KeyCode.PAGE_DOWN);
+      expect(onSelect).not.toHaveBeenCalled();
+
+      // The disabled date is before August
+      panelKeyDown(KeyCode.LEFT);
+      panelKeyDown(KeyCode.UP);
+      expect(onSelect).not.toHaveBeenCalled();
+
+      // August and subsequent dates are enable
+      panelKeyDown(KeyCode.RIGHT);
+      expect(isSame(onSelect.mock.calls[0][0], '1990-10-03')).toBeTruthy();
+      onSelect.mockReset();
+      panelKeyDown(KeyCode.LEFT);
+      onSelect.mockReset();
       panelKeyDown(KeyCode.DOWN);
-      expect(isSame(onSelect.mock.calls[1][0], '1990-09-17')).toBeTruthy();
-      expect(isSame(onChange.mock.calls[0][0], '1990-09-17')).toBeTruthy();
+      expect(isSame(onSelect.mock.calls[0][0], '1990-12-03')).toBeTruthy();
     });
   });
 });
