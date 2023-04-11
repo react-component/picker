@@ -778,8 +778,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         '`disabled` should not set with empty `value`. You should set `allowEmpty` or `value` instead.',
       );
     }
-    warning(!!dateRender, `'dateRender' is deprecated. Please use 'cellRender' instead.`);
-    warning(!!monthCellRender, `'monthCellRender' is deprecated. Please use 'cellRender' instead.`);
+    warning(!dateRender, `'dateRender' is deprecated. Please use 'cellRender' instead.`);
+    warning(!monthCellRender, `'monthCellRender' is deprecated. Please use 'cellRender' instead.`);
   }
 
   // ============================ Private ============================
