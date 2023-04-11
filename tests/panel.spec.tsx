@@ -1,10 +1,10 @@
-import type { PanelMode } from '../src/interface';
 import { fireEvent, render } from '@testing-library/react';
 import type { Moment } from 'moment';
 import moment from 'moment';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
+import type { PanelMode } from '../src/interface';
 import enUS from '../src/locale/en_US';
 import zhCN from '../src/locale/zh_CN';
 import {
@@ -475,7 +475,6 @@ describe('Picker.Panel', () => {
 
     errSpy.mockRestore();
   });
-
   it('should render correctly in rtl', () => {
     const { container } = render(<MomentPickerPanel direction="rtl" />);
     expect(container).toMatchSnapshot();
@@ -568,7 +567,15 @@ describe('Picker.Panel', () => {
     });
   });
 
-  const supportCellRenderPicker: PanelMode[] = ['year', 'month', 'date', 'quarter', 'week', 'time', 'decade'];
+  const supportCellRenderPicker: PanelMode[] = [
+    'year',
+    'month',
+    'date',
+    'quarter',
+    'week',
+    'time',
+    'decade',
+  ];
 
   const getCurText = (picker: PanelMode, current: Moment | number) => {
     switch (picker) {
@@ -618,6 +625,28 @@ describe('Picker.Panel', () => {
       expect(container.querySelector(`.rc-picker-${picker}-panel`)).toBeTruthy();
       expect(container).toMatchSnapshot();
     });
+
+    it('warning with dateRender and monthCellRender', () => {
+      resetWarned();
+      const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      render(
+        <MomentPickerPanel
+          picker={picker as any}
+          dateRender={(current) => (
+            <div className="customWrapper">{getCurText(picker, current)}</div>
+          )}
+          monthCellRender={(current) => (
+            <div className="customWrapper">{getCurText(picker, current)}</div>
+          )}
+        />,
+      );
+      expect(errSpy).toHaveBeenCalledWith("Warning: 'dateRender' is deprecated. Please use 'cellRender' instead.");
+      expect(errSpy).toHaveBeenCalledWith("Warning: 'monthCellRender' is deprecated. Please use 'cellRender' instead.");
+
+      errSpy.mockRestore();
+    });
+
     it(`append cell with cellRender in ${picker}`, () => {
       const App = () => (
         <MomentPickerPanel
