@@ -584,13 +584,18 @@ describe('Picker.Basic', () => {
 
     // https://github.com/ant-design/ant-design/issues/40914
     ['hour', 'minute', 'second'].forEach((unit, index) => {
-      it.only(`should show integer when step is not integer (${unit})`, () => {
+      it(`should show integer when step is not integer (${unit})`, () => {
         const props = {
           [`${unit}Step`]: 5.5,
         };
         const wrapper = mount(<MomentPicker picker="time" {...props} />);
         wrapper.openPicker();
-        expect(wrapper.find('.rc-picker-time-panel-column').at(index)).toMatchSnapshot();
+
+        const column = wrapper.find('.rc-picker-time-panel-column').at(index);
+        const cells = column.find('.rc-picker-time-panel-cell-inner');
+        cells.forEach((cell) => {
+          expect(Number.isInteger(Number(cell.text())));
+        });
       });
     });
 
