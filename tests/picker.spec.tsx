@@ -594,7 +594,7 @@ describe('Picker.Basic', () => {
         const column = wrapper.find('.rc-picker-time-panel-column').at(index);
         const cells = column.find('.rc-picker-time-panel-cell-inner');
         cells.forEach((cell) => {
-          expect(Number.isInteger(Number(cell.text())));
+          expect(Number.isInteger(Number(cell.text()))).toBeTruthy();
         });
       });
     });
