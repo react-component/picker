@@ -1314,414 +1314,414 @@ describe('Picker.Range', () => {
     });
   });
 
-  // describe('hover placeholder', () => {
-  //   beforeEach(() => {
-  //     jest.useFakeTimers();
-  //   });
-  //   afterEach(() => {
-  //     jest.clearAllTimers();
-  //     jest.useRealTimers();
-  //   });
+  describe('hover placeholder', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+    afterEach(() => {
+      jest.clearAllTimers();
+      jest.useRealTimers();
+    });
 
-  //   const defaultValue: [Moment, Moment] = [getMoment('2020-07-22'), getMoment('2020-08-22')];
+    const defaultValue: [Moment, Moment] = [getMoment('2020-07-22'), getMoment('2020-08-22')];
 
-  //   it('should restore when leave', () => {
-  //     const wrapper = mount(<MomentRangePicker defaultValue={defaultValue} />);
+    it('should restore when leave', () => {
+      const wrapper = mount(<MomentRangePicker defaultValue={defaultValue} />);
 
-  //     // left
-  //     wrapper.openPicker(0);
-  //     const leftCell = wrapper.findCell(24);
-  //     leftCell.simulate('mouseEnter');
-  //     act(() => {
-  //       jest.runAllTimers();
-  //     });
-  //     wrapper.update();
-  //     expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
-  //     expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
-  //     expect(
-  //       wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeTruthy();
-  //     expect(
-  //       wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeFalsy();
+      // left
+      wrapper.openPicker(0);
+      const leftCell = wrapper.findCell(24);
+      leftCell.simulate('mouseEnter');
+      act(() => {
+        jest.runAllTimers();
+      });
+      wrapper.update();
+      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
+      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
+      expect(
+        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
+      ).toBeTruthy();
+      expect(
+        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
 
-  //     leftCell.simulate('mouseLeave');
-  //     act(() => {
-  //       jest.runAllTimers();
-  //     });
-  //     wrapper.update();
-  //     expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
-  //     expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
-  //     expect(
-  //       wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeFalsy();
-  //     expect(
-  //       wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeFalsy();
+      leftCell.simulate('mouseLeave');
+      act(() => {
+        jest.runAllTimers();
+      });
+      wrapper.update();
+      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
+      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
+      expect(
+        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+      expect(
+        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
 
-  //     wrapper.closePicker(0);
+      wrapper.closePicker(0);
 
-  //     // right
-  //     wrapper.openPicker(1);
-  //     const rightCell = wrapper.findCell(24, 1);
-  //     rightCell.simulate('mouseEnter');
-  //     act(() => {
-  //       jest.runAllTimers();
-  //     });
-  //     wrapper.update();
-  //     expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
-  //     expect(wrapper.find('input').last().prop('value')).toBe('2020-08-24');
-  //     expect(
-  //       wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeFalsy();
-  //     expect(
-  //       wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeTruthy();
+      // right
+      wrapper.openPicker(1);
+      const rightCell = wrapper.findCell(24, 1);
+      rightCell.simulate('mouseEnter');
+      act(() => {
+        jest.runAllTimers();
+      });
+      wrapper.update();
+      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
+      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-24');
+      expect(
+        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+      expect(
+        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
+      ).toBeTruthy();
 
-  //     rightCell.simulate('mouseLeave');
-  //     act(() => {
-  //       jest.runAllTimers();
-  //     });
-  //     wrapper.update();
-  //     expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
-  //     expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
-  //     expect(
-  //       wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeFalsy();
-  //     expect(
-  //       wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeFalsy();
+      rightCell.simulate('mouseLeave');
+      act(() => {
+        jest.runAllTimers();
+      });
+      wrapper.update();
+      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
+      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
+      expect(
+        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+      expect(
+        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
 
-  //     wrapper.closePicker(1);
-  //   });
+      wrapper.closePicker(1);
+    });
 
-  //   it('should restore after selecting cell', () => {
-  //     const wrapper = mount(<MomentRangePicker defaultValue={defaultValue} />);
-  //     // left
-  //     wrapper.openPicker(0);
-  //     const leftCell = wrapper.findCell(24, 0);
-  //     leftCell.simulate('mouseEnter');
-  //     act(() => {
-  //       jest.runAllTimers();
-  //     });
-  //     wrapper.update();
-  //     expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
-  //     expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
-  //     expect(
-  //       wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeTruthy();
-  //     expect(
-  //       wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeFalsy();
+    it('should restore after selecting cell', () => {
+      const wrapper = mount(<MomentRangePicker defaultValue={defaultValue} />);
+      // left
+      wrapper.openPicker(0);
+      const leftCell = wrapper.findCell(24, 0);
+      leftCell.simulate('mouseEnter');
+      act(() => {
+        jest.runAllTimers();
+      });
+      wrapper.update();
+      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
+      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
+      expect(
+        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
+      ).toBeTruthy();
+      expect(
+        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
 
-  //     wrapper.selectCell(24, 0);
-  //     expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
-  //     expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
-  //     expect(
-  //       wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeFalsy();
-  //     expect(
-  //       wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeFalsy();
+      wrapper.selectCell(24, 0);
+      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
+      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
+      expect(
+        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+      expect(
+        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
 
-  //     // right
-  //     const rightCell = wrapper.findCell(24, 1);
-  //     rightCell.simulate('mouseEnter');
-  //     act(() => {
-  //       jest.runAllTimers();
-  //     });
-  //     wrapper.update();
-  //     expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
-  //     expect(wrapper.find('input').last().prop('value')).toBe('2020-08-24');
-  //     expect(
-  //       wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeFalsy();
-  //     expect(
-  //       wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeTruthy();
+      // right
+      const rightCell = wrapper.findCell(24, 1);
+      rightCell.simulate('mouseEnter');
+      act(() => {
+        jest.runAllTimers();
+      });
+      wrapper.update();
+      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
+      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-24');
+      expect(
+        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+      expect(
+        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
+      ).toBeTruthy();
 
-  //     wrapper.selectCell(24, 1);
-  //     expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
-  //     expect(wrapper.find('input').last().prop('value')).toBe('2020-08-24');
-  //     expect(
-  //       wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeFalsy();
-  //     expect(
-  //       wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-  //     ).toBeFalsy();
-  //   });
+      wrapper.selectCell(24, 1);
+      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
+      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-24');
+      expect(
+        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+      expect(
+        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
+      ).toBeFalsy();
+    });
 
-  //   // https://github.com/ant-design/ant-design/issues/26544
-  //   it('should clean hover style when selecting the same value with last value', () => {
-  //     const wrapper = mount(
-  //       <MomentRangePicker defaultValue={[getMoment('2020-07-24'), getMoment('2020-08-24')]} />,
-  //     );
+    // https://github.com/ant-design/ant-design/issues/26544
+    it('should clean hover style when selecting the same value with last value', () => {
+      const wrapper = mount(
+        <MomentRangePicker defaultValue={[getMoment('2020-07-24'), getMoment('2020-08-24')]} />,
+      );
 
-  //     wrapper.openPicker();
+      wrapper.openPicker();
 
-  //     wrapper.selectCell(24, 0);
-  //     expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
-  //     expect(wrapper.find('input').first().hasClass('rc-picker-input-placeholder')).toBeFalsy();
-  //     expect(wrapper.isOpen()).toBeTruthy();
-  //   });
-  // });
+      wrapper.selectCell(24, 0);
+      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
+      expect(wrapper.find('input').first().hasClass('rc-picker-input-placeholder')).toBeFalsy();
+      expect(wrapper.isOpen()).toBeTruthy();
+    });
+  });
 
-  // // https://github.com/ant-design/ant-design/issues/25746
-  // it('ok button should be disabled when disabledDate is true', () => {
-  //   const disabledDate = () => {
-  //     // Can not select days before today and today
-  //     return true;
-  //   };
-  //   const wrapper = mount(
-  //     <MomentRangePicker
-  //       showTime
-  //       disabledDate={disabledDate}
-  //       defaultValue={[getMoment('2020-07-24'), getMoment('2020-08-24')]}
-  //     />,
-  //   );
+  // https://github.com/ant-design/ant-design/issues/25746
+  it('ok button should be disabled when disabledDate is true', () => {
+    const disabledDate = () => {
+      // Can not select days before today and today
+      return true;
+    };
+    const wrapper = mount(
+      <MomentRangePicker
+        showTime
+        disabledDate={disabledDate}
+        defaultValue={[getMoment('2020-07-24'), getMoment('2020-08-24')]}
+      />,
+    );
 
-  //   wrapper.openPicker();
+    wrapper.openPicker();
 
-  //   expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
+    expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
 
-  //   wrapper
-  //     .find('PickerPanel')
-  //     .first()
-  //     .find('.rc-picker-time-panel-column')
-  //     .first()
-  //     .find('li')
-  //     .at(6)
-  //     .simulate('click');
+    wrapper
+      .find('PickerPanel')
+      .first()
+      .find('.rc-picker-time-panel-column')
+      .first()
+      .find('li')
+      .at(6)
+      .simulate('click');
 
-  //   expect(wrapper.find('input').first().props().value).toEqual('2020-07-24 06:00:00');
-  //   expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
-  // });
+    expect(wrapper.find('input').first().props().value).toEqual('2020-07-24 06:00:00');
+    expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
+  });
 
-  // // https://github.com/ant-design/ant-design/issues/26024
-  // it('panel should keep open when nextValue is empty', () => {
-  //   const wrapper = mount(<MomentRangePicker />);
+  // https://github.com/ant-design/ant-design/issues/26024
+  it('panel should keep open when nextValue is empty', () => {
+    const wrapper = mount(<MomentRangePicker />);
 
-  //   wrapper.openPicker(0);
+    wrapper.openPicker(0);
 
-  //   wrapper.selectCell(7, 0);
-  //   expect(wrapper.find('input').first().prop('value')).toBe('1990-09-07');
+    wrapper.selectCell(7, 0);
+    expect(wrapper.find('input').first().prop('value')).toBe('1990-09-07');
 
-  //   // back to first panel and clear input value
-  //   wrapper.find('input').first().simulate('focus');
-  //   wrapper.inputValue('', 0);
+    // back to first panel and clear input value
+    wrapper.find('input').first().simulate('focus');
+    wrapper.inputValue('', 0);
 
-  //   // reselect date
-  //   wrapper.selectCell(9, 0);
-  //   expect(wrapper.find('input').first().prop('value')).toBe('1990-09-09');
+    // reselect date
+    wrapper.selectCell(9, 0);
+    expect(wrapper.find('input').first().prop('value')).toBe('1990-09-09');
 
-  //   // end date
-  //   wrapper.selectCell(9, 1);
+    // end date
+    wrapper.selectCell(9, 1);
 
-  //   matchValues(wrapper, '1990-09-09', '1990-10-09');
-  // });
+    matchValues(wrapper, '1990-09-09', '1990-10-09');
+  });
 
-  // it('right date panel switch to month should keep in the same year', () => {
-  //   const wrapper = mount(<MomentRangePicker />);
-  //   wrapper.openPicker(0);
-  //   wrapper.find('.rc-picker-month-btn').last().simulate('click');
-  //   expect(wrapper.find('.rc-picker-year-btn').text()).toEqual('1990');
-  // });
+  it('right date panel switch to month should keep in the same year', () => {
+    const wrapper = mount(<MomentRangePicker />);
+    wrapper.openPicker(0);
+    wrapper.find('.rc-picker-month-btn').last().simulate('click');
+    expect(wrapper.find('.rc-picker-year-btn').text()).toEqual('1990');
+  });
 
-  // // https://github.com/ant-design/ant-design/issues/26390
-  // it('month panel should be disabled', () => {
-  //   const wrapper = mount(<MomentRangePicker />);
-  //   wrapper.openPicker();
-  //   wrapper.selectCell(15);
+  // https://github.com/ant-design/ant-design/issues/26390
+  it('month panel should be disabled', () => {
+    const wrapper = mount(<MomentRangePicker />);
+    wrapper.openPicker();
+    wrapper.selectCell(15);
 
-  //   wrapper.find('.rc-picker-month-btn').first().simulate('click');
-  //   expect(wrapper.findCell('Jan').hasClass('rc-picker-cell-disabled')).toBeTruthy();
-  //   expect(wrapper.findCell('Dec').hasClass('rc-picker-cell-disabled')).toBeFalsy();
-  // });
+    wrapper.find('.rc-picker-month-btn').first().simulate('click');
+    expect(wrapper.findCell('Jan').hasClass('rc-picker-cell-disabled')).toBeTruthy();
+    expect(wrapper.findCell('Dec').hasClass('rc-picker-cell-disabled')).toBeFalsy();
+  });
 
-  // // https://github.com/ant-design/ant-design/issues/23167
-  // it('default endDate should be relative startDate', () => {
-  //   const wrapper = mount(<MomentRangePicker showTime />);
-  //   wrapper.openPicker();
+  // https://github.com/ant-design/ant-design/issues/23167
+  it('default endDate should be relative startDate', () => {
+    const wrapper = mount(<MomentRangePicker showTime />);
+    wrapper.openPicker();
 
-  //   wrapper.selectCell(24);
-  //   wrapper.find('.rc-picker-ok button').simulate('click');
+    wrapper.selectCell(24);
+    wrapper.find('.rc-picker-ok button').simulate('click');
 
-  //   wrapper.find('ul').first().find('li').at(0).simulate('click');
-  //   wrapper.find('.rc-picker-ok button').simulate('click');
+    wrapper.find('ul').first().find('li').at(0).simulate('click');
+    wrapper.find('.rc-picker-ok button').simulate('click');
 
-  //   matchValues(wrapper, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
-  // });
+    matchValues(wrapper, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
+  });
 
-  // it('default startDate should be relative endDate', () => {
-  //   const wrapper = mount(<MomentRangePicker showTime />);
-  //   wrapper.openPicker(1);
+  it('default startDate should be relative endDate', () => {
+    const wrapper = mount(<MomentRangePicker showTime />);
+    wrapper.openPicker(1);
 
-  //   wrapper.selectCell(24);
-  //   wrapper.find('.rc-picker-ok button').simulate('click');
+    wrapper.selectCell(24);
+    wrapper.find('.rc-picker-ok button').simulate('click');
 
-  //   wrapper.find('ul').first().find('li').at(0).simulate('click');
-  //   wrapper.find('.rc-picker-ok button').simulate('click');
+    wrapper.find('ul').first().find('li').at(0).simulate('click');
+    wrapper.find('.rc-picker-ok button').simulate('click');
 
-  //   matchValues(wrapper, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
-  // });
+    matchValues(wrapper, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
+  });
 
-  // // https://github.com/ant-design/ant-design/issues/30893
-  // it('range picker should have onMouseEnter and onMouseLeave event', () => {
-  //   const handleMouseEnter = jest.fn();
-  //   const handleMouseLeave = jest.fn();
-  //   const wrapper = mount(
-  //     <MomentRangePicker onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />,
-  //   );
-  //   wrapper.simulate('mouseenter');
-  //   expect(handleMouseEnter).toHaveBeenCalled();
-  //   wrapper.simulate('mouseleave');
-  //   expect(handleMouseLeave).toHaveBeenCalled();
-  // });
+  // https://github.com/ant-design/ant-design/issues/30893
+  it('range picker should have onMouseEnter and onMouseLeave event', () => {
+    const handleMouseEnter = jest.fn();
+    const handleMouseLeave = jest.fn();
+    const wrapper = mount(
+      <MomentRangePicker onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />,
+    );
+    wrapper.simulate('mouseenter');
+    expect(handleMouseEnter).toHaveBeenCalled();
+    wrapper.simulate('mouseleave');
+    expect(handleMouseLeave).toHaveBeenCalled();
+  });
 
-  // // https://github.com/ant-design/ant-design/issues/31334
-  // it('keyboard should not trigger on disabledDate', () => {
-  //   const onCalendarChange = jest.fn();
-  //   const now = moment();
-  //   const disabledDate = (current: Moment) => {
-  //     return current.diff(now, 'days') > 1 || current.diff(now, 'days') < -1;
-  //   };
-  //   const wrapper = mount(
-  //     <MomentRangePicker onCalendarChange={onCalendarChange} disabledDate={disabledDate} />,
-  //   );
-  //   wrapper.find('input').first().simulate('focus');
-  //   wrapper.keyDown(KeyCode.ENTER);
-  //   wrapper.keyDown(KeyCode.TAB);
-  //   // Make sure the selected value is disabledDate. Because only a few values are disabledDate
-  //   wrapper.keyDown(KeyCode.DOWN);
-  //   wrapper.keyDown(KeyCode.DOWN);
-  //   wrapper.keyDown(KeyCode.DOWN);
-  //   wrapper.keyDown(KeyCode.DOWN);
-  //   wrapper.keyDown(KeyCode.DOWN);
-  //   wrapper.keyDown(KeyCode.DOWN);
-  //   wrapper.keyDown(KeyCode.ENTER);
-  //   expect(onCalendarChange).not.toHaveBeenCalled();
-  // });
+  // https://github.com/ant-design/ant-design/issues/31334
+  it('keyboard should not trigger on disabledDate', () => {
+    const onCalendarChange = jest.fn();
+    const now = moment();
+    const disabledDate = (current: Moment) => {
+      return current.diff(now, 'days') > 1 || current.diff(now, 'days') < -1;
+    };
+    const wrapper = mount(
+      <MomentRangePicker onCalendarChange={onCalendarChange} disabledDate={disabledDate} />,
+    );
+    wrapper.find('input').first().simulate('focus');
+    wrapper.keyDown(KeyCode.ENTER);
+    wrapper.keyDown(KeyCode.TAB);
+    // Make sure the selected value is disabledDate. Because only a few values are disabledDate
+    wrapper.keyDown(KeyCode.DOWN);
+    wrapper.keyDown(KeyCode.DOWN);
+    wrapper.keyDown(KeyCode.DOWN);
+    wrapper.keyDown(KeyCode.DOWN);
+    wrapper.keyDown(KeyCode.DOWN);
+    wrapper.keyDown(KeyCode.DOWN);
+    wrapper.keyDown(KeyCode.ENTER);
+    expect(onCalendarChange).not.toHaveBeenCalled();
+  });
 
-  // // https://github.com/ant-design/ant-design/issues/33662
-  // it('range picker should have onClick event', () => {
-  //   const handleClick = jest.fn();
-  //   const wrapper = mount(<MomentRangePicker onClick={handleClick} />);
-  //   wrapper.simulate('click');
-  //   expect(handleClick).toHaveBeenCalled();
-  // });
+  // https://github.com/ant-design/ant-design/issues/33662
+  it('range picker should have onClick event', () => {
+    const handleClick = jest.fn();
+    const wrapper = mount(<MomentRangePicker onClick={handleClick} />);
+    wrapper.simulate('click');
+    expect(handleClick).toHaveBeenCalled();
+  });
 
-  // it('range picker should have onMouseDown event', () => {
-  //   const handleMouseDown = jest.fn();
-  //   const wrapper = mount(<MomentRangePicker onMouseDown={handleMouseDown} />);
-  //   wrapper.simulate('mousedown');
-  //   expect(handleMouseDown).toHaveBeenCalled();
-  // });
+  it('range picker should have onMouseDown event', () => {
+    const handleMouseDown = jest.fn();
+    const wrapper = mount(<MomentRangePicker onMouseDown={handleMouseDown} />);
+    wrapper.simulate('mousedown');
+    expect(handleMouseDown).toHaveBeenCalled();
+  });
 
-  // it('panel should be stable: left', () => {
-  //   const mock = spyElementPrototypes(HTMLElement, {
-  //     offsetWidth: {
-  //       get() {
-  //         if (this.className.includes('range-arrow')) {
-  //           return 14;
-  //         } else if (this.className.includes('panel-container')) {
-  //           return 312;
-  //         } else if (this.className.includes('input')) {
-  //           return 236;
-  //         } else if (this.className.includes('range-separator')) {
-  //           return 10;
-  //         }
-  //       },
-  //     },
-  //     offsetLeft: {
-  //       get() {
-  //         if (this.className.includes('range-arrow')) {
-  //           return 16;
-  //         }
-  //       },
-  //     },
-  //   });
-  //   const wrapper = mount(
-  //     <MomentRangePicker
-  //       allowClear
-  //       defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
-  //       clearIcon={<span>X</span>}
-  //       suffixIcon={<span>O</span>}
-  //     />,
-  //   );
-  //   wrapper.openPicker(1);
-  //   expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('0px');
-  //   mock.mockRestore();
-  // });
+  it('panel should be stable: left', () => {
+    const mock = spyElementPrototypes(HTMLElement, {
+      offsetWidth: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 14;
+          } else if (this.className.includes('panel-container')) {
+            return 312;
+          } else if (this.className.includes('input')) {
+            return 236;
+          } else if (this.className.includes('range-separator')) {
+            return 10;
+          }
+        },
+      },
+      offsetLeft: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 16;
+          }
+        },
+      },
+    });
+    const wrapper = mount(
+      <MomentRangePicker
+        allowClear
+        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        clearIcon={<span>X</span>}
+        suffixIcon={<span>O</span>}
+      />,
+    );
+    wrapper.openPicker(1);
+    expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('0px');
+    mock.mockRestore();
+  });
 
-  // it('panel should be stable: arrow right and panel left', () => {
-  //   const mock = spyElementPrototypes(HTMLElement, {
-  //     offsetWidth: {
-  //       get() {
-  //         if (this.className.includes('range-arrow')) {
-  //           return 14;
-  //         } else if (this.className.includes('panel-container')) {
-  //           return 312;
-  //         } else if (this.className.includes('input')) {
-  //           return 236;
-  //         } else if (this.className.includes('range-separator')) {
-  //           return 10;
-  //         }
-  //       },
-  //     },
-  //     offsetLeft: {
-  //       get() {
-  //         if (this.className.includes('range-arrow')) {
-  //           return 262;
-  //         }
-  //       },
-  //     },
-  //   });
-  //   const wrapper = mount(
-  //     <MomentRangePicker
-  //       allowClear
-  //       defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
-  //       clearIcon={<span>X</span>}
-  //       suffixIcon={<span>O</span>}
-  //     />,
-  //   );
-  //   wrapper.openPicker(1);
-  //   expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('0px');
-  //   mock.mockRestore();
-  // });
+  it('panel should be stable: arrow right and panel left', () => {
+    const mock = spyElementPrototypes(HTMLElement, {
+      offsetWidth: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 14;
+          } else if (this.className.includes('panel-container')) {
+            return 312;
+          } else if (this.className.includes('input')) {
+            return 236;
+          } else if (this.className.includes('range-separator')) {
+            return 10;
+          }
+        },
+      },
+      offsetLeft: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 262;
+          }
+        },
+      },
+    });
+    const wrapper = mount(
+      <MomentRangePicker
+        allowClear
+        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        clearIcon={<span>X</span>}
+        suffixIcon={<span>O</span>}
+      />,
+    );
+    wrapper.openPicker(1);
+    expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('0px');
+    mock.mockRestore();
+  });
 
-  // it('panel should be stable: arrow right and panel right', () => {
-  //   const mock = spyElementPrototypes(HTMLElement, {
-  //     offsetWidth: {
-  //       get() {
-  //         if (this.className.includes('range-arrow')) {
-  //           return 14;
-  //         } else if (this.className.includes('panel-container')) {
-  //           return 311;
-  //         } else if (this.className.includes('input')) {
-  //           return 285;
-  //         } else if (this.className.includes('range-separator')) {
-  //           return 10;
-  //         }
-  //       },
-  //     },
-  //     offsetLeft: {
-  //       get() {
-  //         if (this.className.includes('range-arrow')) {
-  //           return 305;
-  //         }
-  //       },
-  //     },
-  //   });
-  //   const wrapper = mount(
-  //     <MomentRangePicker
-  //       allowClear
-  //       defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
-  //       clearIcon={<span>X</span>}
-  //       suffixIcon={<span>O</span>}
-  //     />,
-  //   );
-  //   wrapper.openPicker(1);
-  //   expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('295px');
-  //   mock.mockRestore();
-  // });
+  it('panel should be stable: arrow right and panel right', () => {
+    const mock = spyElementPrototypes(HTMLElement, {
+      offsetWidth: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 14;
+          } else if (this.className.includes('panel-container')) {
+            return 311;
+          } else if (this.className.includes('input')) {
+            return 285;
+          } else if (this.className.includes('range-separator')) {
+            return 10;
+          }
+        },
+      },
+      offsetLeft: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 305;
+          }
+        },
+      },
+    });
+    const wrapper = mount(
+      <MomentRangePicker
+        allowClear
+        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        clearIcon={<span>X</span>}
+        suffixIcon={<span>O</span>}
+      />,
+    );
+    wrapper.openPicker(1);
+    expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('295px');
+    mock.mockRestore();
+  });
 });
