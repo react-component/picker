@@ -554,11 +554,14 @@ describe('Picker.Range', () => {
 
     // Select to active next
     wrapper.selectCell(11);
-    jest.runAllTimers();
+    act(() => {
+      jest.runAllTimers();
+    });
     expect(wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-active')).toBeTruthy();
 
     wrapper.unmount();
 
+    jest.clearAllTimers();
     jest.useRealTimers();
   });
 
@@ -688,6 +691,7 @@ describe('Picker.Range', () => {
 
     expect(onOpenChange).not.toHaveBeenCalled();
 
+    jest.clearAllTimers();
     jest.useRealTimers();
   });
 
@@ -707,6 +711,7 @@ describe('Picker.Range', () => {
     act(() => {
       jest.runAllTimers();
     });
+    jest.clearAllTimers();
     jest.useRealTimers();
   });
 
@@ -762,6 +767,7 @@ describe('Picker.Range', () => {
     expect(wrapper.isOpen()).toBeFalsy();
     expect(wrapper.find('input').first().props().value).toEqual('');
 
+    jest.clearAllTimers();
     jest.useRealTimers();
   });
 
@@ -1233,8 +1239,12 @@ describe('Picker.Range', () => {
       const wrapper = mount(<MomentRangePicker />);
       wrapper.find('.rc-picker').simulate('click');
       expect(wrapper.isOpen()).toBeTruthy();
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       expect(document.activeElement).toStrictEqual(wrapper.find('input').first().getDOMNode());
+
+      jest.clearAllTimers();
       jest.useRealTimers();
     });
     it('should focus on the second element if first is disabled', () => {
@@ -1242,8 +1252,12 @@ describe('Picker.Range', () => {
       const wrapper = mount(<MomentRangePicker disabled={[true, false]} />);
       wrapper.find('.rc-picker').simulate('click');
       expect(wrapper.isOpen()).toBeTruthy();
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       expect(document.activeElement).toStrictEqual(wrapper.find('input').last().getDOMNode());
+
+      jest.clearAllTimers();
       jest.useRealTimers();
     });
     it("shouldn't let mousedown blur the input", () => {
@@ -1253,12 +1267,16 @@ describe('Picker.Range', () => {
         attachTo: document.body,
       });
       wrapper.find('.rc-picker').simulate('click');
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       wrapper.find('.rc-picker').simulate('mousedown', {
         preventDefault,
       });
       expect(wrapper.isOpen()).toBeTruthy();
       expect(preventDefault).toHaveBeenCalled();
+
+      jest.clearAllTimers();
       jest.useRealTimers();
     });
   });
@@ -1297,6 +1315,7 @@ describe('Picker.Range', () => {
       jest.useFakeTimers();
     });
     afterEach(() => {
+      jest.clearAllTimers();
       jest.useRealTimers();
     });
 
@@ -1309,7 +1328,9 @@ describe('Picker.Range', () => {
       wrapper.openPicker(0);
       const leftCell = wrapper.findCell(24);
       leftCell.simulate('mouseEnter');
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       wrapper.update();
       expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
       expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
@@ -1321,7 +1342,9 @@ describe('Picker.Range', () => {
       ).toBeFalsy();
 
       leftCell.simulate('mouseLeave');
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       wrapper.update();
       expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
       expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
@@ -1338,7 +1361,9 @@ describe('Picker.Range', () => {
       wrapper.openPicker(1);
       const rightCell = wrapper.findCell(24, 1);
       rightCell.simulate('mouseEnter');
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       wrapper.update();
       expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
       expect(wrapper.find('input').last().prop('value')).toBe('2020-08-24');
@@ -1350,7 +1375,9 @@ describe('Picker.Range', () => {
       ).toBeTruthy();
 
       rightCell.simulate('mouseLeave');
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       wrapper.update();
       expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
       expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
@@ -1370,7 +1397,9 @@ describe('Picker.Range', () => {
       wrapper.openPicker(0);
       const leftCell = wrapper.findCell(24, 0);
       leftCell.simulate('mouseEnter');
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       wrapper.update();
       expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
       expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
@@ -1394,7 +1423,9 @@ describe('Picker.Range', () => {
       // right
       const rightCell = wrapper.findCell(24, 1);
       rightCell.simulate('mouseEnter');
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       wrapper.update();
       expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
       expect(wrapper.find('input').last().prop('value')).toBe('2020-08-24');
