@@ -1235,82 +1235,84 @@ describe('Picker.Range', () => {
     });
   });
 
-  // describe('click at non-input elements', () => {
-  //   it('should focus on the first element by default', () => {
-  //     jest.useFakeTimers();
-  //     const wrapper = mount(<MomentRangePicker />);
-  //     wrapper.find('.rc-picker').simulate('click');
-  //     expect(wrapper.isOpen()).toBeTruthy();
-  //     act(() => {
-  //       jest.runAllTimers();
-  //     });
-  //     expect(document.activeElement).toStrictEqual(wrapper.find('input').first().getDOMNode());
+  describe('click at non-input elements', () => {
+    it('should focus on the first element by default', () => {
+      jest.useFakeTimers();
+      const wrapper = mount(<MomentRangePicker />);
+      wrapper.find('.rc-picker').simulate('click');
+      expect(wrapper.isOpen()).toBeTruthy();
+      act(() => {
+        jest.runAllTimers();
+      });
+      expect(document.activeElement).toStrictEqual(wrapper.find('input').first().getDOMNode());
 
-  //     jest.clearAllTimers();
-  //     jest.useRealTimers();
-  //   });
-  //   it('should focus on the second element if first is disabled', () => {
-  //     jest.useFakeTimers();
-  //     const wrapper = mount(<MomentRangePicker disabled={[true, false]} />);
-  //     wrapper.find('.rc-picker').simulate('click');
-  //     expect(wrapper.isOpen()).toBeTruthy();
-  //     act(() => {
-  //       jest.runAllTimers();
-  //     });
-  //     expect(document.activeElement).toStrictEqual(wrapper.find('input').last().getDOMNode());
+      jest.clearAllTimers();
+      jest.useRealTimers();
+    });
 
-  //     jest.clearAllTimers();
-  //     jest.useRealTimers();
-  //   });
-  //   it("shouldn't let mousedown blur the input", () => {
-  //     jest.useFakeTimers();
-  //     const preventDefault = jest.fn();
-  //     const wrapper = mount(<MomentRangePicker />, {
-  //       attachTo: document.body,
-  //     });
-  //     wrapper.find('.rc-picker').simulate('click');
-  //     act(() => {
-  //       jest.runAllTimers();
-  //     });
-  //     wrapper.find('.rc-picker').simulate('mousedown', {
-  //       preventDefault,
-  //     });
-  //     expect(wrapper.isOpen()).toBeTruthy();
-  //     expect(preventDefault).toHaveBeenCalled();
+    it.skip('should focus on the second element if first is disabled', () => {
+      jest.useFakeTimers();
+      const wrapper = mount(<MomentRangePicker disabled={[true, false]} />);
+      wrapper.find('.rc-picker').simulate('click');
+      expect(wrapper.isOpen()).toBeTruthy();
+      act(() => {
+        jest.runAllTimers();
+      });
+      expect(document.activeElement).toStrictEqual(wrapper.find('input').last().getDOMNode());
 
-  //     jest.clearAllTimers();
-  //     jest.useRealTimers();
-  //   });
-  // });
+      jest.clearAllTimers();
+      jest.useRealTimers();
+    });
 
-  // it('panelRender', () => {
-  //   const wrapper = mount(<MomentRangePicker open panelRender={() => <h1>Light</h1>} />);
-  //   expect(wrapper.render()).toMatchSnapshot();
-  // });
+    it("shouldn't let mousedown blur the input", () => {
+      jest.useFakeTimers();
+      const preventDefault = jest.fn();
+      const wrapper = mount(<MomentRangePicker />, {
+        attachTo: document.body,
+      });
+      wrapper.find('.rc-picker').simulate('click');
+      act(() => {
+        jest.runAllTimers();
+      });
+      wrapper.find('.rc-picker').simulate('mousedown', {
+        preventDefault,
+      });
+      expect(wrapper.isOpen()).toBeTruthy();
+      expect(preventDefault).toHaveBeenCalled();
 
-  // describe('Selection callbacks', () => {
-  //   it('selection provide info for onCalendarChange', () => {
-  //     const onCalendarChange = jest.fn();
+      jest.clearAllTimers();
+      jest.useRealTimers();
+    });
+  });
 
-  //     const wrapper = mount(<MomentRangePicker onCalendarChange={onCalendarChange} />);
+  it('panelRender', () => {
+    const wrapper = mount(<MomentRangePicker open panelRender={() => <h1>Light</h1>} />);
+    expect(wrapper.render()).toMatchSnapshot();
+  });
 
-  //     wrapper.openPicker();
+  describe('Selection callbacks', () => {
+    it('selection provide info for onCalendarChange', () => {
+      const onCalendarChange = jest.fn();
 
-  //     // Start date
-  //     wrapper.selectCell(11);
-  //     expect(onCalendarChange).toHaveBeenCalledWith([expect.anything(), null], ['1990-09-11', ''], {
-  //       range: 'start',
-  //     });
+      const wrapper = mount(<MomentRangePicker onCalendarChange={onCalendarChange} />);
 
-  //     // End date
-  //     wrapper.selectCell(23);
-  //     expect(onCalendarChange).toHaveBeenCalledWith(
-  //       [expect.anything(), expect.anything()],
-  //       ['1990-09-11', '1990-09-23'],
-  //       { range: 'end' },
-  //     );
-  //   });
-  // });
+      wrapper.openPicker();
+
+      // Start date
+      wrapper.selectCell(11);
+      expect(onCalendarChange).toHaveBeenCalledWith([expect.anything(), null], ['1990-09-11', ''], {
+        range: 'start',
+      });
+
+      // End date
+      wrapper.selectCell(23);
+      expect(onCalendarChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['1990-09-11', '1990-09-23'],
+        { range: 'end' },
+      );
+    });
+  });
 
   // describe('hover placeholder', () => {
   //   beforeEach(() => {
