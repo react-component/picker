@@ -341,6 +341,21 @@ describe('Picker.Basic', () => {
     expect(mouseDownEvent.defaultPrevented).toBeTruthy();
   });
 
+  it('not fire blur when clickinside and is in focus ', () => {
+    const onBlur = jest.fn();
+    const { container } = render(
+      <MomentPicker onBlur={onBlur} suffixIcon={<div className="suffix-icon">X</div>} />,
+    );
+    openPicker(container);
+    keyDown(KeyCode.ESC);
+    fireEvent.mouseDown(container.querySelector('.suffix-icon'));
+    fireEvent.blur(container.querySelector('input'));
+    expect(onBlur).toHaveBeenCalledTimes(0);
+
+    fireEvent.blur(container.querySelector('input'));
+    expect(onBlur).toHaveBeenCalledTimes(1);
+  });
+
   describe('full steps', () => {
     [
       {
