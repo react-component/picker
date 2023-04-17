@@ -1,12 +1,6 @@
 # rc-picker
 
-[![NPM version][npm-image]][npm-url]
-[![build status][github-actions-image]][github-actions-url]
-[![Codecov][codecov-image]][codecov-url]
-[![Dependencies][david-image]][david-url]
-[![DevDependencies][david-dev-image]][david-dev-url]
-[![npm download][download-image]][download-url]
-[![bundle size][bundlephobia-image]][bundlephobia-url]
+[![NPM version][npm-image]][npm-url] [![build status][github-actions-image]][github-actions-url] [![Codecov][codecov-image]][codecov-url] [![Dependencies][david-image]][david-url] [![DevDependencies][david-dev-image]][david-dev-url] [![npm download][download-image]][download-url] [![bundle size][bundlephobia-image]][bundlephobia-url]
 
 [npm-image]: http://img.shields.io/npm/v/rc-picker.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-picker
@@ -80,6 +74,7 @@ render(<Picker />, mountNode);
 | onBlur | (event:React.FocusEvent\<HTMLInputElement>) => void |  | called like input's on blur |
 | onKeyDown | (event:React.KeyboardEvent\<HTMLInputElement>, preventDefault: () => void) => void |  | input on keydown event |
 | direction | String: ltr or rtl |  | Layout direction of picker component, it supports RTL direction too. |
+| selectAfterDateChange | Boolean | false | Trigger to select value when typing valid date |
 
 ### PickerPanel
 
@@ -109,7 +104,7 @@ render(<Picker />, mountNode);
 ### RangePicker
 
 | Property | Type | Default | Description |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 | prefixCls | String | rc-picker | prefixCls of this component |
 | className | String | '' | additional css class of root dom |
 | style | React.CSSProperties |  | additional style of root dom node |
