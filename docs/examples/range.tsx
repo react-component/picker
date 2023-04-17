@@ -187,6 +187,19 @@ export default () => {
             disabledDate={disabledDate}
           />
         </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Allow outof [begin,end]</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            allowClear
+            limitBeginAndEnd={false}
+            ref={rangePickerRef}
+            clearIcon={<span>X</span>}
+            suffixIcon={<span>O</span>}
+          />
+        </div>
       </div>
     </div>
   );

@@ -63,6 +63,8 @@ export type PickerPanelSharedProps<DateType> = {
 
   // Date
   disabledDate?: (date: DateType) => boolean;
+  // disable outof range[begin,end];  default true
+  limitBeginAndEnd?:boolean
 
   // Render
   /** @deprecated use cellRender instead of dateRender */
