@@ -314,6 +314,31 @@ describe('Picker.Basic', () => {
     expect(preventDefault).toHaveBeenCalled();
   });
 
+  it('not fire blur when clickinside and is in focus ', () => {
+    const onBlur = jest.fn();
+    const wrapper = mount(
+      <MomentPicker onBlur={onBlur} suffixIcon={<div className="suffix-icon">X</div>} />,
+    );
+    wrapper.openPicker();
+    wrapper.find('input').simulate('keyDown', { which: KeyCode.ESC });
+    // workaround: fire an event that bubbles from suffix div to window
+    const mouseDownEvent = new MouseEvent('mousedown', {
+      view: window,
+      bubbles: true,
+    });
+    Reflect.defineProperty(mouseDownEvent, 'target', {
+      value: wrapper.find('.suffix-icon').getDOMNode(),
+      enumerable: true,
+    });
+    fireEvent(window, mouseDownEvent);
+
+    wrapper.find('input').simulate('blur');
+    expect(onBlur).toHaveBeenCalledTimes(0);
+
+    wrapper.find('input').simulate('blur');
+    expect(onBlur).toHaveBeenCalledTimes(1);
+  });
+
   describe('full steps', () => {
     [
       {
