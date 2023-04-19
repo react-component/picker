@@ -62,6 +62,9 @@ export default () => {
             defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
             clearIcon={<span>X</span>}
             suffixIcon={<span>O</span>}
+            onBlur={() => {
+              console.log('trigger blur')
+            }}
           />
           <RangePicker<Moment>
             {...sharedProps}
