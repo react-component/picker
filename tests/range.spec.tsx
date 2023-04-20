@@ -1724,4 +1724,10 @@ describe('Picker.Range', () => {
     expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('295px');
     mock.mockRestore();
   });
+
+  it('range picker should use the passed in default when part is disabled', () => {
+    mount(<MomentRangePicker defaultValue={[null, null]} disabled={[false, true]} />);
+
+    expect(document.querySelectorAll('input')[1].value).toBeFalsy();
+  });
 });
