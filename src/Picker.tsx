@@ -16,6 +16,7 @@ import type { AlignType } from '@rc-component/trigger/lib/interface';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import warning from 'rc-util/lib/warning';
 import * as React from 'react';
+import { parseLocale } from './generate/dayjs';
 import useHoverValue from './hooks/useHoverValue';
 import usePickerInput from './hooks/usePickerInput';
 import usePresets from './hooks/usePresets';
@@ -133,6 +134,8 @@ type MergedPickerProps<DateType> = {
   picker?: PickerMode;
 } & OmitType<DateType>;
 
+const dayjsLocalesLoadedArray = [];
+
 function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
@@ -189,6 +192,14 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
 
   const presetList = usePresets(presets);
+
+  // ============================ dayjsLocalesLoaded ============================
+  React.useEffect(() => {
+    if (!dayjsLocalesLoadedArray.includes(locale.locale)) {
+      dayjsLocalesLoadedArray.push(locale.locale);
+      require(`dayjs/locale/${parseLocale(locale.locale)}.js`);
+    }
+  }, [locale]);
 
   // ============================ Warning ============================
   if (process.env.NODE_ENV !== 'production') {
