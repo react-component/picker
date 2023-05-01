@@ -544,17 +544,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   };
 
-  // Submit with confirm button
-  function onInternalOk() {
-    if (getValue(selectedValue, mergedActivePickerIndex)) {
-      // triggerChangeOld(selectedValue);
-      triggerChange(selectedValue, mergedActivePickerIndex);
-      if (onOk) {
-        onOk(selectedValue);
-      }
-    }
-  }
-
   // ============================= Text ==============================
   const sharedTextHooksProps = {
     formatList,
@@ -635,14 +624,19 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   // ============================= Input =============================
   const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
     if (changeOnBlur) {
-      console.log('???');
-      onInternalOk();
+      const selectedIndexValue = getValue(selectedValue, mergedActivePickerIndex);
+      if (selectedIndexValue) {
+        triggerChange(selectedValue, mergedActivePickerIndex);
+        if (onOk) {
+          onOk(selectedValue);
+        }
+      }
     }
     return onBlur?.(e);
   };
 
   const getSharedInputHookProps = (index: 0 | 1, resetText: () => void) => ({
-    blurToCancel: needConfirmButton,
+    blurToCancel: !changeOnBlur && needConfirmButton,
     forwardKeyDown,
     onBlur: onInternalBlur,
     isClickOutside: (target: EventTarget | null) =>
@@ -684,22 +678,25 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     },
   });
 
+  const sharedPickerInput = {
+    onKeyDown: (e, preventDefault) => {
+      onKeyDown?.(e, preventDefault);
+    },
+    changeOnBlur,
+  };
+
   const [startInputProps, { focused: startFocused, typing: startTyping }] = usePickerInput({
     ...getSharedInputHookProps(0, resetStartText),
     open: startOpen,
     value: startText,
-    onKeyDown: (e, preventDefault) => {
-      onKeyDown?.(e, preventDefault);
-    },
+    ...sharedPickerInput,
   });
 
   const [endInputProps, { focused: endFocused, typing: endTyping }] = usePickerInput({
     ...getSharedInputHookProps(1, resetEndText),
     open: endOpen,
     value: endText,
-    onKeyDown: (e, preventDefault) => {
-      onKeyDown?.(e, preventDefault);
-    },
+    ...sharedPickerInput,
   });
 
   // ========================== Click Picker ==========================
@@ -967,7 +964,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         (disabledDate && disabledDate(selectedValue[mergedActivePickerIndex])),
       locale,
       // rangeList,
-      onOk: onInternalOk,
+      onOk: () => {
+        const selectedIndexValue = getValue(selectedValue, mergedActivePickerIndex);
+        if (selectedIndexValue) {
+          triggerChange(selectedValue, mergedActivePickerIndex);
+          onOk?.(selectedValue);
+        }
+      },
     });
 
     if (picker !== 'time' && !showTime) {
