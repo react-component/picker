@@ -133,9 +133,7 @@ export default function usePickerInput({
       }
       setFocused(false);
 
-      if (onBlur) {
-        onBlur(e);
-      }
+      onBlur?.(e);
     },
   };
 
@@ -164,7 +162,7 @@ export default function usePickerInput({
           });
         } else if (!changeOnBlur && (!focused || clickedOutside)) {
           // raf(() => {
-            triggerOpen(false);
+          triggerOpen(false);
           // });
         }
       } else if (focused && !clickedOutside) {
