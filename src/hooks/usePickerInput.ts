@@ -1,4 +1,5 @@
 import KeyCode from 'rc-util/lib/KeyCode';
+import raf from 'rc-util/lib/raf';
 import type * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { addGlobalMouseDownEvent, getTargetFromEvent } from '../utils/uiUtil';
@@ -156,11 +157,13 @@ export default function usePickerInput({
           preventBlurRef.current = true;
 
           // Always set back in case `onBlur` prevented by user
-          requestAnimationFrame(() => {
+          raf(() => {
             preventBlurRef.current = false;
           });
         } else if (!focused || clickedOutside) {
-          triggerOpen(false);
+          raf(() => {
+            triggerOpen(false);
+          });
         }
       } else if (focused && !clickedOutside) {
         preventBlurRef.current = true;
