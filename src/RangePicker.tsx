@@ -130,6 +130,11 @@ export type RangePickerSharedProps<DateType> = {
   dateRender?: RangeDateRender<DateType>;
   cellRender?: CellRender<DateType>;
   panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
+  /**
+   * Trigger `onChange` event when blur.
+   * If you don't want to user click `confirm` to trigger change, can use this.
+   */
+  changeOnBlur?: boolean;
 };
 
 type OmitPickerProps<Props> = Omit<
@@ -244,6 +249,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     direction,
     activePickerIndex,
     autoComplete = 'off',
+    changeOnBlur,
   } = props as MergedRangePickerProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
@@ -538,6 +544,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   };
 
+  // Submit with confirm button
+  function onInternalOk() {
+    if (getValue(selectedValue, mergedActivePickerIndex)) {
+      // triggerChangeOld(selectedValue);
+      triggerChange(selectedValue, mergedActivePickerIndex);
+      if (onOk) {
+        onOk(selectedValue);
+      }
+    }
+  }
+
   // ============================= Text ==============================
   const sharedTextHooksProps = {
     formatList,
@@ -616,10 +633,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   };
 
   // ============================= Input =============================
+  const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
+    if (changeOnBlur) {
+      onInternalOk();
+    }
+    return onBlur?.(e);
+  };
+
   const getSharedInputHookProps = (index: 0 | 1, resetText: () => void) => ({
     blurToCancel: needConfirmButton,
     forwardKeyDown,
-    onBlur,
+    onBlur: onInternalBlur,
     isClickOutside: (target: EventTarget | null) =>
       !elementsContains(
         [
@@ -758,7 +782,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     monthCellRender,
     dateRender,
   });
-  
+
   const panelDateRender = React.useMemo(() => {
     if (!mergedCellRender) return undefined;
     return (date: DateType, info: CellRenderInfo<DateType>) =>
@@ -942,15 +966,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         (disabledDate && disabledDate(selectedValue[mergedActivePickerIndex])),
       locale,
       // rangeList,
-      onOk: () => {
-        if (getValue(selectedValue, mergedActivePickerIndex)) {
-          // triggerChangeOld(selectedValue);
-          triggerChange(selectedValue, mergedActivePickerIndex);
-          if (onOk) {
-            onOk(selectedValue);
-          }
-        }
-      },
+      onOk: onInternalOk,
     });
 
     if (picker !== 'time' && !showTime) {
