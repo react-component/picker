@@ -130,6 +130,7 @@ export type RangePickerSharedProps<DateType> = {
   dateRender?: RangeDateRender<DateType>;
   cellRender?: CellRender<DateType>;
   panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
+  singlePanel?: boolean;
 };
 
 type OmitPickerProps<Props> = Omit<
@@ -244,6 +245,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     direction,
     activePickerIndex,
     autoComplete = 'off',
+    singlePanel = false,
   } = props as MergedRangePickerProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
@@ -958,7 +960,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       const nextViewDate = getClosingViewDate(viewDate, picker, generateConfig);
       const currentMode = mergedModes[mergedActivePickerIndex];
 
-      const showDoublePanel = currentMode === picker;
+      const showDoublePanel = currentMode === picker && !singlePanel;
       const leftPanel = renderPanel(showDoublePanel ? 'left' : false, {
         pickerValue: viewDate,
         onPickerValueChange: (newViewDate) => {
