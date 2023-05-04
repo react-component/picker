@@ -1166,6 +1166,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       } else {
         onEndLeave();
       }
+
+      // Switch
+      triggerOpen(false, mergedActivePickerIndex, 'confirm');
     } else {
       setSelectedValue(values);
     }

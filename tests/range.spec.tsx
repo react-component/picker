@@ -92,6 +92,7 @@ describe('Picker.Range', () => {
       onCalendarChange.mockReset();
       selectCell(14);
 
+      expect(onChange).toHaveBeenCalled();
       expect(isSame(onChange.mock.calls[0][0][0], '1990-09-13')).toBeTruthy();
       expect(isSame(onChange.mock.calls[0][0][1], '1990-09-14')).toBeTruthy();
       expect(onChange.mock.calls[0][1]).toEqual(['1990-09-13', '1990-09-14']);
