@@ -1,10 +1,10 @@
-import React from 'react';
 import type { Moment } from 'moment';
 import moment from 'moment';
-import RangePicker from '../../src/RangePicker';
+import React from 'react';
+import '../../assets/index.less';
 import momentGenerateConfig from '../../src/generate/moment';
 import zhCN from '../../src/locale/zh_CN';
-import '../../assets/index.less';
+import RangePicker from '../../src/RangePicker';
 import './common.less';
 
 const defaultStartValue = moment('2019-09-03 05:02:03');
@@ -53,7 +53,7 @@ export default () => {
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
-          {/* <RangePicker<Moment>
+          <RangePicker<Moment>
             {...sharedProps}
             value={undefined}
             locale={zhCN}
@@ -62,7 +62,7 @@ export default () => {
             defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
             clearIcon={<span>X</span>}
             suffixIcon={<span>O</span>}
-          /> */}
+          />
           <RangePicker<Moment>
             {...sharedProps}
             locale={zhCN}
@@ -70,7 +70,11 @@ export default () => {
             ref={rangePickerRef}
             showTime
             style={{ width: 580 }}
-            cellRender={(current, info) => <div title={info.type} style={{background: 'green'}}>{typeof current === "number" ? current : current.get("date")}</div>}
+            cellRender={(current, info) => (
+              <div title={info.type} style={{ background: 'green' }}>
+                {typeof current === 'number' ? current : current.get('date')}
+              </div>
+            )}
             ranges={{
               ranges: [moment(), moment().add(10, 'day')],
             }}
@@ -79,7 +83,7 @@ export default () => {
             }}
             changeOnBlur
           />
-          {/* <RangePicker<Moment>
+          <RangePicker<Moment>
             {...sharedProps}
             value={undefined}
             locale={zhCN}
@@ -96,10 +100,10 @@ export default () => {
             allowClear
             picker="time"
             style={{ width: 280 }}
-          /> */}
+          />
         </div>
 
-        {/* <div style={{ margin: '0 8px' }}>
+        <div style={{ margin: '0 8px' }}>
           <h3>Focus</h3>
           <RangePicker<Moment>
             {...sharedProps}
@@ -187,7 +191,7 @@ export default () => {
             placeholder={['start...', 'end...']}
             disabledDate={disabledDate}
           />
-        </div> */}
+        </div>
       </div>
     </div>
   );
