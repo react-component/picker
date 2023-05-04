@@ -35,8 +35,16 @@ export default function useRangeOpen(
 ): [
   open: boolean,
   activeIndex: 0 | 1,
+  startOpened: boolean | undefined,
+  endOpened: boolean | undefined,
   triggerOpen: (open: boolean, activeIndex: 0 | 1 | false, source: SourceType) => void,
 ] {
+  // We record opened status here in case repeat open with picker
+  const [openRecord, setOpenRecord] = React.useState<{
+    0?: boolean;
+    1?: boolean;
+  }>({});
+
   const [mergedOpen, setMergedOpen] = useMergedState(defaultOpen || false, {
     value: open,
     onChange: (nextOpen) => {
@@ -60,9 +68,20 @@ export default function useRangeOpen(
 
       // Record next open index
       if (!mergedOpen) {
+        // Reset open record
+        setOpenRecord({
+          [index]: true,
+        });
         setNextActiveIndex(index === 0 ? 1 : 0);
-      } else if (nextActiveIndex !== null) {
-        setNextActiveIndex(null);
+      } else {
+        setOpenRecord((ori) => ({
+          ...ori,
+          [index]: true,
+        }));
+
+        if (nextActiveIndex !== null) {
+          setNextActiveIndex(null);
+        }
       }
     } else if (source === 'confirm' || (source === 'blur' && changeOnBlur)) {
       if (nextActiveIndex !== null) {
@@ -84,5 +103,5 @@ export default function useRangeOpen(
     }
   });
 
-  return [mergedOpen, mergedActivePickerIndex, triggerOpen];
+  return [mergedOpen, mergedActivePickerIndex, openRecord[0], openRecord[1], triggerOpen];
 }

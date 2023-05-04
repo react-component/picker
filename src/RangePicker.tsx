@@ -256,7 +256,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
 
   // We record opened status here in case repeat open with picker
-  const openRecordsRef = useRef<Record<number, boolean>>({});
+  // const openRecordsRef = useRef<Record<number, boolean>>({});
 
   const containerRef = useRef<HTMLDivElement>(null);
   const panelDivRef = useRef<HTMLDivElement>(null);
@@ -350,20 +350,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   };
 
-  // ========================= Disable Date ==========================
-  const [disabledStartDate, disabledEndDate] = useRangeDisabled(
-    {
-      picker,
-      selectedValue,
-      locale,
-      disabled: mergedDisabled,
-      disabledDate,
-      generateConfig,
-    },
-    openRecordsRef.current[1],
-    openRecordsRef.current[0],
-  );
-
   // ============================= Open ==============================
   // const [mergedOpen, triggerInnerOpen] = useMergedState(false, {
   //   value: open,
@@ -380,18 +366,35 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   //   },
   // });
 
-  const [mergedOpen, mergedActivePickerIndex, triggerOpen] = useRangeOpen(
-    defaultOpen,
-    open,
-    activePickerIndex,
-    changeOnBlur,
-    startInputRef,
-    endInputRef,
-    onOpenChange,
-  );
+  const [mergedOpen, mergedActivePickerIndex, openRecordStart, openRecordEnd, triggerOpen] =
+    useRangeOpen(
+      defaultOpen,
+      open,
+      activePickerIndex,
+      changeOnBlur,
+      startInputRef,
+      endInputRef,
+      onOpenChange,
+    );
 
   const startOpen = mergedOpen && mergedActivePickerIndex === 0;
   const endOpen = mergedOpen && mergedActivePickerIndex === 1;
+
+  // ========================= Disable Date ==========================
+  const [disabledStartDate, disabledEndDate] = useRangeDisabled(
+    {
+      picker,
+      selectedValue,
+      locale,
+      disabled: mergedDisabled,
+      disabledDate,
+      generateConfig,
+    },
+    openRecordEnd,
+    openRecordStart,
+    // openRecordsRef.current[1],
+    // openRecordsRef.current[0],
+  );
 
   // ============================= Popup =============================
   // Popup min width
@@ -470,10 +473,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           values = [null, endValue];
         }
 
-        // Clean up cache since invalidate
-        openRecordsRef.current = {
-          [sourceIndex]: true,
-        };
+        // // Clean up cache since invalidate
+        // openRecordsRef.current = {
+        //   [sourceIndex]: true,
+        // };
       } else if (picker !== 'time' || order !== false) {
         // Reorder when in same date
         values = reorderValues(values, generateConfig);

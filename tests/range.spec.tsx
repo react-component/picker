@@ -1542,6 +1542,7 @@ describe('Picker.Range', () => {
     selectCell(15);
 
     fireEvent.click(document.querySelector('.rc-picker-month-btn'));
+
     expect(findCell('Jan')).toHaveClass('rc-picker-cell-disabled');
     expect(findCell('Dec')).not.toHaveClass('rc-picker-cell-disabled');
   });
@@ -1786,7 +1787,7 @@ describe('Picker.Range', () => {
   it('use dateRender and monthCellRender in month range picker', () => {
     const { container, baseElement } = render(
       <MomentRangePicker
-        picker='month'
+        picker="month"
         dateRender={(date) => <div>{date.get('date')}</div>}
         monthCellRender={(date) => <div>{date.get('month') + 1}</div>}
       />,
@@ -1797,7 +1798,7 @@ describe('Picker.Range', () => {
   it('use dateRender and monthCellRender in date range picker', () => {
     const { container, baseElement } = render(
       <MomentRangePicker
-        picker='date'
+        picker="date"
         dateRender={(date) => <div>{date.get('date')}</div>}
         monthCellRender={(date) => <div>{date.get('month') + 1}</div>}
       />,
