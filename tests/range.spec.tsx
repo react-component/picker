@@ -41,7 +41,7 @@ describe('Picker.Range', () => {
   });
 
   function keyDown(container: HTMLElement, index: number, keyCode: number) {
-    fireEvent.keyDown(container.querySelectorAll('input')[0], {
+    fireEvent.keyDown(container.querySelectorAll('input')[index], {
       keyCode,
       which: keyCode,
       charCode: keyCode,
@@ -578,7 +578,7 @@ describe('Picker.Range', () => {
     // document.querySelector('input').last().simulate('keyDown', {
     //   which: KeyCode.ENTER,
     // });
-    keyDown(container, 1, KeyCode.ENTER);
+    keyDown(container, 0, KeyCode.ENTER);
 
     expect(onChange).not.toHaveBeenCalled();
   });
@@ -1229,11 +1229,12 @@ describe('Picker.Range', () => {
 
         openPicker(container, 1);
         inputValue('1989-01-07', 1);
-        closePicker(container, 1);
+        console.log('close!');
+        keyDown(container, 1, KeyCode.ENTER);
         expect(isOpen()).toBeTruthy();
 
         inputValue('1989-01-01');
-        closePicker(container, 0);
+        keyDown(container, 0, KeyCode.ENTER);
         expect(isOpen()).toBeFalsy();
       });
     });
@@ -1270,21 +1271,15 @@ describe('Picker.Range', () => {
     });
     it("shouldn't let mousedown blur the input", () => {
       jest.useFakeTimers();
-      // const preventDefault = jest.fn();
       const { container } = render(<MomentRangePicker />);
       const node = container.querySelector('.rc-picker');
-      // document.querySelector('.rc-picker').simulate('click');
       fireEvent.click(node);
       act(() => {
         jest.runAllTimers();
       });
-      // document.querySelector('.rc-picker').simulate('mousedown', {
-      //   preventDefault,
-      // });
       const mouseDownEvent = createEvent.mouseDown(node);
       fireEvent(node, mouseDownEvent);
       expect(isOpen()).toBeTruthy();
-      // expect(preventDefault).toHaveBeenCalled();
       expect(mouseDownEvent.defaultPrevented).toBeTruthy();
       jest.useRealTimers();
     });

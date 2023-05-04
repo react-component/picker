@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import raf from 'rc-util/lib/raf';
 import warning from 'rc-util/lib/warning';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -366,18 +367,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   //   },
   // });
 
-  const [mergedOpen, mergedActivePickerIndex, firstTimeOpen, triggerOpen] =
-    useRangeOpen(
-      defaultOpen,
-      open,
-      activePickerIndex,
-      changeOnBlur,
-      startInputRef,
-      endInputRef,
-      getValue(selectedValue, 0),
-      getValue(selectedValue, 1),
-      onOpenChange,
-    );
+  const [mergedOpen, mergedActivePickerIndex, firstTimeOpen, triggerOpen] = useRangeOpen(
+    defaultOpen,
+    open,
+    activePickerIndex,
+    changeOnBlur,
+    startInputRef,
+    endInputRef,
+    getValue(selectedValue, 0),
+    getValue(selectedValue, 1),
+    onOpenChange,
+  );
 
   const startOpen = mergedOpen && mergedActivePickerIndex === 0;
   const endOpen = mergedOpen && mergedActivePickerIndex === 1;
@@ -437,16 +437,16 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   //   }
   // }
 
-  // function triggerOpenAndFocus(index: 0 | 1) {
-  //   triggerOpen(true, index);
-  //   // Use setTimeout to make sure panel DOM exists
-  //   setTimeout(() => {
-  //     const inputRef = [startInputRef, endInputRef][index];
-  //     if (inputRef.current) {
-  //       inputRef.current.focus();
-  //     }
-  //   }, 0);
-  // }
+  function triggerOpenAndFocus(index: 0 | 1) {
+    triggerOpen(true, index, 'open');
+    // Use setTimeout to make sure panel DOM exists
+    raf(() => {
+      const inputRef = [startInputRef, endInputRef][index];
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 0);
+  }
 
   function triggerChange(newValue: RangeValue<DateType>, sourceIndex: 0 | 1) {
     let values = newValue;
@@ -743,9 +743,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       !endInputRef.current.contains(e.target as Node)
     ) {
       if (!mergedDisabled[0]) {
-        // triggerOpenAndFocus(0);
+        triggerOpenAndFocus(0);
       } else if (!mergedDisabled[1]) {
-        // triggerOpenAndFocus(1);
+        triggerOpenAndFocus(1);
       }
     }
   };

@@ -62,7 +62,7 @@ export default function useRangeOpen(
   const [nextActiveIndex, setNextActiveIndex] = React.useState<0 | 1>(null);
 
   const triggerOpen = useEvent((nextOpen: boolean, index: 0 | 1 | false, source: SourceType) => {
-    // console.log('✅', nextOpen, index, source, startSelectedValue, endSelectedValue);
+    console.error('✅', nextOpen, index, source, startSelectedValue, endSelectedValue);
 
     if (index === false) {
       // Only when `nextOpen` is false and no need open to next index
