@@ -1,8 +1,8 @@
 import * as React from 'react';
-import type { RangeValue, PickerMode, Locale } from '../interface';
-import { getValue } from '../utils/miscUtil';
 import type { GenerateConfig } from '../generate';
-import { isSameDate, getQuarter } from '../utils/dateUtil';
+import type { Locale, PickerMode, RangeValue } from '../interface';
+import { getQuarter, isSameDate } from '../utils/dateUtil';
+import { getValue } from '../utils/miscUtil';
 
 export default function useRangeDisabled<DateType>(
   {
@@ -20,8 +20,9 @@ export default function useRangeDisabled<DateType>(
     locale: Locale;
     generateConfig: GenerateConfig<DateType>;
   },
-  disabledStart: boolean,
-  disabledEnd: boolean,
+  // disabledStart: boolean,
+  // disabledEnd: boolean,
+  firstTimeOpen: boolean,
 ) {
   const startDate = getValue(selectedValue, 0);
   const endDate = getValue(selectedValue, 1);
@@ -54,7 +55,8 @@ export default function useRangeDisabled<DateType>(
       }
 
       // Disabled part
-      if (disabledStart && endDate) {
+      // if (disabledStart && endDate) {
+      if (!firstTimeOpen && endDate) {
         switch (picker) {
           case 'quarter':
             return quarterNumber(date) > quarterNumber(endDate);
@@ -71,7 +73,7 @@ export default function useRangeDisabled<DateType>(
 
       return false;
     },
-    [disabledDate, disabled[1], endDate, disabledStart],
+    [disabledDate, disabled[1], endDate, firstTimeOpen],
   );
 
   const disabledEndDate = React.useCallback(
@@ -88,7 +90,8 @@ export default function useRangeDisabled<DateType>(
       }
 
       // Disabled part
-      if (disabledEnd && startDate) {
+      // if (disabledEnd && startDate) {
+      if (!firstTimeOpen && startDate) {
         switch (picker) {
           case 'quarter':
             return quarterNumber(date) < quarterNumber(startDate);
@@ -106,7 +109,7 @@ export default function useRangeDisabled<DateType>(
 
       return false;
     },
-    [disabledDate, disabled[0], startDate, disabledEnd],
+    [disabledDate, disabled[0], startDate, firstTimeOpen],
   );
 
   return [disabledStartDate, disabledEndDate];

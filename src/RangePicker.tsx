@@ -366,7 +366,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   //   },
   // });
 
-  const [mergedOpen, mergedActivePickerIndex, openRecordStart, openRecordEnd, triggerOpen] =
+  const [mergedOpen, mergedActivePickerIndex, firstTimeOpen, triggerOpen] =
     useRangeOpen(
       defaultOpen,
       open,
@@ -374,6 +374,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       changeOnBlur,
       startInputRef,
       endInputRef,
+      getValue(selectedValue, 0),
+      getValue(selectedValue, 1),
       onOpenChange,
     );
 
@@ -390,11 +392,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       disabledDate,
       generateConfig,
     },
-    openRecordEnd,
-    openRecordStart,
+    firstTimeOpen,
+    // firstTimeOpen,
     // openRecordsRef.current[1],
     // openRecordsRef.current[0],
   );
+  console.log('-->', firstTimeOpen);
 
   // ============================= Popup =============================
   // Popup min width
@@ -672,6 +675,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     },
     triggerOpen: (newOpen: boolean) => {
       // `usePickerInput` only call open not close
+      // triggerOpen(newOpen, index, newOpen ? 'open' : 'blur');
       if (newOpen) {
         triggerOpen(newOpen, index, 'open');
       } else {

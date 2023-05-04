@@ -82,8 +82,8 @@ export default () => {
               console.log('OK!!!', dates);
             }}
             changeOnBlur
-          />
-          <RangePicker<Moment>
+          /> */}
+          {/* <RangePicker<Moment>
             {...sharedProps}
             value={undefined}
             locale={zhCN}
