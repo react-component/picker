@@ -19,7 +19,7 @@ import * as React from 'react';
  * 4. Open next index picker if exist
  */
 
-export type SourceType = 'open' | 'blur' | 'confirm' | 'cancel';
+export type SourceType = 'open' | 'blur' | 'confirm' | 'cancel' | 'clear' | 'preset';
 
 /**
  * Auto control of open state
@@ -31,6 +31,7 @@ export default function useRangeOpen(
   changeOnBlur: boolean,
   startInputRef: React.RefObject<HTMLInputElement>,
   endInputRef: React.RefObject<HTMLInputElement>,
+  onOpenChange?: (open: boolean) => void,
 ): [
   open: boolean,
   activeIndex: 0 | 1,
@@ -38,6 +39,9 @@ export default function useRangeOpen(
 ] {
   const [mergedOpen, setMergedOpen] = useMergedState(defaultOpen || false, {
     value: open,
+    onChange: (nextOpen) => {
+      onOpenChange?.(nextOpen);
+    },
   });
 
   const [mergedActivePickerIndex, setMergedActivePickerIndex] = useMergedState<0 | 1>(0, {
@@ -47,8 +51,6 @@ export default function useRangeOpen(
   const [nextActiveIndex, setNextActiveIndex] = React.useState<0 | 1>(null);
 
   const triggerOpen = useEvent((nextOpen: boolean, index: 0 | 1, source: SourceType) => {
-    console.log('✅', nextOpen, index, source, '>>>', nextActiveIndex);
-
     if (nextOpen) {
       setMergedActivePickerIndex(index);
       setMergedOpen(nextOpen);

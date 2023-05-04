@@ -466,7 +466,17 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   let suffixNode: React.ReactNode;
   if (suffixIcon) {
-    suffixNode = <span className={`${prefixCls}-suffix`}>{suffixIcon}</span>;
+    suffixNode = (
+      <span
+        className={`${prefixCls}-suffix`}
+        onMouseDown={(e) => {
+          // Not lost focus
+          e.preventDefault();
+        }}
+      >
+        {suffixIcon}
+      </span>
+    );
   }
 
   let clearNode: React.ReactNode;

@@ -79,6 +79,7 @@ export default () => {
               }
               return {};
             }}
+            changeOnBlur
           />
         </div>
         <div style={{ margin: '0 8px' }}>

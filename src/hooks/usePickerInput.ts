@@ -108,12 +108,10 @@ export default function usePickerInput({
     },
 
     onBlur: (e) => {
-      console.log('blur!', preventBlurRef.current, isClickOutside(document.activeElement));
       if (preventBlurRef.current || !isClickOutside(document.activeElement)) {
         preventBlurRef.current = false;
         return;
       }
-      console.log('blur?');
 
       if (blurToCancel) {
         setTimeout(() => {

@@ -387,6 +387,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     changeOnBlur,
     startInputRef,
     endInputRef,
+    onOpenChange,
   );
 
   const startOpen = mergedOpen && mergedActivePickerIndex === 0;
@@ -1036,7 +1037,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           presets={presetList}
           onClick={(nextValue) => {
             triggerChange(nextValue, null);
-            triggerOpen(false, mergedActivePickerIndex);
+            triggerOpen(false, mergedActivePickerIndex, 'preset');
           }}
           onHover={(hoverValue) => {
             setRangeHoverValue(hoverValue);
@@ -1086,7 +1087,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   // ============================= Icons =============================
   let suffixNode: React.ReactNode;
   if (suffixIcon) {
-    suffixNode = <span className={`${prefixCls}-suffix`}>{suffixIcon}</span>;
+    suffixNode = (
+      <span
+        className={`${prefixCls}-suffix`}
+        onMouseDown={(e) => {
+          // Not lost focus
+          e.preventDefault();
+        }}
+      >
+        {suffixIcon}
+      </span>
+    );
   }
 
   let clearNode: React.ReactNode;
@@ -1114,7 +1125,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           }
 
           triggerChange(values, null);
-          triggerOpen(false, mergedActivePickerIndex);
+          triggerOpen(false, mergedActivePickerIndex, 'clear');
         }}
         className={`${prefixCls}-clear`}
       >
