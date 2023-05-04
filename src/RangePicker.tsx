@@ -10,6 +10,7 @@ import useHoverValue from './hooks/useHoverValue';
 import usePickerInput from './hooks/usePickerInput';
 import usePresets from './hooks/usePresets';
 import useRangeDisabled from './hooks/useRangeDisabled';
+import useRangeOpen from './hooks/useRangeOpen';
 import useRangeViewDates from './hooks/useRangeViewDates';
 import useTextValueMapping from './hooks/useTextValueMapping';
 import useValueTexts from './hooks/useValueTexts';
@@ -275,9 +276,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const formatList = toArray(getDefaultFormat<DateType>(format, picker, showTime, use12Hours));
 
   // Active picker
-  const [mergedActivePickerIndex, setMergedActivePickerIndex] = useMergedState<0 | 1>(0, {
-    value: activePickerIndex,
-  });
+  // const [mergedActivePickerIndex, setMergedActivePickerIndex] = useMergedState<0 | 1>(0, {
+  //   value: activePickerIndex,
+  // });
 
   // Operation ref
   const operationRef: React.MutableRefObject<ContextOperationRefProps | null> =
@@ -364,20 +365,29 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   );
 
   // ============================= Open ==============================
-  const [mergedOpen, triggerInnerOpen] = useMergedState(false, {
-    value: open,
-    defaultValue: defaultOpen,
-    postState: (postOpen) => (mergedDisabled[mergedActivePickerIndex] ? false : postOpen),
-    onChange: (newOpen) => {
-      if (onOpenChange) {
-        onOpenChange(newOpen);
-      }
+  // const [mergedOpen, triggerInnerOpen] = useMergedState(false, {
+  //   value: open,
+  //   defaultValue: defaultOpen,
+  //   postState: (postOpen) => (mergedDisabled[mergedActivePickerIndex] ? false : postOpen),
+  //   onChange: (newOpen) => {
+  //     if (onOpenChange) {
+  //       onOpenChange(newOpen);
+  //     }
 
-      if (!newOpen && operationRef.current && operationRef.current.onClose) {
-        operationRef.current.onClose();
-      }
-    },
-  });
+  //     if (!newOpen && operationRef.current && operationRef.current.onClose) {
+  //       operationRef.current.onClose();
+  //     }
+  //   },
+  // });
+
+  const [mergedOpen, mergedActivePickerIndex, triggerOpen] = useRangeOpen(
+    defaultOpen,
+    open,
+    activePickerIndex,
+    changeOnBlur,
+    startInputRef,
+    endInputRef,
+  );
 
   const startOpen = mergedOpen && mergedActivePickerIndex === 0;
   const endOpen = mergedOpen && mergedActivePickerIndex === 1;
@@ -392,44 +402,45 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }, [mergedOpen]);
 
   // ============================ Trigger ============================
-  const triggerRef = React.useRef<any>();
+  // const triggerRef = React.useRef<any>();
 
-  function triggerOpen(newOpen: boolean, index: 0 | 1) {
-    if (newOpen) {
-      clearTimeout(triggerRef.current);
-      openRecordsRef.current[index] = true;
+  // function triggerOpen(newOpen: boolean, index: 0 | 1) {
+  //   console.error('Trigger Open:', newOpen, index);
+  //   if (newOpen) {
+  //     clearTimeout(triggerRef.current);
+  //     openRecordsRef.current[index] = true;
 
-      setMergedActivePickerIndex(index);
-      triggerInnerOpen(newOpen);
+  //     setMergedActivePickerIndex(index);
+  //     triggerInnerOpen(newOpen);
 
-      // Open to reset view date
-      if (!mergedOpen) {
-        setViewDate(null, index);
-      }
-    } else if (mergedActivePickerIndex === index) {
-      triggerInnerOpen(newOpen);
+  //     // Open to reset view date
+  //     if (!mergedOpen) {
+  //       setViewDate(null, index);
+  //     }
+  //   } else if (mergedActivePickerIndex === index) {
+  //     triggerInnerOpen(newOpen);
 
-      // Clean up async
-      // This makes ref not quick refresh in case user open another input with blur trigger
-      const openRecords = openRecordsRef.current;
-      triggerRef.current = setTimeout(() => {
-        if (openRecords === openRecordsRef.current) {
-          openRecordsRef.current = {};
-        }
-      });
-    }
-  }
+  //     // Clean up async
+  //     // This makes ref not quick refresh in case user open another input with blur trigger
+  //     const openRecords = openRecordsRef.current;
+  //     triggerRef.current = setTimeout(() => {
+  //       if (openRecords === openRecordsRef.current) {
+  //         openRecordsRef.current = {};
+  //       }
+  //     });
+  //   }
+  // }
 
-  function triggerOpenAndFocus(index: 0 | 1) {
-    triggerOpen(true, index);
-    // Use setTimeout to make sure panel DOM exists
-    setTimeout(() => {
-      const inputRef = [startInputRef, endInputRef][index];
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
-    }, 0);
-  }
+  // function triggerOpenAndFocus(index: 0 | 1) {
+  //   triggerOpen(true, index);
+  //   // Use setTimeout to make sure panel DOM exists
+  //   setTimeout(() => {
+  //     const inputRef = [startInputRef, endInputRef][index];
+  //     if (inputRef.current) {
+  //       inputRef.current.focus();
+  //     }
+  //   }, 0);
+  // }
 
   function triggerChange(newValue: RangeValue<DateType>, sourceIndex: 0 | 1) {
     let values = newValue;
@@ -507,24 +518,24 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     // >>>>> Open picker when
 
     // Always open another picker if possible
-    let nextOpenIndex: 0 | 1 = null;
-    if (sourceIndex === 0 && !mergedDisabled[1]) {
-      nextOpenIndex = 1;
-    } else if (sourceIndex === 1 && !mergedDisabled[0]) {
-      nextOpenIndex = 0;
-    }
+    // let nextOpenIndex: 0 | 1 = null;
+    // if (sourceIndex === 0 && !mergedDisabled[1]) {
+    //   nextOpenIndex = 1;
+    // } else if (sourceIndex === 1 && !mergedDisabled[0]) {
+    //   nextOpenIndex = 0;
+    // }
 
-    if (
-      nextOpenIndex !== null &&
-      nextOpenIndex !== mergedActivePickerIndex &&
-      (!openRecordsRef.current[nextOpenIndex] || !getValue(values, nextOpenIndex)) &&
-      getValue(values, sourceIndex)
-    ) {
-      // Delay to focus to avoid input blur trigger expired selectedValues
-      triggerOpenAndFocus(nextOpenIndex);
-    } else {
-      triggerOpen(false, sourceIndex);
-    }
+    // if (
+    //   nextOpenIndex !== null &&
+    //   nextOpenIndex !== mergedActivePickerIndex &&
+    //   (!openRecordsRef.current[nextOpenIndex] || !getValue(values, nextOpenIndex)) &&
+    //   getValue(values, sourceIndex)
+    // ) {
+    //   // Delay to focus to avoid input blur trigger expired selectedValues
+    //   triggerOpenAndFocus(nextOpenIndex);
+    // } else {
+    //   triggerOpen(false, sourceIndex);
+    // }
   }
 
   const forwardKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
@@ -627,9 +638,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       const selectedIndexValue = getValue(selectedValue, mergedActivePickerIndex);
       if (selectedIndexValue) {
         triggerChange(selectedValue, mergedActivePickerIndex);
-        if (onOk) {
-          onOk(selectedValue);
-        }
+        // if (onOk) {
+        //   onOk(selectedValue);
+        // }
       }
     }
     return onBlur?.(e);
@@ -650,13 +661,14 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         target as HTMLElement,
       ),
     onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
-      setMergedActivePickerIndex(index);
+      // setMergedActivePickerIndex(index);
       if (onFocus) {
         onFocus(e);
       }
     },
     triggerOpen: (newOpen: boolean) => {
-      triggerOpen(newOpen, index);
+      // `usePickerInput` only call open not close
+      triggerOpen(newOpen, index, newOpen ? 'open' : 'blur');
     },
     onSubmit: () => {
       if (
@@ -672,7 +684,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       resetText();
     },
     onCancel: () => {
-      triggerOpen(false, index);
+      triggerOpen(false, index, 'cancel');
       setSelectedValue(mergedValue);
       resetText();
     },
@@ -712,9 +724,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       !endInputRef.current.contains(e.target as Node)
     ) {
       if (!mergedDisabled[0]) {
-        triggerOpenAndFocus(0);
+        // triggerOpenAndFocus(0);
       } else if (!mergedDisabled[1]) {
-        triggerOpenAndFocus(1);
+        // triggerOpenAndFocus(1);
       }
     }
   };
@@ -969,6 +981,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         if (selectedIndexValue) {
           triggerChange(selectedValue, mergedActivePickerIndex);
           onOk?.(selectedValue);
+
+          // Switch
+          triggerOpen(false, mergedActivePickerIndex, 'confirm');
         }
       },
     });

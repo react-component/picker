@@ -108,10 +108,12 @@ export default function usePickerInput({
     },
 
     onBlur: (e) => {
+      console.log('blur!', preventBlurRef.current, isClickOutside(document.activeElement));
       if (preventBlurRef.current || !isClickOutside(document.activeElement)) {
         preventBlurRef.current = false;
         return;
       }
+      console.log('blur?');
 
       if (blurToCancel) {
         setTimeout(() => {
@@ -161,12 +163,8 @@ export default function usePickerInput({
             preventBlurRef.current = false;
           });
         } else if (!changeOnBlur && (!focused || clickedOutside)) {
-          // raf(() => {
           triggerOpen(false);
-          // });
         }
-      } else if (focused && !clickedOutside) {
-        preventBlurRef.current = true;
       }
     }),
   );

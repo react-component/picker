@@ -53,7 +53,7 @@ export default () => {
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
-          <RangePicker<Moment>
+          {/* <RangePicker<Moment>
             {...sharedProps}
             value={undefined}
             locale={zhCN}
@@ -62,7 +62,7 @@ export default () => {
             defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
             clearIcon={<span>X</span>}
             suffixIcon={<span>O</span>}
-          />
+          /> */}
           <RangePicker<Moment>
             {...sharedProps}
             locale={zhCN}
@@ -77,8 +77,9 @@ export default () => {
             onOk={(dates) => {
               console.log('OK!!!', dates);
             }}
+            changeOnBlur
           />
-          <RangePicker<Moment>
+          {/* <RangePicker<Moment>
             {...sharedProps}
             value={undefined}
             locale={zhCN}
@@ -95,10 +96,10 @@ export default () => {
             allowClear
             picker="time"
             style={{ width: 280 }}
-          />
+          /> */}
         </div>
 
-        <div style={{ margin: '0 8px' }}>
+        {/* <div style={{ margin: '0 8px' }}>
           <h3>Focus</h3>
           <RangePicker<Moment>
             {...sharedProps}
@@ -186,7 +187,7 @@ export default () => {
             placeholder={['start...', 'end...']}
             disabledDate={disabledDate}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
