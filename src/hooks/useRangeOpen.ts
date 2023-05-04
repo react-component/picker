@@ -35,7 +35,7 @@ export default function useRangeOpen(
 ): [
   open: boolean,
   activeIndex: 0 | 1,
-  triggerOpen: (open: boolean, activeIndex: 0 | 1, source: SourceType) => void,
+  triggerOpen: (open: boolean, activeIndex: 0 | 1 | false, source: SourceType) => void,
 ] {
   const [mergedOpen, setMergedOpen] = useMergedState(defaultOpen || false, {
     value: open,
@@ -50,8 +50,11 @@ export default function useRangeOpen(
 
   const [nextActiveIndex, setNextActiveIndex] = React.useState<0 | 1>(null);
 
-  const triggerOpen = useEvent((nextOpen: boolean, index: 0 | 1, source: SourceType) => {
-    if (nextOpen) {
+  const triggerOpen = useEvent((nextOpen: boolean, index: 0 | 1 | false, source: SourceType) => {
+    if (index === false) {
+      // Only when `nextOpen` is false and no need open to next index
+      setMergedOpen(nextOpen);
+    } else if (nextOpen) {
       setMergedActivePickerIndex(index);
       setMergedOpen(nextOpen);
 

@@ -669,7 +669,16 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     },
     triggerOpen: (newOpen: boolean) => {
       // `usePickerInput` only call open not close
-      triggerOpen(newOpen, index, newOpen ? 'open' : 'blur');
+      if (newOpen) {
+        triggerOpen(newOpen, index, 'open');
+      } else {
+        triggerOpen(
+          newOpen,
+          // Close directly if no selected value provided
+          getValue(selectedValue, index) ? index : false,
+          'blur',
+        );
+      }
     },
     onSubmit: () => {
       if (
