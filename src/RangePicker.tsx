@@ -683,6 +683,9 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
       triggerChange(selectedValue, index);
       resetText();
+
+      // Switch
+      triggerOpen(false, mergedActivePickerIndex, 'confirm');
     },
     onCancel: () => {
       triggerOpen(false, index, 'cancel');
