@@ -62,7 +62,7 @@ export default function useRangeOpen(
   const [nextActiveIndex, setNextActiveIndex] = React.useState<0 | 1>(null);
 
   const triggerOpen = useEvent((nextOpen: boolean, index: 0 | 1 | false, source: SourceType) => {
-    console.log('✅', nextOpen, index, source, startSelectedValue, endSelectedValue);
+    // console.log('✅', nextOpen, index, source, startSelectedValue, endSelectedValue);
 
     if (index === false) {
       // Only when `nextOpen` is false and no need open to next index
@@ -71,14 +71,20 @@ export default function useRangeOpen(
       setMergedActivePickerIndex(index);
       setMergedOpen(nextOpen);
 
+      const nextIndex = index === 0 ? 1 : 0;
+
       // Record next open index
-      if (!mergedOpen) {
+      if (
+        !mergedOpen ||
+        // Also set next index if next is empty
+        ![startSelectedValue, endSelectedValue][nextIndex]
+      ) {
         // Reset open record
         // setOpenRecord({
         //   [index]: true,
         // });
         setFirstTimeOpen(true);
-        setNextActiveIndex(index === 0 ? 1 : 0);
+        setNextActiveIndex(nextIndex);
       } else {
         // setOpenRecord((ori) => ({
         //   ...ori,
@@ -86,11 +92,7 @@ export default function useRangeOpen(
         // }));
         setFirstTimeOpen(false);
 
-        if (
-          // Skip repeat click same one
-          index !== mergedActivePickerIndex &&
-          nextActiveIndex !== null
-        ) {
+        if (nextActiveIndex !== null) {
           setNextActiveIndex(null);
         }
       }

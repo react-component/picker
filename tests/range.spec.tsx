@@ -1515,8 +1515,11 @@ describe('Picker.Range', () => {
     expect(document.querySelectorAll('input')[0].value).toBe('1990-09-07');
 
     // back to first panel and clear input value
+    fireEvent.mouseDown(document.querySelectorAll('input')[0]);
     fireEvent.focus(document.querySelectorAll('input')[0]);
     inputValue('', 0);
+
+    console.log(container.querySelector('.rc-picker').innerHTML);
 
     // reselect date
     selectCell(9, 0);
