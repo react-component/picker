@@ -63,7 +63,7 @@ export default () => {
             clearIcon={<span>X</span>}
             suffixIcon={<span>O</span>}
           />
-          {/* <RangePicker<Moment>
+          <RangePicker<Moment>
             {...sharedProps}
             locale={zhCN}
             allowClear
@@ -82,8 +82,8 @@ export default () => {
               console.log('OK!!!', dates);
             }}
             changeOnBlur
-          /> */}
-          {/* <RangePicker<Moment>
+          />
+          <RangePicker<Moment>
             {...sharedProps}
             value={undefined}
             locale={zhCN}
@@ -100,10 +100,10 @@ export default () => {
             allowClear
             picker="time"
             style={{ width: 280 }}
-          /> */}
+          />
         </div>
 
-        {/* <div style={{ margin: '0 8px' }}>
+        <div style={{ margin: '0 8px' }}>
           <h3>Focus</h3>
           <RangePicker<Moment>
             {...sharedProps}
@@ -191,7 +191,7 @@ export default () => {
             placeholder={['start...', 'end...']}
             disabledDate={disabledDate}
           />
-        </div> */}
+        </div>
       </div>
     </div>
   );
