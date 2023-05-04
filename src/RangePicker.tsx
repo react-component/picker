@@ -397,7 +397,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     // openRecordsRef.current[1],
     // openRecordsRef.current[0],
   );
-  console.log('-->', firstTimeOpen);
 
   // ============================= Popup =============================
   // Popup min width
