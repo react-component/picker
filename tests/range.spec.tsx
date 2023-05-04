@@ -1153,11 +1153,13 @@ describe('Picker.Range', () => {
 
       openPicker(container, 0);
       inputValue('1990-11-28');
-      closePicker(container, 0);
+      // closePicker(container, 0);
+      keyDown(container, 0, KeyCode.ENTER);
       expect(isOpen()).toBeTruthy();
 
       inputValue('1991-01-01');
-      closePicker(container, 1);
+      // closePicker(container, 1);
+      keyDown(container, 1, KeyCode.ENTER);
       expect(isOpen()).toBeFalsy();
     });
 
@@ -1169,11 +1171,13 @@ describe('Picker.Range', () => {
 
         openPicker(container, 0);
         inputValue('1990-11-28');
-        closePicker(container, 0);
+        keyDown(container, 0, KeyCode.ENTER);
+        // closePicker(container, 0);
         expect(isOpen()).toBeTruthy();
 
         inputValue('1990-12-23');
-        closePicker(container, 1);
+        // closePicker(container, 1);
+        keyDown(container, 1, KeyCode.ENTER);
         expect(isOpen()).toBeFalsy();
       });
 
@@ -1184,11 +1188,13 @@ describe('Picker.Range', () => {
 
         openPicker(container, 0);
         inputValue('1989-01-20');
-        closePicker(container, 0);
+        // closePicker(container, 0);
+        keyDown(container, 0, KeyCode.ENTER);
         expect(isOpen()).toBeTruthy();
 
         inputValue('1989-01-25');
-        closePicker(container, 1);
+        // closePicker(container, 1);
+        keyDown(container, 1, KeyCode.ENTER);
         expect(isOpen()).toBeFalsy();
       });
     });
@@ -1198,11 +1204,13 @@ describe('Picker.Range', () => {
 
       openPicker(container, 1);
       inputValue('1990-11-28', 1);
-      closePicker(container, 1);
+      keyDown(container, 1, KeyCode.ENTER);
+      // closePicker(container, 1);
       expect(isOpen()).toBeTruthy();
 
       inputValue('1989-01-01');
-      closePicker(container, 0);
+      // closePicker(container, 0);
+      keyDown(container, 0, KeyCode.ENTER);
       expect(isOpen()).toBeFalsy();
     });
 
@@ -1214,11 +1222,13 @@ describe('Picker.Range', () => {
 
         openPicker(container, 1);
         inputValue('1990-11-28', 1);
-        closePicker(container, 1);
+        keyDown(container, 1, KeyCode.ENTER);
+        // closePicker(container, 1);
         expect(isOpen()).toBeTruthy();
 
         inputValue('1989-01-01');
-        closePicker(container, 0);
+        keyDown(container, 0, KeyCode.ENTER);
+        // closePicker(container, 0);
         expect(isOpen()).toBeFalsy();
       });
 
