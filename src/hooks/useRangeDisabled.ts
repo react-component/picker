@@ -20,8 +20,6 @@ export default function useRangeDisabled<DateType>(
     locale: Locale;
     generateConfig: GenerateConfig<DateType>;
   },
-  // disabledStart: boolean,
-  // disabledEnd: boolean,
   firstTimeOpen: boolean,
 ) {
   const startDate = getValue(selectedValue, 0);
@@ -55,7 +53,6 @@ export default function useRangeDisabled<DateType>(
       }
 
       // Disabled part
-      // if (disabledStart && endDate) {
       if (!firstTimeOpen && endDate) {
         switch (picker) {
           case 'quarter':
@@ -90,7 +87,6 @@ export default function useRangeDisabled<DateType>(
       }
 
       // Disabled part
-      // if (disabledEnd && startDate) {
       if (!firstTimeOpen && startDate) {
         switch (picker) {
           case 'quarter':
