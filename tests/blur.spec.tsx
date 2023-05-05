@@ -1,6 +1,6 @@
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
-import { getMoment, MomentPicker, MomentRangePicker } from './util/commonUtil';
+import { getMoment, isOpen, MomentPicker, MomentRangePicker, openPicker } from './util/commonUtil';
 
 describe('Picker.ChangeOnBlur', () => {
   beforeEach(() => {
@@ -36,7 +36,7 @@ describe('Picker.ChangeOnBlur', () => {
     expect(onChange).toHaveBeenCalled();
   });
 
-  it.only('RangePicker', () => {
+  it('RangePicker', () => {
     const onChange = jest.fn();
 
     const { container } = render(
@@ -66,5 +66,29 @@ describe('Picker.ChangeOnBlur', () => {
     container.querySelector<HTMLButtonElement>('.outside').focus();
     fireEvent.blur(container.querySelectorAll('input')[1]);
     expect(onChange).toHaveBeenCalled();
+  });
+
+  it('blur & close should not trigger change', () => {
+    const onCalendarChange = jest.fn();
+
+    const { container } = render(
+      <>
+        <MomentRangePicker
+          changeOnBlur
+          defaultValue={[getMoment('2000-01-01'), getMoment('2000-01-05')]}
+          onCalendarChange={onCalendarChange}
+        />
+      </>,
+    );
+
+    expect(isOpen()).toBeFalsy();
+    fireEvent.blur(container.querySelector('input'));
+    expect(onCalendarChange).not.toHaveBeenCalled();
+
+    // Open to trigger
+    openPicker(container);
+    expect(isOpen()).toBeTruthy();
+    fireEvent.blur(container.querySelector('input'));
+    expect(onCalendarChange).toHaveBeenCalled();
   });
 });
