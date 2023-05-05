@@ -1,10 +1,10 @@
-import React from 'react';
 import type { Moment } from 'moment';
 import moment from 'moment';
-import RangePicker from '../../src/RangePicker';
+import React from 'react';
+import '../../assets/index.less';
 import momentGenerateConfig from '../../src/generate/moment';
 import zhCN from '../../src/locale/zh_CN';
-import '../../assets/index.less';
+import RangePicker from '../../src/RangePicker';
 import './common.less';
 
 const defaultStartValue = moment('2019-09-03 05:02:03');
@@ -70,13 +70,18 @@ export default () => {
             ref={rangePickerRef}
             showTime
             style={{ width: 580 }}
-            cellRender={(current, info) => <div title={info.type} style={{background: 'green'}}>{typeof current === "number" ? current : current.get("date")}</div>}
+            cellRender={(current, info) => (
+              <div title={info.type} style={{ background: 'green' }}>
+                {typeof current === 'number' ? current : current.get('date')}
+              </div>
+            )}
             ranges={{
               ranges: [moment(), moment().add(10, 'day')],
             }}
             onOk={(dates) => {
               console.log('OK!!!', dates);
             }}
+            changeOnBlur
           />
           <RangePicker<Moment>
             {...sharedProps}

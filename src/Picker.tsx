@@ -11,8 +11,8 @@
  * Tips: Should add faq about `datetime` mode with `defaultValue`
  */
 
-import classNames from 'classnames';
 import type { AlignType } from '@rc-component/trigger/lib/interface';
+import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import warning from 'rc-util/lib/warning';
 import * as React from 'react';
@@ -86,6 +86,12 @@ export type PickerSharedProps<DateType> = {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onContextMenu?: React.MouseEventHandler<HTMLDivElement>;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>, preventDefault: () => void) => void;
+
+  /**
+   * Trigger `onChange` event when blur.
+   * If you don't want to user click `confirm` to trigger change, can use this.
+   */
+  changeOnBlur?: boolean;
 
   // Internal
   /** @private Internal usage, do not use in production mode!!! */
@@ -182,6 +188,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     direction,
     autoComplete = 'off',
     inputRender,
+    changeOnBlur,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -301,6 +308,14 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   };
 
   // ============================= Input =============================
+  const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
+    if (changeOnBlur) {
+      triggerChange(selectedValue);
+    }
+
+    onBlur?.(e);
+  };
+
   const [inputProps, { focused, typing }] = usePickerInput({
     blurToCancel: needConfirmButton,
     open: mergedOpen,
@@ -336,7 +351,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       onKeyDown?.(e, preventDefault);
     },
     onFocus,
-    onBlur,
+    onBlur: onInternalBlur,
+    changeOnBlur,
   });
 
   // ============================= Sync ==============================
@@ -450,7 +466,17 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   let suffixNode: React.ReactNode;
   if (suffixIcon) {
-    suffixNode = <span className={`${prefixCls}-suffix`}>{suffixIcon}</span>;
+    suffixNode = (
+      <span
+        className={`${prefixCls}-suffix`}
+        onMouseDown={(e) => {
+          // Not lost focus
+          e.preventDefault();
+        }}
+      >
+        {suffixIcon}
+      </span>
+    );
   }
 
   let clearNode: React.ReactNode;

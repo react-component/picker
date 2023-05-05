@@ -1,4 +1,5 @@
 import KeyCode from 'rc-util/lib/KeyCode';
+import raf from 'rc-util/lib/raf';
 import type * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { addGlobalMouseDownEvent, getTargetFromEvent } from '../utils/uiUtil';
@@ -15,6 +16,7 @@ export default function usePickerInput({
   onCancel,
   onFocus,
   onBlur,
+  changeOnBlur,
 }: {
   open: boolean;
   value: string;
@@ -27,6 +29,7 @@ export default function usePickerInput({
   onCancel: () => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  changeOnBlur?: boolean;
 }): [React.DOMAttributes<HTMLInputElement>, { focused: boolean; typing: boolean }] {
   const [typing, setTyping] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -130,9 +133,7 @@ export default function usePickerInput({
       }
       setFocused(false);
 
-      if (onBlur) {
-        onBlur(e);
-      }
+      onBlur?.(e);
     },
   };
 
@@ -156,14 +157,12 @@ export default function usePickerInput({
           preventBlurRef.current = true;
 
           // Always set back in case `onBlur` prevented by user
-          requestAnimationFrame(() => {
+          raf(() => {
             preventBlurRef.current = false;
           });
-        } else if (!focused || clickedOutside) {
+        } else if (!changeOnBlur && (!focused || clickedOutside)) {
           triggerOpen(false);
         }
-      } else if (focused && !clickedOutside) {
-        preventBlurRef.current = true;
       }
     }),
   );

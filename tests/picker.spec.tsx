@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-loop-func */
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
-import moment, { Moment } from 'moment';
+import type { Moment } from 'moment';
+import moment from 'moment';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
@@ -341,19 +342,27 @@ describe('Picker.Basic', () => {
     expect(mouseDownEvent.defaultPrevented).toBeTruthy();
   });
 
-  it('not fire blur when clickinside and is in focus ', () => {
+  it('not fire blur when clickinside and is in focus', () => {
     const onBlur = jest.fn();
     const { container } = render(
       <MomentPicker onBlur={onBlur} suffixIcon={<div className="suffix-icon">X</div>} />,
     );
-    openPicker(container);
-    keyDown(KeyCode.ESC);
-    fireEvent.mouseDown(container.querySelector('.suffix-icon'));
-    fireEvent.blur(container.querySelector('input'));
-    expect(onBlur).toHaveBeenCalledTimes(0);
 
-    fireEvent.blur(container.querySelector('input'));
-    expect(onBlur).toHaveBeenCalledTimes(1);
+    const $input = container.querySelector('input');
+
+    openPicker(container);
+    $input.focus();
+    keyDown(KeyCode.ESC);
+
+    expect(document.activeElement).toBe($input);
+
+    // Click suffix should preventDefault
+    const $suffix = container.querySelector('.suffix-icon');
+    const mouseDownEvent = createEvent.mouseDown($suffix);
+    mouseDownEvent.preventDefault = jest.fn();
+    fireEvent($suffix, mouseDownEvent);
+
+    expect(mouseDownEvent.preventDefault).toHaveBeenCalled();
   });
 
   describe('full steps', () => {
@@ -637,7 +646,7 @@ describe('Picker.Basic', () => {
       it(`should show integer when step is not integer (${unit})`, () => {
         const props = {
           [`${unit}Step`]: 5.5,
-        }
+        };
         const { container } = render(<MomentPicker picker="time" {...props} />);
         openPicker(container);
         expect(document.querySelectorAll('.rc-picker-time-panel-column')[index]).toMatchSnapshot();
