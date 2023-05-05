@@ -40,12 +40,6 @@ export default function useRangeOpen(
   firstTimeOpen: boolean,
   triggerOpen: (open: boolean, activeIndex: 0 | 1 | false, source: SourceType) => void,
 ] {
-  // We record opened status here in case repeat open with picker
-  // const [openRecord, setOpenRecord] = React.useState<{
-  //   0?: boolean;
-  //   1?: boolean;
-  // }>({});
-
   const [firstTimeOpen, setFirstTimeOpen] = React.useState(false);
 
   const [mergedOpen, setMergedOpen] = useMergedState(defaultOpen || false, {
@@ -62,8 +56,6 @@ export default function useRangeOpen(
   const [nextActiveIndex, setNextActiveIndex] = React.useState<0 | 1>(null);
 
   const triggerOpen = useEvent((nextOpen: boolean, index: 0 | 1 | false, source: SourceType) => {
-    // console.error('✅', nextOpen, index, source, startSelectedValue, endSelectedValue);
-
     if (index === false) {
       // Only when `nextOpen` is false and no need open to next index
       setMergedOpen(nextOpen);
@@ -79,17 +71,9 @@ export default function useRangeOpen(
         // Also set next index if next is empty
         ![startSelectedValue, endSelectedValue][nextIndex]
       ) {
-        // Reset open record
-        // setOpenRecord({
-        //   [index]: true,
-        // });
         setFirstTimeOpen(true);
         setNextActiveIndex(nextIndex);
       } else {
-        // setOpenRecord((ori) => ({
-        //   ...ori,
-        //   [index]: true,
-        // }));
         setFirstTimeOpen(false);
 
         if (nextActiveIndex !== null) {
@@ -97,14 +81,6 @@ export default function useRangeOpen(
         }
       }
     } else if (source === 'confirm' || (source === 'blur' && changeOnBlur)) {
-      // Close if current value is empty
-      // const selectedValue = [startSelectedValue, endSelectedValue][index];
-
-      // if (!selectedValue) {
-      //   setMergedOpen(false);
-      //   return;
-      // }
-
       if (nextActiveIndex !== null) {
         setFirstTimeOpen(false);
         setMergedActivePickerIndex(nextActiveIndex);

@@ -558,7 +558,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   // ============================= Input =============================
   const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
-    if (changeOnBlur) {
+    if (changeOnBlur && mergedOpen) {
       const selectedIndexValue = getValue(selectedValue, mergedActivePickerIndex);
       if (selectedIndexValue) {
         triggerChange(selectedValue, mergedActivePickerIndex);
