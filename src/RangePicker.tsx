@@ -369,7 +369,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       disabledDate,
       generateConfig,
     },
-    firstTimeOpen,
+    !mergedOpen || firstTimeOpen,
   );
 
   // ============================= Popup =============================
