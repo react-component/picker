@@ -55,6 +55,12 @@ export default function useRangeOpen(
 
   const [nextActiveIndex, setNextActiveIndex] = React.useState<0 | 1>(null);
 
+  React.useEffect(() => {
+    if (mergedOpen) {
+      setFirstTimeOpen(true);
+    }
+  }, [mergedOpen]);
+
   const triggerOpen = useEvent((nextOpen: boolean, index: 0 | 1 | false, source: SourceType) => {
     if (index === false) {
       // Only when `nextOpen` is false and no need open to next index
@@ -71,7 +77,6 @@ export default function useRangeOpen(
         // Also set next index if next is empty
         ![startSelectedValue, endSelectedValue][nextIndex]
       ) {
-        setFirstTimeOpen(true);
         setNextActiveIndex(nextIndex);
       } else {
         setFirstTimeOpen(false);

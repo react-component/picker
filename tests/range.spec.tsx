@@ -1803,6 +1803,7 @@ describe('Picker.Range', () => {
     openPicker(container);
     expect(baseElement).toMatchSnapshot();
   });
+
   it('use dateRender and monthCellRender in date range picker', () => {
     const { container, baseElement } = render(
       <MomentRangePicker
@@ -1813,5 +1814,17 @@ describe('Picker.Range', () => {
     );
     openPicker(container);
     expect(baseElement).toMatchSnapshot();
+  });
+
+  it('no -disabled cell when set open directly', () => {
+    render(
+      <MomentRangePicker
+        open
+        picker="date"
+        defaultValue={[getMoment('2000-09-03'), getMoment('2000-09-03')]}
+      />,
+    );
+
+    expect(document.querySelector('.rc-picker-cell-disabled')).toBeFalsy();
   });
 });
