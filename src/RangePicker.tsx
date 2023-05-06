@@ -557,8 +557,15 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   };
 
   // ============================= Input =============================
+  // We call effect to update `delayOpen` here since
+  // when popup closed and input focused, should not trigger change when click another input
+  const [delayOpen, setDelayOpen] = React.useState(mergedOpen);
+  React.useEffect(() => {
+    setDelayOpen(mergedOpen);
+  }, [mergedOpen]);
+
   const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
-    if (changeOnBlur && mergedOpen) {
+    if (changeOnBlur && delayOpen) {
       const selectedIndexValue = getValue(selectedValue, mergedActivePickerIndex);
       if (selectedIndexValue) {
         triggerChange(selectedValue, mergedActivePickerIndex);
