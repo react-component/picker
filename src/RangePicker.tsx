@@ -65,15 +65,15 @@ function canValueTrigger<DateType>(
   disabled: [boolean, boolean],
   allowEmpty?: [boolean, boolean] | null,
 ): boolean {
+  if (disabled[index % 2]) {
+    return false;
+  }
+
   if (value) {
     return true;
   }
 
   if (allowEmpty && allowEmpty[index]) {
-    return true;
-  }
-
-  if (disabled[(index + 1) % 2]) {
     return true;
   }
 
@@ -447,7 +447,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     const canEndValueTrigger = canValueTrigger(endValue, 1, mergedDisabled, allowEmpty);
 
     const canTrigger = values === null || (canStartValueTrigger && canEndValueTrigger);
-
     if (canTrigger) {
       // Trigger onChange only when value is validate
       setInnerValue(values);
@@ -539,6 +538,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   });
 
   const onDateMouseEnter = (date: DateType) => {
+    if(mergedDisabled[mergedActivePickerIndex]) 
+      return 
     setHoverRangedValue(updateValues(selectedValue, date, mergedActivePickerIndex));
     if (mergedActivePickerIndex === 0) {
       onStartEnter(date);
@@ -548,6 +549,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   };
 
   const onDateMouseLeave = () => {
+    if(mergedDisabled[mergedActivePickerIndex]) 
+      return 
     setHoverRangedValue(updateValues(selectedValue, null, mergedActivePickerIndex));
     if (mergedActivePickerIndex === 0) {
       onStartLeave();
