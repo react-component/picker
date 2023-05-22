@@ -65,15 +65,15 @@ function canValueTrigger<DateType>(
   disabled: [boolean, boolean],
   allowEmpty?: [boolean, boolean] | null,
 ): boolean {
-  if (disabled[index % 2]) {
-    return false;
-  }
-
   if (value) {
     return true;
   }
 
   if (allowEmpty && allowEmpty[index]) {
+    return true;
+  }
+
+  if (disabled[(index+1) % 2]) {
     return true;
   }
 
@@ -394,6 +394,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }
 
   function triggerChange(newValue: RangeValue<DateType>, sourceIndex: 0 | 1) {
+    if(mergedDisabled[sourceIndex])
+      return
     let values = newValue;
     let startValue = getValue(values, 0);
     let endValue = getValue(values, 1);
