@@ -48,6 +48,7 @@ export type PickerPanelSharedProps<DateType> = {
   /** @deprecated Will be removed in next big version. Please use `picker` instead */
   mode?: PanelMode;
   tabIndex?: number;
+  showSelected?: boolean;
 
   // Locale
   locale: Locale;
@@ -146,6 +147,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     showNow,
     showTime,
     showToday,
+    showSelected,
     renderExtraFooter,
     hideHeader,
     onSelect,
@@ -189,7 +191,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   // ============================ State =============================
 
   const panelContext = React.useContext(PanelContext);
-  const { operationRef, onSelect: onContextSelect, hideRanges, defaultOpenValue } = panelContext;
+  const { operationRef, onSelect: onContextSelect, hideRanges, defaultOpenValue, open } = panelContext;
 
   const { inRange, panelPosition, rangedValue, hoverRangedValue } = React.useContext(RangeContext);
   const panelRef = React.useRef<PanelRefProps>({});
@@ -401,6 +403,10 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       setInnerViewDate(value);
     }
   }, [value]);
+
+  React.useEffect(() => {
+    if (value && showSelected) setInnerViewDate(value);
+  }, [open]);
 
   React.useEffect(() => {
     initRef.current = false;

@@ -52,6 +52,7 @@ export type PickerSharedProps<DateType> = {
   autoFocus?: boolean;
   disabled?: boolean;
   tabIndex?: number;
+  showSelected?: boolean;
   open?: boolean;
   defaultOpen?: boolean;
   /** Make input readOnly to avoid popup keyboard in mobile */
@@ -156,6 +157,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     allowClear,
     autoFocus,
     showTime,
+    showSelected,
     picker = 'date',
     format,
     use12Hours,
