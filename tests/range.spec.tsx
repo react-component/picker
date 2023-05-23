@@ -238,10 +238,26 @@ describe('Picker.Range', () => {
   });
 
   describe('disabled', () => {
+    it('should no panel open with disabled', () => {
+      const { baseElement } = render(<MomentRangePicker disabled />);
+      expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
+      fireEvent.click(baseElement.querySelector('.rc-picker-input'));
+      expect(baseElement.querySelector('.rc-picker-dropdown')).toBeFalsy();
+    });
+
     it('basic disabled check', () => {
       const { container } = render(<MomentRangePicker disabled={[true, false]} />);
       expect(container.querySelectorAll('input')[0].disabled).toBeTruthy();
       expect(container.querySelectorAll('input')[1].disabled).toBeFalsy();
+    });
+
+    it('should close panel when finish choose panel and next is disabled with disabled = [false, true]/[true,false]', () => {
+      const { baseElement, container } = render(<MomentRangePicker disabled={[false, true]} />);
+      expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
+      fireEvent.click(baseElement.querySelectorAll('.rc-picker-input')[0]);
+      expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
+      fireEvent.click(baseElement.querySelector('.rc-picker-cell-inner'));
+      expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
     });
 
     it('startDate will have disabledDate when endDate is not selectable', () => {
