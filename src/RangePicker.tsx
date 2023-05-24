@@ -1102,7 +1102,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       }
 
       // Switch
-      triggerOpen(false, mergedActivePickerIndex, 'confirm');
+      const nextActivePickerIndex = mergedActivePickerIndex === 0 ? 1 : 0;
+      if (mergedDisabled[nextActivePickerIndex]) {
+        triggerOpen(false, false, 'confirm');
+      } else {
+        triggerOpen(false, mergedActivePickerIndex, 'confirm');
+      }
     } else {
       setSelectedValue(values);
     }
