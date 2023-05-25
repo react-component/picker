@@ -43,7 +43,7 @@ export default function useRangeDisabled<DateType>(
 
   const disabledStartDate = React.useCallback(
     (date: DateType) => {
-      if (disabledDate && disabledDate(date)) {
+      if (disabled[0] || (disabledDate && disabledDate(date))) {
         return true;
       }
 
@@ -75,7 +75,8 @@ export default function useRangeDisabled<DateType>(
 
   const disabledEndDate = React.useCallback(
     (date: DateType) => {
-      if (disabledDate && disabledDate(date)) {
+
+      if (disabled[1] || (disabledDate && disabledDate(date))) {
         return true;
       }
 
