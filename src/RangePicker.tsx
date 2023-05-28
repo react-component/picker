@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import raf from 'rc-util/lib/raf';
 import warning from 'rc-util/lib/warning';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import type { PickerPanelProps } from '.';
@@ -44,7 +45,7 @@ import {
 } from './utils/dateUtil';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
-import getDataOrAriaProps, { getValue, toArray, updateValues } from './utils/miscUtil';
+import { getValue, toArray, updateValues } from './utils/miscUtil';
 import { elementsContains, getDefaultFormat, getInputSize } from './utils/uiUtil';
 import { legacyPropsWarning } from './utils/warnUtil';
 
@@ -387,9 +388,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     // Use setTimeout to make sure panel DOM exists
     raf(() => {
       const inputRef = [startInputRef, endInputRef][index];
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
+      inputRef.current?.focus();
     }, 0);
   }
 
@@ -1150,7 +1149,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           onMouseLeave={onMouseLeave}
           onMouseDown={onPickerMouseDown}
           onMouseUp={onMouseUp}
-          {...getDataOrAriaProps(props)}
+          {...pickAttrs(props, { aria: true, data: true })}
         >
           <div
             className={classNames(`${prefixCls}-input`, {

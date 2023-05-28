@@ -15,6 +15,7 @@ import type { AlignType } from '@rc-component/trigger/lib/interface';
 import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import warning from 'rc-util/lib/warning';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
 import useHoverValue from './hooks/useHoverValue';
 import usePickerInput from './hooks/usePickerInput';
@@ -33,7 +34,7 @@ import PickerPanel from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
 import PresetPanel from './PresetPanel';
 import { formatValue, isEqual, parseValue } from './utils/dateUtil';
-import getDataOrAriaProps, { toArray } from './utils/miscUtil';
+import { toArray } from './utils/miscUtil';
 import { elementsContains, getDefaultFormat, getInputSize } from './utils/uiUtil';
 import { legacyPropsWarning } from './utils/warnUtil';
 
@@ -143,6 +144,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
     id,
+    name,
     tabIndex,
     style,
     className,
@@ -386,14 +388,10 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   if (pickerRef) {
     pickerRef.current = {
       focus: () => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
+        inputRef.current?.focus();
       },
       blur: () => {
-        if (inputRef.current) {
-          inputRef.current.blur();
-        }
+        inputRef.current?.blur();
       },
     };
   }
@@ -501,7 +499,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     );
   }
 
-  const mergedInputProps: React.InputHTMLAttributes<HTMLInputElement> = {
+  const mergedInputProps: React.InputHTMLAttributes<HTMLInputElement> & { ref: React.MutableRefObject<HTMLInputElement> } = {
     id,
     tabIndex,
     disabled,
@@ -516,7 +514,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     title: text,
     ...inputProps,
     size: getInputSize(picker, formatList[0], generateConfig),
-    ...getDataOrAriaProps(props),
+    name,
+    ...pickAttrs(props, { aria: true, data: true}),
     autoComplete,
   };
 
