@@ -20,24 +20,6 @@ export function toArray<T>(val: T | T[]): T[] {
   return Array.isArray(val) ? val : [val];
 }
 
-export default function getDataOrAriaProps(props: any) {
-  const retProps: any = {};
-
-  Object.keys(props).forEach(key => {
-    if (
-      (key.substr(0, 5) === 'data-' ||
-        key.substr(0, 5) === 'aria-' ||
-        key === 'role' ||
-        key === 'name') &&
-      key.substr(0, 7) !== 'data-__'
-    ) {
-      retProps[key] = props[key];
-    }
-  });
-
-  return retProps;
-}
-
 export function getValue<T>(
   values: null | undefined | (T | null)[],
   index: number,
