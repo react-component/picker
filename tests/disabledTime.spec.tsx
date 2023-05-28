@@ -73,9 +73,7 @@ describe('Picker.DisabledTime', () => {
     // Start
     openPicker(container);
     expect(
-      document
-        .querySelector('.rc-picker-time-panel-column')
-        .querySelectorAll('li')[11],
+      document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[11],
     ).toHaveClass('rc-picker-time-panel-cell-disabled');
     expect(isSame(disabledTime.mock.calls[0][0], '1989-11-28')).toBeTruthy();
     expect(disabledTime.mock.calls[0][1]).toEqual('start');
@@ -91,6 +89,51 @@ describe('Picker.DisabledTime', () => {
     expect(isSame(disabledTime.mock.calls[0][0], '1990-09-03')).toBeTruthy();
     expect(disabledTime.mock.calls[0][1]).toEqual('end');
     closePicker(container, 1);
+  });
+
+  it('dynamic disabledTime should be correct', () => {
+    render(
+      <MomentPicker
+        open
+        picker="time"
+        disabledTime={() => ({
+          disabledHours: () => [0, 1],
+          disabledMinutes: (selectedHour) => {
+            if (selectedHour === 2) {
+              return [0, 1];
+            } else {
+              return [];
+            }
+          },
+          disabledSeconds: (_, selectMinute) => {
+            if (selectMinute === 2) {
+              return [0, 1];
+            } else {
+              return [];
+            }
+          },
+        })}
+      />,
+    );
+    // click hour 3
+    fireEvent.click(
+      document.querySelectorAll('.rc-picker-time-panel-column')[0].querySelectorAll('li')[2],
+    );
+    // click minute 0
+    fireEvent.click(
+      document.querySelectorAll('.rc-picker-time-panel-column')[1].querySelectorAll('li')[0],
+    );
+    // click second 0
+    fireEvent.click(
+      document.querySelectorAll('.rc-picker-time-panel-column')[2].querySelectorAll('li')[0],
+    );
+    // click hour 2
+    fireEvent.click(
+      document.querySelectorAll('.rc-picker-time-panel-column')[0].querySelectorAll('li')[1],
+    );
+    expect(document.querySelector('.rc-picker-input input').getAttribute('value')).toEqual(
+      '02:02:02',
+    );
   });
 
   describe('warning for legacy props', () => {

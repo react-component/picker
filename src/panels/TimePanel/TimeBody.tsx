@@ -115,8 +115,21 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     let newDate = value || generateConfig.getNow();
 
     const mergedHour = Math.max(0, newHour);
-    const mergedMinute = Math.max(0, newMinute);
-    const mergedSecond = Math.max(0, newSecond);
+    let mergedMinute = Math.max(0, newMinute);
+    let mergedSecond = Math.max(0, newSecond);
+
+    const timeRange = new Array(60).fill(null).map((_, index) => index);
+    const newDisabledMinutes = mergedDisabledMinutes && mergedDisabledMinutes(mergedHour);
+    if (newDisabledMinutes?.includes(mergedMinute)) {
+      // find the first available minute in 0-59
+      mergedMinute = timeRange.find((i) => !newDisabledMinutes.includes(i));
+    }
+    const newDisabledSeconds =
+      mergedDisabledSeconds && mergedDisabledSeconds(mergedHour, mergedMinute);
+    if (newDisabledSeconds?.includes(mergedSecond)) {
+      // find the first available second in 0-59
+      mergedSecond = timeRange.find((i) => !newDisabledSeconds.includes(i));
+    }
 
     newDate = utilSetTime(
       generateConfig,
