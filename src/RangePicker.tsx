@@ -388,9 +388,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     // Use setTimeout to make sure panel DOM exists
     raf(() => {
       const inputRef = [startInputRef, endInputRef][index];
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
+      inputRef.current?.focus();
     }, 0);
   }
 

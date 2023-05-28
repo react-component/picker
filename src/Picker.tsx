@@ -144,6 +144,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
     id,
+    name,
     tabIndex,
     style,
     className,
@@ -513,6 +514,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     title: text,
     ...inputProps,
     size: getInputSize(picker, formatList[0], generateConfig),
+    name,
     ...pickAttrs(props, { aria: true, data: true}),
     autoComplete,
   };
