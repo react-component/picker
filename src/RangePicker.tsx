@@ -870,7 +870,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     mergedActivePickerIndex &&
     startInputDivRef.current &&
     separatorRef.current &&
-    panelDivRef.current
+    panelDivRef.current &&
+    arrowRef.current
   ) {
     // Arrow offset
     arrowLeft = startInputDivRef.current.offsetWidth + separatorRef.current.offsetWidth;
