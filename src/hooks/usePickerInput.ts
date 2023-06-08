@@ -89,8 +89,36 @@ export default function usePickerInput({
           return;
         }
       }
-
-      if (!open && ![KeyCode.SHIFT].includes(e.which)) {
+      
+      const ignoreKeys = [
+        KeyCode.F1,
+        KeyCode.F2,
+        KeyCode.F3,
+        KeyCode.F4,
+        KeyCode.F5,
+        KeyCode.F6,
+        KeyCode.F7,
+        KeyCode.F8,
+        KeyCode.F9,
+        KeyCode.F10,
+        KeyCode.F11,
+        KeyCode.F12,
+        145,  // SCROLL_LOCK
+        KeyCode.PAUSE,
+        KeyCode.INSERT,
+        KeyCode.PAGE_UP,
+        KeyCode.PAGE_DOWN,
+        KeyCode.NUM_CENTER,
+        KeyCode.NUMLOCK,
+        KeyCode.CAPS_LOCK,
+        KeyCode.CTRL,
+        KeyCode.SHIFT,
+        KeyCode.ALT,
+        KeyCode.META,   // WIN_KEY_LEFT
+        KeyCode.WIN_KEY_RIGHT,
+      ];
+      
+      if (!open && !ignoreKeys.includes(e.which)) {
         triggerOpen(true);
       } else if (!typing) {
         // Let popup panel handle keyboard
