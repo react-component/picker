@@ -977,6 +977,79 @@ describe('Picker.Basic', () => {
       unmount();
     });
   });
+  
+  describe('time picker auto select correct value', () => {
+    it('correct minute', () => {
+      const { container } = render(
+        <MomentPicker
+          picker="time"
+          disabledTime={() => {
+            return {
+              disabledMinutes: (h) => {
+                if (h === 8) return new Array(20).fill(0).map((_, i) => i);
+                return [];
+              },
+            };
+          }}
+        />,
+      );
+      openPicker(container);
+      const list = document.querySelectorAll('.rc-picker-content .rc-picker-time-panel-column');
+      (list[0].querySelectorAll('.rc-picker-time-panel-cell')[8] as HTMLLIElement).click();
+      const disabledMinutes = list[1].querySelectorAll('.rc-picker-time-panel-cell-disabled');
+      expect(disabledMinutes.length).toBe(20);
+      const selectedMinute = list[1].querySelector(
+        '.rc-picker-time-panel-cell-selected .rc-picker-time-panel-cell-inner',
+      );
+      expect(selectedMinute.innerHTML).toBe(`20`);
+    });
+    it('correct second', () => {
+      const { container } = render(
+        <MomentPicker
+          picker="time"
+          disabledTime={() => {
+            return {
+              disabledMinutes: (h) => {
+                if (h === 8) return new Array(20).fill(0).map((_, i) => i);
+                return [];
+              },
+              disabledSeconds: (h, m) => {
+                if (h === 9) return new Array(20).fill(0).map((_, i) => i);
+                if (m === 30) return new Array(10).fill(0).map((_, i) => i);
+                return [];
+              },
+            };
+          }}
+        />,
+      );
+      openPicker(container);
+      const list = document.querySelectorAll('.rc-picker-content .rc-picker-time-panel-column');
+      let disabledMinutes!: NodeListOf<Element>;
+      let selectedSecond!: Element;
+
+      (list[0].querySelectorAll('.rc-picker-time-panel-cell')[9] as HTMLLIElement).click();
+      disabledMinutes = list[2].querySelectorAll('.rc-picker-time-panel-cell-disabled');
+      expect(disabledMinutes.length).toBe(20);
+
+      (list[0].querySelectorAll('.rc-picker-time-panel-cell')[0] as HTMLLIElement).click();
+      (list[1].querySelectorAll('.rc-picker-time-panel-cell')[0] as HTMLLIElement).click();
+      (list[2].querySelectorAll('.rc-picker-time-panel-cell')[1] as HTMLLIElement).click();
+      disabledMinutes = list[2].querySelectorAll('.rc-picker-time-panel-cell-disabled');
+      expect(disabledMinutes.length).toBe(0);
+      selectedSecond = list[2].querySelector(
+        '.rc-picker-time-panel-cell-selected .rc-picker-time-panel-cell-inner',
+      );
+      expect(selectedSecond.innerHTML).toBe('01');
+
+      (list[1].querySelectorAll('.rc-picker-time-panel-cell')[30] as HTMLLIElement).click();
+      disabledMinutes = list[2].querySelectorAll('.rc-picker-time-panel-cell-disabled');
+      expect(disabledMinutes.length).toBe(10);
+      selectedSecond = list[2].querySelector(
+        '.rc-picker-time-panel-cell-selected .rc-picker-time-panel-cell-inner',
+      );
+      expect(selectedSecond.innerHTML).toBe(`10`);
+    });
+  });
 
   describe('prevent default on keydown', () => {
     it('should open picker panel if no prevent default', () => {
