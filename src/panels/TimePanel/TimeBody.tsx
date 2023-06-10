@@ -105,30 +105,6 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     return [disabledHours, disabledMinutes, disabledSeconds];
   }, [disabledHours, disabledMinutes, disabledSeconds, disabledTime, now]);
 
-  // Set Time
-  const setTime = (
-    isNewPM: boolean | undefined,
-    newHour: number,
-    newMinute: number,
-    newSecond: number,
-  ) => {
-    let newDate = value || generateConfig.getNow();
-
-    const mergedHour = Math.max(0, newHour);
-    const mergedMinute = Math.max(0, newMinute);
-    const mergedSecond = Math.max(0, newSecond);
-
-    newDate = utilSetTime(
-      generateConfig,
-      newDate,
-      !use12Hours || !isNewPM ? mergedHour : mergedHour + 12,
-      mergedMinute,
-      mergedSecond,
-    );
-
-    return newDate;
-  };
-
   // ========================= Unit =========================
   const rawHours = generateUnits(0, 23, hourStep, mergedDisabledHours && mergedDisabledHours());
 
@@ -184,6 +160,39 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     secondStep,
     mergedDisabledSeconds && mergedDisabledSeconds(originHour, minute),
   );
+
+  // Set Time
+  const setTime = (
+    isNewPM: boolean | undefined,
+    newHour: number,
+    newMinute: number,
+    newSecond: number,
+  ) => {
+    let newDate = value || generateConfig.getNow();
+
+    const mergedHour = Math.max(0, newHour);
+    let mergedMinute = Math.max(0, newMinute);
+    let mergedSecond = Math.max(0, newSecond);
+
+    const disabledMinutesSet = new Set(mergedDisabledMinutes?.(mergedHour));
+    if (disabledMinutesSet.has(mergedMinute)) {
+      mergedMinute = minutes.find((m) => !disabledMinutesSet.has(m.value))?.value ?? 0;
+    }
+    const disabledSecondsSet = new Set(mergedDisabledSeconds?.(mergedHour, mergedMinute));
+    if (disabledSecondsSet.has(mergedSecond)) {
+      mergedSecond = seconds.find((s) => !disabledSecondsSet.has(s.value))?.value ?? 0;
+    }
+
+    newDate = utilSetTime(
+      generateConfig,
+      newDate,
+      !use12Hours || !isNewPM ? mergedHour : mergedHour + 12,
+      mergedMinute,
+      mergedSecond,
+    );
+
+    return newDate;
+  };
 
   // ====================== Operations ======================
   operationRef.current = {
