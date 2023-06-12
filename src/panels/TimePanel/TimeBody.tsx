@@ -105,8 +105,6 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     return [disabledHours, disabledMinutes, disabledSeconds];
   }, [disabledHours, disabledMinutes, disabledSeconds, disabledTime, now]);
 
-  // Set Time
-
   // ========================= Unit =========================
   const rawHours = generateUnits(0, 23, hourStep, mergedDisabledHours && mergedDisabledHours());
 
@@ -163,6 +161,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     mergedDisabledSeconds && mergedDisabledSeconds(originHour, minute),
   );
 
+  // Set Time
   const setTime = (
     isNewPM: boolean | undefined,
     newHour: number,
