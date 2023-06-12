@@ -178,13 +178,23 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     const newDisabledMinutes = mergedDisabledMinutes && mergedDisabledMinutes(mergedHour);
     if (newDisabledMinutes?.includes(mergedMinute)) {
       // find the first available minute in minutes
-      mergedMinute = minutes.find((i) => !newDisabledMinutes.includes(i.value)).value;
+      const availableMinute = minutes.find((i) => !newDisabledMinutes.includes(i.value));
+      if (availableMinute) {
+        mergedMinute = availableMinute.value;
+      } else {
+        return null;
+      }
     }
     const newDisabledSeconds =
       mergedDisabledSeconds && mergedDisabledSeconds(mergedHour, mergedMinute);
     if (newDisabledSeconds?.includes(mergedSecond)) {
       // find the first available second in seconds
-      mergedSecond = seconds.find((i) => !newDisabledSeconds.includes(i.value)).value;
+      const availableSecond = seconds.find((i) => !newDisabledSeconds.includes(i.value));
+      if (availableSecond) {
+        mergedSecond = availableSecond.value;
+      } else {
+        return null;
+      }
     }
 
     newDate = utilSetTime(
