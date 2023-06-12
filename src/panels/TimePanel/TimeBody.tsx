@@ -2,9 +2,9 @@ import useMemo from 'rc-util/lib/hooks/useMemo';
 import * as React from 'react';
 import type { SharedTimeProps } from '.';
 import type { GenerateConfig } from '../../generate';
+import useTimeWithDisabled from '../../hooks/useTimeWithDisabled';
 import type { CellRender, Locale, OnSelect } from '../../interface';
 import { leftPad } from '../../utils/miscUtil';
-import { setTime as utilSetTime } from '../../utils/timeUtil';
 import type { Unit } from './TimeUnitColumn';
 import TimeUnitColumn from './TimeUnitColumn';
 
@@ -162,50 +162,15 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   );
 
   // Set Time
-  const setTime = (
-    isNewPM: boolean | undefined,
-    newHour: number,
-    newMinute: number,
-    newSecond: number,
-  ) => {
-    let newDate = value || generateConfig.getNow();
-
-    const mergedHour = Math.max(0, newHour);
-    let mergedMinute = Math.max(0, newMinute);
-    let mergedSecond = Math.max(0, newSecond);
-
-    const newDisabledMinutes = mergedDisabledMinutes && mergedDisabledMinutes(mergedHour);
-    if (newDisabledMinutes?.includes(mergedMinute)) {
-      // find the first available minute in minutes
-      const availableMinute = minutes.find((i) => !newDisabledMinutes.includes(i.value));
-      if (availableMinute) {
-        mergedMinute = availableMinute.value;
-      } else {
-        return null;
-      }
-    }
-    const newDisabledSeconds =
-      mergedDisabledSeconds && mergedDisabledSeconds(mergedHour, mergedMinute);
-    if (newDisabledSeconds?.includes(mergedSecond)) {
-      // find the first available second in seconds
-      const availableSecond = seconds.find((i) => !newDisabledSeconds.includes(i.value));
-      if (availableSecond) {
-        mergedSecond = availableSecond.value;
-      } else {
-        return null;
-      }
-    }
-
-    newDate = utilSetTime(
-      generateConfig,
-      newDate,
-      !use12Hours || !isNewPM ? mergedHour : mergedHour + 12,
-      mergedMinute,
-      mergedSecond,
-    );
-
-    return newDate;
-  };
+  const setTime = useTimeWithDisabled({
+    value,
+    generateConfig,
+    mergedDisabledMinutes,
+    mergedDisabledSeconds,
+    minutes,
+    seconds,
+    use12Hours,
+  });
 
   // ====================== Operations ======================
   operationRef.current = {
