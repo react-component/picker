@@ -1,12 +1,12 @@
-import * as React from 'react';
 import useMemo from 'rc-util/lib/hooks/useMemo';
+import * as React from 'react';
+import type { SharedTimeProps } from '.';
 import type { GenerateConfig } from '../../generate';
+import useTimeSelection from '../../hooks/useTimeSelection';
 import type { CellRender, Locale, OnSelect } from '../../interface';
+import { leftPad } from '../../utils/miscUtil';
 import type { Unit } from './TimeUnitColumn';
 import TimeUnitColumn from './TimeUnitColumn';
-import { leftPad } from '../../utils/miscUtil';
-import type { SharedTimeProps } from '.';
-import { setTime as utilSetTime } from '../../utils/timeUtil';
 
 function shouldUnitsUpdate(prevUnits: Unit[], nextUnits: Unit[]) {
   if (prevUnits.length !== nextUnits.length) return true;
@@ -24,7 +24,7 @@ function generateUnits(
   disabledUnits: number[] | undefined,
 ) {
   const units: Unit[] = [];
-  const integerStep = step >= 1 ? step | 0 : 1
+  const integerStep = step >= 1 ? step | 0 : 1;
   for (let i = start; i <= end; i += integerStep) {
     units.push({
       label: leftPad(i, 2),
@@ -105,30 +105,6 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     return [disabledHours, disabledMinutes, disabledSeconds];
   }, [disabledHours, disabledMinutes, disabledSeconds, disabledTime, now]);
 
-  // Set Time
-  const setTime = (
-    isNewPM: boolean | undefined,
-    newHour: number,
-    newMinute: number,
-    newSecond: number,
-  ) => {
-    let newDate = value || generateConfig.getNow();
-
-    const mergedHour = Math.max(0, newHour);
-    const mergedMinute = Math.max(0, newMinute);
-    const mergedSecond = Math.max(0, newSecond);
-
-    newDate = utilSetTime(
-      generateConfig,
-      newDate,
-      !use12Hours || !isNewPM ? mergedHour : mergedHour + 12,
-      mergedMinute,
-      mergedSecond,
-    );
-
-    return newDate;
-  };
-
   // ========================= Unit =========================
   const rawHours = generateUnits(0, 23, hourStep, mergedDisabledHours && mergedDisabledHours());
 
@@ -185,6 +161,17 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     mergedDisabledSeconds && mergedDisabledSeconds(originHour, minute),
   );
 
+  // Set Time
+  const setTime = useTimeSelection({
+    value,
+    generateConfig,
+    disabledMinutes: mergedDisabledMinutes,
+    disabledSeconds: mergedDisabledSeconds,
+    minutes,
+    seconds,
+    use12Hours,
+  });
+
   // ====================== Operations ======================
   operationRef.current = {
     onUpDown: (diff) => {
@@ -231,19 +218,45 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   }
 
   // Hour
-  addColumnNode(showHour, <TimeUnitColumn<DateType> key="hour" type="hour" info={{today: now, locale, cellRender }} />, hour, hours, (num) => {
-    onSelect(setTime(isPM, num, minute, second), 'mouse');
-  });
+  addColumnNode(
+    showHour,
+    <TimeUnitColumn<DateType> key="hour" type="hour" info={{ today: now, locale, cellRender }} />,
+    hour,
+    hours,
+    (num) => {
+      onSelect(setTime(isPM, num, minute, second), 'mouse');
+    },
+  );
 
   // Minute
-  addColumnNode(showMinute, <TimeUnitColumn<DateType> key="minute" type="minute" info={{today: now, locale, cellRender }} />, minute, minutes, (num) => {
-    onSelect(setTime(isPM, hour, num, second), 'mouse');
-  });
+  addColumnNode(
+    showMinute,
+    <TimeUnitColumn<DateType>
+      key="minute"
+      type="minute"
+      info={{ today: now, locale, cellRender }}
+    />,
+    minute,
+    minutes,
+    (num) => {
+      onSelect(setTime(isPM, hour, num, second), 'mouse');
+    },
+  );
 
   // Second
-  addColumnNode(showSecond, <TimeUnitColumn<DateType> key="second" type="second" info={{today: now, locale, cellRender }} />, second, seconds, (num) => {
-    onSelect(setTime(isPM, hour, minute, num), 'mouse');
-  });
+  addColumnNode(
+    showSecond,
+    <TimeUnitColumn<DateType>
+      key="second"
+      type="second"
+      info={{ today: now, locale, cellRender }}
+    />,
+    second,
+    seconds,
+    (num) => {
+      onSelect(setTime(isPM, hour, minute, num), 'mouse');
+    },
+  );
 
   // 12 Hours
   let PMIndex = -1;
@@ -253,7 +266,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
 
   addColumnNode(
     use12Hours === true,
-    <TimeUnitColumn key="meridiem" type="meridiem" info={{today: now, locale, cellRender }} />,
+    <TimeUnitColumn key="meridiem" type="meridiem" info={{ today: now, locale, cellRender }} />,
     PMIndex,
     [
       { label: 'AM', value: 0, disabled: AMDisabled },
