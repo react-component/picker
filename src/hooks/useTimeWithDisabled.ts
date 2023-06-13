@@ -5,16 +5,16 @@ import { setTime as utilSetTime } from '../utils/timeUtil';
 export default function useTimeWithDisabled<DateType>({
   value,
   generateConfig,
-  mergedDisabledMinutes,
-  mergedDisabledSeconds,
+  disabledMinutes,
+  disabledSeconds,
   minutes,
   seconds,
   use12Hours,
 }: {
   value: DateType;
   generateConfig: GenerateConfig<DateType>;
-  mergedDisabledMinutes: (hour: number) => number[];
-  mergedDisabledSeconds: (hour: number, minute: number) => number[];
+  disabledMinutes: (hour: number) => number[];
+  disabledSeconds: (hour: number, minute: number) => number[];
   minutes: Unit[];
   seconds: Unit[];
   use12Hours: boolean;
@@ -31,7 +31,7 @@ export default function useTimeWithDisabled<DateType>({
     let mergedMinute = Math.max(0, newMinute);
     let mergedSecond = Math.max(0, newSecond);
 
-    const newDisabledMinutes = mergedDisabledMinutes && mergedDisabledMinutes(mergedHour);
+    const newDisabledMinutes = disabledMinutes && disabledMinutes(mergedHour);
     if (newDisabledMinutes?.includes(mergedMinute)) {
       // find the first available minute in minutes
       const availableMinute = minutes.find((i) => !newDisabledMinutes.includes(i.value));
@@ -41,8 +41,7 @@ export default function useTimeWithDisabled<DateType>({
         return null;
       }
     }
-    const newDisabledSeconds =
-      mergedDisabledSeconds && mergedDisabledSeconds(mergedHour, mergedMinute);
+    const newDisabledSeconds = disabledSeconds && disabledSeconds(mergedHour, mergedMinute);
     if (newDisabledSeconds?.includes(mergedSecond)) {
       // find the first available second in seconds
       const availableSecond = seconds.find((i) => !newDisabledSeconds.includes(i.value));

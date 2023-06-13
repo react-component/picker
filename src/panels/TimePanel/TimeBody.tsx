@@ -165,8 +165,8 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   const setTime = useTimeWithDisabled({
     value,
     generateConfig,
-    mergedDisabledMinutes,
-    mergedDisabledSeconds,
+    disabledMinutes: mergedDisabledMinutes,
+    disabledSeconds: mergedDisabledSeconds,
     minutes,
     seconds,
     use12Hours,
