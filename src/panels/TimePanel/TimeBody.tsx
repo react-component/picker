@@ -2,7 +2,7 @@ import useMemo from 'rc-util/lib/hooks/useMemo';
 import * as React from 'react';
 import type { SharedTimeProps } from '.';
 import type { GenerateConfig } from '../../generate';
-import useTimeWithDisabled from '../../hooks/useTimeWithDisabled';
+import useTimeSelection from '../../hooks/useTimeSelection';
 import type { CellRender, Locale, OnSelect } from '../../interface';
 import { leftPad } from '../../utils/miscUtil';
 import type { Unit } from './TimeUnitColumn';
@@ -162,7 +162,7 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
   );
 
   // Set Time
-  const setTime = useTimeWithDisabled({
+  const setTime = useTimeSelection({
     value,
     generateConfig,
     disabledMinutes: mergedDisabledMinutes,

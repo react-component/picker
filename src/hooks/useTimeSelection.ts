@@ -2,7 +2,7 @@ import type { GenerateConfig } from '../generate';
 import type { Unit } from '../panels/TimePanel/TimeUnitColumn';
 import { setTime as utilSetTime } from '../utils/timeUtil';
 
-export default function useTimeWithDisabled<DateType>({
+export default function useTimeSelection<DateType>({
   value,
   generateConfig,
   disabledMinutes,
