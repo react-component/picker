@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
-import { YEAR_DECADE_COUNT } from '.';
+import { YEAR_DECADE_COUNT } from './constant';
 import type { CellRender, Locale, NullableDateType } from '../../interface';
 import useCellClassName from '../../hooks/useCellClassName';
 import { formatValue, isSameYear } from '../../utils/dateUtil';
