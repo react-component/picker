@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
-import { DECADE_DISTANCE_COUNT, DECADE_UNIT_DIFF } from '.';
+import { DECADE_DISTANCE_COUNT, DECADE_UNIT_DIFF } from './constant';
 import PanelBody from '../PanelBody';
 import type { CellRender, Locale } from '../../interface';
 
