@@ -41,7 +41,7 @@ describe('Picker.Range', () => {
   });
 
   function keyDown(container: HTMLElement, index: number, keyCode: number) {
-    fireEvent.keyDown(container.querySelectorAll('input')[0], {
+    fireEvent.keyDown(container.querySelectorAll('input')[index], {
       keyCode,
       which: keyCode,
       charCode: keyCode,
@@ -92,6 +92,7 @@ describe('Picker.Range', () => {
       onCalendarChange.mockReset();
       selectCell(14);
 
+      expect(onChange).toHaveBeenCalled();
       expect(isSame(onChange.mock.calls[0][0][0], '1990-09-13')).toBeTruthy();
       expect(isSame(onChange.mock.calls[0][0][1], '1990-09-14')).toBeTruthy();
       expect(onChange.mock.calls[0][1]).toEqual(['1990-09-13', '1990-09-14']);
@@ -237,10 +238,34 @@ describe('Picker.Range', () => {
   });
 
   describe('disabled', () => {
+    it('should no panel open with disabled', () => {
+      const { baseElement } = render(<MomentRangePicker disabled />);
+      expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
+      fireEvent.click(baseElement.querySelector('.rc-picker-input'));
+      expect(baseElement.querySelector('.rc-picker-dropdown')).toBeFalsy();
+    });
+
     it('basic disabled check', () => {
       const { container } = render(<MomentRangePicker disabled={[true, false]} />);
       expect(container.querySelectorAll('input')[0].disabled).toBeTruthy();
       expect(container.querySelectorAll('input')[1].disabled).toBeFalsy();
+    });
+
+    it('should close panel when finish choose panel and next is disabled with disabled = [false, true]/[true,false]', () => {
+      const { baseElement } = render(<MomentRangePicker disabled={[false, true]} />);
+      expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
+      fireEvent.click(baseElement.querySelectorAll('.rc-picker-input')[0]);
+      expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
+      fireEvent.click(baseElement.querySelector('.rc-picker-cell-inner'));
+      expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
+    });
+
+    it('panel can not be clicked with open and disabled', () => {
+      const onChange = jest.fn();
+      const { baseElement } = render(<MomentRangePicker disabled open onChange={onChange} />);
+      expect(baseElement.querySelector('.rc-picker-cell')).toBeTruthy();
+      fireEvent.click(baseElement.querySelector('.rc-picker-cell'));
+      expect(onChange).not.toBeCalled();
     });
 
     it('startDate will have disabledDate when endDate is not selectable', () => {
@@ -577,7 +602,7 @@ describe('Picker.Range', () => {
     // document.querySelector('input').last().simulate('keyDown', {
     //   which: KeyCode.ENTER,
     // });
-    keyDown(container, 1, KeyCode.ENTER);
+    keyDown(container, 0, KeyCode.ENTER);
 
     expect(onChange).not.toHaveBeenCalled();
   });
@@ -996,7 +1021,7 @@ describe('Picker.Range', () => {
     const { container } = render(
       <MomentRangePicker
         open
-        dateRender={(date, _, info) => {
+        cellRender={(date, info) => {
           expect(info.range).toEqual(range);
           return date.format('YYYY-MM-DD');
         }}
@@ -1152,11 +1177,13 @@ describe('Picker.Range', () => {
 
       openPicker(container, 0);
       inputValue('1990-11-28');
-      closePicker(container, 0);
+      // closePicker(container, 0);
+      keyDown(container, 0, KeyCode.ENTER);
       expect(isOpen()).toBeTruthy();
 
       inputValue('1991-01-01');
-      closePicker(container, 1);
+      // closePicker(container, 1);
+      keyDown(container, 1, KeyCode.ENTER);
       expect(isOpen()).toBeFalsy();
     });
 
@@ -1168,11 +1195,13 @@ describe('Picker.Range', () => {
 
         openPicker(container, 0);
         inputValue('1990-11-28');
-        closePicker(container, 0);
+        keyDown(container, 0, KeyCode.ENTER);
+        // closePicker(container, 0);
         expect(isOpen()).toBeTruthy();
 
         inputValue('1990-12-23');
-        closePicker(container, 1);
+        // closePicker(container, 1);
+        keyDown(container, 1, KeyCode.ENTER);
         expect(isOpen()).toBeFalsy();
       });
 
@@ -1183,11 +1212,13 @@ describe('Picker.Range', () => {
 
         openPicker(container, 0);
         inputValue('1989-01-20');
-        closePicker(container, 0);
+        // closePicker(container, 0);
+        keyDown(container, 0, KeyCode.ENTER);
         expect(isOpen()).toBeTruthy();
 
         inputValue('1989-01-25');
-        closePicker(container, 1);
+        // closePicker(container, 1);
+        keyDown(container, 1, KeyCode.ENTER);
         expect(isOpen()).toBeFalsy();
       });
     });
@@ -1197,11 +1228,13 @@ describe('Picker.Range', () => {
 
       openPicker(container, 1);
       inputValue('1990-11-28', 1);
-      closePicker(container, 1);
+      keyDown(container, 1, KeyCode.ENTER);
+      // closePicker(container, 1);
       expect(isOpen()).toBeTruthy();
 
       inputValue('1989-01-01');
-      closePicker(container, 0);
+      // closePicker(container, 0);
+      keyDown(container, 0, KeyCode.ENTER);
       expect(isOpen()).toBeFalsy();
     });
 
@@ -1213,11 +1246,13 @@ describe('Picker.Range', () => {
 
         openPicker(container, 1);
         inputValue('1990-11-28', 1);
-        closePicker(container, 1);
+        keyDown(container, 1, KeyCode.ENTER);
+        // closePicker(container, 1);
         expect(isOpen()).toBeTruthy();
 
         inputValue('1989-01-01');
-        closePicker(container, 0);
+        keyDown(container, 0, KeyCode.ENTER);
+        // closePicker(container, 0);
         expect(isOpen()).toBeFalsy();
       });
 
@@ -1228,11 +1263,12 @@ describe('Picker.Range', () => {
 
         openPicker(container, 1);
         inputValue('1989-01-07', 1);
-        closePicker(container, 1);
+        console.log('close!');
+        keyDown(container, 1, KeyCode.ENTER);
         expect(isOpen()).toBeTruthy();
 
         inputValue('1989-01-01');
-        closePicker(container, 0);
+        keyDown(container, 0, KeyCode.ENTER);
         expect(isOpen()).toBeFalsy();
       });
     });
@@ -1269,21 +1305,15 @@ describe('Picker.Range', () => {
     });
     it("shouldn't let mousedown blur the input", () => {
       jest.useFakeTimers();
-      // const preventDefault = jest.fn();
       const { container } = render(<MomentRangePicker />);
       const node = container.querySelector('.rc-picker');
-      // document.querySelector('.rc-picker').simulate('click');
       fireEvent.click(node);
       act(() => {
         jest.runAllTimers();
       });
-      // document.querySelector('.rc-picker').simulate('mousedown', {
-      //   preventDefault,
-      // });
       const mouseDownEvent = createEvent.mouseDown(node);
       fireEvent(node, mouseDownEvent);
       expect(isOpen()).toBeTruthy();
-      // expect(preventDefault).toHaveBeenCalled();
       expect(mouseDownEvent.defaultPrevented).toBeTruthy();
       jest.useRealTimers();
     });
@@ -1514,8 +1544,11 @@ describe('Picker.Range', () => {
     expect(document.querySelectorAll('input')[0].value).toBe('1990-09-07');
 
     // back to first panel and clear input value
+    fireEvent.mouseDown(document.querySelectorAll('input')[0]);
     fireEvent.focus(document.querySelectorAll('input')[0]);
     inputValue('', 0);
+
+    console.log(container.querySelector('.rc-picker').innerHTML);
 
     // reselect date
     selectCell(9, 0);
@@ -1541,6 +1574,7 @@ describe('Picker.Range', () => {
     selectCell(15);
 
     fireEvent.click(document.querySelector('.rc-picker-month-btn'));
+
     expect(findCell('Jan')).toHaveClass('rc-picker-cell-disabled');
     expect(findCell('Dec')).not.toHaveClass('rc-picker-cell-disabled');
   });
@@ -1781,5 +1815,40 @@ describe('Picker.Range', () => {
     render(<MomentRangePicker defaultValue={[null, null]} disabled={[false, true]} />);
 
     expect(document.querySelectorAll('input')[1].value).toBeFalsy();
+  });
+  it('use dateRender and monthCellRender in month range picker', () => {
+    const { container, baseElement } = render(
+      <MomentRangePicker
+        picker="month"
+        dateRender={(date) => <div>{date.get('date')}</div>}
+        monthCellRender={(date) => <div>{date.get('month') + 1}</div>}
+      />,
+    );
+    openPicker(container);
+    expect(baseElement).toMatchSnapshot();
+  });
+
+  it('use dateRender and monthCellRender in date range picker', () => {
+    const { container, baseElement } = render(
+      <MomentRangePicker
+        picker="date"
+        dateRender={(date) => <div>{date.get('date')}</div>}
+        monthCellRender={(date) => <div>{date.get('month') + 1}</div>}
+      />,
+    );
+    openPicker(container);
+    expect(baseElement).toMatchSnapshot();
+  });
+
+  it('no -disabled cell when set open directly', () => {
+    render(
+      <MomentRangePicker
+        open
+        picker="date"
+        defaultValue={[getMoment('2000-09-03'), getMoment('2000-09-03')]}
+      />,
+    );
+
+    expect(document.querySelector('.rc-picker-cell-disabled')).toBeFalsy();
   });
 });

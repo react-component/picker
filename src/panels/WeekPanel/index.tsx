@@ -1,12 +1,14 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import type { PanelSharedProps } from '../../interface';
+import type { CellRender, PanelSharedProps } from '../../interface';
 import PanelContext from '../../PanelContext';
 import RangeContext from '../../RangeContext';
 import { getCellDateDisabled, isInRange, isSameWeek } from '../../utils/dateUtil';
 import DatePanel from '../DatePanel';
 
-export type WeekPanelProps<DateType> = PanelSharedProps<DateType>;
+export type WeekPanelProps<DateType> = {
+  cellRender?: CellRender<DateType>;
+} & PanelSharedProps<DateType>;
 
 function WeekPanel<DateType>(props: WeekPanelProps<DateType>) {
   const { prefixCls, generateConfig, locale, value, disabledDate, onSelect } = props;

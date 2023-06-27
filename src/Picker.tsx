@@ -11,10 +11,11 @@
  * Tips: Should add faq about `datetime` mode with `defaultValue`
  */
 
-import classNames from 'classnames';
 import type { AlignType } from '@rc-component/trigger/lib/interface';
+import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import warning from 'rc-util/lib/warning';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
 import useHoverValue from './hooks/useHoverValue';
 import usePickerInput from './hooks/usePickerInput';
@@ -33,7 +34,7 @@ import PickerPanel from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
 import PresetPanel from './PresetPanel';
 import { formatValue, isEqual, parseValue } from './utils/dateUtil';
-import getDataOrAriaProps, { toArray } from './utils/miscUtil';
+import { toArray } from './utils/miscUtil';
 import { elementsContains, getDefaultFormat, getInputSize } from './utils/uiUtil';
 import { legacyPropsWarning } from './utils/warnUtil';
 
@@ -87,6 +88,12 @@ export type PickerSharedProps<DateType> = {
   onContextMenu?: React.MouseEventHandler<HTMLDivElement>;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>, preventDefault: () => void) => void;
 
+  /**
+   * Trigger `onChange` event when blur.
+   * If you don't want to user click `confirm` to trigger change, can use this.
+   */
+  changeOnBlur?: boolean;
+
   // Internal
   /** @private Internal usage, do not use in production mode!!! */
   pickerRef?: React.MutableRefObject<PickerRefConfig>;
@@ -137,6 +144,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
     id,
+    name,
     tabIndex,
     style,
     className,
@@ -182,6 +190,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     direction,
     autoComplete = 'off',
     inputRender,
+    changeOnBlur,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -301,6 +310,14 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   };
 
   // ============================= Input =============================
+  const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
+    if (changeOnBlur) {
+      triggerChange(selectedValue);
+    }
+
+    onBlur?.(e);
+  };
+
   const [inputProps, { focused, typing }] = usePickerInput({
     blurToCancel: needConfirmButton,
     open: mergedOpen,
@@ -336,7 +353,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       onKeyDown?.(e, preventDefault);
     },
     onFocus,
-    onBlur,
+    onBlur: onInternalBlur,
+    changeOnBlur,
   });
 
   // ============================= Sync ==============================
@@ -370,14 +388,10 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   if (pickerRef) {
     pickerRef.current = {
       focus: () => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
+        inputRef.current?.focus();
       },
       blur: () => {
-        if (inputRef.current) {
-          inputRef.current.blur();
-        }
+        inputRef.current?.blur();
       },
     };
   }
@@ -450,7 +464,17 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   let suffixNode: React.ReactNode;
   if (suffixIcon) {
-    suffixNode = <span className={`${prefixCls}-suffix`}>{suffixIcon}</span>;
+    suffixNode = (
+      <span
+        className={`${prefixCls}-suffix`}
+        onMouseDown={(e) => {
+          // Not lost focus
+          e.preventDefault();
+        }}
+      >
+        {suffixIcon}
+      </span>
+    );
   }
 
   let clearNode: React.ReactNode;
@@ -475,7 +499,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     );
   }
 
-  const mergedInputProps: React.InputHTMLAttributes<HTMLInputElement> = {
+  const mergedInputProps: React.InputHTMLAttributes<HTMLInputElement> & { ref: React.MutableRefObject<HTMLInputElement> } = {
     id,
     tabIndex,
     disabled,
@@ -490,7 +514,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     title: text,
     ...inputProps,
     size: getInputSize(picker, formatList[0], generateConfig),
-    ...getDataOrAriaProps(props),
+    name,
+    ...pickAttrs(props, { aria: true, data: true}),
     autoComplete,
   };
 

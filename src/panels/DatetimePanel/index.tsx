@@ -1,13 +1,13 @@
-import * as React from 'react';
 import classNames from 'classnames';
 import KeyCode from 'rc-util/lib/KeyCode';
+import * as React from 'react';
+import type { DisabledTime, PanelRefProps } from '../../interface';
+import { tuple } from '../../utils/miscUtil';
+import { setDateTime as setTime } from '../../utils/timeUtil';
 import type { DatePanelProps } from '../DatePanel';
 import DatePanel from '../DatePanel';
 import type { SharedTimeProps } from '../TimePanel';
 import TimePanel from '../TimePanel';
-import { tuple } from '../../utils/miscUtil';
-import { setDateTime as setTime } from '../../utils/timeUtil';
-import type { PanelRefProps, DisabledTime } from '../../interface';
 
 export type DatetimePanelProps<DateType> = {
   disabledTime?: DisabledTime<DateType>;
@@ -16,7 +16,7 @@ export type DatetimePanelProps<DateType> = {
 } & Omit<DatePanelProps<DateType>, 'disabledHours' | 'disabledMinutes' | 'disabledSeconds'>;
 
 const ACTIVE_PANEL = tuple('date', 'time');
-type ActivePanelType = typeof ACTIVE_PANEL[number];
+type ActivePanelType = (typeof ACTIVE_PANEL)[number];
 
 function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
   const {
@@ -28,6 +28,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
     disabledTime,
     showTime,
     onSelect,
+    cellRender,
   } = props;
   const panelPrefixCls = `${prefixCls}-datetime-panel`;
   const [activePanel, setActivePanel] = React.useState<ActivePanelType | null>(null);
@@ -128,6 +129,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
     >
       <DatePanel
         {...props}
+        cellRender={cellRender}
         operationRef={dateOperationRef}
         active={activePanel === 'date'}
         onSelect={(date) => {
@@ -143,6 +145,11 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       />
       <TimePanel
         {...props}
+        cellRender={
+          cellRender
+            ? (current, info) => cellRender(current as any, { ...info, type: 'time' })
+            : undefined
+        }
         format={undefined}
         {...timeProps}
         {...disabledTimes}

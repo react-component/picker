@@ -3,11 +3,15 @@ import DecadeHeader from './DecadeHeader';
 import DecadeBody, { DECADE_COL_COUNT } from './DecadeBody';
 import type { PanelSharedProps } from '../../interface';
 import { createKeyDownHandler } from '../../utils/uiUtil';
+import { DECADE_DISTANCE_COUNT, DECADE_UNIT_DIFF } from './constant';
 
 export type DecadePanelProps<DateType> = PanelSharedProps<DateType>;
 
-export const DECADE_UNIT_DIFF = 10;
-export const DECADE_DISTANCE_COUNT = DECADE_UNIT_DIFF * 10;
+export {
+  DECADE_DISTANCE_COUNT,
+  DECADE_UNIT_DIFF
+};
+
 
 function DecadePanel<DateType>(props: DecadePanelProps<DateType>) {
   const {

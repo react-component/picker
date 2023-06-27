@@ -3,8 +3,6 @@
 [![NPM version][npm-image]][npm-url]
 [![build status][github-actions-image]][github-actions-url]
 [![Codecov][codecov-image]][codecov-url]
-[![Dependencies][david-image]][david-url]
-[![DevDependencies][david-dev-image]][david-dev-url]
 [![npm download][download-image]][download-url]
 [![bundle size][bundlephobia-image]][bundlephobia-url]
 

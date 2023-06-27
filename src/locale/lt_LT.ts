@@ -11,6 +11,7 @@ const locale: Locale = {
   year: 'Metai',
   timeSelect: 'Pasirinkti laiką',
   dateSelect: 'Pasirinkti datą',
+  weekSelect: 'Pasirinkti savaitę',
   monthSelect: 'Pasirinkti mėnesį',
   yearSelect: 'Pasirinkti metus',
   decadeSelect: 'Pasirinkti dešimtmetį',
@@ -20,13 +21,13 @@ const locale: Locale = {
   dateTimeFormat: 'YYYY-MM-DD HH:MM:SS',
   monthBeforeYear: true,
   previousMonth: 'Buvęs mėnesis (PageUp)',
-  nextMonth: 'Sekantis mėnesis (PageDown)',
+  nextMonth: 'Kitas mėnesis (PageDown)',
   previousYear: 'Buvę metai (Control + left)',
-  nextYear: 'Sekantis metai (Control + right)',
+  nextYear: 'Kiti metai (Control + right)',
   previousDecade: 'Buvęs dešimtmetis',
-  nextDecade: 'Sekantis dešimtmetis',
+  nextDecade: 'Kitas dešimtmetis',
   previousCentury: 'Buvęs amžius',
-  nextCentury: 'Sekantis amžius',
+  nextCentury: 'Kitas amžius',
 };
 
 export default locale;

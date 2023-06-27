@@ -342,6 +342,29 @@ describe('Picker.Basic', () => {
     expect(mouseDownEvent.defaultPrevented).toBeTruthy();
   });
 
+  it('not fire blur when clickinside and is in focus', () => {
+    const onBlur = jest.fn();
+    const { container } = render(
+      <MomentPicker onBlur={onBlur} suffixIcon={<div className="suffix-icon">X</div>} />,
+    );
+
+    const $input = container.querySelector('input');
+
+    openPicker(container);
+    $input.focus();
+    keyDown(KeyCode.ESC);
+
+    expect(document.activeElement).toBe($input);
+
+    // Click suffix should preventDefault
+    const $suffix = container.querySelector('.suffix-icon');
+    const mouseDownEvent = createEvent.mouseDown($suffix);
+    mouseDownEvent.preventDefault = jest.fn();
+    fireEvent($suffix, mouseDownEvent);
+
+    expect(mouseDownEvent.preventDefault).toHaveBeenCalled();
+  });
+
   describe('full steps', () => {
     [
       {
@@ -618,6 +641,32 @@ describe('Picker.Basic', () => {
         'Warning: `secondStep` 9 is invalid. It should be a factor of 60.',
       );
       spy.mockRestore();
+    });
+
+    // https://github.com/ant-design/ant-design/issues/40914
+    ['hour', 'minute', 'second'].forEach((unit, index) => {
+      it(`should show integer when step is not integer (${unit})`, () => {
+        const props = {
+          [`${unit}Step`]: 5.5,
+        };
+        const { container } = render(<MomentPicker picker="time" {...props} />);
+        openPicker(container);
+
+        const column = document.querySelector(`.rc-picker-time-panel-column:nth-child(${index+1})`);
+        expect(column).toBeTruthy();
+
+        const cells = column.querySelectorAll('.rc-picker-time-panel-cell-inner');
+        cells.forEach((cell) => {
+          expect(Number.isInteger(Number(cell.textContent))).toBeTruthy();
+        });
+      });
+    });
+
+    it('should work when hourStep < 0', () => {
+      // @ts-ignore
+      const { container } = render(<MomentPicker picker="time" hourStep={-1} />);
+      openPicker(container);
+      expect(document.querySelectorAll('.rc-picker-time-panel-column')[0].children.length).toBe(24);
     });
   });
 
