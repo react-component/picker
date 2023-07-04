@@ -252,6 +252,12 @@ describe('Picker.Panel', () => {
     expect(isSame(onSelect.mock.calls[2][0], '1990-09-20 10:03:07')).toBeTruthy();
   });
 
+  it('should hide bottom button when switch date interval in the head', () => {
+    render(<MomentPickerPanel showTime />);
+    fireEvent.click(document.querySelector('.rc-picker-year-btn'));
+    expect(document.querySelector('.rc-picker-ranges')).toBeFalsy();
+  });
+
   it('DatePicker has defaultValue and showTime.defaultValue ', () => {
     const onSelect = jest.fn();
     render(
@@ -641,8 +647,12 @@ describe('Picker.Panel', () => {
           )}
         />,
       );
-      expect(errSpy).toHaveBeenCalledWith("Warning: 'dateRender' is deprecated. Please use 'cellRender' instead.");
-      expect(errSpy).toHaveBeenCalledWith("Warning: 'monthCellRender' is deprecated. Please use 'cellRender' instead.");
+      expect(errSpy).toHaveBeenCalledWith(
+        "Warning: 'dateRender' is deprecated. Please use 'cellRender' instead.",
+      );
+      expect(errSpy).toHaveBeenCalledWith(
+        "Warning: 'monthCellRender' is deprecated. Please use 'cellRender' instead.",
+      );
 
       errSpy.mockRestore();
     });
