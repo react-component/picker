@@ -11,6 +11,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import warning from 'rc-util/lib/warning';
 import * as React from 'react';
 import type { GenerateConfig } from './generate';
+import { useCellRender } from './hooks/useCellRender';
 import type {
   CellRender,
   Components,
@@ -39,7 +40,6 @@ import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
 import { getLowerBoundTime, setDateTime, setTime } from './utils/timeUtil';
 import { PickerModeMap } from './utils/uiUtil';
-import { useCellRender } from './hooks/useCellRender';
 
 export type PickerPanelSharedProps<DateType> = {
   prefixCls?: string;
@@ -554,27 +554,32 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
 
   if (!hideRanges) {
     extraFooter = getExtraFooter(prefixCls, mergedMode, renderExtraFooter);
-    rangesNode = getRanges({
-      prefixCls,
-      components,
-      needConfirmButton,
-      okDisabled: !mergedValue || (disabledDate && disabledDate(mergedValue)),
-      locale,
-      showNow,
-      onNow: needConfirmButton && onNow,
-      onOk: () => {
-        if (mergedValue) {
-          triggerSelect(mergedValue, 'submit', true);
-          if (onOk) {
-            onOk(mergedValue);
+
+    // This content is not displayed when the header switches year and month
+    if (showTime && mergedMode !== 'date') {
+      rangesNode = null;
+    } else {
+      rangesNode = getRanges({
+        prefixCls,
+        components,
+        needConfirmButton,
+        okDisabled: !mergedValue || (disabledDate && disabledDate(mergedValue)),
+        locale,
+        showNow,
+        onNow: needConfirmButton && onNow,
+        onOk: () => {
+          if (mergedValue) {
+            triggerSelect(mergedValue, 'submit', true);
+            if (onOk) {
+              onOk(mergedValue);
+            }
           }
-        }
-      },
-    });
+        },
+      });
+    }
   }
 
   let todayNode: React.ReactNode;
-
   if (showToday && mergedMode === 'date' && picker === 'date' && !showTime) {
     const now = generateConfig.getNow();
     const todayCls = `${prefixCls}-today-btn`;
