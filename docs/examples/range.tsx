@@ -62,6 +62,16 @@ export default () => {
             defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
             clearIcon={<span>X</span>}
             suffixIcon={<span>O</span>}
+            presets={[
+              {
+                label: 'Last week',
+                value: [moment().subtract(1, 'week'), moment()],
+              },
+              {
+                label: 'Last 3 days',
+                value: () => [moment().subtract(3, 'days'), moment().add(3, 'days')],
+              },
+            ]}
           />
           <RangePicker<Moment>
             {...sharedProps}
