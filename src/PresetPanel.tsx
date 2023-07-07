@@ -22,10 +22,18 @@ export default function PresetPanel<T>(props: PresetPanelProps<T>) {
           <li
             key={index}
             onClick={() => {
-              onClick(value);
+              onClick?.(
+                typeof value === 'function'
+                  ? (value as any)()
+                  : value
+              );
             }}
             onMouseEnter={() => {
-              onHover?.(value);
+              onHover?.(
+                typeof value === 'function'
+                  ? (value as any)()
+                  : value
+              );
             }}
             onMouseLeave={() => {
               onHover?.(null);
