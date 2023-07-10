@@ -35,7 +35,7 @@ export default () => {
       },
       {
         label: 'Now',
-        value: moment,
+        value: () => moment(),
       }
     ],
   };
