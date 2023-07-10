@@ -1,5 +1,6 @@
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
-import moment, { Moment } from 'moment';
+import type { Moment } from 'moment';
+import moment from 'moment';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import React from 'react';
@@ -18,6 +19,7 @@ import {
   openPicker,
   selectCell,
 } from './util/commonUtil';
+import type { RangePickerProps } from '../src/RangePicker';
 
 describe('Picker.Range', () => {
   function matchValues(container: HTMLElement, value1: string, value2: string) {
@@ -331,15 +333,32 @@ describe('Picker.Range', () => {
     });
   });
 
-  describe('ranges', () => {
-    it('work', () => {
+  function testRangePickerPresetRange(propsType: 'ranges' | 'presets') {
+
+    const genProps = (ranges: Record<string, any>) => {
+      const props: Partial<RangePickerProps<Moment>> = {};
+      if (propsType === 'ranges') {
+        // ranges is deprecated, but the case needs to be retained for a while
+        props.ranges = ranges;
+      } else if (propsType === 'presets') {
+        props.presets = [];
+        Object.entries(ranges).forEach(([label, value]) => {
+          props.presets.push({ label, value });
+        })
+      }
+      return props as RangePickerProps<Moment>;
+    }
+
+    it(`${propsType} work`, () => {
       const onChange = jest.fn();
       const { container } = render(
         <MomentRangePicker
-          ranges={{
-            test: [getMoment('1989-11-28'), getMoment('1990-09-03')],
-            func: () => [getMoment('2000-01-01'), getMoment('2010-11-11')],
-          }}
+          {...genProps(
+            {
+              test: [getMoment('1989-11-28'), getMoment('1990-09-03')],
+              func: () => [getMoment('2000-01-01'), getMoment('2010-11-11')],
+            }
+          )}
           onChange={onChange}
         />,
       );
@@ -371,12 +390,14 @@ describe('Picker.Range', () => {
       expect(isOpen()).toBeFalsy();
     });
 
-    it('hover className', () => {
+    it(`${propsType} hover className`, () => {
       const { container } = render(
         <MomentRangePicker
-          ranges={{
-            now: [getMoment('1990-09-11'), getMoment('1990-09-13')],
-          }}
+          {...genProps(
+            {
+              now: [getMoment('1990-09-11'), getMoment('1990-09-13')],
+            }
+          )}
         />,
       );
 
@@ -391,6 +412,12 @@ describe('Picker.Range', () => {
       expect(findCell(12)).not.toHaveClass('rc-picker-cell-in-range');
       expect(findCell(13)).not.toHaveClass('rc-picker-cell-range-end');
     });
+
+  }
+
+  describe.only('ranges or presets', () => {
+    testRangePickerPresetRange('ranges');
+    testRangePickerPresetRange('presets');
   });
 
   it('placeholder', () => {
