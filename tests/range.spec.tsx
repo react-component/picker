@@ -415,7 +415,7 @@ describe('Picker.Range', () => {
 
   }
 
-  describe.only('ranges or presets', () => {
+  describe('ranges or presets', () => {
     testRangePickerPresetRange('ranges');
     testRangePickerPresetRange('presets');
   });
