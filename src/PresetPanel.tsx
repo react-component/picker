@@ -1,5 +1,6 @@
 import * as React from 'react';
 import type { PresetDate } from './interface';
+import { executeValue } from './utils/miscUtil';
 
 export interface PresetPanelProps<T> {
   prefixCls: string;
@@ -21,28 +22,14 @@ export default function PresetPanel<T>(props: PresetPanelProps<T>) {
         {presets.map(({ label, value }, index) => (
           <li
             key={index}
-            onClick={() => {
-              onClick?.(
-                typeof value === 'function'
-                  ? (value as any)()
-                  : value
-              );
-            }}
-            onMouseEnter={() => {
-              onHover?.(
-                typeof value === 'function'
-                  ? (value as any)()
-                  : value
-              );
-            }}
-            onMouseLeave={() => {
-              onHover?.(null);
-            }}
+            onClick={() => onClick?.(executeValue(value))}
+            onMouseEnter={() => onHover?.(executeValue(value))}
+            onMouseLeave={() => onHover?.(null)}
           >
             {label}
           </li>
         ))}
       </ul>
-    </div>
+    </div >
   );
 }
