@@ -1030,4 +1030,39 @@ describe('Picker.Basic', () => {
 
     expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('2000-09-03');
   });
+
+  it('presets support callback', () => {
+    const onChange = jest.fn();
+    const mockPresetValue = jest.fn().mockImplementationOnce(() => moment('2000-09-03'));
+
+    render(
+      <MomentPicker
+        onChange={onChange}
+        open
+        presets={[
+          {
+            label: 'Bamboo',
+            value: mockPresetValue,
+          },
+        ]}
+      />,
+    );
+
+    const firstPreset = document.querySelector('.rc-picker-presets li');
+    expect(firstPreset.textContent).toBe('Bamboo');
+
+    fireEvent.click(firstPreset);
+
+    expect(mockPresetValue).toHaveBeenCalled();
+    expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('2000-09-03');
+
+    mockPresetValue.mockImplementationOnce(() => moment('2023-05-01 12:34:56'));
+
+    fireEvent.click(firstPreset);
+
+    expect(mockPresetValue).toBeCalledTimes(2);
+    expect(onChange).toBeCalledTimes(2);
+
+    expect(onChange.mock.calls[1][0].format('YYYY-MM-DD HH:mm:ss')).toEqual('2023-05-01 12:34:56');
+  });
 });

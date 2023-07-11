@@ -50,3 +50,7 @@ export function updateValues<T, R = [T | null, T | null] | null>(
 
   return (newValues as unknown) as R;
 }
+
+export function executeValue<T>(value: T | (() => T)): T {
+  return typeof value === 'function' ? (value as () => T)() : value;
+}

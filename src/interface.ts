@@ -123,7 +123,7 @@ export type CustomFormat<DateType> = (value: DateType) => string;
 
 export interface PresetDate<T> {
   label: React.ReactNode;
-  value: T;
+  value: T | (() => T);
 }
 
 // https://stackoverflow.com/a/39495173; need TypeScript >= 4.5

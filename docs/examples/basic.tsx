@@ -33,6 +33,10 @@ export default () => {
         label: 'Hello World!',
         value: moment(),
       },
+      {
+        label: 'Now',
+        value: () => moment(),
+      }
     ],
   };
 

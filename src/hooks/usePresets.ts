@@ -14,17 +14,10 @@ export default function usePresets<T>(
     if (legacyRanges) {
       warning(false, '`ranges` is deprecated. Please use `presets` instead.');
 
-      const rangeLabels = Object.keys(legacyRanges);
-
-      return rangeLabels.map((label) => {
-        const range = legacyRanges[label];
-        const newValues = typeof range === 'function' ? (range as any)() : range;
-
-        return {
-          label,
-          value: newValues,
-        };
-      });
+      return Object.entries(legacyRanges).map(([label, value]) => ({
+        label,
+        value,
+      }));
     }
 
     return [];
