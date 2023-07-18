@@ -426,11 +426,11 @@ describe('Picker.Range', () => {
     expect(container.querySelectorAll('input')[1].placeholder).toEqual('bamboo');
   });
 
-  describe('defaultPickerValue', () => {
-    it('defaultPickerValue works', () => {
+  describe('defaultValue', () => {
+    it('defaultValue works', () => {
       const { container } = render(
         <MomentRangePicker
-          defaultPickerValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
+          defaultValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
         />,
       );
 
@@ -443,12 +443,12 @@ describe('Picker.Range', () => {
       closePicker(container, 1);
     });
 
-    it('defaultPickerValue with showTime', () => {
+    it('defaultValue with showTime', () => {
       const startDate = getMoment('1982-02-12');
       const endDate = getMoment('1982-02-12');
 
       const { container } = render(
-        <MomentRangePicker defaultPickerValue={[startDate, endDate]} showTime />,
+        <MomentRangePicker defaultValue={[startDate, endDate]} showTime />,
       );
       openPicker(container);
       expect(document.querySelector('.rc-picker-year-btn').textContent).toEqual(
@@ -456,14 +456,13 @@ describe('Picker.Range', () => {
       );
     });
 
-    it('defaultPickerValue with showTime should works when open panel', () => {
+    it('defaultValue with showTime should works when open panel', () => {
       const startDate = getMoment('1982-02-12');
       const endDate = getMoment('1982-02-12');
 
       const { container } = render(
         <MomentRangePicker
           defaultValue={[startDate, endDate]}
-          defaultPickerValue={[startDate, endDate]}
           showTime
         />,
       );
@@ -872,8 +871,8 @@ describe('Picker.Range', () => {
       {
         picker: 'year',
         // Default picker value
-        defaultPickerValue: [getMoment('1990-09-03'), getMoment('2000-11-28')],
-        defaultPickerValueTitle: ['1990-1999', '2000-2009'],
+        defaultValue: [getMoment('1990-09-03'), getMoment('2000-11-28')],
+        defaultValueTitle: ['1990-1999', '2000-2009'],
         // Closing value
         closingValue: [getMoment('1989-09-03'), getMoment('1990-11-28')],
         closingValueTitle: '1980-1989',
@@ -884,8 +883,8 @@ describe('Picker.Range', () => {
       {
         picker: 'month',
         // Default picker value
-        defaultPickerValue: [getMoment('1990-09-03'), getMoment('2000-11-28')],
-        defaultPickerValueTitle: ['1990', '2000'],
+        defaultValue: [getMoment('1990-09-03'), getMoment('2000-11-28')],
+        defaultValueTitle: ['1990', '2000'],
         // Closing value
         closingValue: [getMoment('1989-09-03'), getMoment('1989-10-11')],
         closingValueTitle: '1989',
@@ -896,8 +895,8 @@ describe('Picker.Range', () => {
       {
         picker: 'date',
         // Default picker value
-        defaultPickerValue: [getMoment('1990-09-03'), getMoment('2000-11-28')],
-        defaultPickerValueTitle: ['Sep1990', 'Nov2000'],
+        defaultValue: [getMoment('1990-09-03'), getMoment('2000-11-28')],
+        defaultValueTitle: ['Sep1990', 'Nov2000'],
         // Closing value
         closingValue: [getMoment('1989-09-03'), getMoment('1989-10-11')],
         closingValueTitle: 'Sep1989',
@@ -908,26 +907,26 @@ describe('Picker.Range', () => {
     ].forEach(
       ({
         picker,
-        defaultPickerValue,
-        defaultPickerValueTitle,
+        defaultValue,
+        defaultValueTitle,
         closingValue,
         closingValueTitle,
         farValue,
         farValueTitle,
       }) => {
         describe(picker, () => {
-          it('defaultPickerValue', () => {
+          it('defaultValue', () => {
             const { container } = render(
               <MomentRangePicker
                 picker={picker as any}
-                defaultPickerValue={defaultPickerValue as any}
+                defaultValue={defaultValue as any}
               />,
             );
 
             openPicker(container);
-            matchTitle(defaultPickerValueTitle[0]);
+            matchTitle(defaultValueTitle[0]);
             openPicker(container, 1);
-            matchTitle(defaultPickerValueTitle[1]);
+            matchTitle(defaultValueTitle[1]);
           });
 
           it('with closing value', () => {

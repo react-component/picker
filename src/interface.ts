@@ -73,8 +73,6 @@ export type PanelSharedProps<DateType> = {
   generateConfig: GenerateConfig<DateType>;
   value?: NullableDateType<DateType>;
   viewDate: DateType;
-  /** [Legacy] Set default display picker view date */
-  defaultPickerValue?: DateType;
   locale: Locale;
   disabledDate?: (date: DateType) => boolean;
 

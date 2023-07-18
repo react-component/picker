@@ -97,7 +97,6 @@ export type RangePickerSharedProps<DateType> = {
   id?: string;
   value?: RangeValue<DateType>;
   defaultValue?: RangeValue<DateType>;
-  defaultPickerValue?: [DateType, DateType];
   placeholder?: [string, string];
   disabled?: boolean | [boolean, boolean];
   disabledTime?: (date: EventValue<DateType>, type: RangeType) => DisabledTimes;
@@ -144,7 +143,6 @@ type OmitPickerProps<Props> = Omit<
   Props,
   | 'value'
   | 'defaultValue'
-  | 'defaultPickerValue'
   | 'placeholder'
   | 'disabled'
   | 'disabledTime'
@@ -215,7 +213,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     separator = '~',
     value,
     defaultValue,
-    defaultPickerValue,
     open,
     defaultOpen,
     disabledDate,
@@ -299,7 +296,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const [getViewDate, setViewDate] = useRangeViewDates({
     values: mergedValue,
     picker,
-    defaultDates: defaultPickerValue,
+    defaultDates: defaultValue,
     generateConfig,
   });
 
@@ -858,7 +855,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           defaultValue={
             mergedActivePickerIndex === 0 ? getValue(selectedValue, 1) : getValue(selectedValue, 0)
           }
-          // defaultPickerValue={undefined}
         />
       </RangeContext.Provider>
     );

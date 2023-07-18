@@ -53,7 +53,7 @@ export default () => {
           <h3>1 Month earlier</h3>
           <PickerPanel<Moment>
             {...sharedProps}
-            defaultPickerValue={defaultValue.clone().subtract(1, 'month')}
+            defaultValue={defaultValue.clone().subtract(1, 'month')}
             locale={enUS}
           />
         </div>

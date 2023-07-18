@@ -89,7 +89,6 @@ render(<Picker />, mountNode);
 | locale | Object | import from 'rc-picker/lib/locale/en_US' | rc-picker locale |
 | value | moment |  | current value like input's value |
 | defaultValue | moment |  | defaultValue like input's defaultValue |
-| defaultPickerValue | moment |  | Set default display picker view date |
 | mode | time \| datetime \| date \| week \| month \| year \| decade |  | control which kind of panel |
 | picker | time \| date \| week \| month \| year |  | control which kind of panel |
 | tabIndex | Number | 0 | view [tabIndex](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) |
@@ -114,7 +113,6 @@ render(<Picker />, mountNode);
 | locale | Object | import from 'rc-picker/lib/locale/en_US' | rc-picker locale |
 | value | moment |  | current value like input's value |
 | defaultValue | moment |  | defaultValue like input's defaultValue |
-| defaultPickerValue | moment |  | Set default display picker view date |
 | separator | String | '~' | set separator between inputs |
 | picker | time \| date \| week \| month \| year |  | control which kind of panel |
 | placeholder | [String, String] |  | placeholder of date input |

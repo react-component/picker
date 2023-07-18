@@ -58,8 +58,6 @@ export type PickerPanelSharedProps<DateType> = {
   defaultValue?: DateType;
   /** [Legacy] Set default display picker view date */
   pickerValue?: DateType;
-  /** [Legacy] Set default display picker view date */
-  defaultPickerValue?: DateType;
 
   // Date
   disabledDate?: (date: DateType) => boolean;
@@ -138,7 +136,6 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     value,
     defaultValue,
     pickerValue,
-    defaultPickerValue,
     disabledDate,
     mode,
     picker = 'date',
@@ -212,7 +209,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   // View date control
   const [viewDate, setInnerViewDate] = useMergedState<DateType | null, DateType>(null, {
     value: pickerValue,
-    defaultValue: defaultPickerValue || mergedValue,
+    defaultValue: defaultValue || mergedValue,
     postState: (date) => {
       const now = generateConfig.getNow();
       if (!date) {
