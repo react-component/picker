@@ -354,6 +354,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     endInputRef,
     getValue(selectedValue, 0),
     getValue(selectedValue, 1),
+    mergedDisabled,
     onOpenChange,
   );
 
