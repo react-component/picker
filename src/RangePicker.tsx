@@ -1058,7 +1058,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const mergedAllowClear = allowClear && (
     (getValue(mergedValue as RangeValue<DateType>, 0) && !mergedDisabled[0]) ||
     (getValue(mergedValue as RangeValue<DateType>, 1) && !mergedDisabled[1])
-  )
+  );
 
   const inputSharedProps = {
     size: getInputSize(picker, formatList[0], generateConfig),
