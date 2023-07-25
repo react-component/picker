@@ -27,17 +27,17 @@ export function useAllowClear<DateType>(
         if (
             !!allowClear
         ) {
-            if (type === "single") {
-                return mergedValue && !mergedDisabled
-            } else {
+            if (isRange) {
                 return (
                     (getValue(mergedValue as RangeValue<DateType>, 0) && !mergedDisabled[0]) ||
                     (getValue(mergedValue as RangeValue<DateType>, 1) && !mergedDisabled[1])
                 )
+
             }
+            return mergedValue && !mergedDisabled;
         }
         return false;
-    }, [allowClear, mergedDisabled, mergedValue, type]);
+    }, [allowClear, mergedDisabled, mergedValue, isRange]);
 
     return {
         allowClear: mergedAllowClear,
