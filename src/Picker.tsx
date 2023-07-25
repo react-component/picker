@@ -37,7 +37,7 @@ import { formatValue, isEqual, parseValue } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import { elementsContains, getDefaultFormat, getInputSize } from './utils/uiUtil';
 import { legacyPropsWarning } from './utils/warnUtil';
-import { useAllowClear } from './hooks/useAllowClear';
+import { getClearIcon } from './utils/getClearIcon';
 
 export type PickerRefConfig = {
   focus: () => void;
@@ -489,7 +489,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       '`clearIcon` will be removed in future. Please use `allowClear` instead.',
     );
   }
-  const { allowClear: mergedAllowClear, clearIcon: clearNode } = useAllowClear<DateType>(
+
+  const clearNode: React.ReactNode = getClearIcon<DateType>(
     false,
     prefixCls,
     triggerChange,
@@ -497,8 +498,10 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     allowClear,
     clearIcon,
     mergedValue,
-    disabled
+    disabled,
   );
+
+  const mergedAllowClear = !!allowClear && mergedValue && !disabled;
 
   const mergedInputProps: React.InputHTMLAttributes<HTMLInputElement> & { ref: React.MutableRefObject<HTMLInputElement> } = {
     id,
@@ -516,7 +519,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     ...inputProps,
     size: getInputSize(picker, formatList[0], generateConfig),
     name,
-    ...pickAttrs(props, { aria: true, data: true}),
+    ...pickAttrs(props, { aria: true, data: true }),
     autoComplete,
   };
 

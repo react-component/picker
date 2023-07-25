@@ -48,7 +48,7 @@ import getRanges from './utils/getRanges';
 import { getValue, toArray, updateValues } from './utils/miscUtil';
 import { elementsContains, getDefaultFormat, getInputSize } from './utils/uiUtil';
 import { legacyPropsWarning } from './utils/warnUtil';
-import { useAllowClear } from './hooks/useAllowClear';
+import { getClearIcon } from './utils/getClearIcon';
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -1043,8 +1043,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     );
   }
 
-
-  const { allowClear: mergedAllowClear, clearIcon: clearNode } = useAllowClear<DateType>(
+  const clearNode: React.ReactNode = getClearIcon<DateType>(
     true,
     prefixCls,
     triggerChange,
@@ -1055,6 +1054,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     mergedDisabled,
     mergedActivePickerIndex,
   );
+
+  const mergedAllowClear = allowClear && (
+    (getValue(mergedValue as RangeValue<DateType>, 0) && !mergedDisabled[0]) ||
+    (getValue(mergedValue as RangeValue<DateType>, 1) && !mergedDisabled[1])
+  )
 
   const inputSharedProps = {
     size: getInputSize(picker, formatList[0], generateConfig),
