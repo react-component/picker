@@ -23,10 +23,19 @@ import {
 const fakeTime = getMoment('1990-09-03 00:00:00').valueOf();
 
 describe('Picker.Basic', () => {
+  let errorSpy;
   beforeEach(() => {
     jest.useFakeTimers().setSystemTime(fakeTime);
   });
 
+  beforeAll(() => {
+    errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+  });
+
+  beforeEach(() => {
+    errorSpy.mockReset();
+    resetWarned();
+  });
   afterAll(() => {
     jest.clearAllTimers();
     jest.useRealTimers();
@@ -535,6 +544,7 @@ describe('Picker.Basic', () => {
   });
 
   it('icon', () => {
+    expect(errorSpy).not.toHaveBeenCalled();
     render(
       <MomentPicker
         defaultValue={getMoment('1990-09-03')}
@@ -543,8 +553,10 @@ describe('Picker.Basic', () => {
         allowClear
       />,
     );
-
     expect(document.querySelector('.rc-picker-input')).toMatchSnapshot();
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.'
+    );
   });
 
   it('inputRender', () => {
@@ -611,34 +623,28 @@ describe('Picker.Basic', () => {
     });
 
     it('should show warning when hour step is invalid', () => {
-      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
-      expect(spy).not.toBeCalled();
+      expect(errorSpy).not.toBeCalled();
       const { container } = render(<MomentPicker picker="time" hourStep={9} />);
       openPicker(container);
-      expect(spy).toBeCalledWith('Warning: `hourStep` 9 is invalid. It should be a factor of 24.');
-      spy.mockRestore();
+      expect(errorSpy).toBeCalledWith('Warning: `hourStep` 9 is invalid. It should be a factor of 24.');
     });
 
     it('should show warning when minute step is invalid', () => {
-      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
-      expect(spy).not.toBeCalled();
+      expect(errorSpy).not.toBeCalled();
       const { container } = render(<MomentPicker picker="time" minuteStep={9} />);
       openPicker(container);
-      expect(spy).toBeCalledWith(
+      expect(errorSpy).toBeCalledWith(
         'Warning: `minuteStep` 9 is invalid. It should be a factor of 60.',
       );
-      spy.mockRestore();
     });
 
     it('should show warning when second step is invalid', () => {
-      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
-      expect(spy).not.toBeCalled();
+      expect(errorSpy).not.toBeCalled();
       const { container } = render(<MomentPicker picker="time" secondStep={9} />);
       openPicker(container);
-      expect(spy).toBeCalledWith(
+      expect(errorSpy).toBeCalledWith(
         'Warning: `secondStep` 9 is invalid. It should be a factor of 60.',
       );
-      spy.mockRestore();
     });
 
     // https://github.com/ant-design/ant-design/issues/40914
@@ -650,7 +656,7 @@ describe('Picker.Basic', () => {
         const { container } = render(<MomentPicker picker="time" {...props} />);
         openPicker(container);
 
-        const column = document.querySelector(`.rc-picker-time-panel-column:nth-child(${index+1})`);
+        const column = document.querySelector(`.rc-picker-time-panel-column:nth-child(${index + 1})`);
         expect(column).toBeTruthy();
 
         const cells = column.querySelectorAll('.rc-picker-time-panel-cell-inner');
@@ -742,7 +748,7 @@ describe('Picker.Basic', () => {
   it('defaultOpenValue in timePicker', () => {
     resetWarned();
     const onChange = jest.fn();
-    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
 
     const { container } = render(
       <MomentPicker
@@ -842,6 +848,20 @@ describe('Picker.Basic', () => {
     expect(document.querySelector('input').value).toEqual('custom format:20200924');
 
     // clear
+    clearValue();
+    expect(document.querySelector('input').value).toEqual('');
+  });
+
+  it('custom clear icon', () => {
+    render(
+      <MomentPicker
+        allowClear={{ clearIcon: <span className="custom-clear">clear</span> }}
+        defaultValue={getMoment('2020-09-17')}
+      />,
+    );
+
+    // clear
+    expect(document.querySelector('.custom-clear')).toBeTruthy();
     clearValue();
     expect(document.querySelector('input').value).toEqual('');
   });

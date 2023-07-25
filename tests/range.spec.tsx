@@ -20,8 +20,15 @@ import {
   selectCell,
 } from './util/commonUtil';
 import type { RangePickerProps } from '../src/RangePicker';
+import { resetWarned } from 'rc-util/lib/warning';
 
 describe('Picker.Range', () => {
+  let errorSpy;
+
+  beforeAll(() => {
+    errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+  });
+
   function matchValues(container: HTMLElement, value1: string, value2: string) {
     expect(container.querySelectorAll('input')[0].value).toEqual(value1);
     expect(container.querySelectorAll('input')[1].value).toEqual(value2);
@@ -33,6 +40,8 @@ describe('Picker.Range', () => {
   }
 
   beforeEach(() => {
+    errorSpy.mockReset();
+    resetWarned();
     global.scrollCalled = false;
     jest.useFakeTimers().setSystemTime(getMoment('1990-09-03 00:00:00').valueOf());
   });
@@ -319,13 +328,11 @@ describe('Picker.Range', () => {
     });
 
     it('null value with disabled', () => {
-      const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
       render(<MomentRangePicker disabled={[false, true]} value={[null, null]} />);
 
-      expect(errSpy).toHaveBeenCalledWith(
+      expect(errorSpy).toHaveBeenCalledWith(
         'Warning: `disabled` should not set with empty `value`. You should set `allowEmpty` or `value` instead.',
       );
-      errSpy.mockReset();
     });
 
     it('clear should trigger change', () => {
@@ -747,6 +754,9 @@ describe('Picker.Range', () => {
     );
 
     expect(container).toMatchSnapshot();
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.'
+    );
   });
 
   it('block native mouseDown in panel to prevent focus changed', () => {
@@ -1101,19 +1111,19 @@ describe('Picker.Range', () => {
       targetCell: string;
       match: string[];
     }[] = [
-      {
-        picker: 'week',
-        defaultValue: ['2020-06-13'],
-        targetCell: '9',
-        match: ['2020-24th'],
-      },
-      {
-        picker: 'quarter',
-        defaultValue: ['2020-03-30', '2020-05-20'],
-        targetCell: 'Q1',
-        match: ['2020-Q1'],
-      },
-    ];
+        {
+          picker: 'week',
+          defaultValue: ['2020-06-13'],
+          targetCell: '9',
+          match: ['2020-24th'],
+        },
+        {
+          picker: 'quarter',
+          defaultValue: ['2020-03-30', '2020-05-20'],
+          targetCell: 'Q1',
+          match: ['2020-Q1'],
+        },
+      ];
 
     list.forEach(({ picker, defaultValue, match, targetCell }) => {
       it(picker, () => {
@@ -1310,7 +1320,7 @@ describe('Picker.Range', () => {
 
         openPicker(container, 1);
         inputValue('1989-01-07', 1);
-        console.log('close!');
+
         keyDown(container, 1, KeyCode.ENTER);
         expect(isOpen()).toBeTruthy();
 
@@ -1594,8 +1604,6 @@ describe('Picker.Range', () => {
     fireEvent.mouseDown(document.querySelectorAll('input')[0]);
     fireEvent.focus(document.querySelectorAll('input')[0]);
     inputValue('', 0);
-
-    console.log(container.querySelector('.rc-picker').innerHTML);
 
     // reselect date
     selectCell(9, 0);
@@ -1898,4 +1906,19 @@ describe('Picker.Range', () => {
 
     expect(document.querySelector('.rc-picker-cell-disabled')).toBeFalsy();
   });
+
+  it('custom clear icon', () => {
+    render(
+      <MomentRangePicker
+        allowClear={{ clearIcon: <span className="custom-clear">clear</span> }}
+        defaultValue={[getMoment('2000-09-03'), getMoment('2000-09-03')]}
+      />,
+    );
+
+    // clear
+    expect(document.querySelector('.custom-clear')).toBeTruthy();
+    clearValue();
+    expect(document.querySelector('input').value).toEqual('');
+  });
+
 });

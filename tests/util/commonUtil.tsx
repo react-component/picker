@@ -175,7 +175,7 @@ export function confirmOK() {
 }
 
 export function clearValue() {
-  const clearBtn = document.querySelector('.rc-picker-clear-btn');
+  const clearBtn = document.querySelector('.rc-picker-clear');
   fireEvent.mouseDown(clearBtn);
   fireEvent.mouseUp(clearBtn);
 }
