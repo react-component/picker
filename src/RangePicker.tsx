@@ -97,6 +97,10 @@ export type RangePickerSharedProps<DateType> = {
   id?: string;
   value?: RangeValue<DateType>;
   defaultValue?: RangeValue<DateType>;
+  /**
+   * @deprecated please use `defaultValue` instead.
+   * Set default display picker view date
+   */
   defaultPickerValue?: [DateType, DateType];
   placeholder?: [string, string];
   disabled?: boolean | [boolean, boolean];

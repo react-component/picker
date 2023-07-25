@@ -58,7 +58,10 @@ export type PickerPanelSharedProps<DateType> = {
   defaultValue?: DateType;
   /** [Legacy] Set default display picker view date */
   pickerValue?: DateType;
-  /** [Legacy] Set default display picker view date */
+  /**
+   * @deprecated please use `defaultValue` instead.
+   * Set default display picker view date
+   */
   defaultPickerValue?: DateType;
 
   // Date
@@ -170,6 +173,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const isMinuteStepValid = 60 % minuteStep === 0;
   const isSecondStepValid = 60 % secondStep === 0;
 
+  // ============================ Warning ============================
   if (process.env.NODE_ENV !== 'production') {
     warning(!value || generateConfig.isValidate(value), 'Invalidate date pass to `value`.');
     warning(!value || generateConfig.isValidate(value), 'Invalidate date pass to `defaultValue`.');
@@ -182,6 +186,7 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       isSecondStepValid,
       `\`secondStep\` ${secondStep} is invalid. It should be a factor of 60.`,
     );
+    warning(!defaultPickerValue, `'defaultPickerValue' is deprecated. Please use 'defaultValue' instead.`);
     warning(!dateRender, `'dateRender' is deprecated. Please use 'cellRender' instead.`);
     warning(!monthCellRender, `'monthCellRender' is deprecated. Please use 'cellRender' instead.`);
   }
