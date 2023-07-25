@@ -1045,7 +1045,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
 
   const { allowClear: mergedAllowClear, clearIcon: clearNode } = useAllowClear<DateType>(
-    "range",
+    true,
     prefixCls,
     triggerChange,
     triggerOpen,

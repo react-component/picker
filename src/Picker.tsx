@@ -490,7 +490,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     );
   }
   const { allowClear: mergedAllowClear, clearIcon: clearNode } = useAllowClear<DateType>(
-    "single",
+    false,
     prefixCls,
     triggerChange,
     triggerOpen,

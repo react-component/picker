@@ -5,7 +5,7 @@ import type { RangeValue } from '../interface';
 import { getValue, updateValues } from '../utils/miscUtil';
 
 export function useAllowClear<DateType>(
-    type: "single" | "range",
+    isRange: boolean,
     prefixCls,
     triggerChange: (date: DateType | RangeValue<DateType> | null, sourceIndex?: 0 | 1) => void,
     triggerOpen: (open: boolean, activeIndex?: false | 0 | 1, source?: SourceType) => void,
