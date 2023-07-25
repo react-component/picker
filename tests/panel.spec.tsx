@@ -632,6 +632,24 @@ describe('Picker.Panel', () => {
       expect(container).toMatchSnapshot();
     });
 
+    it('warning with defaultPickerValue', () => {
+      resetWarned();
+      const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      render(
+        <MomentPickerPanel
+          picker={picker as any}
+          defaultPickerValue={getMoment('2023-07-25')}
+        />,
+      );
+
+      expect(errSpy).toHaveBeenCalledWith(
+        "Warning: 'defaultPickerValue' is deprecated. Please use 'defaultValue' instead.",
+      );
+
+      errSpy.mockRestore();
+    });
+
     it('warning with dateRender and monthCellRender', () => {
       resetWarned();
       const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
