@@ -490,15 +490,29 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     );
   }
 
-  const clearNode: React.ReactNode = getClearIcon<DateType>(
-    false,
+  const mergedClearIcon: React.ReactNode = getClearIcon(
     prefixCls,
-    triggerChange,
-    triggerOpen,
     allowClear,
     clearIcon,
-    mergedValue,
-    disabled,
+  );
+
+  const clearNode: React.ReactNode = (
+    <span
+      onMouseDown={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      onMouseUp={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerChange(null);
+        triggerOpen(false);
+      }}
+      className={`${prefixCls}-clear`}
+      role="button"
+    >
+      {mergedClearIcon}
+    </span>
   );
 
   const mergedAllowClear = !!allowClear && mergedValue && !disabled;

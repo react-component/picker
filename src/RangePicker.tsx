@@ -1043,16 +1043,38 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     );
   }
 
-  const clearNode: React.ReactNode = getClearIcon<DateType>(
-    true,
+  const mergedClearIcon: React.ReactNode = getClearIcon(
     prefixCls,
-    triggerChange,
-    triggerOpen,
     allowClear,
     clearIcon,
-    mergedValue,
-    mergedDisabled,
-    mergedActivePickerIndex,
+  );
+
+  const clearNode: React.ReactNode = (
+    <span
+      onMouseDown={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      onMouseUp={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        let values = mergedValue;
+
+        if (!mergedDisabled[0]) {
+          values = updateValues(values, null, 0);
+        }
+        if (!mergedDisabled[1]) {
+          values = updateValues(values, null, 1);
+        }
+
+        triggerChange(values, null);
+        triggerOpen(false, mergedActivePickerIndex, 'clear');
+      }}
+      className={`${prefixCls}-clear`}
+      role="button"
+    >
+      {mergedClearIcon}
+    </span>
   );
 
   const mergedAllowClear = allowClear && (
