@@ -1,11 +1,11 @@
 import type { Locale } from '../interface';
 
 const locale: Locale = {
-  locale: 'mm_MM',
+  locale: 'my_MM',
   today: 'ယနေ့',
   now: 'ယခု',
   backToToday: 'ယနေ့ မတိုင်ခင် သို့',
-  ok: 'Ok',
+  ok: 'OK',
   clear: 'ရှင်းမည်',
   month: 'လ',
   year: 'နှစ်',

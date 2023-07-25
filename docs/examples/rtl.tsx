@@ -1,15 +1,15 @@
 import React from 'react';
 import moment, { Moment } from 'moment';
-import Picker from '../src/Picker';
-import RangePicker from '../src/RangePicker';
-import PickerPanel from '../src/PickerPanel';
-import momentGenerateConfig from '../src/generate/moment';
-import zhCN from '../src/locale/zh_CN';
-import enUS from '../src/locale/en_US';
-import jaJP from '../src/locale/ja_JP';
-import '../assets/index.less';
+import Picker from '../../src/Picker';
+import RangePicker from '../../src/RangePicker';
+import PickerPanel from '../../src/PickerPanel';
+import momentGenerateConfig from '../../src/generate/moment';
+import zhCN from '../../src/locale/zh_CN';
+import enUS from '../../src/locale/en_US';
+import jaJP from '../../src/locale/ja_JP';
+import '../../assets/index.less';
 
-const defaultValue = moment('2019-11-28 01:02:03');
+const defaultValue = moment();
 
 function formatDate(date: Moment | null) {
   return date ? date.format('YYYY-MM-DD HH:mm:ss') : 'null';
@@ -25,8 +25,9 @@ export default () => {
   };
 
   const onChange = (newValue: Moment | null, formatString?: string) => {
-    console.log('Change:', newValue, formatString);
-    setValue(newValue);
+    const lastValue = Array.isArray(newValue) ? newValue[1] : newValue;
+    console.log('Change:', lastValue, newValue, formatString);
+    setValue(lastValue);
   };
 
   const sharedProps = {
@@ -206,7 +207,7 @@ export default () => {
             locale={zhCN}
             allowClear
             ref={rangePickerRef}
-            defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+            defaultValue={[moment(), moment().add(1, 'M')]}
             placeholder={['start...', 'end...']}
           />
         </div>

@@ -1,10 +1,11 @@
 import React from 'react';
-import moment, { Moment } from 'moment';
-import Picker from '../src/Picker';
-import RangePicker from '../src/RangePicker';
-import momentGenerateConfig from '../src/generate/moment';
-import zhCN from '../src/locale/zh_CN';
-import '../assets/index.less';
+import type { Moment } from 'moment';
+import moment from 'moment';
+import Picker from '../../src/Picker';
+import RangePicker from '../../src/RangePicker';
+import momentGenerateConfig from '../../src/generate/moment';
+import zhCN from '../../src/locale/zh_CN';
+import '../../assets/index.less';
 import './common.less';
 
 const defaultStartValue = moment('2019-09-03 05:02:03');

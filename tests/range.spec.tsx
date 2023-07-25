@@ -1,73 +1,89 @@
-import React from 'react';
-import MockDate from 'mockdate';
-import { act } from 'react-dom/test-utils';
+import { act, createEvent, fireEvent, render } from '@testing-library/react';
+import type { Moment } from 'moment';
+import moment from 'moment';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import type { Moment } from 'moment';
-import type { Wrapper } from './util/commonUtil';
-import { mount, getMoment, isSame, MomentRangePicker } from './util/commonUtil';
-import zhCN from '../src/locale/zh_CN';
+import React from 'react';
 import type { PickerMode } from '../src/interface';
+import zhCN from '../src/locale/zh_CN';
+import {
+  clearValue,
+  clickButton,
+  closePicker,
+  findCell,
+  getMoment,
+  inputValue,
+  isOpen,
+  isSame,
+  MomentRangePicker,
+  openPicker,
+  selectCell,
+} from './util/commonUtil';
+import type { RangePickerProps } from '../src/RangePicker';
 
 describe('Picker.Range', () => {
-  function matchValues(wrapper: Wrapper, value1: string, value2: string) {
-    expect(wrapper.find('input').first().props().value).toEqual(value1);
-    expect(wrapper.find('input').last().props().value).toEqual(value2);
+  function matchValues(container: HTMLElement, value1: string, value2: string) {
+    expect(container.querySelectorAll('input')[0].value).toEqual(value1);
+    expect(container.querySelectorAll('input')[1].value).toEqual(value2);
   }
 
-  beforeAll(() => {
-    MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
+  function findLast(container: HTMLElement | Document, selector: string) {
+    const list = container.querySelectorAll(selector);
+    return list[list.length - 1];
+  }
+
+  beforeEach(() => {
+    global.scrollCalled = false;
+    jest.useFakeTimers().setSystemTime(getMoment('1990-09-03 00:00:00').valueOf());
   });
 
-  afterAll(() => {
-    MockDate.reset();
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
   });
+
+  function keyDown(container: HTMLElement, index: number, keyCode: number) {
+    fireEvent.keyDown(container.querySelectorAll('input')[index], {
+      keyCode,
+      which: keyCode,
+      charCode: keyCode,
+    });
+  }
 
   describe('value', () => {
     it('defaultValue', () => {
-      const wrapper = mount(
+      const { container } = render(
         <MomentRangePicker defaultValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]} />,
       );
 
-      matchValues(wrapper, '1989-11-28', '1990-09-03');
+      matchValues(container, '1989-11-28', '1990-09-03');
     });
-    it('defaultPickerValue with showTime', () => {
-      const startDate = getMoment('1982-02-12');
-      const endDate = getMoment('1982-02-12');
 
-      const wrapper = mount(
-        <MomentRangePicker defaultPickerValue={[startDate, endDate]} showTime />,
-      );
-      wrapper.openPicker();
-      expect(wrapper.find('.rc-picker-year-btn').first().text()).toEqual(startDate.format('YYYY'));
-    });
     it('controlled', () => {
-      const wrapper = mount(
+      const { container, rerender } = render(
         <MomentRangePicker value={[getMoment('1989-11-28'), getMoment('1990-09-03')]} />,
       );
 
-      matchValues(wrapper, '1989-11-28', '1990-09-03');
+      matchValues(container, '1989-11-28', '1990-09-03');
 
       // Update
-      wrapper.setProps({
-        value: [getMoment('2000-01-01'), getMoment('2011-12-12')],
-      });
-      wrapper.update();
-      matchValues(wrapper, '2000-01-01', '2011-12-12');
+      rerender(<MomentRangePicker value={[getMoment('2000-01-01'), getMoment('2011-12-12')]} />);
+
+      matchValues(container, '2000-01-01', '2011-12-12');
     });
 
     it('uncontrolled', () => {
       const onChange = jest.fn();
       const onCalendarChange = jest.fn();
-      const wrapper = mount(
+      const { container } = render(
         <MomentRangePicker onChange={onChange} onCalendarChange={onCalendarChange} />,
       );
 
       // Start date
-      wrapper.openPicker();
+      openPicker(container);
       expect(onChange).not.toHaveBeenCalled();
 
-      wrapper.selectCell(13);
+      selectCell(13);
       expect(onChange).not.toHaveBeenCalled();
 
       expect(isSame(onCalendarChange.mock.calls[0][0][0], '1990-09-13')).toBeTruthy();
@@ -76,8 +92,9 @@ describe('Picker.Range', () => {
 
       // End date
       onCalendarChange.mockReset();
-      wrapper.selectCell(14);
+      selectCell(14);
 
+      expect(onChange).toHaveBeenCalled();
       expect(isSame(onChange.mock.calls[0][0][0], '1990-09-13')).toBeTruthy();
       expect(isSame(onChange.mock.calls[0][0][1], '1990-09-14')).toBeTruthy();
       expect(onChange.mock.calls[0][1]).toEqual(['1990-09-13', '1990-09-14']);
@@ -89,38 +106,45 @@ describe('Picker.Range', () => {
   });
 
   it('exchanged value should re-order', () => {
-    const wrapper = mount(
+    const { container } = render(
       <MomentRangePicker defaultValue={[getMoment('1990-09-03'), getMoment('1989-11-28')]} />,
     );
-    wrapper.update();
 
-    matchValues(wrapper, '1989-11-28', '1990-09-03');
+    matchValues(container, '1989-11-28', '1990-09-03');
   });
 
   describe('view is closed', () => {
     it('year', () => {
-      const wrapper = mount(<MomentRangePicker picker="year" />);
-      wrapper.openPicker();
-      expect(wrapper.exists('.rc-picker-footer')).toBeFalsy();
-      expect(wrapper.find('.rc-picker-header-view').first().text()).toEqual('1990-1999');
-      expect(wrapper.find('.rc-picker-header-view').last().text()).toEqual('2000-2009');
+      const { container } = render(<MomentRangePicker picker="year" />);
+      openPicker(container);
+      expect(document.querySelector('.rc-picker-footer')).toBeFalsy();
+      expect(document.querySelectorAll('.rc-picker-header-view')[0].textContent).toEqual(
+        '1990-1999',
+      );
+      expect(document.querySelectorAll('.rc-picker-header-view')[1].textContent).toEqual(
+        '2000-2009',
+      );
     });
 
     it('year with footer', () => {
-      const wrapper = mount(
+      const { container } = render(
         <MomentRangePicker renderExtraFooter={() => <p>footer</p>} picker="year" />,
       );
-      wrapper.openPicker();
-      expect(wrapper.find('.rc-picker-footer').text()).toEqual('footer');
-      expect(wrapper.find('.rc-picker-header-view').first().text()).toEqual('1990-1999');
-      expect(wrapper.find('.rc-picker-header-view').last().text()).toEqual('2000-2009');
+      openPicker(container);
+      expect(document.querySelector('.rc-picker-footer').textContent).toEqual('footer');
+      expect(document.querySelectorAll('.rc-picker-header-view')[0].textContent).toEqual(
+        '1990-1999',
+      );
+      expect(document.querySelectorAll('.rc-picker-header-view')[1].textContent).toEqual(
+        '2000-2009',
+      );
     });
   });
 
   it('endDate can not click before startDate', () => {
     const onChange = jest.fn();
 
-    const wrapper = mount(
+    const { container } = render(
       <MomentRangePicker
         onChange={onChange}
         disabledDate={(date) => date.date() === 28}
@@ -128,103 +152,147 @@ describe('Picker.Range', () => {
       />,
     );
 
-    let cellNode: Wrapper;
+    let cellNode: HTMLElement;
 
     // Start date
-    wrapper.openPicker();
-    wrapper.selectCell(23);
+    openPicker(container);
+    selectCell(23);
 
     // End date
-    cellNode = wrapper.selectCell(11);
-    expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeTruthy();
+    cellNode = selectCell(11);
+    expect(cellNode).toHaveClass('rc-picker-cell-disabled');
     expect(onChange).not.toHaveBeenCalled();
 
     // Click origin disabled date
-    cellNode = wrapper.selectCell(28);
-    expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeTruthy();
+    cellNode = selectCell(28);
+    expect(cellNode).toHaveClass('rc-picker-cell-disabled');
     expect(onChange).not.toHaveBeenCalled();
   });
 
   it('week picker can not click before start week', () => {
-    const wrapper = mount(<MomentRangePicker picker="week" locale={zhCN} />);
-    wrapper.openPicker();
-    wrapper.selectCell(11);
+    const { container } = render(<MomentRangePicker picker="week" locale={zhCN} />);
+    openPicker(container);
+    selectCell(11);
 
-    expect(wrapper.findCell(4).hasClass('rc-picker-cell-disabled')).toBeTruthy();
-    expect(wrapper.findCell(11).hasClass('rc-picker-cell-disabled')).toBeFalsy();
+    expect(findCell(4)).toHaveClass('rc-picker-cell-disabled');
+    expect(findCell(11)).not.toHaveClass('rc-picker-cell-disabled');
   });
 
   describe('Can not select when start or end first selected', () => {
     it('select end', () => {
-      const wrapper = mount(<MomentRangePicker />);
+      const { container } = render(<MomentRangePicker />);
 
-      wrapper.openPicker(1);
-      wrapper.selectCell(7);
+      openPicker(container, 1);
+      selectCell(7);
 
-      expect(wrapper.findCell(23).hasClass('rc-picker-cell-disabled')).toBeTruthy();
+      expect(findCell(23)).toHaveClass('rc-picker-cell-disabled');
     });
 
     it('select start', () => {
-      const wrapper = mount(<MomentRangePicker picker="quarter" />);
+      const { container } = render(<MomentRangePicker picker="quarter" />);
 
-      wrapper.openPicker(0);
-      wrapper.selectCell('Q3');
+      openPicker(container, 0);
+      selectCell('Q3');
 
-      expect(wrapper.findCell('Q1').hasClass('rc-picker-cell-disabled')).toBeTruthy();
+      expect(findCell('Q1')).toHaveClass('rc-picker-cell-disabled');
     });
 
     it('select end', () => {
-      const wrapper = mount(<MomentRangePicker picker="month" />);
+      const { container } = render(<MomentRangePicker picker="month" />);
 
-      wrapper.openPicker(1);
-      wrapper.selectCell('May');
+      openPicker(container, 1);
+      selectCell('May');
 
-      expect(wrapper.findCell('Dec').hasClass('rc-picker-cell-disabled')).toBeTruthy();
+      expect(findCell('Dec')).toHaveClass('rc-picker-cell-disabled');
     });
 
     it('disabled start', () => {
-      const wrapper = mount(
+      const { container } = render(
         <MomentRangePicker
           disabled={[true, false]}
           defaultValue={[getMoment('1990-01-15'), getMoment('1990-02-15')]}
         />,
       );
 
-      wrapper.openPicker(1);
-      expect(wrapper.findCell(14).hasClass('rc-picker-cell-disabled')).toBeTruthy();
+      openPicker(container, 1);
+      expect(findCell(14)).toHaveClass('rc-picker-cell-disabled');
     });
   });
 
   it('allowEmpty', () => {
     const onChange = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <MomentRangePicker onChange={onChange} allowEmpty={[false, true]} allowClear />,
     );
 
-    wrapper.openPicker();
-    wrapper.selectCell(11);
+    openPicker(container);
+    selectCell(11);
     expect(onChange).toHaveBeenCalledWith([expect.anything(), null], ['1990-09-11', '']);
 
-    wrapper.clearValue();
+    clearValue();
     onChange.mockReset();
 
     // Not allow empty with startDate
-    wrapper.openPicker(1);
-    wrapper.selectCell(23);
-    wrapper.closePicker(1);
+    openPicker(container, 1);
+    selectCell(23);
+    closePicker(container, 1);
     expect(onChange).not.toHaveBeenCalled();
   });
 
   describe('disabled', () => {
+    it('should no panel open with disabled', () => {
+      const { baseElement } = render(<MomentRangePicker disabled />);
+      expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
+      fireEvent.click(baseElement.querySelector('.rc-picker-input'));
+      expect(baseElement.querySelector('.rc-picker-dropdown')).toBeFalsy();
+    });
+
     it('basic disabled check', () => {
-      const wrapper = mount(<MomentRangePicker disabled={[true, false]} />);
-      expect(wrapper.find('input').at(0).props().disabled).toBeTruthy();
-      expect(wrapper.find('input').at(1).props().disabled).toBeFalsy();
+      const { container } = render(<MomentRangePicker disabled={[true, false]} />);
+      expect(container.querySelectorAll('input')[0].disabled).toBeTruthy();
+      expect(container.querySelectorAll('input')[1].disabled).toBeFalsy();
+    });
+
+    it('should close panel when finish choose panel and next is disabled with disabled = [false, true]/[true,false]', () => {
+      const { baseElement } = render(<MomentRangePicker disabled={[false, true]} />);
+      expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
+      fireEvent.click(baseElement.querySelectorAll('.rc-picker-input')[0]);
+      expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
+      fireEvent.click(baseElement.querySelector('.rc-picker-cell-inner'));
+      expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
+    });
+
+    it('should close panel when finish first choose with showTime = true and disabled = [false, true]', () => {
+      const { baseElement } = render(<MomentRangePicker showTime disabled={[false, true]} />);
+      expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
+      fireEvent.click(baseElement.querySelectorAll('.rc-picker-input')[0]);
+      expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
+      fireEvent.click(baseElement.querySelector('.rc-picker-cell-inner'));
+      fireEvent.click(baseElement.querySelector('.rc-picker-ok button'));
+      expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
+    });
+
+    it('should close panel when finish second choose with showTime = true and disabled = [true, false]', () => {
+      const { baseElement } = render(<MomentRangePicker showTime disabled={[true, false]} />);
+      expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
+      fireEvent.click(baseElement.querySelectorAll('.rc-picker-input')[1]);
+      expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
+      fireEvent.click(baseElement.querySelector('.rc-picker-cell-range-start .rc-picker-cell-inner'));
+      fireEvent.click(baseElement.querySelector('.rc-picker-ok button'));
+      expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
+    });
+
+    it('panel can not be clicked with open and disabled', () => {
+      const onChange = jest.fn();
+      const { baseElement } = render(<MomentRangePicker disabled open onChange={onChange} />);
+      expect(baseElement.querySelector('.rc-picker-cell')).toBeTruthy();
+      fireEvent.click(baseElement.querySelector('.rc-picker-cell'));
+      expect(onChange).not.toBeCalled();
     });
 
     it('startDate will have disabledDate when endDate is not selectable', () => {
       const onChange = jest.fn();
-      const wrapper = mount(
+      const { container } = render(
         <MomentRangePicker
           disabled={[false, true]}
           defaultValue={[null, getMoment('1990-09-22')]}
@@ -232,18 +300,18 @@ describe('Picker.Range', () => {
         />,
       );
 
-      let cellNode: Wrapper;
+      let cellNode: HTMLElement;
 
       // Disabled date
-      wrapper.openPicker();
-      cellNode = wrapper.selectCell(25);
-      expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeTruthy();
+      openPicker(container);
+      cellNode = selectCell(25);
+      expect(cellNode).toHaveClass('rc-picker-cell-disabled');
       expect(onChange).not.toHaveBeenCalled();
 
       // Enabled date
-      wrapper.openPicker();
-      cellNode = wrapper.selectCell(7);
-      expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeFalsy();
+      openPicker(container);
+      cellNode = selectCell(7);
+      expect(cellNode).not.toHaveClass('rc-picker-cell-disabled');
       expect(onChange).toHaveBeenCalledWith(
         [expect.anything(), expect.anything()],
         ['1990-09-07', '1990-09-22'],
@@ -252,7 +320,7 @@ describe('Picker.Range', () => {
 
     it('null value with disabled', () => {
       const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-      mount(<MomentRangePicker disabled={[false, true]} value={[null, null]} />);
+      render(<MomentRangePicker disabled={[false, true]} value={[null, null]} />);
 
       expect(errSpy).toHaveBeenCalledWith(
         'Warning: `disabled` should not set with empty `value`. You should set `allowEmpty` or `value` instead.',
@@ -262,7 +330,7 @@ describe('Picker.Range', () => {
 
     it('clear should trigger change', () => {
       const onChange = jest.fn();
-      const wrapper = mount(
+      const { container } = render(
         <MomentRangePicker
           disabled={[false, true]}
           defaultValue={[getMoment('1990-01-01'), getMoment('2000-11-11')]}
@@ -271,150 +339,161 @@ describe('Picker.Range', () => {
         />,
       );
 
-      wrapper.openPicker();
-      wrapper.clearValue();
-      expect(wrapper.isOpen()).toBeFalsy();
+      openPicker(container);
+      clearValue();
+      expect(isOpen()).toBeFalsy();
       expect(onChange.mock.calls[0][1]).toEqual(['', '2000-11-11']);
     });
 
     // https://github.com/ant-design/ant-design/issues/23726
     it('not fill when all disabled and no value', () => {
-      const wrapper = mount(<MomentRangePicker disabled />);
-      expect(wrapper.find('input').first().props().value).toEqual('');
-      expect(wrapper.find('input').last().props().value).toEqual('');
+      const { container } = render(<MomentRangePicker disabled />);
+      expect(container.querySelectorAll('input')[0].value).toEqual('');
+      expect(container.querySelectorAll('input')[1].value).toEqual('');
     });
   });
 
-  describe('ranges', () => {
-    it('work', () => {
+  function testRangePickerPresetRange(propsType: 'ranges' | 'presets') {
+
+    const genProps = (ranges: Record<string, any>) => {
+      const props: Partial<RangePickerProps<Moment>> = {};
+      if (propsType === 'ranges') {
+        // ranges is deprecated, but the case needs to be retained for a while
+        props.ranges = ranges;
+      } else if (propsType === 'presets') {
+        props.presets = [];
+        Object.entries(ranges).forEach(([label, value]) => {
+          props.presets.push({ label, value });
+        })
+      }
+      return props as RangePickerProps<Moment>;
+    }
+
+    it(`${propsType} work`, () => {
       const onChange = jest.fn();
-      const wrapper = mount(
+      const { container } = render(
         <MomentRangePicker
-          ranges={{
-            test: [getMoment('1989-11-28'), getMoment('1990-09-03')],
-            func: () => [getMoment('2000-01-01'), getMoment('2010-11-11')],
-          }}
+          {...genProps(
+            {
+              test: [getMoment('1989-11-28'), getMoment('1990-09-03')],
+              func: () => [getMoment('2000-01-01'), getMoment('2010-11-11')],
+            }
+          )}
           onChange={onChange}
         />,
       );
 
-      let testNode;
+      let testNode: HTMLElement;
 
       // Basic
-      wrapper.openPicker();
-      testNode = wrapper.find('.rc-picker-ranges li span').first();
-      expect(testNode.text()).toEqual('test');
-      testNode.simulate('click');
+      openPicker(container);
+      testNode = document.querySelector('.rc-picker-presets li');
+      expect(testNode.textContent).toEqual('test');
+      // testNode.simulate('click');
+      fireEvent.click(testNode);
       expect(onChange).toHaveBeenCalledWith(
         [expect.anything(), expect.anything()],
         ['1989-11-28', '1990-09-03'],
       );
-      expect(wrapper.isOpen()).toBeFalsy();
+      expect(isOpen()).toBeFalsy();
 
       // Function
-      wrapper.openPicker();
-      testNode = wrapper.find('.rc-picker-ranges li span').last();
-      expect(testNode.text()).toEqual('func');
-      testNode.simulate('click');
+      openPicker(container);
+      testNode = document.querySelector('.rc-picker-presets li:last-child');
+      expect(testNode.textContent).toEqual('func');
+      // testNode.simulate('click');
+      fireEvent.click(testNode);
       expect(onChange).toHaveBeenCalledWith(
         [expect.anything(), expect.anything()],
         ['2000-01-01', '2010-11-11'],
       );
-      expect(wrapper.isOpen()).toBeFalsy();
+      expect(isOpen()).toBeFalsy();
     });
 
-    it('hover className', () => {
-      const wrapper = mount(
+    it(`${propsType} hover className`, () => {
+      const { container } = render(
         <MomentRangePicker
-          ranges={{
-            now: [getMoment('1990-09-11'), getMoment('1990-09-13')],
-          }}
+          {...genProps(
+            {
+              now: [getMoment('1990-09-11'), getMoment('1990-09-13')],
+            }
+          )}
         />,
       );
 
-      wrapper.openPicker();
-      wrapper.find('.rc-picker-preset > *').simulate('mouseEnter');
-      expect(wrapper.findCell(11).hasClass('rc-picker-cell-range-start')).toBeTruthy();
-      expect(wrapper.findCell(12).hasClass('rc-picker-cell-in-range')).toBeTruthy();
-      expect(wrapper.findCell(13).hasClass('rc-picker-cell-range-end')).toBeTruthy();
+      openPicker(container);
+      fireEvent.mouseEnter(document.querySelector('.rc-picker-presets li'));
+      expect(findCell(11)).toHaveClass('rc-picker-cell-range-start');
+      expect(findCell(12)).toHaveClass('rc-picker-cell-in-range');
+      expect(findCell(13)).toHaveClass('rc-picker-cell-range-end');
 
-      wrapper.find('.rc-picker-preset > *').simulate('mouseLeave');
-      expect(wrapper.findCell(11).hasClass('rc-picker-cell-range-start')).toBeFalsy();
-      expect(wrapper.findCell(12).hasClass('rc-picker-cell-in-range')).toBeFalsy();
-      expect(wrapper.findCell(13).hasClass('rc-picker-cell-range-end')).toBeFalsy();
+      fireEvent.mouseLeave(document.querySelector('.rc-picker-presets li'));
+      expect(findCell(11)).not.toHaveClass('rc-picker-cell-range-start');
+      expect(findCell(12)).not.toHaveClass('rc-picker-cell-in-range');
+      expect(findCell(13)).not.toHaveClass('rc-picker-cell-range-end');
     });
+
+  }
+
+  describe('ranges or presets', () => {
+    testRangePickerPresetRange('ranges');
+    testRangePickerPresetRange('presets');
   });
 
   it('placeholder', () => {
-    const wrapper = mount(<MomentRangePicker placeholder={['light', 'bamboo']} />);
-    expect(wrapper.find('input').first().props().placeholder).toEqual('light');
-    expect(wrapper.find('input').last().props().placeholder).toEqual('bamboo');
+    const { container } = render(<MomentRangePicker placeholder={['light', 'bamboo']} />);
+    expect(container.querySelectorAll('input')[0].placeholder).toEqual('light');
+    expect(container.querySelectorAll('input')[1].placeholder).toEqual('bamboo');
   });
 
-  it('defaultPickerValue', () => {
-    const wrapper = mount(
-      <MomentRangePicker defaultPickerValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]} />,
-    );
+  describe('defaultPickerValue', () => {
+    it('defaultPickerValue works', () => {
+      const { container } = render(
+        <MomentRangePicker
+          defaultPickerValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
+        />,
+      );
 
-    wrapper.openPicker();
-    expect(wrapper.find('PickerPanel').first().find('.rc-picker-header-view').text()).toEqual(
-      'Nov1989',
-    );
-    wrapper.closePicker();
+      openPicker(container);
+      expect(document.querySelectorAll('.rc-picker-header-view')[0].textContent).toEqual('Nov1989');
+      closePicker(container);
 
-    wrapper.openPicker(1);
-    expect(wrapper.find('PickerPanel').last().find('.rc-picker-header-view').text()).toEqual(
-      'Oct1990',
-    );
-    wrapper.closePicker(1);
-  });
+      openPicker(container, 1);
+      expect(document.querySelectorAll('.rc-picker-header-view')[1].textContent).toEqual('Oct1990');
+      closePicker(container, 1);
+    });
 
-  it('disabledTime', () => {
-    /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    const disabledTime = jest.fn((_: Moment | null, __: 'start' | 'end') => ({
-      disabledHours: () => [11],
-    }));
+    it('defaultPickerValue with showTime', () => {
+      const startDate = getMoment('1982-02-12');
+      const endDate = getMoment('1982-02-12');
 
-    const wrapper = mount(
-      <MomentRangePicker
-        showTime
-        disabledTime={disabledTime}
-        defaultValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
-      />,
-    );
+      const { container } = render(
+        <MomentRangePicker defaultPickerValue={[startDate, endDate]} showTime />,
+      );
+      openPicker(container);
+      expect(document.querySelector('.rc-picker-year-btn').textContent).toEqual(
+        startDate.format('YYYY'),
+      );
+    });
 
-    // Start
-    wrapper.openPicker();
-    expect(
-      wrapper
-        .find('PickerPanel')
-        .first()
-        .find('.rc-picker-time-panel-column')
-        .first()
-        .find('li')
-        .at(11)
-        .hasClass('rc-picker-time-panel-cell-disabled'),
-    ).toBeTruthy();
-    expect(isSame(disabledTime.mock.calls[0][0], '1989-11-28')).toBeTruthy();
-    expect(disabledTime.mock.calls[0][1]).toEqual('start');
-    wrapper.closePicker();
+    it('defaultPickerValue with showTime should works when open panel', () => {
+      const startDate = getMoment('1982-02-12');
+      const endDate = getMoment('1982-02-12');
 
-    // End
-    disabledTime.mockClear();
-    wrapper.openPicker(1);
-    expect(
-      wrapper
-        .find('PickerPanel')
-        .last()
-        .find('.rc-picker-time-panel-column')
-        .first()
-        .find('li')
-        .at(11)
-        .hasClass('rc-picker-time-panel-cell-disabled'),
-    ).toBeTruthy();
-    expect(isSame(disabledTime.mock.calls[0][0], '1990-09-03')).toBeTruthy();
-    expect(disabledTime.mock.calls[0][1]).toEqual('end');
-    wrapper.closePicker(1);
+      const { container } = render(
+        <MomentRangePicker
+          defaultValue={[startDate, endDate]}
+          defaultPickerValue={[startDate, endDate]}
+          showTime
+        />,
+      );
+      expect(() => {
+        openPicker(container);
+      }).not.toThrow();
+      expect(document.querySelector('.rc-picker-year-btn').textContent).toEqual(
+        startDate.format('YYYY'),
+      );
+    });
   });
 
   describe('focus test', () => {
@@ -444,7 +523,7 @@ describe('Picker.Range', () => {
 
     it('function call', () => {
       const ref = React.createRef<MomentRangePicker>();
-      mount(
+      render(
         <div>
           <MomentRangePicker ref={ref} />
         </div>,
@@ -458,7 +537,7 @@ describe('Picker.Range', () => {
     });
 
     it('not crash with showTime defaultValue', () => {
-      const wrapper = mount(
+      const { container } = render(
         <MomentRangePicker
           showTime={{
             defaultValue: [getMoment('01:02:03'), getMoment('05:06:07')],
@@ -466,100 +545,111 @@ describe('Picker.Range', () => {
         />,
       );
 
-      wrapper.openPicker();
-      wrapper.selectCell(13);
-      wrapper.find('.rc-picker-ok button').simulate('click');
-      wrapper.selectCell(23);
+      openPicker(container);
+      selectCell(13);
+      // document.querySelector('.rc-picker-ok button').simulate('click');
+      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      selectCell(23);
 
-      matchValues(wrapper, '1990-09-13 01:02:03', '1990-09-23 05:06:07');
+      matchValues(container, '1990-09-13 01:02:03', '1990-09-23 05:06:07');
     });
   });
 
   it('mode is array', () => {
-    const wrapper = mount(<MomentRangePicker mode={['year', 'month']} />);
-    wrapper.openPicker();
-    expect(wrapper.find('.rc-picker-year-panel')).toHaveLength(1);
+    const { container } = render(<MomentRangePicker mode={['year', 'month']} />);
+    openPicker(container);
+    expect(document.querySelector('.rc-picker-year-panel')).toBeTruthy();
 
-    wrapper.openPicker(1);
-    expect(wrapper.find('.rc-picker-month-panel')).toHaveLength(1);
+    openPicker(container, 1);
+    expect(document.querySelector('.rc-picker-month-panel')).toBeTruthy();
   });
 
   describe('onPanelChange is array args', () => {
     it('mode', () => {
       const onPanelChange = jest.fn();
-      const wrapper = mount(
+      const { container } = render(
         <MomentRangePicker mode={['month', 'year']} onPanelChange={onPanelChange} />,
       );
 
-      wrapper.openPicker();
-      wrapper.selectCell('Feb');
+      openPicker(container);
+      selectCell('Feb');
       expect(isSame(onPanelChange.mock.calls[0][0][0], '1990-02-03'));
       expect(onPanelChange.mock.calls[0][1]).toEqual(['date', 'year']);
 
-      wrapper.closePicker();
+      closePicker(container);
       onPanelChange.mockReset();
 
-      wrapper.openPicker(1);
-      wrapper.selectCell(1993);
+      openPicker(container, 1);
+      selectCell(1993);
       expect(isSame(onPanelChange.mock.calls[0][0][1], '1993-02-03'));
       expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
     });
 
     it('picker', () => {
       const onPanelChange = jest.fn();
-      const wrapper = mount(<MomentRangePicker picker="month" onPanelChange={onPanelChange} />);
+      const { container } = render(
+        <MomentRangePicker picker="month" onPanelChange={onPanelChange} />,
+      );
 
       // First go to year panel
-      wrapper.openPicker();
-      wrapper.find('.rc-picker-year-btn').first().simulate('click');
+      openPicker(container);
+      // document.querySelector('.rc-picker-year-btn').first().simulate('click');
+      fireEvent.click(document.querySelector('.rc-picker-year-btn'));
       expect(isSame(onPanelChange.mock.calls[0][0][0], '1990-09-03'));
       expect(onPanelChange.mock.calls[0][1]).toEqual(['year', 'month']);
 
       // First nack to month panel
       onPanelChange.mockReset();
-      wrapper.selectCell(1993);
+      selectCell(1993);
       expect(onPanelChange).toHaveBeenCalled();
       expect(isSame(onPanelChange.mock.calls[0][0][0], '1993-09-03'));
       expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
 
       // Last go to year panel
-      wrapper.closePicker();
-      wrapper.openPicker(1);
-      wrapper.find('.rc-picker-year-btn').first().simulate('click');
+      closePicker(container);
+      openPicker(container, 1);
+      // document.querySelector('.rc-picker-year-btn').first().simulate('click');
+      fireEvent.click(document.querySelector('.rc-picker-year-btn'));
       onPanelChange.mockReset();
 
       // Last nack to month panel
-      wrapper.selectCell(1998);
+      selectCell(1998);
       expect(isSame(onPanelChange.mock.calls[0][0][1], '1998-09-03'));
       expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
     });
 
     it('should render correctly in rtl', () => {
-      const wrapper = mount(<MomentRangePicker direction="rtl" />);
-      expect(wrapper.render()).toMatchSnapshot();
+      const { container } = render(<MomentRangePicker direction="rtl" />);
+      expect(container).toMatchSnapshot();
     });
   });
 
   it('type can not change before start time', () => {
     const onChange = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <MomentRangePicker
         defaultValue={[getMoment('2000-01-15'), getMoment('2000-01-16')]}
         onChange={onChange}
       />,
     );
 
-    wrapper
-      .find('input')
-      .last()
-      .simulate('change', {
-        target: {
-          value: '2000-01-11',
-        },
-      });
-    wrapper.find('input').last().simulate('keyDown', {
-      which: KeyCode.ENTER,
+    // wrapper
+    //   .find('input')
+    //   .last()
+    //   .simulate('change', {
+    //     target: {
+    //       value: '2000-01-11',
+    //     },
+    //   });
+    fireEvent.change(container.querySelectorAll('input')[1], {
+      target: {
+        value: '2000-01-11',
+      },
     });
+    // document.querySelector('input').last().simulate('keyDown', {
+    //   which: KeyCode.ENTER,
+    // });
+    keyDown(container, 0, KeyCode.ENTER);
 
     expect(onChange).not.toHaveBeenCalled();
   });
@@ -567,20 +657,17 @@ describe('Picker.Range', () => {
   it('should open last when first selected', () => {
     jest.useFakeTimers();
     const onOpenChange = jest.fn();
-    const wrapper = mount(<MomentRangePicker onOpenChange={onOpenChange} />);
-    expect(wrapper.find('PickerPanel')).toHaveLength(0);
+    const { container, unmount } = render(<MomentRangePicker onOpenChange={onOpenChange} />);
 
-    wrapper.openPicker();
-    expect(
-      wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-active'),
-    ).toBeTruthy();
+    openPicker(container);
+    expect(document.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
 
     // Select to active next
-    wrapper.selectCell(11);
+    selectCell(11);
     jest.runAllTimers();
-    expect(wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-active')).toBeTruthy();
+    expect(document.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
 
-    wrapper.unmount();
+    unmount();
 
     jest.useRealTimers();
   });
@@ -592,58 +679,65 @@ describe('Picker.Range', () => {
       { picker: 'date', start: 11, end: 22, mid: 15 },
     ].forEach(({ picker, start, end, mid }) => {
       it('year', () => {
-        const wrapper = mount(<MomentRangePicker picker={picker as any} />);
-        wrapper.openPicker();
-        wrapper.selectCell(start);
+        const { container } = render(<MomentRangePicker picker={picker as any} />);
+        openPicker(container);
+        selectCell(start);
 
         // Hover it
-        wrapper.findCell(end).simulate('mouseEnter');
+        // findCell(end).simulate('mouseEnter');
+        fireEvent.mouseEnter(findCell(end));
 
-        expect(wrapper.findCell(start).hasClass('rc-picker-cell-range-hover-start')).toBeTruthy();
-        expect(wrapper.findCell(mid).hasClass('rc-picker-cell-range-hover')).toBeTruthy();
-        expect(wrapper.findCell(end).hasClass('rc-picker-cell-range-hover-end')).toBeTruthy();
+        expect(findCell(start)).toHaveClass('rc-picker-cell-range-hover-start');
+        expect(findCell(mid)).toHaveClass('rc-picker-cell-range-hover');
+        expect(findCell(end)).toHaveClass('rc-picker-cell-range-hover-end');
 
         // Leave
-        wrapper.findCell(end).simulate('mouseLeave');
-        expect(wrapper.findCell(start).hasClass('rc-picker-cell-range-hover-start')).toBeFalsy();
-        expect(wrapper.findCell(mid).hasClass('rc-picker-cell-range-hover')).toBeFalsy();
-        expect(wrapper.findCell(end).hasClass('rc-picker-cell-range-hover-end')).toBeFalsy();
+        // findCell(end).simulate('mouseLeave');
+        fireEvent.mouseLeave(findCell(end));
+        expect(findCell(start)).not.toHaveClass('rc-picker-cell-range-hover-start');
+        expect(findCell(mid)).not.toHaveClass('rc-picker-cell-range-hover');
+        expect(findCell(end)).not.toHaveClass('rc-picker-cell-range-hover-end');
       });
     });
 
     it('range edge className', () => {
-      const wrapper = mount(
+      const { container } = render(
         <MomentRangePicker value={[getMoment('2019-12-20'), getMoment('2019-12-20')]} />,
       );
 
       // End edge
-      wrapper.openPicker();
-      wrapper.findCell(10).simulate('mouseEnter');
-      expect(wrapper.findCell(19).hasClass('rc-picker-cell-range-hover-edge-end')).toBeTruthy();
-      expect(wrapper.findCell(20).hasClass('rc-picker-cell-range-start-near-hover')).toBeTruthy();
-      wrapper.findCell(10).simulate('mouseOut');
+      openPicker(container);
+      // findCell(10).simulate('mouseEnter');
+      fireEvent.mouseEnter(findCell(10));
+      expect(findCell(19)).toHaveClass('rc-picker-cell-range-hover-edge-end');
+      expect(findCell(20)).toHaveClass('rc-picker-cell-range-start-near-hover');
+      // findCell(10).simulate('mouseOut');
+      fireEvent.mouseOut(findCell(10));
 
       // Start edge
-      wrapper.openPicker(1);
-      wrapper.findCell(28).simulate('mouseEnter');
-      expect(wrapper.findCell(21).hasClass('rc-picker-cell-range-hover-edge-start')).toBeTruthy();
-      expect(wrapper.findCell(20).hasClass('rc-picker-cell-range-end-near-hover')).toBeTruthy();
-      wrapper.findCell(28).simulate('mouseOut');
+      openPicker(container, 1);
+      // findCell(28).simulate('mouseEnter');
+      fireEvent.mouseEnter(findCell(28));
+      expect(findCell(21)).toHaveClass('rc-picker-cell-range-hover-edge-start');
+      expect(findCell(20)).toHaveClass('rc-picker-cell-range-end-near-hover');
+      // findCell(28).simulate('mouseOut');
+      fireEvent.mouseOut(findCell(28));
     });
   });
 
   it('should close when user focus out', () => {
-    const wrapper = mount(<MomentRangePicker />);
-    wrapper.openPicker();
-    wrapper.selectCell(11);
-    expect(wrapper.isOpen()).toBeTruthy();
+    const { container } = render(<MomentRangePicker />);
+    openPicker(container);
+    selectCell(11);
+    expect(isOpen()).toBeTruthy();
 
-    wrapper.find('input').last().simulate('blur');
-    expect(wrapper.isOpen()).toBeFalsy();
+    // document.querySelector('input').last().simulate('blur');
+    fireEvent.blur(container.querySelectorAll('input')[1]);
+    expect(isOpen()).toBeFalsy();
   });
 
   it('icon', () => {
-    const wrapper = mount(
+    const { container } = render(
       <MomentRangePicker
         defaultValue={[getMoment('1990-09-03'), getMoment('1990-09-03')]}
         suffixIcon={<span className="suffix-icon" />}
@@ -652,17 +746,20 @@ describe('Picker.Range', () => {
       />,
     );
 
-    expect(wrapper.render()).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 
   it('block native mouseDown in panel to prevent focus changed', () => {
-    const wrapper = mount(<MomentRangePicker />);
-    wrapper.openPicker();
+    const { container } = render(<MomentRangePicker />);
+    openPicker(container);
 
-    const preventDefault = jest.fn();
-    wrapper.find('td').first().simulate('mouseDown', { preventDefault });
+    // const preventDefault = jest.fn();
+    // document.querySelector('td').first().simulate('mouseDown', { preventDefault });
+    const cell = document.querySelector('td');
+    const mouseDownEvent = createEvent.mouseDown(cell);
+    fireEvent(cell, mouseDownEvent);
 
-    expect(preventDefault).toHaveBeenCalled();
+    expect(mouseDownEvent.defaultPrevented).toBeTruthy();
   });
 
   describe('arrow position', () => {
@@ -681,12 +778,15 @@ describe('Picker.Range', () => {
     });
 
     it('end date arrow should move panel left', () => {
-      const wrapper = mount(<MomentRangePicker />);
-      wrapper.openPicker(1);
-      wrapper.update();
-      expect((wrapper.find('.rc-picker-panel-container').props() as any).style.marginLeft).toEqual(
-        200,
-      );
+      const { container } = render(<MomentRangePicker />);
+      openPicker(container, 1);
+
+      // expect((document.querySelector('.rc-picker-panel-container').props() as any).style.marginLeft).toEqual(
+      //   200,
+      // );
+      expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({
+        marginLeft: 200,
+      });
     });
   });
 
@@ -694,18 +794,14 @@ describe('Picker.Range', () => {
     jest.useFakeTimers();
 
     const onOpenChange = jest.fn();
-    const wrapper = mount(<MomentRangePicker onOpenChange={onOpenChange} />);
-    wrapper.openPicker();
+    const { container } = render(<MomentRangePicker onOpenChange={onOpenChange} />);
+    openPicker(container);
     onOpenChange.mockReset();
 
-    const clickEvent = new Event('mousedown');
-    Object.defineProperty(clickEvent, 'target', {
-      get: () => wrapper.find('input').last().instance(),
-    });
     act(() => {
-      window.dispatchEvent(clickEvent);
-      wrapper.find('input').first().simulate('blur');
-      wrapper.find('input').last().simulate('focus');
+      fireEvent.mouseDown(container.querySelectorAll('input')[1]);
+      fireEvent.blur(container.querySelectorAll('input')[0]);
+      fireEvent.focus(container.querySelectorAll('input')[1]);
       jest.runAllTimers();
     });
 
@@ -717,23 +813,15 @@ describe('Picker.Range', () => {
   it('fixed open need repeat trigger onOpenChange', () => {
     jest.useFakeTimers();
     const onOpenChange = jest.fn();
-    const wrapper = mount(<MomentRangePicker onOpenChange={onOpenChange} open />);
+    render(<MomentRangePicker onOpenChange={onOpenChange} open />);
+
+    expect(onOpenChange).toHaveBeenCalledTimes(0);
 
     for (let i = 0; i < 10; i += 1) {
-      const clickEvent = new Event('mousedown');
-      Object.defineProperty(clickEvent, 'target', {
-        get: () => document.body,
-      });
-
-      const current = onOpenChange.mock.calls.length;
       act(() => {
-        window.dispatchEvent(clickEvent);
-        wrapper.find('input').first().simulate('blur');
+        fireEvent.mouseDown(document.body);
       });
-      const next = onOpenChange.mock.calls.length;
-
-      // Maybe not good since onOpenChange trigger twice
-      expect(current < next).toBeTruthy();
+      expect(onOpenChange).toHaveBeenCalledTimes(i + 1);
     }
     act(() => {
       jest.runAllTimers();
@@ -744,20 +832,20 @@ describe('Picker.Range', () => {
   it('datetime display ok button', () => {
     const onCalendarChange = jest.fn();
     const onOk = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <MomentRangePicker showTime onCalendarChange={onCalendarChange} onOk={onOk} />,
     );
-    wrapper.openPicker();
+    openPicker(container);
 
     // Not trigger when not value
-    expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
+    expect(document.querySelector<HTMLButtonElement>('.rc-picker-ok button').disabled).toBeTruthy();
     expect(onCalendarChange).not.toHaveBeenCalled();
 
     // Trigger when start Ok'd
     onCalendarChange.mockReset();
-    wrapper.selectCell(11);
+    selectCell(11);
     expect(onCalendarChange).not.toHaveBeenCalled();
-    wrapper.find('.rc-picker-ok button').simulate('click');
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
     expect(onCalendarChange).toHaveBeenCalledWith(
       [expect.anything(), null],
       ['1990-09-11 00:00:00', ''],
@@ -767,9 +855,9 @@ describe('Picker.Range', () => {
 
     // Trigger when end Ok'd
     onCalendarChange.mockReset();
-    wrapper.selectCell(23);
+    selectCell(23);
     expect(onCalendarChange).not.toHaveBeenCalled();
-    wrapper.find('.rc-picker-ok button').simulate('click');
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
     expect(onCalendarChange).toHaveBeenCalledWith(
       [expect.anything(), expect.anything()],
       ['1990-09-11 00:00:00', '1990-09-23 00:00:00'],
@@ -781,24 +869,23 @@ describe('Picker.Range', () => {
   it('datetime will reset by blur', () => {
     jest.useFakeTimers();
 
-    const wrapper = mount(<MomentRangePicker showTime />);
-    wrapper.openPicker();
-    wrapper.selectCell(11);
-    wrapper.closePicker();
+    const { container } = render(<MomentRangePicker showTime />);
+    openPicker(container);
+    selectCell(11);
+    closePicker(container);
     act(() => {
       jest.runAllTimers();
     });
-    wrapper.update();
 
-    expect(wrapper.isOpen()).toBeFalsy();
-    expect(wrapper.find('input').first().props().value).toEqual('');
+    expect(isOpen()).toBeFalsy();
+    expect(document.querySelector('input').value).toEqual('');
 
     jest.useRealTimers();
   });
 
   describe('viewDate', () => {
-    function matchTitle(wrapper: Wrapper, title: string) {
-      expect(wrapper.find('.rc-picker-header-view').first().text()).toEqual(title);
+    function matchTitle(title: string) {
+      expect(document.querySelector('.rc-picker-header-view').textContent).toEqual(title);
     }
 
     [
@@ -850,50 +937,50 @@ describe('Picker.Range', () => {
       }) => {
         describe(picker, () => {
           it('defaultPickerValue', () => {
-            const wrapper = mount(
+            const { container } = render(
               <MomentRangePicker
                 picker={picker as any}
                 defaultPickerValue={defaultPickerValue as any}
               />,
             );
 
-            wrapper.openPicker();
-            matchTitle(wrapper, defaultPickerValueTitle[0]);
-            wrapper.openPicker(1);
-            matchTitle(wrapper, defaultPickerValueTitle[1]);
+            openPicker(container);
+            matchTitle(defaultPickerValueTitle[0]);
+            openPicker(container, 1);
+            matchTitle(defaultPickerValueTitle[1]);
           });
 
           it('with closing value', () => {
-            const wrapper = mount(
+            const { container } = render(
               <MomentRangePicker picker={picker as any} value={closingValue as any} />,
             );
 
-            wrapper.openPicker();
-            matchTitle(wrapper, closingValueTitle);
-            wrapper.openPicker(1);
-            matchTitle(wrapper, closingValueTitle);
+            openPicker(container);
+            matchTitle(closingValueTitle);
+            openPicker(container, 1);
+            matchTitle(closingValueTitle);
           });
 
           it('with far value', () => {
-            const wrapper = mount(
+            const { container } = render(
               <MomentRangePicker picker={picker as any} value={farValue as any} />,
             );
 
-            wrapper.openPicker();
-            matchTitle(wrapper, farValueTitle[0]);
-            wrapper.openPicker(1);
-            matchTitle(wrapper, farValueTitle[1]);
+            openPicker(container);
+            matchTitle(farValueTitle[0]);
+            openPicker(container, 1);
+            matchTitle(farValueTitle[1]);
           });
 
           it('no end date', () => {
-            const wrapper = mount(
+            const { container } = render(
               <MomentRangePicker picker={picker as any} value={[closingValue[0], null]} />,
             );
 
-            wrapper.openPicker();
-            matchTitle(wrapper, farValueTitle[0]);
-            wrapper.openPicker(1);
-            matchTitle(wrapper, farValueTitle[0]);
+            openPicker(container);
+            matchTitle(farValueTitle[0]);
+            openPicker(container, 1);
+            matchTitle(farValueTitle[0]);
           });
         });
       },
@@ -901,39 +988,40 @@ describe('Picker.Range', () => {
 
     // https://github.com/ant-design/ant-design/issues/22991
     it('click switch 1 offset', () => {
-      const wrapper = mount(<MomentRangePicker />);
-      wrapper.openPicker();
-      expect(wrapper.find('.rc-picker-header-view').first().text()).toEqual('Sep1990');
-      wrapper.find('.rc-picker-header-next-btn').last().simulate('click');
-      expect(wrapper.find('.rc-picker-header-view').first().text()).toEqual('Oct1990');
+      const { container } = render(<MomentRangePicker />);
+      openPicker(container);
+      expect(document.querySelector('.rc-picker-header-view').textContent).toEqual('Sep1990');
+      const nextBtns = document.querySelectorAll('.rc-picker-header-next-btn');
+      fireEvent.click(nextBtns[nextBtns.length - 1]);
+      expect(document.querySelector('.rc-picker-header-view').textContent).toEqual('Oct1990');
     });
   });
 
   // https://github.com/ant-design/ant-design/issues/20868
   it('change picker should reset mode', () => {
-    const wrapper = mount(<MomentRangePicker picker="date" />);
-    wrapper.openPicker();
-    expect(wrapper.find('DatePanel').length).toBeTruthy();
+    const { container, rerender } = render(<MomentRangePicker picker="date" />);
+    openPicker(container);
+    expect(document.querySelector('.rc-picker-date-panel')).toBeTruthy();
 
-    wrapper.setProps({ picker: 'month' });
-    wrapper.update();
-    expect(wrapper.find('DatePanel').length).toBeFalsy();
-    expect(wrapper.find('MonthPanel').length).toBeTruthy();
+    rerender(<MomentRangePicker picker="month" />);
+
+    expect(document.querySelector('.rc-picker-date-panel')).toBeFalsy();
+    expect(document.querySelector('.rc-picker-month-panel')).toBeTruthy();
   });
 
   describe('reorder onChange logic', () => {
     it('datetime should reorder in onChange if start is after end in same date', () => {
       const onChange = jest.fn();
 
-      const wrapper = mount(<MomentRangePicker onChange={onChange} showTime />);
-      wrapper.openPicker();
-      wrapper.selectCell(15);
-      wrapper.find('ul').first().find('li').last().simulate('click');
-      wrapper.find('.rc-picker-ok button').simulate('click');
+      const { container } = render(<MomentRangePicker onChange={onChange} showTime />);
+      openPicker(container);
+      selectCell(15);
+      fireEvent.click(findLast(document.querySelector('ul'), 'li'));
+      fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
-      wrapper.selectCell(15);
-      wrapper.find('ul').first().find('li').first().simulate('click');
-      wrapper.find('.rc-picker-ok button').simulate('click');
+      selectCell(15);
+      fireEvent.click(document.querySelector('ul').querySelector('li'));
+      fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
       expect(onChange).toHaveBeenCalledWith(expect.anything(), [
         '1990-09-15 00:00:00',
@@ -948,15 +1036,15 @@ describe('Picker.Range', () => {
       it(`order: ${String(order)} when picker is time`, () => {
         const onChange = jest.fn();
 
-        const wrapper = mount(
+        const { container } = render(
           <MomentRangePicker onChange={onChange} picker="time" order={order} />,
         );
-        wrapper.openPicker();
-        wrapper.find('ul').first().find('li').last().simulate('click');
-        wrapper.find('.rc-picker-ok button').simulate('click');
+        openPicker(container);
+        fireEvent.click(findLast(document.querySelector('ul'), 'li'));
+        fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
-        wrapper.find('ul').first().find('li').at(2).simulate('click');
-        wrapper.find('.rc-picker-ok button').simulate('click');
+        fireEvent.click(document.querySelector('ul').querySelectorAll('li')[2]);
+        fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
         expect(onChange).toHaveBeenCalledWith(expect.anything(), [start, end]);
 
@@ -970,36 +1058,36 @@ describe('Picker.Range', () => {
   });
 
   it('id', () => {
-    const wrapper = mount(<MomentRangePicker id="bamboo" />);
-    expect(wrapper.find('input').first().props().id).toEqual('bamboo');
+    const { container } = render(<MomentRangePicker id="bamboo" />);
+    expect(container.querySelector('input').id).toEqual('bamboo');
   });
 
   it('dateRender', () => {
     let range = 'start';
 
-    const wrapper = mount(
+    const { container } = render(
       <MomentRangePicker
         open
-        dateRender={(date, _, info) => {
+        cellRender={(date, info) => {
           expect(info.range).toEqual(range);
           return date.format('YYYY-MM-DD');
         }}
       />,
     );
-    expect(wrapper.find('tbody td').last().text()).toEqual('1990-11-10');
+    expect(findLast(document, 'tbody td').textContent).toEqual('1990-11-10');
 
     range = 'end';
-    wrapper.openPicker(1);
+    openPicker(container, 1);
   });
 
   // https://github.com/ant-design/ant-design/issues/21084
   it('should not jump back to current date after select', () => {
-    const wrapper = mount(<MomentRangePicker />);
-    wrapper.openPicker();
-    wrapper.clickButton('super-prev');
-    wrapper.selectCell(3);
-    wrapper.selectCell(4);
-    matchValues(wrapper, '1989-09-03', '1989-09-04');
+    const { container } = render(<MomentRangePicker />);
+    openPicker(container);
+    clickButton('super-prev');
+    selectCell(3);
+    selectCell(4);
+    matchValues(container, '1989-09-03', '1989-09-04');
   });
 
   describe('can select endDate when in same level', () => {
@@ -1010,27 +1098,27 @@ describe('Picker.Range', () => {
     const list: {
       picker: PickerMode;
       defaultValue: string[];
-      selectCell: string;
+      targetCell: string;
       match: string[];
     }[] = [
       {
         picker: 'week',
         defaultValue: ['2020-06-13'],
-        selectCell: '9',
+        targetCell: '9',
         match: ['2020-24th'],
       },
       {
         picker: 'quarter',
         defaultValue: ['2020-03-30', '2020-05-20'],
-        selectCell: 'Q1',
+        targetCell: 'Q1',
         match: ['2020-Q1'],
       },
     ];
 
-    list.forEach(({ picker, defaultValue, match, selectCell }) => {
+    list.forEach(({ picker, defaultValue, match, targetCell }) => {
       it(picker, () => {
         const onChange = jest.fn();
-        const wrapper = mount(
+        const { container } = render(
           <MomentRangePicker
             picker={picker}
             onChange={onChange}
@@ -1040,8 +1128,8 @@ describe('Picker.Range', () => {
             ]}
           />,
         );
-        wrapper.openPicker(1);
-        wrapper.selectCell(selectCell);
+        openPicker(container, 1);
+        selectCell(targetCell);
         expect(onChange).toHaveBeenCalled();
         expect(onChange).toHaveBeenCalledWith(expect.anything(), [match[0], match[1] || match[0]]);
       });
@@ -1049,19 +1137,19 @@ describe('Picker.Range', () => {
   });
 
   it('should not disabled when week picker in diff year', () => {
-    const wrapper = mount(
+    const { container } = render(
       <MomentRangePicker
         picker="week"
         defaultValue={[getMoment('2000-12-15'), getMoment('2021-02-03')]}
       />,
     );
 
-    wrapper.openPicker(1);
-    expect(wrapper.findCell('15').hasClass('rc-picker-cell-disabled')).toBeFalsy();
+    openPicker(container, 1);
+    expect(findCell('15')).not.toHaveClass('rc-picker-cell-disabled');
   });
 
   it('format', () => {
-    const wrapper = mount(
+    const { container } = render(
       <MomentRangePicker
         format={['YYYYMMDD', 'YYYY-MM-DD']}
         defaultValue={[getMoment('2000-12-15'), getMoment('2021-02-03')]}
@@ -1069,35 +1157,36 @@ describe('Picker.Range', () => {
     );
 
     // Start date
-    wrapper.openPicker();
-    wrapper
-      .find('input')
-      .first()
-      .simulate('change', {
-        target: {
-          value: '1989-09-03',
-        },
-      });
-    wrapper.closePicker();
+    openPicker(container);
+
+    fireEvent.change(container.querySelector('input'), {
+      target: {
+        value: '1989-09-03',
+      },
+    });
+    closePicker(container);
 
     // end date
-    wrapper.openPicker(1);
-    wrapper
-      .find('input')
-      .last()
-      .simulate('change', {
-        target: {
-          value: '1990-11-28',
-        },
-      });
-    wrapper.closePicker(1);
+    openPicker(container, 1);
+    act(() => {
+      jest.runAllTimers();
+    });
+    fireEvent.change(container.querySelectorAll('input')[1], {
+      target: {
+        value: '1990-11-28',
+      },
+    });
 
-    expect(wrapper.find('input').first().prop('value')).toEqual('19890903');
-    expect(wrapper.find('input').last().prop('value')).toEqual('19901128');
+    // Force blur since fireEvent blur will not change document.activeElement
+    container.querySelectorAll('input')[1].blur();
+    closePicker(container, 1);
+
+    expect(document.querySelectorAll('input')[0].value).toEqual('19890903');
+    expect(document.querySelectorAll('input')[1].value).toEqual('19901128');
   });
 
   it('custom format', () => {
-    const wrapper = mount(
+    const { container } = render(
       <MomentRangePicker
         allowClear
         format={[(val: Moment) => `custom format:${val.format('YYYYMMDD')}`, 'YYYY-MM-DD']}
@@ -1105,187 +1194,199 @@ describe('Picker.Range', () => {
       />,
     );
 
-    expect(wrapper.find('input').first().prop('readOnly')).toBeTruthy();
-    expect(wrapper.find('input').last().prop('readOnly')).toBeTruthy();
+    expect(document.querySelectorAll('input')[0]).toHaveAttribute('readOnly');
+    expect(document.querySelectorAll('input')[1]).toHaveAttribute('readOnly');
 
     // Start date
-    wrapper.openPicker();
-    wrapper.selectCell(24);
-    wrapper.closePicker();
+    openPicker(container);
+    selectCell(24);
+    closePicker(container);
 
     // end date
-    wrapper.openPicker(1);
-    wrapper.selectCell(24, 1);
-    wrapper.closePicker(1);
+    openPicker(container, 1);
+    selectCell(24, 1);
+    closePicker(container, 1);
 
-    expect(wrapper.find('input').first().prop('value')).toEqual('custom format:20200924');
-    expect(wrapper.find('input').last().prop('value')).toEqual('custom format:20201024');
+    expect(document.querySelectorAll('input')[0].value).toEqual('custom format:20200924');
+    expect(document.querySelectorAll('input')[1].value).toEqual('custom format:20201024');
 
     // clear
-    const clearNode = wrapper.find('.rc-picker-clear');
-    expect(clearNode.simulate.bind(clearNode, 'mouseUp')).not.toThrow();
-    expect(wrapper.find('input').first().prop('value')).toEqual('');
-    expect(wrapper.find('input').last().prop('value')).toEqual('');
+    const clearNode = document.querySelector('.rc-picker-clear');
+    // expect(clearNode.simulate.bind(clearNode, 'mouseUp')).not.toThrow();
+    fireEvent.mouseUp(clearNode);
+    expect(document.querySelectorAll('input')[0].value).toEqual('');
+    expect(document.querySelectorAll('input')[1].value).toEqual('');
   });
 
   describe('auto open', () => {
     it('empty: start -> end -> close', () => {
-      const wrapper = mount(<MomentRangePicker />);
+      const { container } = render(<MomentRangePicker />);
 
-      wrapper.openPicker(0);
-      wrapper.inputValue('1990-11-28');
-      wrapper.closePicker(0);
-      expect(wrapper.isOpen()).toBeTruthy();
+      openPicker(container, 0);
+      inputValue('1990-11-28');
+      // closePicker(container, 0);
+      keyDown(container, 0, KeyCode.ENTER);
+      expect(isOpen()).toBeTruthy();
 
-      wrapper.inputValue('1991-01-01');
-      wrapper.closePicker(1);
-      expect(wrapper.isOpen()).toBeFalsy();
+      inputValue('1991-01-01');
+      // closePicker(container, 1);
+      keyDown(container, 1, KeyCode.ENTER);
+      expect(isOpen()).toBeFalsy();
     });
 
     describe('valued: start -> end -> close', () => {
       it('in range', () => {
-        const wrapper = mount(
+        const { container } = render(
           <MomentRangePicker defaultValue={[getMoment('1989-01-01'), getMoment('1990-01-01')]} />,
         );
 
-        wrapper.openPicker(0);
-        wrapper.inputValue('1990-11-28');
-        wrapper.closePicker(0);
-        expect(wrapper.isOpen()).toBeTruthy();
+        openPicker(container, 0);
+        inputValue('1990-11-28');
+        keyDown(container, 0, KeyCode.ENTER);
+        // closePicker(container, 0);
+        expect(isOpen()).toBeTruthy();
 
-        wrapper.inputValue('1990-12-23');
-        wrapper.closePicker(1);
-        expect(wrapper.isOpen()).toBeFalsy();
+        inputValue('1990-12-23');
+        // closePicker(container, 1);
+        keyDown(container, 1, KeyCode.ENTER);
+        expect(isOpen()).toBeFalsy();
       });
 
       it('new start is after end', () => {
-        const wrapper = mount(
+        const { container } = render(
           <MomentRangePicker defaultValue={[getMoment('1989-01-10'), getMoment('1989-01-15')]} />,
         );
 
-        wrapper.openPicker(0);
-        wrapper.inputValue('1989-01-20');
-        wrapper.closePicker(0);
-        expect(wrapper.isOpen()).toBeTruthy();
+        openPicker(container, 0);
+        inputValue('1989-01-20');
+        // closePicker(container, 0);
+        keyDown(container, 0, KeyCode.ENTER);
+        expect(isOpen()).toBeTruthy();
 
-        wrapper.inputValue('1989-01-25');
-        wrapper.closePicker(1);
-        expect(wrapper.isOpen()).toBeFalsy();
+        inputValue('1989-01-25');
+        // closePicker(container, 1);
+        keyDown(container, 1, KeyCode.ENTER);
+        expect(isOpen()).toBeFalsy();
       });
     });
 
     it('empty: end -> start -> close', () => {
-      const wrapper = mount(<MomentRangePicker />);
+      const { container } = render(<MomentRangePicker />);
 
-      wrapper.openPicker(1);
-      wrapper.inputValue('1990-11-28', 1);
-      wrapper.closePicker(1);
-      expect(wrapper.isOpen()).toBeTruthy();
+      openPicker(container, 1);
+      inputValue('1990-11-28', 1);
+      keyDown(container, 1, KeyCode.ENTER);
+      // closePicker(container, 1);
+      expect(isOpen()).toBeTruthy();
 
-      wrapper.inputValue('1989-01-01');
-      wrapper.closePicker(0);
-      expect(wrapper.isOpen()).toBeFalsy();
+      inputValue('1989-01-01');
+      // closePicker(container, 0);
+      keyDown(container, 0, KeyCode.ENTER);
+      expect(isOpen()).toBeFalsy();
     });
 
     describe('valued: end -> start -> close', () => {
       it('in range', () => {
-        const wrapper = mount(
+        const { container } = render(
           <MomentRangePicker defaultValue={[getMoment('1989-01-01'), getMoment('1990-01-01')]} />,
         );
 
-        wrapper.openPicker(1);
-        wrapper.inputValue('1990-11-28', 1);
-        wrapper.closePicker(1);
-        expect(wrapper.isOpen()).toBeTruthy();
+        openPicker(container, 1);
+        inputValue('1990-11-28', 1);
+        keyDown(container, 1, KeyCode.ENTER);
+        // closePicker(container, 1);
+        expect(isOpen()).toBeTruthy();
 
-        wrapper.inputValue('1989-01-01');
-        wrapper.closePicker(0);
-        expect(wrapper.isOpen()).toBeFalsy();
+        inputValue('1989-01-01');
+        keyDown(container, 0, KeyCode.ENTER);
+        // closePicker(container, 0);
+        expect(isOpen()).toBeFalsy();
       });
 
       it('new end is before start', () => {
-        const wrapper = mount(
+        const { container } = render(
           <MomentRangePicker defaultValue={[getMoment('1989-01-10'), getMoment('1989-01-15')]} />,
         );
 
-        wrapper.openPicker(1);
-        wrapper.inputValue('1989-01-07', 1);
-        wrapper.closePicker(1);
-        expect(wrapper.isOpen()).toBeTruthy();
+        openPicker(container, 1);
+        inputValue('1989-01-07', 1);
+        console.log('close!');
+        keyDown(container, 1, KeyCode.ENTER);
+        expect(isOpen()).toBeTruthy();
 
-        wrapper.inputValue('1989-01-01');
-        wrapper.closePicker(0);
-        expect(wrapper.isOpen()).toBeFalsy();
+        inputValue('1989-01-01');
+        keyDown(container, 0, KeyCode.ENTER);
+        expect(isOpen()).toBeFalsy();
       });
     });
 
     it('not change: start not to end', () => {
-      const wrapper = mount(
+      const { container } = render(
         <MomentRangePicker defaultValue={[getMoment('1989-01-01'), getMoment('1990-01-01')]} />,
       );
-      wrapper.openPicker(0);
-      wrapper.closePicker(0);
-      expect(wrapper.isOpen()).toBeFalsy();
+      openPicker(container, 0);
+      closePicker(container, 0);
+      expect(isOpen()).toBeFalsy();
     });
   });
 
   describe('click at non-input elements', () => {
     it('should focus on the first element by default', () => {
       jest.useFakeTimers();
-      const wrapper = mount(<MomentRangePicker />);
-      wrapper.find('.rc-picker').simulate('click');
-      expect(wrapper.isOpen()).toBeTruthy();
+      const { container } = render(<MomentRangePicker />);
+      fireEvent.click(container.querySelector('.rc-picker'));
+      expect(document.querySelector('.rc-picker-dropdown')).toBeTruthy();
       jest.runAllTimers();
-      expect(document.activeElement).toStrictEqual(wrapper.find('input').first().getDOMNode());
+      expect(document.activeElement).toBe(container.querySelector('input'));
       jest.useRealTimers();
     });
+
     it('should focus on the second element if first is disabled', () => {
       jest.useFakeTimers();
-      const wrapper = mount(<MomentRangePicker disabled={[true, false]} />);
-      wrapper.find('.rc-picker').simulate('click');
-      expect(wrapper.isOpen()).toBeTruthy();
+      const { container } = render(<MomentRangePicker disabled={[true, false]} />);
+      fireEvent.click(container.querySelector('.rc-picker'));
+      expect(document.querySelector('.rc-picker-dropdown')).toBeTruthy();
       jest.runAllTimers();
-      expect(document.activeElement).toStrictEqual(wrapper.find('input').last().getDOMNode());
+      expect(document.activeElement).toBe(container.querySelectorAll('input')[1]);
       jest.useRealTimers();
     });
     it("shouldn't let mousedown blur the input", () => {
       jest.useFakeTimers();
-      const preventDefault = jest.fn();
-      const wrapper = mount(<MomentRangePicker />, {
-        attachTo: document.body,
+      const { container } = render(<MomentRangePicker />);
+      const node = container.querySelector('.rc-picker');
+      fireEvent.click(node);
+      act(() => {
+        jest.runAllTimers();
       });
-      wrapper.find('.rc-picker').simulate('click');
-      jest.runAllTimers();
-      wrapper.find('.rc-picker').simulate('mousedown', {
-        preventDefault,
-      });
-      expect(wrapper.isOpen()).toBeTruthy();
-      expect(preventDefault).toHaveBeenCalled();
+      const mouseDownEvent = createEvent.mouseDown(node);
+      fireEvent(node, mouseDownEvent);
+      expect(isOpen()).toBeTruthy();
+      expect(mouseDownEvent.defaultPrevented).toBeTruthy();
       jest.useRealTimers();
     });
   });
 
   it('panelRender', () => {
-    const wrapper = mount(<MomentRangePicker open panelRender={() => <h1>Light</h1>} />);
-    expect(wrapper.render()).toMatchSnapshot();
+    render(<MomentRangePicker open panelRender={() => <h1>Light</h1>} />);
+    expect(document.body).toMatchSnapshot();
   });
 
   describe('Selection callbacks', () => {
     it('selection provide info for onCalendarChange', () => {
       const onCalendarChange = jest.fn();
 
-      const wrapper = mount(<MomentRangePicker onCalendarChange={onCalendarChange} />);
+      const { container } = render(<MomentRangePicker onCalendarChange={onCalendarChange} />);
 
-      wrapper.openPicker();
+      openPicker(container);
 
       // Start date
-      wrapper.selectCell(11);
+      selectCell(11);
       expect(onCalendarChange).toHaveBeenCalledWith([expect.anything(), null], ['1990-09-11', ''], {
         range: 'start',
       });
 
       // End date
-      wrapper.selectCell(23);
+      selectCell(23);
       expect(onCalendarChange).toHaveBeenCalledWith(
         [expect.anything(), expect.anything()],
         ['1990-09-11', '1990-09-23'],
@@ -1305,131 +1406,152 @@ describe('Picker.Range', () => {
     const defaultValue: [Moment, Moment] = [getMoment('2020-07-22'), getMoment('2020-08-22')];
 
     it('should restore when leave', () => {
-      const wrapper = mount(<MomentRangePicker defaultValue={defaultValue} />);
+      const { container } = render(<MomentRangePicker defaultValue={defaultValue} />);
 
       // left
-      wrapper.openPicker(0);
-      const leftCell = wrapper.findCell(24);
-      leftCell.simulate('mouseEnter');
+      openPicker(container, 0);
+      const leftCell = findCell(24);
+      // leftCell.simulate('mouseEnter');
+      fireEvent.mouseEnter(leftCell);
       jest.runAllTimers();
-      wrapper.update();
-      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
-      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
-      expect(
-        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-      ).toBeTruthy();
-      expect(
-        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-      ).toBeFalsy();
 
-      leftCell.simulate('mouseLeave');
-      jest.runAllTimers();
-      wrapper.update();
-      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
-      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
-      expect(
-        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-      ).toBeFalsy();
-      expect(
-        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-      ).toBeFalsy();
+      expect(document.querySelectorAll('input')[0].value).toBe('2020-07-24');
+      expect(document.querySelectorAll('input')[1].value).toBe('2020-08-22');
+      expect(document.querySelectorAll('.rc-picker-input')[0]).toHaveClass(
+        'rc-picker-input-placeholder',
+      );
+      expect(document.querySelectorAll('.rc-picker-input')[1]).not.toHaveClass(
+        'rc-picker-input-placeholder',
+      );
 
-      wrapper.closePicker(0);
+      // leftCell.simulate('mouseLeave');
+      fireEvent.mouseLeave(leftCell);
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(document.querySelectorAll('input')[0].value).toBe('2020-07-22');
+      expect(document.querySelectorAll('input')[1].value).toBe('2020-08-22');
+      expect(document.querySelectorAll('.rc-picker-input')[0]).not.toHaveClass(
+        'rc-picker-input-placeholder',
+      );
+      expect(document.querySelectorAll('.rc-picker-input')[1]).not.toHaveClass(
+        'rc-picker-input-placeholder',
+      );
+
+      closePicker(container, 0);
 
       // right
-      wrapper.openPicker(1);
-      const rightCell = wrapper.findCell(24, 1);
-      rightCell.simulate('mouseEnter');
-      jest.runAllTimers();
-      wrapper.update();
-      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
-      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-24');
-      expect(
-        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-      ).toBeFalsy();
-      expect(
-        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-      ).toBeTruthy();
+      openPicker(container, 1);
+      const rightCell = findCell(24, 1);
+      fireEvent.mouseEnter(rightCell);
+      act(() => {
+        jest.runAllTimers();
+      });
 
-      rightCell.simulate('mouseLeave');
-      jest.runAllTimers();
-      wrapper.update();
-      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
-      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
-      expect(
-        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-      ).toBeFalsy();
-      expect(
-        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-      ).toBeFalsy();
+      expect(document.querySelectorAll('input')[0].value).toBe('2020-07-22');
+      expect(document.querySelectorAll('input')[1].value).toBe('2020-08-24');
+      expect(document.querySelectorAll('.rc-picker-input')[0]).not.toHaveClass(
+        'rc-picker-input-placeholder',
+      );
+      expect(document.querySelectorAll('.rc-picker-input')[1]).toHaveClass(
+        'rc-picker-input-placeholder',
+      );
 
-      wrapper.closePicker(1);
+      fireEvent.mouseLeave(rightCell);
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(document.querySelectorAll('input')[0].value).toBe('2020-07-22');
+      expect(document.querySelectorAll('input')[1].value).toBe('2020-08-22');
+      expect(document.querySelectorAll('.rc-picker-input')[0]).not.toHaveClass(
+        'rc-picker-input-placeholder',
+      );
+      expect(document.querySelectorAll('.rc-picker-input')[1]).not.toHaveClass(
+        'rc-picker-input-placeholder',
+      );
+
+      closePicker(container, 1);
     });
 
     it('should restore after selecting cell', () => {
-      const wrapper = mount(<MomentRangePicker defaultValue={defaultValue} />);
+      const { container } = render(<MomentRangePicker defaultValue={defaultValue} />);
       // left
-      wrapper.openPicker(0);
-      const leftCell = wrapper.findCell(24, 0);
-      leftCell.simulate('mouseEnter');
-      jest.runAllTimers();
-      wrapper.update();
-      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
-      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
-      expect(
-        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-      ).toBeTruthy();
-      expect(
-        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-      ).toBeFalsy();
+      openPicker(container, 0);
+      const leftCell = findCell(24, 0);
+      //     leftCell.simulate('mouseEnter');
+      fireEvent.mouseEnter(leftCell);
+      act(() => {
+        jest.runAllTimers();
+      });
+      expect(document.querySelectorAll('input')[0].value).toBe('2020-07-24');
+      expect(document.querySelectorAll('input')[1].value).toBe('2020-08-22');
+      expect(document.querySelectorAll('.rc-picker-input')[0]).toHaveClass(
+        'rc-picker-input-placeholder',
+      );
+      //     ).toBeTruthy();
+      expect(document.querySelectorAll('.rc-picker-input')[1]).not.toHaveClass(
+        'rc-picker-input-placeholder',
+      );
+      //     ).toBeFalsy();
 
-      wrapper.selectCell(24, 0);
-      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
-      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
-      expect(
-        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-      ).toBeFalsy();
-      expect(
-        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-      ).toBeFalsy();
+      selectCell(24, 0);
+      expect(document.querySelectorAll('input')[0].value).toBe('2020-07-24');
+      expect(document.querySelectorAll('input')[1].value).toBe('2020-08-22');
+      expect(document.querySelectorAll('.rc-picker-input')[0]).not.toHaveClass(
+        'rc-picker-input-placeholder',
+      );
+      //     ).toBeFalsy();
+      expect(document.querySelectorAll('.rc-picker-input')[1]).not.toHaveClass(
+        'rc-picker-input-placeholder',
+      );
+      //     ).toBeFalsy();
 
       // right
-      const rightCell = wrapper.findCell(24, 1);
-      rightCell.simulate('mouseEnter');
-      jest.runAllTimers();
-      wrapper.update();
-      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
-      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-24');
-      expect(
-        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-      ).toBeFalsy();
-      expect(
-        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-      ).toBeTruthy();
+      const rightCell = findCell(24, 1);
+      //     rightCell.simulate('mouseEnter');
+      fireEvent.mouseEnter(rightCell);
+      act(() => {
+        jest.runAllTimers();
+      });
 
-      wrapper.selectCell(24, 1);
-      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
-      expect(wrapper.find('input').last().prop('value')).toBe('2020-08-24');
-      expect(
-        wrapper.find('.rc-picker-input').first().hasClass('rc-picker-input-placeholder'),
-      ).toBeFalsy();
-      expect(
-        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-placeholder'),
-      ).toBeFalsy();
+      expect(document.querySelectorAll('input')[0].value).toBe('2020-07-24');
+      expect(document.querySelectorAll('input')[1].value).toBe('2020-08-24');
+      expect(document.querySelectorAll('.rc-picker-input')[0]).not.toHaveClass(
+        'rc-picker-input-placeholder',
+      );
+      //     ).toBeFalsy();
+      expect(document.querySelectorAll('.rc-picker-input')[1]).toHaveClass(
+        'rc-picker-input-placeholder',
+      );
+      //     ).toBeTruthy();
+
+      selectCell(24, 1);
+      expect(document.querySelectorAll('input')[0].value).toBe('2020-07-24');
+      expect(document.querySelectorAll('input')[1].value).toBe('2020-08-24');
+      expect(document.querySelectorAll('.rc-picker-input')[0]).not.toHaveClass(
+        'rc-picker-input-placeholder',
+      );
+      //     ).toBeFalsy();
+      expect(document.querySelectorAll('.rc-picker-input')[1]).not.toHaveClass(
+        'rc-picker-input-placeholder',
+      );
+      //     ).toBeFalsy();
     });
 
     // https://github.com/ant-design/ant-design/issues/26544
     it('should clean hover style when selecting the same value with last value', () => {
-      const wrapper = mount(
+      const { container } = render(
         <MomentRangePicker defaultValue={[getMoment('2020-07-24'), getMoment('2020-08-24')]} />,
       );
 
-      wrapper.openPicker();
+      openPicker(container);
 
-      wrapper.selectCell(24, 0);
-      expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
-      expect(wrapper.find('input').first().hasClass('rc-picker-input-placeholder')).toBeFalsy();
-      expect(wrapper.isOpen()).toBeTruthy();
+      selectCell(24, 0);
+      expect(document.querySelectorAll('input')[0].value).toBe('2020-07-24');
+      expect(document.querySelectorAll('input')[0]).not.toHaveClass('rc-picker-input-placeholder');
+      expect(isOpen()).toBeTruthy();
     });
   });
 
@@ -1439,7 +1561,7 @@ describe('Picker.Range', () => {
       // Can not select days before today and today
       return true;
     };
-    const wrapper = mount(
+    const { container } = render(
       <MomentRangePicker
         showTime
         disabledDate={disabledDate}
@@ -1447,101 +1569,333 @@ describe('Picker.Range', () => {
       />,
     );
 
-    wrapper.openPicker();
+    openPicker(container);
 
-    expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
+    expect(document.querySelector<HTMLButtonElement>('.rc-picker-ok button').disabled).toBeTruthy();
 
-    wrapper
-      .find('PickerPanel')
-      .first()
-      .find('.rc-picker-time-panel-column')
-      .first()
-      .find('li')
-      .at(6)
-      .simulate('click');
+    fireEvent.click(
+      document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[6],
+    );
 
-    expect(wrapper.find('input').first().props().value).toEqual('2020-07-24 06:00:00');
-    expect(wrapper.find('.rc-picker-ok button').props().disabled).toBeTruthy();
+    expect(document.querySelectorAll('input')[0].value).toEqual('2020-07-24 06:00:00');
+    expect(document.querySelector<HTMLButtonElement>('.rc-picker-ok button').disabled).toBeTruthy();
   });
 
   // https://github.com/ant-design/ant-design/issues/26024
   it('panel should keep open when nextValue is empty', () => {
-    const wrapper = mount(<MomentRangePicker />);
+    const { container } = render(<MomentRangePicker />);
 
-    wrapper.openPicker(0);
+    openPicker(container, 0);
 
-    wrapper.selectCell(7, 0);
-    expect(wrapper.find('input').first().prop('value')).toBe('1990-09-07');
+    selectCell(7, 0);
+    expect(document.querySelectorAll('input')[0].value).toBe('1990-09-07');
 
     // back to first panel and clear input value
-    wrapper.find('input').first().simulate('focus');
-    wrapper.inputValue('', 0);
+    fireEvent.mouseDown(document.querySelectorAll('input')[0]);
+    fireEvent.focus(document.querySelectorAll('input')[0]);
+    inputValue('', 0);
+
+    console.log(container.querySelector('.rc-picker').innerHTML);
 
     // reselect date
-    wrapper.selectCell(9, 0);
-    expect(wrapper.find('input').first().prop('value')).toBe('1990-09-09');
+    selectCell(9, 0);
+    expect(document.querySelectorAll('input')[0].value).toBe('1990-09-09');
 
     // end date
-    wrapper.selectCell(9, 1);
+    selectCell(9, 1);
 
-    matchValues(wrapper, '1990-09-09', '1990-10-09');
+    matchValues(container, '1990-09-09', '1990-10-09');
   });
 
   it('right date panel switch to month should keep in the same year', () => {
-    const wrapper = mount(<MomentRangePicker />);
-    wrapper.openPicker(0);
-    wrapper.find('.rc-picker-month-btn').last().simulate('click');
-    expect(wrapper.find('.rc-picker-year-btn').text()).toEqual('1990');
+    const { container } = render(<MomentRangePicker />);
+    openPicker(container, 0);
+    fireEvent.click(document.querySelectorAll('.rc-picker-month-btn')[1]);
+    expect(document.querySelector('.rc-picker-year-btn').textContent).toEqual('1990');
   });
 
   // https://github.com/ant-design/ant-design/issues/26390
   it('month panel should be disabled', () => {
-    const wrapper = mount(<MomentRangePicker />);
-    wrapper.openPicker();
-    wrapper.selectCell(15);
+    const { container } = render(<MomentRangePicker />);
+    openPicker(container);
+    selectCell(15);
 
-    wrapper.find('.rc-picker-month-btn').first().simulate('click');
-    expect(wrapper.findCell('Jan').hasClass('rc-picker-cell-disabled')).toBeTruthy();
-    expect(wrapper.findCell('Dec').hasClass('rc-picker-cell-disabled')).toBeFalsy();
+    fireEvent.click(document.querySelector('.rc-picker-month-btn'));
+
+    expect(findCell('Jan')).toHaveClass('rc-picker-cell-disabled');
+    expect(findCell('Dec')).not.toHaveClass('rc-picker-cell-disabled');
   });
 
   // https://github.com/ant-design/ant-design/issues/23167
   it('default endDate should be relative startDate', () => {
-    const wrapper = mount(<MomentRangePicker showTime />);
-    wrapper.openPicker();
+    const { container } = render(<MomentRangePicker showTime />);
+    openPicker(container);
 
-    wrapper.selectCell(24);
-    wrapper.find('.rc-picker-ok button').simulate('click');
+    selectCell(24);
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
-    wrapper.find('ul').first().find('li').at(0).simulate('click');
-    wrapper.find('.rc-picker-ok button').simulate('click');
+    fireEvent.click(document.querySelector('ul').querySelector('li'));
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
-    matchValues(wrapper, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
+    matchValues(container, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
   });
 
   it('default startDate should be relative endDate', () => {
-    const wrapper = mount(<MomentRangePicker showTime />);
-    wrapper.openPicker(1);
+    const { container } = render(<MomentRangePicker showTime />);
+    openPicker(container, 1);
 
-    wrapper.selectCell(24);
-    wrapper.find('.rc-picker-ok button').simulate('click');
+    selectCell(24);
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
-    wrapper.find('ul').first().find('li').at(0).simulate('click');
-    wrapper.find('.rc-picker-ok button').simulate('click');
+    fireEvent.click(document.querySelector('ul').querySelector('li'));
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
-    matchValues(wrapper, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
+    matchValues(container, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
   });
 
   // https://github.com/ant-design/ant-design/issues/30893
   it('range picker should have onMouseEnter and onMouseLeave event', () => {
     const handleMouseEnter = jest.fn();
     const handleMouseLeave = jest.fn();
-    const wrapper = mount(
+    const { container } = render(
       <MomentRangePicker onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />,
     );
-    wrapper.simulate('mouseenter');
+    // wrapper.simulate('mouseenter');
+    fireEvent.mouseEnter(container.querySelector('.rc-picker'));
     expect(handleMouseEnter).toHaveBeenCalled();
-    wrapper.simulate('mouseleave');
+    // wrapper.simulate('mouseleave');
+    fireEvent.mouseLeave(container.querySelector('.rc-picker'));
     expect(handleMouseLeave).toHaveBeenCalled();
+  });
+
+  // https://github.com/ant-design/ant-design/issues/31334
+  it('keyboard should not trigger on disabledDate', () => {
+    const onCalendarChange = jest.fn();
+    const now = moment();
+    const disabledDate = (current: Moment) => {
+      return current.diff(now, 'days') > 1 || current.diff(now, 'days') < -1;
+    };
+    const { container } = render(
+      <MomentRangePicker onCalendarChange={onCalendarChange} disabledDate={disabledDate} />,
+    );
+    fireEvent.focus(document.querySelector('input'));
+
+    function pickerKeyDown(keyCode: number) {
+      fireEvent.keyDown(container.querySelector('.rc-picker'), {
+        keyCode,
+        which: keyCode,
+        charCode: keyCode,
+      });
+    }
+
+    pickerKeyDown(KeyCode.ENTER);
+    pickerKeyDown(KeyCode.TAB);
+    // Make sure the selected value is disabledDate. Because only a few values are disabledDate
+    pickerKeyDown(KeyCode.DOWN);
+    pickerKeyDown(KeyCode.DOWN);
+    pickerKeyDown(KeyCode.DOWN);
+    pickerKeyDown(KeyCode.DOWN);
+    pickerKeyDown(KeyCode.DOWN);
+    pickerKeyDown(KeyCode.DOWN);
+    pickerKeyDown(KeyCode.ENTER);
+    expect(onCalendarChange).not.toHaveBeenCalled();
+  });
+
+  // https://github.com/ant-design/ant-design/issues/33662
+  it('range picker should have onClick event', () => {
+    const handleClick = jest.fn();
+    const { container } = render(<MomentRangePicker onClick={handleClick} />);
+    // wrapper.simulate('click');
+    fireEvent.click(container.querySelector('.rc-picker'));
+    expect(handleClick).toHaveBeenCalled();
+  });
+
+  it('range picker should have onMouseDown event', () => {
+    const handleMouseDown = jest.fn();
+    const { container } = render(<MomentRangePicker onMouseDown={handleMouseDown} />);
+    // wrapper.simulate('mousedown');
+    fireEvent.mouseDown(container.querySelector('.rc-picker'));
+    expect(handleMouseDown).toHaveBeenCalled();
+  });
+
+  it('panel should be stable: left', () => {
+    const mock = spyElementPrototypes(HTMLElement, {
+      offsetWidth: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 14;
+          } else if (this.className.includes('panel-container')) {
+            return 312;
+          } else if (this.className.includes('input')) {
+            return 236;
+          } else if (this.className.includes('range-separator')) {
+            return 10;
+          }
+        },
+      },
+      offsetLeft: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 16;
+          }
+        },
+      },
+    });
+    const { container } = render(
+      <MomentRangePicker
+        allowClear
+        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        clearIcon={<span>X</span>}
+        suffixIcon={<span>O</span>}
+      />,
+    );
+    openPicker(container, 1);
+    expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({ marginLeft: 0 });
+    mock.mockRestore();
+  });
+
+  it('panel should be stable: arrow right and panel left', () => {
+    const mock = spyElementPrototypes(HTMLElement, {
+      offsetWidth: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 14;
+          } else if (this.className.includes('panel-container')) {
+            return 312;
+          } else if (this.className.includes('input')) {
+            return 236;
+          } else if (this.className.includes('range-separator')) {
+            return 10;
+          }
+        },
+      },
+      offsetLeft: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 262;
+          }
+        },
+      },
+    });
+    const { container } = render(
+      <MomentRangePicker
+        allowClear
+        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        clearIcon={<span>X</span>}
+        suffixIcon={<span>O</span>}
+      />,
+    );
+    openPicker(container, 1);
+    expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({ marginLeft: 0 });
+    mock.mockRestore();
+  });
+
+  it('panel should be stable: arrow right and panel right', () => {
+    const mock = spyElementPrototypes(HTMLElement, {
+      offsetWidth: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 14;
+          } else if (this.className.includes('panel-container')) {
+            return 311;
+          } else if (this.className.includes('input')) {
+            return 285;
+          } else if (this.className.includes('range-separator')) {
+            return 10;
+          }
+        },
+      },
+      offsetLeft: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 305;
+          }
+        },
+      },
+    });
+    const { container } = render(
+      <MomentRangePicker
+        allowClear
+        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        clearIcon={<span>X</span>}
+        suffixIcon={<span>O</span>}
+      />,
+    );
+    openPicker(container, 1);
+    expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({
+      marginLeft: '295px',
+    });
+    mock.mockRestore();
+  });
+
+  it('week range selection style', () => {
+    const { container } = render(<MomentRangePicker picker="week" />);
+    openPicker(container);
+
+    function findWeekCell(val: string) {
+      const list = document.querySelectorAll('.rc-picker-cell-week');
+      return Array.from(list).find((cell) => cell.textContent == val);
+    }
+
+    // Start
+    fireEvent.mouseEnter(findWeekCell('35'));
+    fireEvent.click(findWeekCell('35'));
+    fireEvent.mouseLeave(findWeekCell('35'));
+
+    expect(findWeekCell('35').parentElement).toHaveClass('rc-picker-week-panel-row-range-start');
+
+    // End Hover
+    fireEvent.mouseEnter(findWeekCell('37'));
+    expect(findWeekCell('36').parentElement).toHaveClass('rc-picker-week-panel-row-range-hover');
+
+    // End Click
+    fireEvent.click(findWeekCell('37'));
+    fireEvent.mouseLeave(findWeekCell('37'));
+
+    expect(findWeekCell('37').parentElement).toHaveClass('rc-picker-week-panel-row-range-end');
+
+    // No selected cell
+    expect(document.querySelector('.rc-picker-cell-selected')).toBeFalsy();
+  });
+
+  it('range picker should use the passed in default when part is disabled', () => {
+    render(<MomentRangePicker defaultValue={[null, null]} disabled={[false, true]} />);
+
+    expect(document.querySelectorAll('input')[1].value).toBeFalsy();
+  });
+  it('use dateRender and monthCellRender in month range picker', () => {
+    const { container, baseElement } = render(
+      <MomentRangePicker
+        picker="month"
+        dateRender={(date) => <div>{date.get('date')}</div>}
+        monthCellRender={(date) => <div>{date.get('month') + 1}</div>}
+      />,
+    );
+    openPicker(container);
+    expect(baseElement).toMatchSnapshot();
+  });
+
+  it('use dateRender and monthCellRender in date range picker', () => {
+    const { container, baseElement } = render(
+      <MomentRangePicker
+        picker="date"
+        dateRender={(date) => <div>{date.get('date')}</div>}
+        monthCellRender={(date) => <div>{date.get('month') + 1}</div>}
+      />,
+    );
+    openPicker(container);
+    expect(baseElement).toMatchSnapshot();
+  });
+
+  it('no -disabled cell when set open directly', () => {
+    render(
+      <MomentRangePicker
+        open
+        picker="date"
+        defaultValue={[getMoment('2000-09-03'), getMoment('2000-09-03')]}
+      />,
+    );
+
+    expect(document.querySelector('.rc-picker-cell-disabled')).toBeFalsy();
   });
 });

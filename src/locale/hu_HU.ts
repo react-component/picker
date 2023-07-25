@@ -5,7 +5,7 @@ const locale: Locale = {
   today: 'Ma', // 'Today',
   now: 'Most', // 'Now',
   backToToday: 'Vissza a mai napra', // 'Back to today',
-  ok: 'Ok',
+  ok: 'OK',
   clear: 'Törlés', // 'Clear',
   month: 'Hónap', // 'Month',
   year: 'Év', // 'Year',

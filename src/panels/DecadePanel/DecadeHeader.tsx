@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Header from '../Header';
 import type { GenerateConfig } from '../../generate';
-import { DECADE_DISTANCE_COUNT } from '.';
+import { DECADE_DISTANCE_COUNT } from './constant';
 import PanelContext from '../../PanelContext';
 
 export type YearHeaderProps<DateType> = {

@@ -3,9 +3,15 @@
     "target": "esnext",
     "moduleResolution": "node",
     "baseUrl": "./",
-    "jsx": "preserve",
+    "jsx": "react",
     "declaration": true,
     "skipLibCheck": true,
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+    "paths": {
+      "@/*": ["src/*"],
+      "@@/*": [".dumi/tmp/*"],
+      "rc-picker": ["src/index.tsx"]
+    }
+  },
+  "include": [".dumi/**/*", ".dumirc.ts", "**/*.ts", "**/*.tsx"]
 }

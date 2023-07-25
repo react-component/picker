@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { GenerateConfig } from './generate';
 
 export type Locale = {
@@ -43,6 +44,19 @@ export type Locale = {
 export type PanelMode = 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year' | 'decade';
 
 export type PickerMode = Exclude<PanelMode, 'datetime' | 'decade'>;
+
+export type CellRenderInfo<DateType> = {
+  // The cell wrapper element
+  originNode: React.ReactElement,
+  today: DateType,
+  // mask current cell as start or end when range picker
+  range?: 'start' | 'end',
+  type: PanelMode,
+  locale?: Locale,
+  subType?: 'hour' | 'minute' | 'second' | 'meridiem'
+};
+
+export type CellRender<DateType, CurrentType = DateType> = (current: CurrentType, info: CellRenderInfo<DateType>) => React.ReactNode;
 
 export type PanelRefProps = {
   onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => boolean;
@@ -96,14 +110,25 @@ export type RangeValue<DateType> = [EventValue<DateType>, EventValue<DateType>] 
 
 export type Components = {
   button?: React.ComponentType | string;
-  rangeItem?: React.ComponentType | string;
 };
 
 export type RangeList = {
-  label: string;
+  label: React.ReactNode;
   onClick: () => void;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 }[];
 
 export type CustomFormat<DateType> = (value: DateType) => string;
+
+export interface PresetDate<T> {
+  label: React.ReactNode;
+  value: T | (() => T);
+}
+
+// https://stackoverflow.com/a/39495173; need TypeScript >= 4.5
+type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] extends N
+  ? Acc[number]
+  : Enumerate<N, [...Acc, Acc['length']]>
+
+export type IntRange<F extends number, T extends number> = Exclude<Enumerate<T>, Enumerate<F>>

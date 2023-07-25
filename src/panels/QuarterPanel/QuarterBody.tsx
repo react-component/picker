@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
-import type { Locale } from '../../interface';
+import type { CellRender, Locale } from '../../interface';
 import { formatValue, isSameQuarter } from '../../utils/dateUtil';
 import RangeContext from '../../RangeContext';
 import useCellClassName from '../../hooks/useCellClassName';
@@ -17,10 +17,11 @@ export type QuarterBodyProps<DateType> = {
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;
+  cellRender?: CellRender<DateType>;
 };
 
 function QuarterBody<DateType>(props: QuarterBodyProps<DateType>) {
-  const { prefixCls, locale, value, viewDate, generateConfig } = props;
+  const { prefixCls, locale, value, viewDate, generateConfig, cellRender } = props;
 
   const { rangedValue, hoverRangedValue } = React.useContext(RangeContext);
 
@@ -39,12 +40,24 @@ function QuarterBody<DateType>(props: QuarterBodyProps<DateType>) {
 
   const baseQuarter = generateConfig.setDate(generateConfig.setMonth(viewDate, 0), 1);
 
+
+  const getCellNode = cellRender
+    ? (date: DateType, wrapperNode: React.ReactElement) =>
+        cellRender(date, {
+          originNode: wrapperNode,
+          locale,
+          today: generateConfig.getNow(),
+          type: 'quarter',
+        })
+    : undefined;
+
   return (
     <PanelBody
       {...props}
       rowNum={QUARTER_ROW_COUNT}
       colNum={QUARTER_COL_COUNT}
       baseDate={baseQuarter}
+      getCellNode={getCellNode}
       getCellText={date =>
         formatValue(date, {
           locale,
