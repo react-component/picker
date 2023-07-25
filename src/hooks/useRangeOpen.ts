@@ -33,6 +33,7 @@ export default function useRangeOpen(
   endInputRef: React.RefObject<HTMLInputElement>,
   startSelectedValue: any,
   endSelectedValue: any,
+  disabled: [boolean, boolean],
   onOpenChange?: (open: boolean) => void,
 ): [
   open: boolean,
@@ -93,7 +94,7 @@ export default function useRangeOpen(
       setNextActiveIndex(null);
 
       // Focus back
-      if (nextActiveIndex !== null) {
+      if (nextActiveIndex !== null && !disabled[nextActiveIndex]) {
         raf(() => {
           const ref = [startInputRef, endInputRef][nextActiveIndex];
           ref.current?.focus();

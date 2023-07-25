@@ -262,6 +262,26 @@ describe('Picker.Range', () => {
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
     });
 
+    it('should close panel when finish first choose with showTime = true and disabled = [false, true]', () => {
+      const { baseElement } = render(<MomentRangePicker showTime disabled={[false, true]} />);
+      expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
+      fireEvent.click(baseElement.querySelectorAll('.rc-picker-input')[0]);
+      expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
+      fireEvent.click(baseElement.querySelector('.rc-picker-cell-inner'));
+      fireEvent.click(baseElement.querySelector('.rc-picker-ok button'));
+      expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
+    });
+
+    it('should close panel when finish second choose with showTime = true and disabled = [true, false]', () => {
+      const { baseElement } = render(<MomentRangePicker showTime disabled={[true, false]} />);
+      expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
+      fireEvent.click(baseElement.querySelectorAll('.rc-picker-input')[1]);
+      expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
+      fireEvent.click(baseElement.querySelector('.rc-picker-cell-range-start .rc-picker-cell-inner'));
+      fireEvent.click(baseElement.querySelector('.rc-picker-ok button'));
+      expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
+    });
+
     it('panel can not be clicked with open and disabled', () => {
       const onChange = jest.fn();
       const { baseElement } = render(<MomentRangePicker disabled open onChange={onChange} />);
