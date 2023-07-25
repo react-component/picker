@@ -50,7 +50,7 @@ export function useAllowClear<DateType>(
                 onMouseUp={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    if (type === "range") {
+                    if (isRange) {
                         e.preventDefault();
                         e.stopPropagation();
                         let values = mergedValue as RangeValue<DateType>;
