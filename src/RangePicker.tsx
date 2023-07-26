@@ -48,6 +48,7 @@ import getRanges from './utils/getRanges';
 import { getValue, toArray, updateValues } from './utils/miscUtil';
 import { elementsContains, getDefaultFormat, getInputSize } from './utils/uiUtil';
 import { legacyPropsWarning } from './utils/warnUtil';
+import { getClearIcon } from './utils/getClearIcon';
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -689,18 +690,18 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const startStr =
     mergedValue && mergedValue[0]
       ? formatValue(mergedValue[0], {
-          locale,
-          format: 'YYYYMMDDHHmmss',
-          generateConfig,
-        })
+        locale,
+        format: 'YYYYMMDDHHmmss',
+        generateConfig,
+      })
       : '';
   const endStr =
     mergedValue && mergedValue[1]
       ? formatValue(mergedValue[1], {
-          locale,
-          format: 'YYYYMMDDHHmmss',
-          generateConfig,
-        })
+        locale,
+        format: 'YYYYMMDDHHmmss',
+        generateConfig,
+      })
       : '';
 
   useEffect(() => {
@@ -752,6 +753,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
     warning(!dateRender, `'dateRender' is deprecated. Please use 'cellRender' instead.`);
     warning(!monthCellRender, `'monthCellRender' is deprecated. Please use 'cellRender' instead.`);
+    warning(
+      !clearIcon,
+      '`clearIcon` will be removed in future. Please use `allowClear` instead.',
+    );
   }
 
   // ============================ Private ============================
@@ -859,7 +864,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           defaultValue={
             mergedActivePickerIndex === 0 ? getValue(selectedValue, 1) : getValue(selectedValue, 0)
           }
-          // defaultPickerValue={undefined}
+        // defaultPickerValue={undefined}
         />
       </RangeContext.Provider>
     );
@@ -1038,39 +1043,44 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     );
   }
 
-  let clearNode: React.ReactNode;
-  if (
-    allowClear &&
-    ((getValue(mergedValue, 0) && !mergedDisabled[0]) ||
-      (getValue(mergedValue, 1) && !mergedDisabled[1]))
-  ) {
-    clearNode = (
-      <span
-        onMouseDown={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-        onMouseUp={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          let values = mergedValue;
+  const mergedClearIcon: React.ReactNode = getClearIcon(
+    prefixCls,
+    allowClear,
+    clearIcon,
+  );
 
-          if (!mergedDisabled[0]) {
-            values = updateValues(values, null, 0);
-          }
-          if (!mergedDisabled[1]) {
-            values = updateValues(values, null, 1);
-          }
+  const clearNode: React.ReactNode = (
+    <span
+      onMouseDown={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      onMouseUp={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        let values = mergedValue;
 
-          triggerChange(values, null);
-          triggerOpen(false, mergedActivePickerIndex, 'clear');
-        }}
-        className={`${prefixCls}-clear`}
-      >
-        {clearIcon || <span className={`${prefixCls}-clear-btn`} />}
-      </span>
-    );
-  }
+        if (!mergedDisabled[0]) {
+          values = updateValues(values, null, 0);
+        }
+        if (!mergedDisabled[1]) {
+          values = updateValues(values, null, 1);
+        }
+
+        triggerChange(values, null);
+        triggerOpen(false, mergedActivePickerIndex, 'clear');
+      }}
+      className={`${prefixCls}-clear`}
+      role="button"
+    >
+      {mergedClearIcon}
+    </span>
+  );
+
+  const mergedAllowClear = allowClear && (
+    (getValue(mergedValue as RangeValue<DateType>, 0) && !mergedDisabled[0]) ||
+    (getValue(mergedValue as RangeValue<DateType>, 1) && !mergedDisabled[1])
+  );
 
   const inputSharedProps = {
     size: getInputSize(picker, formatList[0], generateConfig),
@@ -1209,7 +1219,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             }}
           />
           {suffixNode}
-          {clearNode}
+          {mergedAllowClear && clearNode}
         </div>
       </PickerTrigger>
     </PanelContext.Provider>

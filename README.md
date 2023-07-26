@@ -53,23 +53,22 @@ render(<Picker />, mountNode);
 | popupStyle | React.CSSProperties |  | customize popup style |
 | transitionName | String | '' | css class for animation |
 | locale | Object | import from 'rc-picker/lib/locale/en_US' | rc-picker locale |
-| inputReadOnly | Boolean | false | set input to read only |
-| allowClear | Boolean | false | whether show clear button |
-| autoFocus | Boolean | false | whether auto focus |
-| showTime | Boolean \| Object | [showTime options](#showTime-options) | to provide an additional time selection |
+| inputReadOnly | boolean | false | set input to read only |
+| allowClear | boolean \| { clearIcon?: ReactNode } | false | whether show clear button or customize clear button |
+| autoFocus | boolean | false | whether auto focus |
+| showTime | boolean \| Object | [showTime options](#showTime-options) | to provide an additional time selection |
 | picker | time \| date \| week \| month \| year |  | control which kind of panel should be shown |
 | format | String \| String[] | depends on whether you set timePicker and your locale | use to format/parse date(without time) value to/from input. When an array is provided, all values are used for parsing and first value for display |
-| use12Hours | Boolean | false | 12 hours display mode |
+| use12Hours | boolean | false | 12 hours display mode |
 | value | moment |  | current value like input's value |
 | defaultValue | moment |  | defaultValue like input's defaultValue |
-| open | Boolean | false | current open state of picker. controlled prop |
+| open | boolean | false | current open state of picker. controlled prop |
 | suffixIcon | ReactNode |  | The custom suffix icon |
-| clearIcon | ReactNode |  | The custom clear icon |
 | prevIcon | ReactNode |  | The custom prev icon |
 | nextIcon | ReactNode |  | The custom next icon |
 | superPrevIcon | ReactNode |  | The custom super prev icon |
 | superNextIcon | ReactNode |  | The custom super next icon |
-| disabled | Boolean | false | whether the picker is disabled |
+| disabled | boolean | false | whether the picker is disabled |
 | placeholder | String |  | picker input's placeholder |
 | getPopupContainer | function(trigger) |  | to set the container of the floating layer, while the default is to create a div element in body |
 | onChange | Function(date: moment, dateString: string) |  | a callback function, can be executed when the selected time is changing |
@@ -93,9 +92,9 @@ render(<Picker />, mountNode);
 | mode | time \| datetime \| date \| week \| month \| year \| decade |  | control which kind of panel |
 | picker | time \| date \| week \| month \| year |  | control which kind of panel |
 | tabIndex | Number | 0 | view [tabIndex](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) |
-| showTime | Boolean \| Object | [showTime options](#showTime-options) | to provide an additional time selection |
-| showToday | Boolean | false | whether to show today button |
-| disabledDate | Function(date:moment) => Boolean |  | whether to disable select of current date |
+| showTime | boolean \| Object | [showTime options](#showTime-options) | to provide an additional time selection |
+| showToday | boolean | false | whether to show today button |
+| disabledDate | Function(date:moment) => boolean |  | whether to disable select of current date |
 | dateRender | Function(currentDate:moment, today:moment) => React.Node |  | custom rendering function for date cells |
 | monthCellRender | Function(currentDate:moment, locale:Locale) => React.Node |  | Custom month cell render method |
 | renderExtraFooter | (mode) => React.Node |  | extra footer |
@@ -118,33 +117,33 @@ render(<Picker />, mountNode);
 | separator | String | '~' | set separator between inputs |
 | picker | time \| date \| week \| month \| year |  | control which kind of panel |
 | placeholder | [String, String] |  | placeholder of date input |
-| showTime | Boolean \| Object | [showTime options](#showTime-options) | to provide an additional time selection |
+| showTime | boolean \| Object | [showTime options](#showTime-options) | to provide an additional time selection |
 | showTime.defaultValue | [moment, moment] |  | to set default time of selected date |
-| use12Hours | Boolean | false | 12 hours display mode |
+| use12Hours | boolean | false | 12 hours display mode |
 | disabledTime | Function(date: moment, type:'start'\|'end'):Object |  |  | to specify the time that cannot be selected |
 | ranges | { String \| [range: string]: moment[] } \| { [range: string]: () => moment[] } |  | preseted ranges for quick selection |
 | format | String \| String[] | depends on whether you set timePicker and your locale | use to format/parse date(without time) value to/from input. When an array is provided, all values are used for parsing and first value for display |
-| allowEmpty | [Boolean, Boolean] |  | allow range picker clearing text |
-| selectable | [Boolean, Boolean] |  | whether to selected picker |
-| disabled | Boolean | false | whether the range picker is disabled |
+| allowEmpty | [boolean, boolean] |  | allow range picker clearing text |
+| selectable | [boolean, boolean] |  | whether to selected picker |
+| disabled | boolean | false | whether the range picker is disabled |
 | onChange | Function(value:[moment], formatString: [string, string]) |  | a callback function, can be executed when the selected time is changing |
 | onCalendarChange | Function(value:[moment], formatString: [string, string], info: { range:'start'\|'end' }) |  | a callback function, can be executed when the start time or the end time of the range is changing |
 | direction | String: ltr or rtl |  | Layout direction of picker component, it supports RTL direction too. |
-| order | Boolean | true | (TimeRangePicker only) `false` to disable auto order |
+| order | boolean | true | (TimeRangePicker only) `false` to disable auto order |
 
 ### showTime-options
 
 | Property            | Type    | Default | Description                        |
 | ------------------- | ------- | ------- | ---------------------------------- |
 | format              | String  |         | moment format                      |
-| showHour            | Boolean | true    | whether show hour                  |
-| showMinute          | Boolean | true    | whether show minute                |
-| showSecond          | Boolean | true    | whether show second                |
-| use12Hours          | Boolean | false   | 12 hours display mode              |
+| showHour            | boolean | true    | whether show hour                  |
+| showMinute          | boolean | true    | whether show minute                |
+| showSecond          | boolean | true    | whether show second                |
+| use12Hours          | boolean | false   | 12 hours display mode              |
 | hourStep            | Number  | 1       | interval between hours in picker   |
 | minuteStep          | Number  | 1       | interval between minutes in picker |
 | secondStep          | Number  | 1       | interval between seconds in picker |
-| hideDisabledOptions | Boolean | false   | whether hide disabled options      |
+| hideDisabledOptions | boolean | false   | whether hide disabled options      |
 | defaultValue        | moment  | null    | default initial value              |
 
 ## Development

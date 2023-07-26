@@ -37,6 +37,7 @@ import { formatValue, isEqual, parseValue } from './utils/dateUtil';
 import { toArray } from './utils/miscUtil';
 import { elementsContains, getDefaultFormat, getInputSize } from './utils/uiUtil';
 import { legacyPropsWarning } from './utils/warnUtil';
+import { getClearIcon } from './utils/getClearIcon';
 
 export type PickerRefConfig = {
   focus: () => void;
@@ -49,7 +50,7 @@ export type PickerSharedProps<DateType> = {
   popupStyle?: React.CSSProperties;
   transitionName?: string;
   placeholder?: string;
-  allowClear?: boolean;
+  allowClear?: boolean | { clearIcon?: React.ReactNode };
   autoFocus?: boolean;
   disabled?: boolean;
   tabIndex?: number;
@@ -66,6 +67,10 @@ export type PickerSharedProps<DateType> = {
 
   // Render
   suffixIcon?: React.ReactNode;
+  /** 
+   * Clear all icon 
+   * @deprecated Please use `allowClear` instead
+   **/
   clearIcon?: React.ReactNode;
   prevIcon?: React.ReactNode;
   nextIcon?: React.ReactNode;
@@ -477,27 +482,40 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     );
   }
 
-  let clearNode: React.ReactNode;
-  if (allowClear && mergedValue && !disabled) {
-    clearNode = (
-      <span
-        onMouseDown={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-        onMouseUp={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          triggerChange(null);
-          triggerOpen(false);
-        }}
-        className={`${prefixCls}-clear`}
-        role="button"
-      >
-        {clearIcon || <span className={`${prefixCls}-clear-btn`} />}
-      </span>
+  // ============================ Clear ============================
+  if (process.env.NODE_ENV !== 'production') {
+    warning(
+      !props.clearIcon,
+      '`clearIcon` will be removed in future. Please use `allowClear` instead.',
     );
   }
+
+  const mergedClearIcon: React.ReactNode = getClearIcon(
+    prefixCls,
+    allowClear,
+    clearIcon,
+  );
+
+  const clearNode: React.ReactNode = (
+    <span
+      onMouseDown={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      onMouseUp={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerChange(null);
+        triggerOpen(false);
+      }}
+      className={`${prefixCls}-clear`}
+      role="button"
+    >
+      {mergedClearIcon}
+    </span>
+  );
+
+  const mergedAllowClear = !!allowClear && mergedValue && !disabled;
 
   const mergedInputProps: React.InputHTMLAttributes<HTMLInputElement> & { ref: React.MutableRefObject<HTMLInputElement> } = {
     id,
@@ -515,7 +533,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     ...inputProps,
     size: getInputSize(picker, formatList[0], generateConfig),
     name,
-    ...pickAttrs(props, { aria: true, data: true}),
+    ...pickAttrs(props, { aria: true, data: true }),
     autoComplete,
   };
 
@@ -590,7 +608,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
           >
             {inputNode}
             {suffixNode}
-            {clearNode}
+            {mergedAllowClear && clearNode}
           </div>
         </div>
       </PickerTrigger>
