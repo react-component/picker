@@ -483,13 +483,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   }
 
   // ============================ Clear ============================
-  if (process.env.NODE_ENV !== 'production') {
-    warning(
-      !props.clearIcon,
-      '`clearIcon` will be removed in future. Please use `allowClear` instead.',
-    );
-  }
-
   const mergedClearIcon: React.ReactNode = getClearIcon(
     prefixCls,
     allowClear,

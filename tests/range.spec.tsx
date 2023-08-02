@@ -754,9 +754,6 @@ describe('Picker.Range', () => {
     );
 
     expect(container).toMatchSnapshot();
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.'
-    );
   });
 
   it('block native mouseDown in panel to prevent focus changed', () => {

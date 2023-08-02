@@ -554,9 +554,6 @@ describe('Picker.Basic', () => {
       />,
     );
     expect(document.querySelector('.rc-picker-input')).toMatchSnapshot();
-    expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.'
-    );
   });
 
   it('inputRender', () => {

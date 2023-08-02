@@ -753,10 +753,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
     warning(!dateRender, `'dateRender' is deprecated. Please use 'cellRender' instead.`);
     warning(!monthCellRender, `'monthCellRender' is deprecated. Please use 'cellRender' instead.`);
-    warning(
-      !clearIcon,
-      '`clearIcon` will be removed in future. Please use `allowClear` instead.',
-    );
   }
 
   // ============================ Private ============================
