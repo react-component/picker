@@ -43,6 +43,10 @@ export default function useRangeOpen(
 ] {
   const [firstTimeOpen, setFirstTimeOpen] = React.useState(false);
 
+  const [afferentOpen, setAfferentOpen] = useMergedState(defaultOpen || false, {
+    value: open,
+  });
+
   const [mergedOpen, setMergedOpen] = useMergedState(defaultOpen || false, {
     value: open,
     onChange: (nextOpen) => {
@@ -62,6 +66,8 @@ export default function useRangeOpen(
     }
   }, [mergedOpen]);
 
+  const queryNextIndex = (index: number) => (index === 0 ? 1 : 0);
+
   const triggerOpen = useEvent((nextOpen: boolean, index: 0 | 1 | false, source: SourceType) => {
     if (index === false) {
       // Only when `nextOpen` is false and no need open to next index
@@ -70,7 +76,7 @@ export default function useRangeOpen(
       setMergedActivePickerIndex(index);
       setMergedOpen(nextOpen);
 
-      const nextIndex = index === 0 ? 1 : 0;
+      const nextIndex = queryNextIndex(index);
 
       // Record next open index
       if (
@@ -87,16 +93,19 @@ export default function useRangeOpen(
         }
       }
     } else if (source === 'confirm' || (source === 'blur' && changeOnBlur)) {
-      if (nextActiveIndex !== null) {
+      const customNextActiveIndex = afferentOpen ? queryNextIndex(index) : nextActiveIndex;
+
+      if (customNextActiveIndex !== null) {
         setFirstTimeOpen(false);
-        setMergedActivePickerIndex(nextActiveIndex);
+        setMergedActivePickerIndex(customNextActiveIndex);
       }
+      
       setNextActiveIndex(null);
 
       // Focus back
-      if (nextActiveIndex !== null && !disabled[nextActiveIndex]) {
+      if (customNextActiveIndex !== null && !disabled[customNextActiveIndex]) {
         raf(() => {
-          const ref = [startInputRef, endInputRef][nextActiveIndex];
+          const ref = [startInputRef, endInputRef][customNextActiveIndex];
           ref.current?.focus();
         });
       } else {
@@ -104,6 +113,7 @@ export default function useRangeOpen(
       }
     } else {
       setMergedOpen(false);
+      setAfferentOpen(false);
     }
   });
 

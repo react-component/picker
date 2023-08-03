@@ -1921,4 +1921,10 @@ describe('Picker.Range', () => {
     expect(document.querySelector('input').value).toEqual('');
   });
 
+  it('selected date when open is true should switch panel', () => {
+    render(<MomentRangePicker open />);
+
+    fireEvent.click(document.querySelector('.rc-picker-cell'));
+    expect(document.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
+  });
 });
