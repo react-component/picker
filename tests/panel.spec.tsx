@@ -569,4 +569,16 @@ describe('Picker.Panel', () => {
       });
     });
   });
+
+  it('week picker current should check year', () => {
+    const wrapper = mount(<MomentPickerPanel picker="week" value={getMoment('1990-09-03')} />);
+    expect(
+      wrapper.exists('.rc-picker-week-panel-row-selected td[title="1990-09-03"]'),
+    ).toBeTruthy();
+
+    // Diff year
+    wrapper.find('.rc-picker-header-super-next-btn').simulate('click');
+    expect(wrapper.exists('td[title="1991-09-03"]')).toBeTruthy();
+    expect(wrapper.exists('.rc-picker-week-panel-row-selected')).toBeFalsy();
+  });
 });
