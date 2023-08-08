@@ -6,6 +6,7 @@ import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { mount, getMoment, isSame, MomentPickerPanel } from './util/commonUtil';
 import zhCN from '../src/locale/zh_CN';
 import enUS from '../src/locale/en_US';
+import { fireEvent, render } from '@testing-library/react';
 
 describe('Picker.Panel', () => {
   beforeAll(() => {
@@ -571,14 +572,16 @@ describe('Picker.Panel', () => {
   });
 
   it('week picker current should check year', () => {
-    const wrapper = mount(<MomentPickerPanel picker="week" value={getMoment('1990-09-03')} />);
+    const { container } = render(
+      <MomentPickerPanel picker="week" value={getMoment('1990-09-03')} />,
+    );
     expect(
-      wrapper.exists('.rc-picker-week-panel-row-selected td[title="1990-09-03"]'),
+      container.querySelector('.rc-picker-week-panel-row-selected td[title="1990-09-03"]'),
     ).toBeTruthy();
 
     // Diff year
-    wrapper.find('.rc-picker-header-super-next-btn').simulate('click');
-    expect(wrapper.exists('td[title="1991-09-03"]')).toBeTruthy();
-    expect(wrapper.exists('.rc-picker-week-panel-row-selected')).toBeFalsy();
+    fireEvent.click(container.querySelector('.rc-picker-header-super-next-btn'));
+    expect(container.querySelector('td[title="1991-09-03"]')).toBeTruthy();
+    expect(container.querySelector('.rc-picker-week-panel-row-selected')).toBeFalsy();
   });
 });
