@@ -2,13 +2,13 @@ import React from 'react';
 import MockDate from 'mockdate';
 import { act } from 'react-dom/test-utils';
 import KeyCode from 'rc-util/lib/KeyCode';
+import type { Wrapper } from './util/commonUtil';
 import {
   mount,
   getMoment,
   isSame,
   MomentPicker,
   MomentPickerPanel,
-  Wrapper,
   MomentRangePicker,
 } from './util/commonUtil';
 
@@ -396,10 +396,7 @@ describe('Picker.Keyboard', () => {
         jest.runAllTimers();
       });
       expect(
-        wrapper
-          .find('.rc-picker-input')
-          .last()
-          .hasClass('rc-picker-input-active'),
+        wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-active'),
       ).toBeTruthy();
       onCalendarChange.mockReset();
 
@@ -436,12 +433,7 @@ describe('Picker.Keyboard', () => {
         .first()
         .simulate('change', { target: { value: '2000-01-01' } });
       wrapper.keyDown(KeyCode.ESC);
-      expect(
-        wrapper
-          .find('input')
-          .first()
-          .props().value,
-      ).toEqual('');
+      expect(wrapper.find('input').first().props().value).toEqual('');
     });
 
     it('move based on current date on first keyboard event', () => {
@@ -486,7 +478,7 @@ describe('Picker.Keyboard', () => {
           showTime
           onSelect={onSelect}
           onChange={onChange}
-          disabledDate={date => date.date() % 2 === 0}
+          disabledDate={(date) => date.date() % 2 === 0}
         />,
       );
       wrapper.find('input').simulate('focus');
@@ -517,21 +509,62 @@ describe('Picker.Keyboard', () => {
         <MomentPickerPanel
           onSelect={onSelect}
           onChange={onChange}
-          disabledDate={date => date.date() % 2 === 0}
+          disabledDate={(date) => date.date() % 2 === 0}
         />,
       );
 
       wrapper.find('.rc-picker-panel').simulate('focus');
 
-      // 9-10 is disabled
+      // 9-02、9-04、9-10 is disabled
+      wrapper.keyDown(KeyCode.LEFT);
+      wrapper.keyDown(KeyCode.RIGHT);
       wrapper.keyDown(KeyCode.DOWN);
-      expect(isSame(onSelect.mock.calls[0][0], '1990-09-10')).toBeTruthy();
-      expect(onChange).not.toHaveBeenCalled();
+      expect(onSelect).not.toHaveBeenCalled();
 
-      // 9-17 is enabled
+      // 7-27、8-27 is enabled
+      wrapper.keyDown(KeyCode.UP);
+      expect(isSame(onSelect.mock.calls[0][0], '1990-08-27')).toBeTruthy();
+      onSelect.mockReset();
+      wrapper.keyDown(KeyCode.PAGE_UP);
+      expect(isSame(onSelect.mock.calls[0][0], '1990-07-27')).toBeTruthy();
+      onSelect.mockReset();
+      wrapper.keyDown(KeyCode.PAGE_DOWN);
+      expect(isSame(onSelect.mock.calls[0][0], '1990-08-27')).toBeTruthy();
+    });
+
+    it('month panel', () => {
+      const onChange = jest.fn();
+      const onSelect = jest.fn();
+      const now = new Date();
+      const wrapper = mount(
+        <MomentPickerPanel
+          picker="month"
+          onSelect={onSelect}
+          onChange={onChange}
+          disabledDate={(date) => date.month() < now.getMonth()}
+        />,
+      );
+
+      wrapper.find('.rc-picker-panel').simulate('focus');
+
+      // PAGE_UP and PAGE_DOWN do not trigger the select
+      wrapper.keyDown(KeyCode.PAGE_UP);
+      wrapper.keyDown(KeyCode.PAGE_DOWN);
+      expect(onSelect).not.toHaveBeenCalled();
+
+      // The disabled date is before August
+      wrapper.keyDown(KeyCode.LEFT);
+      wrapper.keyDown(KeyCode.UP);
+      expect(onSelect).not.toHaveBeenCalled();
+
+      // August and subsequent dates are enable
+      wrapper.keyDown(KeyCode.RIGHT);
+      expect(isSame(onSelect.mock.calls[0][0], '1990-10-03')).toBeTruthy();
+      onSelect.mockReset();
+      wrapper.keyDown(KeyCode.LEFT);
+      onSelect.mockReset();
       wrapper.keyDown(KeyCode.DOWN);
-      expect(isSame(onSelect.mock.calls[1][0], '1990-09-17')).toBeTruthy();
-      expect(isSame(onChange.mock.calls[0][0], '1990-09-17')).toBeTruthy();
+      expect(isSame(onSelect.mock.calls[0][0], '1990-12-03')).toBeTruthy();
     });
   });
 });

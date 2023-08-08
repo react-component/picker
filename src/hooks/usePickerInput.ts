@@ -167,10 +167,9 @@ export default function usePickerInput({
   useEffect(() =>
     addGlobalMouseDownEvent((e: MouseEvent) => {
       const target = getTargetFromEvent(e);
+      const clickedOutside = isClickOutside(target);
 
       if (open) {
-        const clickedOutside = isClickOutside(target);
-
         if (!clickedOutside) {
           preventBlurRef.current = true;
 
@@ -181,6 +180,8 @@ export default function usePickerInput({
         } else if (!focused || clickedOutside) {
           triggerOpen(false);
         }
+      } else if (focused && !clickedOutside) {
+        preventBlurRef.current = true;
       }
     }),
   );

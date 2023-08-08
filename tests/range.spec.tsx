@@ -18,11 +18,13 @@ describe('Picker.Range', () => {
   }
 
   beforeAll(() => {
+    jest.clearAllTimers();
     MockDate.set(getMoment('1990-09-03 00:00:00').toDate());
   });
 
   afterAll(() => {
     MockDate.reset();
+    jest.clearAllTimers();
   });
 
   describe('value', () => {
@@ -209,6 +211,50 @@ describe('Picker.Range', () => {
   });
 
   describe('disabled', () => {
+    it.skip('basic disabled check', () => {
+      const wrapper = mount(<MomentRangePicker disabled={[true, false]} />);
+      expect(wrapper.find('input').at(0).props().disabled).toBeTruthy();
+      expect(wrapper.find('input').at(1).props().disabled).toBeFalsy();
+    });
+
+    it.skip('startDate will have disabledDate when endDate is not selectable', () => {
+      const onChange = jest.fn();
+      const wrapper = mount(
+        <MomentRangePicker
+          disabled={[false, true]}
+          defaultValue={[null, getMoment('1990-09-22')]}
+          onChange={onChange}
+        />,
+      );
+
+      let cellNode: Wrapper;
+
+      // Disabled date
+      wrapper.openPicker();
+      cellNode = wrapper.selectCell(25);
+      expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeTruthy();
+      expect(onChange).not.toHaveBeenCalled();
+
+      // Enabled date
+      wrapper.openPicker();
+      cellNode = wrapper.selectCell(7);
+      expect(cellNode.hasClass('rc-picker-cell-disabled')).toBeFalsy();
+      expect(onChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['1990-09-07', '1990-09-22'],
+      );
+    });
+
+    it.skip('null value with disabled', () => {
+      const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      mount(<MomentRangePicker disabled={[false, true]} value={[null, null]} />);
+
+      expect(errSpy).toHaveBeenCalledWith(
+        'Warning: `disabled` should not set with empty `value`. You should set `allowEmpty` or `value` instead.',
+      );
+      errSpy.mockReset();
+    });
+
     it('clear should trigger change', () => {
       const onChange = jest.fn();
       const wrapper = mount(
@@ -510,11 +556,14 @@ describe('Picker.Range', () => {
 
     // Select to active next
     wrapper.selectCell(11);
-    jest.runAllTimers();
+    act(() => {
+      jest.runAllTimers();
+    });
     expect(wrapper.find('.rc-picker-input').last().hasClass('rc-picker-input-active')).toBeTruthy();
 
     wrapper.unmount();
 
+    jest.clearAllTimers();
     jest.useRealTimers();
   });
 
@@ -644,6 +693,27 @@ describe('Picker.Range', () => {
 
     expect(onOpenChange).not.toHaveBeenCalled();
 
+    jest.clearAllTimers();
+    jest.useRealTimers();
+  });
+
+  it.skip('fixed open need repeat trigger onOpenChange', () => {
+    jest.useFakeTimers();
+    const onOpenChange = jest.fn();
+    render(<MomentRangePicker onOpenChange={onOpenChange} open />);
+
+    expect(onOpenChange).toHaveBeenCalledTimes(0);
+
+    for (let i = 0; i < 10; i += 1) {
+      act(() => {
+        fireEvent.mouseDown(document.body);
+      });
+      expect(onOpenChange).toHaveBeenCalledTimes(1);
+    }
+    act(() => {
+      jest.runAllTimers();
+    });
+    jest.clearAllTimers();
     jest.useRealTimers();
   });
 
@@ -699,6 +769,7 @@ describe('Picker.Range', () => {
     expect(wrapper.isOpen()).toBeFalsy();
     expect(wrapper.find('input').first().props().value).toEqual('');
 
+    jest.clearAllTimers();
     jest.useRealTimers();
   });
 
@@ -1170,10 +1241,29 @@ describe('Picker.Range', () => {
       const wrapper = mount(<MomentRangePicker />);
       wrapper.find('.rc-picker').simulate('click');
       expect(wrapper.isOpen()).toBeTruthy();
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       expect(document.activeElement).toStrictEqual(wrapper.find('input').first().getDOMNode());
+
+      jest.clearAllTimers();
       jest.useRealTimers();
     });
+
+    it.skip('should focus on the second element if first is disabled', () => {
+      jest.useFakeTimers();
+      const wrapper = mount(<MomentRangePicker disabled={[true, false]} />);
+      wrapper.find('.rc-picker').simulate('click');
+      expect(wrapper.isOpen()).toBeTruthy();
+      act(() => {
+        jest.runAllTimers();
+      });
+      expect(document.activeElement).toStrictEqual(wrapper.find('input').last().getDOMNode());
+
+      jest.clearAllTimers();
+      jest.useRealTimers();
+    });
+
     it("shouldn't let mousedown blur the input", () => {
       jest.useFakeTimers();
       const preventDefault = jest.fn();
@@ -1181,12 +1271,16 @@ describe('Picker.Range', () => {
         attachTo: document.body,
       });
       wrapper.find('.rc-picker').simulate('click');
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       wrapper.find('.rc-picker').simulate('mousedown', {
         preventDefault,
       });
       expect(wrapper.isOpen()).toBeTruthy();
       expect(preventDefault).toHaveBeenCalled();
+
+      jest.clearAllTimers();
       jest.useRealTimers();
     });
   });
@@ -1225,6 +1319,7 @@ describe('Picker.Range', () => {
       jest.useFakeTimers();
     });
     afterEach(() => {
+      jest.clearAllTimers();
       jest.useRealTimers();
     });
 
@@ -1237,7 +1332,9 @@ describe('Picker.Range', () => {
       wrapper.openPicker(0);
       const leftCell = wrapper.findCell(24);
       leftCell.simulate('mouseEnter');
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       wrapper.update();
       expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
       expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
@@ -1249,7 +1346,9 @@ describe('Picker.Range', () => {
       ).toBeFalsy();
 
       leftCell.simulate('mouseLeave');
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       wrapper.update();
       expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
       expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
@@ -1266,7 +1365,9 @@ describe('Picker.Range', () => {
       wrapper.openPicker(1);
       const rightCell = wrapper.findCell(24, 1);
       rightCell.simulate('mouseEnter');
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       wrapper.update();
       expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
       expect(wrapper.find('input').last().prop('value')).toBe('2020-08-24');
@@ -1278,7 +1379,9 @@ describe('Picker.Range', () => {
       ).toBeTruthy();
 
       rightCell.simulate('mouseLeave');
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       wrapper.update();
       expect(wrapper.find('input').first().prop('value')).toBe('2020-07-22');
       expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
@@ -1298,7 +1401,9 @@ describe('Picker.Range', () => {
       wrapper.openPicker(0);
       const leftCell = wrapper.findCell(24, 0);
       leftCell.simulate('mouseEnter');
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       wrapper.update();
       expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
       expect(wrapper.find('input').last().prop('value')).toBe('2020-08-22');
@@ -1322,7 +1427,9 @@ describe('Picker.Range', () => {
       // right
       const rightCell = wrapper.findCell(24, 1);
       rightCell.simulate('mouseEnter');
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       wrapper.update();
       expect(wrapper.find('input').first().prop('value')).toBe('2020-07-24');
       expect(wrapper.find('input').last().prop('value')).toBe('2020-08-24');
@@ -1616,5 +1723,11 @@ describe('Picker.Range', () => {
     wrapper.openPicker(1);
     expect(wrapper.find('.rc-picker-panel-container').getDOMNode().style.marginLeft).toBe('295px');
     mock.mockRestore();
+  });
+
+  it('range picker should use the passed in default when part is disabled', () => {
+    mount(<MomentRangePicker defaultValue={[null, null]} disabled={[false, true]} />);
+
+    expect(document.querySelectorAll('input')[1].value).toBeFalsy();
   });
 });
