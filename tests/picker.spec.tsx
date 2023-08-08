@@ -133,7 +133,7 @@ describe('Picker.Basic', () => {
         act(() => {
           fireEvent.mouseDown(document.body);
         });
-        expect(onOpenChange).toHaveBeenCalledTimes(1);
+        expect(onOpenChange).toHaveBeenCalledTimes(i + 1);
       }
       act(() => {
         jest.runAllTimers();

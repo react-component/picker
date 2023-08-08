@@ -478,7 +478,7 @@ describe('Picker.Keyboard', () => {
           showTime
           onSelect={onSelect}
           onChange={onChange}
-          disabledDate={date => date.date() % 2 === 0}
+          disabledDate={(date) => date.date() % 2 === 0}
         />,
       );
       wrapper.find('input').simulate('focus');
@@ -509,7 +509,7 @@ describe('Picker.Keyboard', () => {
         <MomentPickerPanel
           onSelect={onSelect}
           onChange={onChange}
-          disabledDate={date => date.date() % 2 === 0}
+          disabledDate={(date) => date.date() % 2 === 0}
         />,
       );
 
@@ -541,7 +541,7 @@ describe('Picker.Keyboard', () => {
           picker="month"
           onSelect={onSelect}
           onChange={onChange}
-          disabledDate={date => date.month() < now.getMonth()}
+          disabledDate={(date) => date.month() < now.getMonth()}
         />,
       );
 
