@@ -1830,7 +1830,6 @@ describe('Picker.Range', () => {
       />,
     );
     openPicker(container, 1);
-    console.log(document.querySelector('.rc-picker-panel-container').getAttribute("style"))
     expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({
       marginLeft: '410px',
     });
@@ -1961,7 +1960,6 @@ describe('Picker.Range', () => {
       />,
     );
     openPicker(container, 1);
-    console.log(document.querySelector('.rc-picker-panel-container').getAttribute("style"))
     expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({
       marginLeft: '0px',
     });
