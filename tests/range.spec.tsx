@@ -1807,7 +1807,7 @@ describe('Picker.Range', () => {
           } else if (this.className.includes('panel-container')) {
             return 311;
           } else if (this.className.includes('input')) {
-            return 285;
+            return 400;
           } else if (this.className.includes('range-separator')) {
             return 10;
           }
@@ -1830,8 +1830,9 @@ describe('Picker.Range', () => {
       />,
     );
     openPicker(container, 1);
+    console.log(document.querySelector('.rc-picker-panel-container').getAttribute("style"))
     expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({
-      marginLeft: '295px',
+      marginLeft: '410px',
     });
     mock.mockRestore();
   });
@@ -1926,5 +1927,44 @@ describe('Picker.Range', () => {
 
     fireEvent.click(document.querySelector('.rc-picker-cell'));
     expect(document.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
+  });
+
+  it('If input size is too small that panel cannot move to right, let it keep left', () => {
+    const mock = spyElementPrototypes(HTMLElement, {
+      offsetWidth: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 14;
+          } else if (this.className.includes('panel-container')) {
+            return 311;
+          } else if (this.className.includes('input')) {
+            return 100;
+          } else if (this.className.includes('range-separator')) {
+            return 10;
+          }
+        },
+      },
+      offsetLeft: {
+        get() {
+          if (this.className.includes('range-arrow')) {
+            return 305;
+          }
+        },
+      },
+    });
+    const { container } = render(
+      <MomentRangePicker
+        allowClear
+        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        clearIcon={<span>X</span>}
+        suffixIcon={<span>O</span>}
+      />,
+    );
+    openPicker(container, 1);
+    console.log(document.querySelector('.rc-picker-panel-container').getAttribute("style"))
+    expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({
+      marginLeft: '0px',
+    });
+    mock.mockRestore();
   });
 });
