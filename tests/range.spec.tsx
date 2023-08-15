@@ -1807,7 +1807,7 @@ describe('Picker.Range', () => {
           } else if (this.className.includes('panel-container')) {
             return 311;
           } else if (this.className.includes('input')) {
-            return 400;
+            return 306;
           } else if (this.className.includes('range-separator')) {
             return 10;
           }
@@ -1831,7 +1831,7 @@ describe('Picker.Range', () => {
     );
     openPicker(container, 1);
     expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({
-      marginLeft: '410px',
+      marginLeft: '316px',
     });
     mock.mockRestore();
   });
