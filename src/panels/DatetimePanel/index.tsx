@@ -113,11 +113,24 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       selectedDate = generateConfig.setDate(selectedDate, generateConfig.getDate(defaultValue));
     } else if (source === 'date' && value && disabledTime) {
       const disabledTimes = disabledTime(value)
-      const disabledHours = disabledTimes.disabledHours?.() || [-1]
+      const findValidTime = (disabledRange: number[], maxValidTime: number) => {
+        const min = disabledRange[0]
+        const max = disabledRange.at(-1)
 
-      const validHour = Math.min(disabledHours.at(-1) + 1, 23)
-      const validMinute = Math.min(((disabledTimes.disabledMinutes?.(validHour).at(-1) || -1) + 1), 60)
-      const validSeconds = Math.min(((disabledTimes.disabledSeconds?.(validHour, validMinute).at(-1) || -1) + 1) || 0, 60)
+        for (let i = 0; i <= maxValidTime; i++) {
+          if (i < min) {
+            return i
+          } else if (i > max) {
+            return i
+          }
+        }
+
+        return 0
+      }
+
+      const validHour = findValidTime(disabledTimes.disabledHours?.() || [-1], 23)
+      const validMinute = findValidTime(disabledTimes.disabledMinutes?.(validHour) || [-1], 60)
+      const validSeconds = findValidTime(disabledTimes.disabledSeconds?.(validHour, validMinute) || [-1], 60)
       selectedDate = generateConfig.setHour(selectedDate, validHour)
       selectedDate = generateConfig.setMinute(selectedDate, validMinute)
       selectedDate = generateConfig.setSecond(selectedDate, validSeconds)
