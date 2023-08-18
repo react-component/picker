@@ -116,8 +116,8 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       const disabledHours = disabledTimes.disabledHours?.() || [-1]
 
       const validHour = Math.min(disabledHours.at(-1) + 1, 23)
-      const validMinute = Math.min((disabledTimes.disabledMinutes?.(validHour).at(-1) + 1) || 0, 60)
-      const validSeconds = Math.min((disabledTimes.disabledSeconds?.(validHour, validMinute).at(-1) + 1) || 0, 60)
+      const validMinute = Math.min(((disabledTimes.disabledMinutes?.(validHour).at(-1) || -1) + 1), 60)
+      const validSeconds = Math.min(((disabledTimes.disabledSeconds?.(validHour, validMinute).at(-1) || -1) + 1) || 0, 60)
       selectedDate = generateConfig.setHour(selectedDate, validHour)
       selectedDate = generateConfig.setMinute(selectedDate, validMinute)
       selectedDate = generateConfig.setSecond(selectedDate, validSeconds)
