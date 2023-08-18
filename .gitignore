@@ -28,6 +28,7 @@ lib
 es
 yarn.lock
 package-lock.json
+pnpm-lock.yaml
 coverage/
 .doc
 .history
@@ -36,6 +37,7 @@ coverage/
 .umi-production
 .umi-test
 .env.local
+
 
 # dumi
 .dumi/tmp
