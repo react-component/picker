@@ -114,14 +114,10 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
     } else if (source === 'date' && value && disabledTime) {
       const disabledTimes = disabledTime(value)
       const findValidTime = (disabledRange: number[], maxValidTime: number) => {
-        const min = disabledRange[0]
-        const max = disabledRange.at(-1)
-
+        const rangeSet = new Set(disabledRange);
         for (let i = 0; i <= maxValidTime; i++) {
-          if (i < min) {
-            return i
-          } else if (i > max) {
-            return i
+          if (!rangeSet.has(i)) {
+            return i;
           }
         }
 
