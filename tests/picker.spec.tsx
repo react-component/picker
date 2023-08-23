@@ -2,11 +2,14 @@
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import type { Moment } from 'moment';
 import moment from 'moment';
+import 'moment/locale/zh-cn';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import type { PanelMode, PickerMode } from '../src/interface';
+import enUS from '../src/locale/en_US';
+import zhCN from '../src/locale/zh_CN';
 import {
   clearValue,
   closePicker,
@@ -555,7 +558,7 @@ describe('Picker.Basic', () => {
     );
     expect(document.querySelector('.rc-picker-input')).toMatchSnapshot();
     expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.'
+      'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.',
     );
   });
 
@@ -626,7 +629,9 @@ describe('Picker.Basic', () => {
       expect(errorSpy).not.toBeCalled();
       const { container } = render(<MomentPicker picker="time" hourStep={9} />);
       openPicker(container);
-      expect(errorSpy).toBeCalledWith('Warning: `hourStep` 9 is invalid. It should be a factor of 24.');
+      expect(errorSpy).toBeCalledWith(
+        'Warning: `hourStep` 9 is invalid. It should be a factor of 24.',
+      );
     });
 
     it('should show warning when minute step is invalid', () => {
@@ -656,7 +661,9 @@ describe('Picker.Basic', () => {
         const { container } = render(<MomentPicker picker="time" {...props} />);
         openPicker(container);
 
-        const column = document.querySelector(`.rc-picker-time-panel-column:nth-child(${index + 1})`);
+        const column = document.querySelector(
+          `.rc-picker-time-panel-column:nth-child(${index + 1})`,
+        );
         expect(column).toBeTruthy();
 
         const cells = column.querySelectorAll('.rc-picker-time-panel-cell-inner');
@@ -748,7 +755,7 @@ describe('Picker.Basic', () => {
   it('defaultOpenValue in timePicker', () => {
     resetWarned();
     const onChange = jest.fn();
-    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
     const { container } = render(
       <MomentPicker
@@ -1084,5 +1091,20 @@ describe('Picker.Basic', () => {
     expect(onChange).toBeCalledTimes(2);
 
     expect(onChange.mock.calls[1][0].format('YYYY-MM-DD HH:mm:ss')).toEqual('2023-05-01 12:34:56');
+  });
+
+  it('switch picker locale should reformat value', () => {
+    const { container, rerender } = render(
+      <MomentPicker value={getMoment('2011-11-11')} format={'dddd'} locale={enUS} />,
+    );
+    expect(container.querySelector('input').value).toEqual('Friday');
+
+    // Switch locale
+    moment.locale('zh-cn');
+    rerender(<MomentPicker value={getMoment('2011-11-11')} format={'dddd'} locale={zhCN} />);
+    expect(container.querySelector('input').value).toEqual('星期五');
+
+    // Reset locale
+    moment.locale('en');
   });
 });
