@@ -257,6 +257,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   } = props as MergedRangePickerProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
+  const needIgnoreConfirm: boolean = changeOnBlur && needConfirmButton;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const panelDivRef = useRef<HTMLDivElement>(null);
@@ -567,9 +568,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
     if (changeOnBlur && delayOpen) {
-      const selectedIndexValue = getValue(selectedValue, mergedActivePickerIndex);
+      // As the date picker was manually switched, 
+      // it's necessary to trigger the onChange event of the previous date picker.
+      const needTriggerIndex = needIgnoreConfirm ? (mergedActivePickerIndex ? 0 : 1) : mergedActivePickerIndex;
+      const selectedIndexValue = getValue(selectedValue, needTriggerIndex);
       if (selectedIndexValue) {
-        triggerChange(selectedValue, mergedActivePickerIndex);
+        triggerChange(selectedValue, needTriggerIndex);
       }
     }
     return onBlur?.(e);
@@ -579,16 +583,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     blurToCancel: !changeOnBlur && needConfirmButton,
     forwardKeyDown,
     onBlur: onInternalBlur,
-    isClickOutside: (target: EventTarget | null) =>
-      !elementsContains(
+    isClickOutside: (target: EventTarget | null) => {
+      const elementsRefs = [startInputDivRef.current, endInputDivRef.current, containerRef.current];
+      return !elementsContains(
         [
+          // Filter the ref of the currently selected input to trigger the onBlur event of another input.
+          ...(needIgnoreConfirm ? [elementsRefs[mergedActivePickerIndex]] : elementsRefs),
           panelDivRef.current,
-          startInputDivRef.current,
-          endInputDivRef.current,
-          containerRef.current,
         ],
         target as HTMLElement,
-      ),
+      );
+    },
     onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
       if (onFocus) {
         onFocus(e);
