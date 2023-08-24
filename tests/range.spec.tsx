@@ -3,9 +3,11 @@ import type { Moment } from 'moment';
 import moment from 'moment';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import React from 'react';
+import { resetWarned } from 'rc-util/lib/warning';
+import React, { useState } from 'react';
 import type { PickerMode } from '../src/interface';
 import zhCN from '../src/locale/zh_CN';
+import type { RangePickerProps } from '../src/RangePicker';
 import {
   clearValue,
   clickButton,
@@ -19,8 +21,6 @@ import {
   openPicker,
   selectCell,
 } from './util/commonUtil';
-import type { RangePickerProps } from '../src/RangePicker';
-import { resetWarned } from 'rc-util/lib/warning';
 
 describe('Picker.Range', () => {
   let errorSpy;
@@ -286,7 +286,9 @@ describe('Picker.Range', () => {
       expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
       fireEvent.click(baseElement.querySelectorAll('.rc-picker-input')[1]);
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
-      fireEvent.click(baseElement.querySelector('.rc-picker-cell-range-start .rc-picker-cell-inner'));
+      fireEvent.click(
+        baseElement.querySelector('.rc-picker-cell-range-start .rc-picker-cell-inner'),
+      );
       fireEvent.click(baseElement.querySelector('.rc-picker-ok button'));
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
     });
@@ -361,7 +363,6 @@ describe('Picker.Range', () => {
   });
 
   function testRangePickerPresetRange(propsType: 'ranges' | 'presets') {
-
     const genProps = (ranges: Record<string, any>) => {
       const props: Partial<RangePickerProps<Moment>> = {};
       if (propsType === 'ranges') {
@@ -371,21 +372,19 @@ describe('Picker.Range', () => {
         props.presets = [];
         Object.entries(ranges).forEach(([label, value]) => {
           props.presets.push({ label, value });
-        })
+        });
       }
       return props as RangePickerProps<Moment>;
-    }
+    };
 
     it(`${propsType} work`, () => {
       const onChange = jest.fn();
       const { container } = render(
         <MomentRangePicker
-          {...genProps(
-            {
-              test: [getMoment('1989-11-28'), getMoment('1990-09-03')],
-              func: () => [getMoment('2000-01-01'), getMoment('2010-11-11')],
-            }
-          )}
+          {...genProps({
+            test: [getMoment('1989-11-28'), getMoment('1990-09-03')],
+            func: () => [getMoment('2000-01-01'), getMoment('2010-11-11')],
+          })}
           onChange={onChange}
         />,
       );
@@ -420,11 +419,9 @@ describe('Picker.Range', () => {
     it(`${propsType} hover className`, () => {
       const { container } = render(
         <MomentRangePicker
-          {...genProps(
-            {
-              now: [getMoment('1990-09-11'), getMoment('1990-09-13')],
-            }
-          )}
+          {...genProps({
+            now: [getMoment('1990-09-11'), getMoment('1990-09-13')],
+          })}
         />,
       );
 
@@ -439,7 +436,6 @@ describe('Picker.Range', () => {
       expect(findCell(12)).not.toHaveClass('rc-picker-cell-in-range');
       expect(findCell(13)).not.toHaveClass('rc-picker-cell-range-end');
     });
-
   }
 
   describe('ranges or presets', () => {
@@ -755,7 +751,7 @@ describe('Picker.Range', () => {
 
     expect(container).toMatchSnapshot();
     expect(errorSpy).toHaveBeenCalledWith(
-      'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.'
+      'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.',
     );
   });
 
@@ -1111,19 +1107,19 @@ describe('Picker.Range', () => {
       targetCell: string;
       match: string[];
     }[] = [
-        {
-          picker: 'week',
-          defaultValue: ['2020-06-13'],
-          targetCell: '9',
-          match: ['2020-24th'],
-        },
-        {
-          picker: 'quarter',
-          defaultValue: ['2020-03-30', '2020-05-20'],
-          targetCell: 'Q1',
-          match: ['2020-Q1'],
-        },
-      ];
+      {
+        picker: 'week',
+        defaultValue: ['2020-06-13'],
+        targetCell: '9',
+        match: ['2020-24th'],
+      },
+      {
+        picker: 'quarter',
+        defaultValue: ['2020-03-30', '2020-05-20'],
+        targetCell: 'Q1',
+        match: ['2020-Q1'],
+      },
+    ];
 
     list.forEach(({ picker, defaultValue, match, targetCell }) => {
       it(picker, () => {
@@ -1926,5 +1922,33 @@ describe('Picker.Range', () => {
 
     fireEvent.click(document.querySelector('.rc-picker-cell'));
     expect(document.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
+  });
+
+  it('disabledDate should work when using both showTime and changeOnBlur', () => {
+    const Demo: React.FC = () => {
+      const [date, setDate] = useState<[Moment, Moment]>();
+
+      const disabledDate = (current: Moment) => date?.[0] && current.diff(date[0], 'days') >= 7;
+
+      return (
+        <MomentRangePicker
+          value={date}
+          disabledDate={disabledDate}
+          onChange={setDate}
+          showTime
+          changeOnBlur
+        />
+      );
+    };
+
+    const { container } = render(<Demo />);
+
+    openPicker(container, 0);
+
+    selectCell(8, 0);
+
+    openPicker(container, 1);
+
+    expect(findCell(7)).toHaveClass('rc-picker-cell-disabled');
   });
 });
