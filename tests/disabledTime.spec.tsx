@@ -136,6 +136,27 @@ describe('Picker.DisabledTime', () => {
     );
   });
 
+  it('disabledTime should reset correctly when input incorrect time', function () {
+    const disabledTime = jest.fn((_: Moment | null, __: 'start' | 'end') => ({
+      disabledHours: () => [0, 1, 2, 3, 4, 10],
+    }));
+
+    render(
+      <MomentRangePicker
+        open
+        showTime
+        disabledTime={disabledTime}
+        defaultValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
+      />,
+    );
+
+    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual('1989-11-28 00:00:00')
+
+    fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[2]);
+
+    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual('1989-10-31 05:00:00')
+  });
+
   describe('warning for legacy props', () => {
     it('single', () => {
       resetWarned();
