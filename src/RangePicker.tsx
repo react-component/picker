@@ -257,7 +257,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   } = props as MergedRangePickerProps<DateType>;
 
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
-  const needIgnoreConfirm: boolean = changeOnBlur && needConfirmButton;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const panelDivRef = useRef<HTMLDivElement>(null);
@@ -567,10 +566,14 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }, [mergedOpen]);
 
   const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
-    if (changeOnBlur && delayOpen) {
-      // As the date picker was manually switched, 
-      // it's necessary to trigger the onChange event of the previous date picker.
-      const needTriggerIndex = needIgnoreConfirm ? (mergedActivePickerIndex ? 0 : 1) : mergedActivePickerIndex;
+    if ((changeOnBlur || needConfirmButton) && delayOpen) {
+      // As the date picker was manually switched,
+      // it's necessary to trigger the onCalendarChange event of the previous date picker.
+      const needTriggerIndex = needConfirmButton
+        ? mergedActivePickerIndex
+          ? 0
+          : 1
+        : mergedActivePickerIndex;
       const selectedIndexValue = getValue(selectedValue, needTriggerIndex);
       if (selectedIndexValue) {
         triggerChange(selectedValue, needTriggerIndex);
@@ -588,7 +591,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       return !elementsContains(
         [
           // Filter the ref of the currently selected input to trigger the onBlur event of another input.
-          ...(needIgnoreConfirm ? [elementsRefs[mergedActivePickerIndex]] : elementsRefs),
+          ...(needConfirmButton ? [elementsRefs[mergedActivePickerIndex]] : elementsRefs),
           panelDivRef.current,
         ],
         target as HTMLElement,
@@ -638,7 +641,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     onKeyDown: (e, preventDefault) => {
       onKeyDown?.(e, preventDefault);
     },
-    changeOnBlur,
   };
 
   const [startInputProps, { focused: startFocused, typing: startTyping }] = usePickerInput({
