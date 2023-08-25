@@ -136,7 +136,7 @@ describe('Picker.DisabledTime', () => {
     );
   });
 
-  it('disabledTime should reset correctly when input incorrect time', function () {
+  it('disabledTime should reset correctly when date changed by click', function () {
     const disabledTime = jest.fn((_: Moment | null, __: 'start' | 'end') => ({
       disabledHours: () => [0, 1, 2, 3, 4, 10],
     }));
