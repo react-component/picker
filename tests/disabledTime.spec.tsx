@@ -150,11 +150,11 @@ describe('Picker.DisabledTime', () => {
       />,
     );
 
-    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual('1989-11-28 00:00:00')
+    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual('1989-11-28 00:00:00');
 
     fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[2]);
 
-    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual('1989-10-31 05:00:00')
+    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual('1989-10-31 05:00:00');
   });
 
   describe('warning for legacy props', () => {
