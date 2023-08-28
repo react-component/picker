@@ -275,6 +275,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   // ============================= Misc ==============================
   const formatList = toArray(getDefaultFormat<DateType>(format, picker, showTime, use12Hours));
 
+  const formatDateValue = (values: RangeValue<DateType>, index: 0 | 1) =>
+    values && values[index]
+      ? formatValue(values[index], { generateConfig, locale, format: formatList[index] })
+      : '';
+
   // Operation ref
   const operationRef: React.MutableRefObject<ContextOperationRefProps | null> =
     useRef<ContextOperationRefProps>(null);
@@ -327,6 +332,53 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       return postValues;
     },
   });
+
+  // ========================= Convert Value =========================
+  function convertValue(newValue: RangeValue<DateType>, sourceIndex: 0 | 1) {
+    let values = newValue;
+    let startValue = getValue(values, 0);
+    let endValue = getValue(values, 1);
+
+    // >>>>> Format start & end values
+    if (startValue && endValue && generateConfig.isAfter(startValue, endValue)) {
+      if (
+        // WeekPicker only compare week
+        (picker === 'week' && !isSameWeek(generateConfig, locale.locale, startValue, endValue)) ||
+        // QuotaPicker only compare week
+        (picker === 'quarter' && !isSameQuarter(generateConfig, startValue, endValue)) ||
+        // Other non-TimePicker compare date
+        (picker !== 'week' &&
+          picker !== 'quarter' &&
+          picker !== 'time' &&
+          !isSameDate(generateConfig, startValue, endValue))
+      ) {
+        // Clean up end date when start date is after end date
+        if (sourceIndex === 0) {
+          values = [startValue, null];
+          endValue = null;
+        } else {
+          startValue = null;
+          values = [null, endValue];
+        }
+      } else if (picker !== 'time' || order !== false) {
+        // Reorder when in same date
+        values = reorderValues(values, generateConfig);
+      }
+    }
+
+    setSelectedValue(values);
+
+    const startStr = formatDateValue(values, 0);
+    const endStr = formatDateValue(values, 1);
+
+    return {
+      values,
+      startValue,
+      endValue,
+      startStr,
+      endStr,
+    };
+  }
 
   // ============================= Modes =============================
   const [mergedModes, setInnerModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
@@ -394,54 +446,23 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }, 0);
   }
 
-  function triggerChange(newValue: RangeValue<DateType>, sourceIndex: 0 | 1) {
-    let values = newValue;
-    let startValue = getValue(values, 0);
-    let endValue = getValue(values, 1);
-
-    // >>>>> Format start & end values
-    if (startValue && endValue && generateConfig.isAfter(startValue, endValue)) {
-      if (
-        // WeekPicker only compare week
-        (picker === 'week' && !isSameWeek(generateConfig, locale.locale, startValue, endValue)) ||
-        // QuotaPicker only compare week
-        (picker === 'quarter' && !isSameQuarter(generateConfig, startValue, endValue)) ||
-        // Other non-TimePicker compare date
-        (picker !== 'week' &&
-          picker !== 'quarter' &&
-          picker !== 'time' &&
-          !isSameDate(generateConfig, startValue, endValue))
-      ) {
-        // Clean up end date when start date is after end date
-        if (sourceIndex === 0) {
-          values = [startValue, null];
-          endValue = null;
-        } else {
-          startValue = null;
-          values = [null, endValue];
-        }
-      } else if (picker !== 'time' || order !== false) {
-        // Reorder when in same date
-        values = reorderValues(values, generateConfig);
-      }
-    }
-
-    setSelectedValue(values);
-
-    const startStr =
-      values && values[0]
-        ? formatValue(values[0], { generateConfig, locale, format: formatList[0] })
-        : '';
-    const endStr =
-      values && values[1]
-        ? formatValue(values[1], { generateConfig, locale, format: formatList[0] })
-        : '';
-
+  function onInternalCalendarChange(
+    values: RangeValue<DateType>,
+    startStr: string,
+    endStr: string,
+    sourceIndex: 0 | 1,
+  ) {
     if (onCalendarChange) {
       const info: RangeInfo = { range: sourceIndex === 0 ? 'start' : 'end' };
 
       onCalendarChange(values, [startStr, endStr], info);
     }
+  }
+
+  function triggerChange(newValue: RangeValue<DateType>, sourceIndex: 0 | 1) {
+    const { values, startValue, endValue, startStr, endStr } = convertValue(newValue, sourceIndex);
+
+    onInternalCalendarChange(values, startStr, endStr, sourceIndex);
 
     // >>>>> Trigger `onChange` event
     const canStartValueTrigger = canValueTrigger(startValue, 0, mergedDisabled, allowEmpty);
@@ -461,6 +482,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         onChange(values, [startStr, endStr]);
       }
     }
+  }
+
+  function triggerCalendarChange(newValue: RangeValue<DateType>, sourceIndex: 0 | 1) {
+    const { values, startStr, endStr } = convertValue(newValue, sourceIndex);
+
+    onInternalCalendarChange(values, startStr, endStr, sourceIndex);
   }
 
   const forwardKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
@@ -575,8 +602,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           : 1
         : mergedActivePickerIndex;
       const selectedIndexValue = getValue(selectedValue, needTriggerIndex);
+
       if (selectedIndexValue) {
-        triggerChange(selectedValue, needTriggerIndex);
+        if (needConfirmButton) {
+          triggerCalendarChange(selectedValue, needTriggerIndex);
+        } else {
+          triggerChange(selectedValue, needTriggerIndex);
+        }
       }
     }
     return onBlur?.(e);
