@@ -277,7 +277,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   const formatDateValue = (values: RangeValue<DateType>, index: 0 | 1) =>
     values && values[index]
-      ? formatValue(values[index], { generateConfig, locale, format: formatList[index] })
+      ? formatValue(values[index], { generateConfig, locale, format: formatList[0] })
       : '';
 
   // Operation ref
