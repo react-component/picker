@@ -4,7 +4,7 @@ import moment from 'moment';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
-import React, { useState } from 'react';
+import React from 'react';
 import type { PickerMode } from '../src/interface';
 import zhCN from '../src/locale/zh_CN';
 import type { RangePickerProps } from '../src/RangePicker';
@@ -1924,24 +1924,14 @@ describe('Picker.Range', () => {
     expect(document.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
   });
 
-  it('disabledDate should work when using both showTime and changeOnBlur', () => {
-    const Demo: React.FC = () => {
-      const [date, setDate] = useState<[Moment, Moment]>();
-
-      const disabledDate = (current: Moment) => date?.[0] && current.diff(date[0], 'days') >= 7;
-
-      return (
-        <MomentRangePicker
-          value={date}
-          disabledDate={disabledDate}
-          onChange={setDate}
-          showTime
-          changeOnBlur
-        />
-      );
-    };
-
-    const { container } = render(<Demo />);
+  it('dateTime mode switch should trigger onCalendarChange', () => {
+    const onCalendarChange = jest.fn();
+    const { container } = render(
+      <MomentRangePicker
+        showTime
+        onCalendarChange={onCalendarChange}
+      />,
+    );
 
     openPicker(container, 0);
 
@@ -1949,6 +1939,9 @@ describe('Picker.Range', () => {
 
     openPicker(container, 1);
 
-    expect(findCell(7)).toHaveClass('rc-picker-cell-disabled');
+    // onBlur is triggered when the switch is complete
+    closePicker(container, 0);
+
+    expect(onCalendarChange).toHaveBeenCalled();
   });
 });
