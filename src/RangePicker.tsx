@@ -366,8 +366,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       }
     }
 
-    setSelectedValue(values);
-
     const startStr = formatDateValue(values, 0);
     const endStr = formatDateValue(values, 1);
 
@@ -462,6 +460,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   function triggerChange(newValue: RangeValue<DateType>, sourceIndex: 0 | 1) {
     const { values, startValue, endValue, startStr, endStr } = convertValue(newValue, sourceIndex);
 
+    setSelectedValue(values);
+
     onInternalCalendarChange(values, startStr, endStr, sourceIndex);
 
     // >>>>> Trigger `onChange` event
@@ -486,6 +486,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   function triggerCalendarChange(newValue: RangeValue<DateType>, sourceIndex: 0 | 1) {
     const { values, startStr, endStr } = convertValue(newValue, sourceIndex);
+
+    setSelectedValue(values);
 
     onInternalCalendarChange(values, startStr, endStr, sourceIndex);
   }
