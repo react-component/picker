@@ -25,10 +25,22 @@ export default function useTimeSelection<DateType>({
     newMinute: number,
     newSecond: number,
   ) => {
-    let newDate = value || generateConfig.getNow();
+    const now = generateConfig.getNow();
+    let newDate = value || now;
 
-    const mergedHour = Math.max(0, newHour);
-    let mergedMinute = Math.max(0, newMinute);
+    let initHour = 0;
+    let initMinute = 0;
+
+    if (!value && newHour < 0) {
+      initHour = generateConfig.getHour(now);
+
+      if (newMinute < 0) {
+        initMinute = generateConfig.getMinute(now);
+      }
+    }
+
+    const mergedHour = Math.max(initHour, newHour);
+    let mergedMinute = Math.max(initMinute, newMinute);
     let mergedSecond = Math.max(0, newSecond);
 
     const newDisabledMinutes = disabledMinutes && disabledMinutes(mergedHour);
