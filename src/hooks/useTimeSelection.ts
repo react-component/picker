@@ -31,7 +31,7 @@ export default function useTimeSelection<DateType>({
     let initHour = 0;
     let initMinute = 0;
 
-    if (!value && newHour < 0) {
+    if (newHour < 0) {
       initHour = generateConfig.getHour(now);
 
       if (newMinute < 0) {
