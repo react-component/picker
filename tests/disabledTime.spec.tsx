@@ -92,6 +92,7 @@ describe('Picker.DisabledTime', () => {
   });
 
   it('dynamic disabledTime should be correct', () => {
+    jest.useFakeTimers().setSystemTime(getMoment('2023-09-05 22:02:00').valueOf());
     render(
       <MomentPicker
         open
@@ -106,6 +107,7 @@ describe('Picker.DisabledTime', () => {
             }
           },
           disabledSeconds: (_, selectMinute) => {
+            console.log(selectMinute)
             if (selectMinute === 2) {
               return [0, 1];
             } else {
@@ -134,6 +136,7 @@ describe('Picker.DisabledTime', () => {
     expect(document.querySelector('.rc-picker-input input').getAttribute('value')).toEqual(
       '02:02:02',
     );
+    jest.useRealTimers();
   });
 
   describe('warning for legacy props', () => {

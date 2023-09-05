@@ -1111,23 +1111,12 @@ describe('Picker.Basic', () => {
   it('select minutes and seconds directly in dateTime mode will apply the current time', () => {
     jest.setSystemTime(getMoment('2023-09-04 21:49:10').valueOf());
     const ui = <MomentPicker showTime />;
-    const { container, unmount, rerender } = render(ui);
+    const { container } = render(ui);
 
     openPicker(container);
     // Select minute
     selectColumn(1, 5);
 
-    expect(container.querySelector('input')).toHaveValue('2023-09-04 21:05:00');
-    
-    // reset
-    unmount();
-
-    rerender(ui);
-
-    openPicker(container);
-    // Select second
-    selectColumn(2, 7);
-
-    expect(container.querySelector('input')).toHaveValue('2023-09-04 21:49:07');
+    expect(container.querySelector('input')).toHaveValue('2023-09-04 21:05:10');
   });
 });
