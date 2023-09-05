@@ -9,6 +9,8 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import type { PanelMode, PickerMode } from '../src/interface';
 import { getMoment, isSame, MomentPicker, mount } from './util/commonUtil';
+import enUS from '../src/locale/en_US';
+import zhCN from '../src/locale/zh_CN';
 
 describe('Picker.Basic', () => {
   beforeAll(() => {
@@ -1042,5 +1044,21 @@ describe('Picker.Basic', () => {
       .simulate('change', { target: { value: moment().add(1, 'year').format('YYYY-MM-DD') } });
 
     wrapper.find('input').simulate('keyDown', { which: KeyCode.ENTER });
+  });
+
+  it('switch picker locale should reformat value', () => {
+    const wrapper = mount(
+      <MomentPicker value={getMoment('2011-11-11')} format={'dddd'} locale={enUS} />,
+    );
+    expect(wrapper.find('input').prop('value')).toEqual('Friday');
+
+    // Switch locale
+    moment.locale('zh-cn');
+    wrapper.setProps({ locale: zhCN });
+    wrapper.update();
+    expect(wrapper.find('input').prop('value')).toEqual('星期五');
+
+    // Reset locale
+    moment.locale('en');
   });
 });
