@@ -52,6 +52,10 @@ describe('Picker.Basic', () => {
     });
   }
 
+  function selectColumn(colIndex: number, rowIndex: number) {
+    fireEvent.click(document.querySelectorAll('ul')[colIndex].querySelectorAll('li')[rowIndex]);
+  }
+
   describe('mode', () => {
     const modeList: { mode: PanelMode; className: string }[] = [
       {
@@ -473,10 +477,6 @@ describe('Picker.Basic', () => {
       const onOk = jest.fn();
       const { container } = render(<MomentPicker picker="time" onChange={onChange} onOk={onOk} />);
       openPicker(container);
-
-      function selectColumn(colIndex: number, rowIndex: number) {
-        fireEvent.click(document.querySelectorAll('ul')[colIndex].querySelectorAll('li')[rowIndex]);
-      }
 
       selectColumn(0, 13);
       selectColumn(1, 22);
@@ -1106,5 +1106,17 @@ describe('Picker.Basic', () => {
 
     // Reset locale
     moment.locale('en');
+  });
+
+  it('select minutes and seconds directly in dateTime mode will apply the current time', () => {
+    jest.setSystemTime(getMoment('2023-09-04 21:49:10').valueOf());
+    const ui = <MomentPicker showTime />;
+    const { container } = render(ui);
+
+    openPicker(container);
+    // Select minute
+    selectColumn(1, 5);
+
+    expect(container.querySelector('input')).toHaveValue('2023-09-04 21:05:10');
   });
 });
