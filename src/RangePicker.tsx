@@ -568,20 +568,26 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }, [mergedOpen]);
 
   const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
-    if ((changeOnBlur || needConfirmButton) && delayOpen) {
-      // As the date picker was manually switched,
-      // it's necessary to trigger the onCalendarChange event of the previous date picker.
-      const needTriggerIndex = needConfirmButton
-        ? mergedActivePickerIndex
-          ? 0
-          : 1
-        : mergedActivePickerIndex;
-      const selectedIndexValue = getValue(selectedValue, needTriggerIndex);
+    if (delayOpen) {
+      if (changeOnBlur) {
+        const selectedIndexValue = getValue(selectedValue, mergedActivePickerIndex);
 
-      if (selectedIndexValue) {
-        triggerChange(selectedValue, needTriggerIndex, needConfirmButton);
+        if (selectedIndexValue) {
+          triggerChange(selectedValue, mergedActivePickerIndex);
+        }
+      } else if (needConfirmButton) {
+        // when in dateTime mode, switching between two date input fields will trigger onCalendarChange.
+        // when onBlur is triggered, the input field has already switched, 
+        // so it's necessary to obtain the value of the previous input field here.
+        const needTriggerIndex = mergedActivePickerIndex ? 0 : 1;
+        const selectedIndexValue = getValue(selectedValue, needTriggerIndex);
+
+        if (selectedIndexValue) {
+          triggerChange(selectedValue, needTriggerIndex, true);
+        }
       }
     }
+
     return onBlur?.(e);
   };
 
