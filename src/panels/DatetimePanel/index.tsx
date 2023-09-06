@@ -18,6 +18,17 @@ export type DatetimePanelProps<DateType> = {
 const ACTIVE_PANEL = tuple('date', 'time');
 type ActivePanelType = (typeof ACTIVE_PANEL)[number];
 
+const findValidTime = (disabledRange: number[], maxValidTime: number) => {
+  const rangeSet = new Set(disabledRange);
+  for (let i = 0; i <= maxValidTime; i++) {
+    if (!rangeSet.has(i)) {
+      return i;
+    }
+  }
+
+  return 0
+}
+
 function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
   const {
     prefixCls,
@@ -113,20 +124,10 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       selectedDate = generateConfig.setDate(selectedDate, generateConfig.getDate(defaultValue));
     } else if (source === 'date' && value && disabledTime) {
       const disabledTimes = disabledTime(value)
-      const findValidTime = (disabledRange: number[], maxValidTime: number) => {
-        const rangeSet = new Set(disabledRange);
-        for (let i = 0; i <= maxValidTime; i++) {
-          if (!rangeSet.has(i)) {
-            return i;
-          }
-        }
-
-        return 0
-      }
 
       const validHour = findValidTime(disabledTimes.disabledHours?.() || [-1], 23)
-      const validMinute = findValidTime(disabledTimes.disabledMinutes?.(validHour) || [-1], 60)
-      const validSeconds = findValidTime(disabledTimes.disabledSeconds?.(validHour, validMinute) || [-1], 60)
+      const validMinute = findValidTime(disabledTimes.disabledMinutes?.(validHour) || [-1], 59)
+      const validSeconds = findValidTime(disabledTimes.disabledSeconds?.(validHour, validMinute) || [-1], 59)
       selectedDate = generateConfig.setHour(selectedDate, validHour)
       selectedDate = generateConfig.setMinute(selectedDate, validMinute)
       selectedDate = generateConfig.setSecond(selectedDate, validSeconds)
