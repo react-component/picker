@@ -1,12 +1,12 @@
-import * as React from 'react';
 import useMemo from 'rc-util/lib/hooks/useMemo';
+import * as React from 'react';
+import type { SharedTimeProps } from '.';
 import type { GenerateConfig } from '../../generate';
+import useTimeSelection from '../../hooks/useTimeSelection';
 import type { Locale, OnSelect } from '../../interface';
+import { leftPad } from '../../utils/miscUtil';
 import type { Unit } from './TimeUnitColumn';
 import TimeUnitColumn from './TimeUnitColumn';
-import { leftPad } from '../../utils/miscUtil';
-import type { SharedTimeProps } from '.';
-import { setTime as utilSetTime } from '../../utils/timeUtil';
 
 function shouldUnitsUpdate(prevUnits: Unit[], nextUnits: Unit[]) {
   if (prevUnits.length !== nextUnits.length) return true;
@@ -102,30 +102,6 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     return [disabledHours, disabledMinutes, disabledSeconds];
   }, [disabledHours, disabledMinutes, disabledSeconds, disabledTime, now]);
 
-  // Set Time
-  const setTime = (
-    isNewPM: boolean | undefined,
-    newHour: number,
-    newMinute: number,
-    newSecond: number,
-  ) => {
-    let newDate = value || generateConfig.getNow();
-
-    const mergedHour = Math.max(0, newHour);
-    const mergedMinute = Math.max(0, newMinute);
-    const mergedSecond = Math.max(0, newSecond);
-
-    newDate = utilSetTime(
-      generateConfig,
-      newDate,
-      !use12Hours || !isNewPM ? mergedHour : mergedHour + 12,
-      mergedMinute,
-      mergedSecond,
-    );
-
-    return newDate;
-  };
-
   // ========================= Unit =========================
   const rawHours = generateUnits(0, 23, hourStep, mergedDisabledHours && mergedDisabledHours());
 
@@ -181,6 +157,17 @@ function TimeBody<DateType>(props: TimeBodyProps<DateType>) {
     secondStep,
     mergedDisabledSeconds && mergedDisabledSeconds(originHour, minute),
   );
+
+  // Set Time
+  const setTime = useTimeSelection({
+    value,
+    generateConfig,
+    disabledMinutes: mergedDisabledMinutes,
+    disabledSeconds: mergedDisabledSeconds,
+    minutes,
+    seconds,
+    use12Hours,
+  });
 
   // ====================== Operations ======================
   operationRef.current = {
