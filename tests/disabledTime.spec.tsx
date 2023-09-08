@@ -1,7 +1,6 @@
-import React from 'react';
 import type { Moment } from 'moment';
 import { resetWarned } from 'rc-util/lib/warning';
-import { mount, getMoment, isSame, MomentPicker, MomentRangePicker } from './util/commonUtil';
+import { getMoment, isSame, MomentPicker, MomentRangePicker, mount } from './util/commonUtil';
 
 describe('Picker.DisabledTime', () => {
   it('disabledTime on TimePicker', () => {
@@ -88,6 +87,62 @@ describe('Picker.DisabledTime', () => {
     expect(isSame(disabledTime.mock.calls[0][0], '1990-09-03')).toBeTruthy();
     expect(disabledTime.mock.calls[0][1]).toEqual('end');
     wrapper.closePicker(1);
+  });
+
+  it('dynamic disabledTime should be correct', () => {
+    const wrapper = mount(
+      <MomentPicker
+        open
+        picker="time"
+        disabledTime={() => ({
+          disabledHours: () => [0, 1],
+          disabledMinutes: (selectedHour) => {
+            if (selectedHour === 2) {
+              return [0, 1];
+            } else {
+              return [];
+            }
+          },
+          disabledSeconds: (_, selectMinute) => {
+            if (selectMinute === 2) {
+              return [0, 1];
+            } else {
+              return [];
+            }
+          },
+        })}
+      />,
+    );
+
+    wrapper
+      .find('.rc-picker-time-panel-column')
+      .first()
+      .find('.rc-picker-time-panel-cell')
+      .at(2)
+      .simulate('click');
+
+    wrapper
+      .find('.rc-picker-time-panel-column')
+      .at(1)
+      .find('.rc-picker-time-panel-cell')
+      .first()
+      .simulate('click');
+
+    wrapper
+      .find('.rc-picker-time-panel-column')
+      .at(2)
+      .find('.rc-picker-time-panel-cell')
+      .first()
+      .simulate('click');
+
+    wrapper
+      .find('.rc-picker-time-panel-column')
+      .first()
+      .find('.rc-picker-time-panel-cell')
+      .at(1)
+      .simulate('click');
+
+    expect(wrapper.find('input').prop('value')).toEqual('02:02:02');
   });
 
   describe('warning for legacy props', () => {
