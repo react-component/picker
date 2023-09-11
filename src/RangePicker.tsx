@@ -896,11 +896,16 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     const panelWidth = panelDivRef.current.offsetWidth;
     const arrowWidth = arrowRef.current.offsetWidth;
 
+    const inputAreaWidth = startInputDivRef.current.offsetWidth * 2 + separatorRef.current.offsetWidth;
+
     if (
       panelWidth &&
       arrowWidth &&
-      arrowLeft > panelWidth - arrowWidth - (direction === 'rtl' ? 0 : arrowMarginLeft)
+      arrowLeft > panelWidth - arrowWidth - (direction === 'rtl' ? 0 : arrowMarginLeft) && 
+      // If input size is too small that panel cannot move to right, let it keep left.
+      inputAreaWidth >= 2 * panelWidth
     ) {
+      
       panelLeft = arrowLeft;
     }
   }
