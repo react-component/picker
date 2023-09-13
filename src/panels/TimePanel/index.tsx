@@ -1,10 +1,10 @@
-import * as React from 'react';
 import classNames from 'classnames';
-import TimeHeader from './TimeHeader';
-import type { BodyOperationRef } from './TimeBody';
-import TimeBody from './TimeBody';
-import type { PanelSharedProps, DisabledTimes, IntRange } from '../../interface';
+import * as React from 'react';
+import type { DisabledTimes, IntRange, PanelSharedProps } from '../../interface';
 import { createKeyDownHandler } from '../../utils/uiUtil';
+import type { BodyOperationRef, TimeBodyProps } from './TimeBody';
+import TimeBody from './TimeBody';
+import TimeHeader from './TimeHeader';
 
 export type SharedTimeProps<DateType> = {
   format?: string;
@@ -33,7 +33,8 @@ export type TimePanelProps<DateType> = {
   format?: string;
   active?: boolean;
 } & PanelSharedProps<DateType> &
-  SharedTimeProps<DateType>;
+  SharedTimeProps<DateType> &
+  Pick<TimeBodyProps<DateType>, 'cellRender'>;
 
 const countBoolean = (boolList: (boolean | undefined)[]) =>
   boolList.filter((bool) => bool !== false).length;
