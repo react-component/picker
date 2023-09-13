@@ -359,7 +359,6 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     },
     onFocus,
     onBlur: onInternalBlur,
-    changeOnBlur,
   });
 
   // ============================= Sync ==============================

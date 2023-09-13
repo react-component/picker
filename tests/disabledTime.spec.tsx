@@ -107,7 +107,6 @@ describe('Picker.DisabledTime', () => {
             }
           },
           disabledSeconds: (_, selectMinute) => {
-            console.log(selectMinute)
             if (selectMinute === 2) {
               return [0, 1];
             } else {
