@@ -279,6 +279,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   // ============================= Misc ==============================
   const formatList = toArray(getDefaultFormat<DateType>(format, picker, showTime, use12Hours));
 
+  const formatDateValue = (values: RangeValue<DateType>, index: 0 | 1) =>
+    values && values[index]
+      ? formatValue(values[index], { generateConfig, locale, format: formatList[0] })
+      : '';
+
   // Operation ref
   const operationRef: React.MutableRefObject<ContextOperationRefProps | null> =
     useRef<ContextOperationRefProps>(null);
@@ -398,7 +403,11 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }, 0);
   }
 
-  function triggerChange(newValue: RangeValue<DateType>, sourceIndex: 0 | 1) {
+  function triggerChange(
+    newValue: RangeValue<DateType>,
+    sourceIndex: 0 | 1,
+    triggerCalendarChangeOnly?: boolean, 
+  ) {
     let values = newValue;
     let startValue = getValue(values, 0);
     let endValue = getValue(values, 1);
@@ -432,14 +441,8 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
     setSelectedValue(values);
 
-    const startStr =
-      values && values[0]
-        ? formatValue(values[0], { generateConfig, locale, format: formatList[0] })
-        : '';
-    const endStr =
-      values && values[1]
-        ? formatValue(values[1], { generateConfig, locale, format: formatList[0] })
-        : '';
+    const startStr = formatDateValue(values, 0);
+    const endStr = formatDateValue(values, 1);
 
     if (onCalendarChange) {
       const info: RangeInfo = { range: sourceIndex === 0 ? 'start' : 'end' };
@@ -447,22 +450,21 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       onCalendarChange(values, [startStr, endStr], info);
     }
 
-    // >>>>> Trigger `onChange` event
-    const canStartValueTrigger = canValueTrigger(startValue, 0, mergedDisabled, allowEmpty);
-    const canEndValueTrigger = canValueTrigger(endValue, 1, mergedDisabled, allowEmpty);
-
-    const canTrigger = values === null || (canStartValueTrigger && canEndValueTrigger);
-
-    if (canTrigger) {
-      // Trigger onChange only when value is validate
-      setInnerValue(values);
-
-      if (
-        onChange &&
-        (!isEqual(generateConfig, getValue(mergedValue, 0), startValue) ||
-          !isEqual(generateConfig, getValue(mergedValue, 1), endValue))
-      ) {
-        onChange(values, [startStr, endStr]);
+    if (!triggerCalendarChangeOnly) {
+      // >>>>> Trigger `onChange` event
+      const canStartValueTrigger = canValueTrigger(startValue, 0, mergedDisabled, allowEmpty);
+      const canEndValueTrigger = canValueTrigger(endValue, 1, mergedDisabled, allowEmpty);
+      const canTrigger = values === null || (canStartValueTrigger && canEndValueTrigger);
+      if (canTrigger) {
+        // Trigger onChange only when value is validate
+        setInnerValue(values);
+        if (
+          onChange &&
+          (!isEqual(generateConfig, getValue(mergedValue, 0), startValue) ||
+            !isEqual(generateConfig, getValue(mergedValue, 1), endValue))
+        ) {
+          onChange(values, [startStr, endStr]);
+        }
       }
     }
   }
@@ -570,12 +572,26 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }, [mergedOpen]);
 
   const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
-    if (changeOnBlur && delayOpen) {
-      const selectedIndexValue = getValue(selectedValue, mergedActivePickerIndex);
-      if (selectedIndexValue) {
-        triggerChange(selectedValue, mergedActivePickerIndex);
+    if (delayOpen) {
+      if (changeOnBlur) {
+        const selectedIndexValue = getValue(selectedValue, mergedActivePickerIndex);
+
+        if (selectedIndexValue) {
+          triggerChange(selectedValue, mergedActivePickerIndex);
+        }
+      } else if (needConfirmButton) {
+        // when in dateTime mode, switching between two date input fields will trigger onCalendarChange.
+        // when onBlur is triggered, the input field has already switched, 
+        // so it's necessary to obtain the value of the previous input field here.
+        const needTriggerIndex = mergedActivePickerIndex ? 0 : 1;
+        const selectedIndexValue = getValue(selectedValue, needTriggerIndex);
+
+        if (selectedIndexValue) {
+          triggerChange(selectedValue, needTriggerIndex, true);
+        }
       }
     }
+
     return onBlur?.(e);
   };
 
@@ -583,16 +599,17 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     blurToCancel: !changeOnBlur && needConfirmButton,
     forwardKeyDown,
     onBlur: onInternalBlur,
-    isClickOutside: (target: EventTarget | null) =>
-      !elementsContains(
+    isClickOutside: (target: EventTarget | null) => {
+      const elementsRefs = [startInputDivRef.current, endInputDivRef.current, containerRef.current];
+      return !elementsContains(
         [
+          // Filter the ref of the currently selected input to trigger the onBlur event of another input.
+          ...(needConfirmButton ? [elementsRefs[mergedActivePickerIndex]] : elementsRefs),
           panelDivRef.current,
-          startInputDivRef.current,
-          endInputDivRef.current,
-          containerRef.current,
         ],
         target as HTMLElement,
-      ),
+      );
+    },
     onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
       if (onFocus) {
         onFocus(e);
@@ -637,7 +654,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     onKeyDown: (e, preventDefault) => {
       onKeyDown?.(e, preventDefault);
     },
-    changeOnBlur,
   };
 
   const [startInputProps, { focused: startFocused, typing: startTyping }] = usePickerInput({

@@ -16,7 +16,6 @@ export default function usePickerInput({
   onCancel,
   onFocus,
   onBlur,
-  changeOnBlur,
 }: {
   open: boolean;
   value: string;
@@ -29,7 +28,6 @@ export default function usePickerInput({
   onCancel: () => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
-  changeOnBlur?: boolean;
 }): [React.DOMAttributes<HTMLInputElement>, { focused: boolean; typing: boolean }] {
   const [typing, setTyping] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -160,7 +158,7 @@ export default function usePickerInput({
           raf(() => {
             preventBlurRef.current = false;
           });
-        } else if (!changeOnBlur && (!focused || clickedOutside)) {
+        } else if (!blurToCancel && (!focused || clickedOutside)) {
           triggerOpen(false);
         }
       }
