@@ -1924,24 +1924,48 @@ describe('Picker.Range', () => {
     expect(document.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
   });
 
-  it('dateTime mode switch should trigger onCalendarChange', () => {
-    const onCalendarChange = jest.fn();
-    const { container } = render(
-      <MomentRangePicker
-        showTime
-        onCalendarChange={onCalendarChange}
-      />,
-    );
+  describe('trigger onCalendarChange', () => {
+    const switchInput = (container: HTMLElement) => {
+      openPicker(container, 0);
 
-    openPicker(container, 0);
+      selectCell(8, 0);
 
-    selectCell(8, 0);
+      openPicker(container, 1);
 
-    openPicker(container, 1);
+      // onBlur is triggered when the switch is complete
+      closePicker(container, 0);
+    };
 
-    // onBlur is triggered when the switch is complete
-    closePicker(container, 0);
+    it('dateTime mode switch should trigger onCalendarChange', () => {
+      const onCalendarChange = jest.fn();
+      const { container } = render(
+        <MomentRangePicker showTime onCalendarChange={onCalendarChange} />,
+      );
 
-    expect(onCalendarChange).toHaveBeenCalled();
+      switchInput(container);
+
+      expect(onCalendarChange).toHaveBeenCalled();
+    });
+
+    it('should only trigger onCalendarChange when showTime and changeOnBlur exist', () => {
+      const onCalendarChange = jest.fn();
+      const onChange = jest.fn();
+      const { container, baseElement } = render(
+        <MomentRangePicker
+          showTime
+          changeOnBlur
+          onChange={onChange}
+          onCalendarChange={onCalendarChange}
+        />,
+      );
+
+      switchInput(container);
+
+      // one of the panel should be open
+      expect(baseElement.querySelector('.rc-picker-dropdown')).toBeTruthy();
+
+      expect(onCalendarChange).toHaveBeenCalled();
+      expect(onChange).not.toHaveBeenCalled();
+    });
   });
 });
