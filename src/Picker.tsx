@@ -325,6 +325,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   const [inputProps, { focused, typing }] = usePickerInput({
     blurToCancel: needConfirmButton,
+    changeOnBlur,
     open: mergedOpen,
     value: text,
     triggerOpen,

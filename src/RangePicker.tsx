@@ -573,13 +573,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
     if (delayOpen) {
-      if (changeOnBlur) {
-        const selectedIndexValue = getValue(selectedValue, mergedActivePickerIndex);
-
-        if (selectedIndexValue) {
-          triggerChange(selectedValue, mergedActivePickerIndex);
-        }
-      } else if (needConfirmButton) {
+      if (needConfirmButton) {
         // when in dateTime mode, switching between two date input fields will trigger onCalendarChange.
         // when onBlur is triggered, the input field has already switched, 
         // so it's necessary to obtain the value of the previous input field here.
@@ -589,6 +583,12 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
         if (selectedIndexValue) {
           triggerChange(selectedValue, needTriggerIndex, true);
         }
+      } else if (changeOnBlur) {
+        const selectedIndexValue = getValue(selectedValue, mergedActivePickerIndex);
+
+        if (selectedIndexValue) {
+          triggerChange(selectedValue, mergedActivePickerIndex);
+        }
       }
     }
 
@@ -597,6 +597,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
 
   const getSharedInputHookProps = (index: 0 | 1, resetText: () => void) => ({
     blurToCancel: !changeOnBlur && needConfirmButton,
+    changeOnBlur,
     forwardKeyDown,
     onBlur: onInternalBlur,
     isClickOutside: (target: EventTarget | null) => {

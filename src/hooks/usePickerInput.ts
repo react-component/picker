@@ -12,6 +12,7 @@ export default function usePickerInput({
   forwardKeyDown,
   onKeyDown,
   blurToCancel,
+  changeOnBlur,
   onSubmit,
   onCancel,
   onFocus,
@@ -24,6 +25,7 @@ export default function usePickerInput({
   forwardKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => boolean;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, preventDefault: () => void) => void;
   blurToCancel?: boolean;
+  changeOnBlur?: boolean
   onSubmit: () => void | boolean;
   onCancel: () => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
@@ -158,7 +160,7 @@ export default function usePickerInput({
           raf(() => {
             preventBlurRef.current = false;
           });
-        } else if (!blurToCancel && (!focused || clickedOutside)) {
+        } else if (!changeOnBlur && !blurToCancel && (!focused || clickedOutside)) {
           triggerOpen(false);
         }
       }
