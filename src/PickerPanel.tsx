@@ -99,7 +99,7 @@ export type PickerPanelBaseProps<DateType> = {
 } & PickerPanelSharedProps<DateType>;
 
 export type PickerPanelDateProps<DateType> = {
-  picker?: 'date';
+  picker?: 'time' | 'date' | 'week' | 'month' | 'year';
   showToday?: boolean;
   showNow?: boolean;
 
