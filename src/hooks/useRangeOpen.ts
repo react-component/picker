@@ -29,6 +29,7 @@ export default function useRangeOpen(
   open: boolean,
   activePickerIndex: 0 | 1 | undefined,
   changeOnBlur: boolean,
+  needConfirmButton: boolean,
   startInputRef: React.RefObject<HTMLInputElement>,
   endInputRef: React.RefObject<HTMLInputElement>,
   startSelectedValue: any,
@@ -93,7 +94,9 @@ export default function useRangeOpen(
         }
       }
     } else if (source === 'confirm' || (source === 'blur' && changeOnBlur)) {
-      const customNextActiveIndex = afferentOpen ? queryNextIndex(index) : nextActiveIndex;
+      // dateTime mode does not need help getting the index
+      const customNextActiveIndex =
+        afferentOpen && !needConfirmButton ? queryNextIndex(index) : nextActiveIndex;
 
       if (customNextActiveIndex !== null) {
         setFirstTimeOpen(false);
