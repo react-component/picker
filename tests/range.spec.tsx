@@ -1076,7 +1076,9 @@ describe('Picker.Range', () => {
         open
         cellRender={(date, info) => {
           expect(info.range).toEqual(range);
-          return date.format('YYYY-MM-DD');
+          if (typeof date !== 'number') {
+            return date.format('YYYY-MM-DD');
+          }
         }}
       />,
     );
@@ -1967,5 +1969,20 @@ describe('Picker.Range', () => {
       expect(onCalendarChange).toHaveBeenCalled();
       expect(onChange).not.toHaveBeenCalled();
     });
+  });
+
+  it('dateTime mode should be can use a confirm button to close the panel', () => {
+    const onOpenChange = jest.fn();
+
+    render(
+      <MomentRangePicker open showTime onOpenChange={onOpenChange} />,
+    );
+
+    for (let i = 0; i < 2; i++) {
+      selectCell(24);
+      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    }
+
+    expect(onOpenChange).toHaveBeenCalledWith(false);
   });
 });

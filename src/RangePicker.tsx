@@ -360,6 +360,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     open,
     activePickerIndex,
     changeOnBlur,
+    needConfirmButton,
     startInputRef,
     endInputRef,
     getValue(selectedValue, 0),
