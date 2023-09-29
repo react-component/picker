@@ -26,8 +26,8 @@ const findValidTime = (disabledRange: number[], maxValidTime: number) => {
     }
   }
 
-  return 0
-}
+  return 0;
+};
 
 function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
   const {
@@ -122,15 +122,19 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       selectedDate = generateConfig.setYear(selectedDate, generateConfig.getYear(defaultValue));
       selectedDate = generateConfig.setMonth(selectedDate, generateConfig.getMonth(defaultValue));
       selectedDate = generateConfig.setDate(selectedDate, generateConfig.getDate(defaultValue));
-    } else if (source === 'date' && value && disabledTime) {
-      const disabledTimes = disabledTime(value)
+    }
+    if (source === 'date' && selectedDate && disabledTime) {
+      const disabledTimes = disabledTime(selectedDate);
 
-      const validHour = findValidTime(disabledTimes.disabledHours?.() || [-1], 23)
-      const validMinute = findValidTime(disabledTimes.disabledMinutes?.(validHour) || [-1], 59)
-      const validSeconds = findValidTime(disabledTimes.disabledSeconds?.(validHour, validMinute) || [-1], 59)
-      selectedDate = generateConfig.setHour(selectedDate, validHour)
-      selectedDate = generateConfig.setMinute(selectedDate, validMinute)
-      selectedDate = generateConfig.setSecond(selectedDate, validSeconds)
+      const validHour = findValidTime(disabledTimes.disabledHours?.() || [-1], 23);
+      const validMinute = findValidTime(disabledTimes.disabledMinutes?.(validHour) || [-1], 59);
+      const validSeconds = findValidTime(
+        disabledTimes.disabledSeconds?.(validHour, validMinute) || [-1],
+        59,
+      );
+      selectedDate = generateConfig.setHour(selectedDate, validHour);
+      selectedDate = generateConfig.setMinute(selectedDate, validMinute);
+      selectedDate = generateConfig.setSecond(selectedDate, validSeconds);
     }
 
     if (onSelect) {
