@@ -161,20 +161,27 @@ describe('Picker.DisabledTime', () => {
   });
 
   it('disabledTime should reset correctly when date changed by click for no default value', function () {
+    const now = moment();
+    const h = now.hours();
+    const m = now.minutes();
+    const s = now.seconds();
+
     const disabledTime = jest.fn((_: Moment | null, __: 'start' | 'end') => ({
-      disabledHours: () => [0, 1, 2, 3, 4],
-      disabledMinutes: () => [0, 1, 2, 3, 4],
-      disabledSeconds: () => [0, 1, 2, 3, 4],
+      disabledHours: () => [h],
+      disabledMinutes: () => [m],
+      disabledSeconds: () => [s],
     }));
 
-    const now = moment().hour(6).minute(6).second(6);
-
+    const firstDayInMonth = now.startOf('month');
+    const firstDayInCalendar = firstDayInMonth.clone().subtract(firstDayInMonth.days(), 'days');
+    const expected = firstDayInCalendar.clone().hour(h + 1 % 24).minute(m + 1 % 60).second(s + 1 % 60);
+    
     render(<MomentRangePicker open showTime disabledTime={disabledTime} />);
 
     fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[0]);
 
     expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual(
-      now.format('YYYY-MM-DD HH:mm:ss'),
+      expected.format('YYYY-MM-DD HH:mm:ss'),
     );
   });
 

@@ -18,10 +18,14 @@ export type DatetimePanelProps<DateType> = {
 const ACTIVE_PANEL = tuple('date', 'time');
 type ActivePanelType = (typeof ACTIVE_PANEL)[number];
 
-const findValidTime = (disabledRange: number[], maxValidTime: number) => {
+const findValidTime = (refValue: number, disabledRange: number[], maxValidTime: number) => {
   const rangeSet = new Set(disabledRange);
+  if (!rangeSet.has(refValue)) {
+    return refValue;
+  }
   for (let i = 0; i <= maxValidTime; i++) {
-    if (!rangeSet.has(i)) {
+    if (!rangeSet.has(i) && i >= refValue) {
+      // first not disabled time
       return i;
     }
   }
@@ -101,12 +105,24 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
   };
 
   const disableTimeCheck = (date: DateType): DateType => {
-    let selectedDate = date
+    if (!disabledTime) {
+      return date;
+    }
+    let selectedDate = date;
     const disabledTimes = disabledTime(selectedDate);
 
-    const validHour = findValidTime(disabledTimes.disabledHours?.() || [-1], 23);
-    const validMinute = findValidTime(disabledTimes.disabledMinutes?.(validHour) || [-1], 59);
+    const validHour = findValidTime(
+      generateConfig.getHour(selectedDate),
+      disabledTimes.disabledHours?.() || [-1],
+      23,
+    );
+    const validMinute = findValidTime(
+      generateConfig.getMinute(selectedDate),
+      disabledTimes.disabledMinutes?.(validHour) || [-1],
+      59,
+    );
     const validSeconds = findValidTime(
+      generateConfig.getSecond(selectedDate),
       disabledTimes.disabledSeconds?.(validHour, validMinute) || [-1],
       59,
     );
@@ -134,12 +150,13 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         selectedDate,
         generateConfig.getSecond(timeProps.defaultValue),
       );
-      selectedDate = disableTimeCheck(selectedDate);
     } else if (source === 'time' && !value && defaultValue) {
       selectedDate = generateConfig.setYear(selectedDate, generateConfig.getYear(defaultValue));
       selectedDate = generateConfig.setMonth(selectedDate, generateConfig.getMonth(defaultValue));
       selectedDate = generateConfig.setDate(selectedDate, generateConfig.getDate(defaultValue));
-    } else if (source === 'date' && value && disabledTime) {
+    }
+
+    if (showTime) {
       selectedDate = disableTimeCheck(selectedDate);
     }
 
