@@ -140,7 +140,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       selectedDate = generateConfig.setMonth(selectedDate, generateConfig.getMonth(defaultValue));
       selectedDate = generateConfig.setDate(selectedDate, generateConfig.getDate(defaultValue));
     } else if (source === 'date' && value && disabledTime) {
-      selectedDate = disableTimeCheck(value);
+      selectedDate = disableTimeCheck(selectedDate);
     }
 
     if (onSelect) {
