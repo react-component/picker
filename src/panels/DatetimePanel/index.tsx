@@ -114,7 +114,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
     selectedDate = generateConfig.setMinute(selectedDate, validMinute);
     selectedDate = generateConfig.setSecond(selectedDate, validSeconds);
     return selectedDate;
-  }
+  };
 
   // ======================== Events ========================
   const onInternalSelect = (date: DateType, source: 'date' | 'time') => {
