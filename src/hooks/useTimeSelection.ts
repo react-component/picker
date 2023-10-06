@@ -28,7 +28,8 @@ export default function useTimeSelection<DateType>({
     const now = generateConfig.getNow();
     let newDate = value || now;
 
-    const mergedHour = newHour < 0 ? generateConfig.getHour(now) : newHour;
+    const newFormattedHour = !use12Hours || !isNewPM ? newHour : newHour + 12;
+    const mergedHour = newHour < 0 ? generateConfig.getHour(now) : newFormattedHour;
     let mergedMinute = newMinute < 0 ? generateConfig.getMinute(now) : newMinute;
     let mergedSecond = newSecond < 0 ? generateConfig.getSecond(now) : newSecond;
 
@@ -53,13 +54,7 @@ export default function useTimeSelection<DateType>({
       }
     }
 
-    newDate = utilSetTime(
-      generateConfig,
-      newDate,
-      !use12Hours || !isNewPM ? mergedHour : mergedHour + 12,
-      mergedMinute,
-      mergedSecond,
-    );
+    newDate = utilSetTime(generateConfig, newDate, mergedHour, mergedMinute, mergedSecond);
 
     return newDate;
   };

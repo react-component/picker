@@ -634,6 +634,32 @@ describe('Picker.Basic', () => {
       );
     });
 
+    it('should change 12 hours format correctly', () => {
+      const onTimeChange = jest.fn();
+      const { getByText } = render(
+        <MomentPicker
+          disabledTime={() => ({
+            disabledHours: () => [0],
+            disabledMinutes: (hour) => {
+              onTimeChange(hour);
+              return [0];
+            },
+            disabledSeconds: () => [0],
+          })}
+          value={getMoment('2000-01-01 21:40:40')}
+          format="YYYY-MM-DD hh:mm:ss A"
+          use12Hours
+          showTime
+          open
+        />,
+      );
+
+      fireEvent.click(getByText('PM'));
+
+      expect(onTimeChange).not.toBeCalledWith(9);
+      expect(onTimeChange).toBeCalledWith(21);
+    });
+
     it('should show warning when minute step is invalid', () => {
       expect(errorSpy).not.toBeCalled();
       const { container } = render(<MomentPicker picker="time" minuteStep={9} />);
