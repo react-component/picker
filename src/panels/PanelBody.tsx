@@ -103,7 +103,7 @@ export default function PanelBody<DateType>({
           }}
           onMouseLeave={() => {
             if (!disabled && onDateMouseLeave) {
-              onDateMouseLeave(currentDate);
+              onDateMouseLeave(false);
             }
           }}
         >
