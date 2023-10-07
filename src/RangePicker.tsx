@@ -599,6 +599,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const getSharedInputHookProps = (index: 0 | 1, resetText: () => void) => ({
     blurToCancel: !changeOnBlur && needConfirmButton,
     changeOnBlur,
+    hasExtraFooter: !!renderExtraFooter,
     forwardKeyDown,
     onBlur: onInternalBlur,
     isClickOutside: (target: EventTarget | null) => {
