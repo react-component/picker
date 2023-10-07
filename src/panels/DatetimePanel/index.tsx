@@ -105,9 +105,6 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
   };
 
   const disableTimeCheck = (date: DateType): DateType => {
-    if (!disabledTime) {
-      return date;
-    }
     let selectedDate = date;
     const disabledTimes = disabledTime(selectedDate);
 
@@ -156,7 +153,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       selectedDate = generateConfig.setDate(selectedDate, generateConfig.getDate(defaultValue));
     }
 
-    if (showTime) {
+    if (showTime && disabledTime) {
       selectedDate = disableTimeCheck(selectedDate);
     }
 
