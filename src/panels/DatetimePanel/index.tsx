@@ -151,7 +151,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       selectedDate = generateConfig.setDate(selectedDate, generateConfig.getDate(defaultValue));
     }
 
-    if (showTime && disabledTime) {
+    if (source === 'date' && showTime && disabledTime) {
       selectedDate = disableTimeCheck(selectedDate);
     }
 
