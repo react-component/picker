@@ -5,6 +5,7 @@ import dateFnsGenerateConfig from '../src/generate/dateFns';
 import { getMoment } from './util/commonUtil';
 
 import 'dayjs/locale/zh-cn';
+import 'dayjs/locale/ko';
 import type { GenerateConfig } from '../src/generate';
 
 describe('Picker.Generate', () => {
