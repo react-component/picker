@@ -20,17 +20,15 @@ type ActivePanelType = (typeof ACTIVE_PANEL)[number];
 
 const findValidTime = (refValue: number, disabledRange: number[], maxValidTime: number) => {
   const rangeSet = new Set(disabledRange);
-  if (!rangeSet.has(refValue)) {
-    return refValue;
-  }
-  for (let i = 0; i <= maxValidTime; i++) {
-    if (!rangeSet.has(i) && i >= refValue) {
-      // first not disabled time
-      return i;
+  if (rangeSet.has(refValue)) {
+    for (let i = 0; i <= maxValidTime; i++) {
+      if (!rangeSet.has(i) && i >= refValue) {
+        // first not disabled time
+        return i;
+      }
     }
   }
-
-  return 0;
+  return refValue;
 };
 
 function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
