@@ -1,5 +1,6 @@
 import { fireEvent, render } from '@testing-library/react';
 import type { Moment } from 'moment';
+import moment from 'moment';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import {
@@ -157,6 +158,31 @@ describe('Picker.DisabledTime', () => {
     fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[2]);
 
     expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual('1989-10-31 05:00:00');
+  });
+
+  it('disabledTime should reset correctly when date changed by click for no default value', function () {
+    const now = moment();
+    const h = now.hours();
+    const m = now.minutes();
+    const s = now.seconds();
+
+    const disabledTime = jest.fn((_: Moment | null, __: 'start' | 'end') => ({
+      disabledHours: () => [h],
+      disabledMinutes: () => [m],
+      disabledSeconds: () => [s],
+    }));
+
+    const firstDayInMonth = now.startOf('month');
+    const firstDayInCalendar = firstDayInMonth.clone().subtract(firstDayInMonth.days(), 'days');
+    const expected = firstDayInCalendar.clone().hour(h + 1 % 24).minute(m + 1 % 60).second(s + 1 % 60);
+    
+    render(<MomentRangePicker open showTime disabledTime={disabledTime} />);
+
+    fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[0]);
+
+    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual(
+      expected.format('YYYY-MM-DD HH:mm:ss'),
+    );
   });
 
   describe('warning for legacy props', () => {

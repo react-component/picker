@@ -18,16 +18,18 @@ export type DatetimePanelProps<DateType> = {
 const ACTIVE_PANEL = tuple('date', 'time');
 type ActivePanelType = (typeof ACTIVE_PANEL)[number];
 
-const findValidTime = (disabledRange: number[], maxValidTime: number) => {
+const findValidTime = (refValue: number, disabledRange: number[], maxValidTime: number) => {
   const rangeSet = new Set(disabledRange);
-  for (let i = 0; i <= maxValidTime; i++) {
-    if (!rangeSet.has(i)) {
-      return i;
+  if (rangeSet.has(refValue)) {
+    for (let i = 0; i <= maxValidTime; i++) {
+      if (!rangeSet.has(i) && i >= refValue) {
+        // first not disabled time
+        return i;
+      }
     }
   }
-
-  return 0
-}
+  return refValue;
+};
 
 function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
   const {
@@ -104,33 +106,30 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
   const onInternalSelect = (date: DateType, source: 'date' | 'time') => {
     let selectedDate = date;
 
-    if (source === 'date' && !value && timeProps.defaultValue) {
-      // Date with time defaultValue
-      selectedDate = generateConfig.setHour(
-        selectedDate,
-        generateConfig.getHour(timeProps.defaultValue),
+    if (source === 'date') {
+      const disabledTimes = disabledTime?.(value || timeProps.defaultValue) || {};
+      const validHour = findValidTime(
+        generateConfig.getHour(selectedDate),
+        disabledTimes.disabledHours?.() || [-1],
+        23,
       );
-      selectedDate = generateConfig.setMinute(
-        selectedDate,
-        generateConfig.getMinute(timeProps.defaultValue),
+      const validMinute = findValidTime(
+        generateConfig.getMinute(selectedDate),
+        disabledTimes.disabledMinutes?.(validHour) || [-1],
+        59,
       );
-      selectedDate = generateConfig.setSecond(
-        selectedDate,
-        generateConfig.getSecond(timeProps.defaultValue),
+      const validSeconds = findValidTime(
+        generateConfig.getSecond(selectedDate),
+        disabledTimes.disabledSeconds?.(validHour, validMinute) || [-1],
+        59,
       );
+      selectedDate = generateConfig.setHour(selectedDate, validHour);
+      selectedDate = generateConfig.setMinute(selectedDate, validMinute);
+      selectedDate = generateConfig.setSecond(selectedDate, validSeconds);
     } else if (source === 'time' && !value && defaultValue) {
       selectedDate = generateConfig.setYear(selectedDate, generateConfig.getYear(defaultValue));
       selectedDate = generateConfig.setMonth(selectedDate, generateConfig.getMonth(defaultValue));
       selectedDate = generateConfig.setDate(selectedDate, generateConfig.getDate(defaultValue));
-    } else if (source === 'date' && value && disabledTime) {
-      const disabledTimes = disabledTime(value)
-
-      const validHour = findValidTime(disabledTimes.disabledHours?.() || [-1], 23)
-      const validMinute = findValidTime(disabledTimes.disabledMinutes?.(validHour) || [-1], 59)
-      const validSeconds = findValidTime(disabledTimes.disabledSeconds?.(validHour, validMinute) || [-1], 59)
-      selectedDate = generateConfig.setHour(selectedDate, validHour)
-      selectedDate = generateConfig.setMinute(selectedDate, validMinute)
-      selectedDate = generateConfig.setSecond(selectedDate, validSeconds)
     }
 
     if (onSelect) {
