@@ -1145,4 +1145,19 @@ describe('Picker.Basic', () => {
 
     expect(container.querySelector('input')).toHaveValue('2023-09-04 21:05:10');
   });
+
+  it('interacting with components within footer should not close the panel', () => {
+    const { container, baseElement } = render(
+      <MomentPicker renderExtraFooter={() => <button className="test-button">button</button>} />,
+    );
+
+    openPicker(container);
+
+    fireEvent.click(baseElement.querySelector('.test-button'));
+
+    // Simulate component behavior
+    fireEvent.blur(container.querySelector('input'));
+
+    expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
+  });
 });

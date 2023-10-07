@@ -1985,4 +1985,22 @@ describe('Picker.Range', () => {
 
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
+
+  // In line with the picker
+  it('interacting with components within footer should not close the panel', () => {
+    const { container, baseElement } = render(
+      <MomentRangePicker
+        renderExtraFooter={() => <button className="test-button">button</button>}
+      />,
+    );
+
+    openPicker(container);
+
+    fireEvent.click(baseElement.querySelector('.test-button'));
+
+    // Simulate component behavior
+    fireEvent.blur(container.querySelector('input'));
+
+    expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
+  });
 });
