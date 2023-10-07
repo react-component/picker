@@ -1,8 +1,10 @@
 import { fireEvent, render } from '@testing-library/react';
+import type { Moment } from 'moment';
 import moment from 'moment';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
+import type { PanelMode } from '../src/interface';
 import enUS from '../src/locale/en_US';
 import zhCN from '../src/locale/zh_CN';
 import {
@@ -250,6 +252,12 @@ describe('Picker.Panel', () => {
     expect(isSame(onSelect.mock.calls[2][0], '1990-09-20 10:03:07')).toBeTruthy();
   });
 
+  it('should hide bottom button when switch date interval in the head', () => {
+    render(<MomentPickerPanel showTime />);
+    fireEvent.click(document.querySelector('.rc-picker-year-btn'));
+    expect(document.querySelector('.rc-picker-ranges')).toBeFalsy();
+  });
+
   it('DatePicker has defaultValue and showTime.defaultValue ', () => {
     const onSelect = jest.fn();
     render(
@@ -473,7 +481,6 @@ describe('Picker.Panel', () => {
 
     errSpy.mockRestore();
   });
-
   it('should render correctly in rtl', () => {
     const { container } = render(<MomentPickerPanel direction="rtl" />);
     expect(container).toMatchSnapshot();
@@ -503,6 +510,14 @@ describe('Picker.Panel', () => {
   it('monthCellRender', () => {
     const { container } = render(
       <MomentPickerPanel picker="month" monthCellRender={(date) => date.format('YYYY-MM')} />,
+    );
+
+    expect(container.querySelector('tbody')).toMatchSnapshot();
+  });
+
+  it('pass dateRender when picker is month', () => {
+    const { container } = render(
+      <MomentPickerPanel picker="month" dateRender={(date) => date.format('YYYY-MM')} />,
     );
 
     expect(container.querySelector('tbody')).toMatchSnapshot();
@@ -556,5 +571,147 @@ describe('Picker.Panel', () => {
         } as any,
       });
     });
+  });
+
+  const supportCellRenderPicker: PanelMode[] = [
+    'year',
+    'month',
+    'date',
+    'quarter',
+    'week',
+    'time',
+    'decade',
+  ];
+
+  const getCurText = (picker: PanelMode, current: Moment | number) => {
+    switch (picker) {
+      case 'time':
+        return current;
+      case 'decade':
+        return (current as Moment).get('year');
+      case 'date':
+      case 'year':
+      case 'month':
+      case 'quarter':
+      case 'week':
+        return (current as Moment).get(picker);
+    }
+  };
+  it(`override cell with cellRender when pass showTime`, () => {
+    const App = () => (
+      <MomentPickerPanel
+        showTime
+        cellRender={(current, info) => (
+          <div className="customWrapper">{getCurText(info.type, current)}</div>
+        )}
+      />
+    );
+
+    const { container } = render(<App />);
+
+    expect(container.querySelector('.customWrapper')).toBeTruthy();
+    expect(container.querySelector(`.rc-picker-date-panel`)).toBeTruthy();
+    expect(container.querySelector(`.rc-picker-time-panel`)).toBeTruthy();
+    expect(container).toMatchSnapshot();
+  });
+  supportCellRenderPicker.forEach((picker) => {
+    it(`override cell with cellRender in ${picker}`, () => {
+      const App = () => (
+        <MomentPickerPanel
+          picker={picker as any}
+          cellRender={(current) => (
+            <div className="customWrapper">{getCurText(picker, current)}</div>
+          )}
+        />
+      );
+
+      const { container } = render(<App />);
+
+      expect(container.querySelector('.customWrapper')).toBeTruthy();
+      expect(container.querySelector(`.rc-picker-${picker}-panel`)).toBeTruthy();
+      expect(container).toMatchSnapshot();
+    });
+
+    it('warning with defaultPickerValue', () => {
+      resetWarned();
+      const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      render(
+        <MomentPickerPanel
+          picker={picker as any}
+          defaultPickerValue={getMoment('2023-07-25')}
+        />,
+      );
+
+      expect(errSpy).toHaveBeenCalledWith(
+        "Warning: 'defaultPickerValue' is deprecated. Please use 'defaultValue' instead.",
+      );
+
+      errSpy.mockRestore();
+    });
+
+    it('warning with dateRender and monthCellRender', () => {
+      resetWarned();
+      const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      render(
+        <MomentPickerPanel
+          picker={picker as any}
+          dateRender={(current) => (
+            <div className="customWrapper">{getCurText(picker, current)}</div>
+          )}
+          monthCellRender={(current) => (
+            <div className="customWrapper">{getCurText(picker, current)}</div>
+          )}
+        />,
+      );
+      expect(errSpy).toHaveBeenCalledWith(
+        "Warning: 'dateRender' is deprecated. Please use 'cellRender' instead.",
+      );
+      expect(errSpy).toHaveBeenCalledWith(
+        "Warning: 'monthCellRender' is deprecated. Please use 'cellRender' instead.",
+      );
+
+      errSpy.mockRestore();
+    });
+
+    it(`append cell with cellRender in ${picker}`, () => {
+      const App = () => (
+        <MomentPickerPanel
+          picker={picker as any}
+          cellRender={(current, info) =>
+            React.cloneElement(
+              info.originNode,
+              {
+                ...info.originNode.props,
+                className: `${info.originNode.props.className} customInner`,
+              },
+              <div className="customWrapper">{getCurText(picker, current)}</div>,
+            )
+          }
+        />
+      );
+
+      const { container } = render(<App />);
+
+      expect(container.querySelector('.customWrapper')).toBeTruthy();
+      expect(container.querySelector('.customInner')).toBeTruthy();
+      expect(container.querySelector(`.rc-picker-${picker}-panel`)).toBeTruthy();
+      expect(container).toMatchSnapshot();
+    });
+  });
+
+  it('week picker current should check year', () => {
+    const { container } = render(
+      <MomentPickerPanel picker="week" value={getMoment('1990-09-03')} />,
+    );
+    expect(
+      container.querySelector('.rc-picker-week-panel-row-selected td[title="1990-09-03"]'),
+    ).toBeTruthy();
+
+    // Diff year
+    fireEvent.click(container.querySelector('.rc-picker-header-super-next-btn'));
+    expect(container.querySelector('td[title="1991-09-03"]')).toBeTruthy();
+    expect(container.querySelector('.rc-picker-week-panel-row-selected')).toBeFalsy();
   });
 });

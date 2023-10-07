@@ -11,10 +11,11 @@
  * Tips: Should add faq about `datetime` mode with `defaultValue`
  */
 
-import classNames from 'classnames';
 import type { AlignType } from '@rc-component/trigger/lib/interface';
+import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
 import warning from 'rc-util/lib/warning';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
 import useHoverValue from './hooks/useHoverValue';
 import usePickerInput from './hooks/usePickerInput';
@@ -33,9 +34,10 @@ import PickerPanel from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
 import PresetPanel from './PresetPanel';
 import { formatValue, isEqual, parseValue } from './utils/dateUtil';
-import getDataOrAriaProps, { toArray } from './utils/miscUtil';
+import { toArray } from './utils/miscUtil';
 import { elementsContains, getDefaultFormat, getInputSize } from './utils/uiUtil';
 import { legacyPropsWarning } from './utils/warnUtil';
+import { getClearIcon } from './utils/getClearIcon';
 
 export type PickerRefConfig = {
   focus: () => void;
@@ -48,7 +50,7 @@ export type PickerSharedProps<DateType> = {
   popupStyle?: React.CSSProperties;
   transitionName?: string;
   placeholder?: string;
-  allowClear?: boolean;
+  allowClear?: boolean | { clearIcon?: React.ReactNode };
   autoFocus?: boolean;
   disabled?: boolean;
   tabIndex?: number;
@@ -65,6 +67,10 @@ export type PickerSharedProps<DateType> = {
 
   // Render
   suffixIcon?: React.ReactNode;
+  /** 
+   * Clear all icon 
+   * @deprecated Please use `allowClear` instead
+   **/
   clearIcon?: React.ReactNode;
   prevIcon?: React.ReactNode;
   nextIcon?: React.ReactNode;
@@ -86,6 +92,12 @@ export type PickerSharedProps<DateType> = {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   onContextMenu?: React.MouseEventHandler<HTMLDivElement>;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>, preventDefault: () => void) => void;
+
+  /**
+   * Trigger `onChange` event when blur.
+   * If you don't want to user click `confirm` to trigger change, can use this.
+   */
+  changeOnBlur?: boolean;
 
   // Internal
   /** @private Internal usage, do not use in production mode!!! */
@@ -137,6 +149,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
     id,
+    name,
     tabIndex,
     style,
     className,
@@ -182,6 +195,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     direction,
     autoComplete = 'off',
     inputRender,
+    changeOnBlur,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -301,8 +315,17 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   };
 
   // ============================= Input =============================
+  const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
+    if (changeOnBlur) {
+      triggerChange(selectedValue);
+    }
+
+    onBlur?.(e);
+  };
+
   const [inputProps, { focused, typing }] = usePickerInput({
     blurToCancel: needConfirmButton,
+    changeOnBlur,
     open: mergedOpen,
     value: text,
     triggerOpen,
@@ -336,7 +359,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
       onKeyDown?.(e, preventDefault);
     },
     onFocus,
-    onBlur,
+    onBlur: onInternalBlur,
   });
 
   // ============================= Sync ==============================
@@ -370,14 +393,10 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   if (pickerRef) {
     pickerRef.current = {
       focus: () => {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
+        inputRef.current?.focus();
       },
       blur: () => {
-        if (inputRef.current) {
-          inputRef.current.blur();
-        }
+        inputRef.current?.blur();
       },
     };
   }
@@ -450,32 +469,55 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   let suffixNode: React.ReactNode;
   if (suffixIcon) {
-    suffixNode = <span className={`${prefixCls}-suffix`}>{suffixIcon}</span>;
-  }
-
-  let clearNode: React.ReactNode;
-  if (allowClear && mergedValue && !disabled) {
-    clearNode = (
+    suffixNode = (
       <span
+        className={`${prefixCls}-suffix`}
         onMouseDown={(e) => {
+          // Not lost focus
           e.preventDefault();
-          e.stopPropagation();
         }}
-        onMouseUp={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          triggerChange(null);
-          triggerOpen(false);
-        }}
-        className={`${prefixCls}-clear`}
-        role="button"
       >
-        {clearIcon || <span className={`${prefixCls}-clear-btn`} />}
+        {suffixIcon}
       </span>
     );
   }
 
-  const mergedInputProps: React.InputHTMLAttributes<HTMLInputElement> = {
+  // ============================ Clear ============================
+  if (process.env.NODE_ENV !== 'production') {
+    warning(
+      !props.clearIcon,
+      '`clearIcon` will be removed in future. Please use `allowClear` instead.',
+    );
+  }
+
+  const mergedClearIcon: React.ReactNode = getClearIcon(
+    prefixCls,
+    allowClear,
+    clearIcon,
+  );
+
+  const clearNode: React.ReactNode = (
+    <span
+      onMouseDown={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      onMouseUp={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerChange(null);
+        triggerOpen(false);
+      }}
+      className={`${prefixCls}-clear`}
+      role="button"
+    >
+      {mergedClearIcon}
+    </span>
+  );
+
+  const mergedAllowClear = !!allowClear && mergedValue && !disabled;
+
+  const mergedInputProps: React.InputHTMLAttributes<HTMLInputElement> & { ref: React.MutableRefObject<HTMLInputElement> } = {
     id,
     tabIndex,
     disabled,
@@ -490,7 +532,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     title: text,
     ...inputProps,
     size: getInputSize(picker, formatList[0], generateConfig),
-    ...getDataOrAriaProps(props),
+    name,
+    ...pickAttrs(props, { aria: true, data: true }),
     autoComplete,
   };
 
@@ -565,7 +608,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
           >
             {inputNode}
             {suffixNode}
-            {clearNode}
+            {mergedAllowClear && clearNode}
           </div>
         </div>
       </PickerTrigger>

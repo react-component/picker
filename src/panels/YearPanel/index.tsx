@@ -1,14 +1,16 @@
 import * as React from 'react';
 import YearHeader from './YearHeader';
 import YearBody, { YEAR_COL_COUNT } from './YearBody';
-import type { PanelSharedProps, PanelMode } from '../../interface';
+import type { PanelSharedProps, PanelMode, CellRender } from '../../interface';
 import { createKeyDownHandler } from '../../utils/uiUtil';
+import { YEAR_DECADE_COUNT } from './constant';
 
 export type YearPanelProps<DateType> = {
   sourceMode: PanelMode;
+  cellRender?: CellRender<DateType>;
 } & PanelSharedProps<DateType>;
 
-export const YEAR_DECADE_COUNT = 10;
+export { YEAR_DECADE_COUNT };
 
 function YearPanel<DateType>(props: YearPanelProps<DateType>) {
   const {

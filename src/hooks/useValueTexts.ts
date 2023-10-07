@@ -36,11 +36,13 @@ export default function useValueTexts<DateType>(
 
       return [fullValueTexts, firstValueText];
     },
-    [value, formatList],
+    [value, formatList, locale],
     (prev, next) =>
       // Not Same Date
       !isEqual(generateConfig, prev[0], next[0]) ||
       // Not Same format
-      !shallowEqual(prev[1], next[1], true),
+      !shallowEqual(prev[1], next[1], true) ||
+      // Not Same locale
+      !shallowEqual(prev[2], next[2], true),
   );
 }

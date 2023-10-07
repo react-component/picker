@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
-import { YEAR_DECADE_COUNT } from '.';
-import type { Locale, NullableDateType } from '../../interface';
+import { YEAR_DECADE_COUNT } from './constant';
+import type { CellRender, Locale, NullableDateType } from '../../interface';
 import useCellClassName from '../../hooks/useCellClassName';
 import { formatValue, isSameYear } from '../../utils/dateUtil';
 import RangeContext from '../../RangeContext';
@@ -18,10 +18,11 @@ export type YearBodyProps<DateType> = {
   viewDate: DateType;
   disabledDate?: (date: DateType) => boolean;
   onSelect: (value: DateType) => void;
+  cellRender?: CellRender<DateType>;
 };
 
 function YearBody<DateType>(props: YearBodyProps<DateType>) {
-  const { prefixCls, value, viewDate, locale, generateConfig } = props;
+  const { prefixCls, value, viewDate, locale, generateConfig, cellRender } = props;
   const { rangedValue, hoverRangedValue } = React.useContext(RangeContext);
 
   const yearPrefixCls = `${prefixCls}-cell`;
@@ -34,6 +35,7 @@ function YearBody<DateType>(props: YearBodyProps<DateType>) {
     viewDate,
     startYear - Math.ceil((YEAR_COL_COUNT * YEAR_ROW_COUNT - YEAR_DECADE_COUNT) / 2),
   );
+  const today = generateConfig.getNow();
 
   const isInView = (date: DateType) => {
     const currentYearNumber = generateConfig.getYear(date);
@@ -51,12 +53,24 @@ function YearBody<DateType>(props: YearBodyProps<DateType>) {
     offsetCell: (date, offset) => generateConfig.addYear(date, offset),
   });
 
+
+  const getCellNode = cellRender
+    ? (date: DateType, wrapperNode: React.ReactElement) =>
+        cellRender(date, {
+          originNode: wrapperNode,
+          today,
+          type: 'year',
+          locale
+        })
+    : undefined;
+
   return (
     <PanelBody
       {...props}
       rowNum={YEAR_ROW_COUNT}
       colNum={YEAR_COL_COUNT}
       baseDate={baseYear}
+      getCellNode={getCellNode}
       getCellText={generateConfig.getYear}
       getCellClassName={getCellClassName}
       getCellDate={generateConfig.addYear}

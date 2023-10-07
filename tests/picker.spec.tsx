@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/no-loop-func */
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
-import moment, { Moment } from 'moment';
+import type { Moment } from 'moment';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import type { PanelMode, PickerMode } from '../src/interface';
+import enUS from '../src/locale/en_US';
+import zhCN from '../src/locale/zh_CN';
 import {
   clearValue,
   closePicker,
@@ -22,10 +26,19 @@ import {
 const fakeTime = getMoment('1990-09-03 00:00:00').valueOf();
 
 describe('Picker.Basic', () => {
+  let errorSpy;
   beforeEach(() => {
     jest.useFakeTimers().setSystemTime(fakeTime);
   });
 
+  beforeAll(() => {
+    errorSpy = jest.spyOn(console, 'error').mockImplementation(() => null);
+  });
+
+  beforeEach(() => {
+    errorSpy.mockReset();
+    resetWarned();
+  });
   afterAll(() => {
     jest.clearAllTimers();
     jest.useRealTimers();
@@ -37,6 +50,10 @@ describe('Picker.Basic', () => {
       which: keyCode,
       charCode: keyCode,
     });
+  }
+
+  function selectColumn(colIndex: number, rowIndex: number) {
+    fireEvent.click(document.querySelectorAll('ul')[colIndex].querySelectorAll('li')[rowIndex]);
   }
 
   describe('mode', () => {
@@ -341,6 +358,29 @@ describe('Picker.Basic', () => {
     expect(mouseDownEvent.defaultPrevented).toBeTruthy();
   });
 
+  it('not fire blur when clickinside and is in focus', () => {
+    const onBlur = jest.fn();
+    const { container } = render(
+      <MomentPicker onBlur={onBlur} suffixIcon={<div className="suffix-icon">X</div>} />,
+    );
+
+    const $input = container.querySelector('input');
+
+    openPicker(container);
+    $input.focus();
+    keyDown(KeyCode.ESC);
+
+    expect(document.activeElement).toBe($input);
+
+    // Click suffix should preventDefault
+    const $suffix = container.querySelector('.suffix-icon');
+    const mouseDownEvent = createEvent.mouseDown($suffix);
+    mouseDownEvent.preventDefault = jest.fn();
+    fireEvent($suffix, mouseDownEvent);
+
+    expect(mouseDownEvent.preventDefault).toHaveBeenCalled();
+  });
+
   describe('full steps', () => {
     [
       {
@@ -438,10 +478,6 @@ describe('Picker.Basic', () => {
       const { container } = render(<MomentPicker picker="time" onChange={onChange} onOk={onOk} />);
       openPicker(container);
 
-      function selectColumn(colIndex: number, rowIndex: number) {
-        fireEvent.click(document.querySelectorAll('ul')[colIndex].querySelectorAll('li')[rowIndex]);
-      }
-
       selectColumn(0, 13);
       selectColumn(1, 22);
       selectColumn(2, 33);
@@ -511,6 +547,7 @@ describe('Picker.Basic', () => {
   });
 
   it('icon', () => {
+    expect(errorSpy).not.toHaveBeenCalled();
     render(
       <MomentPicker
         defaultValue={getMoment('1990-09-03')}
@@ -519,8 +556,10 @@ describe('Picker.Basic', () => {
         allowClear
       />,
     );
-
     expect(document.querySelector('.rc-picker-input')).toMatchSnapshot();
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.',
+    );
   });
 
   it('inputRender', () => {
@@ -587,34 +626,84 @@ describe('Picker.Basic', () => {
     });
 
     it('should show warning when hour step is invalid', () => {
-      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
-      expect(spy).not.toBeCalled();
+      expect(errorSpy).not.toBeCalled();
       const { container } = render(<MomentPicker picker="time" hourStep={9} />);
       openPicker(container);
-      expect(spy).toBeCalledWith('Warning: `hourStep` 9 is invalid. It should be a factor of 24.');
-      spy.mockRestore();
+      expect(errorSpy).toBeCalledWith(
+        'Warning: `hourStep` 9 is invalid. It should be a factor of 24.',
+      );
+    });
+
+    it('should change 12 hours format correctly', () => {
+      const onTimeChange = jest.fn();
+      const { getByText } = render(
+        <MomentPicker
+          disabledTime={() => ({
+            disabledHours: () => [0],
+            disabledMinutes: (hour) => {
+              onTimeChange(hour);
+              return [0];
+            },
+            disabledSeconds: () => [0],
+          })}
+          value={getMoment('2000-01-01 21:40:40')}
+          format="YYYY-MM-DD hh:mm:ss A"
+          use12Hours
+          showTime
+          open
+        />,
+      );
+
+      fireEvent.click(getByText('PM'));
+
+      expect(onTimeChange).not.toBeCalledWith(9);
+      expect(onTimeChange).toBeCalledWith(21);
     });
 
     it('should show warning when minute step is invalid', () => {
-      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
-      expect(spy).not.toBeCalled();
+      expect(errorSpy).not.toBeCalled();
       const { container } = render(<MomentPicker picker="time" minuteStep={9} />);
       openPicker(container);
-      expect(spy).toBeCalledWith(
+      expect(errorSpy).toBeCalledWith(
         'Warning: `minuteStep` 9 is invalid. It should be a factor of 60.',
       );
-      spy.mockRestore();
     });
 
     it('should show warning when second step is invalid', () => {
-      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
-      expect(spy).not.toBeCalled();
+      expect(errorSpy).not.toBeCalled();
       const { container } = render(<MomentPicker picker="time" secondStep={9} />);
       openPicker(container);
-      expect(spy).toBeCalledWith(
+      expect(errorSpy).toBeCalledWith(
         'Warning: `secondStep` 9 is invalid. It should be a factor of 60.',
       );
-      spy.mockRestore();
+    });
+
+    // https://github.com/ant-design/ant-design/issues/40914
+    ['hour', 'minute', 'second'].forEach((unit, index) => {
+      it(`should show integer when step is not integer (${unit})`, () => {
+        const props = {
+          [`${unit}Step`]: 5.5,
+        };
+        const { container } = render(<MomentPicker picker="time" {...props} />);
+        openPicker(container);
+
+        const column = document.querySelector(
+          `.rc-picker-time-panel-column:nth-child(${index + 1})`,
+        );
+        expect(column).toBeTruthy();
+
+        const cells = column.querySelectorAll('.rc-picker-time-panel-cell-inner');
+        cells.forEach((cell) => {
+          expect(Number.isInteger(Number(cell.textContent))).toBeTruthy();
+        });
+      });
+    });
+
+    it('should work when hourStep < 0', () => {
+      // @ts-ignore
+      const { container } = render(<MomentPicker picker="time" hourStep={-1} />);
+      openPicker(container);
+      expect(document.querySelectorAll('.rc-picker-time-panel-column')[0].children.length).toBe(24);
     });
   });
 
@@ -792,6 +881,20 @@ describe('Picker.Basic', () => {
     expect(document.querySelector('input').value).toEqual('custom format:20200924');
 
     // clear
+    clearValue();
+    expect(document.querySelector('input').value).toEqual('');
+  });
+
+  it('custom clear icon', () => {
+    render(
+      <MomentPicker
+        allowClear={{ clearIcon: <span className="custom-clear">clear</span> }}
+        defaultValue={getMoment('2020-09-17')}
+      />,
+    );
+
+    // clear
+    expect(document.querySelector('.custom-clear')).toBeTruthy();
     clearValue();
     expect(document.querySelector('input').value).toEqual('');
   });
@@ -979,5 +1082,67 @@ describe('Picker.Basic', () => {
     fireEvent.click(document.querySelector('.rc-picker-presets li'));
 
     expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('2000-09-03');
+  });
+
+  it('presets support callback', () => {
+    const onChange = jest.fn();
+    const mockPresetValue = jest.fn().mockImplementationOnce(() => moment('2000-09-03'));
+
+    render(
+      <MomentPicker
+        onChange={onChange}
+        open
+        presets={[
+          {
+            label: 'Bamboo',
+            value: mockPresetValue,
+          },
+        ]}
+      />,
+    );
+
+    const firstPreset = document.querySelector('.rc-picker-presets li');
+    expect(firstPreset.textContent).toBe('Bamboo');
+
+    fireEvent.click(firstPreset);
+
+    expect(mockPresetValue).toHaveBeenCalled();
+    expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('2000-09-03');
+
+    mockPresetValue.mockImplementationOnce(() => moment('2023-05-01 12:34:56'));
+
+    fireEvent.click(firstPreset);
+
+    expect(mockPresetValue).toBeCalledTimes(2);
+    expect(onChange).toBeCalledTimes(2);
+
+    expect(onChange.mock.calls[1][0].format('YYYY-MM-DD HH:mm:ss')).toEqual('2023-05-01 12:34:56');
+  });
+
+  it('switch picker locale should reformat value', () => {
+    const { container, rerender } = render(
+      <MomentPicker value={getMoment('2011-11-11')} format={'dddd'} locale={enUS} />,
+    );
+    expect(container.querySelector('input').value).toEqual('Friday');
+
+    // Switch locale
+    moment.locale('zh-cn');
+    rerender(<MomentPicker value={getMoment('2011-11-11')} format={'dddd'} locale={zhCN} />);
+    expect(container.querySelector('input').value).toEqual('星期五');
+
+    // Reset locale
+    moment.locale('en');
+  });
+
+  it('select minutes and seconds directly in dateTime mode will apply the current time', () => {
+    jest.setSystemTime(getMoment('2023-09-04 21:49:10').valueOf());
+    const ui = <MomentPicker showTime />;
+    const { container } = render(ui);
+
+    openPicker(container);
+    // Select minute
+    selectColumn(1, 5);
+
+    expect(container.querySelector('input')).toHaveValue('2023-09-04 21:05:10');
   });
 });

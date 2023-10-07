@@ -1,5 +1,6 @@
 import { fireEvent, render } from '@testing-library/react';
 import type { Moment } from 'moment';
+import moment from 'moment';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import {
@@ -73,9 +74,7 @@ describe('Picker.DisabledTime', () => {
     // Start
     openPicker(container);
     expect(
-      document
-        .querySelector('.rc-picker-time-panel-column')
-        .querySelectorAll('li')[11],
+      document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[11],
     ).toHaveClass('rc-picker-time-panel-cell-disabled');
     expect(isSame(disabledTime.mock.calls[0][0], '1989-11-28')).toBeTruthy();
     expect(disabledTime.mock.calls[0][1]).toEqual('start');
@@ -91,6 +90,99 @@ describe('Picker.DisabledTime', () => {
     expect(isSame(disabledTime.mock.calls[0][0], '1990-09-03')).toBeTruthy();
     expect(disabledTime.mock.calls[0][1]).toEqual('end');
     closePicker(container, 1);
+  });
+
+  it('dynamic disabledTime should be correct', () => {
+    jest.useFakeTimers().setSystemTime(getMoment('2023-09-05 22:02:00').valueOf());
+    render(
+      <MomentPicker
+        open
+        picker="time"
+        disabledTime={() => ({
+          disabledHours: () => [0, 1],
+          disabledMinutes: (selectedHour) => {
+            if (selectedHour === 2) {
+              return [0, 1];
+            } else {
+              return [];
+            }
+          },
+          disabledSeconds: (_, selectMinute) => {
+            if (selectMinute === 2) {
+              return [0, 1];
+            } else {
+              return [];
+            }
+          },
+        })}
+      />,
+    );
+    // click hour 3
+    fireEvent.click(
+      document.querySelectorAll('.rc-picker-time-panel-column')[0].querySelectorAll('li')[2],
+    );
+    // click minute 0
+    fireEvent.click(
+      document.querySelectorAll('.rc-picker-time-panel-column')[1].querySelectorAll('li')[0],
+    );
+    // click second 0
+    fireEvent.click(
+      document.querySelectorAll('.rc-picker-time-panel-column')[2].querySelectorAll('li')[0],
+    );
+    // click hour 2
+    fireEvent.click(
+      document.querySelectorAll('.rc-picker-time-panel-column')[0].querySelectorAll('li')[1],
+    );
+    expect(document.querySelector('.rc-picker-input input').getAttribute('value')).toEqual(
+      '02:02:02',
+    );
+    jest.useRealTimers();
+  });
+
+  it('disabledTime should reset correctly when date changed by click', function () {
+    const disabledTime = jest.fn((_: Moment | null, __: 'start' | 'end') => ({
+      disabledHours: () => [0, 1, 2, 3, 4, 10],
+    }));
+
+    render(
+      <MomentRangePicker
+        open
+        showTime
+        disabledTime={disabledTime}
+        defaultValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
+      />,
+    );
+
+    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual('1989-11-28 00:00:00');
+
+    fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[2]);
+
+    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual('1989-10-31 05:00:00');
+  });
+
+  it('disabledTime should reset correctly when date changed by click for no default value', function () {
+    const now = moment();
+    const h = now.hours();
+    const m = now.minutes();
+    const s = now.seconds();
+
+    const disabledTime = jest.fn((_: Moment | null, __: 'start' | 'end') => ({
+      disabledHours: () => [h],
+      disabledMinutes: () => [m],
+      disabledSeconds: () => [s],
+    }));
+
+    const firstDayInMonth = now.startOf('month');
+    const firstDayInCalendar = firstDayInMonth.clone().subtract(firstDayInMonth.days(), 'days');
+    const expected = firstDayInCalendar.clone().hour(h + 1 % 24).minute(m + 1 % 60).second(s + 1 % 60);
+    
+    render(<MomentRangePicker open showTime disabledTime={disabledTime} />);
+
+    fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[0]);
+
+    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual(
+      expected.format('YYYY-MM-DD HH:mm:ss'),
+    );
   });
 
   describe('warning for legacy props', () => {

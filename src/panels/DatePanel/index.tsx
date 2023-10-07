@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import type { PanelSharedProps } from '../../interface';
+import type { CellRender, PanelSharedProps } from '../../interface';
 import { WEEK_DAY_COUNT } from '../../utils/dateUtil';
 import type { KeyboardConfig } from '../../utils/uiUtil';
 import { createKeyDownHandler } from '../../utils/uiUtil';
-import type { DateBodyPassProps, DateRender } from './DateBody';
+import type { DateBodyPassProps } from './DateBody';
 import DateBody from './DateBody';
 import DateHeader from './DateHeader';
 
@@ -12,7 +12,7 @@ const DATE_ROW_COUNT = 6;
 
 export type DatePanelProps<DateType> = {
   active?: boolean;
-  dateRender?: DateRender<DateType>;
+  cellRender?: CellRender<DateType>;
 
   // Used for week panel
   panelName?: string;
