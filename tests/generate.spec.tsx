@@ -87,6 +87,13 @@ describe('Picker.Generate', () => {
                 '2000-01-02',
               );
             });
+            ['2000-01-02', '02/01/2000'].forEach((str) => {
+              const date = generateConfig.locale.parse('ko_KR', str, ['YYYY-MM-DD', 'DD/MM/YYYY']);
+
+              expect(generateConfig.locale.format('ko_KR', date!, 'YYYY-MM-DD')).toEqual(
+                '2000-01-02',
+              );
+            });
           });
 
           it('week', () => {
@@ -167,6 +174,15 @@ describe('Picker.Generate', () => {
       });
 
       it('getShortWeekDays', () => {
+        expect(generateConfig.locale.getShortWeekDays!('ko_KR')).toEqual([
+          '일',
+          '월',
+          '화',
+          '수',
+          '목',
+          '금',
+          '토',
+        ]);
         expect(generateConfig.locale.getShortWeekDays!('zh_CN')).toEqual([
           '日',
           '一',
