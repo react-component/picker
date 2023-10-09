@@ -42,6 +42,8 @@ export default function useRangeOpen(
   firstTimeOpen: boolean,
   triggerOpen: (open: boolean, activeIndex: 0 | 1 | false, source: SourceType) => void,
 ] {
+  const rafRef = React.useRef<number>(null);
+
   const [firstTimeOpen, setFirstTimeOpen] = React.useState(false);
 
   const [afferentOpen, setAfferentOpen] = useMergedState(defaultOpen || false, {
@@ -61,13 +63,26 @@ export default function useRangeOpen(
 
   const [nextActiveIndex, setNextActiveIndex] = React.useState<0 | 1>(null);
 
+  const queryNextIndex = (index: number) => (index === 0 ? 1 : 0);
+
   React.useEffect(() => {
     if (mergedOpen) {
       setFirstTimeOpen(true);
     }
   }, [mergedOpen]);
 
-  const queryNextIndex = (index: number) => (index === 0 ? 1 : 0);
+  React.useEffect(() => {
+    if (!afferentOpen && rafRef.current !== null) {
+      // Unfocus
+      raf.cancel(rafRef.current);
+      rafRef.current = null;
+      
+      // Since the index will eventually point to the next one, it needs to be reset.
+      if (mergedActivePickerIndex !== null) {
+        setMergedActivePickerIndex(queryNextIndex(mergedActivePickerIndex));
+      }
+    }
+  }, [afferentOpen]);
 
   const triggerOpen = useEvent((nextOpen: boolean, index: 0 | 1 | false, source: SourceType) => {
     if (index === false) {
@@ -102,12 +117,17 @@ export default function useRangeOpen(
         setFirstTimeOpen(false);
         setMergedActivePickerIndex(customNextActiveIndex);
       }
-      
+
       setNextActiveIndex(null);
 
       // Focus back
       if (customNextActiveIndex !== null && !disabled[customNextActiveIndex]) {
-        raf(() => {
+        // Trigger closure to ensure consistency between controlled and uncontrolled logic.
+        if (afferentOpen && !firstTimeOpen && nextActiveIndex === null) {
+          setMergedOpen(false);
+        }
+
+        rafRef.current = raf(() => {
           const ref = [startInputRef, endInputRef][customNextActiveIndex];
           ref.current?.focus();
         });
