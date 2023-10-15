@@ -55,6 +55,20 @@ exports[`Picker.Range icon 1`] = `
 </div>
 `;
 
+exports[`Picker.Range inputRender 1`] = `
+<div
+  class="rc-picker-input rc-picker-input-active"
+>
+  <input
+    autocomplete="off"
+    placeholder=""
+    readonly=""
+    size="12"
+    value=""
+  />
+</div>
+`;
+
 exports[`Picker.Range onPanelChange is array args should render correctly in rtl 1`] = `
 <div>
   <div

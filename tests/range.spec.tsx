@@ -755,6 +755,12 @@ describe('Picker.Range', () => {
     );
   });
 
+  it('inputRender', () => {
+    render(<MomentRangePicker inputRender={(props) => <input {...props} />} />);
+
+    expect(document.querySelector('.rc-picker-input')).toMatchSnapshot();
+  });
+
   it('block native mouseDown in panel to prevent focus changed', () => {
     const { container } = render(<MomentRangePicker />);
     openPicker(container);

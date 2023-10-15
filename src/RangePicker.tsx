@@ -257,6 +257,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     direction,
     activePickerIndex,
     autoComplete = 'off',
+    inputRender,
     changeOnBlur,
   } = props as MergedRangePickerProps<DateType>;
 
@@ -1108,6 +1109,49 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     size: getInputSize(picker, formatList[0], generateConfig),
   };
 
+  const mergedStartInputProps = {
+    id: id,
+    disabled: mergedDisabled[0],
+    readOnly: inputReadOnly || typeof formatList[0] === 'function' || !startTyping,
+    value: startHoverValue || startText,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+      triggerStartTextChange(e.target.value);
+    },
+    autoFocus: autoFocus,
+    placeholder: getValue(placeholder, 0) || '',
+    ref: startInputRef,
+    ...startInputProps,
+    ...inputSharedProps,
+    autoComplete: autoComplete,
+  }
+
+  const startInputNode = inputRender ? (
+    inputRender(mergedStartInputProps)
+  ) : (
+    <input {...mergedStartInputProps} />
+  )
+
+  const mergedEndInputProps = {
+    disabled: mergedDisabled[1],
+    readOnly: inputReadOnly || typeof formatList[0] === 'function' || !endTyping,
+    value: endHoverValue || endText,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+      triggerEndTextChange(e.target.value);
+    },
+    autoFocus: autoFocus,
+    placeholder: getValue(placeholder, 1) || '',
+    ref: endInputRef,
+    ...endInputProps,
+    ...inputSharedProps,
+    autoComplete: autoComplete,
+  }
+
+  const endInputNode = inputRender ? (
+    inputRender(mergedEndInputProps)
+  ) : (
+    <input {...mergedEndInputProps} />
+  )
+
   let activeBarLeft: number = 0;
   let activeBarWidth: number = 0;
   if (startInputDivRef.current && endInputDivRef.current && separatorRef.current) {
@@ -1192,21 +1236,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             })}
             ref={startInputDivRef}
           >
-            <input
-              id={id}
-              disabled={mergedDisabled[0]}
-              readOnly={inputReadOnly || typeof formatList[0] === 'function' || !startTyping}
-              value={startHoverValue || startText}
-              onChange={(e) => {
-                triggerStartTextChange(e.target.value);
-              }}
-              autoFocus={autoFocus}
-              placeholder={getValue(placeholder, 0) || ''}
-              ref={startInputRef}
-              {...startInputProps}
-              {...inputSharedProps}
-              autoComplete={autoComplete}
-            />
+            {startInputNode}
           </div>
           <div className={`${prefixCls}-range-separator`} ref={separatorRef}>
             {separator}
@@ -1218,19 +1248,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
             })}
             ref={endInputDivRef}
           >
-            <input
-              disabled={mergedDisabled[1]}
-              readOnly={inputReadOnly || typeof formatList[0] === 'function' || !endTyping}
-              value={endHoverValue || endText}
-              onChange={(e) => {
-                triggerEndTextChange(e.target.value);
-              }}
-              placeholder={getValue(placeholder, 1) || ''}
-              ref={endInputRef}
-              {...endInputProps}
-              {...inputSharedProps}
-              autoComplete={autoComplete}
-            />
+            {endInputNode}
           </div>
           <div
             className={`${prefixCls}-active-bar`}
