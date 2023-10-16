@@ -1123,13 +1123,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     ...startInputProps,
     ...inputSharedProps,
     autoComplete: autoComplete,
-  }
+  };
 
   const startInputNode = inputRender ? (
     inputRender(mergedStartInputProps)
   ) : (
     <input {...mergedStartInputProps} />
-  )
+  );
 
   const mergedEndInputProps = {
     disabled: mergedDisabled[1],
@@ -1144,13 +1144,13 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     ...endInputProps,
     ...inputSharedProps,
     autoComplete: autoComplete,
-  }
+  };
 
   const endInputNode = inputRender ? (
     inputRender(mergedEndInputProps)
   ) : (
     <input {...mergedEndInputProps} />
-  )
+  );
 
   let activeBarLeft: number = 0;
   let activeBarWidth: number = 0;
