@@ -277,7 +277,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   }
 
   // ============================= Misc ==============================
-  const formatList = toArray(getDefaultFormat<DateType>(format, picker, showTime, use12Hours));
+  const formatList = toArray(getDefaultFormat<DateType>(format, picker, showTime, use12Hours, locale));
 
   const formatDateValue = (values: RangeValue<DateType>, index: 0 | 1) =>
     values && values[index]
@@ -407,7 +407,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   function triggerChange(
     newValue: RangeValue<DateType>,
     sourceIndex: 0 | 1,
-    triggerCalendarChangeOnly?: boolean, 
+    triggerCalendarChangeOnly?: boolean,
   ) {
     let values = newValue;
     let startValue = getValue(values, 0);
