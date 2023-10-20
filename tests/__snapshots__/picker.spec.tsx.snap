@@ -54,6 +54,24 @@ exports[`Picker.Basic Picker format by locale month 1`] = `
 </div>
 `;
 
+exports[`Picker.Basic Picker format by locale quarter 1`] = `
+<div
+  class="rc-picker"
+>
+  <div
+    class="rc-picker-input"
+  >
+    <input
+      autocomplete="off"
+      readonly=""
+      size="13"
+      title="2000 年 1 季度"
+      value="2000 年 1 季度"
+    />
+  </div>
+</div>
+`;
+
 exports[`Picker.Basic Picker format by locale week 1`] = `
 <div
   class="rc-picker"
@@ -67,6 +85,24 @@ exports[`Picker.Basic Picker format by locale week 1`] = `
       size="12"
       title="2000 年 52 周"
       value="2000 年 52 周"
+    />
+  </div>
+</div>
+`;
+
+exports[`Picker.Basic Picker format by locale year 1`] = `
+<div
+  class="rc-picker"
+>
+  <div
+    class="rc-picker-input"
+  >
+    <input
+      autocomplete="off"
+      readonly=""
+      size="12"
+      title="2000 年"
+      value="2000 年"
     />
   </div>
 </div>
