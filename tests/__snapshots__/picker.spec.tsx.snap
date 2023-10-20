@@ -1,5 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Picker.Basic Picker format by locale date 1`] = `
+<div
+  class="rc-picker"
+>
+  <div
+    class="rc-picker-input"
+  >
+    <input
+      autocomplete="off"
+      readonly=""
+      size="12"
+      title="2000-01-01"
+      value="2000 年 1 月 1 日"
+    />
+  </div>
+</div>
+`;
+
 exports[`Picker.Basic icon 1`] = `
 <div
   class="rc-picker-input"
