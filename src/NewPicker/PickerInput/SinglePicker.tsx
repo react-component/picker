@@ -1,8 +1,8 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
+import type { PickerRef, SelectorRef, SharedPickerProps } from '../interface';
 import PickerTrigger from '../PickerTrigger';
 import { PrefixClsContext } from './context';
-import type { PickerRef, SelectorRef, SharedPickerProps } from './interface';
 import SingleSelector from './Selector/SingleSelector';
 
 export type SinglePickerProps = SharedPickerProps;
@@ -11,9 +11,16 @@ const SinglePicker = React.forwardRef<PickerRef, SinglePickerProps>((props, ref)
   const {
     prefixCls = 'rc-picker',
 
+    // MISC
+    direction,
+
     // Selector
     className,
     style,
+    classNames = {},
+    styles = {},
+
+    // Icons
     suffixIcon,
 
     // Focus
@@ -24,13 +31,22 @@ const SinglePicker = React.forwardRef<PickerRef, SinglePickerProps>((props, ref)
     defaultOpen,
     open,
     onOpenChange,
+    popupAlign,
+    getPopupContainer,
+
+    // Motion
+    transitionName,
   } = props;
+
+  
 
   // ============================= Open =============================
   const [mergedOpen, setMergeOpen] = useMergedState(defaultOpen || false, {
     value: open,
     onChange: onOpenChange,
   });
+
+  const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
 
   // ============================ Active ============================
   const [focused, setFocused] = React.useState(false);
@@ -62,14 +78,14 @@ const SinglePicker = React.forwardRef<PickerRef, SinglePickerProps>((props, ref)
       <PickerTrigger
         visible={mergedOpen}
         // popupElement={panel}
-        // popupStyle={popupStyle}
-        // prefixCls={prefixCls}
-        // dropdownClassName={dropdownClassName}
-        // dropdownAlign={dropdownAlign}
-        // getPopupContainer={getPopupContainer}
-        // transitionName={transitionName}
-        // popupPlacement={popupPlacement}
-        // direction={direction}
+        popupElement={<div>2333</div>}
+        popupStyle={styles.popup}
+        popupClassName={classNames.popup}
+        popupAlign={popupAlign}
+        getPopupContainer={getPopupContainer}
+        transitionName={transitionName}
+        popupPlacement={popupPlacement}
+        direction={direction}
       >
         <SingleSelector
           ref={selectorRef}

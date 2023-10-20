@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { PrefixClsContext } from '../context';
-import type { SelectorProps, SelectorRef } from '../interface';
+import type { SelectorProps, SelectorRef } from '../../interface';
 import Input from './Input';
 
 const SingleSelector = React.forwardRef<SelectorRef, SelectorProps>((props, ref) => {

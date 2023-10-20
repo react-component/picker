@@ -1,6 +1,6 @@
 import * as React from 'react';
 import '../../assets/index.less';
-import type { PickerRef } from '../../src/NewPicker/PickerInput/interface';
+import type { PickerRef } from '../../src/NewPicker/interface';
 import RangePicker from '../../src/NewPicker/PickerInput/RangePicker';
 import SinglePicker from '../../src/NewPicker/PickerInput/SinglePicker';
 

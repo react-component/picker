@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PrefixClsContext } from './context';
-import type { SharedPickerProps } from './interface';
+import type { SharedPickerProps } from '../interface';
 import RangeSelector from './Selector/RangeSelector';
 
 export type RangePickerProps = SharedPickerProps;

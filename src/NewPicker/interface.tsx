@@ -1,8 +1,19 @@
+import type { AlignType } from '@rc-component/trigger';
+
 // ========================= Picker =========================
+export type SemanticStructure = 'popup';
+
 export interface SharedPickerProps {
+  // MISC
+  direction?: 'ltr' | 'rtl';
+
+  // Styles
   prefixCls?: string;
   className?: string;
   style?: React.CSSProperties;
+
+  styles?: Partial<Record<SemanticStructure, React.CSSProperties>>;
+  classNames?: Partial<Record<SemanticStructure, string>>;
 
   // Icons
   suffixIcon?: React.ReactNode;
@@ -20,6 +31,11 @@ export interface SharedPickerProps {
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  popupAlign?: AlignType;
+  getPopupContainer?: (node: HTMLElement) => HTMLElement;
+
+  // Motion
+  transitionName?: string;
 }
 
 export interface PickerRef {

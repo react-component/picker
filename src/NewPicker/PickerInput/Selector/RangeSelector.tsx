@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PrefixClsContext } from '../context';
-import type { SelectorProps, SelectorRef } from '../interface';
+import type { SelectorProps, SelectorRef } from '../../interface';
 import Icon from './Icon';
 import Input from './Input';
 
