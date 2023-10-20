@@ -1,5 +1,6 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
+import PickerTrigger from '../PickerTrigger';
 import { PrefixClsContext } from './context';
 import type { PickerRef, SelectorRef, SharedPickerProps } from './interface';
 import SingleSelector from './Selector/SingleSelector';
@@ -25,24 +26,26 @@ const SinglePicker = React.forwardRef<PickerRef, SinglePickerProps>((props, ref)
     onOpenChange,
   } = props;
 
+  // ============================= Open =============================
+  const [mergedOpen, setMergeOpen] = useMergedState(defaultOpen || false, {
+    value: open,
+    onChange: onOpenChange,
+  });
+
   // ============================ Active ============================
   const [focused, setFocused] = React.useState(false);
 
   const onInternalFocus: React.FocusEventHandler<HTMLInputElement> = (event) => {
     onFocus?.(event);
     setFocused(true);
+    setMergeOpen(true);
   };
 
   const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
     onBlur?.(event);
     setFocused(false);
+    setMergeOpen(false);
   };
-
-  // ============================= Open =============================
-  const [mergedOpen, setMergeOpen] = useMergedState(defaultOpen, {
-    value: open,
-    onChange: onOpenChange,
-  });
 
   // ============================= Refs =============================
   const selectorRef = React.useRef<SelectorRef>();
@@ -56,16 +59,29 @@ const SinglePicker = React.forwardRef<PickerRef, SinglePickerProps>((props, ref)
   // ============================ Render ============================
   return (
     <PrefixClsContext.Provider value={prefixCls}>
-      <SingleSelector
-        ref={selectorRef}
-        className={className}
-        style={style}
-        suffixIcon={suffixIcon}
-        // Focus
-        focused={focused}
-        onFocus={onInternalFocus}
-        onBlur={onInternalBlur}
-      />
+      <PickerTrigger
+        visible={mergedOpen}
+        // popupElement={panel}
+        // popupStyle={popupStyle}
+        // prefixCls={prefixCls}
+        // dropdownClassName={dropdownClassName}
+        // dropdownAlign={dropdownAlign}
+        // getPopupContainer={getPopupContainer}
+        // transitionName={transitionName}
+        // popupPlacement={popupPlacement}
+        // direction={direction}
+      >
+        <SingleSelector
+          ref={selectorRef}
+          className={className}
+          style={style}
+          suffixIcon={suffixIcon}
+          // Focus
+          focused={focused}
+          onFocus={onInternalFocus}
+          onBlur={onInternalBlur}
+        />
+      </PickerTrigger>
     </PrefixClsContext.Provider>
   );
 });
