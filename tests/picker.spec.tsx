@@ -781,7 +781,7 @@ describe('Picker.Basic', () => {
   it('defaultOpenValue in timePicker', () => {
     resetWarned();
     const onChange = jest.fn();
-    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
 
     const { container } = render(
       <MomentPicker
@@ -1170,7 +1170,7 @@ describe('Picker.Basic', () => {
     }
 
     matchPicker('date');
-
+    matchPicker('dateTime', { showTime: true });
   });
 
 
