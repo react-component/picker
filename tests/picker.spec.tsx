@@ -1171,6 +1171,8 @@ describe('Picker.Basic', () => {
 
     matchPicker('date');
     matchPicker('dateTime', { showTime: true });
+    matchPicker('week', { picker: 'week' });
+    matchPicker('month', { picker: 'month' });
   });
 
 
