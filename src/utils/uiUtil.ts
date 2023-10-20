@@ -2,7 +2,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import raf from 'rc-util/lib/raf';
 import isVisible from 'rc-util/lib/Dom/isVisible';
 import type { GenerateConfig } from '../generate';
-import type { CustomFormat, PanelMode, PickerMode } from '../interface';
+import type { CustomFormat, PanelMode, PickerMode, Locale } from '../interface';
 
 const scrollIds = new Map<HTMLElement, number>();
 
@@ -149,36 +149,33 @@ export function getDefaultFormat<DateType>(
   picker: PickerMode | undefined,
   showTime: boolean | object | undefined,
   use12Hours: boolean | undefined,
+  locale: Locale,
 ) {
-  let mergedFormat = format;
-  if (!mergedFormat) {
-    switch (picker) {
-      case 'time':
-        mergedFormat = use12Hours ? 'hh:mm:ss a' : 'HH:mm:ss';
-        break;
+  if (format) return format;
 
-      case 'week':
-        mergedFormat = 'gggg-wo';
-        break;
-
-      case 'month':
-        mergedFormat = 'YYYY-MM';
-        break;
-
-      case 'quarter':
-        mergedFormat = 'YYYY-[Q]Q';
-        break;
-
-      case 'year':
-        mergedFormat = 'YYYY';
-        break;
-
-      default:
-        mergedFormat = showTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
-    }
+  if (picker === 'time') {
+    return use12Hours ? 'hh:mm:ss a' : 'HH:mm:ss';
   }
 
-  return mergedFormat;
+  if (picker === 'week') {
+    return locale.weekFormat ?? 'gggg-wo';
+  }
+
+  if (picker === 'month') {
+    return locale.monthFormat ?? 'YYYY-MM';
+  }
+
+  if (picker === 'quarter') {
+    return locale.quarterFormat ?? 'YYYY-[Q]Q';
+  }
+
+  if (picker === 'year') {
+    return locale.yearFormat ?? 'YYYY';
+  }
+
+  return showTime
+    ? locale.dateTimeFormat ?? 'YYYY-MM-DD HH:mm:ss'
+    : locale.dateFormat ?? 'YYYY-MM-DD';
 }
 
 export function getInputSize<DateType>(
