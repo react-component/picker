@@ -10,7 +10,7 @@ exports[`Picker.Basic Picker format by locale date 1`] = `
     <input
       autocomplete="off"
       readonly=""
-      size="12"
+      size="16"
       title="2000 年 1 月 1 日"
       value="2000 年 1 月 1 日"
     />
@@ -28,7 +28,7 @@ exports[`Picker.Basic Picker format by locale dateTime 1`] = `
     <input
       autocomplete="off"
       readonly=""
-      size="21"
+      size="28"
       title="2000 年 1 月 1 日 0 时 0 分 0 秒"
       value="2000 年 1 月 1 日 0 时 0 分 0 秒"
     />
