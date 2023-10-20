@@ -1146,11 +1146,7 @@ describe('Picker.Basic', () => {
     expect(container.querySelector('input')).toHaveValue('2023-09-04 21:05:10');
   });
 
-
-
-
-
-  describe.only('Picker format by locale', () => {
+  describe('Picker format by locale', () => {
     const myLocale = {
       ...zhCN,
       dateFormat: 'YYYY 年 M 月 D 日',
@@ -1178,35 +1174,5 @@ describe('Picker.Basic', () => {
     matchPicker('quarter', { picker: 'quarter' });
     matchPicker('year', { picker: 'year' });
   });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 });
