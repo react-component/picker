@@ -17,6 +17,7 @@ export interface PickerPanelProps<DateType = any> {
   // Value
   defaultValue?: DateType | null;
   value?: DateType | null;
+  onChange?: (date: DateType) => void;
 
   // Panel control
   defaultPickerValue?: DateType | null;
@@ -43,6 +44,7 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
     // Value
     defaultValue,
     value,
+    onChange,
 
     // Picker control
     defaultPickerValue,
@@ -70,6 +72,11 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
     value,
   });
 
+  const onInternalChange = (newVal: DateType) => {
+    setMergedValue(newVal);
+    onChange?.(newVal);
+  };
+
   // ====================== PickerValue =======================
   // PickerValue is used to control the current displaying panel
   const [mergedPickerValue, setPickerValue] = useMergedState(
@@ -95,8 +102,11 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
       prefixCls={prefixCls}
       locale={locale}
       generateConfig={generateConfig}
+      // Value
       pickerValue={mergedPickerValue}
       value={mergedValue}
+      onChange={onInternalChange}
+      // Render
       cellRender={cellRender}
       disabledDate={disabledDate}
     />

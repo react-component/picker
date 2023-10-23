@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { getWeekStartDate, isSameDate, isSameMonth } from '../../../utils/dateUtil';
 import type { SharedPanelProps } from '../../interface';
-import { PanelInfoContext, useInfo } from '../context';
+import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 
 export default function DatePanel<DateType = any>(props: SharedPanelProps<DateType>) {
@@ -28,7 +28,7 @@ export default function DatePanel<DateType = any>(props: SharedPanelProps<DateTy
 
   // ========================= Render =========================
   return (
-    <PanelInfoContext.Provider
+    <PanelContext.Provider
       value={{
         type: 'date',
         ...info,
@@ -43,6 +43,6 @@ export default function DatePanel<DateType = any>(props: SharedPanelProps<DateTy
         getCellText={getCellText}
         getCellClassName={getCellClassName}
       />
-    </PanelInfoContext.Provider>
+    </PanelContext.Provider>
   );
 }

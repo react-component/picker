@@ -78,6 +78,7 @@ export interface SharedPanelProps<DateType = any> {
   // Value
   pickerValue: DateType;
   value?: DateType;
+  onChange: (date: DateType) => void;
 
   // Render
   disabledDate?: DisabledDate<DateType>;

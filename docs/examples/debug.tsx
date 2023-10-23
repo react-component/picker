@@ -32,7 +32,7 @@ export default () => {
       </button>
 
       <PickerPanel
-        value={moment().add(1, 'day')}
+        defaultValue={moment().add(1, 'day')}
         locale={zhCN}
         generateConfig={momentGenerateConfig}
         disabledDate={(date) => date.date() === 11}

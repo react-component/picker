@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { PrefixClsContext } from '../PickerInput/context';
-import { PanelContext, PanelInfoContext, type PanelContextProps } from './context';
+import { PanelContext } from './context';
 
 export interface PanelBodyProps<DateType = any> {
   rowNum: number;
@@ -34,7 +34,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
   } = props;
 
   const prefixCls = React.useContext(PrefixClsContext);
-  const { type, now, disabledDate, cellRender } = React.useContext(PanelInfoContext);
+  const { type, now, disabledDate, cellRender, onChange } = React.useContext(PanelContext);
 
   const cellPrefixCls = `${prefixCls}-cell`;
 
@@ -71,11 +71,11 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
             [`${cellPrefixCls}-disabled`]: disabled,
             ...getCellClassName(currentDate),
           })}
-          // onClick={() => {
-          //   if (!disabled) {
-          //     onSelect(currentDate);
-          //   }
-          // }}
+          onClick={() => {
+            if (!disabled) {
+              onChange(currentDate);
+            }
+          }}
           // onMouseEnter={() => {
           //   if (!disabled && onDateMouseEnter) {
           //     onDateMouseEnter(currentDate);
