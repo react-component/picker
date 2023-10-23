@@ -1,10 +1,14 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
-import type { CellRender, DisabledDate, Locale } from '../interface';
+import type { CellRender, Components, DisabledDate, Locale, PanelMode } from '../interface';
 import { PrefixClsContext } from '../PickerInput/context';
 import { PanelContext, type PanelContextProps } from './context';
 import DatePanel from './DatePanel';
+
+const DefaultComponents: Components = {
+  date: DatePanel,
+};
 
 export interface PickerPanelProps<DateType = any> {
   locale: Locale;
@@ -20,10 +24,15 @@ export interface PickerPanelProps<DateType = any> {
   pickerValue?: DateType | null;
   onPickerValueChange?: (date: DateType) => void;
 
+  // Mode
+  mode?: PanelMode;
+  picker?: PanelMode;
+
   // Cell
   cellRender?: CellRender<DateType>;
 
   // Components
+  components?: Components;
 }
 
 export default function PickerPanel<DateType = any>(props: PickerPanelProps<DateType>) {
@@ -41,8 +50,15 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
     pickerValue,
     onPickerValueChange,
 
+    // Mode
+    mode,
+    picker = 'date',
+
     // Cell
     cellRender,
+
+    // Components
+    components = {},
   } = props;
 
   const prefixCls = React.useContext(PrefixClsContext);
@@ -65,24 +81,30 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
     },
   );
 
+  // ========================== Mode ==========================
+  const [mergedMode, setMergedMode] = useMergedState<PanelMode>(picker, {
+    value: mode,
+    postState: (val) => val || 'date',
+  });
+
   // ======================== Context =========================
   const panelContext = React.useMemo<PanelContextProps>(
     () => ({
-      locale,
       disabledDate,
-      generateConfig,
       value: mergedValue,
       pickerValue: mergedPickerValue,
       cellRender,
-      now,
     }),
-    [locale, disabledDate, generateConfig, mergedValue, mergedPickerValue, cellRender, now],
+    [disabledDate, mergedValue, mergedPickerValue, cellRender],
   );
+
+  // ======================= Components =======================
+  const PanelComponent = components[mergedMode] || DefaultComponents[mergedMode];
 
   // ========================= Render =========================
   return (
     <PanelContext.Provider value={panelContext}>
-      <DatePanel />
+      <PanelComponent prefixCls={prefixCls} locale={locale} generateConfig={generateConfig} />
     </PanelContext.Provider>
   );
 }

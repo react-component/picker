@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { getWeekStartDate, isSameDate, isSameMonth } from '../../../utils/dateUtil';
-import { PrefixClsContext } from '../../PickerInput/context';
+import type { SharedPanelProps } from '../../interface';
 import { PanelContext, PanelInfoContext, type PanelInfoProps } from '../context';
 import PanelBody from '../PanelBody';
 
-export default function DatePanel<DateType = any>() {
-  const prefixCls = React.useContext(PrefixClsContext);
-  const { value, pickerValue, locale, generateConfig, now } = React.useContext(PanelContext);
+export default function DatePanel<DateType = any>(props: SharedPanelProps<DateType>) {
+  const { prefixCls, locale, generateConfig } = props;
+  const { value, pickerValue } = React.useContext(PanelContext);
 
-  // ======================= Base Date ========================
+  // ========================== Base ==========================
+  const now = generateConfig.getNow();
   const baseDate = getWeekStartDate(locale.locale, generateConfig, pickerValue);
 
   // ========================= Cells ==========================
@@ -30,8 +31,9 @@ export default function DatePanel<DateType = any>() {
   const infoContext = React.useMemo<PanelInfoProps>(
     () => ({
       type: 'date',
+      now,
     }),
-    [],
+    [now],
   );
 
   // ========================= Render =========================

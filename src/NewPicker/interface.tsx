@@ -1,4 +1,5 @@
 import type { AlignType } from '@rc-component/trigger';
+import type { GenerateConfig } from '../generate';
 
 export type Locale = {
   locale: string;
@@ -66,7 +67,15 @@ export type CellRender<DateType, CurrentType = DateType | number> = (
 ) => React.ReactNode;
 
 // ======================= Components =======================
-export type Components = Partial<Record<PanelMode, any>>;
+export interface SharedPanelProps<DateType = any> {
+  prefixCls: string;
+  locale: Locale;
+  generateConfig: GenerateConfig<DateType>;
+}
+
+export type Components<DateType = any> = Partial<
+  Record<PanelMode, React.ComponentType<SharedPanelProps<DateType>>>
+>;
 
 // ========================= Picker =========================
 export type SemanticStructure = 'popup';
