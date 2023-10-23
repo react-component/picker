@@ -1,4 +1,4 @@
-import { Locale } from '../interface';
+import type { Locale } from '../interface';
 
 const locale: Locale = {
   locale: 'ka_GE',
@@ -16,9 +16,9 @@ const locale: Locale = {
   yearSelect: 'წლის არჩევა',
   decadeSelect: 'ათწლეულის არჩევა',
   yearFormat: 'YYYY',
-  dateFormat: 'M/D/YYYY',
+  dateFormat: 'YYYY-MM-DD',
   dayFormat: 'D',
-  dateTimeFormat: 'M/D/YYYY HH:mm:ss',
+  dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
   monthBeforeYear: true,
   previousMonth: 'წინა თვე (PageUp)',
   nextMonth: 'მომდევნო თვე (PageDown)',

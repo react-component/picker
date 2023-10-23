@@ -8,6 +8,7 @@ export type Locale = {
   monthBeforeYear?: boolean;
   yearFormat: string;
   monthFormat?: string;
+  weekFormat?: string;
   quarterFormat?: string;
 
   today: string;
