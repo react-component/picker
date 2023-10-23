@@ -11,6 +11,10 @@ export interface PickerPanelProps<DateType = any> {
   disabledDate?: DisabledDate<DateType>;
   generateConfig: GenerateConfig<DateType>;
 
+  // Value
+  defaultValue?: DateType | null;
+  value?: DateType | null;
+
   // Panel control
   defaultPickerValue?: DateType | null;
   pickerValue?: DateType | null;
@@ -18,6 +22,8 @@ export interface PickerPanelProps<DateType = any> {
 
   // Cell
   cellRender?: CellRender<DateType>;
+
+  // Components
 }
 
 export default function PickerPanel<DateType = any>(props: PickerPanelProps<DateType>) {
@@ -25,6 +31,10 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
     locale,
     disabledDate,
     generateConfig,
+
+    // Value
+    defaultValue,
+    value,
 
     // Picker control
     defaultPickerValue,
@@ -37,10 +47,18 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
 
   const prefixCls = React.useContext(PrefixClsContext);
 
+  // ========================== Now ===========================
+  const now = generateConfig.getNow();
+
+  // ========================= Value ==========================
+  const [mergedValue, setMergedValue] = useMergedState<DateType | null>(defaultValue, {
+    value,
+  });
+
   // ====================== PickerValue =======================
   // PickerValue is used to control the current displaying panel
   const [mergedPickerValue, setPickerValue] = useMergedState(
-    defaultPickerValue || generateConfig.getNow(),
+    defaultPickerValue || mergedValue || now,
     {
       value: pickerValue,
       onChange: onPickerValueChange,
@@ -53,10 +71,12 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
       locale,
       disabledDate,
       generateConfig,
+      value: mergedValue,
       pickerValue: mergedPickerValue,
       cellRender,
+      now,
     }),
-    [locale, disabledDate, generateConfig, mergedPickerValue, cellRender],
+    [locale, disabledDate, generateConfig, mergedValue, mergedPickerValue, cellRender, now],
   );
 
   // ========================= Render =========================

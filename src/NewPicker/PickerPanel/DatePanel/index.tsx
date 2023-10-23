@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { getWeekStartDate } from '../../../utils/dateUtil';
+import { getWeekStartDate, isSameDate, isSameMonth } from '../../../utils/dateUtil';
+import { PrefixClsContext } from '../../PickerInput/context';
 import { PanelContext, PanelInfoContext, type PanelInfoProps } from '../context';
 import PanelBody from '../PanelBody';
 
 export default function DatePanel<DateType = any>() {
-  const { pickerValue, locale, generateConfig } = React.useContext(PanelContext);
+  const prefixCls = React.useContext(PrefixClsContext);
+  const { value, pickerValue, locale, generateConfig, now } = React.useContext(PanelContext);
 
   // ======================= Base Date ========================
   const baseDate = getWeekStartDate(locale.locale, generateConfig, pickerValue);
@@ -18,7 +20,11 @@ export default function DatePanel<DateType = any>() {
     return generateConfig.getDate(date);
   };
 
-  const getCellClassName = () => ({});
+  const getCellClassName = (date: DateType) => ({
+    [`${prefixCls}-cell-in-view`]: isSameMonth(generateConfig, date, pickerValue),
+    [`${prefixCls}-cell-today`]: isSameDate(generateConfig, date, now),
+    [`${prefixCls}-cell-selected`]: isSameDate(generateConfig, date, value),
+  });
 
   // ======================== Context =========================
   const infoContext = React.useMemo<PanelInfoProps>(

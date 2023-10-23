@@ -6,8 +6,10 @@ export interface PanelContextProps<DateType = any> {
   locale: Locale;
   disabledDate?: DisabledDate<DateType>;
   generateConfig: GenerateConfig<DateType>;
+  value?: DateType;
   pickerValue: DateType;
   cellRender?: CellRender<DateType>;
+  now: DateType;
 }
 
 /** Used for root PickerPanel */

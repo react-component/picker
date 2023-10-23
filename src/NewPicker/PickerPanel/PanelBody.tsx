@@ -13,7 +13,7 @@ export interface PanelBodyProps<DateType = any> {
   // Render
   getCellDate: (date: DateType, offset: number) => DateType;
   getCellText: (date: DateType) => React.ReactNode;
-  getCellClassName: (date: DateType) => Record<string, string>;
+  getCellClassName: (date: DateType) => Record<string, any>;
 
   // Used for week panel
   prefixColumn?: (date: DateType) => React.ReactNode;
@@ -34,13 +34,11 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
   } = props;
 
   const prefixCls = React.useContext(PrefixClsContext);
-  const { disabledDate, generateConfig, cellRender }: PanelContextProps<DateType> =
+  const { disabledDate, generateConfig, cellRender, now }: PanelContextProps<DateType> =
     React.useContext(PanelContext);
   const { type } = React.useContext(PanelInfoContext);
 
   const cellPrefixCls = `${prefixCls}-cell`;
-
-  const today = generateConfig.getNow();
 
   // =============================== Body ===============================
   const rows: React.ReactNode[] = [];
@@ -94,7 +92,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
           {cellRender
             ? cellRender(currentDate, {
                 originNode: inner,
-                today,
+                today: now,
                 // range?: 'start' | 'end';
                 type,
                 // locale?: Locale;
