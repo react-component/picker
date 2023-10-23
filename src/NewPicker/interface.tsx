@@ -68,9 +68,20 @@ export type CellRender<DateType, CurrentType = DateType | number> = (
 
 // ======================= Components =======================
 export interface SharedPanelProps<DateType = any> {
+  // Style
   prefixCls: string;
+
+  // Date Library
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
+
+  // Value
+  pickerValue: DateType;
+  value?: DateType;
+
+  // Render
+  disabledDate?: DisabledDate<DateType>;
+  cellRender?: CellRender<DateType>;
 }
 
 export type Components<DateType = any> = Partial<

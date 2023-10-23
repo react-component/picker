@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { getWeekStartDate, isSameDate, isSameMonth } from '../../../utils/dateUtil';
 import type { SharedPanelProps } from '../../interface';
-import { PanelContext, PanelInfoContext, type PanelInfoProps } from '../context';
+import { PanelInfoContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 
 export default function DatePanel<DateType = any>(props: SharedPanelProps<DateType>) {
-  const { prefixCls, locale, generateConfig } = props;
-  const { value, pickerValue } = React.useContext(PanelContext);
+  const { prefixCls, locale, generateConfig, pickerValue, value } = props;
 
   // ========================== Base ==========================
-  const now = generateConfig.getNow();
+  const [info, now] = useInfo(props);
   const baseDate = getWeekStartDate(locale.locale, generateConfig, pickerValue);
 
   // ========================= Cells ==========================
@@ -27,18 +26,14 @@ export default function DatePanel<DateType = any>(props: SharedPanelProps<DateTy
     [`${prefixCls}-cell-selected`]: isSameDate(generateConfig, date, value),
   });
 
-  // ======================== Context =========================
-  const infoContext = React.useMemo<PanelInfoProps>(
-    () => ({
-      type: 'date',
-      now,
-    }),
-    [now],
-  );
-
   // ========================= Render =========================
   return (
-    <PanelInfoContext.Provider value={infoContext}>
+    <PanelInfoContext.Provider
+      value={{
+        type: 'date',
+        ...info,
+      }}
+    >
       <PanelBody
         colNum={7}
         rowNum={6}

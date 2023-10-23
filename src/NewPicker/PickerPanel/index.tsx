@@ -3,7 +3,6 @@ import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import type { CellRender, Components, DisabledDate, Locale, PanelMode } from '../interface';
 import { PrefixClsContext } from '../PickerInput/context';
-import { PanelContext, type PanelContextProps } from './context';
 import DatePanel from './DatePanel';
 
 const DefaultComponents: Components = {
@@ -87,24 +86,19 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
     postState: (val) => val || 'date',
   });
 
-  // ======================== Context =========================
-  const panelContext = React.useMemo<PanelContextProps>(
-    () => ({
-      disabledDate,
-      value: mergedValue,
-      pickerValue: mergedPickerValue,
-      cellRender,
-    }),
-    [disabledDate, mergedValue, mergedPickerValue, cellRender],
-  );
-
   // ======================= Components =======================
   const PanelComponent = components[mergedMode] || DefaultComponents[mergedMode];
 
   // ========================= Render =========================
   return (
-    <PanelContext.Provider value={panelContext}>
-      <PanelComponent prefixCls={prefixCls} locale={locale} generateConfig={generateConfig} />
-    </PanelContext.Provider>
+    <PanelComponent
+      prefixCls={prefixCls}
+      locale={locale}
+      generateConfig={generateConfig}
+      pickerValue={mergedPickerValue}
+      value={mergedValue}
+      cellRender={cellRender}
+      disabledDate={disabledDate}
+    />
   );
 }

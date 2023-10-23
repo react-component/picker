@@ -34,8 +34,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
   } = props;
 
   const prefixCls = React.useContext(PrefixClsContext);
-  const { disabledDate, cellRender }: PanelContextProps<DateType> = React.useContext(PanelContext);
-  const { type, now } = React.useContext(PanelInfoContext);
+  const { type, now, disabledDate, cellRender } = React.useContext(PanelInfoContext);
 
   const cellPrefixCls = `${prefixCls}-cell`;
 
