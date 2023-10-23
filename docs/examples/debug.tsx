@@ -56,6 +56,12 @@ export default () => {
           defaultValue={moment('2000-01-01')}
           disabledDate={(date) => date.week() === 3}
         />
+
+        <CellPicker
+          picker="month"
+          defaultValue={moment('2000-01-01')}
+          disabledDate={(date) => date.week() === 3}
+        />
       </div>
     </div>
   );
