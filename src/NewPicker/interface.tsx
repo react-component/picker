@@ -88,6 +88,7 @@ export interface SharedPanelProps<DateType = any> {
   // Render
   disabledDate?: DisabledDate<DateType>;
   cellRender?: CellRender<DateType>;
+  onHover: (value: DateType | null) => void;
 }
 
 export type Components<DateType = any> = Partial<

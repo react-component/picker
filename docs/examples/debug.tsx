@@ -13,6 +13,15 @@ import zhCN from '../../src/locale/zh_CN';
 moment.locale('zh-cn');
 window.moment = moment;
 
+function CellPicker(props: any) {
+  return (
+    <div>
+      <h5 style={{ margin: 0 }}>{props.picker || 'date'}</h5>
+      <PickerPanel locale={zhCN} generateConfig={momentGenerateConfig} {...props} />
+    </div>
+  );
+}
+
 export default () => {
   const singleRef = React.useRef<PickerRef>(null);
 
@@ -31,17 +40,23 @@ export default () => {
         Focus
       </button>
 
-      <PickerPanel
-        defaultValue={moment().add(1, 'day')}
-        locale={zhCN}
-        generateConfig={momentGenerateConfig}
-        disabledDate={(date) => date.date() === 11}
-        // cellRender={(date: Moment, info) => {
-        //   if (info.type === 'date') {
-        //     return date.format('Do');
-        //   }
-        // }}
-      />
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+        <CellPicker
+          defaultValue={moment().add(1, 'day')}
+          disabledDate={(date) => date.date() === 11}
+          // cellRender={(date: Moment, info) => {
+          //   if (info.type === 'date') {
+          //     return date.format('Do');
+          //   }
+          // }}
+        />
+
+        <CellPicker
+          picker="week"
+          defaultValue={moment('2000-01-01')}
+          disabledDate={(date) => date.week() === 3}
+        />
+      </div>
     </div>
   );
 };

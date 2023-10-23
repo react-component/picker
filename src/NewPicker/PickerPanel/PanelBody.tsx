@@ -36,7 +36,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
     headerCells,
   } = props;
 
-  const { prefixCls, type, now, disabledDate, cellRender, onChange, locale } =
+  const { prefixCls, type, now, disabledDate, cellRender, onChange, onHover, locale } =
     React.useContext(PanelContext);
 
   const cellPrefixCls = `${prefixCls}-cell`;
@@ -79,16 +79,16 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
               onChange(currentDate);
             }
           }}
-          // onMouseEnter={() => {
-          //   if (!disabled && onDateMouseEnter) {
-          //     onDateMouseEnter(currentDate);
-          //   }
-          // }}
-          // onMouseLeave={() => {
-          //   if (!disabled && onDateMouseLeave) {
-          //     onDateMouseLeave(currentDate);
-          //   }
-          // }}
+          onMouseEnter={() => {
+            if (!disabled) {
+              onHover(currentDate);
+            }
+          }}
+          onMouseLeave={() => {
+            if (!disabled) {
+              onHover(null);
+            }
+          }}
         >
           {cellRender
             ? cellRender(currentDate, {

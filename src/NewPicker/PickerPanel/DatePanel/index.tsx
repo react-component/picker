@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import * as React from 'react';
 import {
   formatValue,
@@ -6,21 +7,31 @@ import {
   isSameMonth,
   WEEK_DAY_COUNT,
 } from '../../../utils/dateUtil';
-import type { SharedPanelProps } from '../../interface';
+import type { PanelMode, SharedPanelProps } from '../../interface';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
 
-export default function DatePanel<DateType = any>(props: SharedPanelProps<DateType>) {
+export interface DatePanelProps<DateType> extends SharedPanelProps<DateType> {
+  panelName?: PanelMode;
+  prefixColumn?: (date: DateType) => React.ReactNode;
+  rowClassName?: (date: DateType) => string;
+}
+
+export default function DatePanel<DateType = any>(props: DatePanelProps<DateType>) {
   const {
     prefixCls,
+    panelName = 'date',
     locale,
     generateConfig,
     pickerValue,
     value,
     onPickerValueChange,
     onModeChange,
+    prefixColumn,
   } = props;
+
+  const panelPrefixCls = `${prefixCls}-${panelName}-panel`;
 
   // ========================== Base ==========================
   const [info, now] = useInfo(props);
@@ -37,9 +48,9 @@ export default function DatePanel<DateType = any>(props: SharedPanelProps<DateTy
       ? generateConfig.locale.getShortWeekDays(locale.locale)
       : []);
 
-  // if (prefixColumn) {
-  //   headerCells.push(<th key="empty" aria-label="empty cell" />);
-  // }
+  if (prefixColumn) {
+    headerCells.push(<th key="empty" aria-label="empty cell" />);
+  }
   for (let i = 0; i < WEEK_DAY_COUNT; i += 1) {
     headerCells.push(<th key={i}>{weekDaysLocale[(i + weekFirstDay) % WEEK_DAY_COUNT]}</th>);
   }
@@ -117,30 +128,37 @@ export default function DatePanel<DateType = any>(props: SharedPanelProps<DateTy
         ...info,
       }}
     >
-      {/* Header */}
-      <PanelHeader
-        onOffset={(offset) => {
-          onPickerValueChange(generateConfig.addMonth(pickerValue, offset));
-        }}
-        onSuperOffset={(offset) => {
-          onPickerValueChange(generateConfig.addYear(pickerValue, offset));
-        }}
+      <div
+        className={classNames(panelPrefixCls, {
+          // [`${panelPrefixCls}-active`]: active,
+        })}
       >
-        {monthYearNodes}
-      </PanelHeader>
+        {/* Header */}
+        <PanelHeader
+          onOffset={(offset) => {
+            onPickerValueChange(generateConfig.addMonth(pickerValue, offset));
+          }}
+          onSuperOffset={(offset) => {
+            onPickerValueChange(generateConfig.addYear(pickerValue, offset));
+          }}
+        >
+          {monthYearNodes}
+        </PanelHeader>
 
-      {/* Body */}
-      <PanelBody
-        colNum={WEEK_DAY_COUNT}
-        rowNum={6}
-        baseDate={baseDate}
-        // Header
-        headerCells={headerCells}
-        // Body
-        getCellDate={getCellDate}
-        getCellText={getCellText}
-        getCellClassName={getCellClassName}
-      />
+        {/* Body */}
+        <PanelBody
+          {...props}
+          colNum={WEEK_DAY_COUNT}
+          rowNum={6}
+          baseDate={baseDate}
+          // Header
+          headerCells={headerCells}
+          // Body
+          getCellDate={getCellDate}
+          getCellText={getCellText}
+          getCellClassName={getCellClassName}
+        />
+      </div>
     </PanelContext.Provider>
   );
 }

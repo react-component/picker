@@ -1,5 +1,5 @@
-import type { PanelMode, NullableDateType, PickerMode, Locale, CustomFormat } from '../interface';
 import type { GenerateConfig } from '../generate';
+import type { CustomFormat, Locale, NullableDateType, PanelMode, PickerMode } from '../interface';
 import { DECADE_UNIT_DIFF } from '../panels/DecadePanel/constant';
 
 export const WEEK_DAY_COUNT = 7;
@@ -124,9 +124,12 @@ export function isSameWeek<DateType>(
     return equal;
   }
 
+  const weekStartDate1 = getWeekStartDate(locale, generateConfig, date1);
+  const weekStartDate2 = getWeekStartDate(locale, generateConfig, date2);
+
   return (
-    isSameYear(generateConfig, date1!, date2!) &&
-    generateConfig.locale.getWeek(locale, date1!) === generateConfig.locale.getWeek(locale, date2!)
+    isSameYear(generateConfig, weekStartDate1, weekStartDate2) &&
+    generateConfig.locale.getWeek(locale, date1) === generateConfig.locale.getWeek(locale, date2)
   );
 }
 

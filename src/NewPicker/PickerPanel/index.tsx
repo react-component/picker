@@ -4,9 +4,11 @@ import type { GenerateConfig } from '../../generate';
 import type { CellRender, Components, DisabledDate, Locale, PanelMode } from '../interface';
 import { PrefixClsContext } from '../PickerInput/context';
 import DatePanel from './DatePanel';
+import WeekPanel from './WeekPanel';
 
 const DefaultComponents: Components = {
   date: DatePanel,
+  week: WeekPanel,
 };
 
 export interface PickerPanelProps<DateType = any> {
@@ -95,6 +97,9 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
     },
   );
 
+  // ======================= HoverValue =======================
+  const [hoverDate, setHoverDate] = React.useState<DateType>(null);
+
   // ========================== Mode ==========================
   const [mergedMode, setMergedMode] = useMergedState<PanelMode>(picker, {
     value: mode,
@@ -107,20 +112,23 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
 
   // ========================= Render =========================
   return (
-    <PanelComponent
-      prefixCls={mergedPrefixCls}
-      locale={locale}
-      generateConfig={generateConfig}
-      // Mode
-      onModeChange={setMergedMode}
-      // Value
-      pickerValue={mergedPickerValue}
-      onPickerValueChange={setPickerValue}
-      value={mergedValue}
-      onChange={onInternalChange}
-      // Render
-      cellRender={cellRender}
-      disabledDate={disabledDate}
-    />
+    <div className={`${mergedPrefixCls}-panel`}>
+      <PanelComponent
+        prefixCls={mergedPrefixCls}
+        locale={locale}
+        generateConfig={generateConfig}
+        // Mode
+        onModeChange={setMergedMode}
+        // Value
+        pickerValue={mergedPickerValue}
+        onPickerValueChange={setPickerValue}
+        value={mergedValue}
+        onChange={onInternalChange}
+        // Render
+        cellRender={cellRender}
+        disabledDate={disabledDate}
+        onHover={setHoverDate}
+      />
+    </div>
   );
 }
