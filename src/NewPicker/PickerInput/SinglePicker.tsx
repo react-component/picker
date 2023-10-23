@@ -1,6 +1,7 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
 import type { PickerRef, SelectorRef, SharedPickerProps } from '../interface';
+import PickerPanel from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import { PrefixClsContext } from './context';
 import SingleSelector from './Selector/SingleSelector';
@@ -38,8 +39,6 @@ const SinglePicker = React.forwardRef<PickerRef, SinglePickerProps>((props, ref)
     transitionName,
   } = props;
 
-  
-
   // ============================= Open =============================
   const [mergedOpen, setMergeOpen] = useMergedState(defaultOpen || false, {
     value: open,
@@ -72,13 +71,15 @@ const SinglePicker = React.forwardRef<PickerRef, SinglePickerProps>((props, ref)
     blur: selectorRef.current?.blur,
   }));
 
+  // ============================ Panels ============================
+  const panel = <PickerPanel />;
+
   // ============================ Render ============================
   return (
     <PrefixClsContext.Provider value={prefixCls}>
       <PickerTrigger
         visible={mergedOpen}
-        // popupElement={panel}
-        popupElement={<div>2333</div>}
+        popupElement={panel}
         popupStyle={styles.popup}
         popupClassName={classNames.popup}
         popupAlign={popupAlign}
