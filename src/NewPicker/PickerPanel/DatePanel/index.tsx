@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { formatValue, getWeekStartDate, isSameDate, isSameMonth } from '../../../utils/dateUtil';
+import {
+  formatValue,
+  getWeekStartDate,
+  isSameDate,
+  isSameMonth,
+  WEEK_DAY_COUNT,
+} from '../../../utils/dateUtil';
 import type { SharedPanelProps } from '../../interface';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
@@ -18,10 +24,27 @@ export default function DatePanel<DateType = any>(props: SharedPanelProps<DateTy
 
   // ========================== Base ==========================
   const [info, now] = useInfo(props);
+  const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale.locale);
   const baseDate = getWeekStartDate(locale.locale, generateConfig, pickerValue);
   const month = generateConfig.getMonth(pickerValue);
 
   // ========================= Cells ==========================
+  // >>> Header Cells
+  const headerCells: React.ReactNode[] = [];
+  const weekDaysLocale: string[] =
+    locale.shortWeekDays ||
+    (generateConfig.locale.getShortWeekDays
+      ? generateConfig.locale.getShortWeekDays(locale.locale)
+      : []);
+
+  // if (prefixColumn) {
+  //   headerCells.push(<th key="empty" aria-label="empty cell" />);
+  // }
+  for (let i = 0; i < WEEK_DAY_COUNT; i += 1) {
+    headerCells.push(<th key={i}>{weekDaysLocale[(i + weekFirstDay) % WEEK_DAY_COUNT]}</th>);
+  }
+
+  // >>> Body Cells
   const getCellDate = (date: DateType, offset: number) => {
     return generateConfig.addDate(date, offset);
   };
@@ -108,10 +131,12 @@ export default function DatePanel<DateType = any>(props: SharedPanelProps<DateTy
 
       {/* Body */}
       <PanelBody
-        colNum={7}
+        colNum={WEEK_DAY_COUNT}
         rowNum={6}
         baseDate={baseDate}
-        // Cell
+        // Header
+        headerCells={headerCells}
+        // Body
         getCellDate={getCellDate}
         getCellText={getCellText}
         getCellClassName={getCellClassName}

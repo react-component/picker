@@ -14,6 +14,9 @@ export interface PanelBodyProps<DateType = any> {
   getCellText: (date: DateType) => React.ReactNode;
   getCellClassName: (date: DateType) => Record<string, any>;
 
+  // Used for date panel
+  headerCells?: React.ReactNode[];
+
   // Used for week panel
   prefixColumn?: (date: DateType) => React.ReactNode;
   rowClassName?: (date: DateType) => string;
@@ -30,6 +33,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
     titleCell,
     getCellText,
     getCellClassName,
+    headerCells,
   } = props;
 
   const { prefixCls, type, now, disabledDate, cellRender, onChange, locale } =
@@ -110,11 +114,11 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
   return (
     <div className={`${prefixCls}-body`}>
       <table className={`${prefixCls}-content`}>
-        {/* {headerCells && (
+        {headerCells && (
           <thead>
             <tr>{headerCells}</tr>
           </thead>
-        )} */}
+        )}
         <tbody>{rows}</tbody>
       </table>
     </div>
