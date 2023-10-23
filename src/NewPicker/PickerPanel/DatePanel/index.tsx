@@ -27,7 +27,11 @@ export default function DatePanel<DateType = any>(props: SharedPanelProps<DateTy
   };
 
   const getCellText = (date: DateType) => {
-    return generateConfig.getDate(date);
+    return formatValue(date, {
+      locale,
+      format: locale.dayFormat,
+      generateConfig,
+    });
   };
 
   const getCellClassName = (date: DateType) => ({

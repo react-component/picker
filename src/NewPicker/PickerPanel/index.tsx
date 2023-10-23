@@ -103,7 +103,7 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
   });
 
   // ======================= Components =======================
-  const PanelComponent = components[mergedMode] || DefaultComponents[mergedMode];
+  const PanelComponent = components[mergedMode] || DefaultComponents[mergedMode] || DatePanel;
 
   // ========================= Render =========================
   return (

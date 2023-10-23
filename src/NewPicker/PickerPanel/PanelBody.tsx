@@ -91,7 +91,6 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
                 prefixCls,
                 originNode: inner,
                 today: now,
-                // range?: 'start' | 'end';
                 type,
                 locale,
               })

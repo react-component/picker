@@ -87,7 +87,6 @@ export interface SharedPanelProps<DateType = any> {
 
   // Render
   disabledDate?: DisabledDate<DateType>;
-  titleRender?: CellRender<DateType>;
   cellRender?: CellRender<DateType>;
 }
 
