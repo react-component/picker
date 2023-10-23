@@ -14,7 +14,7 @@ const locale: Locale = {
   monthSelect: '달 선택',
   yearSelect: '연 선택',
   decadeSelect: '연대 선택',
-  yearFormat: 'YYYY년',
+  yearFormat: 'YYYY',
   dateFormat: 'YYYY-MM-DD',
   dayFormat: 'Do',
   dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',

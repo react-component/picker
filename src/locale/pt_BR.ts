@@ -15,9 +15,9 @@ const locale: Locale = {
   yearSelect: 'Escolher ano',
   decadeSelect: 'Escolher década',
   yearFormat: 'YYYY',
-  dateFormat: 'D/M/YYYY',
+  dateFormat: 'YYYY-MM-DD',
   dayFormat: 'D',
-  dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+  dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
   monthBeforeYear: false,
   previousMonth: 'Mês anterior (PageUp)',
   nextMonth: 'Próximo mês (PageDown)',
@@ -28,20 +28,7 @@ const locale: Locale = {
   previousCentury: 'Século anterior',
   nextCentury: 'Próximo século',
   shortWeekDays: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
-    shortMonths: [
-      'Jan',
-      'Fev',
-      'Mar',
-      'Abr',
-      'Mai',
-      'Jun',
-      'Jul',
-      'Ago',
-      'Set',
-      'Out',
-      'Nov',
-      'Dez',
-    ],
+  shortMonths: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
 };
 
 export default locale;

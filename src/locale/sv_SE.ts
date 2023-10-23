@@ -17,7 +17,7 @@ const locale: Locale = {
   yearFormat: 'YYYY',
   dateFormat: 'YYYY-MM-DD',
   dayFormat: 'D',
-  dateTimeFormat: 'YYYY-MM-DD H:mm:ss',
+  dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
   monthBeforeYear: true,
   previousMonth: 'Förra månaden (PageUp)',
   nextMonth: 'Nästa månad (PageDown)',
