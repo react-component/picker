@@ -1,0 +1,4141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Locale: ar_EG format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="٢٠٠٠-٠١-٠١"
+  value="٢٠٠٠-٠١-٠١"
+/>
+`;
+
+exports[`Locale: ar_EG format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="٢٠٠٠-٠١-٠١ ٠٠:٠٠:٠٠"
+  value="٢٠٠٠-٠١-٠١ ٠٠:٠٠:٠٠"
+/>
+`;
+
+exports[`Locale: ar_EG format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="٢٠٠٠-٠١"
+  value="٢٠٠٠-٠١"
+/>
+`;
+
+exports[`Locale: ar_EG format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="٢٠٠٠-Q١"
+  value="٢٠٠٠-Q١"
+/>
+`;
+
+exports[`Locale: ar_EG format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="٢٠٠٠-١"
+  value="٢٠٠٠-١"
+/>
+`;
+
+exports[`Locale: ar_EG format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="٢٠٠٠"
+  value="٢٠٠٠"
+/>
+`;
+
+exports[`Locale: az_AZ format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: az_AZ format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: az_AZ format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: az_AZ format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: az_AZ format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1-inci"
+  value="2000-1-inci"
+/>
+`;
+
+exports[`Locale: az_AZ format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: bg_BG format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: bg_BG format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: bg_BG format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: bg_BG format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: bg_BG format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1-ви"
+  value="2000-1-ви"
+/>
+`;
+
+exports[`Locale: bg_BG format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: bn_BD format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="২০০০-০১-০১"
+  value="২০০০-০১-০১"
+/>
+`;
+
+exports[`Locale: bn_BD format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="২০০০-০১-০১ ০০:০০:০০"
+  value="২০০০-০১-০১ ০০:০০:০০"
+/>
+`;
+
+exports[`Locale: bn_BD format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="২০০০-০১"
+  value="২০০০-০১"
+/>
+`;
+
+exports[`Locale: bn_BD format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="২০০০-Q১"
+  value="২০০০-Q১"
+/>
+`;
+
+exports[`Locale: bn_BD format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="২০০০-১"
+  value="২০০০-১"
+/>
+`;
+
+exports[`Locale: bn_BD format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="২০০০"
+  value="২০০০"
+/>
+`;
+
+exports[`Locale: by_BY format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: by_BY format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: by_BY format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: by_BY format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: by_BY format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1st"
+  value="2000-1st"
+/>
+`;
+
+exports[`Locale: by_BY format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: ca_ES format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: ca_ES format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: ca_ES format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: ca_ES format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: ca_ES format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52a"
+  value="1999-52a"
+/>
+`;
+
+exports[`Locale: ca_ES format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: cs_CZ format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: cs_CZ format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: cs_CZ format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: cs_CZ format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: cs_CZ format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52."
+  value="1999-52."
+/>
+`;
+
+exports[`Locale: cs_CZ format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: da_DK format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: da_DK format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: da_DK format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: da_DK format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: da_DK format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52."
+  value="1999-52."
+/>
+`;
+
+exports[`Locale: da_DK format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: de_DE format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: de_DE format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: de_DE format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: de_DE format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: de_DE format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52."
+  value="1999-52."
+/>
+`;
+
+exports[`Locale: de_DE format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: el_GR format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: el_GR format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: el_GR format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: el_GR format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: el_GR format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52η"
+  value="1999-52η"
+/>
+`;
+
+exports[`Locale: el_GR format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: en_GB format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: en_GB format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: en_GB format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: en_GB format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: en_GB format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52nd"
+  value="1999-52nd"
+/>
+`;
+
+exports[`Locale: en_GB format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: en_US format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: en_US format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: en_US format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: en_US format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: en_US format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1st"
+  value="2000-1st"
+/>
+`;
+
+exports[`Locale: en_US format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: es_ES format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: es_ES format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: es_ES format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: es_ES format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: es_ES format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52º"
+  value="1999-52º"
+/>
+`;
+
+exports[`Locale: es_ES format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: es_MX format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: es_MX format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: es_MX format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: es_MX format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: es_MX format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52º"
+  value="1999-52º"
+/>
+`;
+
+exports[`Locale: es_MX format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: et_EE format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: et_EE format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: et_EE format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: et_EE format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: et_EE format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52."
+  value="1999-52."
+/>
+`;
+
+exports[`Locale: et_EE format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: eu_ES format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: eu_ES format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: eu_ES format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: eu_ES format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: eu_ES format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1."
+  value="2000-1."
+/>
+`;
+
+exports[`Locale: eu_ES format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: fa_IR format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="۲۰۰۰-۰۱-۰۱"
+  value="۲۰۰۰-۰۱-۰۱"
+/>
+`;
+
+exports[`Locale: fa_IR format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="۲۰۰۰-۰۱-۰۱ ۰۰:۰۰:۰۰"
+  value="۲۰۰۰-۰۱-۰۱ ۰۰:۰۰:۰۰"
+/>
+`;
+
+exports[`Locale: fa_IR format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="۲۰۰۰-۰۱"
+  value="۲۰۰۰-۰۱"
+/>
+`;
+
+exports[`Locale: fa_IR format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="۲۰۰۰-Q۱"
+  value="۲۰۰۰-Q۱"
+/>
+`;
+
+exports[`Locale: fa_IR format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="۲۰۰۰-۱م"
+  value="۲۰۰۰-۱م"
+/>
+`;
+
+exports[`Locale: fa_IR format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="۲۰۰۰"
+  value="۲۰۰۰"
+/>
+`;
+
+exports[`Locale: fi_FI format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: fi_FI format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: fi_FI format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: fi_FI format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: fi_FI format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52."
+  value="1999-52."
+/>
+`;
+
+exports[`Locale: fi_FI format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: fr_BE format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: fr_BE format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: fr_BE format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: fr_BE format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: fr_BE format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52e"
+  value="1999-52e"
+/>
+`;
+
+exports[`Locale: fr_BE format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: fr_CA format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: fr_CA format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: fr_CA format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: fr_CA format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: fr_CA format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1re"
+  value="2000-1re"
+/>
+`;
+
+exports[`Locale: fr_CA format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: fr_FR format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: fr_FR format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: fr_FR format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: fr_FR format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: fr_FR format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52e"
+  value="1999-52e"
+/>
+`;
+
+exports[`Locale: fr_FR format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: ga_IE format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: ga_IE format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: ga_IE format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: ga_IE format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: ga_IE format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52na"
+  value="1999-52na"
+/>
+`;
+
+exports[`Locale: ga_IE format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: gl_ES format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: gl_ES format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: gl_ES format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: gl_ES format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: gl_ES format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52º"
+  value="1999-52º"
+/>
+`;
+
+exports[`Locale: gl_ES format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: he_IL format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: he_IL format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: he_IL format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: he_IL format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: he_IL format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1"
+  value="2000-1"
+/>
+`;
+
+exports[`Locale: he_IL format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: hi_IN format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="२०००-०१-०१"
+  value="२०००-०१-०१"
+/>
+`;
+
+exports[`Locale: hi_IN format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="२०००-०१-०१ ००:००:००"
+  value="२०००-०१-०१ ००:००:००"
+/>
+`;
+
+exports[`Locale: hi_IN format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="२०००-०१"
+  value="२०००-०१"
+/>
+`;
+
+exports[`Locale: hi_IN format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="२०००-Q१"
+  value="२०००-Q१"
+/>
+`;
+
+exports[`Locale: hi_IN format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="२०००-१"
+  value="२०००-१"
+/>
+`;
+
+exports[`Locale: hi_IN format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="२०००"
+  value="२०००"
+/>
+`;
+
+exports[`Locale: hr_HR format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: hr_HR format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: hr_HR format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: hr_HR format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: hr_HR format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1."
+  value="2000-1."
+/>
+`;
+
+exports[`Locale: hr_HR format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: hu_HU format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: hu_HU format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: hu_HU format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: hu_HU format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: hu_HU format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52."
+  value="1999-52."
+/>
+`;
+
+exports[`Locale: hu_HU format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: id_ID format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: id_ID format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: id_ID format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: id_ID format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: id_ID format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1"
+  value="2000-1"
+/>
+`;
+
+exports[`Locale: id_ID format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: is_IS format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: is_IS format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: is_IS format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: is_IS format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: is_IS format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52."
+  value="1999-52."
+/>
+`;
+
+exports[`Locale: is_IS format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: it_IT format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: it_IT format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: it_IT format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: it_IT format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: it_IT format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52º"
+  value="1999-52º"
+/>
+`;
+
+exports[`Locale: it_IT format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: ja_JP format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: ja_JP format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: ja_JP format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: ja_JP format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: ja_JP format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1"
+  value="2000-1"
+/>
+`;
+
+exports[`Locale: ja_JP format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: ka_GE format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: ka_GE format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: ka_GE format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: ka_GE format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: ka_GE format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1-ლი"
+  value="2000-1-ლი"
+/>
+`;
+
+exports[`Locale: ka_GE format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: kk_KZ format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: kk_KZ format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: kk_KZ format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: kk_KZ format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: kk_KZ format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1-ші"
+  value="2000-1-ші"
+/>
+`;
+
+exports[`Locale: kk_KZ format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: km_KH format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="២០០០-០១-០១"
+  value="២០០០-០១-០១"
+/>
+`;
+
+exports[`Locale: km_KH format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="២០០០-០១-០១ ០០:០០:០០"
+  value="២០០០-០១-០១ ០០:០០:០០"
+/>
+`;
+
+exports[`Locale: km_KH format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="២០០០-០១"
+  value="២០០០-០១"
+/>
+`;
+
+exports[`Locale: km_KH format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="២០០០-Q១"
+  value="២០០០-Q១"
+/>
+`;
+
+exports[`Locale: km_KH format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="១៩៩៩-ទី៥២"
+  value="១៩៩៩-ទី៥២"
+/>
+`;
+
+exports[`Locale: km_KH format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="២០០០"
+  value="២០០០"
+/>
+`;
+
+exports[`Locale: kmr_IQ format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="٢٠٠٠-٠١-٠١"
+  value="٢٠٠٠-٠١-٠١"
+/>
+`;
+
+exports[`Locale: kmr_IQ format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="٢٠٠٠-٠١-٠١ ٠٠:٠٠:٠٠"
+  value="٢٠٠٠-٠١-٠١ ٠٠:٠٠:٠٠"
+/>
+`;
+
+exports[`Locale: kmr_IQ format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="٢٠٠٠-٠١"
+  value="٢٠٠٠-٠١"
+/>
+`;
+
+exports[`Locale: kmr_IQ format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="٢٠٠٠-Q١"
+  value="٢٠٠٠-Q١"
+/>
+`;
+
+exports[`Locale: kmr_IQ format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="٢٠٠٠-١"
+  value="٢٠٠٠-١"
+/>
+`;
+
+exports[`Locale: kmr_IQ format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="٢٠٠٠"
+  value="٢٠٠٠"
+/>
+`;
+
+exports[`Locale: kn_IN format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="೨೦೦೦-೦೧-೦೧"
+  value="೨೦೦೦-೦೧-೦೧"
+/>
+`;
+
+exports[`Locale: kn_IN format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="೨೦೦೦-೦೧-೦೧ ೦೦:೦೦:೦೦"
+  value="೨೦೦೦-೦೧-೦೧ ೦೦:೦೦:೦೦"
+/>
+`;
+
+exports[`Locale: kn_IN format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="೨೦೦೦-೦೧"
+  value="೨೦೦೦-೦೧"
+/>
+`;
+
+exports[`Locale: kn_IN format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="೨೦೦೦-Q೧"
+  value="೨೦೦೦-Q೧"
+/>
+`;
+
+exports[`Locale: kn_IN format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="೨೦೦೦-೧ನೇ"
+  value="೨೦೦೦-೧ನೇ"
+/>
+`;
+
+exports[`Locale: kn_IN format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="೨೦೦೦"
+  value="೨೦೦೦"
+/>
+`;
+
+exports[`Locale: ko_KR format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: ko_KR format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: ko_KR format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: ko_KR format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: ko_KR format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1주"
+  value="2000-1주"
+/>
+`;
+
+exports[`Locale: ko_KR format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: lt_LT format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: lt_LT format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: lt_LT format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: lt_LT format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: lt_LT format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52-oji"
+  value="1999-52-oji"
+/>
+`;
+
+exports[`Locale: lt_LT format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: lv_LV format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: lv_LV format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: lv_LV format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: lv_LV format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: lv_LV format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52."
+  value="1999-52."
+/>
+`;
+
+exports[`Locale: lv_LV format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: mk_MK format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: mk_MK format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: mk_MK format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: mk_MK format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: mk_MK format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1-ви"
+  value="2000-1-ви"
+/>
+`;
+
+exports[`Locale: mk_MK format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: ml_IN format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: ml_IN format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: ml_IN format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: ml_IN format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: ml_IN format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1"
+  value="2000-1"
+/>
+`;
+
+exports[`Locale: ml_IN format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: mm_MM format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: mm_MM format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: mm_MM format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: mm_MM format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: mm_MM format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1st"
+  value="2000-1st"
+/>
+`;
+
+exports[`Locale: mm_MM format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: mn_MN format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: mn_MN format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: mn_MN format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: mn_MN format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: mn_MN format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1"
+  value="2000-1"
+/>
+`;
+
+exports[`Locale: mn_MN format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: ms_MY format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: ms_MY format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: ms_MY format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: ms_MY format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: ms_MY format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1"
+  value="2000-1"
+/>
+`;
+
+exports[`Locale: ms_MY format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: nb_NO format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: nb_NO format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: nb_NO format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: nb_NO format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: nb_NO format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52."
+  value="1999-52."
+/>
+`;
+
+exports[`Locale: nb_NO format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: nl_BE format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: nl_BE format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: nl_BE format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: nl_BE format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: nl_BE format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52ste"
+  value="1999-52ste"
+/>
+`;
+
+exports[`Locale: nl_BE format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: nl_NL format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: nl_NL format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: nl_NL format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: nl_NL format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: nl_NL format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52ste"
+  value="1999-52ste"
+/>
+`;
+
+exports[`Locale: nl_NL format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: pl_PL format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: pl_PL format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: pl_PL format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: pl_PL format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: pl_PL format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52."
+  value="1999-52."
+/>
+`;
+
+exports[`Locale: pl_PL format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: pt_BR format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: pt_BR format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: pt_BR format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: pt_BR format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: pt_BR format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1º"
+  value="2000-1º"
+/>
+`;
+
+exports[`Locale: pt_BR format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: pt_PT format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: pt_PT format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: pt_PT format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: pt_PT format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: pt_PT format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52º"
+  value="1999-52º"
+/>
+`;
+
+exports[`Locale: pt_PT format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: ro_RO format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: ro_RO format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: ro_RO format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: ro_RO format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: ro_RO format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1"
+  value="2000-1"
+/>
+`;
+
+exports[`Locale: ro_RO format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: ru_RU format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: ru_RU format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: ru_RU format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: ru_RU format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: ru_RU format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52-я"
+  value="1999-52-я"
+/>
+`;
+
+exports[`Locale: ru_RU format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: si_LK format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: si_LK format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: si_LK format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: si_LK format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: si_LK format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1 වැනි"
+  value="2000-1 වැනි"
+/>
+`;
+
+exports[`Locale: si_LK format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: sk_SK format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: sk_SK format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: sk_SK format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: sk_SK format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: sk_SK format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52."
+  value="1999-52."
+/>
+`;
+
+exports[`Locale: sk_SK format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: sl_SI format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: sl_SI format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: sl_SI format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: sl_SI format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: sl_SI format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1."
+  value="2000-1."
+/>
+`;
+
+exports[`Locale: sl_SI format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: sr_Cyrl_RS format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: sr_Cyrl_RS format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: sr_Cyrl_RS format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: sr_Cyrl_RS format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: sr_Cyrl_RS format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1."
+  value="2000-1."
+/>
+`;
+
+exports[`Locale: sr_Cyrl_RS format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: sr_RS format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: sr_RS format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: sr_RS format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: sr_RS format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: sr_RS format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1."
+  value="2000-1."
+/>
+`;
+
+exports[`Locale: sr_RS format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: sv_SE format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: sv_SE format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: sv_SE format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: sv_SE format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: sv_SE format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52:a"
+  value="1999-52:a"
+/>
+`;
+
+exports[`Locale: sv_SE format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: ta_IN format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="௨௦௦௦-௦௧-௦௧"
+  value="௨௦௦௦-௦௧-௦௧"
+/>
+`;
+
+exports[`Locale: ta_IN format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="௨௦௦௦-௦௧-௦௧ ௦௦:௦௦:௦௦"
+  value="௨௦௦௦-௦௧-௦௧ ௦௦:௦௦:௦௦"
+/>
+`;
+
+exports[`Locale: ta_IN format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="௨௦௦௦-௦௧"
+  value="௨௦௦௦-௦௧"
+/>
+`;
+
+exports[`Locale: ta_IN format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="௨௦௦௦-Q௧"
+  value="௨௦௦௦-Q௧"
+/>
+`;
+
+exports[`Locale: ta_IN format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="௨௦௦௦-௧வது"
+  value="௨௦௦௦-௧வது"
+/>
+`;
+
+exports[`Locale: ta_IN format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="௨௦௦௦"
+  value="௨௦௦௦"
+/>
+`;
+
+exports[`Locale: th_TH format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: th_TH format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: th_TH format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: th_TH format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: th_TH format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1"
+  value="2000-1"
+/>
+`;
+
+exports[`Locale: th_TH format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: tk_TK format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: tk_TK format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: tk_TK format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: tk_TK format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: tk_TK format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1'inji"
+  value="2000-1'inji"
+/>
+`;
+
+exports[`Locale: tk_TK format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: tr_TR format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: tr_TR format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: tr_TR format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: tr_TR format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: tr_TR format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1'inci"
+  value="2000-1'inci"
+/>
+`;
+
+exports[`Locale: tr_TR format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: ug_CN format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: ug_CN format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: ug_CN format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: ug_CN format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: ug_CN format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1-ھەپتە"
+  value="2000-1-ھەپتە"
+/>
+`;
+
+exports[`Locale: ug_CN format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: uk_UA format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: uk_UA format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: uk_UA format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: uk_UA format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: uk_UA format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1-й"
+  value="2000-1-й"
+/>
+`;
+
+exports[`Locale: uk_UA format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: ur_PK format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: ur_PK format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: ur_PK format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: ur_PK format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: ur_PK format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52"
+  value="1999-52"
+/>
+`;
+
+exports[`Locale: ur_PK format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: uz_UZ format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: uz_UZ format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: uz_UZ format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: uz_UZ format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: uz_UZ format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1"
+  value="2000-1"
+/>
+`;
+
+exports[`Locale: uz_UZ format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: vi_VN format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: vi_VN format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: vi_VN format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: vi_VN format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: vi_VN format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52"
+  value="1999-52"
+/>
+`;
+
+exports[`Locale: vi_VN format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: zh_CN format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: zh_CN format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: zh_CN format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: zh_CN format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: zh_CN format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="1999-52周"
+  value="1999-52周"
+/>
+`;
+
+exports[`Locale: zh_CN format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
+
+exports[`Locale: zh_TW format by locale with type date 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01-01"
+  value="2000-01-01"
+/>
+`;
+
+exports[`Locale: zh_TW format by locale with type dateTime 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="21"
+  title="2000-01-01 00:00:00"
+  value="2000-01-01 00:00:00"
+/>
+`;
+
+exports[`Locale: zh_TW format by locale with type month 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-01"
+  value="2000-01"
+/>
+`;
+
+exports[`Locale: zh_TW format by locale with type quarter 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-Q1"
+  value="2000-Q1"
+/>
+`;
+
+exports[`Locale: zh_TW format by locale with type week 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000-1週"
+  value="2000-1週"
+/>
+`;
+
+exports[`Locale: zh_TW format by locale with type year 1`] = `
+<input
+  autocomplete="off"
+  readonly=""
+  size="12"
+  title="2000"
+  value="2000"
+/>
+`;
