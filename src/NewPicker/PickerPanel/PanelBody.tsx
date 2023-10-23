@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { PrefixClsContext } from '../PickerInput/context';
 import { PanelContext } from './context';
 
 export interface PanelBodyProps<DateType = any> {
@@ -33,8 +32,8 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
     getCellClassName,
   } = props;
 
-  const prefixCls = React.useContext(PrefixClsContext);
-  const { type, now, disabledDate, cellRender, onChange } = React.useContext(PanelContext);
+  const { prefixCls, type, now, disabledDate, cellRender, onChange, locale } =
+    React.useContext(PanelContext);
 
   const cellPrefixCls = `${prefixCls}-cell`;
 
@@ -89,12 +88,12 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
         >
           {cellRender
             ? cellRender(currentDate, {
+                prefixCls,
                 originNode: inner,
                 today: now,
                 // range?: 'start' | 'end';
                 type,
-                // locale?: Locale;
-                // subType?: 'hour' | 'minute' | 'second' | 'meridiem';
+                locale,
               })
             : inner}
         </td>,

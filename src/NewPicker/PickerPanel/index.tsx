@@ -14,6 +14,9 @@ export interface PickerPanelProps<DateType = any> {
   disabledDate?: DisabledDate<DateType>;
   generateConfig: GenerateConfig<DateType>;
 
+  // Style
+  prefixCls?: string;
+
   // Value
   defaultValue?: DateType | null;
   value?: DateType | null;
@@ -26,6 +29,7 @@ export interface PickerPanelProps<DateType = any> {
 
   // Mode
   mode?: PanelMode;
+  onModeChange?: (mode: PanelMode) => void;
   picker?: PanelMode;
 
   // Cell
@@ -41,6 +45,9 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
     disabledDate,
     generateConfig,
 
+    // Style
+    prefixCls,
+
     // Value
     defaultValue,
     value,
@@ -53,6 +60,7 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
 
     // Mode
     mode,
+    onModeChange,
     picker = 'date',
 
     // Cell
@@ -62,7 +70,7 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
     components = {},
   } = props;
 
-  const prefixCls = React.useContext(PrefixClsContext);
+  const mergedPrefixCls = React.useContext(PrefixClsContext) || prefixCls || 'rc-picker';
 
   // ========================== Now ===========================
   const now = generateConfig.getNow();
@@ -91,6 +99,7 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
   const [mergedMode, setMergedMode] = useMergedState<PanelMode>(picker, {
     value: mode,
     postState: (val) => val || 'date',
+    onChange: onModeChange,
   });
 
   // ======================= Components =======================
@@ -99,11 +108,14 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
   // ========================= Render =========================
   return (
     <PanelComponent
-      prefixCls={prefixCls}
+      prefixCls={mergedPrefixCls}
       locale={locale}
       generateConfig={generateConfig}
+      // Mode
+      onModeChange={setMergedMode}
       // Value
       pickerValue={mergedPickerValue}
+      onPickerValueChange={setPickerValue}
       value={mergedValue}
       onChange={onInternalChange}
       // Render

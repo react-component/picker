@@ -5,7 +5,7 @@ import RangePicker from '../../src/NewPicker/PickerInput/RangePicker';
 import SinglePicker from '../../src/NewPicker/PickerInput/SinglePicker';
 import PickerPanel from '../../src/NewPicker/PickerPanel';
 
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import 'moment/locale/zh-cn';
 import momentGenerateConfig from '../../src/generate/moment';
 import zhCN from '../../src/locale/zh_CN';
@@ -36,6 +36,11 @@ export default () => {
         locale={zhCN}
         generateConfig={momentGenerateConfig}
         disabledDate={(date) => date.date() === 11}
+        cellRender={(date: Moment, info) => {
+          if (info.type === 'date') {
+            return date.format('Do');
+          }
+        }}
       />
     </div>
   );

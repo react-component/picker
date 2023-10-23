@@ -51,6 +51,7 @@ export type DisabledDate<DateType = any> = (
 ) => boolean;
 
 export type CellRenderInfo<DateType> = {
+  prefixCls: string;
   // The cell wrapper element
   originNode: React.ReactElement;
   today: DateType;
@@ -77,11 +78,16 @@ export interface SharedPanelProps<DateType = any> {
 
   // Value
   pickerValue: DateType;
+  onPickerValueChange: (date: DateType) => void;
   value?: DateType;
   onChange: (date: DateType) => void;
 
+  // Mode
+  onModeChange: (mode: PanelMode) => void;
+
   // Render
   disabledDate?: DisabledDate<DateType>;
+  titleRender?: CellRender<DateType>;
   cellRender?: CellRender<DateType>;
 }
 
