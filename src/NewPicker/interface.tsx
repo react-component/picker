@@ -20,6 +20,8 @@ export type Locale = {
   yearCellFormat?: string;
   /** day format in body panel */
   dayFormat: string;
+  /** meridiem format in body panel */
+  meridiemFormat?: string;
 
   // Input format
   /** Full date format like YYYY-MM-DD in input */
@@ -88,8 +90,48 @@ export type CellRender<DateType, CurrentType = DateType | number> = (
   info: CellRenderInfo<DateType>,
 ) => React.ReactNode;
 
+// ========================== Time ==========================
+export interface DisabledTimes {
+  disabledHours?: () => number[];
+  disabledMinutes?: (hour: number) => number[];
+  disabledSeconds?: (hour: number, minute: number) => number[];
+}
+
+export interface SharedTimeProps<DateType = any> {
+  /** Only work in picker is `time` */
+  format?: string;
+  /** Only work in picker is `time` */
+  showNow?: boolean;
+  /** Only work in picker is `time` */
+  showHour?: boolean;
+  /** Only work in picker is `time` */
+  showMinute?: boolean;
+  /** Only work in picker is `time` */
+  showSecond?: boolean;
+  /** Only work in picker is `time` */
+  use12Hours?: boolean;
+  /** Only work in picker is `time` */
+  hourStep?: IntRange<1, 23>;
+  /** Only work in picker is `time` */
+  minuteStep?: IntRange<1, 59>;
+  /** Only work in picker is `time` */
+  secondStep?: IntRange<1, 59>;
+  /** Only work in picker is `time` */
+  hideDisabledOptions?: boolean;
+
+  /** @deprecated Please use `disabledTime` instead. */
+  disabledHours?: DisabledTimes['disabledHours'];
+  /** @deprecated Please use `disabledTime` instead. */
+  disabledMinutes?: DisabledTimes['disabledMinutes'];
+  /** @deprecated Please use `disabledTime` instead. */
+  disabledSeconds?: DisabledTimes['disabledSeconds'];
+
+  /** Only work in picker is `time` */
+  disabledTime?: (date: DateType) => DisabledTimes;
+}
+
 // ======================= Components =======================
-export interface SharedPanelProps<DateType = any> {
+export interface SharedPanelProps<DateType = any> extends SharedTimeProps<DateType> {
   // Style
   prefixCls: string;
 
@@ -175,3 +217,11 @@ export interface SelectorRef {
   focus: VoidFunction;
   blur: VoidFunction;
 }
+
+// ========================== MISC ==========================
+// https://stackoverflow.com/a/39495173; need TypeScript >= 4.5
+type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] extends N
+  ? Acc[number]
+  : Enumerate<N, [...Acc, Acc['length']]>;
+
+export type IntRange<F extends number, T extends number> = Exclude<Enumerate<T>, Enumerate<F>>;

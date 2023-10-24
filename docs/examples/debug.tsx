@@ -3,7 +3,7 @@ import '../../assets/index.less';
 import type { PickerRef } from '../../src/NewPicker/interface';
 import RangePicker from '../../src/NewPicker/PickerInput/RangePicker';
 import SinglePicker from '../../src/NewPicker/PickerInput/SinglePicker';
-import PickerPanel from '../../src/NewPicker/PickerPanel';
+import PickerPanel, { type PickerPanelProps } from '../../src/NewPicker/PickerPanel';
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -13,7 +13,7 @@ import zhCN from '../../src/locale/zh_CN';
 moment.locale('zh-cn');
 window.moment = moment;
 
-function CellPicker(props: any) {
+function CellPicker(props: Partial<PickerPanelProps>) {
   return (
     <div>
       <h5 style={{ margin: 0 }}>{props.picker || 'date'}</h5>
@@ -73,6 +73,13 @@ export default () => {
           picker="decade"
           defaultValue={moment('2023-04-05')}
           disabledDate={(date) => date.week() === 3}
+        />
+
+        <CellPicker
+          picker="time"
+          defaultValue={moment('1990-10-23 03:05:08')}
+          disabledDate={(date) => date.week() === 3}
+          use12Hours
         />
       </div>
     </div>

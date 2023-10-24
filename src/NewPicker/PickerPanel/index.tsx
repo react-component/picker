@@ -6,6 +6,7 @@ import { PrefixClsContext } from '../PickerInput/context';
 import DatePanel from './DatePanel';
 import DecadePanel from './DecadePanel';
 import MonthPanel from './MonthPanel';
+import TimePanel from './TimePanel';
 import WeekPanel from './WeekPanel';
 import YearPanel from './YearPanel';
 
@@ -15,6 +16,7 @@ const DefaultComponents: Components = {
   month: MonthPanel,
   year: YearPanel,
   decade: DecadePanel,
+  time: TimePanel,
 };
 
 export interface PickerPanelProps<DateType = any> {
@@ -138,6 +140,9 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
   return (
     <div className={`${mergedPrefixCls}-panel`}>
       <PanelComponent
+        // Time
+        {...props}
+        // MISC
         prefixCls={mergedPrefixCls}
         locale={locale}
         generateConfig={generateConfig}

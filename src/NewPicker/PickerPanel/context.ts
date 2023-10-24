@@ -1,4 +1,5 @@
 import React from 'react';
+import type { GenerateConfig } from '../../generate';
 import type { CellRender, DisabledDate, Locale, PanelMode, SharedPanelProps } from '../interface';
 
 export interface PanelProps<DateType = any> {
@@ -12,6 +13,9 @@ export interface PanelProps<DateType = any> {
   onChange: (date: DateType) => void;
   locale: Locale;
   onHover: (date: DateType | null) => void;
+  value?: DateType;
+  pickerValue?: DateType;
+  generateConfig: GenerateConfig<DateType>;
 }
 
 /** Used for each single Panel. e.g. DatePanel */
@@ -23,17 +27,30 @@ export const PanelContext = React.createContext<PanelProps>(null!);
 export function useInfo<DateType = any>(
   props: SharedPanelProps<DateType>,
 ): [sharedProps: Omit<PanelProps<DateType>, 'type'>, now: DateType] {
-  const { prefixCls, generateConfig, locale, disabledDate, cellRender, onChange, onHover } = props;
+  const {
+    prefixCls,
+    generateConfig,
+    locale,
+    disabledDate,
+    cellRender,
+    onChange,
+    onHover,
+    value,
+    pickerValue,
+  } = props;
 
   const now = generateConfig.getNow();
   const info = {
     now,
+    value,
+    pickerValue,
     prefixCls,
     disabledDate,
     cellRender,
     onChange,
     onHover,
     locale,
+    generateConfig,
   };
 
   return [info, now];
