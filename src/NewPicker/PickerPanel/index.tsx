@@ -4,13 +4,17 @@ import type { GenerateConfig } from '../../generate';
 import type { CellRender, Components, DisabledDate, Locale, PanelMode } from '../interface';
 import { PrefixClsContext } from '../PickerInput/context';
 import DatePanel from './DatePanel';
+import DecadePanel from './DecadePanel';
 import MonthPanel from './MonthPanel';
 import WeekPanel from './WeekPanel';
+import YearPanel from './YearPanel';
 
 const DefaultComponents: Components = {
   date: DatePanel,
   week: WeekPanel,
   month: MonthPanel,
+  year: YearPanel,
+  decade: DecadePanel,
 };
 
 export interface PickerPanelProps<DateType = any> {

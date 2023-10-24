@@ -5,11 +5,27 @@ export type Locale = {
   locale: string;
 
   // ===================== Date Panel =====================
+  // Header Format
   /** Display month before year in date panel header */
   monthBeforeYear?: boolean;
+  /** year format in header panel */
   yearFormat: string;
+  /** month format in header panel */
   monthFormat?: string;
+  /** quarter format in header panel */
   quarterFormat?: string;
+
+  // Cell format
+  /** year format in body panel */
+  yearCellFormat?: string;
+  /** day format in body panel */
+  dayFormat: string;
+
+  // Input format
+  /** Full date format like YYYY-MM-DD in input */
+  dateFormat: string;
+  /** Full date format with time like YYYY-MM-DD HH:mm:ss in input */
+  dateTimeFormat: string;
 
   today: string;
   now: string;
@@ -27,9 +43,6 @@ export type Locale = {
   yearSelect: string;
   decadeSelect: string;
 
-  dayFormat: string;
-  dateFormat: string;
-  dateTimeFormat: string;
   previousYear: string;
   nextYear: string;
   previousDecade: string;

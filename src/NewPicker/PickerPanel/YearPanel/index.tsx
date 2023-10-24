@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { formatValue, isSameMonth } from '../../../utils/dateUtil';
+import { formatValue, isSameYear } from '../../../utils/dateUtil';
 import type { SharedPanelProps } from '../../interface';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
 
-export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateType>) {
+export default function YearPanel<DateType = any>(props: SharedPanelProps<DateType>) {
   const {
     prefixCls,
     locale,
@@ -17,41 +17,39 @@ export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateT
     onModeChange,
   } = props;
 
-  const panelPrefixCls = `${prefixCls}-month-panel`;
+  const panelPrefixCls = `${prefixCls}-year-panel`;
 
   // ========================== Base ==========================
   const [info, now] = useInfo(props);
-  const baseDate = generateConfig.setMonth(pickerValue, 0);
+  const startYear = Math.floor(generateConfig.getYear(pickerValue) / 10) * 10;
+  const endYear = startYear + 9;
 
-  // ========================= Month ==========================
-  const monthsLocale: string[] =
-    locale.shortMonths ||
-    (generateConfig.locale.getShortMonths
-      ? generateConfig.locale.getShortMonths(locale.locale)
-      : []);
+  const baseDate = generateConfig.setYear(pickerValue, startYear - 1);
+
+  const startYearDate = generateConfig.setYear(baseDate, startYear);
+  const endYearDate = generateConfig.setYear(startYearDate, endYear);
 
   // ========================= Cells ==========================
   const getCellDate = (date: DateType, offset: number) => {
-    return generateConfig.addMonth(date, offset);
+    return generateConfig.addYear(date, offset);
   };
 
   const getCellText = (date: DateType) => {
-    const month = generateConfig.getMonth(date);
-
-    return locale.monthFormat
-      ? formatValue(date, {
-          locale,
-          format: locale.monthFormat,
-          generateConfig,
-        })
-      : monthsLocale[month];
+    return formatValue(date, {
+      locale,
+      format: locale.yearCellFormat || 'YYYY',
+      generateConfig,
+    });
   };
 
-  const getCellClassName = (date: DateType) => ({
-    [`${prefixCls}-cell-in-view`]: true,
-    [`${prefixCls}-cell-today`]: isSameMonth(generateConfig, date, now),
-    [`${prefixCls}-cell-selected`]: isSameMonth(generateConfig, date, value),
-  });
+  const getCellClassName = (date: DateType) => {
+    const dateYear = generateConfig.getYear(date);
+    return {
+      [`${prefixCls}-cell-in-view`]: startYear <= dateYear && dateYear <= endYear,
+      [`${prefixCls}-cell-today`]: isSameYear(generateConfig, date, now),
+      [`${prefixCls}-cell-selected`]: isSameYear(generateConfig, date, value),
+    };
+  };
 
   // ========================= Header =========================
   const yearNode: React.ReactNode = (
@@ -59,12 +57,18 @@ export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateT
       type="button"
       key="year"
       onClick={() => {
-        onModeChange('year');
+        onModeChange('decade');
       }}
       tabIndex={-1}
-      className={`${prefixCls}-year-btn`}
+      className={`${prefixCls}-decade-btn`}
     >
-      {formatValue(pickerValue, {
+      {formatValue(startYearDate, {
+        locale,
+        format: locale.yearFormat,
+        generateConfig,
+      })}
+      -
+      {formatValue(endYearDate, {
         locale,
         format: locale.yearFormat,
         generateConfig,
@@ -88,7 +92,7 @@ export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateT
         {/* Header */}
         <PanelHeader
           onOffset={(offset) => {
-            onPickerValueChange(generateConfig.addYear(pickerValue, offset));
+            onPickerValueChange(generateConfig.addYear(pickerValue, offset * 10));
           }}
         >
           {yearNode}
@@ -97,8 +101,8 @@ export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateT
         {/* Body */}
         <PanelBody
           {...props}
-          colNum={4}
-          rowNum={3}
+          colNum={3}
+          rowNum={4}
           baseDate={baseDate}
           // Body
           getCellDate={getCellDate}
