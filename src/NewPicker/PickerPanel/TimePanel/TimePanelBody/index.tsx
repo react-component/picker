@@ -93,10 +93,16 @@ export default function TimePanelBody<DateType = any>(props: TimePanelBodyProps<
   }, [mergedValue, disabledTime, disabledHours, disabledMinutes, disabledSeconds]);
 
   // ========================= Column =========================
-  const rowHourUnits = React.useMemo(
-    () => generateUnits(0, 23, hourStep, hideDisabledOptions, mergedDisabledHours()),
-    [hideDisabledOptions, hourStep, mergedDisabledHours],
-  );
+  const rowHourUnits = React.useMemo(() => {
+    const hours = generateUnits(0, 23, hourStep, hideDisabledOptions, mergedDisabledHours());
+
+    return mergedShowMeridiem
+      ? hours.map((unit) => ({
+          ...unit,
+          label: leftPad((unit.value as number) % 12 || 12, 2),
+        }))
+      : hours;
+  }, [hideDisabledOptions, hourStep, mergedDisabledHours, mergedShowMeridiem]);
 
   const hourUnits = React.useMemo(() => {
     if (!mergedShowMeridiem) {
@@ -119,21 +125,21 @@ export default function TimePanelBody<DateType = any>(props: TimePanelBodyProps<
     [hideDisabledOptions, secondStep, mergedDisabledSeconds, hour, minute],
   );
 
-  const meridiemUnits = React.useMemo(() => {
-    const hasAM = rowHourUnits.some((h) => isAM(h.value as number));
-    const hasPM = rowHourUnits.some((h) => !isAM(h.value as number));
-
-    return [
-      hasAM && {
+  const meridiemUnits = React.useMemo(
+    () => [
+      {
         label: 'AM',
         value: 'am',
+        disabled: rowHourUnits.every((h) => !isAM(h.value as number)),
       },
-      hasPM && {
+      {
         label: 'PM',
         value: 'pm',
+        disabled: rowHourUnits.every((h) => isAM(h.value as number)),
       },
-    ].filter((u) => u);
-  }, [rowHourUnits]);
+    ],
+    [rowHourUnits],
+  );
 
   // ========================= Change =========================
   const onHourChange = (val: number) => {
@@ -172,7 +178,7 @@ export default function TimePanelBody<DateType = any>(props: TimePanelBodyProps<
       {mergedShowMeridiem && (
         <TimeColumn
           units={meridiemUnits}
-          value="meridiem"
+          value={meridiem}
           type="meridiem"
           onChange={onMeridiemChange}
         />
