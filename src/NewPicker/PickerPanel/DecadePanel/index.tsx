@@ -7,15 +7,7 @@ import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
 
 export default function DecadePanel<DateType = any>(props: SharedPanelProps<DateType>) {
-  const {
-    prefixCls,
-    locale,
-    generateConfig,
-    pickerValue,
-    value,
-    onPickerValueChange,
-    onModeChange,
-  } = props;
+  const { prefixCls, locale, generateConfig, pickerValue, value, onPickerValueChange } = props;
 
   const panelPrefixCls = `${prefixCls}-decade-panel`;
 

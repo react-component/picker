@@ -83,6 +83,13 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
   // ========================== Now ===========================
   const now = generateConfig.getNow();
 
+  // ========================== Mode ==========================
+  const [mergedMode, setMergedMode] = useMergedState<PanelMode>(picker, {
+    value: mode,
+    postState: (val) => val || 'date',
+    onChange: onModeChange,
+  });
+
   // ========================= Value ==========================
   const [mergedValue, setMergedValue] = useMergedState<DateType | null>(defaultValue, {
     value,
@@ -91,6 +98,24 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
   const onInternalChange = (newVal: DateType) => {
     setMergedValue(newVal);
     onChange?.(newVal);
+
+    // Update mode if needed
+    if (mergedMode !== picker) {
+      const queue: PanelMode[] = ['decade', 'year', 'month'];
+      const index = queue.indexOf(mergedMode);
+      const nextMode = queue[index + 1];
+      if (index >= 0 && nextMode) {
+        setMergedMode(nextMode);
+      } else if (mergedMode === 'month') {
+        if (picker === 'datetime') {
+          setMergedMode('datetime');
+        } else if (picker === 'date') {
+          setMergedMode('date');
+        } else if (picker === 'week') {
+          setMergedMode('week');
+        }
+      }
+    }
   };
 
   // ====================== PickerValue =======================
@@ -105,13 +130,6 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
 
   // ======================= HoverValue =======================
   const [hoverDate, setHoverDate] = React.useState<DateType>(null);
-
-  // ========================== Mode ==========================
-  const [mergedMode, setMergedMode] = useMergedState<PanelMode>(picker, {
-    value: mode,
-    postState: (val) => val || 'date',
-    onChange: onModeChange,
-  });
 
   // ======================= Components =======================
   const PanelComponent = components[mergedMode] || DefaultComponents[mergedMode] || DatePanel;
