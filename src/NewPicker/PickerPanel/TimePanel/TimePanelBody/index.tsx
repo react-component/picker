@@ -3,6 +3,7 @@ import { leftPad } from '../../../../utils/miscUtil';
 import type { SharedPanelProps, SharedTimeProps } from '../../../interface';
 import { PanelContext } from '../../context';
 import TimeColumn, { type Unit } from './TimeColumn';
+import { findValidateTime } from './util';
 
 function emptyDisabled<T>(): T[] {
   return [];
@@ -23,7 +24,7 @@ function generateUnits(
   hideDisabledOptions = false,
   disabledUnits: number[] = [],
 ) {
-  const units: Unit[] = [];
+  const units: Unit<number>[] = [];
   const integerStep = step >= 1 ? step | 0 : 1;
   for (let i = start; i <= end; i += integerStep) {
     const disabled = disabledUnits.includes(i);
@@ -117,15 +118,29 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
       : rowHourUnits.filter((h) => !isAM(h.value as number));
   }, [hour, rowHourUnits, mergedShowMeridiem]);
 
-  const minuteUnits = React.useMemo(
-    () => generateUnits(0, 59, minuteStep, hideDisabledOptions, mergedDisabledMinutes(hour)),
-    [hideDisabledOptions, minuteStep, mergedDisabledMinutes, hour],
+  const getMinuteUnits = React.useCallback(
+    (nextHour: number) =>
+      generateUnits(0, 59, minuteStep, hideDisabledOptions, mergedDisabledMinutes(nextHour)),
+    [hideDisabledOptions, mergedDisabledMinutes, minuteStep],
   );
 
+  const getSecondUnits = React.useCallback(
+    (nextHour: number, nextMinute: number) =>
+      generateUnits(
+        0,
+        59,
+        secondStep,
+        hideDisabledOptions,
+        mergedDisabledSeconds(nextHour, nextMinute),
+      ),
+    [hideDisabledOptions, mergedDisabledSeconds, secondStep],
+  );
+
+  const minuteUnits = React.useMemo(() => getMinuteUnits(hour), [getMinuteUnits, hour]);
+
   const secondUnits = React.useMemo(
-    () =>
-      generateUnits(0, 59, secondStep, hideDisabledOptions, mergedDisabledSeconds(hour, minute)),
-    [hideDisabledOptions, secondStep, mergedDisabledSeconds, hour, minute],
+    () => getSecondUnits(hour, minute),
+    [getSecondUnits, hour, minute],
   );
 
   const meridiemUnits = React.useMemo(
@@ -145,23 +160,41 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
   );
 
   // ========================= Change =========================
+  /**
+   * Check if time is validate or will match to validate one
+   */
+  const triggerChange = (nextDate: DateType) => {
+    const validateDate = findValidateTime(
+      nextDate,
+      () => rowHourUnits,
+      getMinuteUnits,
+      getSecondUnits,
+      generateConfig,
+    );
+
+    console.log('~~~>', validateDate.format('HH:mm:ss'));
+
+    onChange(validateDate);
+  };
+
+  // ========================= Column =========================
   const onHourChange = (val: number) => {
-    onChange(generateConfig.setHour(mergedValue, val));
+    triggerChange(generateConfig.setHour(mergedValue, val));
   };
 
   const onMinuteChange = (val: number) => {
-    onChange(generateConfig.setMinute(mergedValue, val));
+    triggerChange(generateConfig.setMinute(mergedValue, val));
   };
 
   const onSecondChange = (val: number) => {
-    onChange(generateConfig.setSecond(mergedValue, val));
+    triggerChange(generateConfig.setSecond(mergedValue, val));
   };
 
   const onMeridiemChange = (val: string) => {
     if (val === 'am' && !isAM(hour)) {
-      onChange(generateConfig.setHour(mergedValue, hour - 12));
+      triggerChange(generateConfig.setHour(mergedValue, hour - 12));
     } else if (val === 'pm' && isAM(hour)) {
-      onChange(generateConfig.setHour(mergedValue, hour + 12));
+      triggerChange(generateConfig.setHour(mergedValue, hour + 12));
     }
   };
 

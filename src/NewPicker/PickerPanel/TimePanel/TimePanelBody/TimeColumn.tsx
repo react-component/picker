@@ -6,9 +6,9 @@ import { PanelContext } from '../../context';
 
 const SCROLL_DELAY = 500;
 
-export type Unit = {
+export type Unit<ValueType = number | string> = {
   label: React.ReactText;
-  value: number | string;
+  value: ValueType;
   disabled?: boolean;
 };
 
@@ -52,15 +52,8 @@ export default function TimeColumn(props: TimeUnitColumnProps) {
 
       const nextTop = targetLiTop - firstLiTop;
 
-      if (ul.scrollTo) {
-        ul.scrollTo({
-          top: nextTop,
-          behavior: 'smooth',
-        });
-      } else {
-        // IE not support `scrollTo`
-        ul.scrollTop = nextTop;
-      }
+      // IE not support `scrollTo`
+      ul.scrollTop = nextTop;
 
       // Do not trigger realign by this effect scroll
       setTimeout(cleanScroll, 100);
@@ -108,7 +101,12 @@ export default function TimeColumn(props: TimeUnitColumnProps) {
 
   // ========================= Render =========================
   return (
-    <ul className={`${panelPrefixCls}-column`} ref={ulRef} onScroll={onInternalScroll}>
+    <ul
+      className={`${panelPrefixCls}-column`}
+      ref={ulRef}
+      onScroll={onInternalScroll}
+      data-type={type}
+    >
       {units.map(({ label, value: unitValue, disabled }) => {
         const inner = <div className={`${cellPrefixCls}-inner`}>{label}</div>;
 
