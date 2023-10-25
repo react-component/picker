@@ -128,10 +128,13 @@ export interface SharedTimeProps<DateType = any> {
 
   /** Only work in picker is `time` */
   disabledTime?: (date: DateType) => DisabledTimes;
+
+  /** Only work in picker is `time` */
+  changeOnScroll?: boolean;
 }
 
 // ======================= Components =======================
-export interface SharedPanelProps<DateType = any> extends SharedTimeProps<DateType> {
+export interface SharedPanelProps<DateType = any> {
   // Style
   prefixCls: string;
 
@@ -152,6 +155,9 @@ export interface SharedPanelProps<DateType = any> extends SharedTimeProps<DateTy
   disabledDate?: DisabledDate<DateType>;
   cellRender?: CellRender<DateType>;
   onHover: (value: DateType | null) => void;
+
+  // Time
+  time?: SharedTimeProps<DateType>;
 }
 
 export type Components<DateType = any> = Partial<

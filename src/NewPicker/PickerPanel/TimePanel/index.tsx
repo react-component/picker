@@ -14,8 +14,10 @@ export default function TimePanel<DateType = any>(props: SharedPanelProps<DateTy
     generateConfig,
 
     // Format
-    format = 'HH:mm:ss',
+    time = {},
   } = props;
+
+  const { format = 'HH:mm:ss' } = time;
 
   const panelPrefixCls = `${prefixCls}-time-panel`;
 
@@ -40,7 +42,7 @@ export default function TimePanel<DateType = any>(props: SharedPanelProps<DateTy
               })
             : '\u00A0'}
         </PanelHeader>
-        <TimePanelBody {...props} format={format} />
+        <TimePanelBody {...time} format={format} />
       </div>
     </PanelContext.Provider>
   );

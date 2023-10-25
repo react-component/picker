@@ -1,6 +1,10 @@
 import classNames from 'classnames';
+import { useEvent } from 'rc-util';
+import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
 import { PanelContext } from '../../context';
+
+const SCROLL_DELAY = 500;
 
 export type Unit = {
   label: React.ReactText;
@@ -8,15 +12,16 @@ export type Unit = {
   disabled?: boolean;
 };
 
-export interface TimeUnitColumnProps<DateType = any> {
+export interface TimeUnitColumnProps {
   units: Unit[];
   value: number | string;
   type: 'hour' | 'minute' | 'second' | 'meridiem';
   onChange: (value: number | string) => void;
+  changeOnScroll?: boolean;
 }
 
-export default function TimeColumn<DateType = any>(props: TimeUnitColumnProps<DateType>) {
-  const { units, value, type, onChange } = props;
+export default function TimeColumn(props: TimeUnitColumnProps) {
+  const { units, value, type, onChange, changeOnScroll } = props;
 
   const { prefixCls, cellRender, now, locale } = React.useContext(PanelContext);
 
@@ -26,8 +31,84 @@ export default function TimeColumn<DateType = any>(props: TimeUnitColumnProps<Da
   // ant-picker-time-panel-cell ant-picker-time-panel-cell-selected
   // ant-picker-time-panel-cell-inner
 
+  // ========================== Refs ==========================
+  const ulRef = React.useRef<HTMLUListElement>(null);
+
+  // ========================= Scroll =========================
+  const timeoutRef = React.useRef<any>();
+
+  const cleanScroll = () => {
+    clearTimeout(timeoutRef.current!);
+  };
+
+  // Scroll to value position
+  const scrollToValue = useEvent((val: number | string) => {
+    const ul = ulRef.current!;
+    const targetLi = ul.querySelector<HTMLLIElement>(`[data-value="${val}"]`);
+
+    if (targetLi) {
+      const firstLiTop = ul.querySelector<HTMLLIElement>(`li`).offsetTop;
+      const targetLiTop = targetLi.offsetTop;
+
+      const nextTop = targetLiTop - firstLiTop;
+
+      if (ul.scrollTo) {
+        ul.scrollTo({
+          top: nextTop,
+          behavior: 'smooth',
+        });
+      } else {
+        // IE not support `scrollTo`
+        ul.scrollTop = nextTop;
+      }
+
+      // Do not trigger realign by this effect scroll
+      setTimeout(cleanScroll, 100);
+    }
+  });
+
+  // Effect sync value scroll
+  useLayoutEffect(() => {
+    scrollToValue(value);
+  }, [value, units, scrollToValue]);
+
+  // Scroll event if sync onScroll
+  const onInternalScroll: React.UIEventHandler<HTMLUListElement> = (event) => {
+    const target = event.target as HTMLUListElement;
+
+    if (changeOnScroll) {
+      cleanScroll();
+
+      timeoutRef.current = setTimeout(() => {
+        const ul = ulRef.current!;
+
+        const firstLiTop = ul.querySelector<HTMLLIElement>(`li`).offsetTop;
+        const liList = Array.from(ul.querySelectorAll<HTMLLIElement>(`li`));
+        const liTopList = liList.map((li) => li.offsetTop - firstLiTop);
+
+        const liDistList = liTopList.map((top, index) => {
+          if (units[index].disabled) {
+            return Number.MAX_SAFE_INTEGER;
+          }
+          return Math.abs(top - target.scrollTop);
+        });
+
+        // Find min distance index
+        const minDist = Math.min(...liDistList);
+        const minDistIndex = liDistList.findIndex((dist) => dist === minDist);
+
+        const targetUnit = units[minDistIndex];
+        if (targetUnit && !targetUnit.disabled) {
+          onChange(targetUnit.value);
+          scrollToValue(targetUnit.value);
+        }
+      }, SCROLL_DELAY);
+    }
+  };
+
+  // ========================= Render =========================
   return (
-    <ul className={`${panelPrefixCls}-column`}>
+    <ul className={`${panelPrefixCls}-column`} ref={ulRef} onScroll={onInternalScroll}>
       {units.map(({ label, value: unitValue, disabled }) => {
         const inner = <div className={`${cellPrefixCls}-inner`}>{label}</div>;
 
@@ -43,9 +124,10 @@ export default function TimeColumn<DateType = any>(props: TimeUnitColumnProps<Da
                 onChange(unitValue);
               }
             }}
+            data-value={unitValue}
           >
             {cellRender
-              ? cellRender(value, {
+              ? cellRender(unitValue, {
                   prefixCls,
                   originNode: inner,
                   today: now,

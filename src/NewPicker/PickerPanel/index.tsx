@@ -1,7 +1,14 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
-import type { CellRender, Components, DisabledDate, Locale, PanelMode } from '../interface';
+import type {
+  CellRender,
+  Components,
+  DisabledDate,
+  Locale,
+  PanelMode,
+  SharedTimeProps,
+} from '../interface';
 import { PrefixClsContext } from '../PickerInput/context';
 import DatePanel from './DatePanel';
 import DecadePanel from './DecadePanel';
@@ -42,6 +49,9 @@ export interface PickerPanelProps<DateType = any> {
   onModeChange?: (mode: PanelMode) => void;
   picker?: PanelMode;
 
+  // Time
+  time?: SharedTimeProps<DateType>;
+
   // Cell
   cellRender?: CellRender<DateType>;
 
@@ -72,6 +82,9 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
     mode,
     onModeChange,
     picker = 'date',
+
+    // Time
+    time,
 
     // Cell
     cellRender,
@@ -141,7 +154,7 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
     <div className={`${mergedPrefixCls}-panel`}>
       <PanelComponent
         // Time
-        {...props}
+        time={time}
         // MISC
         prefixCls={mergedPrefixCls}
         locale={locale}

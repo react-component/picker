@@ -4,6 +4,10 @@
 
 @input-placeholder-color: hsv(0, 0, 75%);
 
+@time-panel-padding-total: 180px;
+@time-panel-padding-top: 90px;
+// @time-panel-padding-top: 0;
+
 .placeholder(@color: @input-placeholder-color) {
   // Firefox
   &::-moz-placeholder {
@@ -249,15 +253,28 @@
     width: auto;
 
     .@{prefix-cls}-content {
+      position: relative;
       display: flex;
       max-height: 200px;
+
+      &::after {
+        position: absolute;
+        top: @time-panel-padding-top;
+        right: -5px;
+        left: -5px;
+        height: 20px;
+        background: rgba(255, 0, 0, 0.05);
+        content: '';
+        pointer-events: none;
+      }
     }
 
     &-column {
       flex: none;
       width: 50px;
       margin: 0;
-      padding: 0 0 180px 0;
+      // padding: 0 0 180px 0;
+      padding: @time-panel-padding-top 0 (@time-panel-padding-total - @time-panel-padding-top);
       overflow-x: hidden;
       overflow-y: hidden;
       font-size: 12px;
@@ -281,6 +298,10 @@
         &.@{prefix-cls}-time-panel-cell {
           &-disabled {
             opacity: 0.5;
+          }
+
+          &-selected {
+            background: rgba(0, 0, 255, 0.5);
           }
         }
 

@@ -77,9 +77,18 @@ export default () => {
 
         <CellPicker
           picker="time"
-          defaultValue={moment('1990-10-23 03:05:08')}
+          defaultValue={moment('1990-10-23 00:05:08')}
           disabledDate={(date) => date.week() === 3}
-          use12Hours
+          time={{
+            use12Hours: true,
+            changeOnScroll: true,
+            disabledHours: () => [0, 1, 2, 3, 4, 5],
+          }}
+          // cellRender={(val: number, info) => {
+          //   if (info.type === 'time') {
+          //     return `${val}!!!`;
+          //   }
+          // }}
         />
       </div>
     </div>

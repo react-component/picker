@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { leftPad } from '../../../../utils/miscUtil';
-import type { SharedPanelProps } from '../../../interface';
+import type { SharedPanelProps, SharedTimeProps } from '../../../interface';
 import { PanelContext } from '../../context';
 import TimeColumn, { type Unit } from './TimeColumn';
 
@@ -41,7 +41,7 @@ function generateUnits(
 
 export type TimePanelBodyProps<DateType = any> = SharedPanelProps<DateType>;
 
-export default function TimePanelBody<DateType = any>(props: TimePanelBodyProps<DateType>) {
+export default function TimePanelBody<DateType = any>(props: SharedTimeProps<DateType>) {
   const {
     format,
 
@@ -62,6 +62,9 @@ export default function TimePanelBody<DateType = any>(props: TimePanelBodyProps<
     disabledHours,
     disabledMinutes,
     disabledSeconds,
+
+    // MISC
+    changeOnScroll,
   } = props;
 
   const { prefixCls, value, pickerValue, generateConfig, onChange } =
@@ -163,17 +166,34 @@ export default function TimePanelBody<DateType = any>(props: TimePanelBodyProps<
   };
 
   // ========================= Render =========================
-
   return (
     <div className={`${prefixCls}-content`}>
       {mergedShowHour && (
-        <TimeColumn units={hourUnits} value={hour} type="hour" onChange={onHourChange} />
+        <TimeColumn
+          units={hourUnits}
+          value={hour}
+          type="hour"
+          onChange={onHourChange}
+          changeOnScroll={changeOnScroll}
+        />
       )}
       {mergedShowMinute && (
-        <TimeColumn units={minuteUnits} value={minute} type="minute" onChange={onMinuteChange} />
+        <TimeColumn
+          units={minuteUnits}
+          value={minute}
+          type="minute"
+          onChange={onMinuteChange}
+          changeOnScroll={changeOnScroll}
+        />
       )}
       {mergedShowSecond && (
-        <TimeColumn units={secondUnits} value={second} type="second" onChange={onSecondChange} />
+        <TimeColumn
+          units={secondUnits}
+          value={second}
+          type="second"
+          onChange={onSecondChange}
+          changeOnScroll={changeOnScroll}
+        />
       )}
       {mergedShowMeridiem && (
         <TimeColumn
@@ -181,6 +201,7 @@ export default function TimePanelBody<DateType = any>(props: TimePanelBodyProps<
           value={meridiem}
           type="meridiem"
           onChange={onMeridiemChange}
+          changeOnScroll={changeOnScroll}
         />
       )}
     </div>
