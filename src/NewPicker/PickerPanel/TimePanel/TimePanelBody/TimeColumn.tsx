@@ -28,9 +28,6 @@ export default function TimeColumn(props: TimeUnitColumnProps) {
   const panelPrefixCls = `${prefixCls}-time-panel`;
   const cellPrefixCls = `${prefixCls}-time-panel-cell`;
 
-  // ant-picker-time-panel-cell ant-picker-time-panel-cell-selected
-  // ant-picker-time-panel-cell-inner
-
   // ========================== Refs ==========================
   const ulRef = React.useRef<HTMLUListElement>(null);
 

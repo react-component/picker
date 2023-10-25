@@ -172,8 +172,6 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
       generateConfig,
     );
 
-    console.log('~~~>', validateDate.format('HH:mm:ss'));
-
     onChange(validateDate);
   };
 
