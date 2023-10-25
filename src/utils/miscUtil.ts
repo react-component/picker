@@ -5,7 +5,7 @@ export function leftPad(
 ) {
   let current = String(str);
   while (current.length < length) {
-    current = `${fill}${str}`;
+    current = `${fill}${current}`;
   }
   return current;
 }

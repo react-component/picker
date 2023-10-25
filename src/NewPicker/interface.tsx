@@ -27,6 +27,7 @@ export type Locale = {
   hour?: string;
   minute?: string;
   second?: string;
+  millisecond?: string;
   meridiem?: string;
 
   // >>>>> Not used yet
@@ -103,6 +104,7 @@ export interface DisabledTimes {
   disabledHours?: () => number[];
   disabledMinutes?: (hour: number) => number[];
   disabledSeconds?: (hour: number, minute: number) => number[];
+  disabledMilliSeconds?: (hour: number, minute: number, second: number) => number[];
 }
 
 export interface SharedTimeProps<DateType = any> {
@@ -119,6 +121,8 @@ export interface SharedTimeProps<DateType = any> {
   /** Only work in picker is `time` */
   showSecond?: boolean;
   /** Only work in picker is `time` */
+  showMillisecond?: boolean;
+  /** Only work in picker is `time` */
   use12Hours?: boolean;
   /** Only work in picker is `time` */
   hourStep?: IntRange<1, 23>;
@@ -126,6 +130,11 @@ export interface SharedTimeProps<DateType = any> {
   minuteStep?: IntRange<1, 59>;
   /** Only work in picker is `time` */
   secondStep?: IntRange<1, 59>;
+  /**
+   * Only work in picker is `time`.
+   * Note that too small step will cause performance issue.
+   */
+  millisecondStep?: IntRange<1, 999>;
   /** Only work in picker is `time` */
   hideDisabledOptions?: boolean;
 

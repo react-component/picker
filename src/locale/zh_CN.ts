@@ -11,6 +11,7 @@ const locale: Locale = {
   hour: '时',
   minute: '分',
   second: '秒',
+  millisecond: '毫秒',
   meridiem: '',
 
   today: '今天',

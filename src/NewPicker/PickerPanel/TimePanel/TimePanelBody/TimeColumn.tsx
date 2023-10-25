@@ -15,7 +15,7 @@ export type Unit<ValueType = number | string> = {
 export interface TimeUnitColumnProps {
   units: Unit[];
   value: number | string;
-  type: 'hour' | 'minute' | 'second' | 'meridiem';
+  type: 'hour' | 'minute' | 'second' | 'millisecond' | 'meridiem';
   onChange: (value: number | string) => void;
   changeOnScroll?: boolean;
   showTitle?: boolean;

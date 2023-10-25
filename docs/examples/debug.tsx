@@ -77,17 +77,21 @@ export default () => {
 
         <CellPicker
           picker="time"
-          defaultValue={moment('1990-10-23 13:05:08.233')}
+          defaultValue={moment('1990-10-23 13:05:08.200')}
           disabledDate={(date) => date.week() === 3}
           time={{
-            // format: 'HH:mm:ss.SSS',
-            format: 'LTS',
+            format: 'HH:mm:ss.SSS',
+            // format: 'LTS',
             use12Hours: true,
             changeOnScroll: true,
             disabledHours: () => [0, 1, 2, 3, 4, 5],
             disabledMinutes: (hour) => (hour === 6 ? [0, 1, 2, 4, 5, 6] : []),
             disabledSeconds: (_, minute) => (minute === 3 ? [6, 7, 8, 9] : []),
+            disabledTime: () => ({
+              disabledMilliSeconds: () => [0, 100],
+            }),
             showTitle: true,
+            millisecondStep: 20,
           }}
           // cellRender={(val: number, info) => {
           //   if (info.type === 'time') {

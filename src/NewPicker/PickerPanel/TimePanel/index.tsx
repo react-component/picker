@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { formatValue } from '../../../utils/dateUtil';
-import FormatInput from '../../FormatInput';
 import type { SharedPanelProps } from '../../interface';
 import { PanelContext, useInfo } from '../context';
 import PanelHeader from '../PanelHeader';
@@ -40,9 +39,7 @@ export default function TimePanel<DateType = any>(props: SharedPanelProps<DateTy
       }}
     >
       <div className={classNames(panelPrefixCls)}>
-        <PanelHeader>
-          {value ? <FormatInput value={formatTimeStr} format={format} /> : '\u00A0'}
-        </PanelHeader>
+        <PanelHeader>{value ? formatTimeStr : '\u00A0'}</PanelHeader>
         <TimePanelBody {...time} format={format} />
       </div>
     </PanelContext.Provider>

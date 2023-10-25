@@ -7,7 +7,7 @@ export interface FormatInputProps {
 }
 
 export default function FormatInput(props: FormatInputProps) {
-  const { value } = props;
+  const { value, format } = props;
 
   return <input />;
 }
