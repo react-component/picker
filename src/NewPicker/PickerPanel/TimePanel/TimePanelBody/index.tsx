@@ -73,16 +73,13 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     changeOnScroll,
   } = props;
 
-  const { prefixCls, value, pickerValue, generateConfig, locale, onChange } =
-    React.useContext(PanelContext);
+  const { prefixCls, value, generateConfig, locale, onChange } = React.useContext(PanelContext);
 
   // ========================= Value ==========================
-  const mergedValue = value || pickerValue;
-
-  const hour = generateConfig.getHour(mergedValue);
-  const minute = generateConfig.getMinute(mergedValue);
-  const second = generateConfig.getSecond(mergedValue);
-  const millisecond = generateConfig.getMillisecond(mergedValue);
+  const hour = generateConfig.getHour(value);
+  const minute = generateConfig.getMinute(value);
+  const second = generateConfig.getSecond(value);
+  const millisecond = generateConfig.getMillisecond(value);
   const meridiem = isAM(hour) ? 'am' : 'pm';
 
   // ========================== Show ==========================
@@ -99,7 +96,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     mergedDisabledSeconds,
     mergedDisabledMilliseconds,
   ] = React.useMemo(() => {
-    const disabledConfig = disabledTime?.(mergedValue) || {};
+    const disabledConfig = disabledTime?.(value) || {};
 
     return [
       disabledConfig.disabledHours || disabledHours || emptyDisabled,
@@ -107,7 +104,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
       disabledConfig.disabledSeconds || disabledSeconds || emptyDisabled,
       disabledConfig.disabledMilliSeconds || emptyDisabled,
     ];
-  }, [mergedValue, disabledTime, disabledHours, disabledMinutes, disabledSeconds]);
+  }, [value, disabledTime, disabledHours, disabledMinutes, disabledSeconds]);
 
   // ========================= Column =========================
   const rowHourUnits = React.useMemo(() => {
@@ -227,26 +224,26 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
 
   // ========================= Column =========================
   const onHourChange = (val: number) => {
-    triggerChange(generateConfig.setHour(mergedValue, val));
+    triggerChange(generateConfig.setHour(value, val));
   };
 
   const onMinuteChange = (val: number) => {
-    triggerChange(generateConfig.setMinute(mergedValue, val));
+    triggerChange(generateConfig.setMinute(value, val));
   };
 
   const onSecondChange = (val: number) => {
-    triggerChange(generateConfig.setSecond(mergedValue, val));
+    triggerChange(generateConfig.setSecond(value, val));
   };
 
   const onMillisecondChange = (val: number) => {
-    triggerChange(generateConfig.setMillisecond(mergedValue, val));
+    triggerChange(generateConfig.setMillisecond(value, val));
   };
 
   const onMeridiemChange = (val: string) => {
     if (val === 'am' && !isAM(hour)) {
-      triggerChange(generateConfig.setHour(mergedValue, hour - 12));
+      triggerChange(generateConfig.setHour(value, hour - 12));
     } else if (val === 'pm' && isAM(hour)) {
-      triggerChange(generateConfig.setHour(mergedValue, hour + 12));
+      triggerChange(generateConfig.setHour(value, hour + 12));
     }
   };
 

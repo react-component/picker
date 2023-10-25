@@ -65,15 +65,7 @@ export type Locale = {
   shortMonths?: string[];
 };
 
-export type PanelMode =
-  | 'time'
-  | 'date'
-  | 'datetime'
-  | 'week'
-  | 'month'
-  | 'quarter'
-  | 'year'
-  | 'decade';
+export type PanelMode = 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year' | 'decade';
 
 export type DisabledDate<DateType = any> = (
   date: DateType,
@@ -176,11 +168,11 @@ export interface SharedPanelProps<DateType = any> {
   onHover: (value: DateType | null) => void;
 
   // Time
-  time?: SharedTimeProps<DateType>;
+  showTime?: SharedTimeProps<DateType>;
 }
 
 export type Components<DateType = any> = Partial<
-  Record<PanelMode, React.ComponentType<SharedPanelProps<DateType>>>
+  Record<PanelMode | 'datetime', React.ComponentType<SharedPanelProps<DateType>>>
 >;
 
 // ========================= Picker =========================

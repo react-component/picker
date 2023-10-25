@@ -14,18 +14,20 @@ export default function TimePanel<DateType = any>(props: SharedPanelProps<DateTy
     generateConfig,
 
     // Format
-    time = {},
+    showTime = {},
   } = props;
 
-  const { format = 'HH:mm:ss' } = time;
+  const { format = 'HH:mm:ss' } = showTime;
 
   const panelPrefixCls = `${prefixCls}-time-panel`;
 
   // ========================== Base ==========================
   const [info, now] = useInfo(props);
 
+  const mergedValue = value || now;
+
   // ========================= Render =========================
-  const formatTimeStr = formatValue(value, {
+  const formatTimeStr = formatValue(mergedValue, {
     locale,
     format,
     generateConfig,
@@ -36,11 +38,12 @@ export default function TimePanel<DateType = any>(props: SharedPanelProps<DateTy
       value={{
         type: 'date',
         ...info,
+        value: mergedValue,
       }}
     >
       <div className={classNames(panelPrefixCls)}>
-        <PanelHeader>{value ? formatTimeStr : '\u00A0'}</PanelHeader>
-        <TimePanelBody {...time} format={format} />
+        <PanelHeader>{mergedValue ? formatTimeStr : '\u00A0'}</PanelHeader>
+        <TimePanelBody {...showTime} format={format} />
       </div>
     </PanelContext.Provider>
   );

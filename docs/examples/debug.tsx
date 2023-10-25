@@ -5,7 +5,7 @@ import RangePicker from '../../src/NewPicker/PickerInput/RangePicker';
 import SinglePicker from '../../src/NewPicker/PickerInput/SinglePicker';
 import PickerPanel, { type PickerPanelProps } from '../../src/NewPicker/PickerPanel';
 
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import 'moment/locale/zh-cn';
 import momentGenerateConfig from '../../src/generate/moment';
 import zhCN from '../../src/locale/zh_CN';
@@ -25,6 +25,8 @@ function CellPicker(props: Partial<PickerPanelProps>) {
 export default () => {
   const singleRef = React.useRef<PickerRef>(null);
 
+  const [value, setValue] = React.useState<Moment>(null);
+
   return (
     <div>
       <SinglePicker ref={singleRef} suffixIcon="🧶" />
@@ -41,7 +43,9 @@ export default () => {
       </button>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        <CellPicker
+        <CellPicker picker="datetime" />
+
+        {/* <CellPicker
           defaultValue={moment().add(1, 'day')}
           disabledDate={(date) => date.date() === 11}
           // cellRender={(date: Moment, info) => {
@@ -49,6 +53,8 @@ export default () => {
           //     return date.format('Do');
           //   }
           // }}
+          value={value}
+          onChange={setValue}
         />
 
         <CellPicker
@@ -61,6 +67,8 @@ export default () => {
           picker="month"
           defaultValue={moment('2000-01-01')}
           disabledDate={(date) => date.week() === 3}
+          value={value}
+          onChange={setValue}
         />
 
         <CellPicker
@@ -79,7 +87,7 @@ export default () => {
           picker="time"
           defaultValue={moment('1990-10-23 13:05:08.200')}
           disabledDate={(date) => date.week() === 3}
-          time={{
+          showTime={{
             format: 'HH:mm:ss.SSS',
             // format: 'LTS',
             use12Hours: true,
@@ -98,7 +106,7 @@ export default () => {
           //     return `${val}!!!`;
           //   }
           // }}
-        />
+        /> */}
       </div>
     </div>
   );

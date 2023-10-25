@@ -11,6 +11,7 @@ import type {
 } from '../interface';
 import { PrefixClsContext } from '../PickerInput/context';
 import DatePanel from './DatePanel';
+import DateTimePanel from './DateTimePanel';
 import DecadePanel from './DecadePanel';
 import MonthPanel from './MonthPanel';
 import TimePanel from './TimePanel';
@@ -19,6 +20,7 @@ import YearPanel from './YearPanel';
 
 const DefaultComponents: Components = {
   date: DatePanel,
+  datetime: DateTimePanel,
   week: WeekPanel,
   month: MonthPanel,
   year: YearPanel,
@@ -50,7 +52,7 @@ export interface PickerPanelProps<DateType = any> {
   picker?: PanelMode;
 
   // Time
-  time?: SharedTimeProps<DateType>;
+  showTime?: SharedTimeProps<DateType>;
 
   // Cell
   cellRender?: CellRender<DateType>;
@@ -84,7 +86,7 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
     picker = 'date',
 
     // Time
-    time,
+    showTime,
 
     // Cell
     cellRender,
@@ -132,9 +134,7 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
       if (index >= 0 && nextMode) {
         setMergedMode(nextMode);
       } else if (mergedMode === 'month') {
-        if (picker === 'datetime') {
-          setMergedMode('datetime');
-        } else if (picker === 'date') {
+        if (picker === 'date') {
           setMergedMode('date');
         } else if (picker === 'week') {
           setMergedMode('week');
@@ -147,14 +147,15 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
   const [hoverDate, setHoverDate] = React.useState<DateType>(null);
 
   // ======================= Components =======================
-  const PanelComponent = components[mergedMode] || DefaultComponents[mergedMode] || DatePanel;
+  const componentName = mergedMode === 'date' && showTime ? 'datetime' : mergedMode;
+  const PanelComponent = components[componentName] || DefaultComponents[componentName] || DatePanel;
 
   // ========================= Render =========================
   return (
     <div className={`${mergedPrefixCls}-panel`}>
       <PanelComponent
         // Time
-        time={time}
+        showTime={showTime}
         // MISC
         prefixCls={mergedPrefixCls}
         locale={locale}
