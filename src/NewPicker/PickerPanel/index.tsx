@@ -108,11 +108,21 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
   // ========================= Value ==========================
   const [mergedValue, setMergedValue] = useMergedState<DateType | null>(defaultValue, {
     value,
+    onChange,
   });
+
+  // PickerValue is used to control the current displaying panel
+  const [mergedPickerValue, setPickerValue] = useMergedState(
+    defaultPickerValue || mergedValue || now,
+    {
+      value: pickerValue,
+      onChange: onPickerValueChange,
+    },
+  );
 
   const onInternalChange = (newVal: DateType) => {
     setMergedValue(newVal);
-    onChange?.(newVal);
+    setPickerValue(newVal);
 
     // Update mode if needed
     if (mergedMode !== picker) {
@@ -132,16 +142,6 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
       }
     }
   };
-
-  // ====================== PickerValue =======================
-  // PickerValue is used to control the current displaying panel
-  const [mergedPickerValue, setPickerValue] = useMergedState(
-    defaultPickerValue || mergedValue || now,
-    {
-      value: pickerValue,
-      onChange: onPickerValueChange,
-    },
-  );
 
   // ======================= HoverValue =======================
   const [hoverDate, setHoverDate] = React.useState<DateType>(null);
