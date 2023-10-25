@@ -23,6 +23,14 @@ export type Locale = {
   /** meridiem format in body panel */
   meridiemFormat?: string;
 
+  // Column desc
+  hour?: string;
+  minute?: string;
+  second?: string;
+  meridiem?: string;
+
+  // >>>>> Not used yet
+
   // Input format
   /** Full date format like YYYY-MM-DD in input */
   dateFormat: string;
@@ -100,6 +108,8 @@ export interface DisabledTimes {
 export interface SharedTimeProps<DateType = any> {
   /** Only work in picker is `time` */
   format?: string;
+  /** Only work in picker is `time` */
+  showTitle?: boolean;
   /** Only work in picker is `time` */
   showNow?: boolean;
   /** Only work in picker is `time` */

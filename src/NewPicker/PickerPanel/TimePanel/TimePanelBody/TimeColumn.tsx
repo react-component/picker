@@ -18,10 +18,12 @@ export interface TimeUnitColumnProps {
   type: 'hour' | 'minute' | 'second' | 'meridiem';
   onChange: (value: number | string) => void;
   changeOnScroll?: boolean;
+  showTitle?: boolean;
+  title?: React.ReactNode;
 }
 
 export default function TimeColumn(props: TimeUnitColumnProps) {
-  const { units, value, type, onChange, changeOnScroll } = props;
+  const { showTitle, title, units, value, type, onChange, changeOnScroll } = props;
 
   const { prefixCls, cellRender, now, locale } = React.useContext(PanelContext);
 
@@ -97,43 +99,54 @@ export default function TimeColumn(props: TimeUnitColumnProps) {
   };
 
   // ========================= Render =========================
+  const columnPrefixCls = `${panelPrefixCls}-column`;
+  const columnHolderPrefixCls = `${columnPrefixCls}-holder`;
+
   return (
-    <ul
-      className={`${panelPrefixCls}-column`}
-      ref={ulRef}
-      onScroll={onInternalScroll}
+    <div
+      className={classNames(columnHolderPrefixCls, {
+        [`${columnHolderPrefixCls}-show-title`]: showTitle,
+      })}
       data-type={type}
     >
-      {units.map(({ label, value: unitValue, disabled }) => {
-        const inner = <div className={`${cellPrefixCls}-inner`}>{label}</div>;
+      {showTitle && (
+        <div className={`${columnPrefixCls}-title`}>
+          {title !== undefined ? title || '\u00A0' : type}
+        </div>
+      )}
 
-        return (
-          <li
-            key={unitValue}
-            className={classNames(cellPrefixCls, {
-              [`${cellPrefixCls}-selected`]: value === unitValue,
-              [`${cellPrefixCls}-disabled`]: disabled,
-            })}
-            onClick={() => {
-              if (!disabled) {
-                onChange(unitValue);
-              }
-            }}
-            data-value={unitValue}
-          >
-            {cellRender
-              ? cellRender(unitValue, {
-                  prefixCls,
-                  originNode: inner,
-                  today: now,
-                  type: 'time',
-                  subType: type,
-                  locale,
-                })
-              : inner}
-          </li>
-        );
-      })}
-    </ul>
+      <ul className={columnPrefixCls} ref={ulRef} onScroll={onInternalScroll}>
+        {units.map(({ label, value: unitValue, disabled }) => {
+          const inner = <div className={`${cellPrefixCls}-inner`}>{label}</div>;
+
+          return (
+            <li
+              key={unitValue}
+              className={classNames(cellPrefixCls, {
+                [`${cellPrefixCls}-selected`]: value === unitValue,
+                [`${cellPrefixCls}-disabled`]: disabled,
+              })}
+              onClick={() => {
+                if (!disabled) {
+                  onChange(unitValue);
+                }
+              }}
+              data-value={unitValue}
+            >
+              {cellRender
+                ? cellRender(unitValue, {
+                    prefixCls,
+                    originNode: inner,
+                    today: now,
+                    type: 'time',
+                    subType: type,
+                    locale,
+                  })
+                : inner}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }

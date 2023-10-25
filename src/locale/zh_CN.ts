@@ -2,6 +2,17 @@ import type { Locale } from '../interface';
 
 const locale: Locale = {
   locale: 'zh_CN',
+
+  yearFormat: 'YYYY年',
+
+  dayFormat: 'D',
+  meridiemFormat: 'A',
+
+  hour: '时',
+  minute: '分',
+  second: '秒',
+  meridiem: '',
+
   today: '今天',
   now: '此刻',
   backToToday: '返回今天',
@@ -17,8 +28,7 @@ const locale: Locale = {
   monthSelect: '选择月份',
   yearSelect: '选择年份',
   decadeSelect: '选择年代',
-  yearFormat: 'YYYY年',
-  dayFormat: 'D',
+
   dateFormat: 'YYYY年M月D日',
   dateTimeFormat: 'YYYY年M月D日 HH时mm分ss秒',
   previousYear: '上一年 (Control键加左方向键)',

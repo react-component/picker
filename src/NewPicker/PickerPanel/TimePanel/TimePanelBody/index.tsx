@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { formatValue } from '../../../../utils/dateUtil';
 import { leftPad } from '../../../../utils/miscUtil';
 import type { SharedPanelProps, SharedTimeProps } from '../../../interface';
 import { PanelContext } from '../../context';
@@ -51,6 +52,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     showMinute,
     showSecond,
     use12Hours,
+    showTitle,
 
     // Steps
     hourStep,
@@ -68,7 +70,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     changeOnScroll,
   } = props;
 
-  const { prefixCls, value, pickerValue, generateConfig, onChange } =
+  const { prefixCls, value, pickerValue, generateConfig, locale, onChange } =
     React.useContext(PanelContext);
 
   // ========================= Value ==========================
@@ -143,21 +145,40 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     [getSecondUnits, hour, minute],
   );
 
-  const meridiemUnits = React.useMemo(
-    () => [
+  const meridiemUnits = React.useMemo(() => {
+    if (!mergedShowMeridiem) {
+      return [];
+    }
+
+    const base = generateConfig.getNow();
+    const amDate = generateConfig.setHour(base, 6);
+    const pmDate = generateConfig.setHour(base, 18);
+
+    return [
       {
-        label: 'AM',
+        label: locale.meridiemFormat
+          ? formatValue(amDate, {
+              generateConfig,
+              locale,
+              format: locale.meridiemFormat,
+            })
+          : 'AM',
         value: 'am',
         disabled: rowHourUnits.every((h) => !isAM(h.value as number)),
       },
       {
-        label: 'PM',
+        label: locale.meridiemFormat
+          ? formatValue(pmDate, {
+              generateConfig,
+              locale,
+              format: locale.meridiemFormat,
+            })
+          : 'PM',
         value: 'pm',
         disabled: rowHourUnits.every((h) => isAM(h.value as number)),
       },
-    ],
-    [rowHourUnits],
-  );
+    ];
+  }, [rowHourUnits, mergedShowMeridiem, generateConfig, locale]);
 
   // ========================= Change =========================
   /**
@@ -201,6 +222,8 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     <div className={`${prefixCls}-content`}>
       {mergedShowHour && (
         <TimeColumn
+          showTitle={showTitle}
+          title={locale.hour}
           units={hourUnits}
           value={hour}
           type="hour"
@@ -210,6 +233,8 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
       )}
       {mergedShowMinute && (
         <TimeColumn
+          showTitle={showTitle}
+          title={locale.minute}
           units={minuteUnits}
           value={minute}
           type="minute"
@@ -219,6 +244,8 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
       )}
       {mergedShowSecond && (
         <TimeColumn
+          showTitle={showTitle}
+          title={locale.second}
           units={secondUnits}
           value={second}
           type="second"
@@ -228,6 +255,8 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
       )}
       {mergedShowMeridiem && (
         <TimeColumn
+          showTitle={showTitle}
+          title={locale.meridiem}
           units={meridiemUnits}
           value={meridiem}
           type="meridiem"
