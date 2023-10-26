@@ -375,7 +375,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         !selectedValue ||
         // Normal disabled check
         (disabledDate && disabledDate(selectedValue)) ||
-        validateTime(picker, disabledTime, selectedValue || timeProps?.defaultValue, generateConfig)
+        validateTime(picker, disabledTime, selectedValue, generateConfig)
       ) {
         return false;
       }
