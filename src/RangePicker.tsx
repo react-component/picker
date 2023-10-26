@@ -743,7 +743,6 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
   }, [mergedOpen, startValueTexts, endValueTexts]);
 
-
   // Sync innerValue with control mode
   useEffect(() => {
     setSelectedValue(mergedValue);
