@@ -12,6 +12,19 @@ import {
   openPicker,
 } from './util/commonUtil';
 
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import KeyCode from 'rc-util/lib/KeyCode';
+dayjs.extend(customParseFormat);
+
+function keyDown(keyCode: number) {
+  fireEvent.keyDown(document.querySelector('input'), {
+    keyCode,
+    which: keyCode,
+    charCode: keyCode,
+  });
+}
+
 describe('Picker.DisabledTime', () => {
   it('disabledTime on TimePicker', () => {
     render(
@@ -153,11 +166,15 @@ describe('Picker.DisabledTime', () => {
       />,
     );
 
-    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual('1989-11-28 00:00:00');
+    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual(
+      '1989-11-28 00:00:00',
+    );
 
     fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[2]);
 
-    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual('1989-10-31 05:00:00');
+    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual(
+      '1989-10-31 05:00:00',
+    );
   });
 
   it('disabledTime should reset correctly when date changed by click for no default value', function () {
@@ -174,8 +191,12 @@ describe('Picker.DisabledTime', () => {
 
     const firstDayInMonth = now.startOf('month');
     const firstDayInCalendar = firstDayInMonth.clone().subtract(firstDayInMonth.days(), 'days');
-    const expected = firstDayInCalendar.clone().hour(h + 1 % 24).minute(m + 1 % 60).second(s + 1 % 60);
-    
+    const expected = firstDayInCalendar
+      .clone()
+      .hour(h + (1 % 24))
+      .minute(m + (1 % 60))
+      .second(s + (1 % 60));
+
     render(<MomentRangePicker open showTime disabledTime={disabledTime} />);
 
     fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[0]);
@@ -183,6 +204,72 @@ describe('Picker.DisabledTime', () => {
     expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual(
       expected.format('YYYY-MM-DD HH:mm:ss'),
     );
+  });
+  // https://github.com/ant-design/ant-design/issues/45489
+  it('disabledTime should reset correctly when date time change by input enter', () => {
+    resetWarned();
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const range = (start, end) => {
+      const result = [];
+      for (let i = start; i < end; i++) {
+        result.push(i);
+      }
+      return result;
+    };
+    const disabledDate = (current) => {
+      return current && current.isBefore(Date.now());
+    };
+    const disabledDateTime = () => ({
+      disabledHours: () => range(0, 24).splice(4, 20),
+      disabledMinutes: () => range(30, 60),
+      disabledSeconds: () => [55, 56],
+    });
+
+    const expectDate = '2023-10-26 00:00:00';
+    const changingDate = '2023-10-26 03:00:00';
+    const nowAllowDate = '2023-10-26 06:00:00';
+
+    const { container } = render(
+      <MomentPicker
+        showTime
+        picker="date"
+        format="YYYY-MM-DD HH:mm:ss"
+        disabledDate={disabledDate}
+        disabledTime={disabledDateTime}
+        defaultValue={moment(expectDate)}
+      />,
+    );
+    openPicker(container);
+    const yearPanel = document.querySelector('.rc-picker-time-panel-column');
+    expect(yearPanel.querySelectorAll('li')[4]).toHaveClass('rc-picker-time-panel-cell-disabled');
+    closePicker(container);
+
+    expect(document.querySelector('.rc-picker-input input').getAttribute('value')).toEqual(
+      expectDate,
+    );
+
+    fireEvent.click(document.querySelector('.rc-picker-input > input'));
+    fireEvent.change(document.querySelector('.rc-picker-input > input'), {
+      target: {
+        value: changingDate,
+      },
+    });
+    keyDown(KeyCode.ENTER);
+    expect(document.querySelector('.rc-picker-input input').getAttribute('value')).toEqual(
+      changingDate,
+    );
+    fireEvent.click(document.querySelector('.rc-picker-input > input'));
+    fireEvent.change(document.querySelector('.rc-picker-input > input'), {
+      target: {
+        value: nowAllowDate,
+      },
+    });
+
+    keyDown(KeyCode.ENTER);
+    expect(document.querySelector('.rc-picker-input input').getAttribute('value')).toEqual(
+      changingDate,
+    );
+    errSpy.mockRestore();
   });
 
   describe('warning for legacy props', () => {
