@@ -1,20 +1,22 @@
-const FORMAT_KEYS = ['YYYY', 'MM', 'DD', 'HH', 'mm', 'ss', 'SSS'];
+const FORMAT_KEYS = ['YYYY', 'MM', 'DD', 'HH', 'mm', 'ss', 'SSS'] as const;
 
 const REPLACE_KEY = '顧';
 
-// Format logic
-//
-// First time on focus:
-//  1. check if the text is valid, if not fill with format
-//  2. set highlight cell to the first cell
-// Cells
-//  1. Selection the index cell, set inner `cacheValue` to ''
-//  2. Key input filter non-number char, patch after the `cacheValue`
-//    1. Replace the `cacheValue` with input align the cell length
-//    2. Re-selection the mask cell
-//  3. If `cacheValue` match the limit length or cell format (like 1 ~ 12 month), go to next cell
+export function getMaskRange(key: string): [startVal: number, endVal: number, defaultVal?: number] {
+  const PresetRange: Record<(typeof FORMAT_KEYS)[number], [number, number, number?]> = {
+    YYYY: [0, 9999, new Date().getFullYear()],
+    MM: [1, 12],
+    DD: [1, 31],
+    HH: [0, 23],
+    mm: [0, 59],
+    ss: [0, 59],
+    SSS: [0, 999],
+  };
 
-export function getMask(format: string) {
+  return PresetRange[key];
+}
+
+export function getMask(format: string): [maskFormat: string, cellCount: number] {
   const replaceKeys = FORMAT_KEYS.map((key) => `(${key})`).join('|');
   const replaceReg = new RegExp(replaceKeys, 'g');
 
@@ -24,7 +26,7 @@ export function getMask(format: string) {
     (key: string) => REPLACE_KEY.repeat(key.length),
   );
 
-  return replacedFormat;
+  return [replacedFormat, format.match(replaceReg)?.length || 0];
 }
 
 export function matchFormat(maskFormat: string, text: string = '') {
@@ -60,6 +62,8 @@ export function getCellRange(maskFormat: string, cellIndex: number) {
       if (cellIndex === matchIndex) {
         break;
       }
+    } else if (i === maskFormat.length - 1) {
+      endIndex = i + 1;
     }
   }
 

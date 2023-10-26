@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import { useComposeRef } from 'rc-util';
-// import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
+import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import raf from 'rc-util/lib/raf';
 import * as React from 'react';
 import { leftPad } from '../../../utils/miscUtil';
 import { PrefixClsContext } from '../context';
 import Icon from './Icon';
-import { getCellRange, getMask, matchFormat } from './util';
+import { getCellRange, getMask, getMaskRange, matchFormat } from './util';
 
 // Format logic
 //
@@ -47,6 +47,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const [focusValue, setFocusValue] = React.useState<string>(value || '');
   const [focusCellText, setFocusCellText] = React.useState<string>('');
   const [focusCellIndex, setFocusCellIndex] = React.useState<number>(null);
+  const [forceSelectionSyncMark, forceSelectionSync] = React.useState<object>(null);
 
   // ========================= Refs =========================
   const inputRef = React.useRef<HTMLInputElement>();
@@ -54,7 +55,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const mergedRef = useComposeRef(ref, inputRef);
 
   // ======================== Format ========================
-  const maskFormat = React.useMemo(() => getMask(format || ''), [format]);
+  const [maskFormat, maskCellCount] = React.useMemo(() => getMask(format || ''), [format]);
+
   const [selectionStart, selectionEnd] = React.useMemo(
     () => getCellRange(maskFormat, focusCellIndex),
     [maskFormat, focusCellIndex],
@@ -84,22 +86,112 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
   const onInternalKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     const { key } = event;
+    console.log('key', key);
 
-    if (!isNaN(Number(key))) {
-      const nextCellText = focusCellText + key;
+    // Save the cache with cell text
+    let nextCellText: string = null;
+
+    // Fill in the input
+    let nextFillText: string = null;
+
+    const maskCellLen = selectionEnd - selectionStart;
+    const cellFormat = format.slice(selectionStart, selectionEnd);
+
+    // Cell Index
+    const offsetCellIndex = (offset: number) => {
+      setFocusCellIndex((idx) => {
+        let nextIndex = idx + offset;
+        nextIndex = Math.max(nextIndex, 0);
+        nextIndex = Math.min(nextIndex, maskCellCount - 1);
+        return nextIndex;
+      });
+    };
+
+    // Range
+    const offsetCellValue = (offset: number) => {
+      const [rangeStart, rangeEnd, rangeDefault] = getMaskRange(cellFormat);
+
+      const currentText = focusValue.slice(selectionStart, selectionEnd);
+      const currentTextNum = Number(currentText);
+
+      if (isNaN(currentTextNum)) {
+        return rangeDefault ? rangeDefault : String(offset > 0 ? rangeStart : rangeEnd);
+      }
+
+      const num = currentTextNum + offset;
+      const range = rangeEnd - rangeStart + 1;
+      console.log('>>>>>', num);
+      return String(rangeStart + ((range + num - rangeStart) % range));
+    };
+
+    switch (key) {
+      // =============== Remove ===============
+      case 'Backspace':
+      case 'Delete':
+        nextCellText = '';
+        nextFillText = cellFormat;
+        break;
+
+      // =============== Arrows ===============
+      // Left key
+      case 'ArrowLeft':
+        nextCellText = '';
+        offsetCellIndex(-1);
+        break;
+
+      // Right key
+      case 'ArrowRight':
+        nextCellText = '';
+        offsetCellIndex(1);
+        break;
+
+      // Up key
+      case 'ArrowUp':
+        nextCellText = '';
+        nextFillText = offsetCellValue(1);
+        break;
+
+      // Down key
+      case 'ArrowDown':
+        nextCellText = '';
+        nextFillText = offsetCellValue(-1);
+        break;
+
+      // =============== Number ===============
+      default:
+        if (!isNaN(Number(key))) {
+          nextCellText = focusCellText + key;
+          nextFillText = nextCellText;
+        }
+        break;
+    }
+
+    // Update cell text
+    if (nextCellText !== null) {
       setFocusCellText(nextCellText);
 
+      if (nextCellText.length >= maskCellLen) {
+        // Go to next cell
+        offsetCellIndex(1);
+        setFocusCellText('');
+      }
+    }
+
+    // Update the input text
+    if (nextFillText !== null) {
       // Replace selection range with `nextCellText`
       const nextFocusValue =
         // before
         focusValue.slice(0, selectionStart) +
         // replace
-        leftPad(nextCellText, 4) +
+        leftPad(nextFillText, maskCellLen) +
         // after
         focusValue.slice(selectionEnd);
-      setFocusValue(nextFocusValue);
-      console.log('setted!!!', nextFocusValue);
+      setFocusValue(nextFocusValue.slice(0, maskFormat.length));
     }
+
+    // Always trigger selection sync after key down
+    forceSelectionSync({});
 
     onKeyDown?.(event);
   };
@@ -117,39 +209,38 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   // ======================== Format ========================
   const rafRef = React.useRef<number>();
 
-  // useLayoutEffect(() => {
-  React.useEffect(() => {
+  useLayoutEffect(() => {
     if (!focused || !format) {
       return;
     }
 
-    console.log('Effect Mask >', maskFormat);
-
     // Reset with format if not match
     if (!matchFormat(maskFormat, focusValue)) {
-      // flushSync(() => {
       setFocusValue(format);
-      // });
       return;
     }
 
     // Match the selection range
+    inputRef.current.setSelectionRange(selectionStart, selectionEnd);
+
+    // Chrome has the bug anchor position looks not correct but actually correct
     rafRef.current = raf(() => {
       inputRef.current.setSelectionRange(selectionStart, selectionEnd);
     });
-    // console.log(
-    //   'MMM!',
-    //   selectionStart,
-    //   selectionEnd,
-    //   inputRef.current.value,
-    //   inputRef.current.selectionStart,
-    //   inputRef.current.selectionEnd,
-    // );
 
     return () => {
       raf.cancel(rafRef.current);
     };
-  }, [maskFormat, format, focused, focusValue, focusCellIndex, selectionStart, selectionEnd]);
+  }, [
+    maskFormat,
+    format,
+    focused,
+    focusValue,
+    focusCellIndex,
+    selectionStart,
+    selectionEnd,
+    forceSelectionSyncMark,
+  ]);
 
   // ======================== Render ========================
   return (
