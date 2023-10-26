@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 import raf from 'rc-util/lib/raf';
 import warning from 'rc-util/lib/warning';
-import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import type { PickerPanelProps } from '.';
@@ -43,12 +43,12 @@ import {
   isSameWeek,
   parseValue,
 } from './utils/dateUtil';
+import { getClearIcon } from './utils/getClearIcon';
 import getExtraFooter from './utils/getExtraFooter';
 import getRanges from './utils/getRanges';
 import { getValue, toArray, updateValues } from './utils/miscUtil';
 import { elementsContains, getDefaultFormat, getInputSize } from './utils/uiUtil';
 import { legacyPropsWarning } from './utils/warnUtil';
-import { getClearIcon } from './utils/getClearIcon';
 
 function reorderValues<DateType>(
   values: RangeValue<DateType>,
@@ -407,7 +407,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   function triggerChange(
     newValue: RangeValue<DateType>,
     sourceIndex: 0 | 1,
-    triggerCalendarChangeOnly?: boolean, 
+    triggerCalendarChangeOnly?: boolean,
   ) {
     let values = newValue;
     let startValue = getValue(values, 0);
@@ -576,7 +576,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     if (delayOpen) {
       if (needConfirmButton) {
         // when in dateTime mode, switching between two date input fields will trigger onCalendarChange.
-        // when onBlur is triggered, the input field has already switched, 
+        // when onBlur is triggered, the input field has already switched,
         // so it's necessary to obtain the value of the previous input field here.
         const needTriggerIndex = mergedActivePickerIndex ? 0 : 1;
         const selectedIndexValue = getValue(selectedValue, needTriggerIndex);
@@ -712,18 +712,18 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
   const startStr =
     mergedValue && mergedValue[0]
       ? formatValue(mergedValue[0], {
-        locale,
-        format: 'YYYYMMDDHHmmss',
-        generateConfig,
-      })
+          locale,
+          format: 'YYYYMMDDHHmmss',
+          generateConfig,
+        })
       : '';
   const endStr =
     mergedValue && mergedValue[1]
       ? formatValue(mergedValue[1], {
-        locale,
-        format: 'YYYYMMDDHHmmss',
-        generateConfig,
-      })
+          locale,
+          format: 'YYYYMMDDHHmmss',
+          generateConfig,
+        })
       : '';
 
   useEffect(() => {
@@ -742,6 +742,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
       }
     }
   }, [mergedOpen, startValueTexts, endValueTexts]);
+
 
   // Sync innerValue with control mode
   useEffect(() => {
@@ -775,10 +776,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     }
     warning(!dateRender, `'dateRender' is deprecated. Please use 'cellRender' instead.`);
     warning(!monthCellRender, `'monthCellRender' is deprecated. Please use 'cellRender' instead.`);
-    warning(
-      !clearIcon,
-      '`clearIcon` will be removed in future. Please use `allowClear` instead.',
-    );
+    warning(!clearIcon, '`clearIcon` will be removed in future. Please use `allowClear` instead.');
   }
 
   // ============================ Private ============================
@@ -886,7 +884,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
           defaultValue={
             mergedActivePickerIndex === 0 ? getValue(selectedValue, 1) : getValue(selectedValue, 0)
           }
-        // defaultPickerValue={undefined}
+          // defaultPickerValue={undefined}
         />
       </RangeContext.Provider>
     );
@@ -1065,11 +1063,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     );
   }
 
-  const mergedClearIcon: React.ReactNode = getClearIcon(
-    prefixCls,
-    allowClear,
-    clearIcon,
-  );
+  const mergedClearIcon: React.ReactNode = getClearIcon(prefixCls, allowClear, clearIcon);
 
   const clearNode: React.ReactNode = (
     <span
@@ -1099,10 +1093,10 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     </span>
   );
 
-  const mergedAllowClear = allowClear && (
-    (getValue(mergedValue as RangeValue<DateType>, 0) && !mergedDisabled[0]) ||
-    (getValue(mergedValue as RangeValue<DateType>, 1) && !mergedDisabled[1])
-  );
+  const mergedAllowClear =
+    allowClear &&
+    ((getValue(mergedValue as RangeValue<DateType>, 0) && !mergedDisabled[0]) ||
+      (getValue(mergedValue as RangeValue<DateType>, 1) && !mergedDisabled[1]));
 
   const inputSharedProps = {
     size: getInputSize(picker, formatList[0], generateConfig),
