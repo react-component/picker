@@ -30,11 +30,24 @@ export type Locale = {
   millisecond?: string;
   meridiem?: string;
 
+  // Input format
+  /** Input field formatter like YYYY-MM-DD HH:mm:ss */
+  fieldDateTimeFormat: string;
+  /** Input field formatter like YYYY-MM-DD */
+  fieldDateFormat: string;
+  /** Input field formatter like YYYY-MM */
+  fieldMonthFormat: string;
+  /** Input field formatter like YYYY */
+  fieldYearFormat: string;
+  /** Input field formatter like HH:mm:ss */
+  fieldTimeFormat: string;
+
   // >>>>> Not used yet
 
   // Input format
   /** Full date format like YYYY-MM-DD in input */
   dateFormat: string;
+
   /** Full date format with time like YYYY-MM-DD HH:mm:ss in input */
   dateTimeFormat: string;
 
@@ -66,6 +79,8 @@ export type Locale = {
 };
 
 export type PanelMode = 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year' | 'decade';
+
+export type InternalMode = PanelMode | 'datetime';
 
 export type DisabledDate<DateType = any> = (
   date: DateType,
@@ -172,13 +187,13 @@ export interface SharedPanelProps<DateType = any> {
 }
 
 export type Components<DateType = any> = Partial<
-  Record<PanelMode | 'datetime', React.ComponentType<SharedPanelProps<DateType>>>
+  Record<InternalMode, React.ComponentType<SharedPanelProps<DateType>>>
 >;
 
 // ========================= Picker =========================
 export type SemanticStructure = 'popup';
 
-export interface SharedPickerProps {
+export interface SharedPickerProps<DateType = any> {
   // MISC
   direction?: 'ltr' | 'rtl';
 
@@ -189,6 +204,26 @@ export interface SharedPickerProps {
 
   styles?: Partial<Record<SemanticStructure, React.CSSProperties>>;
   classNames?: Partial<Record<SemanticStructure, string>>;
+
+  // Config
+  locale: Locale;
+  generateConfig: GenerateConfig<DateType>;
+
+  // Picker
+  picker?: PanelMode;
+  showTime?: SharedTimeProps<DateType>;
+  /**
+   * Config the input field parse and format.
+   * When set `format.align`, it will force user input align with your input,
+   * it's only support basic format mask: YYYY, MM, DD, HH, mm, ss, SSS.
+   */
+  format?:
+    | string
+    | string[]
+    | {
+        format: string;
+        align?: boolean;
+      };
 
   // Icons
   suffixIcon?: React.ReactNode;
@@ -220,13 +255,16 @@ export interface PickerRef {
 }
 
 // ======================== Selector ========================
-export interface SelectorProps {
+export interface SelectorProps<DateType = any> {
+  format: string;
   suffixIcon?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
-  focused: boolean;
-  onFocus: React.FocusEventHandler<HTMLInputElement>;
-  onBlur: React.FocusEventHandler<HTMLInputElement>;
+  focusIndex: number | null;
+  onFocus: (event: React.FocusEvent<HTMLInputElement>, index?: number) => void;
+  onBlur: (event: React.FocusEvent<HTMLInputElement>, index?: number) => void;
+  locale: Locale;
+  generateConfig: GenerateConfig<DateType>;
 }
 
 export interface SelectorRef {

@@ -2,7 +2,6 @@ import * as React from 'react';
 import '../../assets/index.less';
 import type { PickerRef } from '../../src/NewPicker/interface';
 import RangePicker from '../../src/NewPicker/PickerInput/RangePicker';
-import SinglePicker from '../../src/NewPicker/PickerInput/SinglePicker';
 import PickerPanel, { type PickerPanelProps } from '../../src/NewPicker/PickerPanel';
 
 import moment, { Moment } from 'moment';
@@ -13,14 +12,21 @@ import zhCN from '../../src/locale/zh_CN';
 moment.locale('zh-cn');
 window.moment = moment;
 
+const sharedLocale = {
+  locale: zhCN,
+  generateConfig: momentGenerateConfig,
+};
+
 function CellPicker(props: Partial<PickerPanelProps>) {
   return (
     <div>
       <h5 style={{ margin: 0 }}>{props.picker || 'date'}</h5>
-      <PickerPanel locale={zhCN} generateConfig={momentGenerateConfig} {...props} />
+      <PickerPanel {...sharedLocale} {...props} />
     </div>
   );
 }
+
+const MyTime = () => <div>2333</div>;
 
 export default () => {
   const singleRef = React.useRef<PickerRef>(null);
@@ -29,9 +35,16 @@ export default () => {
 
   return (
     <div>
-      <SinglePicker ref={singleRef} suffixIcon="🧶" />
+      {/* <SinglePicker ref={singleRef} suffixIcon="🧶" /> */}
       <br />
-      <RangePicker suffixIcon="🧶" />
+      <RangePicker
+        {...sharedLocale}
+        suffixIcon="🧶"
+        format={{
+          format: 'YYYY-MM-DD',
+          align: true,
+        }}
+      />
       <br />
 
       <button
@@ -43,7 +56,19 @@ export default () => {
       </button>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        <CellPicker picker="datetime" />
+        {/* <CellPicker
+          picker="time"
+          components={{
+            time: MyTime,
+          }}
+        /> */}
+        {/* <CellPicker
+          picker="date"
+          showTime={{
+            format: 'HH:mm:ss.SSS A',
+            showTitle: true,
+          }}
+        /> */}
 
         {/* <CellPicker
           defaultValue={moment().add(1, 'day')}
