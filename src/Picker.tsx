@@ -14,15 +14,16 @@
 import type { AlignType } from '@rc-component/trigger/lib/interface';
 import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import warning from 'rc-util/lib/warning';
 import pickAttrs from 'rc-util/lib/pickAttrs';
+import warning from 'rc-util/lib/warning';
 import * as React from 'react';
+import { GenerateConfig } from './generate';
 import useHoverValue from './hooks/useHoverValue';
 import usePickerInput from './hooks/usePickerInput';
 import usePresets from './hooks/usePresets';
 import useTextValueMapping from './hooks/useTextValueMapping';
 import useValueTexts from './hooks/useValueTexts';
-import type { CustomFormat, PickerMode, PresetDate } from './interface';
+import type { CustomFormat, DisabledTime, PickerMode, PresetDate } from './interface';
 import type { ContextOperationRefProps } from './PanelContext';
 import PanelContext from './PanelContext';
 import type {
@@ -34,10 +35,10 @@ import PickerPanel from './PickerPanel';
 import PickerTrigger from './PickerTrigger';
 import PresetPanel from './PresetPanel';
 import { formatValue, isEqual, parseValue } from './utils/dateUtil';
+import { getClearIcon } from './utils/getClearIcon';
 import { toArray } from './utils/miscUtil';
 import { elementsContains, getDefaultFormat, getInputSize } from './utils/uiUtil';
 import { legacyPropsWarning } from './utils/warnUtil';
-import { getClearIcon } from './utils/getClearIcon';
 
 export type PickerRefConfig = {
   focus: () => void;
@@ -67,8 +68,8 @@ export type PickerSharedProps<DateType> = {
 
   // Render
   suffixIcon?: React.ReactNode;
-  /** 
-   * Clear all icon 
+  /**
+   * Clear all icon
    * @deprecated Please use `allowClear` instead
    **/
   clearIcon?: React.ReactNode;
@@ -145,6 +146,32 @@ type MergedPickerProps<DateType> = {
   picker?: PickerMode;
 } & OmitType<DateType>;
 
+function testValueInSet(num: number, range: number[]) {
+  if (typeof num === 'undefined' || typeof range === 'undefined') return;
+  const set = new Set(range);
+  return set.has(num);
+}
+
+function validateTime<DateType>(
+  picker: PickerMode,
+  disabledTime: DisabledTime<DateType>,
+  date: DateType,
+  generateConfig: GenerateConfig<DateType>,
+) {
+  if (!disabledTime || picker !== 'date') return false;
+  const disabledTimes = disabledTime(date);
+  if (!disabledTimes) return false;
+  const { disabledHours, disabledMinutes, disabledSeconds } = disabledTimes;
+  const hour = generateConfig.getHour(date);
+  const minter = generateConfig.getMinute(date);
+  const second = generateConfig.getSecond(date);
+
+  const validateHour = testValueInSet(hour, disabledHours?.());
+  const validateMinute = testValueInSet(minter, disabledMinutes?.(hour));
+  const validateSecond = testValueInSet(second, disabledSeconds?.(hour, minter));
+  return validateHour || validateMinute || validateSecond;
+}
+
 function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const {
     prefixCls = 'rc-picker',
@@ -196,6 +223,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     autoComplete = 'off',
     inputRender,
     changeOnBlur,
+    disabledTime,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -253,6 +281,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     locale,
   });
 
+  const timeProps = typeof showTime === 'object' ? showTime : {};
+
   const [text, triggerTextChange, resetText] = useTextValueMapping({
     valueTexts,
     onTextChange: (newText) => {
@@ -261,7 +291,11 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         formatList,
         generateConfig,
       });
-      if (inputDate && (!disabledDate || !disabledDate(inputDate))) {
+      if (
+        inputDate &&
+        (!disabledDate || !disabledDate(inputDate)) &&
+        !validateTime(picker, disabledTime, inputDate || timeProps?.defaultValue, generateConfig)
+      ) {
         setSelectedValue(inputDate);
       }
     },
@@ -340,7 +374,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         // When user typing disabledDate with keyboard and enter, this value will be empty
         !selectedValue ||
         // Normal disabled check
-        (disabledDate && disabledDate(selectedValue))
+        (disabledDate && disabledDate(selectedValue)) ||
+        validateTime(picker, disabledTime, selectedValue || timeProps?.defaultValue, generateConfig)
       ) {
         return false;
       }
@@ -490,11 +525,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     );
   }
 
-  const mergedClearIcon: React.ReactNode = getClearIcon(
-    prefixCls,
-    allowClear,
-    clearIcon,
-  );
+  const mergedClearIcon: React.ReactNode = getClearIcon(prefixCls, allowClear, clearIcon);
 
   const clearNode: React.ReactNode = (
     <span
@@ -517,7 +548,9 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   const mergedAllowClear = !!allowClear && mergedValue && !disabled;
 
-  const mergedInputProps: React.InputHTMLAttributes<HTMLInputElement> & { ref: React.MutableRefObject<HTMLInputElement> } = {
+  const mergedInputProps: React.InputHTMLAttributes<HTMLInputElement> & {
+    ref: React.MutableRefObject<HTMLInputElement>;
+  } = {
     id,
     tabIndex,
     disabled,
