@@ -1,5 +1,6 @@
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
+import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 
 export default function useTextValueMapping({
   valueTexts,
