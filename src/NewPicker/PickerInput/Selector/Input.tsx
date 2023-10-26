@@ -1,7 +1,9 @@
 import classNames from 'classnames';
 import { useComposeRef } from 'rc-util';
-import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
+// import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
+import raf from 'rc-util/lib/raf';
 import * as React from 'react';
+import { leftPad } from '../../../utils/miscUtil';
 import { PrefixClsContext } from '../context';
 import Icon from './Icon';
 import { getCellRange, getMask, matchFormat } from './util';
@@ -27,8 +29,15 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  const { active, suffixIcon, format, validateFormat, onFocus, onBlur, value, ...restProps } =
-    props;
+  const {
+    active,
+    suffixIcon,
+    format,
+    validateFormat,
+    // Pass to input
+    ...restProps
+  } = props;
+  const { value, onFocus, onBlur, onKeyDown } = props;
 
   const prefixCls = React.useContext(PrefixClsContext);
   const inputPrefixCls = `${prefixCls}-input`;
@@ -36,6 +45,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   // ======================== Value =========================
   const [focused, setFocused] = React.useState(false);
   const [focusValue, setFocusValue] = React.useState<string>(value || '');
+  const [focusCellText, setFocusCellText] = React.useState<string>('');
   const [focusCellIndex, setFocusCellIndex] = React.useState<number>(null);
 
   // ========================= Refs =========================
@@ -43,16 +53,20 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
   const mergedRef = useComposeRef(ref, inputRef);
 
+  // ======================== Format ========================
+  const maskFormat = React.useMemo(() => getMask(format || ''), [format]);
+  const [selectionStart, selectionEnd] = React.useMemo(
+    () => getCellRange(maskFormat, focusCellIndex),
+    [maskFormat, focusCellIndex],
+  );
+
   // ====================== Focus Blur ======================
   const onInternalFocus: React.FocusEventHandler<HTMLInputElement> = (event) => {
     onFocus(event);
 
-    // if (!focusValue) {
-    //   setFocusValue(format);
-    // }
-
     setFocused(true);
     setFocusCellIndex(0);
+    setFocusCellText('');
   };
 
   const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
@@ -61,11 +75,33 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     // setFocusValue(value || '');
 
     setFocused(false);
-    setFocusCellIndex(null);
   };
 
   const onInternalChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    setFocusValue(event.target.value);
+    // console.log('>>>', event);
+    // setFocusValue(event.target.value);
+  };
+
+  const onInternalKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    const { key } = event;
+
+    if (!isNaN(Number(key))) {
+      const nextCellText = focusCellText + key;
+      setFocusCellText(nextCellText);
+
+      // Replace selection range with `nextCellText`
+      const nextFocusValue =
+        // before
+        focusValue.slice(0, selectionStart) +
+        // replace
+        leftPad(nextCellText, 4) +
+        // after
+        focusValue.slice(selectionEnd);
+      setFocusValue(nextFocusValue);
+      console.log('setted!!!', nextFocusValue);
+    }
+
+    onKeyDown?.(event);
   };
 
   const inputProps: React.InputHTMLAttributes<HTMLInputElement> = format
@@ -74,18 +110,20 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         onFocus: onInternalFocus,
         onBlur: onInternalBlur,
         onChange: onInternalChange,
+        onKeyDown: onInternalKeyDown,
       }
     : {};
 
   // ======================== Format ========================
+  const rafRef = React.useRef<number>();
 
-  useLayoutEffect(() => {
-    if (!focused || focusCellIndex === null || !format) {
+  // useLayoutEffect(() => {
+  React.useEffect(() => {
+    if (!focused || !format) {
       return;
     }
 
-    const maskFormat = getMask(format);
-    console.log('>', maskFormat);
+    console.log('Effect Mask >', maskFormat);
 
     // Reset with format if not match
     if (!matchFormat(maskFormat, focusValue)) {
@@ -96,16 +134,22 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     }
 
     // Match the selection range
-    const [selectionStart, selectionEnd] = getCellRange(maskFormat, focusCellIndex);
-    console.log('MMM!', selectionStart, selectionEnd);
+    rafRef.current = raf(() => {
+      inputRef.current.setSelectionRange(selectionStart, selectionEnd);
+    });
+    // console.log(
+    //   'MMM!',
+    //   selectionStart,
+    //   selectionEnd,
+    //   inputRef.current.value,
+    //   inputRef.current.selectionStart,
+    //   inputRef.current.selectionEnd,
+    // );
 
-    // alignFormat(format, focusValue);
-
-    // const formatCells = format.split(/[^A-Za-z]+/);
-
-    // // Realign selection by the format cells
-    // console.log(inputRef.current.selectionStart, focusValue);
-  }, [format, focused, focusValue, focusCellIndex]);
+    return () => {
+      raf.cancel(rafRef.current);
+    };
+  }, [maskFormat, format, focused, focusValue, focusCellIndex, selectionStart, selectionEnd]);
 
   // ======================== Render ========================
   return (
