@@ -1,5 +1,6 @@
 import * as React from 'react';
 import type { InternalMode, Locale, SharedPickerProps } from '../../interface';
+import { toArray } from '../../util';
 
 function getRowFormat(picker: InternalMode, locale: Locale, format?: SharedPickerProps['format']) {
   if (format) {
@@ -28,7 +29,7 @@ export function useFieldFormat(
   return React.useMemo(() => {
     const rawFormat = getRowFormat(picker, locale, format);
 
-    const formatList = Array.isArray(rawFormat) ? rawFormat : [rawFormat];
+    const formatList = toArray(rawFormat);
 
     const firstFormat = formatList[0];
     const maskFormat =

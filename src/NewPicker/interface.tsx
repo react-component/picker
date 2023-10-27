@@ -260,7 +260,6 @@ export interface PickerRef {
 export type OnOpenChange = (open: boolean, index?: number) => void;
 export interface SelectorProps<DateType = any> {
   preserveInvalidOnBlur?: boolean;
-  format: string;
   suffixIcon?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -269,6 +268,15 @@ export interface SelectorProps<DateType = any> {
   onBlur: (event: React.FocusEvent<HTMLInputElement>, index?: number) => void;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
+
+  // Change
+  format: string[];
+  /**
+   * Convert with user typing for the format template.
+   * This will force align the input with template mask.
+   */
+  maskFormat?: string;
+  onChange: (date: DateType, index?: number) => void;
 
   // Open
   /** Open index */

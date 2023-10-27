@@ -7,9 +7,29 @@ import { PrefixClsContext } from './context';
 import { useFieldFormat } from './hooks/useFieldFormat';
 import RangeSelector from './Selector/RangeSelector';
 
-export type RangePickerProps = SharedPickerProps;
+function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
+  const singleConfig = config ?? defaultConfig;
 
-export default function Picker(props: RangePickerProps) {
+  if (Array.isArray(singleConfig)) {
+    return singleConfig;
+  }
+
+  return [singleConfig, singleConfig];
+}
+
+export type RangeValueType<DateType> = [start?: DateType, end?: DateType];
+
+export interface RangePickerProps<DateType> extends SharedPickerProps<DateType> {
+  // Value
+  value?: RangeValueType<DateType>;
+  defaultValue?: RangeValueType<DateType>;
+  onChange?: (dates: RangeValueType<DateType>, dateStrings: [string, string]) => void;
+
+  disabled?: boolean | [boolean, boolean];
+  allowEmpty?: [boolean, boolean];
+}
+
+export default function Picker<DateType = any>(props: RangePickerProps<DateType>) {
   const {
     // Style
     prefixCls = 'rc-picker',
@@ -17,6 +37,14 @@ export default function Picker(props: RangePickerProps) {
     style,
     styles = {},
     classNames = {},
+
+    // Value
+    value,
+    defaultValue,
+    onChange,
+
+    disabled,
+    allowEmpty,
 
     // Open
     defaultOpen,
@@ -41,6 +69,13 @@ export default function Picker(props: RangePickerProps) {
     direction,
   } = props;
 
+  // ======================== Format ========================
+  const [formatList, maskFormat] = useFieldFormat(
+    picker === 'date' && showTime ? 'datetime' : picker,
+    locale,
+    format,
+  );
+
   // ======================== Active ========================
   const [activeIndex, setActiveIndex] = React.useState<number>(null);
 
@@ -56,12 +91,43 @@ export default function Picker(props: RangePickerProps) {
     setMergeOpen(nextOpen);
   };
 
-  // ========================= Mode =========================
-  const [formatList, maskFormat] = useFieldFormat(
-    picker === 'date' && showTime ? 'datetime' : picker,
-    locale,
-    format,
-  );
+  // =================== Disabled & Empty ===================
+  const mergedDisabled = separateConfig(disabled, false);
+  const mergedAllowEmpty = separateConfig(allowEmpty, true);
+
+  // ======================== Value =========================
+  const [mergedValue, setMergedValue] = useMergedState(defaultValue, {
+    value,
+    postState: (valList): RangeValueType<DateType> => valList || [],
+    onChange: (nextValue) => {
+      if (onChange) {
+        const startEmpty = !nextValue[0];
+        const endEmpty = !nextValue[1];
+
+        if (
+          // Validate start
+          (!startEmpty || mergedAllowEmpty[0]) &&
+          // Validate end
+          (!endEmpty || mergedAllowEmpty[1])
+        ) {
+          const nextValueTexts = nextValue.map((date) =>
+            date ? generateConfig.locale.format(locale.locale, date, formatList[0]) : '',
+          );
+
+          onChange(nextValue, nextValueTexts as [string, string]);
+        }
+      }
+    },
+  });
+
+  const onInternalChange = (date: DateType, index: number) => {
+    setMergedValue((prev) => {
+      const clone: RangeValueType<DateType> = [...(prev || [])];
+      clone[index] = date;
+
+      return clone;
+    });
+  };
 
   // ======================== Panels ========================
   const panel = <PickerPanel {...props} />;
@@ -83,7 +149,6 @@ export default function Picker(props: RangePickerProps) {
         <RangeSelector
           locale={locale}
           generateConfig={generateConfig}
-          format={maskFormat}
           focusIndex={activeIndex}
           suffixIcon={suffixIcon}
           onFocus={(_, index) => {
@@ -92,6 +157,11 @@ export default function Picker(props: RangePickerProps) {
           onBlur={() => {
             setActiveIndex(null);
           }}
+          // Change
+          value={mergedValue}
+          format={formatList}
+          maskFormat={maskFormat}
+          onChange={onInternalChange}
           // Open
           open={mergedOpen ? activeIndex : null}
           onOpenChange={onSelectorOpenChange}
