@@ -1,6 +1,6 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
-import type { SharedPickerProps } from '../interface';
+import type { OnOpenChange, SharedPickerProps } from '../interface';
 import PickerPanel from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import { PrefixClsContext } from './context';
@@ -41,13 +41,20 @@ export default function Picker(props: RangePickerProps) {
     direction,
   } = props;
 
+  // ======================== Active ========================
+  const [activeIndex, setActiveIndex] = React.useState<number>(null);
+
   // ========================= Open =========================
+  const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
+
   const [mergedOpen, setMergeOpen] = useMergedState(defaultOpen || false, {
     value: open,
     onChange: onOpenChange,
   });
 
-  const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
+  const onSelectorOpenChange: OnOpenChange = (nextOpen, index) => {
+    setMergeOpen(nextOpen);
+  };
 
   // ========================= Mode =========================
   const [formatList, maskFormat] = useFieldFormat(
@@ -55,9 +62,6 @@ export default function Picker(props: RangePickerProps) {
     locale,
     format,
   );
-
-  // ======================== Active ========================
-  const [focusIndex, setFocusIndex] = React.useState<number>(null);
 
   // ======================== Panels ========================
   const panel = <PickerPanel {...props} />;
@@ -80,14 +84,17 @@ export default function Picker(props: RangePickerProps) {
           locale={locale}
           generateConfig={generateConfig}
           format={maskFormat}
-          focusIndex={focusIndex}
+          focusIndex={activeIndex}
           suffixIcon={suffixIcon}
           onFocus={(_, index) => {
-            setFocusIndex(index);
+            setActiveIndex(index);
           }}
           onBlur={() => {
-            setFocusIndex(null);
+            setActiveIndex(null);
           }}
+          // Open
+          open={mergedOpen ? activeIndex : null}
+          onOpenChange={onSelectorOpenChange}
         />
       </PickerTrigger>
     </PrefixClsContext.Provider>

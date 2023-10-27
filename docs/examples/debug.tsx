@@ -41,7 +41,8 @@ export default () => {
         {...sharedLocale}
         suffixIcon="🧶"
         format={{
-          format: 'YYYY-MM-DD',
+          // format: 'YYYY-MM-DD',
+          format: 'YYYYMMDD',
           align: true,
         }}
       />

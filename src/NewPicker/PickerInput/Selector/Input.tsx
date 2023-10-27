@@ -1,12 +1,13 @@
 import classNames from 'classnames';
-import { useComposeRef } from 'rc-util';
+import { useComposeRef, useEvent } from 'rc-util';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import raf from 'rc-util/lib/raf';
 import * as React from 'react';
 import { leftPad } from '../../../utils/miscUtil';
 import { PrefixClsContext } from '../context';
 import Icon from './Icon';
-import { getCellIndex, getCellRange, getMask, getMaskRange, matchFormat } from './util';
+import MaskFormat from './MaskFormat';
+import { getMaskRange } from './util';
 
 // Format logic
 //
@@ -20,12 +21,18 @@ import { getCellIndex, getCellRange, getMask, getMaskRange, matchFormat } from '
 //    2. Re-selection the mask cell
 //  3. If `cacheValue` match the limit length or cell format (like 1 ~ 12 month), go to next cell
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   format?: string;
   validateFormat: (value: string, format: string) => boolean;
   active?: boolean;
   suffixIcon?: React.ReactNode;
   value?: string;
+  onChange?: (value: string) => void;
+  /**
+   * Trigger when input need additional help.
+   * Like open the popup for interactive.
+   */
+  onHelp: () => void;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
@@ -34,6 +41,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     suffixIcon,
     format,
     validateFormat,
+    onChange,
+    onInput,
+    onHelp,
     // Pass to input
     ...restProps
   } = props;
@@ -55,12 +65,47 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const mergedRef = useComposeRef(ref, inputRef);
 
   // ======================== Format ========================
-  const [maskFormat, maskCellCount] = React.useMemo(() => getMask(format || ''), [format]);
+  const maskFormat = React.useMemo(() => new MaskFormat(format || ''), [format]);
 
   const [selectionStart, selectionEnd] = React.useMemo(
-    () => getCellRange(maskFormat, focusCellIndex),
+    () => maskFormat.getSelection(focusCellIndex),
     [maskFormat, focusCellIndex],
   );
+
+  // ======================== Modify ========================
+  // When input modify content, trigger `onText` if is not the format
+  const onModify = (text: string) => {
+    if (text !== format) {
+      onHelp();
+    }
+  };
+
+  // ======================== Change ========================
+  const triggerInputChange = useEvent((text: string) => {
+    if (validateFormat(text, format)) {
+      onChange?.(text);
+    }
+    setFocusValue(text);
+    onModify(text);
+  });
+
+  const onInternalChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    // Hack `onChange` with format to do nothing
+    if (!format) {
+      const text = event.target.value;
+      onChange?.(text);
+      onModify(text);
+    }
+  };
+
+  const onInternalPaste: React.ClipboardEventHandler<HTMLInputElement> = (event) => {
+    // Get paste text
+    const pasteText = event.clipboardData.getData('text');
+
+    if (validateFormat(pasteText, format)) {
+      triggerInputChange(pasteText);
+    }
+  };
 
   // ====================== Focus Blur ======================
   const onInternalFocus: React.FocusEventHandler<HTMLInputElement> = (event) => {
@@ -72,25 +117,26 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   };
 
   const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
-    setFocusValue(value || '');
+    triggerInputChange(value || '');
     setFocused(false);
 
     onBlur(event);
   };
 
-  const onInternalChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    // console.log('>>>', event);
-    // setFocusValue(event.target.value);
-  };
-
+  // ======================== Mouse =========================
   const onInternalMouseUp: React.MouseEventHandler<HTMLInputElement> = (event) => {
     const { selectionStart: start } = event.target as HTMLInputElement;
 
-    console.log('???', start, getCellIndex(maskFormat, start));
+    const closeMaskIndex = maskFormat.getMaskCellIndex(start);
+    setFocusCellIndex(closeMaskIndex);
+
+    // Force update the selection
+    forceSelectionSync({});
 
     onMouseUp?.(event);
   };
 
+  // ======================= Keyboard =======================
   const onInternalKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     const { key } = event;
     console.log('key', key);
@@ -109,7 +155,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       setFocusCellIndex((idx) => {
         let nextIndex = idx + offset;
         nextIndex = Math.max(nextIndex, 0);
-        nextIndex = Math.min(nextIndex, maskCellCount - 1);
+        nextIndex = Math.min(nextIndex, maskFormat.size() - 1);
         return nextIndex;
       });
     };
@@ -193,7 +239,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         leftPad(nextFillText, maskCellLen) +
         // after
         focusValue.slice(selectionEnd);
-      setFocusValue(nextFocusValue.slice(0, maskFormat.length));
+      triggerInputChange(nextFocusValue.slice(0, format.length));
     }
 
     // Always trigger selection sync after key down
@@ -201,17 +247,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
     onKeyDown?.(event);
   };
-
-  const inputProps: React.InputHTMLAttributes<HTMLInputElement> = format
-    ? {
-        value: focusValue,
-        onFocus: onInternalFocus,
-        onBlur: onInternalBlur,
-        onChange: onInternalChange,
-        onKeyDown: onInternalKeyDown,
-        onMouseUp: onInternalMouseUp,
-      }
-    : {};
 
   // ======================== Format ========================
   const rafRef = React.useRef<number>();
@@ -222,8 +257,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     }
 
     // Reset with format if not match
-    if (!matchFormat(maskFormat, focusValue)) {
-      setFocusValue(format);
+    if (!maskFormat.match(focusValue)) {
+      triggerInputChange(format);
       return;
     }
 
@@ -247,9 +282,23 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     selectionStart,
     selectionEnd,
     forceSelectionSyncMark,
+    triggerInputChange,
   ]);
 
   // ======================== Render ========================
+  // Input props for format
+  const inputProps: React.InputHTMLAttributes<HTMLInputElement> = format
+    ? {
+        value: focusValue,
+        onFocus: onInternalFocus,
+        onBlur: onInternalBlur,
+        onChange: onInternalChange,
+        onKeyDown: onInternalKeyDown,
+        onMouseUp: onInternalMouseUp,
+        onPaste: onInternalPaste,
+      }
+    : {};
+
   return (
     <div
       className={classNames(inputPrefixCls, {

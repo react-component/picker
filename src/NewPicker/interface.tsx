@@ -257,6 +257,7 @@ export interface PickerRef {
 }
 
 // ======================== Selector ========================
+export type OnOpenChange = (open: boolean, index?: number) => void;
 export interface SelectorProps<DateType = any> {
   preserveInvalidOnBlur?: boolean;
   format: string;
@@ -268,6 +269,12 @@ export interface SelectorProps<DateType = any> {
   onBlur: (event: React.FocusEvent<HTMLInputElement>, index?: number) => void;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
+
+  // Open
+  /** Open index */
+  open: number;
+  /** Trigger when need open by selector */
+  onOpenChange: OnOpenChange;
 }
 
 export interface SelectorRef {
