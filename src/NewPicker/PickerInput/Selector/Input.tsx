@@ -54,10 +54,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
   // ======================== Value =========================
   const [focused, setFocused] = React.useState(false);
-  const [focusValue, setFocusValue] = React.useState<string>(value || '');
+  const [inputValue, setInputValue] = React.useState<string>(value || '');
   const [focusCellText, setFocusCellText] = React.useState<string>('');
   const [focusCellIndex, setFocusCellIndex] = React.useState<number>(null);
   const [forceSelectionSyncMark, forceSelectionSync] = React.useState<object>(null);
+
+  // Sync value if needed
+  React.useEffect(() => {
+    setInputValue(value || '');
+  }, [value]);
 
   // ========================= Refs =========================
   const inputRef = React.useRef<HTMLInputElement>();
@@ -85,7 +90,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     if (validateFormat(text, format)) {
       onChange?.(text);
     }
-    setFocusValue(text);
+    setInputValue(text);
     onModify(text);
   });
 
@@ -93,8 +98,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     // Hack `onChange` with format to do nothing
     if (!format) {
       const text = event.target.value;
-      onChange?.(text);
+
       onModify(text);
+      setInputValue(text);
+      onChange?.(text);
     }
   };
 
@@ -164,7 +171,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     const offsetCellValue = (offset: number) => {
       const [rangeStart, rangeEnd, rangeDefault] = getMaskRange(cellFormat);
 
-      const currentText = focusValue.slice(selectionStart, selectionEnd);
+      const currentText = inputValue.slice(selectionStart, selectionEnd);
       const currentTextNum = Number(currentText);
 
       if (isNaN(currentTextNum)) {
@@ -234,11 +241,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       // Replace selection range with `nextCellText`
       const nextFocusValue =
         // before
-        focusValue.slice(0, selectionStart) +
+        inputValue.slice(0, selectionStart) +
         // replace
         leftPad(nextFillText, maskCellLen) +
         // after
-        focusValue.slice(selectionEnd);
+        inputValue.slice(selectionEnd);
       triggerInputChange(nextFocusValue.slice(0, format.length));
     }
 
@@ -257,7 +264,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     }
 
     // Reset with format if not match
-    if (!maskFormat.match(focusValue)) {
+    if (!maskFormat.match(inputValue)) {
       triggerInputChange(format);
       return;
     }
@@ -277,7 +284,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     maskFormat,
     format,
     focused,
-    focusValue,
+    inputValue,
     focusCellIndex,
     selectionStart,
     selectionEnd,
@@ -289,10 +296,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   // Input props for format
   const inputProps: React.InputHTMLAttributes<HTMLInputElement> = format
     ? {
-        value: focusValue,
         onFocus: onInternalFocus,
         onBlur: onInternalBlur,
-        onChange: onInternalChange,
         onKeyDown: onInternalKeyDown,
         onMouseUp: onInternalMouseUp,
         onPaste: onInternalPaste,
@@ -305,7 +310,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         [`${inputPrefixCls}-active`]: active,
       })}
     >
-      <input ref={mergedRef} {...restProps} {...inputProps} />
+      <input
+        ref={mergedRef}
+        {...restProps}
+        {...inputProps}
+        // Value
+        value={inputValue}
+        onChange={onInternalChange}
+      />
       <Icon type="suffix" icon={suffixIcon} />
     </div>
   );

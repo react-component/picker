@@ -40,11 +40,11 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         suffixIcon="🧶"
-        format={{
-          format: 'YYYY-MM-DD',
-          // format: 'YYYYMMDD',
-          align: true,
-        }}
+        // format={{
+        //   format: 'YYYY-MM-DD',
+        //   // format: 'YYYYMMDD',
+        //   align: true,
+        // }}
         onChange={(val) => {
           console.log('🧶 Demo Change:', val);
         }}
