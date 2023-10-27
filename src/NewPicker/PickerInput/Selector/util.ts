@@ -69,3 +69,18 @@ export function getCellRange(maskFormat: string, cellIndex: number) {
 
   return [startIndex, endIndex];
 }
+
+export function getCellIndex(maskFormat: string, selectionStart: number) {
+  let str = maskFormat.slice(0, selectionStart + 1);
+  // const cellReg = new RegExp(`(${REPLACE_KEY}+)|([^${REPLACE_KEY}]+)`, 'g');
+  // const match = maskFormat.match(cellReg) || [];
+
+  // let strIndex = 0;
+
+  // for (let i = 0; i < match.length; i += 1) {
+  //   const cell = match[i];
+
+  //   if () {}
+  // }
+  return str;
+}

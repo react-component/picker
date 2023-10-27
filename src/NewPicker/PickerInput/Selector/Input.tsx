@@ -6,7 +6,7 @@ import * as React from 'react';
 import { leftPad } from '../../../utils/miscUtil';
 import { PrefixClsContext } from '../context';
 import Icon from './Icon';
-import { getCellRange, getMask, getMaskRange, matchFormat } from './util';
+import { getCellIndex, getCellRange, getMask, getMaskRange, matchFormat } from './util';
 
 // Format logic
 //
@@ -37,7 +37,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     // Pass to input
     ...restProps
   } = props;
-  const { value, onFocus, onBlur, onKeyDown } = props;
+  const { value, onFocus, onBlur, onKeyDown, onMouseUp } = props;
 
   const prefixCls = React.useContext(PrefixClsContext);
   const inputPrefixCls = `${prefixCls}-input`;
@@ -64,24 +64,31 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
   // ====================== Focus Blur ======================
   const onInternalFocus: React.FocusEventHandler<HTMLInputElement> = (event) => {
-    onFocus(event);
-
     setFocused(true);
     setFocusCellIndex(0);
     setFocusCellText('');
+
+    onFocus(event);
   };
 
   const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
-    onBlur(event);
-
-    // setFocusValue(value || '');
-
+    setFocusValue(value || '');
     setFocused(false);
+
+    onBlur(event);
   };
 
   const onInternalChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     // console.log('>>>', event);
     // setFocusValue(event.target.value);
+  };
+
+  const onInternalMouseUp: React.MouseEventHandler<HTMLInputElement> = (event) => {
+    const { selectionStart: start } = event.target as HTMLInputElement;
+
+    console.log('???', start, getCellIndex(maskFormat, start));
+
+    onMouseUp?.(event);
   };
 
   const onInternalKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
@@ -115,12 +122,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       const currentTextNum = Number(currentText);
 
       if (isNaN(currentTextNum)) {
-        return rangeDefault ? rangeDefault : String(offset > 0 ? rangeStart : rangeEnd);
+        return String(rangeDefault ? rangeDefault : offset > 0 ? rangeStart : rangeEnd);
       }
 
       const num = currentTextNum + offset;
       const range = rangeEnd - rangeStart + 1;
-      console.log('>>>>>', num);
       return String(rangeStart + ((range + num - rangeStart) % range));
     };
 
@@ -203,6 +209,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         onBlur: onInternalBlur,
         onChange: onInternalChange,
         onKeyDown: onInternalKeyDown,
+        onMouseUp: onInternalMouseUp,
       }
     : {};
 

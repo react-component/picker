@@ -224,6 +224,8 @@ export interface SharedPickerProps<DateType = any> {
         format: string;
         align?: boolean;
       };
+  /** When user input invalidate date, keep it in the input field */
+  preserveInvalidOnBlur?: boolean;
 
   // Icons
   suffixIcon?: React.ReactNode;
@@ -256,6 +258,7 @@ export interface PickerRef {
 
 // ======================== Selector ========================
 export interface SelectorProps<DateType = any> {
+  preserveInvalidOnBlur?: boolean;
   format: string;
   suffixIcon?: React.ReactNode;
   className?: string;
