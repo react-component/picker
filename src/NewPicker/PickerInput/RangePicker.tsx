@@ -1,11 +1,12 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
 import { isSameTimestamp } from '../../utils/dateUtil';
-import type { OnOpenChange, SharedPickerProps } from '../interface';
+import type { OnOpenChange, OpenConfig, SharedPickerProps } from '../interface';
 import PickerPanel from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import { PrefixClsContext } from './context';
 import { useFieldFormat } from './hooks/useFieldFormat';
+import useOpen from './hooks/useOpen';
 import RangeSelector from './Selector/RangeSelector';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
@@ -87,14 +88,10 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   // ========================= Open =========================
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
 
-  const [mergedOpen, setMergeOpen] = useMergedState(defaultOpen || false, {
-    value: open,
-    onChange: onOpenChange,
-  });
+  const [mergedOpen, setMergeOpen] = useOpen(open, defaultOpen, onOpenChange);
 
-  const onSelectorOpenChange: OnOpenChange = (nextOpen, index) => {
-    console.log('Open!!!', nextOpen, index, activeIndex);
-    setMergeOpen(nextOpen);
+  const onSelectorOpenChange: OnOpenChange = (nextOpen, index, config?: OpenConfig) => {
+    setMergeOpen(nextOpen, config);
   };
 
   // =================== Disabled & Empty ===================

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import type { SelectorProps, SelectorRef } from '../../interface';
+import type { OpenConfig, SelectorProps, SelectorRef } from '../../interface';
 import { PrefixClsContext } from '../context';
 import Icon from './Icon';
 import Input, { type InputProps } from './Input';
@@ -48,10 +48,8 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
   }));
 
   // ========================= Open =========================
-  const triggerOpen = (nextOpen: boolean, index: number) => {
-    if (open === index) {
-      onOpenChange(nextOpen, index);
-    }
+  const triggerOpen = (nextOpen: boolean, index: number, config?: OpenConfig) => {
+    onOpenChange(nextOpen, index, config);
   };
 
   // ======================== Parser ========================
@@ -87,6 +85,10 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
     active: focusIndex === index,
     onFocus: (event) => {
       onFocus(event, index);
+
+      triggerOpen(true, index, {
+        inherit: true,
+      });
     },
     onBlur: (event) => {
       onBlur(event, index);

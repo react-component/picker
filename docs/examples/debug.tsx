@@ -42,7 +42,7 @@ export default () => {
         suffixIcon="🧶"
         format={{
           format: 'YYYY-MM-DD',
-        //   // format: 'YYYYMMDD',
+          //   // format: 'YYYYMMDD',
           align: true,
         }}
         onChange={(val, text) => {
@@ -50,6 +50,9 @@ export default () => {
         }}
         // preserveInvalidOnBlur
         allowEmpty={[true, false]}
+        onOpenChange={(nextOpen) => {
+          console.log('Next Open:', nextOpen);
+        }}
       />
       <br />
 
