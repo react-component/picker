@@ -121,6 +121,29 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     }
   };
 
+  // ======================== Mouse =========================
+  // When `mouseDown` get focus, it's better to not to change the selection
+  // Since the up position maybe not is the first cell
+  const mouseDownRef = React.useRef(false);
+
+  const onInternalMouseDown: React.MouseEventHandler<HTMLInputElement> = () => {
+    mouseDownRef.current = true;
+  };
+
+  const onInternalMouseUp: React.MouseEventHandler<HTMLInputElement> = (event) => {
+    const { selectionStart: start } = event.target as HTMLInputElement;
+
+    const closeMaskIndex = maskFormat.getMaskCellIndex(start);
+    setFocusCellIndex(closeMaskIndex);
+
+    // Force update the selection
+    forceSelectionSync({});
+
+    onMouseUp?.(event);
+
+    mouseDownRef.current = false;
+  };
+
   // ====================== Focus Blur ======================
   const onInternalFocus: React.FocusEventHandler<HTMLInputElement> = (event) => {
     setFocused(true);
@@ -143,19 +166,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     setFocused(false);
 
     onSharedBlur(event);
-  };
-
-  // ======================== Mouse =========================
-  const onInternalMouseUp: React.MouseEventHandler<HTMLInputElement> = (event) => {
-    const { selectionStart: start } = event.target as HTMLInputElement;
-
-    const closeMaskIndex = maskFormat.getMaskCellIndex(start);
-    setFocusCellIndex(closeMaskIndex);
-
-    // Force update the selection
-    forceSelectionSync({});
-
-    onMouseUp?.(event);
   };
 
   // ======================= Keyboard =======================
@@ -279,7 +289,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const rafRef = React.useRef<number>();
 
   useLayoutEffect(() => {
-    if (!focused || !format) {
+    if (!focused || !format || mouseDownRef.current) {
       return;
     }
 
@@ -319,6 +329,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         onFocus: onInternalFocus,
         onBlur: onInternalBlur,
         onKeyDown: onInternalKeyDown,
+        onMouseDown: onInternalMouseDown,
         onMouseUp: onInternalMouseUp,
         onPaste: onInternalPaste,
       }

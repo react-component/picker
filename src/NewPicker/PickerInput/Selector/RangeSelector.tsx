@@ -15,7 +15,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
   const {
     suffixIcon,
     separator = '~',
-    focusIndex,
+    activeIndex,
     onFocus,
     onBlur,
     locale,
@@ -42,11 +42,41 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
   const inputStartRef = React.useRef<HTMLInputElement>();
   const inputEndRef = React.useRef<HTMLInputElement>();
 
+  const getInput = (index: number) => [inputStartRef, inputEndRef][index].current;
+
   React.useImperativeHandle(ref, () => ({
     nativeElement: rootRef.current,
-    focus: () => inputStartRef.current?.focus(),
-    blur: () => inputStartRef.current?.blur(),
+    focus: (index = 0) => getInput(index)?.focus(),
+    blur: () => {
+      getInput(0)?.blur();
+      getInput(1)?.blur();
+    },
   }));
+
+  // // ======================== Active ========================
+  // const [activeIndexList, setActiveIndexList] = React.useState<number[]>(EMPTY_LIST);
+
+  // React.useEffect(() => {
+  //   if (!open) {
+  //     setActiveIndexList(EMPTY_LIST);
+  //   } else if (activeIndex !== null) {
+  //     setActiveIndexList((list) =>
+  //       list[list.length - 1] === activeIndex ? list : [...list, activeIndex],
+  //     );
+  //   }
+  // }, [open, activeIndex]);
+
+  // // ======================== Enter =========================
+  // // Auto focus to another one if needed
+  // const onInternalEnter = () => {
+  //   onSubmit();
+
+  //   if (activeIndexList.length === 1) {
+  //     // Focus next input
+  //     const inputEle = [inputStartRef, inputEndRef][activeIndexList[0] === 0 ? 1 : 0].current;
+  //     inputEle.focus();
+  //   }
+  // };
 
   // ========================= Open =========================
   const triggerOpen = (nextOpen: boolean, index: number, config?: OpenConfig) => {
@@ -83,7 +113,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
     // ============= By Index =============
     value: valueTexts[index],
 
-    active: focusIndex === index,
+    active: activeIndex === index,
     onFocus: (event) => {
       onFocus(event, index);
 
@@ -125,7 +155,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
   return (
     <div
       className={classNames(prefixCls, `${prefixCls}-range`, {
-        [`${prefixCls}-focused`]: focusIndex !== null,
+        [`${prefixCls}-focused`]: activeIndex !== null,
       })}
       ref={rootRef}
     >

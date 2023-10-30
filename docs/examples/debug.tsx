@@ -4,7 +4,7 @@ import type { PickerRef } from '../../src/NewPicker/interface';
 import RangePicker from '../../src/NewPicker/PickerInput/RangePicker';
 import PickerPanel, { type PickerPanelProps } from '../../src/NewPicker/PickerPanel';
 
-import moment, { Moment } from 'moment';
+import moment, { type Moment } from 'moment';
 import 'moment/locale/zh-cn';
 import momentGenerateConfig from '../../src/generate/moment';
 import zhCN from '../../src/locale/zh_CN';
@@ -46,7 +46,10 @@ export default () => {
           align: true,
         }}
         onChange={(val, text) => {
-          console.log('🧶 Demo Change:', val, text);
+          console.log('🔥 Change:', val, text);
+        }}
+        onCalendarChange={(val, text, info) => {
+          console.log('🎉 Calendar Change:', val, text, info);
         }}
         // preserveInvalidOnBlur
         allowEmpty={[true, false]}

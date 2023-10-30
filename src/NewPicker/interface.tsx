@@ -270,7 +270,7 @@ export interface SelectorProps<DateType = any> {
   suffixIcon?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
-  focusIndex: number | null;
+  activeIndex: number | null;
   onFocus: (event: React.FocusEvent<HTMLInputElement>, index?: number) => void;
   onBlur: (event: React.FocusEvent<HTMLInputElement>, index?: number) => void;
   /** Trigger by `enter` key */
@@ -298,7 +298,7 @@ export interface SelectorProps<DateType = any> {
 
 export interface SelectorRef {
   nativeElement: HTMLDivElement;
-  focus: VoidFunction;
+  focus: (index?: number) => void;
   blur: VoidFunction;
 }
 
