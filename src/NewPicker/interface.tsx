@@ -278,6 +278,9 @@ export interface SelectorProps<DateType = any> {
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
 
+  // Click
+  onClick: React.MouseEventHandler<HTMLDivElement>;
+
   // Change
   format: string[];
   /**

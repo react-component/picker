@@ -8,7 +8,7 @@ import type {
   SelectorRef,
   SharedPickerProps,
 } from '../interface';
-import PickerPanel from '../PickerPanel';
+import PickerPanel, { type PickerPanelRef } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import { PrefixClsContext } from './context';
 import { useFieldFormat } from './hooks/useFieldFormat';
@@ -90,6 +90,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   } = props;
 
   const selectorRef = React.useRef<SelectorRef>();
+  const panelRef = React.useRef<PickerPanelRef>();
 
   // ======================== Format ========================
   const [formatList, maskFormat] = useFieldFormat(
@@ -112,6 +113,9 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   // When second time focus one input, submit will not trigger focus again.
   // When click outside to close the panel, trigger event if it can trigger onChange.
   const [activeIndex, setActiveIndex] = React.useState<number>(null);
+  const [focused, setFocused] = React.useState<boolean>(false);
+
+  const focusedIndex = focused ? activeIndex : null;
 
   const [activeList, setActiveList] = React.useState<number[]>(null);
 
@@ -201,10 +205,11 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   // ====================== Focus Blur ======================
   const onFocus: SelectorProps['onFocus'] = (_, index) => {
     setActiveIndex(index);
+    setFocused(true);
   };
 
   const onBlur: SelectorProps['onBlur'] = () => {
-    setActiveIndex(null);
+    setFocused(false);
     triggerChange(mergedValue, 'submit');
   };
 
@@ -213,8 +218,27 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     syncActive();
   };
 
+  // ======================== Click =========================
+  const onSelectorClick: React.MouseEventHandler<HTMLDivElement> = () => {
+    // if (focusedIndex === null) {
+    selectorRef.current.focus(0);
+    setMergeOpen(true);
+    // }
+  };
+
   // ======================== Panels ========================
-  const panel = <PickerPanel {...props} />;
+  const onPanelFocus: React.FocusEventHandler<HTMLDivElement> = () => {
+    setFocused(true);
+    setMergeOpen(true);
+  };
+
+  const onPanelBlur: React.FocusEventHandler<HTMLDivElement> = () => {
+    setFocused(false);
+  };
+
+  const panel = (
+    <PickerPanel<any> {...props} ref={panelRef} onFocus={onPanelFocus} onBlur={onPanelBlur} />
+  );
 
   // ======================== Render ========================
   return (
@@ -238,7 +262,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
           // Icon
           suffixIcon={suffixIcon}
           // Active
-          activeIndex={activeIndex}
+          activeIndex={focusedIndex}
           onFocus={onFocus}
           onBlur={onBlur}
           onSubmit={onSubmit}
@@ -248,8 +272,10 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
           maskFormat={maskFormat}
           onChange={onSelectorChange}
           // Open
-          open={mergedOpen ? activeIndex : null}
+          open={mergedOpen ? focusedIndex : null}
           onOpenChange={onSelectorOpenChange}
+          // Click
+          onClick={onSelectorClick}
         />
       </PickerTrigger>
     </PrefixClsContext.Provider>

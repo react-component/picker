@@ -21,6 +21,9 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
     locale,
     generateConfig,
 
+    // Click
+    onClick,
+
     // Change
     value,
     format,
@@ -52,31 +55,6 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
       getInput(1)?.blur();
     },
   }));
-
-  // // ======================== Active ========================
-  // const [activeIndexList, setActiveIndexList] = React.useState<number[]>(EMPTY_LIST);
-
-  // React.useEffect(() => {
-  //   if (!open) {
-  //     setActiveIndexList(EMPTY_LIST);
-  //   } else if (activeIndex !== null) {
-  //     setActiveIndexList((list) =>
-  //       list[list.length - 1] === activeIndex ? list : [...list, activeIndex],
-  //     );
-  //   }
-  // }, [open, activeIndex]);
-
-  // // ======================== Enter =========================
-  // // Auto focus to another one if needed
-  // const onInternalEnter = () => {
-  //   onSubmit();
-
-  //   if (activeIndexList.length === 1) {
-  //     // Focus next input
-  //     const inputEle = [inputStartRef, inputEndRef][activeIndexList[0] === 0 ? 1 : 0].current;
-  //     inputEle.focus();
-  //   }
-  // };
 
   // ========================= Open =========================
   const triggerOpen = (nextOpen: boolean, index: number, config?: OpenConfig) => {
@@ -122,6 +100,8 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
       });
     },
     onBlur: (event) => {
+      // Blur do not trigger close
+      // Since it may focus to the popup panel
       onBlur(event, index);
       triggerOpen(false, index);
     },
@@ -140,7 +120,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
       }
     },
     onHelp: () => {
-      onOpenChange(true, index);
+      triggerOpen(true, index);
     },
     onKeyDown: (event) => {
       switch (event.key) {
@@ -158,6 +138,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
         [`${prefixCls}-focused`]: activeIndex !== null,
       })}
       ref={rootRef}
+      onClick={onClick}
     >
       <Input ref={inputStartRef} {...getInputProps(0)} />
       <div className={`${prefixCls}-range-separator`}>{separator}</div>

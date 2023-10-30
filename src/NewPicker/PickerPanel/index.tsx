@@ -28,6 +28,10 @@ const DefaultComponents: Components = {
   time: TimePanel,
 };
 
+export interface PickerPanelRef {
+  nativeElement: HTMLDivElement;
+}
+
 export interface PickerPanelProps<DateType = any> {
   locale: Locale;
   disabledDate?: DisabledDate<DateType>;
@@ -59,9 +63,16 @@ export interface PickerPanelProps<DateType = any> {
 
   // Components
   components?: Components;
+
+  // Focus
+  onFocus?: React.FocusEventHandler<HTMLDivElement>;
+  onBlur?: React.FocusEventHandler<HTMLDivElement>;
 }
 
-export default function PickerPanel<DateType = any>(props: PickerPanelProps<DateType>) {
+function PickerPanel<DateType = any>(
+  props: PickerPanelProps<DateType>,
+  ref: React.Ref<PickerPanelRef>,
+) {
   const {
     locale,
     disabledDate,
@@ -93,9 +104,20 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
 
     // Components
     components = {},
+
+    // Focus
+    onFocus,
+    onBlur,
   } = props;
 
   const mergedPrefixCls = React.useContext(PrefixClsContext) || prefixCls || 'rc-picker';
+
+  // ========================== Refs ==========================
+  const rootRef = React.useRef<HTMLDivElement>();
+
+  React.useImperativeHandle(ref, () => ({
+    nativeElement: rootRef.current,
+  }));
 
   // ========================== Now ===========================
   const now = generateConfig.getNow();
@@ -152,7 +174,13 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
 
   // ========================= Render =========================
   return (
-    <div className={`${mergedPrefixCls}-panel`}>
+    <div
+      ref={rootRef}
+      className={`${mergedPrefixCls}-panel`}
+      tabIndex={-1}
+      onFocus={onFocus}
+      onBlur={onBlur}
+    >
       <PanelComponent
         // Time
         showTime={showTime}
@@ -175,3 +203,14 @@ export default function PickerPanel<DateType = any>(props: PickerPanelProps<Date
     </div>
   );
 }
+
+const RefPanelPicker = React.forwardRef(PickerPanel);
+
+if (process.env.NODE_ENV !== 'production') {
+  RefPanelPicker.displayName = 'PanelPicker';
+}
+
+// Make support generic
+export default RefPanelPicker as <DateType = any>(
+  props: PickerPanelProps<DateType> & { ref?: React.Ref<PickerPanelRef> },
+) => React.ReactElement;
