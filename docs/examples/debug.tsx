@@ -40,14 +40,16 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         suffixIcon="🧶"
-        // format={{
-        //   format: 'YYYY-MM-DD',
+        format={{
+          format: 'YYYY-MM-DD',
         //   // format: 'YYYYMMDD',
-        //   align: true,
-        // }}
-        onChange={(val) => {
-          console.log('🧶 Demo Change:', val);
+          align: true,
         }}
+        onChange={(val, text) => {
+          console.log('🧶 Demo Change:', val, text);
+        }}
+        // preserveInvalidOnBlur
+        allowEmpty={[true, false]}
       />
       <br />
 

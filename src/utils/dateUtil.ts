@@ -113,6 +113,24 @@ export function isSameTime<DateType>(
   );
 }
 
+/**
+ * Check if the Date is all the same of timestamp
+ */
+export function isSameTimestamp<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  time1: NullableDateType<DateType>,
+  time2: NullableDateType<DateType>,
+) {
+  return (
+    // Same object
+    time1 === time2 ||
+    // Date
+    (isSameDate(generateConfig, time1, time2) &&
+      isSameTime(generateConfig, time1, time2) &&
+      generateConfig.getMillisecond(time1) === generateConfig.getMillisecond(time2))
+  );
+}
+
 export function isSameWeek<DateType>(
   generateConfig: GenerateConfig<DateType>,
   locale: string,

@@ -259,7 +259,6 @@ export interface PickerRef {
 // ======================== Selector ========================
 export type OnOpenChange = (open: boolean, index?: number) => void;
 export interface SelectorProps<DateType = any> {
-  preserveInvalidOnBlur?: boolean;
   suffixIcon?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -277,6 +276,8 @@ export interface SelectorProps<DateType = any> {
    */
   maskFormat?: string;
   onChange: (date: DateType, index?: number) => void;
+  /** When user input invalidate date, keep it in the input field */
+  preserveInvalidOnBlur?: boolean;
 
   // Open
   /** Open index */

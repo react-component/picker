@@ -1,5 +1,6 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
+import { isSameTimestamp } from '../../utils/dateUtil';
 import type { OnOpenChange, SharedPickerProps } from '../interface';
 import PickerPanel from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
@@ -25,6 +26,8 @@ export interface RangePickerProps<DateType> extends SharedPickerProps<DateType> 
   defaultValue?: RangeValueType<DateType>;
   onChange?: (dates: RangeValueType<DateType>, dateStrings: [string, string]) => void;
 
+  order?: boolean;
+
   disabled?: boolean | [boolean, boolean];
   allowEmpty?: [boolean, boolean];
 }
@@ -42,6 +45,8 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     value,
     defaultValue,
     onChange,
+
+    order = true,
 
     disabled,
     allowEmpty,
@@ -88,6 +93,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   });
 
   const onSelectorOpenChange: OnOpenChange = (nextOpen, index) => {
+    console.log('Open!!!', nextOpen, index, activeIndex);
     setMergeOpen(nextOpen);
   };
 
@@ -98,7 +104,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   // ======================== Value =========================
   const [mergedValue, setMergedValue] = useMergedState(defaultValue, {
     value,
-    postState: (valList): RangeValueType<DateType> => valList || [],
+    postState: (valList): RangeValueType<DateType> => valList || [null, null],
     onChange: (nextValue) => {
       if (onChange) {
         const startEmpty = !nextValue[0];
@@ -121,12 +127,18 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   });
 
   const onInternalChange = (date: DateType, index: number) => {
-    setMergedValue((prev) => {
-      const clone: RangeValueType<DateType> = [...(prev || [])];
-      clone[index] = date;
+    // Trigger change only when date changed
+    const [prevStart, prevEnd] = mergedValue;
 
-      return clone;
-    });
+    const clone: RangeValueType<DateType> = [prevStart, prevEnd];
+    clone[index] = date;
+
+    const isSameStart = isSameTimestamp(generateConfig, prevStart, clone[0]);
+    const isSameEnd = isSameTimestamp(generateConfig, prevEnd, clone[1]);
+
+    if (!isSameStart || !isSameEnd) {
+      setMergedValue(clone);
+    }
   };
 
   // ======================== Panels ========================
@@ -147,10 +159,12 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
         direction={direction}
       >
         <RangeSelector
-          locale={locale}
-          generateConfig={generateConfig}
-          focusIndex={activeIndex}
+          // Shared
+          {...props}
+          // Icon
           suffixIcon={suffixIcon}
+          // Active
+          focusIndex={activeIndex}
           onFocus={(_, index) => {
             setActiveIndex(index);
           }}

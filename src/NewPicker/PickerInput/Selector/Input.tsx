@@ -33,6 +33,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
    * Like open the popup for interactive.
    */
   onHelp: () => void;
+  preserveInvalidOnBlur?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
@@ -44,6 +45,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     onChange,
     onInput,
     onHelp,
+    preserveInvalidOnBlur,
     // Pass to input
     ...restProps
   } = props;
@@ -54,14 +56,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
   // ======================== Value =========================
   const [focused, setFocused] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState<string>(value || '');
+  const [internalInputValue, setInputValue] = React.useState<string>(value);
   const [focusCellText, setFocusCellText] = React.useState<string>('');
   const [focusCellIndex, setFocusCellIndex] = React.useState<number>(null);
   const [forceSelectionSyncMark, forceSelectionSync] = React.useState<object>(null);
 
+  const inputValue = internalInputValue || '';
+
   // Sync value if needed
   React.useEffect(() => {
-    setInputValue(value || '');
+    setInputValue(value);
   }, [value]);
 
   // ========================= Refs =========================
@@ -80,7 +84,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   // ======================== Modify ========================
   // When input modify content, trigger `onText` if is not the format
   const onModify = (text: string) => {
-    if (text !== format) {
+    if (text && text !== format && text !== value) {
       onHelp();
     }
   };
@@ -123,11 +127,19 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     onFocus(event);
   };
 
-  const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
-    triggerInputChange(value || '');
-    setFocused(false);
+  const onSharedBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
+    if (!preserveInvalidOnBlur) {
+      setInputValue(value);
+    }
 
     onBlur(event);
+  };
+
+  const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
+    triggerInputChange(value);
+    setFocused(false);
+
+    onSharedBlur(event);
   };
 
   // ======================== Mouse =========================
@@ -313,6 +325,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       <input
         ref={mergedRef}
         {...restProps}
+        onBlur={onSharedBlur}
+        // Replace with format
         {...inputProps}
         // Value
         value={inputValue}

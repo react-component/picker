@@ -5,8 +5,10 @@ import { PrefixClsContext } from '../context';
 import Icon from './Icon';
 import Input, { type InputProps } from './Input';
 
-export interface RangeSelectorProps extends SelectorProps {
+export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateType> {
   separator?: React.ReactNode;
+
+  value?: [DateType?, DateType?];
 }
 
 const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, ref) => {
@@ -24,6 +26,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
     format,
     maskFormat,
     onChange,
+    preserveInvalidOnBlur,
 
     // Open
     open,
@@ -76,6 +79,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
       const parsed = parseDate(str, formatStr);
       return !!parsed;
     },
+    preserveInvalidOnBlur,
 
     // ============= By Index =============
     value: valueTexts[index],
