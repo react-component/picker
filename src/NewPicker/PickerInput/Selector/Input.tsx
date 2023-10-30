@@ -27,7 +27,8 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   active?: boolean;
   suffixIcon?: React.ReactNode;
   value?: string;
-  onChange?: (value: string) => void;
+  onChange: (value: string) => void;
+  onEnter: VoidFunction;
   /**
    * Trigger when input need additional help.
    * Like open the popup for interactive.
@@ -45,6 +46,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     onChange,
     onInput,
     onHelp,
+    onEnter,
     preserveInvalidOnBlur,
     // Pass to input
     ...restProps
@@ -92,12 +94,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   // ======================== Change ========================
   const triggerInputChange = useEvent((text: string) => {
     if (validateFormat(text, format)) {
-      onChange?.(text);
+      onChange(text);
     }
     setInputValue(text);
     onModify(text);
   });
 
+  // Directly trigger `onChange` if `format` is empty
   const onInternalChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     // Hack `onChange` with format to do nothing
     if (!format) {
@@ -105,7 +108,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
       onModify(text);
       setInputValue(text);
-      onChange?.(text);
+      onChange(text);
     }
   };
 
@@ -226,6 +229,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       case 'ArrowDown':
         nextCellText = '';
         nextFillText = offsetCellValue(-1);
+        break;
+
+      // =============== Enter ================
+      case 'Enter':
+        onEnter();
         break;
 
       // =============== Number ===============

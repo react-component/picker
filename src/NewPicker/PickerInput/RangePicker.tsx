@@ -1,7 +1,7 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
 import { isSameTimestamp } from '../../utils/dateUtil';
-import type { OnOpenChange, OpenConfig, SharedPickerProps } from '../interface';
+import type { OnOpenChange, OpenConfig, SelectorProps, SharedPickerProps } from '../interface';
 import PickerPanel from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import { PrefixClsContext } from './context';
@@ -123,19 +123,46 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     },
   });
 
-  const onInternalChange = (date: DateType, index: number) => {
-    // Trigger change only when date changed
+  // ======================== Change ========================
+  const triggerChange = ([start, end]: RangeValueType<DateType>, source?: 'submit') => {
+    const clone: RangeValueType<DateType> = [start, end];
+
+    // Only when exist value to sort
+    if (order && source === 'submit' && clone[0] && clone[1]) {
+      clone.sort((a, b) => (generateConfig.isAfter(a, b) ? 1 : -1));
+    }
+
     const [prevStart, prevEnd] = mergedValue;
-
-    const clone: RangeValueType<DateType> = [prevStart, prevEnd];
-    clone[index] = date;
-
     const isSameStart = isSameTimestamp(generateConfig, prevStart, clone[0]);
     const isSameEnd = isSameTimestamp(generateConfig, prevEnd, clone[1]);
 
     if (!isSameStart || !isSameEnd) {
       setMergedValue(clone);
     }
+  };
+
+  const onSelectorChange = (date: DateType, index: number) => {
+    // Trigger change only when date changed
+    const [prevStart, prevEnd] = mergedValue;
+
+    const clone: RangeValueType<DateType> = [prevStart, prevEnd];
+    clone[index] = date;
+
+    triggerChange(clone);
+  };
+
+  // ====================== Focus Blur ======================
+  const onSubmit: SelectorProps['onSubmit'] = () => {
+    triggerChange(mergedValue, 'submit');
+  };
+
+  const onFocus: SelectorProps['onFocus'] = (_, index) => {
+    setActiveIndex(index);
+  };
+
+  const onBlur: SelectorProps['onBlur'] = () => {
+    setActiveIndex(null);
+    onSubmit();
   };
 
   // ======================== Panels ========================
@@ -162,17 +189,14 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
           suffixIcon={suffixIcon}
           // Active
           focusIndex={activeIndex}
-          onFocus={(_, index) => {
-            setActiveIndex(index);
-          }}
-          onBlur={() => {
-            setActiveIndex(null);
-          }}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          onSubmit={onSubmit}
           // Change
           value={mergedValue}
           format={formatList}
           maskFormat={maskFormat}
-          onChange={onInternalChange}
+          onChange={onSelectorChange}
           // Open
           open={mergedOpen ? activeIndex : null}
           onOpenChange={onSelectorOpenChange}

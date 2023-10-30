@@ -273,6 +273,8 @@ export interface SelectorProps<DateType = any> {
   focusIndex: number | null;
   onFocus: (event: React.FocusEvent<HTMLInputElement>, index?: number) => void;
   onBlur: (event: React.FocusEvent<HTMLInputElement>, index?: number) => void;
+  /** Trigger by `enter` key */
+  onSubmit: VoidFunction;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
 

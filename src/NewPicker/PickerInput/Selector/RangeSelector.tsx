@@ -26,6 +26,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
     format,
     maskFormat,
     onChange,
+    onSubmit,
     preserveInvalidOnBlur,
 
     // Open
@@ -94,6 +95,8 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
       onBlur(event, index);
       triggerOpen(false, index);
     },
+
+    onEnter: onSubmit,
 
     // Get validate text value
     onChange: (text) => {
