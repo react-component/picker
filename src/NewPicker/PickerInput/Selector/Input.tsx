@@ -5,6 +5,7 @@ import raf from 'rc-util/lib/raf';
 import * as React from 'react';
 import { leftPad } from '../../../utils/miscUtil';
 import { PrefixClsContext } from '../context';
+import { useLockEffect } from '../hooks/useLockState';
 import Icon from './Icon';
 import MaskFormat from './MaskFormat';
 import { getMaskRange } from './util';
@@ -112,7 +113,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     }
   };
 
-  const onInternalPaste: React.ClipboardEventHandler<HTMLInputElement> = (event) => {
+  const onFormatPaste: React.ClipboardEventHandler<HTMLInputElement> = (event) => {
     // Get paste text
     const pasteText = event.clipboardData.getData('text');
 
@@ -126,11 +127,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   // Since the up position maybe not is the first cell
   const mouseDownRef = React.useRef(false);
 
-  const onInternalMouseDown: React.MouseEventHandler<HTMLInputElement> = () => {
+  const onFormatMouseDown: React.MouseEventHandler<HTMLInputElement> = () => {
     mouseDownRef.current = true;
   };
 
-  const onInternalMouseUp: React.MouseEventHandler<HTMLInputElement> = (event) => {
+  const onFormatMouseUp: React.MouseEventHandler<HTMLInputElement> = (event) => {
     const { selectionStart: start } = event.target as HTMLInputElement;
 
     const closeMaskIndex = maskFormat.getMaskCellIndex(start);
@@ -145,7 +146,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   };
 
   // ====================== Focus Blur ======================
-  const onInternalFocus: React.FocusEventHandler<HTMLInputElement> = (event) => {
+  const onFormatFocus: React.FocusEventHandler<HTMLInputElement> = (event) => {
     setFocused(true);
     setFocusCellIndex(0);
     setFocusCellText('');
@@ -154,22 +155,29 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   };
 
   const onSharedBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
-    if (!preserveInvalidOnBlur) {
-      setInputValue(value);
-    }
+    // if (!preserveInvalidOnBlur) {
+    //   setInputValue(value);
+    // }
 
     onBlur(event);
   };
 
-  const onInternalBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
-    triggerInputChange(value);
+  const onFormatBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
     setFocused(false);
 
     onSharedBlur(event);
   };
 
+  // ======================== Active ========================
+  // Check if blur need reset input value
+  useLockEffect(active, () => {
+    if (!active && format && (internalInputValue === format || !preserveInvalidOnBlur)) {
+      triggerInputChange(value);
+    }
+  });
+
   // ======================= Keyboard =======================
-  const onInternalKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+  const onFormatKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     const { key } = event;
     console.log('key', key);
 
@@ -326,12 +334,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   // Input props for format
   const inputProps: React.InputHTMLAttributes<HTMLInputElement> = format
     ? {
-        onFocus: onInternalFocus,
-        onBlur: onInternalBlur,
-        onKeyDown: onInternalKeyDown,
-        onMouseDown: onInternalMouseDown,
-        onMouseUp: onInternalMouseUp,
-        onPaste: onInternalPaste,
+        onFocus: onFormatFocus,
+        onBlur: onFormatBlur,
+        onKeyDown: onFormatKeyDown,
+        onMouseDown: onFormatMouseDown,
+        onMouseUp: onFormatMouseUp,
+        onPaste: onFormatPaste,
       }
     : {};
 

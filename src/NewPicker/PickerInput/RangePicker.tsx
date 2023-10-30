@@ -12,6 +12,7 @@ import PickerPanel, { type PickerPanelRef } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import { PrefixClsContext } from './context';
 import { useFieldFormat } from './hooks/useFieldFormat';
+import useLockState from './hooks/useLockState';
 import useOpen from './hooks/useOpen';
 import RangeSelector from './Selector/RangeSelector';
 
@@ -103,6 +104,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
 
   const [mergedOpen, setMergeOpen] = useOpen(open, defaultOpen, onOpenChange);
+  // const [mergedOpen, setMergeOpen] = useLockState(open, defaultOpen, onOpenChange);
 
   const onSelectorOpenChange: OnOpenChange = (nextOpen, index, config?: OpenConfig) => {
     setMergeOpen(nextOpen, config);
@@ -230,7 +232,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const onPanelFocus: React.FocusEventHandler<HTMLDivElement> = () => {
     setFocused(true);
     setMergeOpen(true);
-  };
+  }; 
 
   const onPanelBlur: React.FocusEventHandler<HTMLDivElement> = () => {
     setFocused(false);

@@ -53,9 +53,9 @@ export default () => {
         }}
         // preserveInvalidOnBlur
         allowEmpty={[true, false]}
-        // onOpenChange={(nextOpen) => {
-        //   console.log('Next Open:', nextOpen);
-        // }}
+        onOpenChange={(nextOpen) => {
+          console.log('🏆 Next Open:', nextOpen);
+        }}
         order
       />
       <br />
