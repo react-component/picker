@@ -1,3 +1,15 @@
 import * as React from 'react';
+import type { GenerateConfig } from '../../generate';
+import type { Components, Locale } from '../interface';
 
-export const PrefixClsContext = React.createContext<string>('');
+export interface PickerContextProps<DateType = any> {
+  prefixCls: string;
+  locale: Locale;
+  generateConfig: GenerateConfig<DateType>;
+  /** Customize button component */
+  button?: Components['button'];
+}
+
+const PickerContext = React.createContext<PickerContextProps>(null!);
+
+export default PickerContext;

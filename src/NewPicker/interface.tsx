@@ -187,7 +187,9 @@ export interface SharedPanelProps<DateType = any> {
 }
 
 export type Components<DateType = any> = Partial<
-  Record<InternalMode, React.ComponentType<SharedPanelProps<DateType>>>
+  Record<InternalMode, React.ComponentType<SharedPanelProps<DateType>>> & {
+    button?: React.ComponentType<any> | string;
+  }
 >;
 
 // ========================= Picker =========================
@@ -210,6 +212,8 @@ export interface SharedPickerProps<DateType = any> {
   generateConfig: GenerateConfig<DateType>;
 
   // Picker
+  mode?: PanelMode;
+  onModeChange?: (mode: PanelMode) => void;
   picker?: PanelMode;
   showTime?: SharedTimeProps<DateType>;
   /**
@@ -248,6 +252,18 @@ export interface SharedPickerProps<DateType = any> {
 
   // Motion
   transitionName?: string;
+
+  // Render
+  components?: Components;
+  /**
+   * When use `date` picker,
+   * Show the button to set current datetime.
+   */
+  showNow?: boolean;
+  /** @deprecated Please use `showNow` instead */
+  showToday?: boolean;
+  panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
+  renderExtraFooter?: (mode: PanelMode) => React.ReactNode;
 }
 
 export interface PickerRef {

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { PrefixClsContext } from '../context';
 import type { SelectorProps, SelectorRef } from '../../interface';
+import PickerContext from '../context';
 import Input from './Input';
 
 const SingleSelector = React.forwardRef<SelectorRef, SelectorProps>((props, ref) => {
@@ -18,7 +18,7 @@ const SingleSelector = React.forwardRef<SelectorRef, SelectorProps>((props, ref)
     onBlur,
   } = props;
 
-  const prefixCls = React.useContext(PrefixClsContext);
+  const { prefixCls } = React.useContext(PickerContext);
 
   // ============================= Refs =============================
   const rootRef = React.useRef<HTMLDivElement>();

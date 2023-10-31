@@ -4,7 +4,7 @@ import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import raf from 'rc-util/lib/raf';
 import * as React from 'react';
 import { leftPad } from '../../../utils/miscUtil';
-import { PrefixClsContext } from '../context';
+import PickerContext from '../context';
 import { useLockEffect } from '../hooks/useLockState';
 import Icon from './Icon';
 import MaskFormat from './MaskFormat';
@@ -54,7 +54,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   } = props;
   const { value, onFocus, onBlur, onKeyDown, onMouseUp } = props;
 
-  const prefixCls = React.useContext(PrefixClsContext);
+  const { prefixCls } = React.useContext(PickerContext);
   const inputPrefixCls = `${prefixCls}-input`;
 
   // ======================== Value =========================

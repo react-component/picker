@@ -3,7 +3,7 @@ import * as React from 'react';
 import type { PickerRef, SelectorRef, SharedPickerProps } from '../interface';
 import PickerPanel from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
-import { PrefixClsContext } from './context';
+import PickerContext from './context';
 import SingleSelector from './Selector/SingleSelector';
 
 export type SinglePickerProps = SharedPickerProps;
@@ -76,7 +76,7 @@ const SinglePicker = React.forwardRef<PickerRef, SinglePickerProps>((props, ref)
 
   // ============================ Render ============================
   return (
-    <PrefixClsContext.Provider value={prefixCls}>
+    <PickerContext.Provider value={{ prefixCls }}>
       <PickerTrigger
         visible={mergedOpen}
         popupElement={panel}
@@ -99,7 +99,7 @@ const SinglePicker = React.forwardRef<PickerRef, SinglePickerProps>((props, ref)
           onBlur={onInternalBlur}
         />
       </PickerTrigger>
-    </PrefixClsContext.Provider>
+    </PickerContext.Provider>
   );
 });
 

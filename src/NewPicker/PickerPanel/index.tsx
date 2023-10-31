@@ -9,7 +9,7 @@ import type {
   PanelMode,
   SharedTimeProps,
 } from '../interface';
-import { PrefixClsContext } from '../PickerInput/context';
+import PickerContext from '../PickerInput/context';
 import DatePanel from './DatePanel';
 import DateTimePanel from './DateTimePanel';
 import DecadePanel from './DecadePanel';
@@ -63,10 +63,6 @@ export interface PickerPanelProps<DateType = any> {
 
   // Components
   components?: Components;
-
-  // Focus
-  onFocus?: React.FocusEventHandler<HTMLDivElement>;
-  onBlur?: React.FocusEventHandler<HTMLDivElement>;
 }
 
 function PickerPanel<DateType = any>(
@@ -104,13 +100,9 @@ function PickerPanel<DateType = any>(
 
     // Components
     components = {},
-
-    // Focus
-    onFocus,
-    onBlur,
   } = props;
 
-  const mergedPrefixCls = React.useContext(PrefixClsContext) || prefixCls || 'rc-picker';
+  const mergedPrefixCls = React.useContext(PickerContext)?.prefixCls || prefixCls || 'rc-picker';
 
   // ========================== Refs ==========================
   const rootRef = React.useRef<HTMLDivElement>();
@@ -174,13 +166,7 @@ function PickerPanel<DateType = any>(
 
   // ========================= Render =========================
   return (
-    <div
-      ref={rootRef}
-      className={`${mergedPrefixCls}-panel`}
-      tabIndex={-1}
-      onFocus={onFocus}
-      onBlur={onBlur}
-    >
+    <div ref={rootRef} className={`${mergedPrefixCls}-panel`}>
       <PanelComponent
         // Time
         showTime={showTime}

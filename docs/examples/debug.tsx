@@ -40,11 +40,12 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         suffixIcon="🧶"
-        format={{
-          format: 'YYYY-MM-DD',
-          //   // format: 'YYYYMMDD',
-          align: true,
-        }}
+        // format={{
+        //   format: 'YYYY-MM-DD',
+        //   //   // format: 'YYYYMMDD',
+        //   align: true,
+        // }}
+        showTime={{}}
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
         }}
@@ -52,11 +53,12 @@ export default () => {
           console.log('🎉 Calendar Change:', val, text, info);
         }}
         // preserveInvalidOnBlur
-        allowEmpty={[true, false]}
+        allowEmpty={[false, true]}
         onOpenChange={(nextOpen) => {
           console.log('🏆 Next Open:', nextOpen);
         }}
-        order
+        // open
+        renderExtraFooter={(mode) => mode}
       />
       <br />
 

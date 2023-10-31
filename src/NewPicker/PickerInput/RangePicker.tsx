@@ -2,18 +2,21 @@ import { useMergedState } from 'rc-util';
 import * as React from 'react';
 import { isSameTimestamp } from '../../utils/dateUtil';
 import type {
+  InternalMode,
   OnOpenChange,
   OpenConfig,
   SelectorProps,
   SelectorRef,
   SharedPickerProps,
 } from '../interface';
-import PickerPanel, { type PickerPanelRef } from '../PickerPanel';
+import type { PickerPanelProps, PickerPanelRef } from '../PickerPanel';
+import PickerPanel from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
-import { PrefixClsContext } from './context';
+import PickerContext from './context';
 import { useFieldFormat } from './hooks/useFieldFormat';
-import useLockState from './hooks/useLockState';
 import useOpen from './hooks/useOpen';
+import useShowNow from './hooks/useShowNow';
+import Popup from './Popup';
 import RangeSelector from './Selector/RangeSelector';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
@@ -78,7 +81,11 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     locale,
     generateConfig,
     picker = 'date',
+    mode,
+    onModeChange,
     showTime,
+    showNow,
+    showToday,
 
     // Format
     format,
@@ -88,17 +95,28 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
     suffixIcon,
     direction,
+
+    // Render
+    components = {},
   } = props;
 
   const selectorRef = React.useRef<SelectorRef>();
   const panelRef = React.useRef<PickerPanelRef>();
 
+  // ======================== Picker ========================
+  const [mergedMode, setMergedMode] = useMergedState(picker, {
+    value: mode,
+    onChange: onModeChange,
+  });
+
+  const internalPicker: InternalMode = picker === 'date' && showTime ? 'datetime' : picker;
+  const internalMode: InternalMode = mergedMode === 'date' && showTime ? 'datetime' : mergedMode;
+
+  // ======================= Show Now =======================
+  const mergedShowNow = useShowNow(internalPicker, mergedMode, showNow, showToday);
+
   // ======================== Format ========================
-  const [formatList, maskFormat] = useFieldFormat(
-    picker === 'date' && showTime ? 'datetime' : picker,
-    locale,
-    format,
-  );
+  const [formatList, maskFormat] = useFieldFormat(internalPicker, locale, format);
 
   // ========================= Open =========================
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
@@ -194,12 +212,18 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     }
   };
 
-  const onSelectorChange = (date: DateType, index: number) => {
+  const fillValue = (date: DateType, index: number) => {
     // Trigger change only when date changed
     const [prevStart, prevEnd] = mergedValue;
 
     const clone: RangeValueType<DateType> = [prevStart, prevEnd];
     clone[index] = date;
+
+    return clone;
+  };
+
+  const onSelectorChange = (date: DateType, index: number) => {
+    const clone = fillValue(date, index);
 
     triggerChange(clone);
   };
@@ -215,8 +239,14 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     triggerChange(mergedValue, 'submit');
   };
 
-  const onSubmit: SelectorProps['onSubmit'] = () => {
-    triggerChange(mergedValue, 'submit');
+  const onSubmit = (date?: DateType) => {
+    let nextValue = mergedValue;
+
+    if (date) {
+      nextValue = fillValue(date, activeIndex);
+    }
+
+    triggerChange(nextValue, 'submit');
     syncActive();
   };
 
@@ -232,19 +262,53 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const onPanelFocus: React.FocusEventHandler<HTMLDivElement> = () => {
     setFocused(true);
     setMergeOpen(true);
-  }; 
+  };
 
   const onPanelBlur: React.FocusEventHandler<HTMLDivElement> = () => {
     setFocused(false);
   };
 
+  const onPanelChange: PickerPanelProps<DateType>['onChange'] = (date) => {
+    const clone: RangeValueType<DateType> = [...mergedValue];
+    clone[activeIndex] = date;
+
+    triggerChange(clone);
+  };
+
   const panel = (
-    <PickerPanel<any> {...props} ref={panelRef} onFocus={onPanelFocus} onBlur={onPanelBlur} />
+    <Popup
+      {...props}
+      onFocus={onPanelFocus}
+      onBlur={onPanelBlur}
+      mode={mergedMode}
+      internalMode={internalMode}
+      showNow={mergedShowNow}
+      onSubmit={onSubmit}
+    >
+      <PickerPanel<any>
+        {...props}
+        ref={panelRef}
+        onChange={onPanelChange}
+        mode={mergedMode}
+        onModeChange={setMergedMode}
+      />
+    </Popup>
+  );
+
+  // ======================= Context ========================
+  const context = React.useMemo(
+    () => ({
+      prefixCls,
+      locale,
+      generateConfig,
+      button: components.button,
+    }),
+    [prefixCls, locale, generateConfig, components.button],
   );
 
   // ======================== Render ========================
   return (
-    <PrefixClsContext.Provider value={prefixCls}>
+    <PickerContext.Provider value={context}>
       <PickerTrigger
         visible={mergedOpen}
         popupElement={panel}
@@ -280,6 +344,6 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
           onClick={onSelectorClick}
         />
       </PickerTrigger>
-    </PrefixClsContext.Provider>
+    </PickerContext.Provider>
   );
 }

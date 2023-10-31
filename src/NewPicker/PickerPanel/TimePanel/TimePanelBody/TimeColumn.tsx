@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { useEvent } from 'rc-util';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
+import raf from 'rc-util/lib/raf';
 import * as React from 'react';
 import { PanelContext } from '../../context';
 
@@ -40,23 +41,29 @@ export default function TimeColumn(props: TimeUnitColumnProps) {
     clearTimeout(timeoutRef.current!);
   };
 
+  const scrollRafRef = React.useRef<number>(null);
+
   // Scroll to value position
   const scrollToValue = useEvent((val: number | string) => {
-    const ul = ulRef.current!;
-    const targetLi = ul.querySelector<HTMLLIElement>(`[data-value="${val}"]`);
+    raf.cancel(scrollRafRef.current);
 
-    if (targetLi) {
-      const firstLiTop = ul.querySelector<HTMLLIElement>(`li`).offsetTop;
-      const targetLiTop = targetLi.offsetTop;
+    // Do not trigger realign by this effect scroll
+    setTimeout(cleanScroll, 100);
 
-      const nextTop = targetLiTop - firstLiTop;
+    scrollRafRef.current = raf(() => {
+      const ul = ulRef.current;
+      const targetLi = ul?.querySelector<HTMLLIElement>(`[data-value="${val}"]`);
 
-      // IE not support `scrollTo`
-      ul.scrollTop = nextTop;
+      if (targetLi) {
+        const firstLiTop = ul.querySelector<HTMLLIElement>(`li`).offsetTop;
+        const targetLiTop = targetLi.offsetTop;
 
-      // Do not trigger realign by this effect scroll
-      setTimeout(cleanScroll, 100);
-    }
+        const nextTop = targetLiTop - firstLiTop;
+
+        // IE not support `scrollTo`
+        ul.scrollTop = nextTop;
+      }
+    });
   });
 
   // Effect sync value scroll

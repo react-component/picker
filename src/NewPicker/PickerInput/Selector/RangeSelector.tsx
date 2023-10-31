@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import type { OpenConfig, SelectorProps, SelectorRef } from '../../interface';
-import { PrefixClsContext } from '../context';
+import PickerContext from '../context';
 import Icon from './Icon';
 import Input, { type InputProps } from './Input';
 
@@ -38,7 +38,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
   } = props;
 
   // ======================== Prefix ========================
-  const prefixCls = React.useContext(PrefixClsContext);
+  const { prefixCls } = React.useContext(PickerContext);
 
   // ========================= Refs =========================
   const rootRef = React.useRef<HTMLDivElement>();

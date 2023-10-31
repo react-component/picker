@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PrefixClsContext } from '../context';
+import PickerContext from '../context';
 
 export interface IconProps {
   icon?: React.ReactNode;
@@ -9,7 +9,7 @@ export interface IconProps {
 export default function Icon(props: IconProps) {
   const { icon, type } = props;
 
-  const prefixCls = React.useContext(PrefixClsContext);
+  const { prefixCls } = React.useContext(PickerContext);
 
   return icon ? <span className={`${prefixCls}-${type}`}>{icon}</span> : null;
 }
