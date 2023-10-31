@@ -162,12 +162,36 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const mergedAllowEmpty = separateConfig(allowEmpty, true);
 
   // ======================== Value =========================
-  const [mergedValue, setMergedValue] = useMergedState(defaultValue, {
+  const valueConfig = {
     value,
-    postState: (valList): RangeValueType<DateType> => valList || [null, null],
-  });
+    postState: (valList: RangeValueType<DateType>): RangeValueType<DateType> =>
+      valList || [null, null],
+  };
+
+  // Used for internal value management.
+  // It should always use `mergedValue` in render logic
+  const [mergedValue, setMergedValue] = useMergedState(defaultValue, valueConfig);
+
+  // Used for trigger `onChange` event.
+  // Record current submitted value.
+  const [submitValue, setSubmitValue] = useMergedState(defaultValue, valueConfig);
 
   // ======================== Change ========================
+  const getDateTexts = (dateList: RangeValueType<DateType>) => {
+    return dateList.map((date) =>
+      date ? generateConfig.locale.format(locale.locale, date, formatList[0]) : '',
+    ) as [string, string];
+  };
+
+  const isSameDates = (source: RangeValueType<DateType>, target: RangeValueType<DateType>) => {
+    const [prevSubmitStart, prevSubmitEnd] = source;
+
+    const isSameStart = isSameTimestamp(generateConfig, prevSubmitStart, target[0]);
+    const isSameEnd = isSameTimestamp(generateConfig, prevSubmitEnd, target[1]);
+
+    return [isSameStart && isSameEnd, isSameStart, isSameEnd];
+  };
+
   const triggerChange = ([start, end]: RangeValueType<DateType>, source?: 'submit') => {
     const clone: RangeValueType<DateType> = [start, end];
 
@@ -176,37 +200,38 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       clone.sort((a, b) => (generateConfig.isAfter(a, b) ? 1 : -1));
     }
 
-    const [prevStart, prevEnd] = mergedValue;
-    const isSameStart = isSameTimestamp(generateConfig, prevStart, clone[0]);
-    const isSameEnd = isSameTimestamp(generateConfig, prevEnd, clone[1]);
+    // Update merged value
+    const [isSameMergedDates, isSameStart] = isSameDates(mergedValue, clone);
 
-    if (!isSameStart || !isSameEnd) {
+    if (!isSameMergedDates) {
       setMergedValue(clone);
-
-      // >>>>> Batch of change logic
-      const nextValueTexts = clone.map((date) =>
-        date ? generateConfig.locale.format(locale.locale, date, formatList[0]) : '',
-      ) as [string, string];
 
       // Trigger calendar change event
       if (onCalendarChange) {
-        onCalendarChange(clone, nextValueTexts, {
+        onCalendarChange(clone, getDateTexts(clone), {
           range: isSameStart ? 'end' : 'start',
         });
       }
+    }
 
-      // Trigger Change event
-      if (onChange && source === 'submit') {
+    // Trigger Change event
+    if (source === 'submit') {
+      const [isSameSubmitDate] = isSameDates(submitValue, clone);
+
+      if (!isSameSubmitDate) {
+        setSubmitValue(clone);
+
         const startEmpty = !clone[0];
         const endEmpty = !clone[1];
 
         if (
+          onChange &&
           // Validate start
           (!startEmpty || mergedAllowEmpty[0]) &&
           // Validate end
           (!endEmpty || mergedAllowEmpty[1])
         ) {
-          onChange(clone, nextValueTexts);
+          onChange(clone, getDateTexts(clone));
         }
       }
     }
