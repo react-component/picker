@@ -781,7 +781,7 @@ describe('Picker.Basic', () => {
   it('defaultOpenValue in timePicker', () => {
     resetWarned();
     const onChange = jest.fn();
-    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
 
     const { container } = render(
       <MomentPicker
@@ -1145,4 +1145,34 @@ describe('Picker.Basic', () => {
 
     expect(container.querySelector('input')).toHaveValue('2023-09-04 21:05:10');
   });
+
+  describe('Picker format by locale', () => {
+    const myLocale = {
+      ...zhCN,
+      dateFormat: 'YYYY 年 M 月 D 日',
+      dateTimeFormat: 'YYYY 年 M 月 D 日 H 时 m 分 s 秒',
+      weekFormat: 'YYYY 年 W 周',
+      monthFormat: 'YYYY 年 M 月',
+      quarterFormat: 'YYYY 年 Q 季度',
+      yearFormat: 'YYYY 年',
+    };
+
+    const date = moment('2000-01-01', 'YYYY-MM-DD');
+    function matchPicker(name: string, props?: any) {
+      it(name, () => {
+        const { container } = render(
+          <MomentPicker value={date} {...props} locale={myLocale} />
+        );
+        expect(container.firstChild).toMatchSnapshot();
+      });
+    }
+
+    matchPicker('date');
+    matchPicker('dateTime', { showTime: true });
+    matchPicker('week', { picker: 'week' });
+    matchPicker('month', { picker: 'month' });
+    matchPicker('quarter', { picker: 'quarter' });
+    matchPicker('year', { picker: 'year' });
+  });
+
 });

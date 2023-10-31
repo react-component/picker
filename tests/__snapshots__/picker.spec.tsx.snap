@@ -1,5 +1,113 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Picker.Basic Picker format by locale date 1`] = `
+<div
+  class="rc-picker"
+>
+  <div
+    class="rc-picker-input"
+  >
+    <input
+      autocomplete="off"
+      readonly=""
+      size="16"
+      title="2000 年 1 月 1 日"
+      value="2000 年 1 月 1 日"
+    />
+  </div>
+</div>
+`;
+
+exports[`Picker.Basic Picker format by locale dateTime 1`] = `
+<div
+  class="rc-picker"
+>
+  <div
+    class="rc-picker-input"
+  >
+    <input
+      autocomplete="off"
+      readonly=""
+      size="28"
+      title="2000 年 1 月 1 日 0 时 0 分 0 秒"
+      value="2000 年 1 月 1 日 0 时 0 分 0 秒"
+    />
+  </div>
+</div>
+`;
+
+exports[`Picker.Basic Picker format by locale month 1`] = `
+<div
+  class="rc-picker"
+>
+  <div
+    class="rc-picker-input"
+  >
+    <input
+      autocomplete="off"
+      readonly=""
+      size="12"
+      title="2000 年 1 月"
+      value="2000 年 1 月"
+    />
+  </div>
+</div>
+`;
+
+exports[`Picker.Basic Picker format by locale quarter 1`] = `
+<div
+  class="rc-picker"
+>
+  <div
+    class="rc-picker-input"
+  >
+    <input
+      autocomplete="off"
+      readonly=""
+      size="13"
+      title="2000 年 1 季度"
+      value="2000 年 1 季度"
+    />
+  </div>
+</div>
+`;
+
+exports[`Picker.Basic Picker format by locale week 1`] = `
+<div
+  class="rc-picker"
+>
+  <div
+    class="rc-picker-input"
+  >
+    <input
+      autocomplete="off"
+      readonly=""
+      size="12"
+      title="2000 年 52 周"
+      value="2000 年 52 周"
+    />
+  </div>
+</div>
+`;
+
+exports[`Picker.Basic Picker format by locale year 1`] = `
+<div
+  class="rc-picker"
+>
+  <div
+    class="rc-picker-input"
+  >
+    <input
+      autocomplete="off"
+      readonly=""
+      size="12"
+      title="2000 年"
+      value="2000 年"
+    />
+  </div>
+</div>
+`;
+
 exports[`Picker.Basic icon 1`] = `
 <div
   class="rc-picker-input"
