@@ -115,6 +115,8 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   });
 
   const internalPicker: InternalMode = picker === 'date' && showTime ? 'datetime' : picker;
+
+  /** Extends from `mergedMode` to patch `datetime` mode */
   const internalMode: InternalMode = mergedMode === 'date' && showTime ? 'datetime' : mergedMode;
 
   const needConfirm = internalMode === 'time' || internalMode === 'datetime';
@@ -331,6 +333,22 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   const panelValue = mergedValue[activeIndex] || null;
 
+  const panels =
+    internalMode === picker ? (
+      []
+    ) : (
+      <PickerPanel<any>
+        {...props}
+        ref={panelRef}
+        onChange={null}
+        onCalendarChange={onPanelCalendarChange}
+        mode={mergedMode}
+        onModeChange={setMergedMode}
+        // Value
+        value={panelValue}
+      />
+    );
+
   const panel = (
     <Popup
       {...props}
@@ -345,16 +363,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       needConfirm={needConfirm}
       onSubmit={onSubmit}
     >
-      <PickerPanel<any>
-        {...props}
-        ref={panelRef}
-        onChange={null}
-        onCalendarChange={onPanelCalendarChange}
-        mode={mergedMode}
-        onModeChange={setMergedMode}
-        // Value
-        value={panelValue}
-      />
+      {panels}
     </Popup>
   );
 

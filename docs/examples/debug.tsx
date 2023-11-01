@@ -46,14 +46,14 @@ export default () => {
         onBlur={() => {
           console.log('🍷 Blur!');
         }}
-        changeOnBlur
+        // changeOnBlur
         format={{
           format: 'YYYY-MM-DD',
           // format: 'YYYY-MM-DD HH:mm:ss.SSS',
           //   // format: 'YYYYMMDD',
           // align: true,
         }}
-        showTime={{}}
+        // showTime={{}}
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
         }}
