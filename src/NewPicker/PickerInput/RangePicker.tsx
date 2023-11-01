@@ -122,7 +122,6 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
 
   const [mergedOpen, setMergeOpen] = useOpen(open, defaultOpen, onOpenChange);
-  // const [mergedOpen, setMergeOpen] = useLockState(open, defaultOpen, onOpenChange);
 
   const onSelectorOpenChange: OnOpenChange = (nextOpen, index, config?: OpenConfig) => {
     setMergeOpen(nextOpen, config);
@@ -149,13 +148,6 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       });
     }
   }, [activeIndex, mergedOpen]);
-
-  // Trigger if need adjust active
-  const syncActive = () => {
-    if (activeList?.length === 1) {
-      selectorRef.current.focus(activeList[0] === 0 ? 1 : 0);
-    }
-  };
 
   // =================== Disabled & Empty ===================
   const mergedDisabled = separateConfig(disabled, false);
@@ -272,7 +264,16 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     }
 
     triggerChange(nextValue, 'submit');
-    syncActive();
+
+    // Focus or blur the open panel
+    const activeLen = activeList?.length;
+    if (activeLen === 1) {
+      // Open to the next field
+      selectorRef.current.focus(activeList[0] === 0 ? 1 : 0);
+    } else if (activeLen > 1) {
+      // Close anyway
+      onSelectorOpenChange(false, activeIndex);
+    }
   };
 
   // ======================== Click =========================
