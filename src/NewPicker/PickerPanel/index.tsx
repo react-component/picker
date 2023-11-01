@@ -44,6 +44,7 @@ export interface PickerPanelProps<DateType = any> {
   defaultValue?: DateType | null;
   value?: DateType | null;
   onChange?: (date: DateType) => void;
+  onCalendarChange?: (date: DateType) => void;
 
   // Panel control
   defaultPickerValue?: DateType | null;
@@ -81,6 +82,7 @@ function PickerPanel<DateType = any>(
     defaultValue,
     value,
     onChange,
+    onCalendarChange,
 
     // Picker control
     defaultPickerValue,
@@ -122,11 +124,32 @@ function PickerPanel<DateType = any>(
   });
 
   // ========================= Value ==========================
+  // >>> Real value
+  // Interactive with `onChange` event which only trigger when the `mode` is `picker`
   const [mergedValue, setMergedValue] = useMergedState<DateType | null>(defaultValue, {
     value,
     onChange,
   });
 
+  // >>> CalendarValue
+  // CalendarValue is a temp value for user operation
+  // which will only trigger `onCalendarChange` but not `onChange`
+  const [calendarValue, setCalendarValue] = React.useState(mergedValue);
+  const updateCalendarValue = (newDate: DateType) => {
+    setCalendarValue(newDate);
+
+    onCalendarChange?.(newDate);
+
+    if (mergedMode === picker) {
+      setMergedValue(newDate);
+    }
+  };
+
+  React.useEffect(() => {
+    setCalendarValue(mergedValue);
+  }, [mergedValue]);
+
+  // >>> PickerValue
   // PickerValue is used to control the current displaying panel
   const [mergedPickerValue, setPickerValue] = useMergedState(
     defaultPickerValue || mergedValue || now,
@@ -136,8 +159,8 @@ function PickerPanel<DateType = any>(
     },
   );
 
-  const onInternalChange = (newVal: DateType) => {
-    setMergedValue(newVal);
+  const onPanelValueChange = (newVal: DateType) => {
+    updateCalendarValue(newVal);
     setPickerValue(newVal);
 
     // Update mode if needed
@@ -179,8 +202,8 @@ function PickerPanel<DateType = any>(
         // Value
         pickerValue={mergedPickerValue}
         onPickerValueChange={setPickerValue}
-        value={mergedValue}
-        onChange={onInternalChange}
+        value={calendarValue}
+        onChange={onPanelValueChange}
         // Render
         cellRender={cellRender}
         disabledDate={disabledDate}

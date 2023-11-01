@@ -117,6 +117,8 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const internalPicker: InternalMode = picker === 'date' && showTime ? 'datetime' : picker;
   const internalMode: InternalMode = mergedMode === 'date' && showTime ? 'datetime' : mergedMode;
 
+  const needConfirm = internalMode === 'time' || internalMode === 'datetime';
+
   // ======================= Show Now =======================
   const mergedShowNow = useShowNow(internalPicker, mergedMode, showNow, showToday);
 
@@ -307,11 +309,15 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     setFocused(false);
   };
 
-  const onPanelChange: PickerPanelProps<DateType>['onChange'] = (date) => {
+  const onPanelCalendarChange: PickerPanelProps<DateType>['onChange'] = (date) => {
     const clone: RangeValueType<DateType> = [...mergedValue];
     clone[activeIndex] = date;
 
-    triggerChange(clone);
+    if (mergedMode === picker && !needConfirm) {
+      triggerChange(clone, 'submit');
+    } else {
+      triggerChange(clone);
+    }
   };
 
   const onPopupClose = () => {
@@ -333,14 +339,17 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       mode={mergedMode}
       internalMode={internalMode}
       showNow={mergedShowNow}
-      onSubmit={onSubmit}
       // Value
       value={panelValue}
+      // Submit
+      needConfirm={needConfirm}
+      onSubmit={onSubmit}
     >
       <PickerPanel<any>
         {...props}
         ref={panelRef}
-        onChange={onPanelChange}
+        onChange={null}
+        onCalendarChange={onPanelCalendarChange}
         mode={mergedMode}
         onModeChange={setMergedMode}
         // Value

@@ -1,22 +1,15 @@
 import classNames from 'classnames';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
-import type { InternalMode, PanelMode, SharedPickerProps } from '../../interface';
+import type { SharedPickerProps } from '../../interface';
 import PickerContext from '../context';
-import Footer from './Footer';
+import Footer, { type FooterProps } from './Footer';
 
 export interface PopupProps<DateType = any>
-  extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onFocus' | 'onBlur'> {
+  extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onFocus' | 'onBlur'>,
+    FooterProps<DateType> {
   children?: React.ReactElement | React.ReactElement[];
   panelRender?: SharedPickerProps['panelRender'];
-  mode: PanelMode;
-  internalMode: InternalMode;
-  renderExtraFooter?: SharedPickerProps['renderExtraFooter'];
-  showNow: boolean;
-  onSubmit: (date?: DateType) => void;
-
-  // Value
-  value?: DateType;
 }
 
 export default function Popup(props: PopupProps) {
@@ -24,11 +17,6 @@ export default function Popup(props: PopupProps) {
 
   const { prefixCls } = React.useContext(PickerContext);
   const panelPrefixCls = `${prefixCls}-panel`;
-
-  // ======================== Focus =========================
-  const onMouseDown: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    event.preventDefault();
-  };
 
   // ======================== Custom ========================
   const panelNode = Array.isArray(children) ? (
@@ -76,7 +64,6 @@ export default function Popup(props: PopupProps) {
         // Used for Today Button style, safe to remove if no need
         `${prefixCls}-${internalMode}-panel-container`,
       )}
-      // onMouseDown={onMouseDown}
       {...divProps}
     >
       {mergedNodes}

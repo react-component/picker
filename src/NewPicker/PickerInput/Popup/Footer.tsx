@@ -7,14 +7,17 @@ export interface FooterProps<DateType = any> {
   internalMode: InternalMode;
   renderExtraFooter?: SharedPickerProps['renderExtraFooter'];
   showNow: boolean;
-  onSubmit: (date?: DateType) => void;
 
   // Value
   value?: DateType;
+
+  // Submit
+  onSubmit: (date?: DateType) => void;
+  needConfirm: boolean;
 }
 
 export default function Footer(props: FooterProps) {
-  const { mode, internalMode, renderExtraFooter, showNow, onSubmit, value } = props;
+  const { mode, internalMode, renderExtraFooter, showNow, onSubmit, value, needConfirm } = props;
 
   const {
     prefixCls,
@@ -43,7 +46,7 @@ export default function Footer(props: FooterProps) {
 
   const validDate = value && generateConfig.isValidate(value);
 
-  const okNode = (internalMode === 'time' || internalMode === 'datetime') && (
+  const okNode = needConfirm && (
     <li className={`${prefixCls}-ok`}>
       <Button
         disabled={!validDate}

@@ -48,8 +48,8 @@ export default () => {
         }}
         changeOnBlur
         format={{
-          // format: 'YYYY-MM-DD',
-          format: 'YYYY-MM-DD HH:mm:ss.SSS',
+          format: 'YYYY-MM-DD',
+          // format: 'YYYY-MM-DD HH:mm:ss.SSS',
           //   // format: 'YYYYMMDD',
           // align: true,
         }}
