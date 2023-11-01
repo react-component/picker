@@ -96,6 +96,10 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     suffixIcon,
     direction,
 
+    // Focus
+    onFocus,
+    onBlur,
+
     // Render
     components = {},
   } = props;
@@ -246,14 +250,18 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   };
 
   // ==================== Selector Focus ====================
-  const onSelectorFocus: SelectorProps['onFocus'] = (_, index) => {
+  const onSelectorFocus: SelectorProps['onFocus'] = (event, index) => {
     setActiveIndex(index);
     setFocused(true);
+
+    onFocus?.(event);
   };
 
-  const onSelectorBlur: SelectorProps['onBlur'] = () => {
+  const onSelectorBlur: SelectorProps['onBlur'] = (event) => {
     setFocused(false);
     triggerChange(mergedValue, 'submit');
+
+    onBlur?.(event);
   };
 
   // ======================== Submit ========================

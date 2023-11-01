@@ -61,7 +61,7 @@ export default () => {
         // preserveInvalidOnBlur
         allowEmpty={[false, true]}
         onOpenChange={(nextOpen) => {
-          console.error('🏆 Next Open:', nextOpen);
+          console.log('🏆 Next Open:', nextOpen);
         }}
         // open
         // renderExtraFooter={(mode) => mode}
