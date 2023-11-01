@@ -307,6 +307,12 @@ export interface SelectorProps<DateType = any> {
   onChange: (date: DateType, index?: number) => void;
   /** When user input invalidate date, keep it in the input field */
   preserveInvalidOnBlur?: boolean;
+  /**
+   * Trigger change event when click outside to blur.
+   * This is only affect `datetime` & `time` picker
+   * which do not have certain end action on the panel cell so need confirm button.
+   */
+  changeOnBlur?: boolean;
 
   // Open
   /** Open index */

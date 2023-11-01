@@ -58,7 +58,12 @@ export default () => {
           console.log('🏆 Next Open:', nextOpen);
         }}
         // open
-        renderExtraFooter={(mode) => mode}
+        // renderExtraFooter={(mode) => mode}
+        components={
+          {
+            // datetime: () => null,
+          }
+        }
       />
       <br />
 
@@ -71,12 +76,17 @@ export default () => {
       </button>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        {/* <CellPicker
+        <CellPicker
           picker="time"
           // components={{
           //   time: MyTime,
           // }}
-        /> */}
+          showTime={{
+            format: 'HH:mm:ss.SSS',
+            showTitle: true,
+          }}
+          pickerValue={moment('2000-01-01 01:03:05.800')}
+        />
         {/* <CellPicker
           picker="date"
           showTime={{

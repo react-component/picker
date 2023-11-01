@@ -14,6 +14,9 @@ export interface PopupProps<DateType = any>
   renderExtraFooter?: SharedPickerProps['renderExtraFooter'];
   showNow: boolean;
   onSubmit: (date?: DateType) => void;
+
+  // Value
+  value?: DateType;
 }
 
 export default function Popup(props: PopupProps) {

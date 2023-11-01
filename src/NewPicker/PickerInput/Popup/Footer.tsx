@@ -8,10 +8,13 @@ export interface FooterProps<DateType = any> {
   renderExtraFooter?: SharedPickerProps['renderExtraFooter'];
   showNow: boolean;
   onSubmit: (date?: DateType) => void;
+
+  // Value
+  value?: DateType;
 }
 
 export default function Footer(props: FooterProps) {
-  const { mode, internalMode, renderExtraFooter, showNow, onSubmit } = props;
+  const { mode, internalMode, renderExtraFooter, showNow, onSubmit, value } = props;
 
   const {
     prefixCls,
@@ -19,17 +22,6 @@ export default function Footer(props: FooterProps) {
     generateConfig,
     button: Button = 'button',
   } = React.useContext(PickerContext);
-
-  // <div className={`${prefixCls}-footer-extra`}>{renderExtraFooter(mode)}</div>
-
-  {
-    /* {(extraNode || rangesNode) && (
-          <div className={`${prefixCls}-footer`}>
-            {extraNode}
-            {rangesNode}
-          </div>
-        )} */
-  }
 
   // ======================== Event =========================
   const onNow = () => {
@@ -49,10 +41,12 @@ export default function Footer(props: FooterProps) {
     </li>
   );
 
+  const validDate = value && generateConfig.isValidate(value);
+
   const okNode = (internalMode === 'time' || internalMode === 'datetime') && (
     <li className={`${prefixCls}-ok`}>
       <Button
-        // disabled={okDisabled}
+        disabled={!validDate}
         onClick={() => {
           onSubmit();
         }}

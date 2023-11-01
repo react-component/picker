@@ -125,7 +125,6 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   const onSelectorOpenChange: OnOpenChange = (nextOpen, index, config?: OpenConfig) => {
     setMergeOpen(nextOpen, config);
-    console.log('asdsadasdasdsa', index);
   };
 
   // ======================== Active ========================
@@ -246,17 +245,18 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     triggerChange(clone);
   };
 
-  // ====================== Focus Blur ======================
-  const onFocus: SelectorProps['onFocus'] = (_, index) => {
+  // ==================== Selector Focus ====================
+  const onSelectorFocus: SelectorProps['onFocus'] = (_, index) => {
     setActiveIndex(index);
     setFocused(true);
   };
 
-  const onBlur: SelectorProps['onBlur'] = () => {
+  const onSelectorBlur: SelectorProps['onBlur'] = () => {
     setFocused(false);
     triggerChange(mergedValue, 'submit');
   };
 
+  // ======================== Submit ========================
   const onSubmit = (date?: DateType) => {
     let nextValue = mergedValue;
 
@@ -302,6 +302,8 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     triggerChange(clone);
   };
 
+  const panelValue = mergedValue[activeIndex] || null;
+
   const panel = (
     <Popup
       {...props}
@@ -311,6 +313,8 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       internalMode={internalMode}
       showNow={mergedShowNow}
       onSubmit={onSubmit}
+      // Value
+      value={panelValue}
     >
       <PickerPanel<any>
         {...props}
@@ -319,7 +323,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
         mode={mergedMode}
         onModeChange={setMergedMode}
         // Value
-        value={mergedValue[activeIndex] || null}
+        value={panelValue}
       />
     </Popup>
   );
@@ -358,8 +362,8 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
           suffixIcon={suffixIcon}
           // Active
           activeIndex={focusedIndex}
-          onFocus={onFocus}
-          onBlur={onBlur}
+          onFocus={onSelectorFocus}
+          onBlur={onSelectorBlur}
           onSubmit={onSubmit}
           // Change
           value={mergedValue}
