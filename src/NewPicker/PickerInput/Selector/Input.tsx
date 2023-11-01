@@ -155,10 +155,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   };
 
   const onSharedBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
-    // if (!preserveInvalidOnBlur) {
-    //   setInputValue(value);
-    // }
-
     onBlur(event);
   };
 

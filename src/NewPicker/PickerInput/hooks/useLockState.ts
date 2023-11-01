@@ -7,17 +7,17 @@ import * as React from 'react';
  * Will be `true` immediately for setState.
  * But will be `false` for a requestAnimationFrame.
  */
-export default function useLockState(
-  value: boolean,
-  defaultValue?: boolean,
-  onChange?: (next: boolean) => void,
-): [state: boolean, setState: (nextState: boolean) => void] {
-  const [state, setState] = useMergedState(defaultValue || false, {
+export default function useLockState<T>(
+  value: T,
+  defaultValue?: T,
+  onChange?: (next: T) => void,
+): [state: T, setState: (nextState: T) => void] {
+  const [state, setState] = useMergedState<T>(defaultValue, {
     value,
   });
   const rafRef = React.useRef<number>(null);
 
-  const updateValue = useEvent((next: boolean) => {
+  const updateValue = useEvent((next: T) => {
     raf.cancel(rafRef.current);
 
     if (next) {

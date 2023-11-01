@@ -11,7 +11,7 @@ export default function useOpen(
   onOpenChange?: (open: boolean) => void,
 ): [open: boolean, setOpen: (open: boolean, config?: OpenConfig) => void] {
   // Delay for handle the open state, in case fast shift from `open` -> `close` -> `open`
-  const [rafOpen, setRafOpen] = useLockState(open, defaultOpen, onOpenChange);
+  const [rafOpen, setRafOpen] = useLockState(open, defaultOpen || false, onOpenChange);
 
   function setOpen(next: boolean, config: OpenConfig = {}) {
     if (!config.inherit || rafOpen) {

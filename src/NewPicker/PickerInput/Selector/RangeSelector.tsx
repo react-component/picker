@@ -139,6 +139,12 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
       })}
       ref={rootRef}
       onClick={onClick}
+      // onFocus={() => {
+      //   console.log('my!!! IN', document.activeElement);
+      // }}
+      // onBlur={() => {
+      //   console.log('my!!! OUT', document.activeElement);
+      // }}
     >
       <Input ref={inputStartRef} {...getInputProps(0)} />
       <div className={`${prefixCls}-range-separator`}>{separator}</div>

@@ -279,10 +279,11 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   // ======================== Click =========================
   const onSelectorClick: React.MouseEventHandler<HTMLDivElement> = () => {
-    // if (focusedIndex === null) {
-    selectorRef.current.focus(0);
+    if (focusedIndex === null) {
+      selectorRef.current.focus(0);
+    }
+
     setMergeOpen(true);
-    // }
   };
 
   // ======================== Panels ========================

@@ -25,6 +25,11 @@ export default function Popup(props: PopupProps) {
   const { prefixCls } = React.useContext(PickerContext);
   const panelPrefixCls = `${prefixCls}-panel`;
 
+  // ======================== Focus =========================
+  const onMouseDown: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    event.preventDefault();
+  };
+
   // ======================== Custom ========================
   const panelNode = Array.isArray(children) ? (
     <div className={`${prefixCls}-panels`}>{children}</div>
@@ -71,6 +76,7 @@ export default function Popup(props: PopupProps) {
         // Used for Today Button style, safe to remove if no need
         `${prefixCls}-${internalMode}-panel-container`,
       )}
+      onMouseDown={onMouseDown}
       {...divProps}
     >
       {mergedNodes}

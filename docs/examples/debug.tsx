@@ -40,6 +40,12 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         suffixIcon="🧶"
+        onFocus={() => {
+          console.log('🍷 Focus!');
+        }}
+        onBlur={() => {
+          console.log('🍷 Blur!');
+        }}
         // format={{
         //   format: 'YYYY-MM-DD',
         //   //   // format: 'YYYYMMDD',
@@ -55,7 +61,7 @@ export default () => {
         // preserveInvalidOnBlur
         allowEmpty={[false, true]}
         onOpenChange={(nextOpen) => {
-          console.log('🏆 Next Open:', nextOpen);
+          console.error('🏆 Next Open:', nextOpen);
         }}
         // open
         // renderExtraFooter={(mode) => mode}
