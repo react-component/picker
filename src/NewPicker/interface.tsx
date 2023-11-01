@@ -145,6 +145,9 @@ export interface SharedTimeProps<DateType = any> {
   /** Only work in picker is `time` */
   hideDisabledOptions?: boolean;
 
+  /** Set default value template when empty selection */
+  defaultValue?: DateType;
+
   /** @deprecated Please use `disabledTime` instead. */
   disabledHours?: DisabledTimes['disabledHours'];
   /** @deprecated Please use `disabledTime` instead. */

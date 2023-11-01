@@ -71,6 +71,8 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
 
     // MISC
     changeOnScroll,
+
+    defaultValue,
   } = props;
 
   const {
@@ -171,42 +173,54 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
   );
 
   // >>> Pick Fallback
-  const getEnabled = (val: number, pickerVal: number, units: Unit<number>[]) => {
+  const getEnabled = (units: Unit<number>[], val: number, defaultVal: number) => {
     const enabledUnits = units.filter((unit) => !unit.disabled);
 
     return (
       val ??
       // Fallback to picker value
-      enabledUnits.find((unit) => unit.value === pickerVal)?.value ??
+      enabledUnits.find((unit) => unit.value === defaultVal)?.value ??
       // Fallback to enabled value
       enabledUnits[0].value ??
       // Fallback to picker value again since not have validate unit
-      pickerVal
+      defaultVal
     );
   };
 
   // >>> Minutes
-  const validHour = getEnabled(hour, generateConfig.getHour(pickerValue), rowHourUnits);
+  const validHour = getEnabled(
+    rowHourUnits,
+    hour,
+    defaultValue && generateConfig.getHour(defaultValue),
+  );
   const minuteUnits = React.useMemo(() => getMinuteUnits(validHour), [getMinuteUnits, validHour]);
 
   // >>> Seconds
-  const validMinute = getEnabled(minute, generateConfig.getMinute(pickerValue), minuteUnits);
+  const validMinute = getEnabled(
+    minuteUnits,
+    minute,
+    defaultValue && generateConfig.getMinute(defaultValue),
+  );
   const secondUnits = React.useMemo(
     () => getSecondUnits(validHour, validMinute),
     [getSecondUnits, validHour, validMinute],
   );
 
   // >>> Milliseconds
-  const validSecond = getEnabled(second, generateConfig.getSecond(pickerValue), secondUnits);
+  const validSecond = getEnabled(
+    secondUnits,
+    second,
+    defaultValue && generateConfig.getSecond(defaultValue),
+  );
   const millisecondUnits = React.useMemo(
     () => getMillisecondUnits(validHour, validMinute, validSecond),
     [getMillisecondUnits, validHour, validMinute, validSecond],
   );
 
   const validMillisecond = getEnabled(
-    millisecond,
-    generateConfig.getMillisecond(pickerValue),
     millisecondUnits,
+    millisecond,
+    defaultValue && generateConfig.getMillisecond(defaultValue),
   );
 
   // Meridiem
@@ -265,10 +279,13 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
   // Create a template date for the trigger change event
   const triggerDateTmpl = React.useMemo(() => {
     let tmpl = generateConfig.getNow();
-    tmpl = generateConfig.setHour(tmpl, validHour);
-    tmpl = generateConfig.setMinute(tmpl, validMinute);
-    tmpl = generateConfig.setSecond(tmpl, validSecond);
-    tmpl = generateConfig.setMillisecond(tmpl, validMillisecond);
+
+    if (validHour !== undefined) {
+      tmpl = generateConfig.setHour(tmpl, validHour);
+      tmpl = generateConfig.setMinute(tmpl, validMinute);
+      tmpl = generateConfig.setSecond(tmpl, validSecond);
+      tmpl = generateConfig.setMillisecond(tmpl, validMillisecond);
+    }
 
     return tmpl;
   }, [validHour, validMinute, validSecond, validMillisecond, generateConfig]);

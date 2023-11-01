@@ -177,7 +177,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   });
 
   // ======================= Keyboard =======================
+  const onSharedKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    if (event.key === 'Enter') {
+      onEnter();
+    }
+  };
+
   const onFormatKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    onSharedKeyDown(event);
+
     const { key } = event;
     console.log('key', key);
 
@@ -247,11 +255,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       case 'ArrowDown':
         nextCellText = '';
         nextFillText = offsetCellValue(-1);
-        break;
-
-      // =============== Enter ================
-      case 'Enter':
-        onEnter();
         break;
 
       // =============== Number ===============
@@ -352,6 +355,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       <input
         ref={mergedRef}
         {...restProps}
+        onKeyDown={onSharedKeyDown}
         onBlur={onSharedBlur}
         // Replace with format
         {...inputProps}
