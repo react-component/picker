@@ -9,8 +9,7 @@ import type {
   SelectorRef,
   SharedPickerProps,
 } from '../interface';
-import type { PickerPanelProps, PickerPanelRef } from '../PickerPanel';
-import PickerPanel from '../PickerPanel';
+import type { PickerPanelProps } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import PickerContext from './context';
 import { useFieldFormat } from './hooks/useFieldFormat';
@@ -106,7 +105,6 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   } = props;
 
   const selectorRef = React.useRef<SelectorRef>();
-  const panelRef = React.useRef<PickerPanelRef>();
 
   // ======================== Picker ========================
   const [mergedMode, setMergedMode] = useMergedState(picker, {
@@ -272,7 +270,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   };
 
   // ======================== Submit ========================
-  const onSubmit = (date?: DateType) => {
+  const submitAndFocusNext = (date?: DateType) => {
     let nextValue = mergedValue;
 
     if (date) {
@@ -316,7 +314,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     clone[activeIndex] = date;
 
     if (mergedMode === picker && !needConfirm) {
-      triggerChange(clone, 'submit');
+      submitAndFocusNext(date);
     } else {
       triggerChange(clone);
     }
@@ -333,38 +331,28 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   const panelValue = mergedValue[activeIndex] || null;
 
-  const panels =
-    internalMode === picker ? (
-      []
-    ) : (
-      <PickerPanel<any>
-        {...props}
-        ref={panelRef}
-        onChange={null}
-        onCalendarChange={onPanelCalendarChange}
-        mode={mergedMode}
-        onModeChange={setMergedMode}
-        // Value
-        value={panelValue}
-      />
-    );
-
   const panel = (
     <Popup
-      {...props}
+      // MISC
+      {...(props as Omit<RangePickerProps<DateType>, 'onChange' | 'onCalendarChange'>)}
+      showNow={mergedShowNow}
+      range
+      // Focus
       onFocus={onPanelFocus}
       onBlur={onPanelBlur}
+      // Mode
+      picker={picker}
       mode={mergedMode}
       internalMode={internalMode}
-      showNow={mergedShowNow}
+      onModeChange={setMergedMode}
       // Value
       value={panelValue}
+      onChange={null}
+      onCalendarChange={onPanelCalendarChange}
       // Submit
       needConfirm={needConfirm}
-      onSubmit={onSubmit}
-    >
-      {panels}
-    </Popup>
+      onSubmit={submitAndFocusNext}
+    />
   );
 
   // ======================= Context ========================
@@ -405,7 +393,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
           activeIndex={focusedIndex}
           onFocus={onSelectorFocus}
           onBlur={onSelectorBlur}
-          onSubmit={onSubmit}
+          onSubmit={submitAndFocusNext}
           // Change
           value={mergedValue}
           format={formatList}
