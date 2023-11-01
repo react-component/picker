@@ -22,27 +22,35 @@ export default function TimePanel<DateType = any>(props: SharedPanelProps<DateTy
   const panelPrefixCls = `${prefixCls}-time-panel`;
 
   // ========================== Base ==========================
-  const [info, now] = useInfo(props);
+  const [info] = useInfo(props);
 
-  const mergedValue = value || now;
+  // const mergedValue = value || now;
 
   // ========================= Render =========================
-  const formatTimeStr = formatValue(mergedValue, {
-    locale,
-    format,
-    generateConfig,
-  });
+  // const formatTimeStr = formatValue(value, {
+  //   locale,
+  //   format,
+  //   generateConfig,
+  // });
 
   return (
     <PanelContext.Provider
       value={{
         type: 'date',
         ...info,
-        value: mergedValue,
+        // value: mergedValue,
       }}
     >
       <div className={classNames(panelPrefixCls)}>
-        <PanelHeader>{mergedValue ? formatTimeStr : '\u00A0'}</PanelHeader>
+        <PanelHeader>
+          {value
+            ? formatValue(value, {
+                locale,
+                format,
+                generateConfig,
+              })
+            : '\u00A0'}
+        </PanelHeader>
         <TimePanelBody {...showTime} format={format} />
       </div>
     </PanelContext.Provider>

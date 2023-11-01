@@ -44,12 +44,6 @@ export default function Popup(props: PopupProps) {
       /> */}
       <div>
         {panelNode}
-        {/* {(extraNode || rangesNode) && (
-          <div className={`${prefixCls}-footer`}>
-            {extraNode}
-            {rangesNode}
-          </div>
-        )} */}
         <Footer {...props} />
       </div>
     </div>

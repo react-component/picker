@@ -125,6 +125,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   const onSelectorOpenChange: OnOpenChange = (nextOpen, index, config?: OpenConfig) => {
     setMergeOpen(nextOpen, config);
+    console.log('asdsadasdasdsa', index);
   };
 
   // ======================== Active ========================
@@ -317,6 +318,8 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
         onChange={onPanelChange}
         mode={mergedMode}
         onModeChange={setMergedMode}
+        // Value
+        value={mergedValue[activeIndex] || null}
       />
     </Popup>
   );

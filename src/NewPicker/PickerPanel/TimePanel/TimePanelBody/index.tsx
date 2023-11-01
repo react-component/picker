@@ -73,14 +73,21 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     changeOnScroll,
   } = props;
 
-  const { prefixCls, value, generateConfig, locale, onChange } = React.useContext(PanelContext);
+  const {
+    prefixCls,
+    value = null,
+    generateConfig,
+    locale,
+    onChange,
+    now,
+  } = React.useContext(PanelContext);
 
   // ========================= Value ==========================
-  const hour = generateConfig.getHour(value);
-  const minute = generateConfig.getMinute(value);
-  const second = generateConfig.getSecond(value);
-  const millisecond = generateConfig.getMillisecond(value);
-  const meridiem = isAM(hour) ? 'am' : 'pm';
+  const hour = value && generateConfig.getHour(value);
+  const minute = value && generateConfig.getMinute(value);
+  const second = value && generateConfig.getSecond(value);
+  const millisecond = value && generateConfig.getMillisecond(value);
+  const meridiem = hour === null ? null : isAM(hour) ? 'am' : 'pm';
 
   // ========================== Show ==========================
   const mergedShowHour = checkShow(format, ['H', 'LT', 'LLL'], showHour);
@@ -107,6 +114,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
   }, [value, disabledTime, disabledHours, disabledMinutes, disabledSeconds]);
 
   // ========================= Column =========================
+  // Hours
   const rowHourUnits = React.useMemo(() => {
     const hours = generateUnits(0, 23, hourStep, hideDisabledOptions, mergedDisabledHours());
 
@@ -128,12 +136,14 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
       : rowHourUnits.filter((h) => !isAM(h.value as number));
   }, [hour, rowHourUnits, mergedShowMeridiem]);
 
+  // Minutes
   const getMinuteUnits = React.useCallback(
     (nextHour: number) =>
       generateUnits(0, 59, minuteStep, hideDisabledOptions, mergedDisabledMinutes(nextHour)),
     [hideDisabledOptions, mergedDisabledMinutes, minuteStep],
   );
 
+  // Seconds
   const getSecondUnits = React.useCallback(
     (nextHour: number, nextMinute: number) =>
       generateUnits(
@@ -146,6 +156,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     [hideDisabledOptions, mergedDisabledSeconds, secondStep],
   );
 
+  // Milliseconds
   const getMillisecondUnits = React.useCallback(
     (nextHour: number, nextMinute: number, nextSecond: number) =>
       generateUnits(
@@ -159,18 +170,27 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     [hideDisabledOptions, mergedDisabledMilliseconds, millisecondStep],
   );
 
-  const minuteUnits = React.useMemo(() => getMinuteUnits(hour), [getMinuteUnits, hour]);
+  // >>> Minutes
+  const pickerHour = hour ?? rowHourUnits[0].value;
+  const minuteUnits = React.useMemo(() => getMinuteUnits(pickerHour), [getMinuteUnits, pickerHour]);
 
+  // >>> Seconds
+  const pickerMinute = minute ?? minuteUnits[0].value;
   const secondUnits = React.useMemo(
-    () => getSecondUnits(hour, minute),
-    [getSecondUnits, hour, minute],
+    () => getSecondUnits(pickerHour, pickerMinute),
+    [getSecondUnits, pickerHour, pickerMinute],
   );
 
+  // >>> Milliseconds
+  const pickerSecond = second ?? secondUnits[0].value;
   const millisecondUnits = React.useMemo(
-    () => getMillisecondUnits(hour, minute, second),
-    [getMillisecondUnits, hour, minute, second],
+    () => getMillisecondUnits(pickerHour, pickerMinute, pickerSecond),
+    [getMillisecondUnits, pickerHour, pickerMinute, pickerSecond],
   );
 
+  const pickerMillisecond = millisecond ?? millisecondUnits[0].value;
+
+  // Meridiem
   const meridiemUnits = React.useMemo(() => {
     if (!mergedShowMeridiem) {
       return [];
@@ -223,27 +243,38 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
   };
 
   // ========================= Column =========================
+  // Create a template date for the trigger change event
+  const triggerDateTmpl = React.useMemo(() => {
+    let tmpl = generateConfig.getNow();
+    tmpl = generateConfig.setHour(tmpl, pickerHour);
+    tmpl = generateConfig.setMinute(tmpl, pickerMinute);
+    tmpl = generateConfig.setSecond(tmpl, pickerSecond);
+    tmpl = generateConfig.setMillisecond(tmpl, pickerMillisecond);
+
+    return tmpl;
+  }, [pickerHour, pickerMinute, pickerSecond, pickerMillisecond, generateConfig]);
+
   const onHourChange = (val: number) => {
-    triggerChange(generateConfig.setHour(value, val));
+    triggerChange(generateConfig.setHour(triggerDateTmpl, val));
   };
 
   const onMinuteChange = (val: number) => {
-    triggerChange(generateConfig.setMinute(value, val));
+    triggerChange(generateConfig.setMinute(triggerDateTmpl, val));
   };
 
   const onSecondChange = (val: number) => {
-    triggerChange(generateConfig.setSecond(value, val));
+    triggerChange(generateConfig.setSecond(triggerDateTmpl, val));
   };
 
   const onMillisecondChange = (val: number) => {
-    triggerChange(generateConfig.setMillisecond(value, val));
+    triggerChange(generateConfig.setMillisecond(triggerDateTmpl, val));
   };
 
   const onMeridiemChange = (val: string) => {
     if (val === 'am' && !isAM(hour)) {
-      triggerChange(generateConfig.setHour(value, hour - 12));
+      triggerChange(generateConfig.setHour(triggerDateTmpl, hour - 12));
     } else if (val === 'pm' && isAM(hour)) {
-      triggerChange(generateConfig.setHour(value, hour + 12));
+      triggerChange(generateConfig.setHour(triggerDateTmpl, hour + 12));
     }
   };
 

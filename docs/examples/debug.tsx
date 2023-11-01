@@ -73,9 +73,9 @@ export default () => {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
         {/* <CellPicker
           picker="time"
-          components={{
-            time: MyTime,
-          }}
+          // components={{
+          //   time: MyTime,
+          // }}
         /> */}
         {/* <CellPicker
           picker="date"
