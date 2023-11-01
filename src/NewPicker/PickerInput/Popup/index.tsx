@@ -76,7 +76,7 @@ export default function Popup(props: PopupProps) {
         // Used for Today Button style, safe to remove if no need
         `${prefixCls}-${internalMode}-panel-container`,
       )}
-      onMouseDown={onMouseDown}
+      // onMouseDown={onMouseDown}
       {...divProps}
     >
       {mergedNodes}

@@ -42,7 +42,6 @@ const BUILT_IN_PLACEMENTS = {
 type Placement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
 
 export type PickerTriggerProps = {
-  visible: boolean;
   popupElement: React.ReactElement;
   popupStyle?: React.CSSProperties;
   children: React.ReactElement;
@@ -53,12 +52,15 @@ export type PickerTriggerProps = {
   range?: boolean;
   popupPlacement?: Placement;
   direction?: 'ltr' | 'rtl';
+
+  // Visible
+  visible: boolean;
+  onClose: () => void;
 };
 
 function PickerTrigger({
   popupElement,
   popupStyle,
-  visible,
   popupClassName,
   popupAlign,
   transitionName,
@@ -67,6 +69,10 @@ function PickerTrigger({
   range,
   popupPlacement,
   direction,
+
+  // Visible
+  visible,
+  onClose,
 }: PickerTriggerProps) {
   const { prefixCls } = React.useContext(PickerContext);
   const dropdownPrefixCls = `${prefixCls}-dropdown`;
@@ -81,7 +87,7 @@ function PickerTrigger({
   return (
     <Trigger
       showAction={[]}
-      hideAction={[]}
+      hideAction={['click']}
       popupPlacement={getPopupPlacement()}
       builtinPlacements={BUILT_IN_PLACEMENTS}
       prefixCls={dropdownPrefixCls}
@@ -95,6 +101,11 @@ function PickerTrigger({
       })}
       popupStyle={popupStyle}
       getPopupContainer={getPopupContainer}
+      onPopupVisibleChange={(nextVisible) => {
+        if (!nextVisible) {
+          onClose();
+        }
+      }}
     >
       {children}
     </Trigger>

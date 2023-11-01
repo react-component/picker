@@ -167,8 +167,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   // ======================== Active ========================
   // Check if blur need reset input value
   useLockEffect(active, () => {
-    if (!active && format && (internalInputValue === format || !preserveInvalidOnBlur)) {
-      triggerInputChange(value);
+    if (!active && !preserveInvalidOnBlur) {
+      setInputValue(value);
     }
   });
 

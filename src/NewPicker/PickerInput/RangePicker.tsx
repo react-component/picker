@@ -64,6 +64,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     defaultValue,
     onChange,
     onCalendarChange,
+    changeOnBlur,
 
     order = true,
 
@@ -210,30 +211,30 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       }
     }
 
-    // Trigger Change event
+    // Update `submitValue` to trigger event by effect
     if (source === 'submit') {
-      const [isSameSubmitDate] = isSameDates(submitValue, clone);
+      setSubmitValue(clone);
 
-      if (!isSameSubmitDate) {
-        setSubmitValue(clone);
+      // Trigger `onChange` if needed
+      const [isSameSubmitDates] = isSameDates(submitValue, clone);
 
-        const startEmpty = !clone[0];
-        const endEmpty = !clone[1];
+      const startEmpty = !clone[0];
+      const endEmpty = !clone[1];
 
-        if (
-          onChange &&
-          // Validate start
-          (!startEmpty || mergedAllowEmpty[0]) &&
-          // Validate end
-          (!endEmpty || mergedAllowEmpty[1])
-        ) {
-          onChange(clone, getDateTexts(clone));
-        }
+      if (
+        onChange &&
+        !isSameSubmitDates &&
+        // Validate start
+        (!startEmpty || mergedAllowEmpty[0]) &&
+        // Validate end
+        (!endEmpty || mergedAllowEmpty[1])
+      ) {
+        onChange(clone, getDateTexts(clone));
       }
     }
   };
 
-  const fillValue = (date: DateType, index: number) => {
+  const fillMergedValue = (date: DateType, index: number) => {
     // Trigger change only when date changed
     const [prevStart, prevEnd] = mergedValue;
 
@@ -244,7 +245,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   };
 
   const onSelectorChange = (date: DateType, index: number) => {
-    const clone = fillValue(date, index);
+    const clone = fillMergedValue(date, index);
 
     triggerChange(clone);
   };
@@ -259,6 +260,8 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   const onSelectorBlur: SelectorProps['onBlur'] = (event) => {
     setFocused(false);
+
+    // Always trigger submit since input is always means confirm
     triggerChange(mergedValue, 'submit');
 
     onBlur?.(event);
@@ -269,7 +272,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     let nextValue = mergedValue;
 
     if (date) {
-      nextValue = fillValue(date, activeIndex);
+      nextValue = fillMergedValue(date, activeIndex);
     }
 
     triggerChange(nextValue, 'submit');
@@ -309,6 +312,15 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     clone[activeIndex] = date;
 
     triggerChange(clone);
+  };
+
+  const onPopupClose = () => {
+    if (changeOnBlur) {
+      triggerChange(mergedValue, 'submit');
+    }
+
+    // Close popup
+    setMergeOpen(false);
   };
 
   const panelValue = mergedValue[activeIndex] || null;
@@ -352,7 +364,6 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   return (
     <PickerContext.Provider value={context}>
       <PickerTrigger
-        visible={mergedOpen}
         popupElement={panel}
         popupStyle={styles.popup}
         popupClassName={classNames.popup}
@@ -361,6 +372,9 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
         transitionName={transitionName}
         popupPlacement={popupPlacement}
         direction={direction}
+        // Visible
+        visible={mergedOpen}
+        onClose={onPopupClose}
       >
         <RangeSelector
           // Shared
