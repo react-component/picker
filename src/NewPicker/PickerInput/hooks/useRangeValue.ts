@@ -1,11 +1,10 @@
-import { useMergedState } from 'rc-util';
-import type { GenerateConfig } from '../../../generate';
+import { useEvent, useMergedState } from 'rc-util';
 import { isSameTimestamp } from '../../../utils/dateUtil';
-import type { Locale } from '../../interface';
 import type { RangePickerProps, RangeValueType } from '../RangePicker';
+import { useLockEffect } from './useLockState';
 
 // Submit Logic (with order):
-// * All the input is filled step by step
+// * Submit by next input
 // * None of the Picker has focused anymore
 
 type SetValue<DateType> = (val: RangeValueType<DateType>) => void;
@@ -13,22 +12,41 @@ type SetValue<DateType> = (val: RangeValueType<DateType>) => void;
 type TriggerChange<DateType> = ([start, end]: RangeValueType<DateType>, source?: 'submit') => void;
 
 export default function useRangeValue<DateType = any>(
-  value: RangeValueType<DateType>,
-  defaultValue: RangeValueType<DateType>,
-  generateConfig: GenerateConfig<DateType>,
-  locale: Locale,
-  formatList: string[],
-  allowEmpty: [boolean | undefined, boolean | undefined],
-  order: boolean,
-  onCalendarChange?: RangePickerProps<DateType>['onCalendarChange'],
-  onChange?: RangePickerProps<DateType>['onChange'],
+  info: Pick<
+    RangePickerProps<DateType>,
+    | 'value'
+    | 'defaultValue'
+    | 'generateConfig'
+    | 'locale'
+    | 'allowEmpty'
+    | 'order'
+    | 'onCalendarChange'
+    | 'onChange'
+  > & {
+    formatList: string[];
+    focused: boolean;
+  },
 ): [
   mergedValue: RangeValueType<DateType>,
   setMergedValue: SetValue<DateType>,
   submitValue: RangeValueType<DateType>,
   setSubmitValue: SetValue<DateType>,
   triggerChange: TriggerChange<DateType>,
+  finishActive: (value: RangeValueType<DateType>) => void,
 ] {
+  const {
+    value,
+    defaultValue,
+    generateConfig,
+    locale,
+    formatList,
+    allowEmpty,
+    order = true,
+    onCalendarChange,
+    onChange,
+    focused,
+  } = info;
+
   // ============================ Values ============================
   const valueConfig = {
     value,
@@ -60,13 +78,8 @@ export default function useRangeValue<DateType = any>(
     return [isSameStart && isSameEnd, isSameStart, isSameEnd];
   };
 
-  const triggerChange = ([start, end]: RangeValueType<DateType>, source?: 'submit') => {
+  const triggerChange = ([start, end]: RangeValueType<DateType>) => {
     const clone: RangeValueType<DateType> = [start, end];
-
-    // Only when exist value to sort
-    if (order && source === 'submit' && clone[0] && clone[1]) {
-      clone.sort((a, b) => (generateConfig.isAfter(a, b) ? 1 : -1));
-    }
 
     // Update merged value
     const [isSameMergedDates, isSameStart] = isSameDates(mergedValue, clone);
@@ -81,19 +94,31 @@ export default function useRangeValue<DateType = any>(
         });
       }
     }
+  };
 
-    // Update `submitValue` to trigger event by effect
-    if (source === 'submit') {
-      setSubmitValue(clone);
+  // ============================ Effect ============================
+  const triggerSubmit = useEvent((nextValue?: RangeValueType<DateType>) => {
+    const clone: RangeValueType<DateType> = [...(nextValue || mergedValue)];
 
-      // Trigger `onChange` if needed
+    // Only when exist value to sort
+    if (order && clone[0] && clone[1]) {
+      clone.sort((a, b) => (generateConfig.isAfter(a, b) ? 1 : -1));
+    }
+
+    // Sync `calendarValue`
+    triggerChange(clone);
+
+    // Sync state
+    setSubmitValue(clone);
+
+    // Trigger `onChange` if needed
+    if (onChange) {
       const [isSameSubmitDates] = isSameDates(submitValue, clone);
 
       const startEmpty = !clone[0];
       const endEmpty = !clone[1];
 
       if (
-        onChange &&
         !isSameSubmitDates &&
         // Validate start
         (!startEmpty || allowEmpty[0]) &&
@@ -103,8 +128,20 @@ export default function useRangeValue<DateType = any>(
         onChange(clone, getDateTexts(clone));
       }
     }
+  });
+
+  const finishActive = (nextValue: RangeValueType<DateType>) => {
+    console.log('finishActive');
+    triggerSubmit(nextValue);
   };
 
+  useLockEffect(focused, () => {
+    if (!focused) {
+      console.log('Effect!');
+      triggerSubmit();
+    }
+  });
+
   // ============================ Return ============================
-  return [mergedValue, setMergedValue, submitValue, setSubmitValue, triggerChange];
+  return [mergedValue, setMergedValue, submitValue, setSubmitValue, triggerChange, finishActive];
 }

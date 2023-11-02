@@ -40,12 +40,12 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         suffixIcon="🧶"
-        onFocus={() => {
-          console.log('🍷 Focus!');
-        }}
-        onBlur={() => {
-          console.log('🍷 Blur!');
-        }}
+        // onFocus={() => {
+        //   console.log('🍷 Focus!');
+        // }}
+        // onBlur={() => {
+        //   console.log('🍷 Blur!');
+        // }}
         // changeOnBlur
         format={{
           format: 'YYYY-MM-DD',
