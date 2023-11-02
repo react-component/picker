@@ -7,8 +7,6 @@ import { useLockEffect } from './useLockState';
 // * Submit by next input
 // * None of the Picker has focused anymore
 
-type SetValue<DateType> = (val: RangeValueType<DateType>) => void;
-
 type TriggerChange<DateType> = ([start, end]: RangeValueType<DateType>, source?: 'submit') => void;
 
 export default function useRangeValue<DateType = any>(
@@ -28,11 +26,8 @@ export default function useRangeValue<DateType = any>(
   },
 ): [
   mergedValue: RangeValueType<DateType>,
-  setMergedValue: SetValue<DateType>,
-  submitValue: RangeValueType<DateType>,
-  setSubmitValue: SetValue<DateType>,
-  triggerChange: TriggerChange<DateType>,
-  finishActive: (value: RangeValueType<DateType>) => void,
+  triggerCalendarChange: TriggerChange<DateType>,
+  triggerSubmitChange: (value: RangeValueType<DateType>) => void,
 ] {
   const {
     value,
@@ -78,7 +73,7 @@ export default function useRangeValue<DateType = any>(
     return [isSameStart && isSameEnd, isSameStart, isSameEnd];
   };
 
-  const triggerChange = ([start, end]: RangeValueType<DateType>) => {
+  const triggerCalendarChange = ([start, end]: RangeValueType<DateType>) => {
     const clone: RangeValueType<DateType> = [start, end];
 
     // Update merged value
@@ -106,7 +101,7 @@ export default function useRangeValue<DateType = any>(
     }
 
     // Sync `calendarValue`
-    triggerChange(clone);
+    triggerCalendarChange(clone);
 
     // Sync state
     setSubmitValue(clone);
@@ -130,18 +125,16 @@ export default function useRangeValue<DateType = any>(
     }
   });
 
-  const finishActive = (nextValue: RangeValueType<DateType>) => {
-    console.log('finishActive');
+  const triggerSubmitChange = (nextValue: RangeValueType<DateType>) => {
     triggerSubmit(nextValue);
   };
 
   useLockEffect(focused, () => {
     if (!focused) {
-      console.log('Effect!');
       triggerSubmit();
     }
   });
 
   // ============================ Return ============================
-  return [mergedValue, setMergedValue, submitValue, setSubmitValue, triggerChange, finishActive];
+  return [mergedValue, triggerCalendarChange, triggerSubmitChange];
 }

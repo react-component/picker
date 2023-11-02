@@ -65,10 +65,6 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     classNames = {},
 
     // Value
-    value,
-    defaultValue,
-    onChange,
-    onCalendarChange,
     changeOnBlur,
 
     disabled,
@@ -170,13 +166,12 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const mergedAllowEmpty = separateConfig(allowEmpty, true);
 
   // ======================== Value =========================
-  const [mergedValue, setMergedValue, submitValue, setSubmitValue, triggerChange, finishActive] =
-    useRangeValue({
-      ...props,
-      formatList,
-      allowEmpty: mergedAllowEmpty,
-      focused,
-    });
+  const [mergedValue, triggerCalendarChange, triggerSubmitChange] = useRangeValue({
+    ...props,
+    formatList,
+    allowEmpty: mergedAllowEmpty,
+    focused,
+  });
 
   // ===================== Picker Value =====================
   const [mergedStartPickerValue, setStartPickerValue] = useMergedState(
@@ -217,7 +212,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const onSelectorChange = (date: DateType, index: number) => {
     const clone = fillMergedValue(date, index);
 
-    triggerChange(clone);
+    triggerCalendarChange(clone);
   };
 
   // ==================== Selector Focus ====================
@@ -232,7 +227,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     setFocused(false);
 
     // Always trigger submit since input is always means confirm
-    triggerChange(mergedValue);
+    triggerCalendarChange(mergedValue);
 
     onBlur?.(event);
   };
@@ -248,14 +243,15 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     // Focus or blur the open panel
     const activeLen = activeList?.length;
     if (activeLen === 1) {
-      triggerChange(nextValue);
+      // Trigger
+      triggerCalendarChange(nextValue);
 
       // Open to the next field
       selectorRef.current.focus(activeList[0] === 0 ? 1 : 0);
     } else if (activeLen > 1) {
       // Close anyway
       onSelectorOpenChange(false, activeIndex);
-      finishActive(nextValue);
+      triggerSubmitChange(nextValue);
     }
   };
 
@@ -285,13 +281,13 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     if (mergedMode === picker && !needConfirm) {
       triggerChangeAndFocusNext(date);
     } else {
-      triggerChange(clone);
+      triggerCalendarChange(clone);
     }
   };
 
   const onPopupClose = () => {
     if (changeOnBlur) {
-      triggerChange(mergedValue);
+      triggerCalendarChange(mergedValue);
     }
 
     // Close popup
