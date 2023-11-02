@@ -1,6 +1,5 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
-import { isSameTimestamp } from '../../utils/dateUtil';
 import type {
   InternalMode,
   OnOpenChange,
@@ -14,6 +13,7 @@ import PickerTrigger from '../PickerTrigger';
 import PickerContext from './context';
 import { useFieldFormat } from './hooks/useFieldFormat';
 import useOpen from './hooks/useOpen';
+import useRangeValue from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
 import RangeSelector from './Selector/RangeSelector';
@@ -43,6 +43,12 @@ export interface RangePickerProps<DateType> extends SharedPickerProps<DateType> 
     },
   ) => void;
 
+  // Picker Value
+  defaultPickerValue?: [DateType, DateType] | null;
+  pickerValue?: [DateType, DateType] | null;
+  onPickerValueChange?: (date: [DateType, DateType]) => void;
+
+  // MISC
   order?: boolean;
 
   disabled?: boolean | [boolean, boolean];
@@ -86,6 +92,11 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     showTime,
     showNow,
     showToday,
+
+    // Picker Value
+    defaultPickerValue,
+    pickerValue,
+    onPickerValueChange,
 
     // Format
     format,
@@ -161,81 +172,44 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const mergedAllowEmpty = separateConfig(allowEmpty, true);
 
   // ======================== Value =========================
-  const valueConfig = {
+  const [mergedValue, setMergedValue, submitValue, setSubmitValue, triggerChange] = useRangeValue(
     value,
-    postState: (valList: RangeValueType<DateType>): RangeValueType<DateType> =>
-      valList || [null, null],
+    defaultValue,
+    generateConfig,
+    locale,
+    formatList,
+    mergedAllowEmpty,
+    order,
+    onCalendarChange,
+    onChange,
+  );
+
+  // ===================== Picker Value =====================
+  const [mergedStartPickerValue, setStartPickerValue] = useMergedState(
+    () => defaultPickerValue?.[0] || mergedValue?.[0] || generateConfig.getNow(),
+    {
+      value: pickerValue?.[0],
+    },
+  );
+
+  const [mergedEndPickerValue, setEndPickerValue] = useMergedState(
+    () => defaultPickerValue?.[1] || mergedValue?.[1] || generateConfig.getNow(),
+    {
+      value: pickerValue?.[1],
+    },
+  );
+
+  const currentPickerValue = [mergedStartPickerValue, mergedEndPickerValue][activeIndex];
+  const setCurrentPickerValue = (nextPickerValue: DateType) => {
+    const updater = [setStartPickerValue, setEndPickerValue][activeIndex];
+    updater(nextPickerValue);
+
+    const clone: [DateType, DateType] = [mergedStartPickerValue, mergedEndPickerValue];
+    clone[activeIndex] = nextPickerValue;
+    onPickerValueChange?.(clone);
   };
-
-  // Used for internal value management.
-  // It should always use `mergedValue` in render logic
-  const [mergedValue, setMergedValue] = useMergedState(defaultValue, valueConfig);
-
-  // Used for trigger `onChange` event.
-  // Record current submitted value.
-  const [submitValue, setSubmitValue] = useMergedState(defaultValue, valueConfig);
 
   // ======================== Change ========================
-  const getDateTexts = (dateList: RangeValueType<DateType>) => {
-    return dateList.map((date) =>
-      date ? generateConfig.locale.format(locale.locale, date, formatList[0]) : '',
-    ) as [string, string];
-  };
-
-  const isSameDates = (source: RangeValueType<DateType>, target: RangeValueType<DateType>) => {
-    const [prevSubmitStart, prevSubmitEnd] = source;
-
-    const isSameStart = isSameTimestamp(generateConfig, prevSubmitStart, target[0]);
-    const isSameEnd = isSameTimestamp(generateConfig, prevSubmitEnd, target[1]);
-
-    return [isSameStart && isSameEnd, isSameStart, isSameEnd];
-  };
-
-  const triggerChange = ([start, end]: RangeValueType<DateType>, source?: 'submit') => {
-    const clone: RangeValueType<DateType> = [start, end];
-
-    // Only when exist value to sort
-    if (order && source === 'submit' && clone[0] && clone[1]) {
-      clone.sort((a, b) => (generateConfig.isAfter(a, b) ? 1 : -1));
-    }
-
-    // Update merged value
-    const [isSameMergedDates, isSameStart] = isSameDates(mergedValue, clone);
-
-    if (!isSameMergedDates) {
-      setMergedValue(clone);
-
-      // Trigger calendar change event
-      if (onCalendarChange) {
-        onCalendarChange(clone, getDateTexts(clone), {
-          range: isSameStart ? 'end' : 'start',
-        });
-      }
-    }
-
-    // Update `submitValue` to trigger event by effect
-    if (source === 'submit') {
-      setSubmitValue(clone);
-
-      // Trigger `onChange` if needed
-      const [isSameSubmitDates] = isSameDates(submitValue, clone);
-
-      const startEmpty = !clone[0];
-      const endEmpty = !clone[1];
-
-      if (
-        onChange &&
-        !isSameSubmitDates &&
-        // Validate start
-        (!startEmpty || mergedAllowEmpty[0]) &&
-        // Validate end
-        (!endEmpty || mergedAllowEmpty[1])
-      ) {
-        onChange(clone, getDateTexts(clone));
-      }
-    }
-  };
-
   const fillMergedValue = (date: DateType, index: number) => {
     // Trigger change only when date changed
     const [prevStart, prevEnd] = mergedValue;
@@ -349,6 +323,9 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       value={panelValue}
       onChange={null}
       onCalendarChange={onPanelCalendarChange}
+      // PickerValue
+      pickerValue={currentPickerValue}
+      onPickerValueChange={setCurrentPickerValue}
       // Submit
       needConfirm={needConfirm}
       onSubmit={submitAndFocusNext}
