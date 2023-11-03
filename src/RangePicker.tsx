@@ -632,7 +632,7 @@ function InnerRangePicker<DateType>(props: RangePickerProps<DateType>) {
     onSubmit: () => {
       if (
         // When user typing disabledDate with keyboard and enter, this value will be empty
-        !selectedValue ||
+        !selectedValue?.[index] ||
         // Normal disabled check
         (disabledDate && disabledDate(selectedValue[index]))
       ) {

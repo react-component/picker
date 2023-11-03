@@ -586,4 +586,25 @@ describe('Picker.Keyboard', () => {
       expect(isSame(onSelect.mock.calls[0][0], '1990-12-03')).toBeTruthy();
     });
   });
+
+  it('range picker value should be empty array when typing invalid or disabledDate to start date', () => {
+    const onCalendarChange = jest.fn();
+    const now = new Date();
+    const { container } = render(
+      <MomentRangePicker
+        onCalendarChange={onCalendarChange}
+        disabledDate={(date) => date.month() < now.getMonth()}
+      />,
+    );
+
+    openPicker(container);
+    fireEvent.change(container.querySelector('input'), { target: { value: '1990-1-1' } });
+    closePicker(container);
+    expect(onCalendarChange.mock.calls).toEqual([]);
+
+    openPicker(container);
+    fireEvent.change(container.querySelector('input'), { target: { value: '2000-01-01' } });
+    closePicker(container);
+    expect(onCalendarChange.mock.calls).toEqual([]);
+  });
 });
