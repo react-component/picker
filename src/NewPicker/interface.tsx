@@ -246,6 +246,9 @@ export interface SharedPickerProps<DateType = any> {
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 
+  // Disabled
+  disabledDate?: DisabledDate<DateType>;
+
   // Open
   defaultOpen?: boolean;
   open?: boolean;

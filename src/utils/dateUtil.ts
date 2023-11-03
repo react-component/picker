@@ -151,6 +151,40 @@ export function isSameWeek<DateType>(
   );
 }
 
+export function isSame<DateType = any>(
+  generateConfig: GenerateConfig<DateType>,
+  locale: Locale,
+  value1: NullableDateType<DateType>,
+  value2: NullableDateType<DateType>,
+  type: PanelMode,
+) {
+  switch (type) {
+    case 'date':
+      return isSameDate(generateConfig, value1, value2);
+
+    case 'week':
+      return isSameWeek(generateConfig, locale.locale, value1, value2);
+
+    case 'month':
+      return isSameMonth(generateConfig, value1, value2);
+
+    case 'quarter':
+      return isSameQuarter(generateConfig, value1, value2);
+
+    case 'year':
+      return isSameYear(generateConfig, value1, value2);
+
+    case 'decade':
+      return isSameDecade(generateConfig, value1, value2);
+
+    case 'time':
+      return isSameTime(generateConfig, value1, value2);
+
+    default:
+      return isSameTimestamp(generateConfig, value1, value2);
+  }
+}
+
 export function isEqual<DateType>(
   generateConfig: GenerateConfig<DateType>,
   value1: NullableDateType<DateType>,

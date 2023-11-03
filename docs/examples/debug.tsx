@@ -32,10 +32,12 @@ export default () => {
   const singleRef = React.useRef<PickerRef>(null);
 
   const [value, setValue] = React.useState<Moment>(null);
-  const [rangeValue, setRangeValue] = React.useState<[Moment?, Moment?]>([
-    moment('2000-01-01'),
-    null,
-  ]);
+  const [rangeValue, setRangeValue] = React.useState<[Moment?, Moment?]>(
+    // // has start
+    // [moment('2023-11-15'), null],
+    // has end
+    [null, moment('2023-11-15')],
+  );
 
   return (
     <div>
@@ -45,8 +47,9 @@ export default () => {
         {...sharedLocale}
         // value={[moment('2000-01-01'), null]}
         value={rangeValue}
-        disabled={[true, false]}
+        disabled={[false, true]}
         suffixIcon="🧶"
+        disabledDate={(date) => date.date() === 11}
         // onFocus={() => {
         //   console.log('🍷 Focus!');
         // }}

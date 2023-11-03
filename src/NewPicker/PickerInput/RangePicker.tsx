@@ -13,6 +13,7 @@ import PickerTrigger from '../PickerTrigger';
 import PickerContext from './context';
 import { useFieldFormat } from './hooks/useFieldFormat';
 import useOpen from './hooks/useOpen';
+import useRangeDisabledDate from './hooks/useRangeDisabledDate';
 import useRangeValue from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
@@ -67,8 +68,10 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     // Value
     changeOnBlur,
 
+    // Disabled
     disabled,
     allowEmpty,
+    disabledDate,
 
     // Open
     defaultOpen,
@@ -166,7 +169,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const mergedAllowEmpty = separateConfig(allowEmpty, false);
 
   // ======================== Value =========================
-  const [mergedValue, triggerCalendarChange, triggerSubmitChange] = useRangeValue({
+  const [calendarValue, triggerCalendarChange, triggerSubmitChange] = useRangeValue({
     ...props,
     formatList,
     allowEmpty: mergedAllowEmpty,
@@ -174,16 +177,26 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     focused,
   });
 
+  // ===================== DisabledDate =====================
+  const mergedDisabledDate = useRangeDisabledDate(
+    calendarValue,
+    mergedDisabled,
+    activeIndex,
+    generateConfig,
+    locale,
+    disabledDate,
+  );
+
   // ===================== Picker Value =====================
   const [mergedStartPickerValue, setStartPickerValue] = useMergedState(
-    () => defaultPickerValue?.[0] || mergedValue?.[0] || generateConfig.getNow(),
+    () => defaultPickerValue?.[0] || calendarValue?.[0] || generateConfig.getNow(),
     {
       value: pickerValue?.[0],
     },
   );
 
   const [mergedEndPickerValue, setEndPickerValue] = useMergedState(
-    () => defaultPickerValue?.[1] || mergedValue?.[1] || generateConfig.getNow(),
+    () => defaultPickerValue?.[1] || calendarValue?.[1] || generateConfig.getNow(),
     {
       value: pickerValue?.[1],
     },
@@ -202,7 +215,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   // ======================== Change ========================
   const fillMergedValue = (date: DateType, index: number) => {
     // Trigger change only when date changed
-    const [prevStart, prevEnd] = mergedValue;
+    const [prevStart, prevEnd] = calendarValue;
 
     const clone: RangeValueType<DateType> = [prevStart, prevEnd];
     clone[index] = date;
@@ -228,7 +241,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     setFocused(false);
 
     // Always trigger submit since input is always means confirm
-    triggerCalendarChange(mergedValue);
+    triggerCalendarChange(calendarValue);
 
     onBlur?.(event);
   };
@@ -237,7 +250,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const hasDisabled = mergedDisabled.some((disabledItem) => disabledItem);
 
   const triggerChangeAndFocusNext = (date?: DateType) => {
-    let nextValue = mergedValue;
+    let nextValue = calendarValue;
 
     if (date) {
       nextValue = fillMergedValue(date, activeIndex);
@@ -261,6 +274,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   // ======================== Click =========================
   const onSelectorClick: React.MouseEventHandler<HTMLDivElement> = () => {
     if (focusedIndex === null) {
+      // Click to focus the enabled input
       const enabledIndex = mergedDisabled.findIndex((d) => !d);
       if (enabledIndex >= 0) {
         selectorRef.current.focus(enabledIndex);
@@ -281,7 +295,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   };
 
   const onPanelCalendarChange: PickerPanelProps<DateType>['onChange'] = (date) => {
-    const clone: RangeValueType<DateType> = [...mergedValue];
+    const clone: RangeValueType<DateType> = [...calendarValue];
     clone[activeIndex] = date;
 
     if (mergedMode === picker && !needConfirm) {
@@ -293,14 +307,14 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   const onPopupClose = () => {
     if (changeOnBlur) {
-      triggerCalendarChange(mergedValue);
+      triggerCalendarChange(calendarValue);
     }
 
     // Close popup
     setMergeOpen(false);
   };
 
-  const panelValue = mergedValue[activeIndex] || null;
+  const panelValue = calendarValue[activeIndex] || null;
 
   const panel = (
     <Popup
@@ -308,6 +322,8 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       {...(props as Omit<RangePickerProps<DateType>, 'onChange' | 'onCalendarChange'>)}
       showNow={mergedShowNow}
       range
+      // Disabled
+      disabledDate={mergedDisabledDate}
       // Focus
       onFocus={onPanelFocus}
       onBlur={onPanelBlur}
@@ -369,7 +385,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
           onBlur={onSelectorBlur}
           onSubmit={triggerChangeAndFocusNext}
           // Change
-          value={mergedValue}
+          value={calendarValue}
           format={formatList}
           maskFormat={maskFormat}
           onChange={onSelectorChange}

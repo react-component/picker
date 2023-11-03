@@ -1,5 +1,4 @@
 import { useEvent, useMergedState } from 'rc-util';
-import { useLayoutUpdateEffect } from 'rc-util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
 import { isSameTimestamp } from '../../../utils/dateUtil';
 import type { RangePickerProps, RangeValueType } from '../RangePicker';
@@ -59,15 +58,21 @@ export default function useRangeValue<DateType = any>(
   const mergedOrder = disabled.some((d) => d) ? false : order;
 
   // ============================ Values ============================
-  const [cachedDefaultValue] = React.useState(defaultValue);
-
   // Used for internal value management.
   // It should always use `mergedValue` in render logic
-  const [internalCalendarValue, setCalendarValue] = React.useState(cachedDefaultValue || value);
+  const [internalCalendarValue, setCalendarValue1] = React.useState<RangeValueType<DateType>>(
+    defaultValue || [null, null],
+  );
   const calendarValue = internalCalendarValue || [null, null];
 
-  useLayoutUpdateEffect(() => {
-    setCalendarValue(value);
+  const setCalendarValue = (val) => {
+    setCalendarValue1(val);
+  };
+
+  React.useEffect(() => {
+    if (value) {
+      setCalendarValue(value);
+    }
   }, [value]);
 
   // Used for trigger `onChange` event.
@@ -136,7 +141,7 @@ export default function useRangeValue<DateType = any>(
 
     if (validateDateRange) {
       // Sync calendar value with current value
-      setCalendarValue(cachedDefaultValue || value);
+      setCalendarValue(value || clone);
 
       // Sync submit value to not to trigger `onChange` again
       setSubmitValue(clone);
@@ -166,7 +171,7 @@ export default function useRangeValue<DateType = any>(
       // When blur & invalid, restore to empty one
       // This is used for typed only one input
       if (!validatedSubmitValue && !preserveInvalidOnBlur) {
-        setCalendarValue([]);
+        setCalendarValue(value);
       }
     }
   });
