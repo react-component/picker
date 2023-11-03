@@ -196,6 +196,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     autoComplete = 'off',
     inputRender,
     changeOnBlur,
+    renderExtraFooter,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -326,6 +327,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const [inputProps, { focused, typing }] = usePickerInput({
     blurToCancel: needConfirmButton,
     changeOnBlur,
+    hasExtraFooter: !!renderExtraFooter,
     open: mergedOpen,
     value: text,
     triggerOpen,

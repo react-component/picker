@@ -13,6 +13,7 @@ export default function usePickerInput({
   onKeyDown,
   blurToCancel,
   changeOnBlur,
+  hasExtraFooter,
   onSubmit,
   onCancel,
   onFocus,
@@ -25,7 +26,8 @@ export default function usePickerInput({
   forwardKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => boolean;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, preventDefault: () => void) => void;
   blurToCancel?: boolean;
-  changeOnBlur?: boolean
+  changeOnBlur?: boolean;
+  hasExtraFooter?: boolean;
   onSubmit: () => void | boolean;
   onCancel: () => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
@@ -33,6 +35,7 @@ export default function usePickerInput({
 }): [React.DOMAttributes<HTMLInputElement>, { focused: boolean; typing: boolean }] {
   const [typing, setTyping] = useState(false);
   const [focused, setFocused] = useState(false);
+  const [outside, setOutside] = useState(true);
 
   /**
    * We will prevent blur to handle open event when user click outside,
@@ -108,7 +111,7 @@ export default function usePickerInput({
     },
 
     onBlur: (e) => {
-      if (preventBlurRef.current || !isClickOutside(document.activeElement)) {
+      if (preventBlurRef.current || !isClickOutside(document.activeElement) || !outside) {
         preventBlurRef.current = false;
         return;
       }
@@ -151,6 +154,11 @@ export default function usePickerInput({
     addGlobalMouseDownEvent((e: MouseEvent) => {
       const target = getTargetFromEvent(e);
       const clickedOutside = isClickOutside(target);
+
+      if (hasExtraFooter) {
+        // Save whether the last click is inside the component when `extraFooter` exists.
+        setOutside(clickedOutside);
+      }
 
       if (open) {
         if (!clickedOutside) {
