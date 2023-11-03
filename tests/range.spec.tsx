@@ -4,7 +4,7 @@ import moment from 'moment';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
-import React from 'react';
+import React, { useState } from 'react';
 import type { PickerMode } from '../src/interface';
 import zhCN from '../src/locale/zh_CN';
 import type { RangePickerProps } from '../src/RangePicker';
@@ -1984,5 +1984,25 @@ describe('Picker.Range', () => {
     }
 
     expect(onOpenChange).toHaveBeenCalledWith(false);
+  });
+
+  it('controlled open logic should be consistent with the uncontrolled logic', () => {
+    const Demo: React.FC = () => {
+      const [open, setOpen] = useState(false);
+
+      return <MomentRangePicker open={open} onOpenChange={(bool) => setOpen(bool)} />;
+    };
+
+    const { container, baseElement } =  render(<Demo />);
+
+    openPicker(container);
+
+    expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
+
+    selectCell(2);
+    selectCell(4);
+
+    expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
+    expect(baseElement.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
   });
 });
