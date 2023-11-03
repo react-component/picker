@@ -1,4 +1,6 @@
 import { useEvent, useMergedState } from 'rc-util';
+import { useLayoutUpdateEffect } from 'rc-util/lib/hooks/useLayoutEffect';
+import * as React from 'react';
 import { isSameTimestamp } from '../../../utils/dateUtil';
 import type { RangePickerProps, RangeValueType } from '../RangePicker';
 import { useLockEffect } from './useLockState';
@@ -24,40 +26,55 @@ export default function useRangeValue<DateType = any>(
   > & {
     formatList: string[];
     focused: boolean;
+    disabled: [boolean, boolean];
   },
 ): [
-  mergedValue: RangeValueType<DateType>,
+  calendarValue: RangeValueType<DateType>,
   triggerCalendarChange: TriggerChange<DateType>,
   triggerSubmitChange: (value: RangeValueType<DateType>) => void,
 ] {
   const {
-    value,
-    defaultValue,
+    // MISC
     generateConfig,
     locale,
     formatList,
-    allowEmpty,
-    order = true,
+
+    // Value
+    value,
+    defaultValue,
     onCalendarChange,
     onChange,
+
+    // Focus
     focused,
     preserveInvalidOnBlur,
+
+    // Checker
+    allowEmpty,
+    disabled,
+    order = true,
   } = info;
 
-  // ============================ Values ============================
-  const valueConfig = {
-    value,
-    postState: (valList: RangeValueType<DateType>): RangeValueType<DateType> =>
-      valList || [null, null],
-  };
+  // When exist disabled, it should not support order
+  const mergedOrder = disabled.some((d) => d) ? false : order;
 
+  // ============================ Values ============================
   // Used for internal value management.
   // It should always use `mergedValue` in render logic
-  const [mergedValue, setMergedValue] = useMergedState(defaultValue, valueConfig);
+  const [internalCalendarValue, setCalendarValue] = React.useState(defaultValue || value);
+  const calendarValue = internalCalendarValue || [null, null];
+
+  useLayoutUpdateEffect(() => {
+    setCalendarValue(value);
+  }, [value]);
 
   // Used for trigger `onChange` event.
   // Record current submitted value.
-  const [submitValue, setSubmitValue] = useMergedState(defaultValue, valueConfig);
+  const [submitValue, setSubmitValue] = useMergedState(defaultValue, {
+    value,
+    postState: (valList: RangeValueType<DateType>): RangeValueType<DateType> =>
+      valList || [null, null],
+  });
 
   // ============================ Change ============================
   const getDateTexts = (dateList: RangeValueType<DateType>) => {
@@ -79,10 +96,10 @@ export default function useRangeValue<DateType = any>(
     const clone: RangeValueType<DateType> = [start, end];
 
     // Update merged value
-    const [isSameMergedDates, isSameStart] = isSameDates(mergedValue, clone);
+    const [isSameMergedDates, isSameStart] = isSameDates(calendarValue, clone);
 
     if (!isSameMergedDates) {
-      setMergedValue(clone);
+      setCalendarValue(clone);
 
       // Trigger calendar change event
       if (onCalendarChange) {
@@ -95,10 +112,10 @@ export default function useRangeValue<DateType = any>(
 
   // ============================ Effect ============================
   const triggerSubmit = useEvent((nextValue?: RangeValueType<DateType>) => {
-    const clone: RangeValueType<DateType> = [...(nextValue || mergedValue)];
+    const clone: RangeValueType<DateType> = [...(nextValue || calendarValue)];
 
     // Only when exist value to sort
-    if (order && clone[0] && clone[1]) {
+    if (mergedOrder && clone[0] && clone[1]) {
       clone.sort((a, b) => (generateConfig.isAfter(a, b) ? 1 : -1));
     }
 
@@ -116,7 +133,10 @@ export default function useRangeValue<DateType = any>(
       (!endEmpty || allowEmpty[1]);
 
     if (validateDateRange) {
-      // Sync state
+      // // Sync calendar value with current value
+      // setCalendarValue(value);
+
+      // Sync submit value to not to trigger `onChange` again
       setSubmitValue(clone);
 
       // Trigger `onChange` if needed
@@ -144,11 +164,11 @@ export default function useRangeValue<DateType = any>(
       // When blur & invalid, restore to empty one
       // This is used for typed only one input
       if (!validatedSubmitValue && !preserveInvalidOnBlur) {
-        setMergedValue([]);
+        setCalendarValue([]);
       }
     }
   });
 
   // ============================ Return ============================
-  return [mergedValue, triggerCalendarChange, triggerSubmitChange];
+  return [calendarValue, triggerCalendarChange, triggerSubmitChange];
 }

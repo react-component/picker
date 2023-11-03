@@ -170,6 +170,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     ...props,
     formatList,
     allowEmpty: mergedAllowEmpty,
+    disabled: mergedDisabled,
     focused,
   });
 
@@ -233,6 +234,8 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   };
 
   // ======================== Submit ========================
+  const hasDisabled = mergedDisabled.some((disabledItem) => disabledItem);
+
   const triggerChangeAndFocusNext = (date?: DateType) => {
     let nextValue = mergedValue;
 
@@ -242,16 +245,16 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
     // Focus or blur the open panel
     const activeLen = activeList?.length;
-    if (activeLen === 1) {
+    if (activeLen > 1 || hasDisabled) {
+      // Close anyway
+      onSelectorOpenChange(false, activeIndex);
+      triggerSubmitChange(nextValue);
+    } else if (activeLen === 1) {
       // Trigger
       triggerCalendarChange(nextValue);
 
       // Open to the next field
       selectorRef.current.focus(activeList[0] === 0 ? 1 : 0);
-    } else if (activeLen > 1) {
-      // Close anyway
-      onSelectorOpenChange(false, activeIndex);
-      triggerSubmitChange(nextValue);
     }
   };
 
