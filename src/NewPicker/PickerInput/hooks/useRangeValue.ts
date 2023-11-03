@@ -59,9 +59,11 @@ export default function useRangeValue<DateType = any>(
   const mergedOrder = disabled.some((d) => d) ? false : order;
 
   // ============================ Values ============================
+  const [cachedDefaultValue] = React.useState(defaultValue);
+
   // Used for internal value management.
   // It should always use `mergedValue` in render logic
-  const [internalCalendarValue, setCalendarValue] = React.useState(defaultValue || value);
+  const [internalCalendarValue, setCalendarValue] = React.useState(cachedDefaultValue || value);
   const calendarValue = internalCalendarValue || [null, null];
 
   useLayoutUpdateEffect(() => {
@@ -133,8 +135,8 @@ export default function useRangeValue<DateType = any>(
       (!endEmpty || allowEmpty[1]);
 
     if (validateDateRange) {
-      // // Sync calendar value with current value
-      // setCalendarValue(value);
+      // Sync calendar value with current value
+      setCalendarValue(cachedDefaultValue || value);
 
       // Sync submit value to not to trigger `onChange` again
       setSubmitValue(clone);

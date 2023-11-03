@@ -261,7 +261,10 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   // ======================== Click =========================
   const onSelectorClick: React.MouseEventHandler<HTMLDivElement> = () => {
     if (focusedIndex === null) {
-      selectorRef.current.focus(0);
+      const enabledIndex = mergedDisabled.findIndex((d) => !d);
+      if (enabledIndex >= 0) {
+        selectorRef.current.focus(enabledIndex);
+      }
     }
 
     setMergeOpen(true);

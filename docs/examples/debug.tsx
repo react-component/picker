@@ -32,6 +32,10 @@ export default () => {
   const singleRef = React.useRef<PickerRef>(null);
 
   const [value, setValue] = React.useState<Moment>(null);
+  const [rangeValue, setRangeValue] = React.useState<[Moment?, Moment?]>([
+    moment('2000-01-01'),
+    null,
+  ]);
 
   return (
     <div>
@@ -39,7 +43,8 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
-        value={[moment('2000-01-01'), null]}
+        // value={[moment('2000-01-01'), null]}
+        value={rangeValue}
         disabled={[true, false]}
         suffixIcon="🧶"
         // onFocus={() => {
@@ -59,6 +64,7 @@ export default () => {
         // showTime={{}}
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
+          setRangeValue(val);
         }}
         onCalendarChange={(val, text, info) => {
           console.log('🎉 Calendar Change:', val, text, info);
