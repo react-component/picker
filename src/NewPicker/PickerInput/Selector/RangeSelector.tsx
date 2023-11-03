@@ -9,6 +9,7 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
   separator?: React.ReactNode;
 
   value?: [DateType?, DateType?];
+  disabled: [boolean, boolean];
 }
 
 const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, ref) => {
@@ -31,6 +32,9 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
     onChange,
     onSubmit,
     preserveInvalidOnBlur,
+
+    // Disabled
+    disabled,
 
     // Open
     open,
@@ -92,6 +96,9 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
     value: valueTexts[index],
 
     active: activeIndex === index,
+
+    disabled: disabled[index],
+
     onFocus: (event) => {
       onFocus(event, index);
 

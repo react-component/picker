@@ -163,7 +163,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   // =================== Disabled & Empty ===================
   const mergedDisabled = separateConfig(disabled, false);
-  const mergedAllowEmpty = separateConfig(allowEmpty, true);
+  const mergedAllowEmpty = separateConfig(allowEmpty, false);
 
   // ======================== Value =========================
   const [mergedValue, triggerCalendarChange, triggerSubmitChange] = useRangeValue({
@@ -367,6 +367,8 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
           format={formatList}
           maskFormat={maskFormat}
           onChange={onSelectorChange}
+          // Disabled
+          disabled={mergedDisabled}
           // Open
           open={mergedOpen ? focusedIndex : null}
           onOpenChange={onSelectorOpenChange}

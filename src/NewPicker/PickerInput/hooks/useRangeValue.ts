@@ -20,6 +20,7 @@ export default function useRangeValue<DateType = any>(
     | 'order'
     | 'onCalendarChange'
     | 'onChange'
+    | 'preserveInvalidOnBlur'
   > & {
     formatList: string[];
     focused: boolean;
@@ -40,6 +41,7 @@ export default function useRangeValue<DateType = any>(
     onCalendarChange,
     onChange,
     focused,
+    preserveInvalidOnBlur,
   } = info;
 
   // ============================ Values ============================
@@ -103,35 +105,47 @@ export default function useRangeValue<DateType = any>(
     // Sync `calendarValue`
     triggerCalendarChange(clone);
 
-    // Sync state
-    setSubmitValue(clone);
+    // Validate check
+    const startEmpty = !clone[0];
+    const endEmpty = !clone[1];
 
-    // Trigger `onChange` if needed
-    if (onChange) {
-      const [isSameSubmitDates] = isSameDates(submitValue, clone);
+    const validateDateRange =
+      // Validate start
+      (!startEmpty || allowEmpty[0]) &&
+      // Validate end
+      (!endEmpty || allowEmpty[1]);
 
-      const startEmpty = !clone[0];
-      const endEmpty = !clone[1];
+    if (validateDateRange) {
+      // Sync state
+      setSubmitValue(clone);
 
-      if (
-        !isSameSubmitDates &&
-        // Validate start
-        (!startEmpty || allowEmpty[0]) &&
-        // Validate end
-        (!endEmpty || allowEmpty[1])
-      ) {
-        onChange(clone, getDateTexts(clone));
+      // Trigger `onChange` if needed
+      if (onChange) {
+        const [isSameSubmitDates] = isSameDates(submitValue, clone);
+
+        if (!isSameSubmitDates && validateDateRange) {
+          onChange(clone, getDateTexts(clone));
+        }
       }
     }
+
+    return validateDateRange;
   });
 
+  // From the 2 active panel finished
   const triggerSubmitChange = (nextValue: RangeValueType<DateType>) => {
     triggerSubmit(nextValue);
   };
 
   useLockEffect(focused, () => {
     if (!focused) {
-      triggerSubmit();
+      const validatedSubmitValue = triggerSubmit();
+
+      // When blur & invalid, restore to empty one
+      // This is used for typed only one input
+      if (!validatedSubmitValue && !preserveInvalidOnBlur) {
+        setMergedValue([]);
+      }
     }
   });
 

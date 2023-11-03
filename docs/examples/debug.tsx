@@ -39,6 +39,8 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
+        value={[moment('2000-01-01'), null]}
+        disabled={[true, false]}
         suffixIcon="🧶"
         // onFocus={() => {
         //   console.log('🍷 Focus!');
@@ -51,8 +53,9 @@ export default () => {
           format: 'YYYY-MM-DD',
           // format: 'YYYY-MM-DD HH:mm:ss.SSS',
           //   // format: 'YYYYMMDD',
-          // align: true,
+          align: true,
         }}
+        // preserveInvalidOnBlur
         // showTime={{}}
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
@@ -61,7 +64,7 @@ export default () => {
           console.log('🎉 Calendar Change:', val, text, info);
         }}
         // preserveInvalidOnBlur
-        allowEmpty={[false, true]}
+        // allowEmpty={[false, true]}
         onOpenChange={(nextOpen) => {
           console.log('🏆 Next Open:', nextOpen);
         }}
