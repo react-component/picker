@@ -12,6 +12,7 @@ export interface PanelProps<DateType = any> {
   cellRender?: CellRender<DateType>;
   onChange: (date: DateType) => void;
   locale: Locale;
+  hoverValue: [DateType, DateType] | null;
   onHover: (date: DateType | null) => void;
   value?: DateType;
   pickerValue?: DateType;
@@ -34,6 +35,7 @@ export function useInfo<DateType = any>(
     disabledDate,
     cellRender,
     onChange,
+    hoverValue,
     onHover,
     value,
     pickerValue,
@@ -48,6 +50,7 @@ export function useInfo<DateType = any>(
     disabledDate,
     cellRender,
     onChange,
+    hoverValue,
     onHover,
     locale,
     generateConfig,

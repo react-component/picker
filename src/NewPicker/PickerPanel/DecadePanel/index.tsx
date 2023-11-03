@@ -88,6 +88,7 @@ export default function DecadePanel<DateType = any>(props: SharedPanelProps<Date
         {/* Body */}
         <PanelBody
           {...props}
+          mode="decade"
           colNum={3}
           rowNum={4}
           baseDate={baseDate}

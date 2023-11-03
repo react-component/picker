@@ -1,5 +1,6 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
+import useShowTime from '../hooks/useShowTime';
 import type {
   InternalMode,
   OnOpenChange,
@@ -12,6 +13,7 @@ import type { PickerPanelProps } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import PickerContext from './context';
 import { useFieldFormat } from './hooks/useFieldFormat';
+import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
 import useRangeDisabledDate from './hooks/useRangeDisabledDate';
 import useRangeValue from './hooks/useRangeValue';
@@ -67,6 +69,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
     // Value
     changeOnBlur,
+    order = true,
 
     // Disabled
     disabled,
@@ -114,16 +117,20 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   const selectorRef = React.useRef<SelectorRef>();
 
+  // ======================= ShowTime =======================
+  const mergedShowTime = useShowTime(showTime);
+
   // ======================== Picker ========================
   const [mergedMode, setMergedMode] = useMergedState(picker, {
     value: mode,
     onChange: onModeChange,
   });
 
-  const internalPicker: InternalMode = picker === 'date' && showTime ? 'datetime' : picker;
+  const internalPicker: InternalMode = picker === 'date' && mergedShowTime ? 'datetime' : picker;
 
   /** Extends from `mergedMode` to patch `datetime` mode */
-  const internalMode: InternalMode = mergedMode === 'date' && showTime ? 'datetime' : mergedMode;
+  const internalMode: InternalMode =
+    mergedMode === 'date' && mergedShowTime ? 'datetime' : mergedMode;
 
   const needConfirm = internalMode === 'time' || internalMode === 'datetime';
 
@@ -168,14 +175,24 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const mergedDisabled = separateConfig(disabled, false);
   const mergedAllowEmpty = separateConfig(allowEmpty, false);
 
+  const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, mergedShowTime);
+
+  // ======================== Order =========================
+  // When exist disabled, it should not support order
+  const orderOnChange = mergedDisabled.some((d) => d) ? false : order;
+
   // ======================== Value =========================
-  const [calendarValue, triggerCalendarChange, triggerSubmitChange] = useRangeValue({
-    ...props,
-    formatList,
-    allowEmpty: mergedAllowEmpty,
-    disabled: mergedDisabled,
-    focused,
-  });
+  const [calendarValue, triggerCalendarChange, triggerSubmitChange] = useRangeValue(
+    {
+      ...props,
+      formatList,
+      allowEmpty: mergedAllowEmpty,
+      focused,
+      order,
+    },
+    orderOnChange,
+    isInvalidateDate,
+  );
 
   // ===================== DisabledDate =====================
   const mergedDisabledDate = useRangeDisabledDate(
@@ -186,6 +203,36 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     locale,
     disabledDate,
   );
+
+  // ======================= Validate =======================
+  const isInvalidRange = React.useMemo(() => {
+    // Not check if get focused
+    if (focused) {
+      return false;
+    }
+
+    const [start, end] = calendarValue;
+
+    if (
+      // No start
+      (!mergedAllowEmpty[0] && !start) ||
+      // No end
+      (!mergedAllowEmpty[1] && !end)
+    ) {
+      return true;
+    }
+
+    if (
+      // Invalidate start
+      (start && isInvalidateDate(start)) ||
+      // Invalidate end
+      (end && isInvalidateDate(end))
+    ) {
+      return true;
+    }
+
+    return false;
+  }, [focused, calendarValue, mergedAllowEmpty, isInvalidateDate]);
 
   // ===================== Picker Value =====================
   const [mergedStartPickerValue, setStartPickerValue] = useMergedState(
@@ -284,7 +331,27 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     setMergeOpen(true);
   };
 
-  // ======================== Panels ========================
+  // ======================== Hover =========================
+  const [hoverDate, setHoverDate] = React.useState<DateType>(null);
+
+  const hoverValues = React.useMemo(() => {
+    const clone: RangeValueType<DateType> = [...calendarValue];
+
+    if (hoverDate) {
+      clone[activeIndex] = hoverDate;
+    }
+
+    return clone;
+  }, [calendarValue, hoverDate, activeIndex]);
+
+  // ========================================================
+  // ==                       Panels                       ==
+  // ========================================================
+  const onPanelHover = (date: DateType) => {
+    setHoverDate(date);
+  };
+
+  // >>> Focus
   const onPanelFocus: React.FocusEventHandler<HTMLDivElement> = () => {
     setFocused(true);
     setMergeOpen(true);
@@ -294,6 +361,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     setFocused(false);
   };
 
+  // >>> Calendar
   const onPanelCalendarChange: PickerPanelProps<DateType>['onChange'] = (date) => {
     const clone: RangeValueType<DateType> = [...calendarValue];
     clone[activeIndex] = date;
@@ -305,6 +373,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     }
   };
 
+  // >>> Close
   const onPopupClose = () => {
     if (changeOnBlur) {
       triggerCalendarChange(calendarValue);
@@ -314,13 +383,16 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     setMergeOpen(false);
   };
 
+  // >>> Value
   const panelValue = calendarValue[activeIndex] || null;
 
+  // >>> Render
   const panel = (
     <Popup
       // MISC
       {...(props as Omit<RangePickerProps<DateType>, 'onChange' | 'onCalendarChange'>)}
       showNow={mergedShowNow}
+      showTime={mergedShowTime}
       range
       // Disabled
       disabledDate={mergedDisabledDate}
@@ -339,6 +411,9 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       // PickerValue
       pickerValue={currentPickerValue}
       onPickerValueChange={setCurrentPickerValue}
+      //Hover
+      hoverValue={hoverValues}
+      onHover={onPanelHover}
       // Submit
       needConfirm={needConfirm}
       onSubmit={triggerChangeAndFocusNext}
@@ -357,6 +432,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   );
 
   // ======================== Render ========================
+
   return (
     <PickerContext.Provider value={context}>
       <PickerTrigger
@@ -381,11 +457,12 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
           suffixIcon={suffixIcon}
           // Active
           activeIndex={focusedIndex}
+          activeHelp={!!hoverDate}
           onFocus={onSelectorFocus}
           onBlur={onSelectorBlur}
           onSubmit={triggerChangeAndFocusNext}
           // Change
-          value={calendarValue}
+          value={hoverValues}
           format={formatList}
           maskFormat={maskFormat}
           onChange={onSelectorChange}
@@ -396,6 +473,8 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
           onOpenChange={onSelectorOpenChange}
           // Click
           onClick={onSelectorClick}
+          // Invalid
+          invalid={isInvalidRange}
         />
       </PickerTrigger>
     </PickerContext.Provider>

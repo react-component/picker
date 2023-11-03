@@ -36,7 +36,8 @@ export default () => {
     // // has start
     // [moment('2023-11-15'), null],
     // has end
-    [null, moment('2023-11-15')],
+    // [null, moment('2023-11-15')],
+    [moment('2023-11-5'), moment('2023-12-29')],
   );
 
   return (
@@ -61,7 +62,7 @@ export default () => {
           format: 'YYYY-MM-DD',
           // format: 'YYYY-MM-DD HH:mm:ss.SSS',
           //   // format: 'YYYYMMDD',
-          align: true,
+          // align: true,
         }}
         // preserveInvalidOnBlur
         // showTime={{}}

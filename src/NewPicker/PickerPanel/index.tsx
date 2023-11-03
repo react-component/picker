@@ -1,12 +1,11 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
-import type { GenerateConfig } from '../../generate';
+import useShowTime from '../hooks/useShowTime';
 import type {
   CellRender,
   Components,
-  DisabledDate,
-  Locale,
   PanelMode,
+  SharedPanelProps,
   SharedTimeProps,
 } from '../interface';
 import PickerContext from '../PickerInput/context';
@@ -32,11 +31,15 @@ export interface PickerPanelRef {
   nativeElement: HTMLDivElement;
 }
 
-export interface PickerPanelProps<DateType = any> {
-  locale: Locale;
-  disabledDate?: DisabledDate<DateType>;
-  generateConfig: GenerateConfig<DateType>;
-
+export interface PickerPanelProps<DateType = any>
+  extends Pick<
+    SharedPanelProps<DateType>,
+    // MISC
+    | 'locale'
+    | 'generateConfig'
+    // Disabled
+    | 'disabledDate'
+  > {
   // Style
   prefixCls?: string;
 
@@ -57,10 +60,14 @@ export interface PickerPanelProps<DateType = any> {
   picker?: PanelMode;
 
   // Time
-  showTime?: SharedTimeProps<DateType>;
+  showTime?: true | SharedTimeProps<DateType>;
 
   // Cell
   cellRender?: CellRender<DateType>;
+
+  // Hover
+  hoverValue?: DateType | [start: DateType, end: DateType];
+  onHover?: (date: DateType) => void;
 
   // Components
   components?: Components;
@@ -94,6 +101,10 @@ function PickerPanel<DateType = any>(
     onModeChange,
     picker = 'date',
 
+    // Hover
+    hoverValue,
+    onHover,
+
     // Time
     showTime,
 
@@ -112,6 +123,9 @@ function PickerPanel<DateType = any>(
   React.useImperativeHandle(ref, () => ({
     nativeElement: rootRef.current,
   }));
+
+  // ======================== ShowTime ========================
+  const mergedShowTime = useShowTime(showTime);
 
   // ========================== Now ===========================
   const now = generateConfig.getNow();
@@ -180,11 +194,31 @@ function PickerPanel<DateType = any>(
     }
   };
 
-  // ======================= HoverValue =======================
-  const [hoverDate, setHoverDate] = React.useState<DateType>(null);
+  // ======================= Hover Date =======================
+  const hoverRangeDate = React.useMemo<[DateType, DateType] | null>(() => {
+    let start: DateType;
+    let end: DateType;
+
+    if (Array.isArray(hoverValue)) {
+      [start, end] = hoverValue;
+    } else {
+      start = hoverValue;
+    }
+
+    // Return for not exist
+    if (!start && !end) {
+      return null;
+    }
+
+    // Fill if has empty
+    start = start || end;
+    end = end || start;
+
+    return generateConfig.isAfter(start, end) ? [end, start] : [start, end];
+  }, [hoverValue, generateConfig]);
 
   // ======================= Components =======================
-  const componentName = mergedMode === 'date' && showTime ? 'datetime' : mergedMode;
+  const componentName = mergedMode === 'date' && mergedShowTime ? 'datetime' : mergedMode;
   const PanelComponent = components[componentName] || DefaultComponents[componentName] || DatePanel;
 
   // ========================= Render =========================
@@ -192,7 +226,7 @@ function PickerPanel<DateType = any>(
     <div ref={rootRef} className={`${mergedPrefixCls}-panel`}>
       <PanelComponent
         // Time
-        showTime={showTime}
+        showTime={mergedShowTime}
         // MISC
         prefixCls={mergedPrefixCls}
         locale={locale}
@@ -207,13 +241,15 @@ function PickerPanel<DateType = any>(
         // Render
         cellRender={cellRender}
         disabledDate={disabledDate}
-        onHover={setHoverDate}
+        // Hover
+        hoverValue={hoverRangeDate}
+        onHover={onHover}
       />
     </div>
   );
 }
 
-const RefPanelPicker = React.forwardRef(PickerPanel);
+const RefPanelPicker = React.memo(React.forwardRef(PickerPanel));
 
 if (process.env.NODE_ENV !== 'production') {
   RefPanelPicker.displayName = 'PanelPicker';

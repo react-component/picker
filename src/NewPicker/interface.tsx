@@ -183,7 +183,11 @@ export interface SharedPanelProps<DateType = any> {
   // Render
   disabledDate?: DisabledDate<DateType>;
   cellRender?: CellRender<DateType>;
-  onHover: (value: DateType | null) => void;
+
+  // Hover
+  /** The range of hover. Used for range picker */
+  hoverValue: [start: DateType, end: DateType] | null;
+  onHover?: (value: DateType | null) => void;
 
   // Time
   showTime?: SharedTimeProps<DateType>;
@@ -218,7 +222,7 @@ export interface SharedPickerProps<DateType = any> {
   mode?: PanelMode;
   onModeChange?: (mode: PanelMode) => void;
   picker?: PanelMode;
-  showTime?: SharedTimeProps<DateType>;
+  showTime?: boolean | SharedTimeProps<DateType>;
   /**
    * Config the input field parse and format.
    * When set `format.align`, it will force user input align with your input,
@@ -231,7 +235,10 @@ export interface SharedPickerProps<DateType = any> {
         format: string;
         align?: boolean;
       };
-  /** When user input invalidate date, keep it in the input field */
+  /**
+   * When user input invalidate date, keep it in the input field.
+   * This is only used for strong a11y requirement which do not want modify after blur.
+   */
   preserveInvalidOnBlur?: boolean;
 
   // Icons
@@ -299,6 +306,8 @@ export interface SelectorProps<DateType = any> {
   className?: string;
   style?: React.CSSProperties;
   activeIndex: number | null;
+  /** Add `-placeholder` className as a help info */
+  activeHelp?: boolean;
   onFocus: (event: React.FocusEvent<HTMLInputElement>, index?: number) => void;
   onBlur: (event: React.FocusEvent<HTMLInputElement>, index?: number) => void;
   /** Trigger by `enter` key */
@@ -325,6 +334,9 @@ export interface SelectorProps<DateType = any> {
   open: number;
   /** Trigger when need open by selector */
   onOpenChange: OnOpenChange;
+
+  // Invalidate
+  invalid?: boolean;
 }
 
 export interface SelectorRef {

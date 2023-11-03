@@ -97,6 +97,7 @@ export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateT
         {/* Body */}
         <PanelBody
           {...props}
+          mode="month"
           colNum={4}
           rowNum={3}
           baseDate={baseDate}

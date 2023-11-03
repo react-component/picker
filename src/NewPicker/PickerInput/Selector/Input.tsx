@@ -30,6 +30,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   value?: string;
   onChange: (value: string) => void;
   onEnter: VoidFunction;
+  helped?: boolean;
   /**
    * Trigger when input need additional help.
    * Like open the popup for interactive.
@@ -46,6 +47,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     validateFormat,
     onChange,
     onInput,
+    helped,
     onHelp,
     onEnter,
     preserveInvalidOnBlur,
@@ -79,10 +81,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   // ======================== Format ========================
   const maskFormat = React.useMemo(() => new MaskFormat(format || ''), [format]);
 
-  const [selectionStart, selectionEnd] = React.useMemo(
-    () => maskFormat.getSelection(focusCellIndex),
-    [maskFormat, focusCellIndex],
-  );
+  const [selectionStart, selectionEnd] = React.useMemo(() => {
+    if (helped) {
+      return [0, 0];
+    }
+
+    return maskFormat.getSelection(focusCellIndex);
+  }, [maskFormat, focusCellIndex, helped]);
 
   // ======================== Modify ========================
   // When input modify content, trigger `onText` if is not the format
@@ -346,6 +351,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     <div
       className={classNames(inputPrefixCls, {
         [`${inputPrefixCls}-active`]: active,
+        [`${inputPrefixCls}-placeholder`]: helped,
       })}
     >
       <input

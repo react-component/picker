@@ -16,6 +16,9 @@ export interface DatePanelProps<DateType> extends SharedPanelProps<DateType> {
   panelName?: PanelMode;
   prefixColumn?: (date: DateType) => React.ReactNode;
   rowClassName?: (date: DateType) => string;
+
+  /** Used for `WeekPanel` */
+  mode?: PanelMode;
 }
 
 export default function DatePanel<DateType = any>(props: DatePanelProps<DateType>) {
@@ -147,6 +150,7 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
 
         {/* Body */}
         <PanelBody
+          mode="date"
           {...props}
           colNum={WEEK_DAY_COUNT}
           rowNum={6}

@@ -101,6 +101,7 @@ export default function YearPanel<DateType = any>(props: SharedPanelProps<DateTy
         {/* Body */}
         <PanelBody
           {...props}
+          mode="year"
           colNum={3}
           rowNum={4}
           baseDate={baseDate}

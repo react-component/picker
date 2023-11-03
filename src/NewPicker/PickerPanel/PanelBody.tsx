@@ -1,5 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
+import { isInRange } from '../../utils/dateUtil';
+import type { PanelMode } from '../interface';
 import { PanelContext } from './context';
 
 export interface PanelBodyProps<DateType = any> {
@@ -20,10 +22,14 @@ export interface PanelBodyProps<DateType = any> {
   // Used for week panel
   prefixColumn?: (date: DateType) => React.ReactNode;
   rowClassName?: (date: DateType) => string;
+
+  // Mode
+  mode: PanelMode;
 }
 
 export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType>) {
   const {
+    mode,
     rowNum,
     colNum,
     baseDate,
@@ -36,8 +42,18 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
     headerCells,
   } = props;
 
-  const { prefixCls, type, now, disabledDate, cellRender, onChange, onHover, locale } =
-    React.useContext(PanelContext);
+  const {
+    prefixCls,
+    type,
+    now,
+    disabledDate,
+    cellRender,
+    onChange,
+    onHover,
+    hoverValue,
+    generateConfig,
+    locale,
+  } = React.useContext(PanelContext);
 
   const cellPrefixCls = `${prefixCls}-cell`;
 
@@ -56,6 +72,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
         type,
       });
 
+      // Row Start Cell
       if (col === 0) {
         rowStartDate = currentDate;
 
@@ -64,6 +81,11 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
         }
       }
 
+      // Range
+      const inRange =
+        hoverValue && isInRange(generateConfig, hoverValue[0], hoverValue[1], currentDate);
+
+      // Render
       const inner = <div className={`${cellPrefixCls}-inner`}>{getCellText(currentDate)}</div>;
 
       rowNode.push(
@@ -72,6 +94,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
           title={titleCell?.(currentDate)}
           className={classNames(cellPrefixCls, {
             [`${cellPrefixCls}-disabled`]: disabled,
+            [`${cellPrefixCls}-in-range`]: inRange,
             ...getCellClassName(currentDate),
           })}
           onClick={() => {

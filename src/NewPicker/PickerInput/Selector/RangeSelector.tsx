@@ -17,6 +17,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
     suffixIcon,
     separator = '~',
     activeIndex,
+    activeHelp,
     onFocus,
     onBlur,
     locale,
@@ -35,6 +36,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
 
     // Disabled
     disabled,
+    invalid,
 
     // Open
     open,
@@ -97,6 +99,8 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
 
     active: activeIndex === index,
 
+    helped: activeHelp && activeIndex === index,
+
     disabled: disabled[index],
 
     onFocus: (event) => {
@@ -143,6 +147,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
     <div
       className={classNames(prefixCls, `${prefixCls}-range`, {
         [`${prefixCls}-focused`]: activeIndex !== null,
+        [`${prefixCls}-invalid`]: invalid,
       })}
       ref={rootRef}
       onClick={onClick}

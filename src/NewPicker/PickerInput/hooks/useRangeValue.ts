@@ -25,8 +25,9 @@ export default function useRangeValue<DateType = any>(
   > & {
     formatList: string[];
     focused: boolean;
-    disabled: [boolean, boolean];
   },
+  orderOnChange: boolean,
+  isInvalidateDate: (date: DateType) => boolean,
 ): [
   calendarValue: RangeValueType<DateType>,
   triggerCalendarChange: TriggerChange<DateType>,
@@ -50,12 +51,8 @@ export default function useRangeValue<DateType = any>(
 
     // Checker
     allowEmpty,
-    disabled,
-    order = true,
+    order,
   } = info;
-
-  // When exist disabled, it should not support order
-  const mergedOrder = disabled.some((d) => d) ? false : order;
 
   // ============================ Values ============================
   // Used for internal value management.
@@ -117,32 +114,47 @@ export default function useRangeValue<DateType = any>(
     }
   };
 
-  // ============================ Effect ============================
+  // ============================ Submit ============================
+  const [lastSubmitResult, setLastSubmitResult] = React.useState<[passed: boolean]>([true]);
+
   const triggerSubmit = useEvent((nextValue?: RangeValueType<DateType>) => {
     const clone: RangeValueType<DateType> = [...(nextValue || calendarValue)];
 
     // Only when exist value to sort
-    if (mergedOrder && clone[0] && clone[1]) {
+    if (orderOnChange && clone[0] && clone[1]) {
       clone.sort((a, b) => (generateConfig.isAfter(a, b) ? 1 : -1));
     }
 
     // Sync `calendarValue`
     triggerCalendarChange(clone);
 
-    // Validate check
-    const startEmpty = !clone[0];
-    const endEmpty = !clone[1];
+    // ========= Validate check =========
+    const [start, end] = clone;
 
-    const validateDateRange =
-      // Validate start
+    // >>> Empty
+    const startEmpty = !start;
+    const endEmpty = !end;
+
+    const validateEmptyDateRange =
+      // Validate empty start
       (!startEmpty || allowEmpty[0]) &&
-      // Validate end
+      // Validate empty end
       (!endEmpty || allowEmpty[1]);
 
-    if (validateDateRange) {
-      // Sync calendar value with current value
-      setCalendarValue(value || clone);
+    // >>> Order
+    const validateOrder = !order || startEmpty || endEmpty || generateConfig.isAfter(end, start);
 
+    // >>> Invalid
+    const validateDates =
+      // Validate start
+      (!start || !isInvalidateDate(start)) &&
+      // Validate end
+      (!end || !isInvalidateDate(end));
+
+    // >>> Result
+    const allPassed = validateEmptyDateRange && validateOrder && validateDates;
+
+    if (allPassed) {
       // Sync submit value to not to trigger `onChange` again
       setSubmitValue(clone);
 
@@ -150,13 +162,13 @@ export default function useRangeValue<DateType = any>(
       if (onChange) {
         const [isSameSubmitDates] = isSameDates(submitValue, clone);
 
-        if (!isSameSubmitDates && validateDateRange) {
+        if (!isSameSubmitDates && validateEmptyDateRange) {
           onChange(clone, getDateTexts(clone));
         }
       }
     }
 
-    return validateDateRange;
+    setLastSubmitResult([allPassed]);
   });
 
   // From the 2 active panel finished
@@ -164,17 +176,20 @@ export default function useRangeValue<DateType = any>(
     triggerSubmit(nextValue);
   };
 
+  // ============================ Effect ============================
   useLockEffect(focused, () => {
     if (!focused) {
-      const validatedSubmitValue = triggerSubmit();
-
-      // When blur & invalid, restore to empty one
-      // This is used for typed only one input
-      if (!validatedSubmitValue && !preserveInvalidOnBlur) {
-        setCalendarValue(value);
-      }
+      triggerSubmit();
     }
   });
+
+  // When blur & invalid, restore to empty one
+  // This is used for typed only one input
+  React.useEffect(() => {
+    if (!lastSubmitResult[0] && !preserveInvalidOnBlur) {
+      triggerCalendarChange(value);
+    }
+  }, [lastSubmitResult]);
 
   // ============================ Return ============================
   return [calendarValue, triggerCalendarChange, triggerSubmitChange];

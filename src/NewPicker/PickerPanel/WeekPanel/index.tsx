@@ -68,6 +68,7 @@ export default function WeekPanel<DateType = any>(props: SharedPanelProps<DateTy
   return (
     <DatePanel
       {...props}
+      mode="date"
       panelName="week"
       prefixColumn={prefixColumn}
       rowClassName={rowClassName}
