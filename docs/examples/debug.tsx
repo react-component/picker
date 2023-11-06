@@ -51,9 +51,9 @@ export default () => {
         // value={[moment('2000-01-01'), null]}
         value={rangeValue}
         // defaultPickerValue={[moment('2020-01-01'), null]}
-        onPickerValueChange={(dates, info) => {
-          console.log('🍭 Picker Value Change:', dates, info);
-        }}
+        // onPickerValueChange={(dates, info) => {
+        //   console.log('🍭 Picker Value Change:', dates, info);
+        // }}
         // disabled={[false, true]}
         suffixIcon="🧶"
         disabledDate={(date) => date.date() === 11}

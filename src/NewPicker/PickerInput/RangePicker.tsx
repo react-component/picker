@@ -349,12 +349,20 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   };
 
   // ======================== Hover =========================
+  const hoverLockRef = React.useRef(false);
   const [hoverDate, setHoverDate] = React.useState<DateType>(null);
+
+  // Lock `hoverDate` replacement to improve user experience
+  // When select the first date and change to next,
+  // it will still show the prev hover date till user hover to other cell.
+  React.useMemo(() => {
+    hoverLockRef.current = true;
+  }, [activeIndex]);
 
   const hoverValues = React.useMemo(() => {
     const clone: RangeValueType<DateType> = [...calendarValue];
 
-    if (hoverDate) {
+    if (hoverDate && !hoverLockRef.current) {
       clone[activeIndex] = hoverDate;
     }
 
@@ -366,6 +374,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   // ========================================================
   const onPanelHover = (date: DateType) => {
     setHoverDate(date);
+    hoverLockRef.current = false;
   };
 
   // >>> Focus
