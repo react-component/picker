@@ -51,9 +51,11 @@ export interface RangePickerProps<DateType> extends SharedPickerProps<DateType> 
   pickerValue?: [DateType, DateType] | null;
   onPickerValueChange?: (date: [DateType, DateType]) => void;
 
-  // MISC
+  // range
+  /** Default will always order of selection after submit */
   order?: boolean;
 
+  // Control
   disabled?: boolean | [boolean, boolean];
   allowEmpty?: [boolean, boolean];
 }
@@ -189,6 +191,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       allowEmpty: mergedAllowEmpty,
       focused,
       order,
+      picker,
     },
     orderOnChange,
     isInvalidateDate,

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { isInRange } from '../../utils/dateUtil';
+import { isInRange, isSame } from '../../utils/dateUtil';
 import type { PanelMode } from '../interface';
 import { PanelContext } from './context';
 
@@ -82,8 +82,16 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
       }
 
       // Range
-      const inRange =
-        hoverValue && isInRange(generateConfig, hoverValue[0], hoverValue[1], currentDate);
+      let inRange = false;
+      let rangeStart = false;
+      let rangeEnd = false;
+
+      if (hoverValue) {
+        const [hoverStart, hoverEnd] = hoverValue;
+        inRange = isInRange(generateConfig, hoverStart, hoverEnd, currentDate);
+        rangeStart = isSame(generateConfig, locale, currentDate, hoverStart, mode);
+        rangeEnd = isSame(generateConfig, locale, currentDate, hoverEnd, mode);
+      }
 
       // Render
       const inner = <div className={`${cellPrefixCls}-inner`}>{getCellText(currentDate)}</div>;
@@ -94,7 +102,9 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
           title={titleCell?.(currentDate)}
           className={classNames(cellPrefixCls, {
             [`${cellPrefixCls}-disabled`]: disabled,
-            [`${cellPrefixCls}-in-range`]: inRange,
+            [`${cellPrefixCls}-in-range`]: inRange && !rangeStart && !rangeEnd,
+            [`${cellPrefixCls}-range-start`]: rangeStart,
+            [`${cellPrefixCls}-range-end`]: rangeEnd,
             ...getCellClassName(currentDate),
           })}
           onClick={() => {

@@ -48,7 +48,7 @@ export default () => {
         {...sharedLocale}
         // value={[moment('2000-01-01'), null]}
         value={rangeValue}
-        disabled={[false, true]}
+        // disabled={[false, true]}
         suffixIcon="🧶"
         disabledDate={(date) => date.date() === 11}
         // onFocus={() => {

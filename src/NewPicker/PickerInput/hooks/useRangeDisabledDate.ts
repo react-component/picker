@@ -19,9 +19,10 @@ export default function useRangeDisabledDate<DateType = any>(
       activeIndex === 1 &&
       disabled[0] &&
       start &&
-      // Same date or before start date
-      (isSame(generateConfig, locale, start, date, info.type) ||
-        generateConfig.isAfter(start, date))
+      // Same date isOK
+      !isSame(generateConfig, locale, start, date, info.type) &&
+      // Before start date
+      generateConfig.isAfter(start, date)
     ) {
       return true;
     }
@@ -31,8 +32,10 @@ export default function useRangeDisabledDate<DateType = any>(
       activeIndex === 0 &&
       disabled[1] &&
       end &&
-      // Same date or after end date
-      (isSame(generateConfig, locale, end, date, info.type) || generateConfig.isAfter(date, end))
+      // Same date isOK
+      !isSame(generateConfig, locale, end, date, info.type) &&
+      // After end date
+      generateConfig.isAfter(date, end)
     ) {
       return true;
     }

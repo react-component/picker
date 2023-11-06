@@ -32,6 +32,8 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
     onPickerValueChange,
     onModeChange,
     prefixColumn,
+    mode,
+    hoverValue,
   } = props;
 
   const panelPrefixCls = `${prefixCls}-${panelName}-panel`;
@@ -74,7 +76,7 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
   const getCellClassName = (date: DateType) => ({
     [`${prefixCls}-cell-in-view`]: isSameMonth(generateConfig, date, pickerValue),
     [`${prefixCls}-cell-today`]: isSameDate(generateConfig, date, now),
-    [`${prefixCls}-cell-selected`]: isSameDate(generateConfig, date, value),
+    [`${prefixCls}-cell-selected`]: !hoverValue && isSameDate(generateConfig, date, value),
   });
 
   // ========================= Header =========================

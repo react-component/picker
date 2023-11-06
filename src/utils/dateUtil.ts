@@ -154,34 +154,34 @@ export function isSameWeek<DateType>(
 export function isSame<DateType = any>(
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
-  value1: NullableDateType<DateType>,
-  value2: NullableDateType<DateType>,
+  source: NullableDateType<DateType>,
+  target: NullableDateType<DateType>,
   type: PanelMode,
 ) {
   switch (type) {
     case 'date':
-      return isSameDate(generateConfig, value1, value2);
+      return isSameDate(generateConfig, source, target);
 
     case 'week':
-      return isSameWeek(generateConfig, locale.locale, value1, value2);
+      return isSameWeek(generateConfig, locale.locale, source, target);
 
     case 'month':
-      return isSameMonth(generateConfig, value1, value2);
+      return isSameMonth(generateConfig, source, target);
 
     case 'quarter':
-      return isSameQuarter(generateConfig, value1, value2);
+      return isSameQuarter(generateConfig, source, target);
 
     case 'year':
-      return isSameYear(generateConfig, value1, value2);
+      return isSameYear(generateConfig, source, target);
 
     case 'decade':
-      return isSameDecade(generateConfig, value1, value2);
+      return isSameDecade(generateConfig, source, target);
 
     case 'time':
-      return isSameTime(generateConfig, value1, value2);
+      return isSameTime(generateConfig, source, target);
 
     default:
-      return isSameTimestamp(generateConfig, value1, value2);
+      return isSameTimestamp(generateConfig, source, target);
   }
 }
 

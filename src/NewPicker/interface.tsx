@@ -12,8 +12,6 @@ export type Locale = {
   yearFormat: string;
   /** month format in header panel */
   monthFormat?: string;
-  /** quarter format in header panel */
-  quarterFormat?: string;
 
   // Cell format
   /** year format in body panel */
@@ -35,21 +33,16 @@ export type Locale = {
   fieldDateTimeFormat: string;
   /** Input field formatter like YYYY-MM-DD */
   fieldDateFormat: string;
+  /** Input field formatter like HH:mm:ss */
+  fieldTimeFormat: string;
   /** Input field formatter like YYYY-MM */
   fieldMonthFormat: string;
   /** Input field formatter like YYYY */
   fieldYearFormat: string;
-  /** Input field formatter like HH:mm:ss */
-  fieldTimeFormat: string;
-
-  // >>>>> Not used yet
-
-  // Input format
-  /** Full date format like YYYY-MM-DD in input */
-  dateFormat: string;
-
-  /** Full date format with time like YYYY-MM-DD HH:mm:ss in input */
-  dateTimeFormat: string;
+  /** Input field formatter like wwww-go */
+  fieldWeekFormat?: string;
+  /** Input field formatter like YYYY-Q */
+  fieldQuarterFormat?: string;
 
   today: string;
   now: string;
@@ -81,6 +74,8 @@ export type Locale = {
 export type PanelMode = 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year' | 'decade';
 
 export type InternalMode = PanelMode | 'datetime';
+
+export type PickerMode = Exclude<PanelMode, 'datetime' | 'decade'>;
 
 export type DisabledDate<DateType = any> = (
   date: DateType,
@@ -185,7 +180,7 @@ export interface SharedPanelProps<DateType = any> {
   cellRender?: CellRender<DateType>;
 
   // Hover
-  /** The range of hover. Used for range picker */
+  /** @private Only used for RangePicker passing. */
   hoverValue: [start: DateType, end: DateType] | null;
   onHover?: (value: DateType | null) => void;
 
@@ -221,7 +216,7 @@ export interface SharedPickerProps<DateType = any> {
   // Picker
   mode?: PanelMode;
   onModeChange?: (mode: PanelMode) => void;
-  picker?: PanelMode;
+  picker?: PickerMode;
   showTime?: boolean | SharedTimeProps<DateType>;
   /**
    * Config the input field parse and format.

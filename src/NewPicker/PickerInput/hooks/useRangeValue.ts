@@ -1,6 +1,6 @@
 import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
-import { isSameTimestamp } from '../../../utils/dateUtil';
+import { isSame, isSameTimestamp } from '../../../utils/dateUtil';
 import type { RangePickerProps, RangeValueType } from '../RangePicker';
 import { useLockEffect } from './useLockState';
 
@@ -22,6 +22,7 @@ export default function useRangeValue<DateType = any>(
     | 'onCalendarChange'
     | 'onChange'
     | 'preserveInvalidOnBlur'
+    | 'picker'
   > & {
     formatList: string[];
     focused: boolean;
@@ -38,6 +39,8 @@ export default function useRangeValue<DateType = any>(
     generateConfig,
     locale,
     formatList,
+
+    picker,
 
     // Value
     value,
@@ -142,7 +145,12 @@ export default function useRangeValue<DateType = any>(
       (!endEmpty || allowEmpty[1]);
 
     // >>> Order
-    const validateOrder = !order || startEmpty || endEmpty || generateConfig.isAfter(end, start);
+    const validateOrder =
+      !order ||
+      startEmpty ||
+      endEmpty ||
+      isSame(generateConfig, locale, start, end, picker) ||
+      generateConfig.isAfter(end, start);
 
     // >>> Invalid
     const validateDates =

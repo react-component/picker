@@ -12,7 +12,7 @@ export type PopupPanelProps<DateType = any> = MustProp &
   };
 
 export default function PopupPanel<DateType = any>(props: PopupPanelProps<DateType>) {
-  const { internalMode, picker, multiple, pickerValue, onPickerValueChange } = props;
+  const { picker, multiple, pickerValue, onPickerValueChange } = props;
   const { prefixCls, generateConfig } = React.useContext(PickerContext);
 
   const offsetDate = React.useCallback(

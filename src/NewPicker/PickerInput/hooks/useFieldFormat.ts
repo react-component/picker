@@ -8,16 +8,23 @@ function getRowFormat(picker: InternalMode, locale: Locale, format?: SharedPicke
   }
 
   switch (picker) {
-    case 'year':
-      return locale.yearFormat || 'YYYY';
-    case 'month':
-      return locale.monthFormat || 'YYYY-MM';
-    case 'datetime':
-      return locale.dateTimeFormat || 'YYYY-MM-DD HH:mm:ss';
-    default:
-      return locale.dateFormat || 'YYYY-MM-DD';
+    // time is
 
-    // TODO: fill rest format
+    case 'time':
+      return locale.fieldTimeFormat || 'HH:mm:ss';
+    case 'datetime':
+      return locale.fieldDateTimeFormat || 'YYYY-MM-DD HH:mm:ss';
+    case 'month':
+      return locale.fieldMonthFormat || 'YYYY-MM';
+    case 'year':
+      return locale.fieldYearFormat || 'YYYY';
+    case 'quarter':
+      return locale.fieldQuarterFormat || 'YYYY-[Q]Q';
+    case 'week':
+      return locale.fieldWeekFormat || 'gggg-wo';
+
+    default:
+      return locale.fieldDateFormat || 'YYYY-MM-DD';
   }
 }
 
