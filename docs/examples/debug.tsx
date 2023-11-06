@@ -71,7 +71,7 @@ export default () => {
           // align: true,
         }}
         // preserveInvalidOnBlur
-        // showTime={{}}
+        showTime={{}}
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
           setRangeValue(val);

@@ -182,6 +182,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   // When click outside to close the panel, trigger event if it can trigger onChange.
   const [activeIndex, setActiveIndex] = React.useState<number>(null);
   const [focused, setFocused] = React.useState<boolean>(false);
+  const blurRef = React.useRef<'input' | 'panel'>(null);
 
   const focusedIndex = focused ? activeIndex : null;
 
@@ -212,14 +213,16 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const [calendarValue, triggerCalendarChange, triggerSubmitChange] = useRangeValue(
     {
       ...props,
-      formatList,
       allowEmpty: mergedAllowEmpty,
-      focused,
       order,
       picker,
     },
+    formatList,
+    focused,
+    blurRef,
     orderOnChange,
     isInvalidateDate,
+    needConfirm,
   );
 
   // ===================== DisabledDate =====================
@@ -302,6 +305,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   };
 
   const onSelectorBlur: SelectorProps['onBlur'] = (event) => {
+    blurRef.current = 'input';
     setFocused(false);
 
     // Always trigger submit since input is always means confirm
@@ -384,6 +388,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   };
 
   const onPanelBlur: React.FocusEventHandler<HTMLDivElement> = () => {
+    blurRef.current = 'panel';
     setFocused(false);
   };
 

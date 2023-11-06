@@ -23,12 +23,13 @@ export default function useRangeValue<DateType = any>(
     | 'onChange'
     | 'preserveInvalidOnBlur'
     | 'picker'
-  > & {
-    formatList: string[];
-    focused: boolean;
-  },
+  >,
+  formatList: string[],
+  focused: boolean,
+  blurRef: React.RefObject<'input' | 'panel'>,
   orderOnChange: boolean,
   isInvalidateDate: (date: DateType) => boolean,
+  needConfirm: boolean,
 ): [
   calendarValue: RangeValueType<DateType>,
   triggerCalendarChange: TriggerChange<DateType>,
@@ -38,7 +39,6 @@ export default function useRangeValue<DateType = any>(
     // MISC
     generateConfig,
     locale,
-    formatList,
 
     picker,
 
@@ -49,7 +49,6 @@ export default function useRangeValue<DateType = any>(
     onChange,
 
     // Focus
-    focused,
     preserveInvalidOnBlur,
 
     // Checker
@@ -187,7 +186,14 @@ export default function useRangeValue<DateType = any>(
   // ============================ Effect ============================
   useLockEffect(focused, () => {
     if (!focused) {
-      triggerSubmit();
+      // If panel no need panel confirm or last blur is not from panel
+      // Trigger submit
+      if (!needConfirm || blurRef.current !== 'panel') {
+        triggerSubmit();
+      } else {
+        // Else should reset `calendarValue` to `submitValue`
+        setCalendarValue(submitValue);
+      }
     }
   });
 
