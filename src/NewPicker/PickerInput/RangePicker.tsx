@@ -16,6 +16,7 @@ import { useFieldFormat } from './hooks/useFieldFormat';
 import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
 import useRangeDisabledDate from './hooks/useRangeDisabledDate';
+import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
@@ -49,10 +50,19 @@ export interface RangePickerProps<DateType> extends SharedPickerProps<DateType> 
   // Picker Value
   /**
    * Config the popup panel date.
-   * Every time active the input to open popup will reset with `defaultPickerValue`
+   * Every time active the input to open popup will reset with `defaultPickerValue`.
+   *
+   * Note: `defaultPickerValue` priority is higher than `value` for the first open.
    */
   defaultPickerValue?: [DateType, DateType] | null;
+  /**
+   * Config each start & end field popup panel date.
+   * When config `pickerValue`, you must also provide `onPickerValueChange` to handle changes.
+   */
   pickerValue?: [DateType, DateType] | null;
+  /**
+   * Each popup panel `pickerValue` change will trigger the callback.
+   */
   onPickerValueChange?: (date: [DateType, DateType]) => void;
 
   // range
@@ -132,6 +142,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     onChange: onModeChange,
   });
 
+  /** Almost same as `picker`, but add `datetime` for `date` with `showTime` */
   const internalPicker: InternalMode = picker === 'date' && mergedShowTime ? 'datetime' : picker;
 
   /** Extends from `mergedMode` to patch `datetime` mode */
@@ -242,40 +253,16 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   }, [focused, calendarValue, mergedAllowEmpty, isInvalidateDate]);
 
   // ===================== Picker Value =====================
-  const [mergedStartPickerValue, setStartPickerValue] = useMergedState(
-    () => defaultPickerValue?.[0] || calendarValue?.[0] || generateConfig.getNow(),
-    {
-      value: pickerValue?.[0],
-    },
+  const [currentPickerValue, setCurrentPickerValue] = useRangePickerValue(
+    generateConfig,
+    calendarValue,
+    mergedOpen,
+    activeIndex,
+    internalPicker,
+    defaultPickerValue,
+    pickerValue,
+    onPickerValueChange,
   );
-
-  const [mergedEndPickerValue, setEndPickerValue] = useMergedState(
-    () => defaultPickerValue?.[1] || calendarValue?.[1] || generateConfig.getNow(),
-    {
-      value: pickerValue?.[1],
-    },
-  );
-
-  const currentPickerValue = [mergedStartPickerValue, mergedEndPickerValue][activeIndex];
-  const setCurrentPickerValue = (nextPickerValue: DateType) => {
-    const updater = [setStartPickerValue, setEndPickerValue][activeIndex];
-    updater(nextPickerValue);
-
-    const clone: [DateType, DateType] = [mergedStartPickerValue, mergedEndPickerValue];
-    clone[activeIndex] = nextPickerValue;
-    onPickerValueChange?.(clone);
-  };
-
-  // Resync to `defaultPickerValue` for each panel focused
-  React.useEffect(() => {
-    if (mergedOpen && focusedIndex !== null) {
-      if (focusedIndex === 0 && defaultPickerValue[0]) {
-        setStartPickerValue(defaultPickerValue[0]);
-      } else if (focusedIndex === 1 && defaultPickerValue[1]) {
-        setEndPickerValue(defaultPickerValue[1]);
-      }
-    }
-  }, [mergedOpen, focusedIndex]);
 
   // ======================== Change ========================
   const fillMergedValue = (date: DateType, index: number) => {
