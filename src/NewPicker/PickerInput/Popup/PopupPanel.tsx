@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PickerPanel, { type PickerPanelProps } from '../../PickerPanel';
+import { PickerHackContext } from '../../PickerPanel/context';
 import PickerContext from '../context';
 import { offsetPanelDate } from '../hooks/useRangePickerValue';
 import { type FooterProps } from './Footer';
@@ -37,12 +38,16 @@ export default function PopupPanel<DateType = any>(props: PopupPanelProps<DateTy
   if (multiple) {
     return (
       <div className={`${prefixCls}-panels`}>
-        <PickerPanel {...props} />
-        <PickerPanel
-          {...props}
-          pickerValue={nextPickerValue}
-          onPickerValueChange={onNextPickerValueChange}
-        />
+        <PickerHackContext.Provider value={{ hideNext: true }}>
+          <PickerPanel {...props} />
+        </PickerHackContext.Provider>
+        <PickerHackContext.Provider value={{ hidePrev: true }}>
+          <PickerPanel
+            {...props}
+            pickerValue={nextPickerValue}
+            onPickerValueChange={onNextPickerValueChange}
+          />
+        </PickerHackContext.Provider>
       </div>
     );
   }

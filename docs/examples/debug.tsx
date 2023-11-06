@@ -47,7 +47,7 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
-        picker="year"
+        // picker="year"
         // value={[moment('2000-01-01'), null]}
         value={rangeValue}
         // defaultPickerValue={[moment('2020-01-01'), null]}

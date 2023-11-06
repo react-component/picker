@@ -58,3 +58,14 @@ export function useInfo<DateType = any>(
 
   return [info, now];
 }
+
+// ============================== Internal ==============================
+export interface PickerHackContextProps {
+  hidePrev?: boolean;
+  hideNext?: boolean;
+}
+
+/**
+ * Internal usage for RangePicker to not to show the operation arrow
+ */
+export const PickerHackContext = React.createContext<PickerHackContextProps>({});

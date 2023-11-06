@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PanelContext } from './context';
+import { PanelContext, PickerHackContext } from './context';
 
 const HIDDEN_STYLE: React.CSSProperties = {
   visibility: 'hidden',
@@ -11,14 +11,6 @@ export interface HeaderProps {
   nextIcon?: React.ReactNode;
   superPrevIcon?: React.ReactNode;
   superNextIcon?: React.ReactNode;
-  // /** Last one step */
-  // onPrev?: () => void;
-  // /** Next one step */
-  // onNext?: () => void;
-  // /** Last multiple steps */
-  // onSuperPrev?: () => void;
-  // /** Next multiple steps */
-  // onSuperNext?: () => void;
 
   onOffset?: (offset: number) => void;
   onSuperOffset?: (offset: number) => void;
@@ -44,16 +36,7 @@ function PanelHeader(props: HeaderProps) {
 
   const headerPrefixCls = `${prefixCls}-header`;
 
-  // const {
-  //   prefixCls,
-
-  //   onSuperPrev,
-  //   onSuperNext,
-  //   onPrev,
-  //   onNext,
-  //   children,
-  // } = props;
-  // const { hideNextBtn, hidePrevBtn } = React.useContext(PanelContext);
+  const { hidePrev, hideNext } = React.useContext(PickerHackContext);
 
   return (
     <div className={headerPrefixCls}>
@@ -63,7 +46,7 @@ function PanelHeader(props: HeaderProps) {
           onClick={() => onSuperOffset(-1)}
           tabIndex={-1}
           className={`${headerPrefixCls}-super-prev-btn`}
-          // style={hidePrevBtn ? HIDDEN_STYLE : {}}
+          style={hidePrev ? HIDDEN_STYLE : {}}
         >
           {superPrevIcon}
         </button>
@@ -74,7 +57,7 @@ function PanelHeader(props: HeaderProps) {
           onClick={() => onOffset(-1)}
           tabIndex={-1}
           className={`${headerPrefixCls}-prev-btn`}
-          // style={hidePrevBtn ? HIDDEN_STYLE : {}}
+          style={hidePrev ? HIDDEN_STYLE : {}}
         >
           {prevIcon}
         </button>
@@ -86,7 +69,7 @@ function PanelHeader(props: HeaderProps) {
           onClick={() => onOffset(1)}
           tabIndex={-1}
           className={`${headerPrefixCls}-next-btn`}
-          // style={hideNextBtn ? HIDDEN_STYLE : {}}
+          style={hideNext ? HIDDEN_STYLE : {}}
         >
           {nextIcon}
         </button>
@@ -97,7 +80,7 @@ function PanelHeader(props: HeaderProps) {
           onClick={() => onSuperOffset(1)}
           tabIndex={-1}
           className={`${headerPrefixCls}-super-next-btn`}
-          // style={hideNextBtn ? HIDDEN_STYLE : {}}
+          style={hideNext ? HIDDEN_STYLE : {}}
         >
           {superNextIcon}
         </button>
