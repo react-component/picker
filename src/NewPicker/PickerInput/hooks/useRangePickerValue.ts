@@ -1,19 +1,46 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
 import type { GenerateConfig } from '../../../generate';
-import { isSameMonth } from '../../../utils/dateUtil';
-import type { InternalMode } from '../../interface';
-import type { RangeValueType } from '../RangePicker';
+import { isSame } from '../../../utils/dateUtil';
+import type { InternalMode, Locale, PanelMode } from '../../interface';
+import type { RangePickerProps, RangeValueType } from '../RangePicker';
+
+export function offsetPanelDate<DateType = any>(
+  generateConfig: GenerateConfig<DateType>,
+  picker: InternalMode,
+  date: DateType,
+  offset: number,
+) {
+  switch (picker) {
+    case 'date':
+      return generateConfig.addMonth(date, offset);
+
+    case 'month':
+    case 'quarter':
+      return generateConfig.addYear(date, offset);
+
+    case 'year':
+      return generateConfig.addYear(date, offset * 10);
+
+    case 'decade':
+      return generateConfig.addYear(date, offset * 100);
+
+    default:
+      return date;
+  }
+}
 
 export default function useRangePickerValue<DateType = any>(
   generateConfig: GenerateConfig<DateType>,
+  locale: Locale,
   calendarValue: RangeValueType<DateType>,
   open: boolean,
   activeIndex: number,
   pickerMode: InternalMode,
+  multiplePanel: boolean,
   defaultPickerValue?: RangeValueType<DateType>,
   pickerValue?: RangeValueType<DateType>,
-  onPickerValueChange?: (values: RangeValueType<DateType>) => void,
+  onPickerValueChange?: RangePickerProps<DateType>['onPickerValueChange'],
 ): [currentIndexPickerValue: DateType, setCurrentIndexPickerValue: (value: DateType) => void] {
   // ===================== Picker Value =====================
   const [mergedStartPickerValue, setStartPickerValue] = useMergedState(
@@ -31,13 +58,23 @@ export default function useRangePickerValue<DateType = any>(
   );
 
   const currentPickerValue = [mergedStartPickerValue, mergedEndPickerValue][activeIndex];
-  const setCurrentPickerValue = (nextPickerValue: DateType) => {
+  const setCurrentPickerValue = (
+    nextPickerValue: DateType,
+    source: 'reset' | 'panel' = 'panel',
+  ) => {
     const updater = [setStartPickerValue, setEndPickerValue][activeIndex];
     updater(nextPickerValue);
 
     const clone: [DateType, DateType] = [mergedStartPickerValue, mergedEndPickerValue];
     clone[activeIndex] = nextPickerValue;
-    onPickerValueChange?.(clone);
+
+    if (
+      onPickerValueChange &&
+      (!isSame(generateConfig, locale, mergedStartPickerValue, clone[0], pickerMode) ||
+        !isSame(generateConfig, locale, mergedEndPickerValue, clone[1], pickerMode))
+    ) {
+      onPickerValueChange?.(clone, { source });
+    }
   };
 
   // ======================== Effect ========================
@@ -49,9 +86,30 @@ export default function useRangePickerValue<DateType = any>(
    * - Else pass directly
    */
   const getEndDatePickerValue = (startDate: DateType, endDate: DateType) => {
-    if (pickerMode === 'date' && !isSameMonth(generateConfig, startDate, endDate)) {
-      return generateConfig.addMonth(endDate, -1);
+    if (multiplePanel) {
+      // Basic offset
+      const SAME_CHECKER: Partial<Record<InternalMode, PanelMode>> = {
+        date: 'month',
+        week: 'month',
+        month: 'year',
+        quarter: 'year',
+      };
+
+      const mode = SAME_CHECKER[pickerMode];
+      if (mode && !isSame(generateConfig, locale, startDate, endDate, mode)) {
+        return offsetPanelDate(generateConfig, pickerMode, endDate, -1);
+      }
+
+      // Year offset
+      if (pickerMode === 'year') {
+        const srcYear = Math.floor(generateConfig.getYear(startDate) / 10);
+        const tgtYear = Math.floor(generateConfig.getYear(endDate) / 10);
+        if (srcYear !== tgtYear) {
+          return offsetPanelDate(generateConfig, pickerMode, endDate, -1);
+        }
+      }
     }
+
     return endDate;
   };
 
@@ -59,23 +117,24 @@ export default function useRangePickerValue<DateType = any>(
   React.useEffect(() => {
     if (open) {
       if (activeIndex === 0 && calendarValue[0]) {
-        setCurrentPickerValue(calendarValue[0]);
+        setCurrentPickerValue(calendarValue[0], 'reset');
       } else if (activeIndex === 1 && calendarValue[1]) {
         setCurrentPickerValue(
           // End PickerValue need additional shift
           getEndDatePickerValue(calendarValue[0], calendarValue[1]),
+          'reset',
         );
       }
     }
-  }, [calendarValue]);
+  }, [open, calendarValue, activeIndex]);
 
   // >>> defaultPickerValue: Resync to `defaultPickerValue` for each panel focused
   React.useEffect(() => {
     if (open && defaultPickerValue) {
       if (activeIndex === 0 && defaultPickerValue[0]) {
-        setStartPickerValue(defaultPickerValue[0]);
+        setCurrentPickerValue(defaultPickerValue[0], 'reset');
       } else if (activeIndex === 1 && defaultPickerValue[1]) {
-        setEndPickerValue(defaultPickerValue[1]);
+        setCurrentPickerValue(defaultPickerValue[1], 'reset');
       }
     }
   }, [open, activeIndex]);

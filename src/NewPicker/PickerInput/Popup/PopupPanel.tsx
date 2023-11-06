@@ -1,6 +1,7 @@
 import * as React from 'react';
 import PickerPanel, { type PickerPanelProps } from '../../PickerPanel';
 import PickerContext from '../context';
+import { offsetPanelDate } from '../hooks/useRangePickerValue';
 import { type FooterProps } from './Footer';
 
 export type MustProp = Required<Pick<PickerPanelProps, 'mode' | 'onModeChange'>>;
@@ -15,36 +16,20 @@ export default function PopupPanel<DateType = any>(props: PopupPanelProps<DateTy
   const { picker, multiple, pickerValue, onPickerValueChange } = props;
   const { prefixCls, generateConfig } = React.useContext(PickerContext);
 
-  const offsetDate = React.useCallback(
+  const internalOffsetDate = React.useCallback(
     (date: DateType, offset: number) => {
-      switch (picker) {
-        case 'date':
-          return generateConfig.addMonth(date, offset);
-
-        case 'month':
-        case 'quarter':
-          return generateConfig.addYear(date, offset);
-
-        case 'year':
-          return generateConfig.addYear(date, offset * 10);
-
-        case 'decade':
-          return generateConfig.addYear(date, offset * 100);
-
-        default:
-          return date;
-      }
+      return offsetPanelDate(generateConfig, picker, date, offset);
     },
     [generateConfig, picker],
   );
 
   const nextPickerValue = React.useMemo(
-    () => offsetDate(pickerValue, 1),
-    [pickerValue, offsetDate],
+    () => internalOffsetDate(pickerValue, 1),
+    [pickerValue, internalOffsetDate],
   );
 
   const onNextPickerValueChange = (nextDate: DateType) => {
-    onPickerValueChange(offsetDate(nextDate, -1));
+    onPickerValueChange(internalOffsetDate(nextDate, -1));
   };
 
   // ======================== Render ========================

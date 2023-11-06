@@ -1,3 +1,4 @@
+import type { InternalMode } from '../NewPicker/interface';
 import type { GenerateConfig } from '../generate';
 import type { CustomFormat, Locale, NullableDateType, PanelMode, PickerMode } from '../interface';
 import { DECADE_UNIT_DIFF } from '../panels/DecadePanel/constant';
@@ -156,7 +157,7 @@ export function isSame<DateType = any>(
   locale: Locale,
   source: NullableDateType<DateType>,
   target: NullableDateType<DateType>,
-  type: PanelMode,
+  type: InternalMode,
 ) {
   switch (type) {
     case 'date':

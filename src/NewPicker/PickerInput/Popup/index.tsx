@@ -11,24 +11,15 @@ export interface PopupProps<DateType = any>
     FooterProps<DateType>,
     PopupPanelProps<DateType> {
   panelRender?: SharedPickerProps['panelRender'];
-  range?: boolean;
 }
 
 export default function Popup(props: PopupProps) {
-  const { panelRender, internalMode, picker, range, showNow, ...restProps } = props;
+  const { panelRender, internalMode, picker, showNow, multiple, ...restProps } = props;
 
   const { prefixCls } = React.useContext(PickerContext);
   const panelPrefixCls = `${prefixCls}-panel`;
 
-  const multiplePanel = range && internalMode === picker && internalMode !== 'time';
-
   // ======================== Custom ========================
-  // const panelNode = Array.isArray(children) ? (
-  //   <div className={`${prefixCls}-panels`}>{children}</div>
-  // ) : (
-  //   children
-  // );
-
   let mergedNodes: React.ReactNode = (
     <div className={`${prefixCls}-panel-layout`}>
       {/* <PresetPanel
@@ -43,8 +34,8 @@ export default function Popup(props: PopupProps) {
         }}
       /> */}
       <div>
-        <PopupPanel {...props} multiple={multiplePanel} />
-        <Footer {...props} showNow={multiplePanel ? false : showNow} />
+        <PopupPanel {...props} />
+        <Footer {...props} showNow={multiple ? false : showNow} />
       </div>
     </div>
   );

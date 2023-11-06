@@ -62,8 +62,15 @@ export interface RangePickerProps<DateType> extends SharedPickerProps<DateType> 
   pickerValue?: [DateType, DateType] | null;
   /**
    * Each popup panel `pickerValue` change will trigger the callback.
+   * @param date The changed picker value
+   * @param info.source `panel` from the panel click. `reset` from popup open or field typing.
    */
-  onPickerValueChange?: (date: [DateType, DateType]) => void;
+  onPickerValueChange?: (
+    date: [DateType, DateType],
+    info: {
+      source: 'reset' | 'panel';
+    },
+  ) => void;
 
   // range
   /** Default will always order of selection after submit */
@@ -150,6 +157,9 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     mergedMode === 'date' && mergedShowTime ? 'datetime' : mergedMode;
 
   const needConfirm = internalMode === 'time' || internalMode === 'datetime';
+
+  // ====================== PanelCount ======================
+  const multiplePanel = internalMode === picker && internalMode !== 'time';
 
   // ======================= Show Now =======================
   const mergedShowNow = useShowNow(internalPicker, mergedMode, showNow, showToday);
@@ -255,10 +265,12 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   // ===================== Picker Value =====================
   const [currentPickerValue, setCurrentPickerValue] = useRangePickerValue(
     generateConfig,
+    locale,
     calendarValue,
     mergedOpen,
     activeIndex,
     internalPicker,
+    multiplePanel,
     defaultPickerValue,
     pickerValue,
     onPickerValueChange,
@@ -398,7 +410,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       {...(props as Omit<RangePickerProps<DateType>, 'onChange' | 'onCalendarChange'>)}
       showNow={mergedShowNow}
       showTime={mergedShowTime}
-      range
+      multiple={multiplePanel}
       // Disabled
       disabledDate={mergedDisabledDate}
       // Focus
