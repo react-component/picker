@@ -15,6 +15,7 @@ export default function YearPanel<DateType = any>(props: SharedPanelProps<DateTy
     value,
     onPickerValueChange,
     onModeChange,
+    hoverValue,
   } = props;
 
   const panelPrefixCls = `${prefixCls}-year-panel`;
@@ -47,7 +48,7 @@ export default function YearPanel<DateType = any>(props: SharedPanelProps<DateTy
     return {
       [`${prefixCls}-cell-in-view`]: startYear <= dateYear && dateYear <= endYear,
       [`${prefixCls}-cell-today`]: isSameYear(generateConfig, date, now),
-      [`${prefixCls}-cell-selected`]: isSameYear(generateConfig, date, value),
+      [`${prefixCls}-cell-selected`]: !hoverValue && isSameYear(generateConfig, date, value),
     };
   };
 

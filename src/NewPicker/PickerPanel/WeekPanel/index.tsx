@@ -5,7 +5,8 @@ import type { SharedPanelProps } from '../../interface';
 import DatePanel from '../DatePanel';
 
 export default function WeekPanel<DateType = any>(props: SharedPanelProps<DateType>) {
-  const { disabledDate, prefixCls, onChange, onHover, generateConfig, locale, value } = props;
+  const { disabledDate, prefixCls, onChange, onHover, generateConfig, locale, value, hoverValue } =
+    props;
 
   const cellPrefixCls = `${prefixCls}-cell`;
 
@@ -52,7 +53,8 @@ export default function WeekPanel<DateType = any>(props: SharedPanelProps<DateTy
     // const isRangeEnd = isSameWeek(generateConfig, locale.locale, rangeEnd, date);
 
     return classNames(rowPrefixCls, {
-      [`${rowPrefixCls}-selected`]: isSameWeek(generateConfig, locale.locale, value, date),
+      [`${rowPrefixCls}-selected`]:
+        !hoverValue && isSameWeek(generateConfig, locale.locale, value, date),
       // [`${rowPrefixCls}-selected`]:
       //   !rangedValue && isSameWeek(generateConfig, locale.locale, value, date),
 

@@ -38,7 +38,7 @@ export default () => {
     // has end
     // [null, moment('2023-11-15')],
     // [moment('2023-11-5'), moment('2023-12-29')],
-    [moment('2023-11-5'), moment('2032-12-29')],
+    [moment('2023-11-5'), moment('2132-12-29')],
   );
 
   return (
