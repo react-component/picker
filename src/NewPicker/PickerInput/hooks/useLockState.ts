@@ -38,18 +38,25 @@ export default function useLockState<T>(
   return [state, updateValue];
 }
 
-export function useLockEffect(value: boolean, onChange: (next: boolean) => void) {
+/**
+ * Trigger `callback` immediately when `condition` is `true`.
+ * But trigger `callback` in next frame when `condition` is `false`.
+ */
+export function useLockEffect(
+  condition: boolean,
+  callback: (next: boolean) => void,
+) {
   useLayoutUpdateEffect(() => {
-    if (value) {
-      onChange(value);
+    if (condition) {
+      callback(condition);
     } else {
       const id = raf(() => {
-        onChange(value);
+        callback(condition);
       });
 
       return () => {
         raf.cancel(id);
       };
     }
-  }, [value]);
+  }, [condition]);
 }
