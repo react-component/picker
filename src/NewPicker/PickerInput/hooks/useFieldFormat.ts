@@ -8,8 +8,7 @@ function getRowFormat(picker: InternalMode, locale: Locale, format?: SharedPicke
   }
 
   switch (picker) {
-    // time is
-
+    // All from the `locale.fieldXXXFormat` first
     case 'time':
       return locale.fieldTimeFormat || 'HH:mm:ss';
     case 'datetime':

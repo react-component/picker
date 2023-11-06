@@ -4,6 +4,27 @@ import type { GenerateConfig } from '../generate';
 export type Locale = {
   locale: string;
 
+  // ======================================================
+  // ==                      Format                      ==
+  // ======================================================
+
+  // ==================== Input Format ====================
+  // Input format
+  /** Input field formatter like YYYY-MM-DD HH:mm:ss */
+  fieldDateTimeFormat: string;
+  /** Input field formatter like YYYY-MM-DD */
+  fieldDateFormat: string;
+  /** Input field formatter like HH:mm:ss */
+  fieldTimeFormat: string;
+  /** Input field formatter like YYYY-MM */
+  fieldMonthFormat: string;
+  /** Input field formatter like YYYY */
+  fieldYearFormat: string;
+  /** Input field formatter like wwww-go */
+  fieldWeekFormat?: string;
+  /** Input field formatter like YYYY-Q */
+  fieldQuarterFormat?: string;
+
   // ===================== Date Panel =====================
   // Header Format
   /** Display month before year in date panel header */
@@ -28,22 +49,9 @@ export type Locale = {
   millisecond?: string;
   meridiem?: string;
 
-  // Input format
-  /** Input field formatter like YYYY-MM-DD HH:mm:ss */
-  fieldDateTimeFormat: string;
-  /** Input field formatter like YYYY-MM-DD */
-  fieldDateFormat: string;
-  /** Input field formatter like HH:mm:ss */
-  fieldTimeFormat: string;
-  /** Input field formatter like YYYY-MM */
-  fieldMonthFormat: string;
-  /** Input field formatter like YYYY */
-  fieldYearFormat: string;
-  /** Input field formatter like wwww-go */
-  fieldWeekFormat?: string;
-  /** Input field formatter like YYYY-Q */
-  fieldQuarterFormat?: string;
-
+  // ======================================================
+  // ==                       MISC                       ==
+  // ======================================================
   today: string;
   now: string;
   backToToday: string;
