@@ -47,6 +47,10 @@ export interface RangePickerProps<DateType> extends SharedPickerProps<DateType> 
   ) => void;
 
   // Picker Value
+  /**
+   * Config the popup panel date.
+   * Every time active the input to open popup will reset with `defaultPickerValue`
+   */
   defaultPickerValue?: [DateType, DateType] | null;
   pickerValue?: [DateType, DateType] | null;
   onPickerValueChange?: (date: [DateType, DateType]) => void;
@@ -261,6 +265,17 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     clone[activeIndex] = nextPickerValue;
     onPickerValueChange?.(clone);
   };
+
+  // Resync to `defaultPickerValue` for each panel focused
+  React.useEffect(() => {
+    if (mergedOpen && focusedIndex !== null) {
+      if (focusedIndex === 0 && defaultPickerValue[0]) {
+        setStartPickerValue(defaultPickerValue[0]);
+      } else if (focusedIndex === 1 && defaultPickerValue[1]) {
+        setEndPickerValue(defaultPickerValue[1]);
+      }
+    }
+  }, [mergedOpen, focusedIndex]);
 
   // ======================== Change ========================
   const fillMergedValue = (date: DateType, index: number) => {

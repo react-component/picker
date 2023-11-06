@@ -48,6 +48,7 @@ export default () => {
         {...sharedLocale}
         // value={[moment('2000-01-01'), null]}
         value={rangeValue}
+        defaultPickerValue={[moment('2020-01-01'), null]}
         // disabled={[false, true]}
         suffixIcon="🧶"
         disabledDate={(date) => date.date() === 11}
