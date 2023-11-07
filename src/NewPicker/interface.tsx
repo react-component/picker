@@ -37,6 +37,8 @@ export type Locale = {
   // Cell format
   /** year format in body panel */
   yearCellFormat?: string;
+  /** quarter format in body panel */
+  quarterCellFormat?: string;
   /** day format in body panel */
   dayFormat: string;
   /** meridiem format in body panel */

@@ -1,5 +1,5 @@
 import { useMergedState } from 'rc-util';
-import * as React from 'react';
+import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import type { GenerateConfig } from '../../../generate';
 import { isSame } from '../../../utils/dateUtil';
 import type { InternalMode, Locale, PanelMode } from '../../interface';
@@ -13,6 +13,7 @@ export function offsetPanelDate<DateType = any>(
 ) {
   switch (picker) {
     case 'date':
+    case 'week':
       return generateConfig.addMonth(date, offset);
 
     case 'month':
@@ -114,7 +115,7 @@ export default function useRangePickerValue<DateType = any>(
   };
 
   // >>> calendarValue: Sync with `calendarValue` if changed
-  React.useEffect(() => {
+  useLayoutEffect(() => {
     if (open) {
       if (activeIndex === 0 && calendarValue[0]) {
         setCurrentPickerValue(calendarValue[0], 'reset');
@@ -129,7 +130,7 @@ export default function useRangePickerValue<DateType = any>(
   }, [open, calendarValue, activeIndex]);
 
   // >>> defaultPickerValue: Resync to `defaultPickerValue` for each panel focused
-  React.useEffect(() => {
+  useLayoutEffect(() => {
     if (open && defaultPickerValue) {
       if (activeIndex === 0 && defaultPickerValue[0]) {
         setCurrentPickerValue(defaultPickerValue[0], 'reset');

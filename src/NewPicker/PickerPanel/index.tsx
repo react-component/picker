@@ -13,6 +13,7 @@ import DatePanel from './DatePanel';
 import DateTimePanel from './DateTimePanel';
 import DecadePanel from './DecadePanel';
 import MonthPanel from './MonthPanel';
+import QuarterPanel from './QuarterPanel';
 import TimePanel from './TimePanel';
 import WeekPanel from './WeekPanel';
 import YearPanel from './YearPanel';
@@ -22,6 +23,7 @@ const DefaultComponents: Components = {
   datetime: DateTimePanel,
   week: WeekPanel,
   month: MonthPanel,
+  quarter: QuarterPanel,
   year: YearPanel,
   decade: DecadePanel,
   time: TimePanel,

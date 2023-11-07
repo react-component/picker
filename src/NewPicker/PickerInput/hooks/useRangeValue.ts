@@ -200,7 +200,7 @@ export default function useRangeValue<DateType = any>(
   // When blur & invalid, restore to empty one
   // This is used for typed only one input
   React.useEffect(() => {
-    if (!lastSubmitResult[0] && !preserveInvalidOnBlur) {
+    if (!lastSubmitResult[0] && !preserveInvalidOnBlur && value) {
       triggerCalendarChange(value);
     }
   }, [lastSubmitResult]);

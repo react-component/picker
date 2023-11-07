@@ -38,7 +38,7 @@ export default () => {
     // has end
     // [null, moment('2023-11-15')],
     // [moment('2023-11-5'), moment('2023-12-29')],
-    [moment('2023-11-5'), moment('2132-12-29')],
+    // [moment('2023-11-5'), moment('2132-12-29')],
   );
 
   return (
@@ -47,7 +47,7 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
-        // picker="year"
+        picker="quarter"
         // value={[moment('2000-01-01'), null]}
         value={rangeValue}
         // defaultPickerValue={[moment('2020-01-01'), null]}
@@ -64,12 +64,12 @@ export default () => {
         //   console.log('🍷 Blur!');
         // }}
         // changeOnBlur
-        format={{
-          format: 'YYYY-MM-DD',
-          // format: 'YYYY-MM-DD HH:mm:ss.SSS',
-          //   // format: 'YYYYMMDD',
-          // align: true,
-        }}
+        // format={{
+        //   format: 'YYYY-MM-DD',
+        //   // format: 'YYYY-MM-DD HH:mm:ss.SSS',
+        //   //   // format: 'YYYYMMDD',
+        //   // align: true,
+        // }}
         // preserveInvalidOnBlur
         showTime={{}}
         onChange={(val, text) => {
