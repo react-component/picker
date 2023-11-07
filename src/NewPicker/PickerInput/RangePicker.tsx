@@ -224,6 +224,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const orderOnChange = mergedDisabled.some((d) => d) ? false : order;
 
   // ======================== Value =========================
+
   const [calendarValue, triggerCalendarChange, triggerSubmitChange] = useRangeValue(
     {
       ...props,
@@ -372,12 +373,8 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     React.useState<RangeValueType<DateType>>(null);
 
   const hoverValues = React.useMemo(() => {
-    const clone = [...(internalHoverValues || calendarValue)].filter(
-      (n) => n,
-    ) as RangeValueType<DateType>;
-
-    return clone.sort((a, b) => (generateConfig.isAfter(b, a) ? -1 : 1));
-  }, [calendarValue, internalHoverValues, generateConfig]);
+    return internalHoverValues || calendarValue;
+  }, [calendarValue, internalHoverValues]);
 
   // ========================================================
   // ==                       Panels                       ==

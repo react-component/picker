@@ -59,7 +59,7 @@ export default function Footer(props: FooterProps) {
     </li>
   );
 
-  const rangeNode = (
+  const rangeNode = (presetNode || okNode) && (
     <ul className={`${prefixCls}-ranges`}>
       {presetNode}
       {okNode}
@@ -67,6 +67,10 @@ export default function Footer(props: FooterProps) {
   );
 
   // ======================== Render ========================
+  if (!extraNode && !rangeNode) {
+    return null;
+  }
+
   return (
     <div className={`${prefixCls}-footer`}>
       {extraNode}

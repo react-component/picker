@@ -34,13 +34,14 @@ export default () => {
   const singleRef = React.useRef<PickerRef>(null);
 
   const [value, setValue] = React.useState<Moment>(null);
-  const [rangeValue, setRangeValue] = React.useState<[Moment?, Moment?]>();
-  // has start
-  // [moment('2023-11-15'), null],
-  // has end
-  // [null, moment('2023-11-15')],
-  // [moment('2023-11-5'), moment('2023-12-29')],
-  // [moment('2023-11-5'), moment('2132-12-29')],
+  const [rangeValue, setRangeValue] = React.useState<[Moment?, Moment?]>(
+    // has start
+    // [moment('2023-11-15'), null],
+    // has end
+    // [null, moment('2023-11-15')],
+    // [moment('2023-11-5'), moment('2023-12-29')],
+    [moment('2000-09-03'), moment('1990-09-03')],
+  );
 
   return (
     <div>
@@ -48,7 +49,7 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
-        // picker="time"
+        // picker="year"
         // value={[moment('2000-01-01'), null]}
         presets={[
           {
@@ -62,6 +63,10 @@ export default () => {
           {
             label: 'Last Week',
             value: [moment().add(-14, 'd'), moment().add(-7, 'd')],
+          },
+          {
+            label: 'Wrong Order',
+            value: [moment(), moment().add(-14, 'd')],
           },
         ]}
         value={rangeValue}

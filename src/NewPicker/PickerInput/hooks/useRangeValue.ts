@@ -59,14 +59,10 @@ export default function useRangeValue<DateType = any>(
   // ============================ Values ============================
   // Used for internal value management.
   // It should always use `mergedValue` in render logic
-  const [internalCalendarValue, setCalendarValue1] = React.useState<RangeValueType<DateType>>(
+  const [internalCalendarValue, setCalendarValue] = React.useState<RangeValueType<DateType>>(
     defaultValue || [null, null],
   );
   const calendarValue = internalCalendarValue || [null, null];
-
-  const setCalendarValue = (val) => {
-    setCalendarValue1(val);
-  };
 
   React.useEffect(() => {
     if (value) {
