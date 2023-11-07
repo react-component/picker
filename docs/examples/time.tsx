@@ -33,6 +33,18 @@ export default () => {
         generateConfig={momentGenerateConfig}
       />
 
+      <h3>TimePicker 12 Hours</h3>
+      <Picker
+        defaultValue={defaultValue}
+        picker="time"
+        locale={zhCN}
+        disabledTime={(now) => ({
+          disabledHours: () => [now.hours()],
+        })}
+        generateConfig={momentGenerateConfig}
+        use12Hours
+      />
+
       <h3>RangePicker</h3>
       <RangePicker
         defaultValue={[defaultValue, defaultValue]}
