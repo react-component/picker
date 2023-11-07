@@ -1,6 +1,6 @@
 import * as React from 'react';
 import '../../assets/index.less';
-import type { PickerRef } from '../../src/NewPicker/interface';
+import type { Locale, PickerRef } from '../../src/NewPicker/interface';
 import RangePicker from '../../src/NewPicker/PickerInput/RangePicker';
 import PickerPanel, { type PickerPanelProps } from '../../src/NewPicker/PickerPanel';
 
@@ -12,8 +12,10 @@ import zhCN from '../../src/locale/zh_CN';
 moment.locale('zh-cn');
 window.moment = moment;
 
+const myLocale: Locale = { ...zhCN, quarterCellFormat: '第Q季度' };
+
 const sharedLocale = {
-  locale: zhCN,
+  locale: myLocale,
   generateConfig: momentGenerateConfig,
 };
 
@@ -32,14 +34,13 @@ export default () => {
   const singleRef = React.useRef<PickerRef>(null);
 
   const [value, setValue] = React.useState<Moment>(null);
-  const [rangeValue, setRangeValue] = React.useState<[Moment?, Moment?]>(
-    // // has start
-    // [moment('2023-11-15'), null],
-    // has end
-    // [null, moment('2023-11-15')],
-    // [moment('2023-11-5'), moment('2023-12-29')],
-    // [moment('2023-11-5'), moment('2132-12-29')],
-  );
+  const [rangeValue, setRangeValue] = React.useState<[Moment?, Moment?]>();
+  // // has start
+  // [moment('2023-11-15'), null],
+  // has end
+  // [null, moment('2023-11-15')],
+  // [moment('2023-11-5'), moment('2023-12-29')],
+  // [moment('2023-11-5'), moment('2132-12-29')],
 
   return (
     <div>
