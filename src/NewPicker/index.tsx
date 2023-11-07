@@ -11,4 +11,6 @@
  * - Get correct `disabledHours` when set `use12Hours`
  * - `pickerValue` is now full controlled
  *   - `defaultPickerValue` will take effect on every field active with popup opening.
+ * - [Break] Not order `value` if given `value` is wrong order.
+ * - Hover `presets` will show date in input field.
  */

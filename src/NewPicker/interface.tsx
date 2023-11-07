@@ -111,6 +111,11 @@ export type CellRender<DateType, CurrentType = DateType | number> = (
   info: CellRenderInfo<DateType>,
 ) => React.ReactNode;
 
+export interface ValueDate<DateType = any> {
+  label: React.ReactNode;
+  value: DateType | (() => DateType);
+}
+
 // ========================== Time ==========================
 export interface DisabledTimes {
   disabledHours?: () => number[];

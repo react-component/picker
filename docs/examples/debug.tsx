@@ -35,7 +35,7 @@ export default () => {
 
   const [value, setValue] = React.useState<Moment>(null);
   const [rangeValue, setRangeValue] = React.useState<[Moment?, Moment?]>();
-  // // has start
+  // has start
   // [moment('2023-11-15'), null],
   // has end
   // [null, moment('2023-11-15')],
@@ -48,8 +48,18 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
-        picker="quarter"
+        // picker="time"
         // value={[moment('2000-01-01'), null]}
+        presets={[
+          {
+            label: 'Now',
+            value: [moment(), moment()],
+          },
+          {
+            label: 'This Week',
+            value: [moment().add(-7, 'd'), moment()],
+          },
+        ]}
         value={rangeValue}
         // defaultPickerValue={[moment('2020-01-01'), null]}
         // onPickerValueChange={(dates, info) => {
@@ -72,7 +82,7 @@ export default () => {
         //   // align: true,
         // }}
         // preserveInvalidOnBlur
-        showTime={{}}
+        // showTime={{}}
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
           setRangeValue(val);

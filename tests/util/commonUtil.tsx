@@ -1,20 +1,24 @@
 import React from 'react';
 // import { mount as originMount, ReactWrapper } from 'enzyme';
 import { fireEvent } from '@testing-library/react';
-import moment, { Moment, unitOfTime } from 'moment';
-import Picker, { PickerPanel, PickerProps } from '../../src';
+import dayjs, { type Dayjs } from 'dayjs';
+import moment, { type Moment, type unitOfTime } from 'moment';
+import Picker, { PickerPanel, type PickerProps } from '../../src';
+import dayGenerateConfig from '../../src/generate/dayjs';
 import momentGenerateConfig from '../../src/generate/moment';
 import enUS from '../../src/locale/en_US';
-import { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
-import {
+import zh_CN from '../../src/locale/zh_CN';
+import NewRangePicker, { type RangePickerProps } from '../../src/NewPicker/PickerInput/RangePicker';
+import type { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
+import type {
   PickerPanelBaseProps,
   PickerPanelDateProps,
   PickerPanelTimeProps,
 } from '../../src/PickerPanel';
 import RangePicker, {
-  RangePickerBaseProps,
-  RangePickerDateProps,
-  RangePickerTimeProps,
+  type RangePickerBaseProps,
+  type RangePickerDateProps,
+  type RangePickerTimeProps,
 } from '../../src/RangePicker';
 
 const FULL_FORMAT = 'YYYY-MM-DD HH:mm:ss';
@@ -120,6 +124,7 @@ export class MomentRangePicker extends React.Component<MomentRangePickerProps> {
 export function openPicker(container: HTMLElement, index = 0) {
   const input = container.querySelectorAll('input')[index];
   fireEvent.mouseDown(input);
+  fireEvent.click(input);
   fireEvent.focus(input);
 }
 
@@ -182,4 +187,20 @@ export function clearValue() {
 
 export function inputValue(text: string, index = 0) {
   fireEvent.change(document.querySelectorAll('input')[index], { target: { value: text } });
+}
+
+// ===================================== Day JS =====================================
+export const DayRangePicker = (props: Partial<Omit<RangePickerProps<Dayjs>, 'generateConfig'>>) => {
+  return <NewRangePicker generateConfig={dayGenerateConfig} locale={zh_CN} {...props} />;
+};
+
+export function getDay(str: string): Dayjs {
+  const formatList = [FULL_FORMAT, 'YYYY-MM-DD', 'HH:mm:ss', 'YYYY'];
+  for (let i = 0; i < formatList.length; i += 1) {
+    const date = dayjs(str, formatList[i], true);
+    if (date.isValid()) {
+      return date;
+    }
+  }
+  throw new Error(`Format not match with: ${str}`);
 }

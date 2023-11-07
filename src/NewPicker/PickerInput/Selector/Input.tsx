@@ -30,6 +30,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   value?: string;
   onChange: (value: string) => void;
   onEnter: VoidFunction;
+  /** Meaning current is from the hover cell getting the placeholder text */
   helped?: boolean;
   /**
    * Trigger when input need additional help.

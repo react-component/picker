@@ -8,6 +8,7 @@ import type {
   SelectorProps,
   SelectorRef,
   SharedPickerProps,
+  ValueDate,
 } from '../interface';
 import type { PickerPanelProps } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
@@ -15,6 +16,7 @@ import PickerContext from './context';
 import { useFieldFormat } from './hooks/useFieldFormat';
 import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
+import usePresets from './hooks/usePresets';
 import useRangeDisabledDate from './hooks/useRangeDisabledDate';
 import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue from './hooks/useRangeValue';
@@ -76,6 +78,14 @@ export interface RangePickerProps<DateType> extends SharedPickerProps<DateType> 
   /** Default will always order of selection after submit */
   order?: boolean;
 
+  // Preset
+  presets?: ValueDate<Exclude<RangeValueType<DateType>, null>>[];
+  /** @deprecated Please use `presets` instead */
+  ranges?: Record<
+    string,
+    Exclude<RangeValueType<DateType>, null> | (() => Exclude<RangeValueType<DateType>, null>)
+  >;
+
   // Control
   disabled?: boolean | [boolean, boolean];
   allowEmpty?: [boolean, boolean];
@@ -133,6 +143,10 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     // Focus
     onFocus,
     onBlur,
+
+    // Presets
+    presets,
+    ranges,
 
     // Render
     components = {},
@@ -353,32 +367,54 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   };
 
   // ======================== Hover =========================
-  const hoverLockRef = React.useRef(false);
-  const [hoverDate, setHoverDate] = React.useState<DateType>(null);
+  // const hoverLockRef = React.useRef(false);
 
-  // Lock `hoverDate` replacement to improve user experience
-  // When select the first date and change to next,
-  // it will still show the prev hover date till user hover to other cell.
-  React.useMemo(() => {
-    hoverLockRef.current = true;
-  }, [activeIndex]);
+  const [internalHoverValues, setInternalHoverValues] =
+    React.useState<RangeValueType<DateType>>(null);
+
+  const onPresetHover = (nextValues: RangeValueType<DateType> | null) => {
+    setInternalHoverValues(nextValues);
+  };
+
+  // const [hoverDate, setHoverDate] = React.useState<DateType>(null);
+
+  // // Lock `hoverDate` replacement to improve user experience
+  // // When select the first date and change to next,
+  // // it will still show the prev hover date till user hover to other cell.
+  // React.useMemo(() => {
+  //   hoverLockRef.current = true;
+  // }, [activeIndex]);
 
   const hoverValues = React.useMemo(() => {
-    const clone: RangeValueType<DateType> = [...calendarValue];
+    // const clone: RangeValueType<DateType> = [...calendarValue];
 
-    if (hoverDate && !hoverLockRef.current) {
-      clone[activeIndex] = hoverDate;
-    }
+    // if (hoverDate && !hoverLockRef.current) {
+    //   clone[activeIndex] = hoverDate;
+    // }
 
-    return clone;
-  }, [calendarValue, hoverDate, activeIndex]);
+    // if (internalHoverValues?.[activeIndex] && !hoverLockRef.current) {
+    //   clone[activeIndex] = internalHoverValues[activeIndex];
+    // }
+
+    const clone = [...(internalHoverValues || calendarValue)].filter(
+      (n) => n,
+    ) as RangeValueType<DateType>;
+
+    return clone.sort((a, b) => (generateConfig.isAfter(b, a) ? -1 : 1));
+  }, [calendarValue, internalHoverValues, generateConfig]);
 
   // ========================================================
   // ==                       Panels                       ==
   // ========================================================
+
+  // ======================= Presets ========================
+  const presetList = usePresets(presets, ranges);
+
+  // ======================== Panel =========================
   const onPanelHover = (date: DateType) => {
-    setHoverDate(date);
-    hoverLockRef.current = false;
+    // setHoverDate(date);
+    setInternalHoverValues(date ? fillMergedValue(date, activeIndex) : null);
+    // hoverLockRef.current = false;
   };
 
   // >>> Focus
@@ -445,9 +481,12 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       //Hover
       hoverValue={hoverValues}
       onHover={onPanelHover}
+      onPresetHover={onPresetHover}
       // Submit
       needConfirm={needConfirm}
       onSubmit={triggerChangeAndFocusNext}
+      // Preset
+      presets={presetList}
     />
   );
 
@@ -488,7 +527,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
           suffixIcon={suffixIcon}
           // Active
           activeIndex={focusedIndex}
-          activeHelp={!!hoverDate}
+          activeHelp={!!internalHoverValues}
           onFocus={onSelectorFocus}
           onBlur={onSelectorBlur}
           onSubmit={triggerChangeAndFocusNext}
