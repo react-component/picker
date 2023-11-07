@@ -20,10 +20,10 @@ export type TimeUnitColumnProps<DateType> = {
   onSelect?: (value: number) => void;
   type: 'hour' | 'minute' | 'second' | 'meridiem';
   info: {
-    today: DateType,
-    locale: Locale,
-    cellRender: CellRender<DateType, number>,
-  }
+    today: DateType;
+    locale: Locale;
+    cellRender: CellRender<DateType, number>;
+  };
 };
 
 function TimeUnitColumn<DateType>(props: TimeUnitColumnProps<DateType>) {
@@ -38,13 +38,13 @@ function TimeUnitColumn<DateType>(props: TimeUnitColumnProps<DateType>) {
   // `useLayoutEffect` here to avoid blink by duration is 0
   useLayoutEffect(() => {
     const li = liRefs.current.get(value!);
-    if (li && open !== false) {
+    if (li && open !== false && type !== 'meridiem') {
       scrollTo(ulRef.current!, li.offsetTop, 120);
     }
   }, [value]);
 
   useLayoutEffect(() => {
-    if (open) {
+    if (open && type !== 'meridiem') {
       const li = liRefs.current.get(value!);
       if (li) {
         scrollRef.current = waitElementReady(li, () => {
@@ -88,14 +88,17 @@ function TimeUnitColumn<DateType>(props: TimeUnitColumnProps<DateType>) {
               onSelect!(unit.value);
             }}
           >
-            {info.cellRender ? info.cellRender(unit.value, {
-              today: info.today,
-              locale: info.locale,
-              originNode: <div className={`${cellPrefixCls}-inner`}>{unit.label}</div>,
-              type: 'time',
-              subType: type
-            }) : <div className={`${cellPrefixCls}-inner`}>{unit.label}</div>}
-            
+            {info.cellRender ? (
+              info.cellRender(unit.value, {
+                today: info.today,
+                locale: info.locale,
+                originNode: <div className={`${cellPrefixCls}-inner`}>{unit.label}</div>,
+                type: 'time',
+                subType: type,
+              })
+            ) : (
+              <div className={`${cellPrefixCls}-inner`}>{unit.label}</div>
+            )}
           </li>
         );
       })}
