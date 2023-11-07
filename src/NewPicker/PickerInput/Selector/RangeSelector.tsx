@@ -10,6 +10,8 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
 
   value?: [DateType?, DateType?];
   disabled: [boolean, boolean];
+
+  allHelp: boolean;
 }
 
 const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, ref) => {
@@ -18,6 +20,8 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
     separator = '~',
     activeIndex,
     activeHelp,
+    allHelp,
+
     onFocus,
     onBlur,
     locale,
@@ -99,7 +103,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
 
     active: activeIndex === index,
 
-    helped: activeHelp && activeIndex === index,
+    helped: allHelp || (activeHelp && activeIndex === index),
 
     disabled: disabled[index],
 

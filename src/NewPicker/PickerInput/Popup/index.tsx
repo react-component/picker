@@ -3,6 +3,7 @@ import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
 import type { SharedPickerProps, ValueDate } from '../../interface';
 import PickerContext from '../context';
+import type { RangeValueType } from '../RangePicker';
 import Footer, { type FooterProps } from './Footer';
 import PopupPanel, { type PopupPanelProps } from './PopupPanel';
 import PresetPanel from './PresetPanel';
@@ -12,8 +13,11 @@ export interface PopupProps<DateType = any, PresetValue = DateType>
     FooterProps<DateType>,
     PopupPanelProps<DateType> {
   panelRender?: SharedPickerProps['panelRender'];
+
+  // Presets
   presets: ValueDate<DateType>[];
   onPresetHover: (presetValue: PresetValue) => void;
+  onPresetSubmit: (presetValue: RangeValueType<DateType>) => void;
 }
 
 export default function Popup(props: PopupProps) {
@@ -23,8 +27,12 @@ export default function Popup(props: PopupProps) {
     picker,
     showNow,
     multiple,
+
+    // Presets
     presets,
     onPresetHover,
+    onPresetSubmit,
+
     ...restProps
   } = props;
 
@@ -37,10 +45,7 @@ export default function Popup(props: PopupProps) {
       <PresetPanel
         prefixCls={prefixCls}
         presets={presets}
-        // onClick={(nextValue) => {
-        //   triggerChange(nextValue, null);
-        //   triggerOpen(false, mergedActivePickerIndex, 'preset');
-        // }}
+        onClick={onPresetSubmit}
         onHover={onPresetHover}
       />
       <div>

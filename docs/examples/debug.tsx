@@ -59,6 +59,10 @@ export default () => {
             label: 'This Week',
             value: [moment().add(-7, 'd'), moment()],
           },
+          {
+            label: 'Last Week',
+            value: [moment().add(-14, 'd'), moment().add(-7, 'd')],
+          },
         ]}
         value={rangeValue}
         // defaultPickerValue={[moment('2020-01-01'), null]}
