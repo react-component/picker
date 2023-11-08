@@ -1,6 +1,6 @@
 import React from 'react';
 // import { mount as originMount, ReactWrapper } from 'enzyme';
-import { fireEvent } from '@testing-library/react';
+import { act, fireEvent } from '@testing-library/react';
 import dayjs, { type Dayjs } from 'dayjs';
 import moment, { type Moment, type unitOfTime } from 'moment';
 import Picker, { PickerPanel, type PickerProps } from '../../src';
@@ -131,6 +131,10 @@ export function openPicker(container: HTMLElement, index = 0) {
 export function closePicker(container: HTMLElement, index = 0) {
   const input = container.querySelectorAll('input')[index];
   fireEvent.blur(input);
+
+  act(() => {
+    jest.runAllTimers();
+  });
 }
 
 export function isOpen() {

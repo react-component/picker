@@ -151,36 +151,7 @@ describe('Picker.Range', () => {
     });
   });
 
-  return;
-
-  describe('Can not select when start or end first selected', () => {
-    it('select end', () => {
-      const { container } = render(<DayRangePicker />);
-
-      openPicker(container, 1);
-      selectCell(7);
-
-      expect(findCell(23)).toHaveClass('rc-picker-cell-disabled');
-    });
-
-    it('select start', () => {
-      const { container } = render(<DayRangePicker picker="quarter" />);
-
-      openPicker(container, 0);
-      selectCell('Q3');
-
-      expect(findCell('Q1')).toHaveClass('rc-picker-cell-disabled');
-    });
-
-    it('select end', () => {
-      const { container } = render(<DayRangePicker picker="month" />);
-
-      openPicker(container, 1);
-      selectCell('May');
-
-      expect(findCell('Dec')).toHaveClass('rc-picker-cell-disabled');
-    });
-
+  describe('Can not select when part field disabled', () => {
     it('disabled start', () => {
       const { container } = render(
         <DayRangePicker
@@ -192,6 +163,18 @@ describe('Picker.Range', () => {
       openPicker(container, 1);
       expect(findCell(14)).toHaveClass('rc-picker-cell-disabled');
     });
+
+    it('disabled end', () => {
+      const { container } = render(
+        <DayRangePicker
+          disabled={[false, true]}
+          defaultValue={[getDay('1990-01-15'), getDay('1990-02-15')]}
+        />,
+      );
+
+      openPicker(container, 0);
+      expect(findCell(16, 1)).toHaveClass('rc-picker-cell-disabled');
+    });
   });
 
   it('allowEmpty', () => {
@@ -202,6 +185,7 @@ describe('Picker.Range', () => {
 
     openPicker(container);
     selectCell(11);
+    closePicker(container, 1);
     expect(onChange).toHaveBeenCalledWith([expect.anything(), null], ['1990-09-11', '']);
 
     clearValue();
@@ -213,6 +197,8 @@ describe('Picker.Range', () => {
     closePicker(container, 1);
     expect(onChange).not.toHaveBeenCalled();
   });
+
+  return;
 
   describe('disabled', () => {
     it('should no panel open with disabled', () => {

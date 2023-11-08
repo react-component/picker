@@ -268,6 +268,9 @@ export interface SharedPickerProps<DateType = any> {
         clearIcon?: React.ReactNode;
       };
 
+  /** @deprecated Please use `allowClear.clearIcon` instead */
+  clearIcon?: React.ReactNode;
+
   // Active
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -321,6 +324,7 @@ export interface OpenConfig {
 
 export type OnOpenChange = (open: boolean, index?: number, config?: OpenConfig) => void;
 export interface SelectorProps<DateType = any> {
+  clearIcon?: React.ReactNode;
   suffixIcon?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -336,6 +340,9 @@ export interface SelectorProps<DateType = any> {
 
   // Click
   onClick: React.MouseEventHandler<HTMLDivElement>;
+
+  // Clear
+  onClear: VoidFunction;
 
   // Change
   format: string[];

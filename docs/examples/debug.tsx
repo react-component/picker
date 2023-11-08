@@ -40,7 +40,8 @@ export default () => {
     // has end
     // [null, moment('2023-11-15')],
     // [moment('2023-11-5'), moment('2023-12-29')],
-    [moment('2000-09-03'), moment('1990-09-03')],
+    // [moment('2000-09-03'), moment('1990-09-03')],
+    null,
   );
 
   return (
@@ -51,24 +52,24 @@ export default () => {
         {...sharedLocale}
         // picker="year"
         // value={[moment('2000-01-01'), null]}
-        presets={[
-          {
-            label: 'Now',
-            value: [moment(), moment()],
-          },
-          {
-            label: 'This Week',
-            value: [moment().add(-7, 'd'), moment()],
-          },
-          {
-            label: 'Last Week',
-            value: [moment().add(-14, 'd'), moment().add(-7, 'd')],
-          },
-          {
-            label: 'Wrong Order',
-            value: [moment(), moment().add(-14, 'd')],
-          },
-        ]}
+        // presets={[
+        //   {
+        //     label: 'Now',
+        //     value: [moment(), moment()],
+        //   },
+        //   {
+        //     label: 'This Week',
+        //     value: [moment().add(-7, 'd'), moment()],
+        //   },
+        //   {
+        //     label: 'Last Week',
+        //     value: [moment().add(-14, 'd'), moment().add(-7, 'd')],
+        //   },
+        //   {
+        //     label: 'Wrong Order',
+        //     value: [moment(), moment().add(-14, 'd')],
+        //   },
+        // ]}
         value={rangeValue}
         // defaultPickerValue={[moment('2020-01-01'), null]}
         // onPickerValueChange={(dates, info) => {
@@ -100,7 +101,7 @@ export default () => {
           console.log('🎉 Calendar Change:', val, text, info);
         }}
         // preserveInvalidOnBlur
-        // allowEmpty={[false, true]}
+        allowEmpty={[false, true]}
         onOpenChange={(nextOpen) => {
           console.log('🏆 Next Open:', nextOpen);
         }}

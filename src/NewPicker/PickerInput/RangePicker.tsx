@@ -22,6 +22,7 @@ import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
+import { useClearIcon } from './Selector/hooks/useClearIcon';
 import RangeSelector from './Selector/RangeSelector';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
@@ -148,11 +149,18 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     presets,
     ranges,
 
+    // Icons
+    allowClear,
+    clearIcon,
+
     // Render
     components = {},
   } = props;
 
   const selectorRef = React.useRef<SelectorRef>();
+
+  // ========================= Icon =========================
+  const mergedClearIcon = useClearIcon(prefixCls, allowClear, clearIcon);
 
   // ======================= ShowTime =======================
   const mergedShowTime = useShowTime(showTime);
@@ -225,7 +233,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   // ======================== Value =========================
 
-  const [calendarValue, triggerCalendarChange, triggerSubmitChange] = useRangeValue(
+  const [calendarValue, triggerCalendarChange, triggerSubmitChange, emptyValue] = useRangeValue(
     {
       ...props,
       allowEmpty: mergedAllowEmpty,
@@ -253,7 +261,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   // ======================= Validate =======================
   const isInvalidRange = React.useMemo(() => {
     // Not check if get focused
-    if (focused) {
+    if (focused || emptyValue) {
       return false;
     }
 
@@ -278,7 +286,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     }
 
     return false;
-  }, [focused, calendarValue, mergedAllowEmpty, isInvalidateDate]);
+  }, [focused, emptyValue, calendarValue, mergedAllowEmpty, isInvalidateDate]);
 
   // ===================== Picker Value =====================
   const [currentPickerValue, setCurrentPickerValue] = useRangePickerValue(
@@ -365,6 +373,10 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     }
 
     setMergeOpen(true);
+  };
+
+  const onSelectorClear = () => {
+    triggerSubmitChange(null);
   };
 
   // ======================== Hover =========================
@@ -507,6 +519,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
           // Ref
           ref={selectorRef}
           // Icon
+          clearIcon={mergedClearIcon}
           suffixIcon={suffixIcon}
           // Active
           activeIndex={focusedIndex}
@@ -527,6 +540,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
           onOpenChange={onSelectorOpenChange}
           // Click
           onClick={onSelectorClick}
+          onClear={onSelectorClear}
           // Invalid
           invalid={isInvalidRange}
         />

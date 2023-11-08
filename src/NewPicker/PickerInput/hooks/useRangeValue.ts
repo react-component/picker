@@ -34,6 +34,7 @@ export default function useRangeValue<DateType = any>(
   calendarValue: RangeValueType<DateType>,
   triggerCalendarChange: TriggerChange<DateType>,
   triggerSubmitChange: (value: RangeValueType<DateType>) => void,
+  emptyValue: boolean,
 ] {
   const {
     // MISC
@@ -60,12 +61,12 @@ export default function useRangeValue<DateType = any>(
   // Used for internal value management.
   // It should always use `mergedValue` in render logic
   const [internalCalendarValue, setCalendarValue] = React.useState<RangeValueType<DateType>>(
-    defaultValue || [null, null],
+    defaultValue || null,
   );
   const calendarValue = internalCalendarValue || [null, null];
 
   React.useEffect(() => {
-    if (value) {
+    if (value || value === null) {
       setCalendarValue(value);
     }
   }, [value]);
@@ -79,17 +80,19 @@ export default function useRangeValue<DateType = any>(
   });
 
   // ============================ Change ============================
-  const getDateTexts = (dateList: RangeValueType<DateType>) => {
-    return dateList.map((date) =>
+  const getDateTexts = ([start, end]: RangeValueType<DateType>) => {
+    return [start, end].map((date) =>
       date ? generateConfig.locale.format(locale.locale, date, formatList[0]) : '',
     ) as [string, string];
   };
 
   const isSameDates = (source: RangeValueType<DateType>, target: RangeValueType<DateType>) => {
-    const [prevSubmitStart, prevSubmitEnd] = source;
+    const [prevStart = null, prevEnd = null] = source;
+    const [nextStart = null, nextEnd = null] = target;
 
-    const isSameStart = isSameTimestamp(generateConfig, prevSubmitStart, target[0]);
-    const isSameEnd = isSameTimestamp(generateConfig, prevSubmitEnd, target[1]);
+    const isSameStart =
+      prevStart === nextStart || isSameTimestamp(generateConfig, prevStart, nextStart);
+    const isSameEnd = prevEnd === nextEnd || isSameTimestamp(generateConfig, prevEnd, nextEnd);
 
     return [isSameStart && isSameEnd, isSameStart, isSameEnd];
   };
@@ -116,7 +119,8 @@ export default function useRangeValue<DateType = any>(
   const [lastSubmitResult, setLastSubmitResult] = React.useState<[passed: boolean]>([true]);
 
   const triggerSubmit = useEvent((nextValue?: RangeValueType<DateType>) => {
-    const clone: RangeValueType<DateType> = [...(nextValue || calendarValue)];
+    const isNullValue = nextValue === null;
+    const clone: RangeValueType<DateType> = isNullValue ? [] : [...(nextValue || calendarValue)];
 
     // Only when exist value to sort
     if (orderOnChange && clone[0] && clone[1]) {
@@ -155,7 +159,11 @@ export default function useRangeValue<DateType = any>(
       (!end || !isInvalidateDate(end));
 
     // >>> Result
-    const allPassed = validateEmptyDateRange && validateOrder && validateDates;
+    const allPassed =
+      // Null value is from clear button
+      isNullValue ||
+      // Normal check
+      (validateEmptyDateRange && validateOrder && validateDates);
 
     if (allPassed) {
       // Sync submit value to not to trigger `onChange` again
@@ -165,8 +173,8 @@ export default function useRangeValue<DateType = any>(
       if (onChange) {
         const [isSameSubmitDates] = isSameDates(submitValue, clone);
 
-        if (!isSameSubmitDates && validateEmptyDateRange) {
-          onChange(clone, getDateTexts(clone));
+        if (!isSameSubmitDates) {
+          onChange(isNullValue ? null : clone, getDateTexts(clone));
         }
       }
     }
@@ -202,5 +210,10 @@ export default function useRangeValue<DateType = any>(
   }, [lastSubmitResult]);
 
   // ============================ Return ============================
-  return [calendarValue, triggerCalendarChange, triggerSubmitChange];
+  return [
+    calendarValue,
+    triggerCalendarChange,
+    triggerSubmitChange,
+    internalCalendarValue === null,
+  ];
 }

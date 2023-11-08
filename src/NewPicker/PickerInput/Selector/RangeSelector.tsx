@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import type { OpenConfig, SelectorProps, SelectorRef } from '../../interface';
 import PickerContext from '../context';
-import Icon from './Icon';
+import Icon, { ClearIcon } from './Icon';
 import Input, { type InputProps } from './Input';
 
 export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateType> {
@@ -14,8 +14,12 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
   allHelp: boolean;
 }
 
-const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, ref) => {
+function RangeSelector<DateType = any>(
+  props: RangeSelectorProps<DateType>,
+  ref: React.Ref<SelectorRef>,
+) {
   const {
+    clearIcon,
     suffixIcon,
     separator = '~',
     activeIndex,
@@ -29,6 +33,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
 
     // Click
     onClick,
+    onClear,
 
     // Change
     value,
@@ -87,8 +92,7 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
 
   const valueTexts = React.useMemo(() => [getText(value[0]), getText(value[1])], [value, getText]);
 
-  // ======================== Render ========================
-  // >>> Input Props
+  // ======================== Inputs ========================
   const getInputProps = (index: number): InputProps => ({
     // ============== Shared ==============
     format: maskFormat,
@@ -146,7 +150,10 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
     },
   });
 
-  // >>> Render
+  // ======================== Clear =========================
+  const showClear = (clearIcon && value[0] && !disabled[0]) || (value[1] && !disabled[1]);
+
+  // ======================== Render ========================
   return (
     <div
       className={classNames(prefixCls, `${prefixCls}-range`, {
@@ -155,23 +162,20 @@ const RangeSelector = React.forwardRef<SelectorRef, RangeSelectorProps>((props, 
       })}
       ref={rootRef}
       onClick={onClick}
-      // onFocus={() => {
-      //   console.log('my!!! IN', document.activeElement);
-      // }}
-      // onBlur={() => {
-      //   console.log('my!!! OUT', document.activeElement);
-      // }}
     >
       <Input ref={inputStartRef} {...getInputProps(0)} />
       <div className={`${prefixCls}-range-separator`}>{separator}</div>
       <Input ref={inputEndRef} {...getInputProps(1)} />
       <Icon type="suffix" icon={suffixIcon} />
+      {showClear && <ClearIcon type="clear" icon={clearIcon} onClear={onClear} />}
     </div>
   );
-});
-
-if (process.env.NODE_ENV !== 'production') {
-  RangeSelector.displayName = 'RangeSelector';
 }
 
-export default RangeSelector;
+const RefRangeSelector = React.forwardRef(RangeSelector);
+
+if (process.env.NODE_ENV !== 'production') {
+  RefRangeSelector.displayName = 'RangeSelector';
+}
+
+export default RefRangeSelector;
