@@ -123,7 +123,7 @@ export default function useRangeValue<DateType = any>(
   const triggerSubmit = useEvent((nextValue?: RangeValueType<DateType>) => {
     const isNullValue = nextValue === null;
 
-    const clone: RangeValueType<DateType> = [...calendarValue];
+    const clone: RangeValueType<DateType> = [...(nextValue || calendarValue)];
 
     // Fill null value
     if (isNullValue) {
