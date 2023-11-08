@@ -225,6 +225,8 @@ export type Components<DateType = any> = Partial<
 // ========================= Picker =========================
 export type SemanticStructure = 'popup';
 
+export type CustomFormat<DateType> = (value: DateType) => string;
+
 export interface SharedPickerProps<DateType = any> {
   // MISC
   direction?: 'ltr' | 'rtl';
@@ -250,10 +252,12 @@ export interface SharedPickerProps<DateType = any> {
    * Config the input field parse and format.
    * When set `format.align`, it will force user input align with your input,
    * it's only support basic format mask: YYYY, MM, DD, HH, mm, ss, SSS.
+   * Once use config mode, it must be fill with format your config.
    */
   format?:
     | string
-    | string[]
+    | CustomFormat<DateType>
+    | (string | CustomFormat<DateType>)[]
     | {
         format: string;
         align?: boolean;

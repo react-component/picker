@@ -73,7 +73,9 @@ function RangeSelector<DateType = any>(
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: rootRef.current,
-    focus: (index = 0) => getInput(index)?.focus(),
+    focus: (index = 0) => {
+      getInput(index)?.focus();
+    },
     blur: () => {
       getInput(0)?.blur();
       getInput(1)?.blur();

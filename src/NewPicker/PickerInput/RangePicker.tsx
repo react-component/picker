@@ -7,6 +7,7 @@ import type {
   InternalMode,
   OnOpenChange,
   OpenConfig,
+  PickerRef,
   RangeTimeProps,
   SelectorProps,
   SelectorRef,
@@ -101,7 +102,7 @@ export interface RangePickerProps<DateType> extends Omit<SharedPickerProps<DateT
   showTime?: boolean | RangeTimeProps<DateType>;
 }
 
-export default function Picker<DateType = any>(props: RangePickerProps<DateType>) {
+function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: React.Ref<PickerRef>) {
   const {
     // Style
     prefixCls = 'rc-picker',
@@ -166,7 +167,18 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     components = {},
   } = props;
 
+  // ========================= Refs =========================
   const selectorRef = React.useRef<SelectorRef>();
+
+  React.useImperativeHandle(ref, () => ({
+    nativeElement: selectorRef.current?.nativeElement,
+    focus: () => {
+      selectorRef.current?.focus();
+    },
+    blur: () => {
+      selectorRef.current?.blur();
+    },
+  }));
 
   // =================== Disabled & Empty ===================
   const mergedDisabled = separateConfig(disabled, false);
@@ -307,7 +319,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     multiplePanel,
     defaultPickerValue,
     pickerValue,
-    mergedShowTime.defaultValue,
+    mergedShowTime?.defaultValue,
     onPickerValueChange,
   );
 
@@ -576,3 +588,13 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     </PickerContext.Provider>
   );
 }
+
+const RefRangePicker = React.forwardRef(RangePicker) as <DateType>(
+  props: RangePickerProps<DateType> & { ref?: React.Ref<PickerRef> },
+) => React.ReactElement;
+
+if (process.env.NODE_ENV !== 'production') {
+  (RefRangePicker as any).displayName = 'RefRangePicker';
+}
+
+export default RefRangePicker;

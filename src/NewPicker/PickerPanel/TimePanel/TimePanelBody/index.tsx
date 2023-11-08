@@ -71,7 +71,6 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
 
     // MISC
     changeOnScroll,
-
   } = props;
 
   const {

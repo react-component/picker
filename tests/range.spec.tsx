@@ -1,6 +1,7 @@
 // Note: zombieJ refactoring
 
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
+import type { Dayjs } from 'dayjs';
 import type { Moment } from 'moment';
 import moment from 'moment';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -8,7 +9,7 @@ import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import type { PickerMode } from '../src/interface';
-import type { RangePickerProps } from '../src/RangePicker';
+import type { PickerRef, RangePickerProps } from '../src/NewPicker';
 import {
   clearValue,
   clickButton,
@@ -328,7 +329,7 @@ describe('Picker.Range', () => {
 
   function testRangePickerPresetRange(propsType: 'ranges' | 'presets') {
     const genProps = (ranges: Record<string, any>) => {
-      const props: Partial<RangePickerProps<Moment>> = {};
+      const props: Partial<RangePickerProps<Dayjs>> = {};
       if (propsType === 'ranges') {
         // ranges is deprecated, but the case needs to be retained for a while
         props.ranges = ranges;
@@ -338,7 +339,7 @@ describe('Picker.Range', () => {
           props.presets.push({ label, value });
         });
       }
-      return props as RangePickerProps<Moment>;
+      return props as RangePickerProps<Dayjs>;
     };
 
     it(`${propsType} work`, () => {
@@ -472,11 +473,17 @@ describe('Picker.Range', () => {
 
     beforeAll(() => {
       domMock = spyElementPrototypes(HTMLElement, {
-        focus: () => {
+        focus(oriDesc: any, ...rest: any[]) {
           focused = true;
+
+          // Call origin
+          oriDesc.value.call(this, ...rest);
         },
-        blur: () => {
+        blur(oriDesc: any, ...rest: any[]) {
           blurred = true;
+
+          // Call origin
+          oriDesc.value.call(this, ...rest);
         },
       });
     });
@@ -491,32 +498,40 @@ describe('Picker.Range', () => {
     });
 
     it('function call', () => {
-      const ref = React.createRef<DayRangePicker>();
+      const ref = React.createRef<PickerRef>();
       render(
         <div>
           <DayRangePicker ref={ref} />
         </div>,
       );
 
-      ref.current!.rangePickerRef.current!.focus();
+      ref.current!.focus();
       expect(focused).toBeTruthy();
 
-      ref.current!.rangePickerRef.current!.blur();
+      ref.current!.blur();
       expect(blurred).toBeTruthy();
+    });
+
+    it('jsdom', () => {
+      const { container } = render(<button onFocus={console.log}>good</button>);
+      const btn = container.querySelector('button');
+      btn.focus();
     });
 
     it('not crash with showTime defaultValue', () => {
       const { container } = render(
-        <DayRangePicker
-          showTime={{
-            defaultValue: [getDay('01:02:03'), getDay('05:06:07')],
-          }}
-        />,
+        <>
+          <DayRangePicker
+            showTime={{
+              defaultValue: [getDay('01:02:03'), getDay('05:06:07')],
+            }}
+          />
+          <button tabIndex={0} />
+        </>,
       );
 
       openPicker(container);
       selectCell(13);
-      // document.querySelector('.rc-picker-ok button').simulate('click');
       fireEvent.click(document.querySelector('.rc-picker-ok button'));
       selectCell(23);
 
