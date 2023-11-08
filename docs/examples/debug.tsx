@@ -73,6 +73,7 @@ export default () => {
         //   },
         // ]}
         value={rangeValue}
+        placeholder={['Start', 'End']}
         // defaultPickerValue={[moment('2020-01-01'), null]}
         // onPickerValueChange={(dates, info) => {
         //   console.log('🍭 Picker Value Change:', dates, info);

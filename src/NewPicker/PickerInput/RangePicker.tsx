@@ -52,6 +52,9 @@ export interface RangePickerProps<DateType> extends SharedPickerProps<DateType> 
     },
   ) => void;
 
+  // Placeholder
+  placeholder?: [string, string];
+
   // Picker Value
   /**
    * Config the popup panel date.

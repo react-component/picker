@@ -326,8 +326,6 @@ describe('Picker.Range', () => {
     });
   });
 
-  return;
-
   function testRangePickerPresetRange(propsType: 'ranges' | 'presets') {
     const genProps = (ranges: Record<string, any>) => {
       const props: Partial<RangePickerProps<Moment>> = {};
@@ -422,11 +420,11 @@ describe('Picker.Range', () => {
       );
 
       openPicker(container);
-      expect(document.querySelectorAll('.rc-picker-header-view')[0].textContent).toEqual('Nov1989');
+      expect(document.querySelectorAll('.rc-picker-header-view')[0].textContent).toEqual('1989年11月');
       closePicker(container);
 
       openPicker(container, 1);
-      expect(document.querySelectorAll('.rc-picker-header-view')[1].textContent).toEqual('Oct1990');
+      expect(document.querySelectorAll('.rc-picker-header-view')[1].textContent).toEqual('1990年10月');
       closePicker(container, 1);
     });
 
@@ -439,7 +437,7 @@ describe('Picker.Range', () => {
       );
       openPicker(container);
       expect(document.querySelector('.rc-picker-year-btn').textContent).toEqual(
-        startDate.format('YYYY'),
+        startDate.format('YYYY年'),
       );
     });
 
@@ -458,10 +456,12 @@ describe('Picker.Range', () => {
         openPicker(container);
       }).not.toThrow();
       expect(document.querySelector('.rc-picker-year-btn').textContent).toEqual(
-        startDate.format('YYYY'),
+        startDate.format('YYYY年'),
       );
     });
   });
+
+  return;
 
   describe('focus test', () => {
     let domMock: ReturnType<typeof spyElementPrototypes>;

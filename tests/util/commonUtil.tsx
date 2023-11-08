@@ -2,6 +2,7 @@ import React from 'react';
 // import { mount as originMount, ReactWrapper } from 'enzyme';
 import { act, fireEvent } from '@testing-library/react';
 import dayjs, { type Dayjs } from 'dayjs';
+import 'dayjs/locale/zh-cn';
 import moment, { type Moment, type unitOfTime } from 'moment';
 import Picker, { PickerPanel, type PickerProps } from '../../src';
 import dayGenerateConfig from '../../src/generate/dayjs';
@@ -20,6 +21,8 @@ import RangePicker, {
   type RangePickerDateProps,
   type RangePickerTimeProps,
 } from '../../src/RangePicker';
+
+dayjs.locale('zh-cn');
 
 const FULL_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
@@ -139,7 +142,6 @@ export function closePicker(container: HTMLElement, index = 0) {
 
 export function isOpen() {
   const dropdown = document.querySelector('.rc-picker-dropdown');
-  console.log(dropdown.className);
   return dropdown && !dropdown.classList.contains('rc-picker-dropdown-hidden');
 }
 

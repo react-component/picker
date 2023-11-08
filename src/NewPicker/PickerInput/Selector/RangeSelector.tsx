@@ -12,6 +12,8 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
   disabled: [boolean, boolean];
 
   allHelp: boolean;
+
+  placeholder?: [string, string];
 }
 
 function RangeSelector<DateType = any>(
@@ -30,6 +32,9 @@ function RangeSelector<DateType = any>(
     onBlur,
     locale,
     generateConfig,
+
+    // Placeholder
+    placeholder,
 
     // Style
     className,
@@ -111,6 +116,8 @@ function RangeSelector<DateType = any>(
 
     // ============= By Index =============
     value: valueTexts[index],
+
+    placeholder: (placeholder || [])[index],
 
     active: activeIndex === index,
 
