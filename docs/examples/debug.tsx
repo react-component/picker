@@ -40,8 +40,8 @@ export default () => {
     // has end
     // [null, moment('2023-11-15')],
     // [moment('2023-11-5'), moment('2023-12-29')],
-    // [moment('2000-09-03'), moment('1990-09-03')],
-    null,
+    [moment('2000-09-03'), moment('1990-09-03')],
+    // null,
   );
 
   return (
@@ -50,6 +50,8 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
+        // className="good"
+        // style={{ opacity: 0.5 }}
         // picker="year"
         // value={[moment('2000-01-01'), null]}
         // presets={[
@@ -75,7 +77,7 @@ export default () => {
         // onPickerValueChange={(dates, info) => {
         //   console.log('🍭 Picker Value Change:', dates, info);
         // }}
-        disabled
+        // disabled={[true, false]}
         suffixIcon="🧶"
         disabledDate={(date) => date.date() === 11}
         // onFocus={() => {
@@ -92,7 +94,7 @@ export default () => {
         //   // align: true,
         // }}
         // preserveInvalidOnBlur
-        // showTime={{}}
+        showTime
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
           setRangeValue(val);

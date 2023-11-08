@@ -15,7 +15,7 @@ export default function useOpen(
 
   function setOpen(next: boolean, config: OpenConfig = {}) {
     if (!config.inherit || rafOpen) {
-      setRafOpen(next);
+      setRafOpen(next, config.force);
     }
   }
 

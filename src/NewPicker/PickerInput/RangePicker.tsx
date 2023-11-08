@@ -1,4 +1,6 @@
 import { useMergedState } from 'rc-util';
+import omit from 'rc-util/lib/omit';
+import warning from 'rc-util/lib/warning';
 import * as React from 'react';
 import useShowTime from '../hooks/useShowTime';
 import type {
@@ -96,12 +98,12 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const {
     // Style
     prefixCls = 'rc-picker',
-    className,
-    style,
     styles = {},
     classNames = {},
 
     // Value
+    defaultValue,
+    value,
     changeOnBlur,
     order = true,
 
@@ -231,12 +233,8 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   // ====================== Invalidate ======================
   const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, mergedShowTime);
 
-  // ======================== Order =========================
-  // When exist disabled, it should not support order
-  const orderOnChange = mergedDisabled.some((d) => d) ? false : order;
 
   // ======================== Value =========================
-
   const [calendarValue, triggerCalendarChange, triggerSubmitChange, emptyValue] = useRangeValue(
     {
       ...props,
@@ -244,10 +242,10 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       order,
       picker,
     },
+    mergedDisabled,
     formatList,
     focused,
     blurRef,
-    orderOnChange,
     isInvalidateDate,
     needConfirm,
   );
@@ -355,7 +353,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     const activeLen = activeList?.length;
     if (activeLen > 1 || hasDisabled) {
       // Close anyway
-      triggerOpen(false, { index: activeIndex });
+      triggerOpen(false, { index: activeIndex, force: true });
       triggerSubmitChange(nextValue);
     } else if (activeLen === 1) {
       // Trigger
@@ -381,6 +379,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   const onSelectorClear = () => {
     triggerSubmitChange(null);
+    triggerOpen(false, { force: true });
   };
 
   // ======================== Hover =========================
@@ -406,7 +405,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   const onPresetSubmit = (nextValues: RangeValueType<DateType>) => {
     triggerSubmitChange(nextValues);
-    triggerOpen(false);
+    triggerOpen(false, { force: true });
   };
 
   // ======================== Panel =========================
@@ -455,7 +454,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   const panel = (
     <Popup
       // MISC
-      {...(props as Omit<RangePickerProps<DateType>, 'onChange' | 'onCalendarChange'>)}
+      {...omit(props, ['onChange', 'onCalendarChange', 'style', 'className'])}
       showNow={mergedShowNow}
       showTime={mergedShowTime}
       multiple={multiplePanel}
@@ -500,8 +499,26 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     [prefixCls, locale, generateConfig, components.button],
   );
 
-  // ======================== Render ========================
+  // ====================== DevWarning ======================
+  if (process.env.NODE_ENV !== 'production') {
+    const isIndexEmpty = (index: number) => {
+      return (
+        // Value is empty
+        (value && !value[index]) ||
+        // DefaultValue is empty
+        (defaultValue && !defaultValue[index])
+      );
+    };
 
+    if (mergedDisabled.some((fieldDisabled, index) => fieldDisabled && isIndexEmpty(index))) {
+      warning(
+        false,
+        '`disabled` should not set with empty `value`. You should set `allowEmpty` or `value` instead.',
+      );
+    }
+  }
+
+  // ======================== Render ========================
   return (
     <PickerContext.Provider value={context}>
       <PickerTrigger

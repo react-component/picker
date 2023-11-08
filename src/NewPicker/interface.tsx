@@ -315,12 +315,16 @@ export interface PickerRef {
 
 // ======================== Selector ========================
 export interface OpenConfig {
-  index?: number
+  index?: number;
   /**
    * Keep open if prev state is open but set close within the same frame.
    * This is used for RangePicker input switch to another one.
    */
   inherit?: boolean;
+  /**
+   * By default. Close popup will delay for one frame. `force` will trigger immediately.
+   */
+  force?: boolean;
 }
 
 export type OnOpenChange = (open: boolean, config?: OpenConfig) => void;

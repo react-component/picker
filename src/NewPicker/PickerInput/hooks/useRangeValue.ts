@@ -24,10 +24,10 @@ export default function useRangeValue<DateType = any>(
     | 'preserveInvalidOnBlur'
     | 'picker'
   >,
+  disabled: [boolean, boolean],
   formatList: string[],
   focused: boolean,
   blurRef: React.RefObject<'input' | 'panel'>,
-  orderOnChange: boolean,
   isInvalidateDate: (date: DateType) => boolean,
   needConfirm: boolean,
 ): [
@@ -56,6 +56,8 @@ export default function useRangeValue<DateType = any>(
     allowEmpty,
     order,
   } = info;
+
+  const orderOnChange = disabled.some((d) => d) ? false : order;
 
   // ============================ Values ============================
   // Used for internal value management.
@@ -120,7 +122,17 @@ export default function useRangeValue<DateType = any>(
 
   const triggerSubmit = useEvent((nextValue?: RangeValueType<DateType>) => {
     const isNullValue = nextValue === null;
-    const clone: RangeValueType<DateType> = isNullValue ? [] : [...(nextValue || calendarValue)];
+
+    const clone: RangeValueType<DateType> = [...calendarValue];
+
+    // Fill null value
+    if (isNullValue) {
+      disabled.forEach((fieldDisabled, index) => {
+        if (!fieldDisabled) {
+          clone[index] = null;
+        }
+      });
+    }
 
     // Only when exist value to sort
     if (orderOnChange && clone[0] && clone[1]) {
@@ -174,7 +186,11 @@ export default function useRangeValue<DateType = any>(
         const [isSameSubmitDates] = isSameDates(submitValue, clone);
 
         if (!isSameSubmitDates) {
-          onChange(isNullValue ? null : clone, getDateTexts(clone));
+          onChange(
+            // Return null directly if all date are empty
+            isNullValue && clone.every((val) => !val) ? null : clone,
+            getDateTexts(clone),
+          );
         }
       }
     }

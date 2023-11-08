@@ -31,6 +31,10 @@ function RangeSelector<DateType = any>(
     locale,
     generateConfig,
 
+    // Style
+    className,
+    style,
+
     // Click
     onClick,
     onClear,
@@ -159,10 +163,16 @@ function RangeSelector<DateType = any>(
   // ======================== Render ========================
   return (
     <div
-      className={classNames(prefixCls, `${prefixCls}-range`, {
-        [`${prefixCls}-focused`]: activeIndex !== null,
-        [`${prefixCls}-invalid`]: invalid,
-      })}
+      className={classNames(
+        prefixCls,
+        `${prefixCls}-range`,
+        {
+          [`${prefixCls}-focused`]: activeIndex !== null,
+          [`${prefixCls}-invalid`]: invalid,
+        },
+        className,
+      )}
+      style={style}
       ref={rootRef}
       onClick={onClick}
     >

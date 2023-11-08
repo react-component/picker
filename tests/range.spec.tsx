@@ -213,14 +213,17 @@ describe('Picker.Range', () => {
       expect(container.querySelectorAll('input')[1].disabled).toBeFalsy();
     });
 
-    return;
-
     it('should close panel when finish choose panel and next is disabled with disabled = [false, true]/[true,false]', () => {
       const { baseElement } = render(<DayRangePicker disabled={[false, true]} />);
       expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
       fireEvent.click(baseElement.querySelectorAll('.rc-picker-input')[0]);
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
       fireEvent.click(baseElement.querySelector('.rc-picker-cell-inner'));
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
     });
 
@@ -231,6 +234,11 @@ describe('Picker.Range', () => {
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
       fireEvent.click(baseElement.querySelector('.rc-picker-cell-inner'));
       fireEvent.click(baseElement.querySelector('.rc-picker-ok button'));
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
     });
 
@@ -239,10 +247,13 @@ describe('Picker.Range', () => {
       expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
       fireEvent.click(baseElement.querySelectorAll('.rc-picker-input')[1]);
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
-      fireEvent.click(
-        baseElement.querySelector('.rc-picker-cell-range-start .rc-picker-cell-inner'),
-      );
+      selectCell(11);
       fireEvent.click(baseElement.querySelector('.rc-picker-ok button'));
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
     });
 
