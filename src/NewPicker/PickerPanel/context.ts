@@ -13,7 +13,7 @@ export interface PanelProps<DateType = any> {
   onChange: (date: DateType) => void;
   locale: Locale;
   hoverValue: [DateType, DateType] | null;
-  onHover: (date: DateType | null) => void;
+  onHover?: (date: DateType | null) => void;
   value?: DateType;
   pickerValue?: DateType;
   generateConfig: GenerateConfig<DateType>;

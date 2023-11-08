@@ -5,45 +5,7 @@ import type { SharedPanelProps } from '../../interface';
 import DatePanel from '../DatePanel';
 
 export default function WeekPanel<DateType = any>(props: SharedPanelProps<DateType>) {
-  const { disabledDate, prefixCls, onChange, onHover, generateConfig, locale, value, hoverValue } =
-    props;
-
-  const cellPrefixCls = `${prefixCls}-cell`;
-
-  // =========================== PrefixColumn ===========================
-  const prefixColumn = (date: DateType) => {
-    // >>> Additional check for disabled
-    const disabled = disabledDate?.(date, { type: 'week' });
-
-    return (
-      <td
-        key="week"
-        className={classNames(cellPrefixCls, `${cellPrefixCls}-week`, {
-          [`${cellPrefixCls}-disabled`]: disabled,
-        })}
-        // Operation: Same as code in PanelBody
-        onClick={() => {
-          if (!disabled) {
-            onChange(date);
-          }
-        }}
-        onMouseEnter={() => {
-          if (!disabled) {
-            onHover(date);
-          }
-        }}
-        onMouseLeave={() => {
-          if (!disabled) {
-            onHover(null);
-          }
-        }}
-      >
-        <div className={`${cellPrefixCls}-inner`}>
-          {generateConfig.locale.getWeek(locale.locale, date)}
-        </div>
-      </td>
-    );
-  };
+  const { prefixCls, generateConfig, locale, value, hoverValue } = props;
 
   // =============================== Row ================================
   const rowPrefixCls = `${prefixCls}-week-panel-row`;
@@ -55,8 +17,6 @@ export default function WeekPanel<DateType = any>(props: SharedPanelProps<DateTy
     return classNames(rowPrefixCls, {
       [`${rowPrefixCls}-selected`]:
         !hoverValue && isSameWeek(generateConfig, locale.locale, value, date),
-      // [`${rowPrefixCls}-selected`]:
-      //   !rangedValue && isSameWeek(generateConfig, locale.locale, value, date),
 
       // Patch for hover range
       // [`${rowPrefixCls}-range-start`]: isRangeStart,
@@ -67,13 +27,5 @@ export default function WeekPanel<DateType = any>(props: SharedPanelProps<DateTy
   };
 
   // ============================== Render ==============================
-  return (
-    <DatePanel
-      {...props}
-      mode="week"
-      panelName="week"
-      prefixColumn={prefixColumn}
-      rowClassName={rowClassName}
-    />
-  );
+  return <DatePanel {...props} mode="week" panelName="week" rowClassName={rowClassName} />;
 }

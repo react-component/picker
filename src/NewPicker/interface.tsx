@@ -200,7 +200,16 @@ export interface SharedPanelProps<DateType = any> {
   onHover?: (value: DateType | null) => void;
 
   // Time
+  /**
+   * Only used for `date` mode.
+   */
   showTime?: SharedTimeProps<DateType>;
+
+  // Week
+  /**
+   * Only used for `date` mode.
+   */
+  showWeek?: boolean;
 }
 
 export type Components<DateType = any> = Partial<

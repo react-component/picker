@@ -114,12 +114,12 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
           }}
           onMouseEnter={() => {
             if (!disabled) {
-              onHover(currentDate);
+              onHover?.(currentDate);
             }
           }}
           onMouseLeave={() => {
             if (!disabled) {
-              onHover(null);
+              onHover?.(null);
             }
           }}
         >

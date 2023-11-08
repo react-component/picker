@@ -14,7 +14,6 @@ import PanelHeader from '../PanelHeader';
 
 export interface DatePanelProps<DateType> extends SharedPanelProps<DateType> {
   panelName?: PanelMode;
-  prefixColumn?: (date: DateType) => React.ReactNode;
   rowClassName?: (date: DateType) => string;
 
   /** Used for `WeekPanel` */
@@ -31,18 +30,61 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
     value,
     onPickerValueChange,
     onModeChange,
-    prefixColumn,
     mode,
     hoverValue,
+    disabledDate,
+    onChange,
+    onHover,
+    showWeek,
   } = props;
 
   const panelPrefixCls = `${prefixCls}-${panelName}-panel`;
+
+  const cellPrefixCls = `${prefixCls}-cell`;
 
   // ========================== Base ==========================
   const [info, now] = useInfo(props);
   const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale.locale);
   const baseDate = getWeekStartDate(locale.locale, generateConfig, pickerValue);
   const month = generateConfig.getMonth(pickerValue);
+
+  // =========================== PrefixColumn ===========================
+  const prefixColumn =
+    mode === ('week' || showWeek)
+      ? (date: DateType) => {
+          // >>> Additional check for disabled
+          const disabled = disabledDate?.(date, { type: 'week' });
+
+          return (
+            <td
+              key="week"
+              className={classNames(cellPrefixCls, `${cellPrefixCls}-week`, {
+                [`${cellPrefixCls}-disabled`]: disabled,
+              })}
+              // Operation: Same as code in PanelBody
+              onClick={() => {
+                if (!disabled) {
+                  onChange(date);
+                }
+              }}
+              onMouseEnter={() => {
+                if (!disabled) {
+                  onHover?.(date);
+                }
+              }}
+              onMouseLeave={() => {
+                if (!disabled) {
+                  onHover?.(null);
+                }
+              }}
+            >
+              <div className={`${cellPrefixCls}-inner`}>
+                {generateConfig.locale.getWeek(locale.locale, date)}
+              </div>
+            </td>
+          );
+        }
+      : null;
 
   // ========================= Cells ==========================
   // >>> Header Cells
@@ -164,6 +206,7 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
           getCellDate={getCellDate}
           getCellText={getCellText}
           getCellClassName={getCellClassName}
+          prefixColumn={prefixColumn}
         />
       </div>
     </PanelContext.Provider>

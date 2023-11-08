@@ -137,10 +137,13 @@ export default () => {
         /> */}
         {/* <CellPicker
           picker="date"
-          showTime={{
-            format: 'HH:mm:ss.SSS A',
-            showTitle: true,
-          }}
+          // showTime={{
+          //   format: 'HH:mm:ss.SSS A',
+          //   showTitle: true,
+          // }}
+        />
+        <CellPicker
+          picker="week"
         /> */}
 
         {/* <CellPicker

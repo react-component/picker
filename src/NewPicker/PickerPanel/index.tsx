@@ -64,6 +64,12 @@ export interface PickerPanelProps<DateType = any>
   // Time
   showTime?: true | SharedTimeProps<DateType>;
 
+  // Week
+  /**
+   * Only worked in `date` mode. Show the current week
+   */
+  showWeek?: boolean;
+
   // Cell
   cellRender?: CellRender<DateType>;
 
@@ -109,6 +115,9 @@ function PickerPanel<DateType = any>(
 
     // Time
     showTime,
+
+    // Week
+    showWeek,
 
     // Cell
     cellRender,
@@ -229,6 +238,8 @@ function PickerPanel<DateType = any>(
       <PanelComponent
         // Time
         showTime={mergedShowTime}
+        // Week
+        showWeek={showWeek}
         // MISC
         prefixCls={mergedPrefixCls}
         locale={locale}

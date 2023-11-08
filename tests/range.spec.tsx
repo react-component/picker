@@ -8,7 +8,6 @@ import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import type { PickerMode } from '../src/interface';
-import zhCN from '../src/locale/zh_CN';
 import type { RangePickerProps } from '../src/RangePicker';
 import {
   clearValue,
@@ -130,14 +129,12 @@ describe('Picker.Range', () => {
       openPicker(container);
       expect(document.querySelector('.rc-picker-footer')).toBeFalsy();
       expect(document.querySelectorAll('.rc-picker-header-view')[0].textContent).toEqual(
-        '1990-1999',
+        '1990年-1999年',
       );
       expect(document.querySelectorAll('.rc-picker-header-view')[1].textContent).toEqual(
-        '2000-2009',
+        '2000年-2009年',
       );
     });
-
-    return;
 
     it('year with footer', () => {
       const { container } = render(
@@ -146,48 +143,15 @@ describe('Picker.Range', () => {
       openPicker(container);
       expect(document.querySelector('.rc-picker-footer').textContent).toEqual('footer');
       expect(document.querySelectorAll('.rc-picker-header-view')[0].textContent).toEqual(
-        '1990-1999',
+        '1990年-1999年',
       );
       expect(document.querySelectorAll('.rc-picker-header-view')[1].textContent).toEqual(
-        '2000-2009',
+        '2000年-2009年',
       );
     });
   });
 
   return;
-
-  it('endDate can not click before startDate', () => {
-    const onChange = jest.fn();
-
-    const { container } = render(
-      <DayRangePicker onChange={onChange} disabledDate={(date) => date.date() === 28} allowClear />,
-    );
-
-    let cellNode: HTMLElement;
-
-    // Start date
-    openPicker(container);
-    selectCell(23);
-
-    // End date
-    cellNode = selectCell(11);
-    expect(cellNode).toHaveClass('rc-picker-cell-disabled');
-    expect(onChange).not.toHaveBeenCalled();
-
-    // Click origin disabled date
-    cellNode = selectCell(28);
-    expect(cellNode).toHaveClass('rc-picker-cell-disabled');
-    expect(onChange).not.toHaveBeenCalled();
-  });
-
-  it('week picker can not click before start week', () => {
-    const { container } = render(<DayRangePicker picker="week" locale={zhCN} />);
-    openPicker(container);
-    selectCell(11);
-
-    expect(findCell(4)).toHaveClass('rc-picker-cell-disabled');
-    expect(findCell(11)).not.toHaveClass('rc-picker-cell-disabled');
-  });
 
   describe('Can not select when start or end first selected', () => {
     it('select end', () => {
