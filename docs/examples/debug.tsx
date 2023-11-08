@@ -40,8 +40,8 @@ export default () => {
     // has end
     // [null, moment('2023-11-15')],
     // [moment('2023-11-5'), moment('2023-12-29')],
-    [moment('2000-09-03'), moment('1990-09-03')],
-    // null,
+    // [moment('2000-09-03'), moment('1990-09-03')],
+    null,
   );
 
   return (
@@ -129,7 +129,7 @@ export default () => {
       </button>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        <CellPicker
+        {/* <CellPicker
           picker="time"
           // components={{
           //   time: MyTime,
@@ -140,7 +140,7 @@ export default () => {
             // defaultValue: moment('2000-01-01 01:03:05.800'),
           }}
           pickerValue={moment('2000-01-01 01:03:05.800')}
-        />
+        /> */}
         {/* <CellPicker
           picker="date"
           // showTime={{

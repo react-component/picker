@@ -1,7 +1,7 @@
-import type { RangeTimeProps } from '../../interface';
 import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
 import { isSame, isSameTimestamp } from '../../../utils/dateUtil';
+import type { RangeTimeProps } from '../../interface';
 import type { RangePickerProps, RangeValueType } from '../RangePicker';
 import { useLockEffect } from './useLockState';
 
@@ -60,6 +60,9 @@ export default function useRangeValue<DateType = any>(
   } = info;
 
   const orderOnChange = disabled.some((d) => d) ? false : order;
+
+  // ====================== Time Picker Value =======================
+  const { defaultValue: timeDefaultValue = [] } = showTime || {};
 
   // ============================ Values ============================
   // Used for internal value management.
