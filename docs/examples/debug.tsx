@@ -75,7 +75,7 @@ export default () => {
         // onPickerValueChange={(dates, info) => {
         //   console.log('🍭 Picker Value Change:', dates, info);
         // }}
-        // disabled={[false, true]}
+        disabled
         suffixIcon="🧶"
         disabledDate={(date) => date.date() === 11}
         // onFocus={() => {

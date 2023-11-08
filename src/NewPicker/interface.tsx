@@ -315,6 +315,7 @@ export interface PickerRef {
 
 // ======================== Selector ========================
 export interface OpenConfig {
+  index?: number
   /**
    * Keep open if prev state is open but set close within the same frame.
    * This is used for RangePicker input switch to another one.
@@ -322,7 +323,7 @@ export interface OpenConfig {
   inherit?: boolean;
 }
 
-export type OnOpenChange = (open: boolean, index?: number, config?: OpenConfig) => void;
+export type OnOpenChange = (open: boolean, config?: OpenConfig) => void;
 export interface SelectorProps<DateType = any> {
   clearIcon?: React.ReactNode;
   suffixIcon?: React.ReactNode;

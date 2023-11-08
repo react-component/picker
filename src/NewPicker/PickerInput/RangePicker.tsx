@@ -159,6 +159,10 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   const selectorRef = React.useRef<SelectorRef>();
 
+  // =================== Disabled & Empty ===================
+  const mergedDisabled = separateConfig(disabled, false);
+  const mergedAllowEmpty = separateConfig(allowEmpty, false);
+
   // ========================= Icon =========================
   const mergedClearIcon = useClearIcon(prefixCls, allowClear, clearIcon);
 
@@ -194,8 +198,11 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   const [mergedOpen, setMergeOpen] = useOpen(open, defaultOpen, onOpenChange);
 
-  const onSelectorOpenChange: OnOpenChange = (nextOpen, index, config?: OpenConfig) => {
-    setMergeOpen(nextOpen, config);
+  const triggerOpen: OnOpenChange = (nextOpen, config?: OpenConfig) => {
+    // No need to open if all disabled
+    if (mergedDisabled.some((fieldDisabled) => !fieldDisabled) || !nextOpen) {
+      setMergeOpen(nextOpen, config);
+    }
   };
 
   // ======================== Active ========================
@@ -221,10 +228,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     }
   }, [activeIndex, mergedOpen]);
 
-  // =================== Disabled & Empty ===================
-  const mergedDisabled = separateConfig(disabled, false);
-  const mergedAllowEmpty = separateConfig(allowEmpty, false);
-
+  // ====================== Invalidate ======================
   const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, mergedShowTime);
 
   // ======================== Order =========================
@@ -351,7 +355,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     const activeLen = activeList?.length;
     if (activeLen > 1 || hasDisabled) {
       // Close anyway
-      onSelectorOpenChange(false, activeIndex);
+      triggerOpen(false, { index: activeIndex });
       triggerSubmitChange(nextValue);
     } else if (activeLen === 1) {
       // Trigger
@@ -372,7 +376,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       }
     }
 
-    setMergeOpen(true);
+    triggerOpen(true);
   };
 
   const onSelectorClear = () => {
@@ -402,7 +406,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
 
   const onPresetSubmit = (nextValues: RangeValueType<DateType>) => {
     triggerSubmitChange(nextValues);
-    setMergeOpen(false);
+    triggerOpen(false);
   };
 
   // ======================== Panel =========================
@@ -414,7 +418,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   // >>> Focus
   const onPanelFocus: React.FocusEventHandler<HTMLDivElement> = () => {
     setFocused(true);
-    setMergeOpen(true);
+    triggerOpen(true);
   };
 
   const onPanelBlur: React.FocusEventHandler<HTMLDivElement> = () => {
@@ -441,7 +445,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     }
 
     // Close popup
-    setMergeOpen(false);
+    triggerOpen(false);
   };
 
   // >>> Value
@@ -537,7 +541,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
           disabled={mergedDisabled}
           // Open
           open={mergedOpen ? focusedIndex : null}
-          onOpenChange={onSelectorOpenChange}
+          onOpenChange={triggerOpen}
           // Click
           onClick={onSelectorClick}
           onClear={onSelectorClear}

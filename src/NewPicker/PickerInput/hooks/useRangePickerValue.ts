@@ -43,6 +43,10 @@ export default function useRangePickerValue<DateType = any>(
   pickerValue?: RangeValueType<DateType>,
   onPickerValueChange?: RangePickerProps<DateType>['onPickerValueChange'],
 ): [currentIndexPickerValue: DateType, setCurrentIndexPickerValue: (value: DateType) => void] {
+  // ======================== Active ========================
+  // `activeIndex` must be valid to avoid getting empty `pickerValue`
+  const mergedActiveIndex = activeIndex || 0;
+
   // ===================== Picker Value =====================
   const [mergedStartPickerValue, setStartPickerValue] = useMergedState(
     () => defaultPickerValue?.[0] || calendarValue?.[0] || generateConfig.getNow(),
@@ -58,16 +62,16 @@ export default function useRangePickerValue<DateType = any>(
     },
   );
 
-  const currentPickerValue = [mergedStartPickerValue, mergedEndPickerValue][activeIndex];
+  const currentPickerValue = [mergedStartPickerValue, mergedEndPickerValue][mergedActiveIndex];
   const setCurrentPickerValue = (
     nextPickerValue: DateType,
     source: 'reset' | 'panel' = 'panel',
   ) => {
-    const updater = [setStartPickerValue, setEndPickerValue][activeIndex];
+    const updater = [setStartPickerValue, setEndPickerValue][mergedActiveIndex];
     updater(nextPickerValue);
 
     const clone: [DateType, DateType] = [mergedStartPickerValue, mergedEndPickerValue];
-    clone[activeIndex] = nextPickerValue;
+    clone[mergedActiveIndex] = nextPickerValue;
 
     if (
       onPickerValueChange &&
@@ -117,9 +121,9 @@ export default function useRangePickerValue<DateType = any>(
   // >>> calendarValue: Sync with `calendarValue` if changed
   useLayoutEffect(() => {
     if (open) {
-      if (activeIndex === 0 && calendarValue[0]) {
+      if (mergedActiveIndex === 0 && calendarValue[0]) {
         setCurrentPickerValue(calendarValue[0], 'reset');
-      } else if (activeIndex === 1 && calendarValue[1]) {
+      } else if (mergedActiveIndex === 1 && calendarValue[1]) {
         setCurrentPickerValue(
           // End PickerValue need additional shift
           getEndDatePickerValue(calendarValue[0], calendarValue[1]),
@@ -127,18 +131,18 @@ export default function useRangePickerValue<DateType = any>(
         );
       }
     }
-  }, [open, calendarValue, activeIndex]);
+  }, [open, calendarValue, mergedActiveIndex]);
 
   // >>> defaultPickerValue: Resync to `defaultPickerValue` for each panel focused
   useLayoutEffect(() => {
     if (open && defaultPickerValue) {
-      if (activeIndex === 0 && defaultPickerValue[0]) {
+      if (mergedActiveIndex === 0 && defaultPickerValue[0]) {
         setCurrentPickerValue(defaultPickerValue[0], 'reset');
-      } else if (activeIndex === 1 && defaultPickerValue[1]) {
+      } else if (mergedActiveIndex === 1 && defaultPickerValue[1]) {
         setCurrentPickerValue(defaultPickerValue[1], 'reset');
       }
     }
-  }, [open, activeIndex]);
+  }, [open, mergedActiveIndex]);
 
   return [currentPickerValue, setCurrentPickerValue];
 }

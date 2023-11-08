@@ -189,6 +189,7 @@ describe('Picker.Range', () => {
     expect(onChange).toHaveBeenCalledWith([expect.anything(), null], ['1990-09-11', '']);
 
     clearValue();
+    expect(onChange).toHaveBeenCalledWith(null, ['', '']);
     onChange.mockReset();
 
     // Not allow empty with startDate
@@ -197,8 +198,6 @@ describe('Picker.Range', () => {
     closePicker(container, 1);
     expect(onChange).not.toHaveBeenCalled();
   });
-
-  return;
 
   describe('disabled', () => {
     it('should no panel open with disabled', () => {
@@ -213,6 +212,8 @@ describe('Picker.Range', () => {
       expect(container.querySelectorAll('input')[0].disabled).toBeTruthy();
       expect(container.querySelectorAll('input')[1].disabled).toBeFalsy();
     });
+
+    return;
 
     it('should close panel when finish choose panel and next is disabled with disabled = [false, true]/[true,false]', () => {
       const { baseElement } = render(<DayRangePicker disabled={[false, true]} />);
@@ -313,6 +314,8 @@ describe('Picker.Range', () => {
       expect(container.querySelectorAll('input')[1].value).toEqual('');
     });
   });
+
+  return;
 
   function testRangePickerPresetRange(propsType: 'ranges' | 'presets') {
     const genProps = (ranges: Record<string, any>) => {

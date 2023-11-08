@@ -72,8 +72,11 @@ function RangeSelector<DateType = any>(
   }));
 
   // ========================= Open =========================
-  const triggerOpen = (nextOpen: boolean, index: number, config?: OpenConfig) => {
-    onOpenChange(nextOpen, index, config);
+  const triggerOpen = (nextOpen: boolean, index: number, config: OpenConfig = {}) => {
+    onOpenChange(nextOpen, {
+      ...config,
+      index,
+    });
   };
 
   // ======================== Parser ========================

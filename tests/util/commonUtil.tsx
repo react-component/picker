@@ -187,6 +187,7 @@ export function clearValue() {
   const clearBtn = document.querySelector('.rc-picker-clear');
   fireEvent.mouseDown(clearBtn);
   fireEvent.mouseUp(clearBtn);
+  fireEvent.click(clearBtn);
 }
 
 export function inputValue(text: string, index = 0) {
