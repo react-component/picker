@@ -1,5 +1,6 @@
 import { useMergedState } from 'rc-util';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
+import * as React from 'react';
 import type { GenerateConfig } from '../../../generate';
 import { isSame } from '../../../utils/dateUtil';
 import type { InternalMode, Locale, PanelMode } from '../../interface';
@@ -31,6 +32,30 @@ export function offsetPanelDate<DateType = any>(
   }
 }
 
+const EMPTY_LIST: RangeValueType<any> = [];
+
+// Merge the `showTime.defaultValue` into `pickerValue`
+function fillTimePickerValue<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  date: DateType,
+  timePickerValue?: DateType,
+) {
+  let tmpDate = date;
+
+  const getFn = ['getHour', 'getMinute', 'getSecond', 'getMillisecond'] as const;
+  const setFn = ['setHour', 'setMinute', 'setSecond', 'setMillisecond'] as const;
+
+  setFn.forEach((fn, index) => {
+    if (timePickerValue) {
+      tmpDate = generateConfig[fn](tmpDate, generateConfig[getFn[index]](timePickerValue));
+    } else {
+      tmpDate = generateConfig[fn](tmpDate, 0);
+    }
+  });
+
+  return tmpDate;
+}
+
 export default function useRangePickerValue<DateType = any>(
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
@@ -39,8 +64,11 @@ export default function useRangePickerValue<DateType = any>(
   activeIndex: number,
   pickerMode: InternalMode,
   multiplePanel: boolean,
-  defaultPickerValue?: RangeValueType<DateType>,
-  pickerValue?: RangeValueType<DateType>,
+  defaultPickerValue: RangeValueType<DateType> = EMPTY_LIST,
+  pickerValue: RangeValueType<DateType> = EMPTY_LIST,
+  // This is legacy from origin logic.
+  // We will take `showTime.defaultValue` as the part of `pickerValue`
+  timeDefaultValue: RangeValueType<DateType> = EMPTY_LIST,
   onPickerValueChange?: RangePickerProps<DateType>['onPickerValueChange'],
 ): [currentIndexPickerValue: DateType, setCurrentIndexPickerValue: (value: DateType) => void] {
   // ======================== Active ========================
@@ -48,19 +76,34 @@ export default function useRangePickerValue<DateType = any>(
   const mergedActiveIndex = activeIndex || 0;
 
   // ===================== Picker Value =====================
+
+  const getDefaultPickerValue = (index: number) => {
+    const rawDate = defaultPickerValue[index] || calendarValue[index] || generateConfig.getNow();
+    return fillTimePickerValue(generateConfig, rawDate, timeDefaultValue[index]);
+  };
+
+  const [startPickerValue, endPickerValue] = React.useMemo(() => {
+    const [startValue, endValue] = pickerValue;
+
+    const filledStart =
+      startValue && fillTimePickerValue(generateConfig, startValue, timeDefaultValue[0]);
+    const filledEnd =
+      endValue && fillTimePickerValue(generateConfig, endValue, timeDefaultValue[1]);
+
+    return [filledStart, filledEnd];
+  }, [pickerValue, timeDefaultValue, generateConfig]);
+
+  // State
   const [mergedStartPickerValue, setStartPickerValue] = useMergedState(
-    () => defaultPickerValue?.[0] || calendarValue?.[0] || generateConfig.getNow(),
+    () => getDefaultPickerValue(0),
     {
-      value: pickerValue?.[0],
+      value: startPickerValue,
     },
   );
 
-  const [mergedEndPickerValue, setEndPickerValue] = useMergedState(
-    () => defaultPickerValue?.[1] || calendarValue?.[1] || generateConfig.getNow(),
-    {
-      value: pickerValue?.[1],
-    },
-  );
+  const [mergedEndPickerValue, setEndPickerValue] = useMergedState(() => getDefaultPickerValue(1), {
+    value: endPickerValue,
+  });
 
   const currentPickerValue = [mergedStartPickerValue, mergedEndPickerValue][mergedActiveIndex];
   const setCurrentPickerValue = (
@@ -78,7 +121,7 @@ export default function useRangePickerValue<DateType = any>(
       (!isSame(generateConfig, locale, mergedStartPickerValue, clone[0], pickerMode) ||
         !isSame(generateConfig, locale, mergedEndPickerValue, clone[1], pickerMode))
     ) {
-      onPickerValueChange?.(clone, { source });
+      onPickerValueChange(clone, { source });
     }
   };
 

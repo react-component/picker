@@ -248,7 +248,6 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       order,
       picker,
     },
-    mergedShowTime,
     mergedDisabled,
     formatList,
     focused,
@@ -308,6 +307,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
     multiplePanel,
     defaultPickerValue,
     pickerValue,
+    mergedShowTime.defaultValue,
     onPickerValueChange,
   );
 

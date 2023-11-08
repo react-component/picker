@@ -72,7 +72,6 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     // MISC
     changeOnScroll,
 
-    defaultValue,
   } = props;
 
   const {
@@ -183,55 +182,35 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
   );
 
   // >>> Pick Fallback
-  const getEnabled = (units: Unit<number>[], val: number, defaultVal: number) => {
+  const getEnabled = (units: Unit<number>[], val: number) => {
     const enabledUnits = units.filter((unit) => !unit.disabled);
 
     return (
       val ??
-      // Fallback to picker value
-      enabledUnits.find((unit) => unit.value === defaultVal)?.value ??
       // Fallback to enabled value
-      enabledUnits[0].value ??
-      // Fallback to picker value again since not have validate unit
-      defaultVal
+      enabledUnits[0].value
     );
   };
 
   // >>> Minutes
-  const validHour = getEnabled(
-    rowHourUnits,
-    hour,
-    defaultValue && generateConfig.getHour(defaultValue),
-  );
+  const validHour = getEnabled(rowHourUnits, hour);
   const minuteUnits = React.useMemo(() => getMinuteUnits(validHour), [getMinuteUnits, validHour]);
 
   // >>> Seconds
-  const validMinute = getEnabled(
-    minuteUnits,
-    minute,
-    defaultValue && generateConfig.getMinute(defaultValue),
-  );
+  const validMinute = getEnabled(minuteUnits, minute);
   const secondUnits = React.useMemo(
     () => getSecondUnits(validHour, validMinute),
     [getSecondUnits, validHour, validMinute],
   );
 
   // >>> Milliseconds
-  const validSecond = getEnabled(
-    secondUnits,
-    second,
-    defaultValue && generateConfig.getSecond(defaultValue),
-  );
+  const validSecond = getEnabled(secondUnits, second);
   const millisecondUnits = React.useMemo(
     () => getMillisecondUnits(validHour, validMinute, validSecond),
     [getMillisecondUnits, validHour, validMinute, validSecond],
   );
 
-  const validMillisecond = getEnabled(
-    millisecondUnits,
-    millisecond,
-    defaultValue && generateConfig.getMillisecond(defaultValue),
-  );
+  const validMillisecond = getEnabled(millisecondUnits, millisecond);
 
   // Meridiem
   const meridiemUnits = React.useMemo(() => {
