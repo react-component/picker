@@ -1,3 +1,4 @@
+import type { RangeTimeProps } from '../../interface';
 import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
 import { isSame, isSameTimestamp } from '../../../utils/dateUtil';
@@ -24,6 +25,7 @@ export default function useRangeValue<DateType = any>(
     | 'preserveInvalidOnBlur'
     | 'picker'
   >,
+  showTime: RangeTimeProps<DateType>,
   disabled: [boolean, boolean],
   formatList: string[],
   focused: boolean,

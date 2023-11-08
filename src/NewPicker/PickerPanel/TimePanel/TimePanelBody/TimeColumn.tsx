@@ -16,6 +16,7 @@ export type Unit<ValueType = number | string> = {
 export interface TimeUnitColumnProps {
   units: Unit[];
   value: number | string;
+  optionalValue?: number | string;
   type: 'hour' | 'minute' | 'second' | 'millisecond' | 'meridiem';
   onChange: (value: number | string) => void;
   changeOnScroll?: boolean;
@@ -24,7 +25,7 @@ export interface TimeUnitColumnProps {
 }
 
 export default function TimeColumn(props: TimeUnitColumnProps) {
-  const { showTitle, title, units, value, type, onChange, changeOnScroll } = props;
+  const { showTitle, title, units, value, optionalValue, type, onChange, changeOnScroll } = props;
 
   const { prefixCls, cellRender, now, locale } = React.useContext(PanelContext);
 
@@ -68,8 +69,8 @@ export default function TimeColumn(props: TimeUnitColumnProps) {
 
   // Effect sync value scroll
   useLayoutEffect(() => {
-    scrollToValue(value);
-  }, [value, units, scrollToValue]);
+    scrollToValue(value ?? optionalValue);
+  }, [value, optionalValue, units, scrollToValue]);
 
   // Scroll event if sync onScroll
   const onInternalScroll: React.UIEventHandler<HTMLUListElement> = (event) => {

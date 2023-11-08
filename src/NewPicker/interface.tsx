@@ -172,6 +172,10 @@ export interface SharedTimeProps<DateType = any> {
   changeOnScroll?: boolean;
 }
 
+export type RangeTimeProps<DateType = any> = Omit<SharedTimeProps<DateType>, 'defaultValue'> & {
+  defaultValue?: [DateType, DateType];
+};
+
 // ======================= Components =======================
 export interface SharedPanelProps<DateType = any> {
   // Style

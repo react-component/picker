@@ -1,10 +1,6 @@
-import type { SharedTimeProps } from '../interface';
-
-export default function useShowTime<DateType = any>(
-  showTime?: boolean | SharedTimeProps<DateType>,
-) {
+export default function useShowTime<Config extends object>(showTime?: boolean | Config): Config {
   if (showTime === true) {
-    return {};
+    return {} as Config;
   }
 
   return showTime || null;

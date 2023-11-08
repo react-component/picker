@@ -24,8 +24,6 @@ export default function TimePanel<DateType = any>(props: SharedPanelProps<DateTy
   // ========================== Base ==========================
   const [info] = useInfo(props);
 
-  // const mergedValue = value || now;
-
   // ========================= Render =========================
   // const formatTimeStr = formatValue(value, {
   //   locale,

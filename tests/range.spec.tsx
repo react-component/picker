@@ -420,11 +420,15 @@ describe('Picker.Range', () => {
       );
 
       openPicker(container);
-      expect(document.querySelectorAll('.rc-picker-header-view')[0].textContent).toEqual('1989年11月');
+      expect(document.querySelectorAll('.rc-picker-header-view')[0].textContent).toEqual(
+        '1989年11月',
+      );
       closePicker(container);
 
       openPicker(container, 1);
-      expect(document.querySelectorAll('.rc-picker-header-view')[1].textContent).toEqual('1990年10月');
+      expect(document.querySelectorAll('.rc-picker-header-view')[1].textContent).toEqual(
+        '1990年10月',
+      );
       closePicker(container, 1);
     });
 
@@ -460,8 +464,6 @@ describe('Picker.Range', () => {
       );
     });
   });
-
-  return;
 
   describe('focus test', () => {
     let domMock: ReturnType<typeof spyElementPrototypes>;
@@ -521,6 +523,8 @@ describe('Picker.Range', () => {
       matchValues(container, '1990-09-13 01:02:03', '1990-09-23 05:06:07');
     });
   });
+
+  return;
 
   it('mode is array', () => {
     const { container } = render(<DayRangePicker mode={['year', 'month']} />);

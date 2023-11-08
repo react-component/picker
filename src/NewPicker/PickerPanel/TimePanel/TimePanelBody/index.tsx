@@ -85,10 +85,19 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
   } = React.useContext(PanelContext);
 
   // ========================= Value ==========================
-  const hour = value && generateConfig.getHour(value);
-  const minute = value && generateConfig.getMinute(value);
-  const second = value && generateConfig.getSecond(value);
-  const millisecond = value && generateConfig.getMillisecond(value);
+  const getUnitValue = (
+    func: 'getHour' | 'getMinute' | 'getSecond' | 'getMillisecond',
+  ): [valueNum: number, pickerNum: number] => {
+    const valueUnitVal = value && generateConfig[func](value);
+    const pickerUnitValue = pickerValue && generateConfig[func](pickerValue);
+
+    return [valueUnitVal, pickerUnitValue];
+  };
+
+  const [hour, pickerHour] = getUnitValue('getHour');
+  const [minute, pickerMinute] = getUnitValue('getMinute');
+  const [second, pickerSecond] = getUnitValue('getSecond');
+  const [millisecond, pickerMillisecond] = getUnitValue('getMillisecond');
   const meridiem = hour === null ? null : isAM(hour) ? 'am' : 'pm';
 
   // ========================== Show ==========================
@@ -280,7 +289,19 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
   const triggerDateTmpl = React.useMemo(() => {
     let tmpl = generateConfig.getNow();
 
-    if (validHour !== undefined) {
+    const isNotNull = (num: number) => num !== null && num !== undefined;
+
+    if (isNotNull(hour)) {
+      tmpl = generateConfig.setHour(tmpl, hour);
+      tmpl = generateConfig.setMinute(tmpl, minute);
+      tmpl = generateConfig.setSecond(tmpl, second);
+      tmpl = generateConfig.setMillisecond(tmpl, millisecond);
+    } else if (isNotNull(pickerHour)) {
+      tmpl = generateConfig.setHour(tmpl, pickerHour);
+      tmpl = generateConfig.setMinute(tmpl, pickerMinute);
+      tmpl = generateConfig.setSecond(tmpl, pickerSecond);
+      tmpl = generateConfig.setMillisecond(tmpl, pickerMillisecond);
+    } else if (isNotNull(validHour)) {
       tmpl = generateConfig.setHour(tmpl, validHour);
       tmpl = generateConfig.setMinute(tmpl, validMinute);
       tmpl = generateConfig.setSecond(tmpl, validSecond);
@@ -288,7 +309,21 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     }
 
     return tmpl;
-  }, [validHour, validMinute, validSecond, validMillisecond, generateConfig]);
+  }, [
+    hour,
+    minute,
+    second,
+    millisecond,
+    validHour,
+    validMinute,
+    validSecond,
+    validMillisecond,
+    pickerHour,
+    pickerMinute,
+    pickerSecond,
+    pickerMillisecond,
+    generateConfig,
+  ]);
 
   const onHourChange = (val: number) => {
     triggerChange(generateConfig.setHour(triggerDateTmpl, val));
@@ -323,6 +358,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
           title={locale.hour}
           units={hourUnits}
           value={hour}
+          optionalValue={pickerHour}
           type="hour"
           onChange={onHourChange}
           changeOnScroll={changeOnScroll}
@@ -334,6 +370,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
           title={locale.minute}
           units={minuteUnits}
           value={minute}
+          optionalValue={pickerMinute}
           type="minute"
           onChange={onMinuteChange}
           changeOnScroll={changeOnScroll}
@@ -345,6 +382,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
           title={locale.second}
           units={secondUnits}
           value={second}
+          optionalValue={pickerSecond}
           type="second"
           onChange={onSecondChange}
           changeOnScroll={changeOnScroll}
@@ -356,6 +394,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
           title={locale.millisecond}
           units={millisecondUnits}
           value={millisecond}
+          optionalValue={pickerMillisecond}
           type="millisecond"
           onChange={onMillisecondChange}
           changeOnScroll={changeOnScroll}

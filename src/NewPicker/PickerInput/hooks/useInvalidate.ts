@@ -1,6 +1,11 @@
 import { useEvent } from 'rc-util';
 import type { GenerateConfig } from '../../../generate';
-import type { PanelMode, SharedPickerProps, SharedTimeProps } from '../../interface';
+import type {
+  PanelMode,
+  RangeTimeProps,
+  SharedPickerProps,
+  SharedTimeProps,
+} from '../../interface';
 
 /**
  * Check if provided date is valid for the `disabledDate` & `showTime.disabledTime`.
@@ -9,7 +14,7 @@ export default function useInvalidate<DateType = any>(
   generateConfig: GenerateConfig<DateType>,
   picker: PanelMode,
   disabledDate?: SharedPickerProps<DateType>['disabledDate'],
-  showTime?: SharedTimeProps<DateType>,
+  showTime?: SharedTimeProps<DateType> | RangeTimeProps<DateType>,
 ) {
   // Check disabled date
   const isInvalidate = useEvent((date: DateType) => {

@@ -7,6 +7,7 @@ import type {
   InternalMode,
   OnOpenChange,
   OpenConfig,
+  RangeTimeProps,
   SelectorProps,
   SelectorRef,
   SharedPickerProps,
@@ -39,7 +40,7 @@ function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig:
 
 export type RangeValueType<DateType> = [start?: DateType, end?: DateType];
 
-export interface RangePickerProps<DateType> extends SharedPickerProps<DateType> {
+export interface RangePickerProps<DateType> extends Omit<SharedPickerProps<DateType>, 'showTime'> {
   // Value
   value?: RangeValueType<DateType>;
   defaultValue?: RangeValueType<DateType>;
@@ -95,6 +96,9 @@ export interface RangePickerProps<DateType> extends SharedPickerProps<DateType> 
   // Control
   disabled?: boolean | [boolean, boolean];
   allowEmpty?: [boolean, boolean];
+
+  // Time
+  showTime?: boolean | RangeTimeProps<DateType>;
 }
 
 export default function Picker<DateType = any>(props: RangePickerProps<DateType>) {
@@ -236,7 +240,6 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
   // ====================== Invalidate ======================
   const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, mergedShowTime);
 
-
   // ======================== Value =========================
   const [calendarValue, triggerCalendarChange, triggerSubmitChange, emptyValue] = useRangeValue(
     {
@@ -245,6 +248,7 @@ export default function Picker<DateType = any>(props: RangePickerProps<DateType>
       order,
       picker,
     },
+    mergedShowTime,
     mergedDisabled,
     formatList,
     focused,

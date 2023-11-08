@@ -95,7 +95,9 @@ export default () => {
         //   // align: true,
         // }}
         // preserveInvalidOnBlur
-        showTime
+        showTime={{
+          defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],
+        }}
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
           setRangeValue(val);
@@ -127,7 +129,7 @@ export default () => {
       </button>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        {/* <CellPicker
+        <CellPicker
           picker="time"
           // components={{
           //   time: MyTime,
@@ -135,10 +137,10 @@ export default () => {
           showTime={{
             format: 'HH:mm:ss.SSS',
             showTitle: true,
-            defaultValue: moment('2000-01-01 01:03:05.800'),
+            // defaultValue: moment('2000-01-01 01:03:05.800'),
           }}
-          // pickerValue={moment('2000-01-01 01:03:05.800')}
-        /> */}
+          pickerValue={moment('2000-01-01 01:03:05.800')}
+        />
         {/* <CellPicker
           picker="date"
           // showTime={{
