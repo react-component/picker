@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useComposeRef, useEvent } from 'rc-util';
+import { useEvent } from 'rc-util';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import raf from 'rc-util/lib/raf';
 import * as React from 'react';
@@ -22,6 +22,12 @@ import { getMaskRange } from './util';
 //    2. Re-selection the mask cell
 //  3. If `cacheValue` match the limit length or cell format (like 1 ~ 12 month), go to next cell
 
+export interface InputRef {
+  nativeElement: HTMLDivElement;
+  focus: VoidFunction;
+  blur: VoidFunction;
+}
+
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   format?: string;
   validateFormat: (value: string, format: string) => boolean;
@@ -40,7 +46,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   preserveInvalidOnBlur?: boolean;
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   const {
     active,
     suffixIcon,
@@ -75,9 +81,18 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   }, [value]);
 
   // ========================= Refs =========================
+  const holderRef = React.useRef<HTMLDivElement>();
   const inputRef = React.useRef<HTMLInputElement>();
 
-  const mergedRef = useComposeRef(ref, inputRef);
+  React.useImperativeHandle(ref, () => ({
+    nativeElement: holderRef.current,
+    focus: () => {
+      inputRef.current.focus();
+    },
+    blur: () => {
+      inputRef.current.blur();
+    },
+  }));
 
   // ======================== Format ========================
   const maskFormat = React.useMemo(() => new MaskFormat(format || ''), [format]);
@@ -350,13 +365,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
 
   return (
     <div
+      ref={holderRef}
       className={classNames(inputPrefixCls, {
         [`${inputPrefixCls}-active`]: active,
         [`${inputPrefixCls}-placeholder`]: helped,
       })}
     >
       <input
-        ref={mergedRef}
+        ref={inputRef}
         {...restProps}
         onKeyDown={onSharedKeyDown}
         onBlur={onSharedBlur}

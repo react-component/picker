@@ -3,7 +3,7 @@ import * as React from 'react';
 import type { OpenConfig, SelectorProps, SelectorRef } from '../../interface';
 import PickerContext from '../context';
 import Icon, { ClearIcon } from './Icon';
-import Input, { type InputProps } from './Input';
+import Input, { InputRef, type InputProps } from './Input';
 
 export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateType> {
   separator?: React.ReactNode;
@@ -70,10 +70,10 @@ function RangeSelector<DateType = any>(
 
   // ========================= Refs =========================
   const rootRef = React.useRef<HTMLDivElement>();
-  const inputStartRef = React.useRef<HTMLInputElement>();
-  const inputEndRef = React.useRef<HTMLInputElement>();
+  const inputStartRef = React.useRef<InputRef>();
+  const inputEndRef = React.useRef<InputRef>();
 
-  const getInput = (index: number) => [inputStartRef, inputEndRef][index].current;
+  const getInput = (index: number) => [inputStartRef, inputEndRef][index]?.current;
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: rootRef.current,
@@ -172,6 +172,24 @@ function RangeSelector<DateType = any>(
     },
   });
 
+  // ====================== ActiveBar =======================
+  const [activeBarStyle, setActiveBarStyle] = React.useState<React.CSSProperties>({
+    position: 'absolute',
+    width: 0,
+    left: 0,
+  });
+
+  React.useEffect(() => {
+    const input = getInput(activeIndex);
+    if (input) {
+      setActiveBarStyle((ori) => ({
+        ...ori,
+        width: input.nativeElement.offsetWidth,
+        left: input.nativeElement.offsetLeft,
+      }));
+    }
+  }, [activeIndex]);
+
   // ======================== Clear =========================
   const showClear = (clearIcon && value[0] && !disabled[0]) || (value[1] && !disabled[1]);
 
@@ -195,6 +213,7 @@ function RangeSelector<DateType = any>(
       <Input ref={inputStartRef} {...getInputProps(0)} />
       <div className={`${prefixCls}-range-separator`}>{separator}</div>
       <Input ref={inputEndRef} {...getInputProps(1)} />
+      <div className={`${prefixCls}-active-bar`} style={activeBarStyle} />
       <Icon type="suffix" icon={suffixIcon} />
       {showClear && <ClearIcon type="clear" icon={clearIcon} onClear={onClear} />}
     </div>
