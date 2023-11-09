@@ -61,13 +61,11 @@ exports[`Picker.Range onPanelChange is array args should render correctly in rtl
     class="rc-picker rc-picker-range rc-picker-rtl"
   >
     <div
-      class="rc-picker-input rc-picker-input-active"
+      class="rc-picker-input"
     >
       <input
+        aria-invalid="false"
         autocomplete="off"
-        placeholder=""
-        readonly=""
-        size="12"
         value=""
       />
     </div>
@@ -80,16 +78,14 @@ exports[`Picker.Range onPanelChange is array args should render correctly in rtl
       class="rc-picker-input"
     >
       <input
+        aria-invalid="false"
         autocomplete="off"
-        placeholder=""
-        readonly=""
-        size="12"
         value=""
       />
     </div>
     <div
       class="rc-picker-active-bar"
-      style="right: 0px; width: 0px; position: absolute;"
+      style="position: absolute; width: 0px;"
     />
   </div>
 </div>
