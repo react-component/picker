@@ -27,7 +27,7 @@ export default function useRangeValue<DateType = any>(
   disabled: [boolean, boolean],
   formatList: string[],
   focused: boolean,
-  blurRef: React.RefObject<'input' | 'panel'>,
+  lastOperationRef: React.RefObject<'input' | 'panel'>,
   isInvalidateDate: (date: DateType) => boolean,
   needConfirm: boolean,
 ): [
@@ -208,7 +208,7 @@ export default function useRangeValue<DateType = any>(
     if (!focused) {
       // If panel no need panel confirm or last blur is not from panel
       // Trigger submit
-      if (!needConfirm || blurRef.current !== 'panel') {
+      if (!needConfirm || lastOperationRef.current !== 'panel') {
         triggerSubmit();
       } else {
         // Else should reset `calendarValue` to `submitValue`

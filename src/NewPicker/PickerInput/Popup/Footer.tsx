@@ -14,10 +14,14 @@ export interface FooterProps<DateType = any> {
   // Submit
   onSubmit: (date?: DateType) => void;
   needConfirm: boolean;
+
+  // OK
+  onOk?: VoidFunction;
 }
 
 export default function Footer(props: FooterProps) {
-  const { mode, internalMode, renderExtraFooter, showNow, onSubmit, value, needConfirm } = props;
+  const { mode, internalMode, renderExtraFooter, showNow, onSubmit, onOk, value, needConfirm } =
+    props;
 
   const {
     prefixCls,
@@ -51,6 +55,7 @@ export default function Footer(props: FooterProps) {
       <Button
         disabled={!validDate}
         onClick={() => {
+          onOk?.();
           onSubmit();
         }}
       >

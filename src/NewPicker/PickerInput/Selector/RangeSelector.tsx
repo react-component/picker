@@ -51,6 +51,7 @@ function RangeSelector<DateType = any>(
     value,
     onChange,
     onSubmit,
+    onInputChange,
 
     // Valid
     format,
@@ -159,6 +160,8 @@ function RangeSelector<DateType = any>(
 
     // Get validate text value
     onChange: (text) => {
+      onInputChange();
+
       for (let i = 0; i < format.length; i += 1) {
         const parsed = parseDate(text, format[i]);
 

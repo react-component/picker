@@ -208,7 +208,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // When click outside to close the panel, trigger event if it can trigger onChange.
   const [activeIndex, setActiveIndex] = React.useState<number>(null);
   const [focused, setFocused] = React.useState<boolean>(false);
-  const blurRef = React.useRef<'input' | 'panel'>(null);
+  const lastOperationRef = React.useRef<'input' | 'panel'>(null);
 
   const focusedIndex = focused ? activeIndex : null;
 
@@ -266,7 +266,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     mergedDisabled,
     formatList,
     focused,
-    blurRef,
+    lastOperationRef,
     isInvalidateDate,
     needConfirm,
   );
@@ -365,6 +365,10 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     triggerCalendarChange(clone);
   };
 
+  const onSelectorInputChange = () => {
+    lastOperationRef.current = 'input';
+  };
+
   // ==================== Selector Focus ====================
   const onSelectorFocus: SelectorProps['onFocus'] = (event, index) => {
     setActiveIndex(index);
@@ -374,7 +378,6 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   };
 
   const onSelectorBlur: SelectorProps['onBlur'] = (event) => {
-    blurRef.current = 'input';
     setFocused(false);
 
     // Always trigger submit since input is always means confirm
@@ -465,12 +468,13 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   };
 
   const onPanelBlur: React.FocusEventHandler<HTMLDivElement> = () => {
-    blurRef.current = 'panel';
     setFocused(false);
   };
 
   // >>> Calendar
   const onPanelCalendarChange: PickerPanelProps<DateType>['onChange'] = (date) => {
+    lastOperationRef.current = 'panel';
+
     const clone: RangeValueType<DateType> = fillIndex(calendarValue, activeIndex, date);
 
     if (mergedMode === picker && !needConfirm) {
@@ -619,6 +623,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
           format={formatList}
           maskFormat={maskFormat}
           onChange={onSelectorChange}
+          onInputChange={onSelectorInputChange}
           // Disabled
           disabled={mergedDisabled}
           // Open

@@ -96,9 +96,12 @@ export default () => {
         //   // align: true,
         // }}
         preserveInvalidOnBlur
-        // showTime={{
-        //   defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],
-        // }}
+        showTime={{
+          defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],
+        }}
+        onOk={() => {
+          console.log('🍷 Ok!');
+        }}
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
           setRangeValue(val);

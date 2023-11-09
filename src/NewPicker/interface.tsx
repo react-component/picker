@@ -315,6 +315,9 @@ export interface SharedPickerProps<DateType = any> {
   showToday?: boolean;
   panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
   renderExtraFooter?: (mode: PanelMode) => React.ReactNode;
+
+  // Events
+  onOk?: VoidFunction;
 }
 
 export interface PickerRef {
@@ -370,6 +373,7 @@ export interface SelectorProps<DateType = any> {
    */
   maskFormat?: string;
   onChange: (date: DateType, index?: number) => void;
+  onInputChange: VoidFunction;
   /** When user input invalidate date, keep it in the input field */
   preserveInvalidOnBlur?: boolean;
 

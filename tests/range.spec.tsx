@@ -783,7 +783,9 @@ describe('Picker.Range', () => {
     // Trigger when start Ok'd
     onCalendarChange.mockReset();
     selectCell(11);
-    expect(onCalendarChange).not.toHaveBeenCalled();
+    expect(onCalendarChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-11 00:00:00', ''], {
+      range: 'start',
+    });
     fireEvent.click(document.querySelector('.rc-picker-ok button'));
     expect(onCalendarChange).toHaveBeenCalledWith(
       [expect.anything(), null],
@@ -795,19 +797,16 @@ describe('Picker.Range', () => {
     // Trigger when end Ok'd
     onCalendarChange.mockReset();
     selectCell(23);
-    expect(onCalendarChange).not.toHaveBeenCalled();
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
     expect(onCalendarChange).toHaveBeenCalledWith(
-      [expect.anything(), expect.anything()],
+      expect.anything(),
       ['1990-09-11 00:00:00', '1990-09-23 00:00:00'],
       { range: 'end' },
     );
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
     expect(onOk).toHaveBeenCalled();
   });
 
   it('datetime will reset by blur', () => {
-    jest.useFakeTimers();
-
     const { container } = render(<DayRangePicker showTime />);
     openPicker(container);
     selectCell(11);
@@ -818,8 +817,6 @@ describe('Picker.Range', () => {
 
     expect(isOpen()).toBeFalsy();
     expect(document.querySelector('input').value).toEqual('');
-
-    jest.useRealTimers();
   });
 
   return;
