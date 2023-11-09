@@ -110,6 +110,7 @@ export default () => {
         // onOpenChange={(nextOpen) => {
         //   console.log('🏆 Next Open:', nextOpen);
         // }}
+        mode={['month', 'year']}
         onPanelChange={(val, mode) => {
           console.log('🏆 Panel Change:', val?.[0]?.format('YYYY-MM-DD'), mode);
         }}

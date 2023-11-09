@@ -55,6 +55,10 @@ function RangeSelector<DateType = any>(
     // Disabled
     disabled,
     invalid,
+    inputReadOnly,
+
+    // Direction
+    direction,
 
     // Open
     open,
@@ -115,6 +119,8 @@ function RangeSelector<DateType = any>(
       return !!parsed;
     },
     preserveInvalidOnBlur,
+
+    readOnly: inputReadOnly,
 
     // ============= By Index =============
     value: valueTexts[index],
@@ -178,6 +184,7 @@ function RangeSelector<DateType = any>(
         {
           [`${prefixCls}-focused`]: activeIndex !== null,
           [`${prefixCls}-invalid`]: invalid,
+          [`${prefixCls}-rtl`]: direction === 'rtl',
         },
         className,
       )}

@@ -365,6 +365,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         // Value
         value={inputValue}
         onChange={onInternalChange}
+        autoComplete="off"
       />
       <Icon type="suffix" icon={suffixIcon} />
     </div>

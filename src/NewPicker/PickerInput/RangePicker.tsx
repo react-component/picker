@@ -326,23 +326,25 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   );
 
   // >>> Mode need wait for `pickerValue`
-  const triggerModeChange = useEvent((nextPickerValue: DateType, nextMode: PanelMode) => {
-    const clone: [PanelMode, PanelMode] = [...modes];
-    clone[activeIndex] = nextMode;
+  const triggerModeChange = useEvent(
+    (nextPickerValue: DateType, nextMode: PanelMode, triggerEvent?: boolean) => {
+      const clone: [PanelMode, PanelMode] = [...modes];
+      clone[activeIndex] = nextMode;
 
-    if (clone[0] !== modes[0] || clone[1] !== modes[1]) {
-      setModes(clone);
-    }
-
-    // Compatible with `onPanelChange`
-    if (onPanelChange) {
-      const clonePickerValue: RangeValueType<DateType> = [...calendarValue];
-      if (nextPickerValue) {
-        clonePickerValue[activeIndex] = nextPickerValue;
+      if (clone[0] !== modes[0] || clone[1] !== modes[1]) {
+        setModes(clone);
       }
-      onPanelChange(clonePickerValue, clone);
-    }
-  });
+
+      // Compatible with `onPanelChange`
+      if (onPanelChange && triggerEvent !== false) {
+        const clonePickerValue: RangeValueType<DateType> = [...calendarValue];
+        if (nextPickerValue) {
+          clonePickerValue[activeIndex] = nextPickerValue;
+        }
+        onPanelChange(clonePickerValue, clone);
+      }
+    },
+  );
 
   // ======================== Change ========================
   const fillMergedValue = (date: DateType, index: number) => {
@@ -556,7 +558,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // Reset for every active
   useLayoutEffect(() => {
     if (mergedOpen && activeIndex !== undefined) {
-      triggerModeChange(null, picker);
+      // Legacy compatible. This effect update should not trigger `onPanelChange`
+      triggerModeChange(null, picker, false);
     }
   }, [mergedOpen, activeIndex]);
 

@@ -512,12 +512,6 @@ describe('Picker.Range', () => {
       expect(blurred).toBeTruthy();
     });
 
-    it('jsdom', () => {
-      const { container } = render(<button onFocus={console.log}>good</button>);
-      const btn = container.querySelector('button');
-      btn.focus();
-    });
-
     it('not crash with showTime defaultValue', () => {
       const { container } = render(
         <>
@@ -548,8 +542,6 @@ describe('Picker.Range', () => {
     expect(document.querySelector('.rc-picker-month-panel')).toBeTruthy();
   });
 
-  return;
-
   describe('onPanelChange is array args', () => {
     it('mode', () => {
       const onPanelChange = jest.fn();
@@ -558,7 +550,7 @@ describe('Picker.Range', () => {
       );
 
       openPicker(container);
-      selectCell('Feb');
+      selectCell('2月');
       expect(isSame(onPanelChange.mock.calls[0][0][0], '1990-02-03'));
       expect(onPanelChange.mock.calls[0][1]).toEqual(['date', 'year']);
 
@@ -567,7 +559,7 @@ describe('Picker.Range', () => {
 
       openPicker(container, 1);
       selectCell(1993);
-      expect(isSame(onPanelChange.mock.calls[0][0][1], '1993-02-03'));
+      expect(isSame(onPanelChange.mock.calls[0][0][1], '1993-09-03'));
       expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
     });
 
@@ -607,6 +599,8 @@ describe('Picker.Range', () => {
       expect(container).toMatchSnapshot();
     });
   });
+
+  return;
 
   it('type can not change before start time', () => {
     const onChange = jest.fn();

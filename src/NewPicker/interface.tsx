@@ -283,6 +283,8 @@ export interface SharedPickerProps<DateType = any> {
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 
+  inputReadOnly?: boolean;
+
   // Disabled
   disabledDate?: DisabledDate<DateType>;
 
@@ -351,6 +353,9 @@ export interface SelectorProps<DateType = any> {
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
 
+  // Direction
+  direction?: 'ltr' | 'rtl';
+
   // Click
   onClick: React.MouseEventHandler<HTMLDivElement>;
 
@@ -376,6 +381,7 @@ export interface SelectorProps<DateType = any> {
 
   // Invalidate
   invalid?: boolean;
+  inputReadOnly?: boolean;
 }
 
 export interface SelectorRef {
