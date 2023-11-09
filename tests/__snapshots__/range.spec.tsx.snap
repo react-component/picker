@@ -6,13 +6,11 @@ exports[`Picker.Range icon 1`] = `
     class="rc-picker rc-picker-range"
   >
     <div
-      class="rc-picker-input rc-picker-input-active"
+      class="rc-picker-input"
     >
       <input
+        aria-invalid="false"
         autocomplete="off"
-        placeholder=""
-        readonly=""
-        size="12"
         value="1990-09-03"
       />
     </div>
@@ -25,16 +23,14 @@ exports[`Picker.Range icon 1`] = `
       class="rc-picker-input"
     >
       <input
+        aria-invalid="false"
         autocomplete="off"
-        placeholder=""
-        readonly=""
-        size="12"
         value="1990-09-03"
       />
     </div>
     <div
       class="rc-picker-active-bar"
-      style="left: 0px; width: 0px; position: absolute;"
+      style="position: absolute; width: 0px; left: 0px;"
     />
     <span
       class="rc-picker-suffix"
@@ -85,7 +81,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in rtl
     </div>
     <div
       class="rc-picker-active-bar"
-      style="position: absolute; width: 0px;"
+      style="position: absolute; width: 0px; left: 0px;"
     />
   </div>
 </div>
