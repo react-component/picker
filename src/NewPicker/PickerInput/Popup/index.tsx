@@ -74,6 +74,10 @@ export default function Popup(props: PopupProps) {
         // Used for Today Button style, safe to remove if no need
         `${prefixCls}-${internalMode}-panel-container`,
       )}
+      // Still wish not to lose focus on mouse down
+      onMouseDown={(e) => {
+        e.preventDefault();
+      }}
       {...divProps}
     >
       {mergedNodes}

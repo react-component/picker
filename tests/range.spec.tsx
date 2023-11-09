@@ -696,14 +696,10 @@ describe('Picker.Range', () => {
     );
   });
 
-  return;
-
   it('block native mouseDown in panel to prevent focus changed', () => {
     const { container } = render(<DayRangePicker />);
     openPicker(container);
 
-    // const preventDefault = jest.fn();
-    // document.querySelector('td').first().simulate('mouseDown', { preventDefault });
     const cell = document.querySelector('td');
     const mouseDownEvent = createEvent.mouseDown(cell);
     fireEvent(cell, mouseDownEvent);
@@ -711,6 +707,7 @@ describe('Picker.Range', () => {
     expect(mouseDownEvent.defaultPrevented).toBeTruthy();
   });
 
+  // TODO: handle this
   describe('arrow position', () => {
     let domMock: ReturnType<typeof spyElementPrototypes>;
 
@@ -730,9 +727,6 @@ describe('Picker.Range', () => {
       const { container } = render(<DayRangePicker />);
       openPicker(container, 1);
 
-      // expect((document.querySelector('.rc-picker-panel-container').props() as any).style.marginLeft).toEqual(
-      //   200,
-      // );
       expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({
         marginLeft: 200,
       });
@@ -740,8 +734,6 @@ describe('Picker.Range', () => {
   });
 
   it('focus to next input not to onOpenChange', () => {
-    jest.useFakeTimers();
-
     const onOpenChange = jest.fn();
     const { container } = render(<DayRangePicker onOpenChange={onOpenChange} />);
     openPicker(container);
@@ -755,12 +747,9 @@ describe('Picker.Range', () => {
     });
 
     expect(onOpenChange).not.toHaveBeenCalled();
-
-    jest.useRealTimers();
   });
 
   it('fixed open need repeat trigger onOpenChange', () => {
-    jest.useFakeTimers();
     const onOpenChange = jest.fn();
     render(<DayRangePicker onOpenChange={onOpenChange} open />);
 
@@ -769,14 +758,17 @@ describe('Picker.Range', () => {
     for (let i = 0; i < 10; i += 1) {
       act(() => {
         fireEvent.mouseDown(document.body);
+        fireEvent.mouseUp(document.body);
+        fireEvent.click(document.body);
+      });
+      act(() => {
+        jest.runAllTimers();
       });
       expect(onOpenChange).toHaveBeenCalledTimes(i + 1);
     }
-    act(() => {
-      jest.runAllTimers();
-    });
-    jest.useRealTimers();
   });
+
+  return;
 
   it('datetime display ok button', () => {
     const onCalendarChange = jest.fn();

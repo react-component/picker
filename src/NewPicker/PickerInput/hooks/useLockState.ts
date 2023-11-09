@@ -20,20 +20,17 @@ export default function useLockState<T>(
   const updateValue = useEvent((next: T, immediately?: boolean) => {
     raf.cancel(rafRef.current);
 
-    if (next || immediately) {
+    const doUpdate = () => {
       setState(next);
+      onChange?.(next);
+    };
+
+    if (next || immediately) {
+      doUpdate();
     } else {
-      rafRef.current = raf(() => {
-        setState(next);
-      });
+      rafRef.current = raf(doUpdate);
     }
   });
-
-  useLayoutUpdateEffect(() => {
-    if (onChange) {
-      onChange(state);
-    }
-  }, [state]);
 
   return [state, updateValue];
 }

@@ -108,9 +108,10 @@ export default () => {
         // }}
         // preserveInvalidOnBlur
         allowEmpty={[false, true]}
-        // onOpenChange={(nextOpen) => {
-        //   console.log('🏆 Next Open:', nextOpen);
-        // }}
+        onOpenChange={(nextOpen) => {
+          console.log('🏆 Next Open:', nextOpen);
+        }}
+        open
         // mode={['month', 'year']}
         // onPanelChange={(val, mode) => {
         //   console.log('🏆 Panel Change:', val?.[0]?.format('YYYY-MM-DD'), mode);
