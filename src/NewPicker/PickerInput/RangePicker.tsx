@@ -282,6 +282,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
   // ======================= Validate =======================
   const isInvalidRange = React.useMemo(() => {
+    console.log('>>>', focused, emptyValue);
     // Not check if get focused
     if (focused || emptyValue) {
       return false;

@@ -94,7 +94,7 @@ export default () => {
         //   //   // format: 'YYYYMMDD',
         //   // align: true,
         // }}
-        // preserveInvalidOnBlur
+        preserveInvalidOnBlur
         showTime={{
           defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],
         }}
@@ -110,10 +110,10 @@ export default () => {
         // onOpenChange={(nextOpen) => {
         //   console.log('🏆 Next Open:', nextOpen);
         // }}
-        mode={['month', 'year']}
-        onPanelChange={(val, mode) => {
-          console.log('🏆 Panel Change:', val?.[0]?.format('YYYY-MM-DD'), mode);
-        }}
+        // mode={['month', 'year']}
+        // onPanelChange={(val, mode) => {
+        //   console.log('🏆 Panel Change:', val?.[0]?.format('YYYY-MM-DD'), mode);
+        // }}
         // onPickerValueChange={(val) => {
         //   console.log('👻 Picker Value Change:', val);
         // }}
