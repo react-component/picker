@@ -380,7 +380,6 @@ export interface SelectorProps<DateType = any> {
   onOpenChange: OnOpenChange;
 
   // Invalidate
-  invalid?: boolean;
   inputReadOnly?: boolean;
 }
 

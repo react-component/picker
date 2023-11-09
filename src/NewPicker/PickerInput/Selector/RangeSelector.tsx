@@ -3,7 +3,7 @@ import * as React from 'react';
 import type { OpenConfig, SelectorProps, SelectorRef } from '../../interface';
 import PickerContext from '../context';
 import Icon, { ClearIcon } from './Icon';
-import Input, { InputRef, type InputProps } from './Input';
+import Input, { type InputProps, type InputRef } from './Input';
 
 export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateType> {
   separator?: React.ReactNode;
@@ -14,6 +14,9 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
   allHelp: boolean;
 
   placeholder?: [string, string];
+
+  invalid: [boolean, boolean];
+  onInvalid: (index: number, valid: boolean) => void;
 }
 
 function RangeSelector<DateType = any>(
@@ -46,11 +49,14 @@ function RangeSelector<DateType = any>(
 
     // Change
     value,
-    format,
-    maskFormat,
     onChange,
     onSubmit,
+
+    // Valid
+    format,
+    maskFormat,
     preserveInvalidOnBlur,
+    onInvalid,
 
     // Disabled
     disabled,
@@ -125,6 +131,8 @@ function RangeSelector<DateType = any>(
     // ============= By Index =============
     value: valueTexts[index],
 
+    invalid: invalid[index],
+
     placeholder: (placeholder || [])[index],
 
     active: activeIndex === index,
@@ -155,10 +163,15 @@ function RangeSelector<DateType = any>(
         const parsed = parseDate(text, format[i]);
 
         if (parsed) {
+          onInvalid(index, false);
           onChange(parsed, index);
-          break;
+          return;
         }
       }
+
+      // Tell outer that the value typed is invalid.
+      // If text is empty, it means valid.
+      onInvalid(index, !!text);
     },
     onHelp: () => {
       triggerOpen(true, index);
@@ -176,7 +189,6 @@ function RangeSelector<DateType = any>(
   const [activeBarStyle, setActiveBarStyle] = React.useState<React.CSSProperties>({
     position: 'absolute',
     width: 0,
-    left: 0,
   });
 
   React.useEffect(() => {
@@ -201,7 +213,7 @@ function RangeSelector<DateType = any>(
         `${prefixCls}-range`,
         {
           [`${prefixCls}-focused`]: activeIndex !== null,
-          [`${prefixCls}-invalid`]: invalid,
+          [`${prefixCls}-invalid`]: invalid.some((i) => i),
           [`${prefixCls}-rtl`]: direction === 'rtl',
         },
         className,

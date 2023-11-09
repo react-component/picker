@@ -50,6 +50,7 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
+        direction="rtl"
         // className="good"
         // style={{ opacity: 0.5 }}
         // picker="year"

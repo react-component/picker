@@ -44,6 +44,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
    */
   onHelp: () => void;
   preserveInvalidOnBlur?: boolean;
+  invalid?: boolean;
 }
 
 const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
@@ -58,6 +59,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     onHelp,
     onEnter,
     preserveInvalidOnBlur,
+    invalid,
     // Pass to input
     ...restProps
   } = props;
@@ -373,6 +375,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     >
       <input
         ref={inputRef}
+        aria-invalid={invalid}
         {...restProps}
         onKeyDown={onSharedKeyDown}
         onBlur={onSharedBlur}

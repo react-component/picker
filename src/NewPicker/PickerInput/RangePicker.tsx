@@ -18,6 +18,7 @@ import type {
 } from '../interface';
 import type { PickerPanelProps } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
+import { fillIndex } from '../util';
 import PickerContext from './context';
 import { useFieldFormat } from './hooks/useFieldFormat';
 import useInvalidate from './hooks/useInvalidate';
@@ -281,35 +282,42 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   );
 
   // ======================= Validate =======================
-  const isInvalidRange = React.useMemo(() => {
-    console.log('>>>', focused, emptyValue);
-    // Not check if get focused
-    if (focused || emptyValue) {
+  const [fieldsInvalidates, setFieldsInvalidates] = React.useState<[boolean, boolean]>([
+    false,
+    false,
+  ]);
+
+  const onSelectorInvalid = (index: number, valid: boolean) => {
+    setFieldsInvalidates((ori) => fillIndex(ori, index, valid));
+  };
+
+  const submitInvalidates = React.useMemo(() => {
+    return fieldsInvalidates.map((invalid, index) => {
+      // If typing invalidate
+      if (invalid) {
+        return true;
+      }
+
+      // Not check if all empty
+      if (emptyValue) {
+        return false;
+      }
+
+      const current = calendarValue[index];
+
+      // Not allow empty
+      if (!mergedAllowEmpty[index] && !current) {
+        return true;
+      }
+
+      // Invalidate
+      if (current && isInvalidateDate(current)) {
+        return true;
+      }
+
       return false;
-    }
-
-    const [start, end] = calendarValue;
-
-    if (
-      // No start
-      (!mergedAllowEmpty[0] && !start) ||
-      // No end
-      (!mergedAllowEmpty[1] && !end)
-    ) {
-      return true;
-    }
-
-    if (
-      // Invalidate start
-      (start && isInvalidateDate(start)) ||
-      // Invalidate end
-      (end && isInvalidateDate(end))
-    ) {
-      return true;
-    }
-
-    return false;
-  }, [focused, emptyValue, calendarValue, mergedAllowEmpty, isInvalidateDate]);
+    }) as [boolean, boolean];
+  }, [calendarValue, emptyValue, fieldsInvalidates, isInvalidateDate, mergedAllowEmpty]);
 
   // ===================== Picker Value =====================
   const [currentPickerValue, setCurrentPickerValue] = useRangePickerValue(
@@ -329,8 +337,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // >>> Mode need wait for `pickerValue`
   const triggerModeChange = useEvent(
     (nextPickerValue: DateType, nextMode: PanelMode, triggerEvent?: boolean) => {
-      const clone: [PanelMode, PanelMode] = [...modes];
-      clone[activeIndex] = nextMode;
+      const clone = fillIndex(modes, activeIndex, nextMode);
 
       if (clone[0] !== modes[0] || clone[1] !== modes[1]) {
         setModes(clone);
@@ -348,15 +355,9 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   );
 
   // ======================== Change ========================
-  const fillMergedValue = (date: DateType, index: number) => {
+  const fillMergedValue = (date: DateType, index: number) =>
     // Trigger change only when date changed
-    const [prevStart, prevEnd] = calendarValue;
-
-    const clone: RangeValueType<DateType> = [prevStart, prevEnd];
-    clone[index] = date;
-
-    return clone;
-  };
+    fillIndex(calendarValue, index, date);
 
   const onSelectorChange = (date: DateType, index: number) => {
     const clone = fillMergedValue(date, index);
@@ -470,8 +471,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
   // >>> Calendar
   const onPanelCalendarChange: PickerPanelProps<DateType>['onChange'] = (date) => {
-    const clone: RangeValueType<DateType> = [...calendarValue];
-    clone[activeIndex] = date;
+    const clone: RangeValueType<DateType> = fillIndex(calendarValue, activeIndex, date);
 
     if (mergedMode === picker && !needConfirm) {
       triggerChangeAndFocusNext(date);
@@ -628,7 +628,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
           onClick={onSelectorClick}
           onClear={onSelectorClear}
           // Invalid
-          invalid={isInvalidRange}
+          invalid={submitInvalidates}
+          onInvalid={onSelectorInvalid}
         />
       </PickerTrigger>
     </PickerContext.Provider>
