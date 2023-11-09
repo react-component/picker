@@ -768,8 +768,6 @@ describe('Picker.Range', () => {
     }
   });
 
-  return;
-
   it('datetime display ok button', () => {
     const onCalendarChange = jest.fn();
     const onOk = jest.fn();
@@ -823,6 +821,8 @@ describe('Picker.Range', () => {
 
     jest.useRealTimers();
   });
+
+  return;
 
   describe('viewDate', () => {
     function matchTitle(title: string) {
