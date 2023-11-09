@@ -134,7 +134,7 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
       type="button"
       key="year"
       onClick={() => {
-        onModeChange('year');
+        onModeChange('year', pickerValue);
       }}
       tabIndex={-1}
       className={`${prefixCls}-year-btn`}
@@ -151,7 +151,7 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
       type="button"
       key="month"
       onClick={() => {
-        onModeChange('month');
+        onModeChange('month', pickerValue);
       }}
       tabIndex={-1}
       className={`${prefixCls}-month-btn`}

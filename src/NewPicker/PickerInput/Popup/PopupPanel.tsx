@@ -5,7 +5,7 @@ import PickerContext from '../context';
 import { offsetPanelDate } from '../hooks/useRangePickerValue';
 import { type FooterProps } from './Footer';
 
-export type MustProp = Required<Pick<PickerPanelProps, 'mode' | 'onModeChange'>>;
+export type MustProp = Required<Pick<PickerPanelProps, 'mode' | 'onPanelChange'>>;
 
 export type PopupPanelProps<DateType = any> = MustProp &
   PickerPanelProps<DateType> &

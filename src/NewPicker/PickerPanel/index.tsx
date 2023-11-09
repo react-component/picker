@@ -4,6 +4,7 @@ import useShowTime from '../hooks/useShowTime';
 import type {
   CellRender,
   Components,
+  OnPanelChange,
   PanelMode,
   SharedPanelProps,
   SharedTimeProps,
@@ -58,7 +59,7 @@ export interface PickerPanelProps<DateType = any>
 
   // Mode
   mode?: PanelMode;
-  onModeChange?: (mode: PanelMode) => void;
+  onPanelChange?: OnPanelChange<DateType>;
   picker?: PanelMode;
 
   // Time
@@ -106,7 +107,7 @@ function PickerPanel<DateType = any>(
 
     // Mode
     mode,
-    onModeChange,
+    onPanelChange,
     picker = 'date',
 
     // Hover
@@ -145,7 +146,6 @@ function PickerPanel<DateType = any>(
   const [mergedMode, setMergedMode] = useMergedState<PanelMode>(picker, {
     value: mode,
     postState: (val) => val || 'date',
-    onChange: onModeChange,
   });
 
   // ========================= Value ==========================
@@ -184,6 +184,16 @@ function PickerPanel<DateType = any>(
     },
   );
 
+  const triggerModeChange = (nextMode: PanelMode, viewDate?: DateType) => {
+    setMergedMode(nextMode);
+
+    if (viewDate) {
+      setPickerValue(viewDate);
+    }
+
+    onPanelChange?.(viewDate || pickerValue, nextMode);
+  };
+
   const onPanelValueChange = (newVal: DateType) => {
     updateCalendarValue(newVal);
     setPickerValue(newVal);
@@ -194,12 +204,12 @@ function PickerPanel<DateType = any>(
       const index = queue.indexOf(mergedMode);
       const nextMode = queue[index + 1];
       if (index >= 0 && nextMode) {
-        setMergedMode(nextMode);
+        triggerModeChange(nextMode, newVal);
       } else if (mergedMode === 'month') {
         if (picker === 'date') {
-          setMergedMode('date');
+          triggerModeChange('date', newVal);
         } else if (picker === 'week') {
-          setMergedMode('week');
+          triggerModeChange('week', newVal);
         }
       }
     }
@@ -245,7 +255,7 @@ function PickerPanel<DateType = any>(
         locale={locale}
         generateConfig={generateConfig}
         // Mode
-        onModeChange={setMergedMode}
+        onModeChange={triggerModeChange}
         // Value
         pickerValue={mergedPickerValue}
         onPickerValueChange={setPickerValue}

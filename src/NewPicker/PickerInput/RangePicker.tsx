@@ -1,4 +1,5 @@
-import { useMergedState } from 'rc-util';
+import { useEvent, useMergedState } from 'rc-util';
+import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import omit from 'rc-util/lib/omit';
 import warning from 'rc-util/lib/warning';
 import * as React from 'react';
@@ -7,6 +8,7 @@ import type {
   InternalMode,
   OnOpenChange,
   OpenConfig,
+  PanelMode,
   PickerRef,
   RangeTimeProps,
   SelectorProps,
@@ -100,6 +102,13 @@ export interface RangePickerProps<DateType> extends Omit<SharedPickerProps<DateT
 
   // Time
   showTime?: boolean | RangeTimeProps<DateType>;
+
+  // Mode
+  mode?: [startMode: PanelMode, endMode: PanelMode];
+  onPanelChange?: (
+    values: RangeValueType<DateType>,
+    modes: [startMode: PanelMode, endMode: PanelMode],
+  ) => void;
 }
 
 function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: React.Ref<PickerRef>) {
@@ -131,11 +140,13 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     locale,
     generateConfig,
     picker = 'date',
-    mode,
-    onModeChange,
     showTime,
     showNow,
     showToday,
+
+    // Mode
+    mode,
+    onPanelChange,
 
     // Picker Value
     defaultPickerValue,
@@ -190,12 +201,26 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // ======================= ShowTime =======================
   const mergedShowTime = useShowTime(showTime);
 
-  // ======================== Picker ========================
-  const [mergedMode, setMergedMode] = useMergedState(picker, {
+  // ======================== Active ========================
+  // When user first focus one input, any submit will trigger focus another one.
+  // When second time focus one input, submit will not trigger focus again.
+  // When click outside to close the panel, trigger event if it can trigger onChange.
+  const [activeIndex, setActiveIndex] = React.useState<number>(null);
+  const [focused, setFocused] = React.useState<boolean>(false);
+  const blurRef = React.useRef<'input' | 'panel'>(null);
+
+  const focusedIndex = focused ? activeIndex : null;
+
+  const [activeList, setActiveList] = React.useState<number[]>(null);
+
+  // ========================= Mode =========================
+  const [modes, setModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
     value: mode,
-    onChange: onModeChange,
   });
 
+  const mergedMode = modes[activeIndex] || picker;
+
+  // ======================== Picker ========================
   /** Almost same as `picker`, but add `datetime` for `date` with `showTime` */
   const internalPicker: InternalMode = picker === 'date' && mergedShowTime ? 'datetime' : picker;
 
@@ -225,29 +250,6 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       setMergeOpen(nextOpen, config);
     }
   };
-
-  // ======================== Active ========================
-  // When user first focus one input, any submit will trigger focus another one.
-  // When second time focus one input, submit will not trigger focus again.
-  // When click outside to close the panel, trigger event if it can trigger onChange.
-  const [activeIndex, setActiveIndex] = React.useState<number>(null);
-  const [focused, setFocused] = React.useState<boolean>(false);
-  const blurRef = React.useRef<'input' | 'panel'>(null);
-
-  const focusedIndex = focused ? activeIndex : null;
-
-  const [activeList, setActiveList] = React.useState<number[]>(null);
-
-  React.useEffect(() => {
-    if (!mergedOpen) {
-      setActiveList(null);
-    } else if (activeIndex !== null) {
-      setActiveList((ori) => {
-        const list = [...(ori || [])];
-        return list[list.length - 1] === activeIndex ? ori : [...list, activeIndex];
-      });
-    }
-  }, [activeIndex, mergedOpen]);
 
   // ====================== Invalidate ======================
   const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, mergedShowTime);
@@ -322,6 +324,25 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     mergedShowTime?.defaultValue,
     onPickerValueChange,
   );
+
+  // >>> Mode need wait for `pickerValue`
+  const triggerModeChange = useEvent((nextPickerValue: DateType, nextMode: PanelMode) => {
+    const clone: [PanelMode, PanelMode] = [...modes];
+    clone[activeIndex] = nextMode;
+
+    if (clone[0] !== modes[0] || clone[1] !== modes[1]) {
+      setModes(clone);
+    }
+
+    // Compatible with `onPanelChange`
+    if (onPanelChange) {
+      const clonePickerValue: RangeValueType<DateType> = [...calendarValue];
+      if (nextPickerValue) {
+        clonePickerValue[activeIndex] = nextPickerValue;
+      }
+      onPanelChange(clonePickerValue, clone);
+    }
+  });
 
   // ======================== Change ========================
   const fillMergedValue = (date: DateType, index: number) => {
@@ -473,7 +494,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   const panel = (
     <Popup
       // MISC
-      {...omit(props, ['onChange', 'onCalendarChange', 'style', 'className'])}
+      {...omit(props, ['onChange', 'onCalendarChange', 'style', 'className', 'onPanelChange'])}
       showNow={mergedShowNow}
       showTime={mergedShowTime}
       multiple={multiplePanel}
@@ -486,7 +507,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       picker={picker}
       mode={mergedMode}
       internalMode={internalMode}
-      onModeChange={setMergedMode}
+      onPanelChange={triggerModeChange}
       // Value
       value={panelValue}
       onChange={null}
@@ -517,6 +538,27 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     }),
     [prefixCls, locale, generateConfig, components.button],
   );
+
+  // ======================== Effect ========================
+  // >>> Active: Reset list
+  React.useEffect(() => {
+    if (!mergedOpen) {
+      setActiveList(null);
+    } else if (activeIndex !== null) {
+      setActiveList((ori) => {
+        const list = [...(ori || [])];
+        return list[list.length - 1] === activeIndex ? ori : [...list, activeIndex];
+      });
+    }
+  }, [activeIndex, mergedOpen]);
+
+  // >>> Mode
+  // Reset for every active
+  useLayoutEffect(() => {
+    if (mergedOpen && activeIndex !== undefined) {
+      triggerModeChange(null, picker);
+    }
+  }, [mergedOpen, activeIndex]);
 
   // ====================== DevWarning ======================
   if (process.env.NODE_ENV !== 'production') {

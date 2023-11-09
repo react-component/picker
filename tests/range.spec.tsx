@@ -539,8 +539,6 @@ describe('Picker.Range', () => {
     });
   });
 
-  return;
-
   it('mode is array', () => {
     const { container } = render(<DayRangePicker mode={['year', 'month']} />);
     openPicker(container);
@@ -549,6 +547,8 @@ describe('Picker.Range', () => {
     openPicker(container, 1);
     expect(document.querySelector('.rc-picker-month-panel')).toBeTruthy();
   });
+
+  return;
 
   describe('onPanelChange is array args', () => {
     it('mode', () => {

@@ -102,14 +102,20 @@ export default () => {
           console.log('🔥 Change:', val, text);
           setRangeValue(val);
         }}
-        onCalendarChange={(val, text, info) => {
-          console.log('🎉 Calendar Change:', val, text, info);
-        }}
+        // onCalendarChange={(val, text, info) => {
+        //   console.log('🎉 Calendar Change:', val, text, info);
+        // }}
         // preserveInvalidOnBlur
         allowEmpty={[false, true]}
-        onOpenChange={(nextOpen) => {
-          console.log('🏆 Next Open:', nextOpen);
+        // onOpenChange={(nextOpen) => {
+        //   console.log('🏆 Next Open:', nextOpen);
+        // }}
+        onPanelChange={(val, mode) => {
+          console.log('🏆 Panel Change:', val?.[0]?.format('YYYY-MM-DD'), mode);
         }}
+        // onPickerValueChange={(val) => {
+        //   console.log('👻 Picker Value Change:', val);
+        // }}
         // open
         // renderExtraFooter={(mode) => mode}
         components={
@@ -147,8 +153,8 @@ export default () => {
           //   format: 'HH:mm:ss.SSS A',
           //   showTitle: true,
           // }}
-        />
-        <CellPicker
+        /> */}
+        {/* <CellPicker
           picker="week"
         /> */}
 

@@ -177,6 +177,8 @@ export type RangeTimeProps<DateType = any> = Omit<SharedTimeProps<DateType>, 'de
 };
 
 // ======================= Components =======================
+export type OnPanelChange<DateType> = (value: DateType, mode: PanelMode) => void;
+
 export interface SharedPanelProps<DateType = any> {
   // Style
   prefixCls: string;
@@ -192,7 +194,7 @@ export interface SharedPanelProps<DateType = any> {
   onChange: (date: DateType) => void;
 
   // Mode
-  onModeChange: (mode: PanelMode) => void;
+  onModeChange: (mode: PanelMode, date?: DateType) => void;
 
   // Render
   disabledDate?: DisabledDate<DateType>;
@@ -244,8 +246,6 @@ export interface SharedPickerProps<DateType = any> {
   generateConfig: GenerateConfig<DateType>;
 
   // Picker
-  mode?: PanelMode;
-  onModeChange?: (mode: PanelMode) => void;
   picker?: PickerMode;
   showTime?: boolean | SharedTimeProps<DateType>;
   /**
