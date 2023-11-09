@@ -26,6 +26,7 @@ export function ClearIcon({ onClear, ...restProps }: ClearIconProps) {
   return (
     <Icon
       {...restProps}
+      role="button"
       onMouseDown={(e) => {
         e.preventDefault();
       }}

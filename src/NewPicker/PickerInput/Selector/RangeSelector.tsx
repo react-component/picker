@@ -189,6 +189,7 @@ function RangeSelector<DateType = any>(
   const [activeBarStyle, setActiveBarStyle] = React.useState<React.CSSProperties>({
     position: 'absolute',
     width: 0,
+    left: 0,
   });
 
   React.useEffect(() => {

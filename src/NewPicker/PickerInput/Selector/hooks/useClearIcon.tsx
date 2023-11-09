@@ -1,3 +1,4 @@
+import warning from 'rc-util/lib/warning';
 import type { ReactNode } from 'react';
 import * as React from 'react';
 
@@ -6,6 +7,10 @@ export function useClearIcon(
   allowClear?: boolean | { clearIcon?: ReactNode },
   clearIcon?: ReactNode,
 ) {
+  if (process.env.NODE_ENV !== 'production' && clearIcon) {
+    warning(false, '`clearIcon` will be removed in future. Please use `allowClear` instead.');
+  }
+
   const mergedClearIcon = React.useMemo(() => {
     if (allowClear === false) {
       return null;

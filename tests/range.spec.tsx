@@ -600,8 +600,6 @@ describe('Picker.Range', () => {
     });
   });
 
-  return;
-
   it('type can not change before start time', () => {
     const onChange = jest.fn();
     const { container } = render(
@@ -611,22 +609,11 @@ describe('Picker.Range', () => {
       />,
     );
 
-    // wrapper
-    //   .find('input')
-    //   .last()
-    //   .simulate('change', {
-    //     target: {
-    //       value: '2000-01-11',
-    //     },
-    //   });
     fireEvent.change(container.querySelectorAll('input')[1], {
       target: {
         value: '2000-01-11',
       },
     });
-    // document.querySelector('input').last().simulate('keyDown', {
-    //   which: KeyCode.ENTER,
-    // });
     keyDown(container, 0, KeyCode.ENTER);
 
     expect(onChange).not.toHaveBeenCalled();
@@ -653,53 +640,28 @@ describe('Picker.Range', () => {
   describe('hover className', () => {
     [
       { picker: 'year', start: 1990, end: 1997, mid: 1991 },
-      { picker: 'month', start: 'Feb', end: 'Oct', mid: 'May' },
+      { picker: 'month', start: '2月', end: '10月', mid: '5月' },
       { picker: 'date', start: 11, end: 22, mid: 15 },
     ].forEach(({ picker, start, end, mid }) => {
-      it('year', () => {
+      it(picker, () => {
         const { container } = render(<DayRangePicker picker={picker as any} />);
         openPicker(container);
         selectCell(start);
 
         // Hover it
-        // findCell(end).simulate('mouseEnter');
         fireEvent.mouseEnter(findCell(end));
 
-        expect(findCell(start)).toHaveClass('rc-picker-cell-range-hover-start');
-        expect(findCell(mid)).toHaveClass('rc-picker-cell-range-hover');
-        expect(findCell(end)).toHaveClass('rc-picker-cell-range-hover-end');
+        expect(findCell(start)).toHaveClass('rc-picker-cell-range-start');
+        expect(findCell(mid)).toHaveClass('rc-picker-cell-in-range');
+        expect(findCell(end)).toHaveClass('rc-picker-cell-range-end');
 
         // Leave
-        // findCell(end).simulate('mouseLeave');
         fireEvent.mouseLeave(findCell(end));
-        expect(findCell(start)).not.toHaveClass('rc-picker-cell-range-hover-start');
-        expect(findCell(mid)).not.toHaveClass('rc-picker-cell-range-hover');
-        expect(findCell(end)).not.toHaveClass('rc-picker-cell-range-hover-end');
+
+        expect(findCell(start)).toHaveClass('rc-picker-cell-range-start');
+        expect(findCell(mid)).not.toHaveClass('rc-picker-cell-in-range');
+        expect(findCell(end)).not.toHaveClass('rc-picker-cell-range-end');
       });
-    });
-
-    it('range edge className', () => {
-      const { container } = render(
-        <DayRangePicker value={[getDay('2019-12-20'), getDay('2019-12-20')]} />,
-      );
-
-      // End edge
-      openPicker(container);
-      // findCell(10).simulate('mouseEnter');
-      fireEvent.mouseEnter(findCell(10));
-      expect(findCell(19)).toHaveClass('rc-picker-cell-range-hover-edge-end');
-      expect(findCell(20)).toHaveClass('rc-picker-cell-range-start-near-hover');
-      // findCell(10).simulate('mouseOut');
-      fireEvent.mouseOut(findCell(10));
-
-      // Start edge
-      openPicker(container, 1);
-      // findCell(28).simulate('mouseEnter');
-      fireEvent.mouseEnter(findCell(28));
-      expect(findCell(21)).toHaveClass('rc-picker-cell-range-hover-edge-start');
-      expect(findCell(20)).toHaveClass('rc-picker-cell-range-end-near-hover');
-      // findCell(28).simulate('mouseOut');
-      fireEvent.mouseOut(findCell(28));
     });
   });
 
@@ -709,8 +671,12 @@ describe('Picker.Range', () => {
     selectCell(11);
     expect(isOpen()).toBeTruthy();
 
-    // document.querySelector('input').last().simulate('blur');
     fireEvent.blur(container.querySelectorAll('input')[1]);
+
+    act(() => {
+      jest.runAllTimers();
+    });
+
     expect(isOpen()).toBeFalsy();
   });
 
@@ -729,6 +695,8 @@ describe('Picker.Range', () => {
       'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.',
     );
   });
+
+  return;
 
   it('block native mouseDown in panel to prevent focus changed', () => {
     const { container } = render(<DayRangePicker />);
