@@ -16,13 +16,19 @@ export default function useLockState<T>(
     value,
   });
   const rafRef = React.useRef<number>(null);
+  const stateRef = React.useRef<T>(state);
+  stateRef.current = state;
 
   const updateValue = useEvent((next: T, immediately?: boolean) => {
     raf.cancel(rafRef.current);
 
     const doUpdate = () => {
+      const prev = stateRef.current;
       setState(next);
-      onChange?.(next);
+
+      if (onChange && prev !== next) {
+        onChange(next);
+      }
     };
 
     if (next || immediately) {
