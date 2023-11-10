@@ -2,7 +2,7 @@ import React from 'react';
 import type { GenerateConfig } from '../../generate';
 import type { CellRender, DisabledDate, Locale, PanelMode, SharedPanelProps } from '../interface';
 
-export interface PanelProps<DateType = any> {
+export interface PanelContextProps<DateType = any> {
   type: PanelMode;
 
   // Shared
@@ -15,19 +15,20 @@ export interface PanelProps<DateType = any> {
   hoverValue: [DateType, DateType] | null;
   onHover?: (date: DateType | null) => void;
   value?: DateType;
-  pickerValue?: DateType;
+  /** `pickerValue` is always exist */
+  pickerValue: DateType;
   generateConfig: GenerateConfig<DateType>;
 }
 
 /** Used for each single Panel. e.g. DatePanel */
-export const PanelContext = React.createContext<PanelProps>(null!);
+export const PanelContext = React.createContext<PanelContextProps>(null!);
 
 /**
  * Get shared props for the SharedPanelProps interface.
  */
 export function useInfo<DateType = any>(
   props: SharedPanelProps<DateType>,
-): [sharedProps: Omit<PanelProps<DateType>, 'type'>, now: DateType] {
+): [sharedProps: Omit<PanelContextProps<DateType>, 'type'>, now: DateType] {
   const {
     prefixCls,
     generateConfig,

@@ -25,12 +25,6 @@ export default function TimePanel<DateType = any>(props: SharedPanelProps<DateTy
   const [info] = useInfo(props);
 
   // ========================= Render =========================
-  // const formatTimeStr = formatValue(value, {
-  //   locale,
-  //   format,
-  //   generateConfig,
-  // });
-
   return (
     <PanelContext.Provider
       value={{

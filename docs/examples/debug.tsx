@@ -98,7 +98,7 @@ export default () => {
         // }}
         preserveInvalidOnBlur
         showTime={{
-          defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],
+          // defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],
         }}
         // onOk={() => {
         //   console.log('🍷 Ok!');

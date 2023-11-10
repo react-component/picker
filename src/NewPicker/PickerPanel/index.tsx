@@ -1,11 +1,12 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
-import useShowTime from '../hooks/useShowTime';
+import useTimeConfig from '../hooks/useTimeConfig';
 import type {
   CellRender,
   Components,
   OnPanelChange,
   PanelMode,
+  PickerMode,
   SharedPanelProps,
   SharedTimeProps,
 } from '../interface';
@@ -60,7 +61,7 @@ export interface PickerPanelProps<DateType = any>
   // Mode
   mode?: PanelMode;
   onPanelChange?: OnPanelChange<DateType>;
-  picker?: PanelMode;
+  picker?: PickerMode;
 
   // Time
   showTime?: true | SharedTimeProps<DateType>;
@@ -114,9 +115,6 @@ function PickerPanel<DateType = any>(
     hoverValue,
     onHover,
 
-    // Time
-    showTime,
-
     // Week
     showWeek,
 
@@ -137,7 +135,7 @@ function PickerPanel<DateType = any>(
   }));
 
   // ======================== ShowTime ========================
-  const mergedShowTime = useShowTime(showTime);
+  const mergedShowTime = useTimeConfig(props);
 
   // ========================== Now ===========================
   const now = generateConfig.getNow();

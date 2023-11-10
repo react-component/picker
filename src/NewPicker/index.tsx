@@ -21,6 +21,7 @@
  *  - Trigger `onCalendarChange` when type correct
  *  - [Break] Not order `value` if given `value` is wrong order.
  *  - Hover `presets` will show date in input field.
+ *  - [Break] RangePicker go to end field, `pickerValue` will follow the start field if not controlled.
  */
 
 import type { PickerRef } from './interface';

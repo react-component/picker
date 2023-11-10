@@ -4,6 +4,7 @@ import omit from 'rc-util/lib/omit';
 import warning from 'rc-util/lib/warning';
 import * as React from 'react';
 import useShowTime from '../hooks/useShowTime';
+import useTimeConfig from '../hooks/useTimeConfig';
 import type {
   InternalMode,
   OnOpenChange,
@@ -200,7 +201,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   const mergedClearIcon = useClearIcon(prefixCls, allowClear, clearIcon);
 
   // ======================= ShowTime =======================
-  const mergedShowTime = useShowTime(showTime);
+  const mergedShowTime = useTimeConfig(props);
 
   // ======================== Active ========================
   // When user first focus one input, any submit will trigger focus another one.
@@ -566,7 +567,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       // Legacy compatible. This effect update should not trigger `onPanelChange`
       triggerModeChange(null, picker, false);
     }
-  }, [mergedOpen, activeIndex]);
+  }, [mergedOpen, activeIndex, picker]);
 
   // ====================== DevWarning ======================
   if (process.env.NODE_ENV !== 'production') {

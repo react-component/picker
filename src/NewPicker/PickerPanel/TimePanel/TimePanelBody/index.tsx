@@ -2,7 +2,7 @@ import * as React from 'react';
 import { formatValue } from '../../../../utils/dateUtil';
 import { leftPad } from '../../../../utils/miscUtil';
 import type { SharedPanelProps, SharedTimeProps } from '../../../interface';
-import { PanelContext } from '../../context';
+import { PanelContext, type PanelContextProps } from '../../context';
 import TimeColumn, { type Unit } from './TimeColumn';
 import { findValidateTime } from './util';
 
@@ -80,7 +80,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     locale,
     onChange,
     pickerValue,
-  } = React.useContext(PanelContext);
+  } = React.useContext<PanelContextProps<DateType>>(PanelContext);
 
   // ========================= Value ==========================
   // PickerValue will tell which one to align on the top
@@ -266,7 +266,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
   // ========================= Column =========================
   // Create a template date for the trigger change event
   const triggerDateTmpl = React.useMemo(() => {
-    let tmpl = generateConfig.getNow();
+    let tmpl = pickerValue || generateConfig.getNow();
 
     const isNotNull = (num: number) => num !== null && num !== undefined;
 
@@ -289,6 +289,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
 
     return tmpl;
   }, [
+    pickerValue,
     hour,
     minute,
     second,

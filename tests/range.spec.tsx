@@ -527,7 +527,6 @@ describe('Picker.Range', () => {
       openPicker(container);
       selectCell(13);
       fireEvent.click(document.querySelector('.rc-picker-ok button'));
-      console.log('~~~~~~~~');
       selectCell(23);
 
       matchValues(container, '1990-09-13 01:02:03', '1990-09-23 05:06:07');
@@ -560,7 +559,7 @@ describe('Picker.Range', () => {
 
       openPicker(container, 1);
       selectCell(1993);
-      expect(isSame(onPanelChange.mock.calls[0][0][1], '1993-09-03'));
+      expect(isSame(onPanelChange.mock.calls[0][0][1], '1993', 'year'));
       expect(onPanelChange.mock.calls[0][1]).toEqual(['month', 'month']);
     });
 
@@ -934,8 +933,6 @@ describe('Picker.Range', () => {
     });
   });
 
-  return;
-
   // https://github.com/ant-design/ant-design/issues/20868
   it('change picker should reset mode', () => {
     const { container, rerender } = render(<DayRangePicker picker="date" />);
@@ -995,6 +992,8 @@ describe('Picker.Range', () => {
     testOrderOnTime(false, '23:00:00', '02:00:00');
     testOrderOnTime(true, '02:00:00', '23:00:00');
   });
+
+  return;
 
   it('id', () => {
     const { container } = render(<DayRangePicker id="bamboo" />);
