@@ -1074,6 +1074,7 @@ describe('Picker.Range', () => {
         );
         openPicker(container, 1);
         selectCell(targetCell);
+        closePicker(container, 1);
         expect(onChange).toHaveBeenCalled();
         expect(onChange).toHaveBeenCalledWith(expect.anything(), [match[0], match[1] || match[0]]);
       });
