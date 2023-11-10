@@ -1268,8 +1268,6 @@ describe('Picker.Range', () => {
     });
   });
 
-  return;
-
   describe('click at non-input elements', () => {
     it('should focus on the first element by default', () => {
       jest.useFakeTimers();
@@ -1290,6 +1288,7 @@ describe('Picker.Range', () => {
       expect(document.activeElement).toBe(container.querySelectorAll('input')[1]);
       jest.useRealTimers();
     });
+
     it("shouldn't let mousedown blur the input", () => {
       jest.useFakeTimers();
       const { container } = render(<DayRangePicker />);
@@ -1310,6 +1309,8 @@ describe('Picker.Range', () => {
     render(<DayRangePicker open panelRender={() => <h1>Light</h1>} />);
     expect(document.body).toMatchSnapshot();
   });
+
+  return;
 
   describe('Selection callbacks', () => {
     it('selection provide info for onCalendarChange', () => {

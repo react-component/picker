@@ -25,8 +25,16 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
 
   placeholder?: [string, string];
 
+  // Invalid
   invalid: [boolean, boolean];
   onInvalid: (index: number, valid: boolean) => void;
+
+  // Offset
+  /**
+   * Trigger when the active bar offset position changed.
+   * This is used for popup panel offset.
+   */
+  onActiveOffset: (offset: number) => void;
 }
 
 function RangeSelector<DateType = any>(
@@ -82,7 +90,12 @@ function RangeSelector<DateType = any>(
     // Open
     open,
     onOpenChange,
+
+    // Offset
+    onActiveOffset,
   } = props;
+
+  const rtl = direction === 'rtl';
 
   // ======================== Prefix ========================
   const { prefixCls } = React.useContext(PickerContext);
@@ -224,20 +237,39 @@ function RangeSelector<DateType = any>(
   });
 
   // ====================== ActiveBar =======================
+  const offsetUnit = rtl ? 'right' : 'left';
+
   const [activeBarStyle, setActiveBarStyle] = React.useState<React.CSSProperties>({
     position: 'absolute',
     width: 0,
-    left: 0,
+    [offsetUnit]: 0,
   });
 
   React.useEffect(() => {
     const input = getInput(activeIndex);
     if (input) {
+      const { offsetWidth, offsetLeft, offsetParent } = input.nativeElement;
+
+      let offset = offsetLeft;
+      if (rtl) {
+        const parentElement = offsetParent as HTMLElement;
+        const parentStyle = getComputedStyle(parentElement);
+
+        offset =
+          parentElement.offsetWidth -
+          parseFloat(parentStyle.borderRightWidth) -
+          parseFloat(parentStyle.borderLeftWidth) -
+          offsetLeft -
+          offsetWidth;
+      }
+
       setActiveBarStyle((ori) => ({
         ...ori,
-        width: input.nativeElement.offsetWidth,
-        left: input.nativeElement.offsetLeft,
+        width: offsetWidth,
+        [offsetUnit]: offset,
       }));
+
+      onActiveOffset(offset);
     }
   }, [activeIndex]);
 
@@ -253,13 +285,23 @@ function RangeSelector<DateType = any>(
         {
           [`${prefixCls}-focused`]: activeIndex !== null,
           [`${prefixCls}-invalid`]: invalid.some((i) => i),
-          [`${prefixCls}-rtl`]: direction === 'rtl',
+          [`${prefixCls}-rtl`]: rtl,
         },
         className,
       )}
       style={style}
       ref={rootRef}
       onClick={onClick}
+      // Not lose current input focus
+      onMouseDown={(e) => {
+        const { target } = e;
+        if (
+          target !== inputStartRef.current.inputElement &&
+          target !== inputEndRef.current.inputElement
+        ) {
+          e.preventDefault();
+        }
+      }}
     >
       <Input ref={inputStartRef} {...getInputProps(0)} />
       <div className={`${prefixCls}-range-separator`}>{separator}</div>

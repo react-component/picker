@@ -24,6 +24,7 @@ import { getMaskRange } from './util';
 
 export interface InputRef {
   nativeElement: HTMLDivElement;
+  inputElement: HTMLInputElement;
   focus: VoidFunction;
   blur: VoidFunction;
 }
@@ -88,6 +89,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: holderRef.current,
+    inputElement: inputRef.current,
     focus: () => {
       inputRef.current.focus();
     },

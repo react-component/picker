@@ -451,6 +451,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // ========================================================
   // ==                       Panels                       ==
   // ========================================================
+  const [activeOffset, setActiveOffset] = React.useState(0);
 
   // ======================= Presets ========================
   const presetList = usePresets(presets, ranges);
@@ -519,10 +520,20 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   const panel = (
     <Popup
       // MISC
-      {...omit(props, ['onChange', 'onCalendarChange', 'style', 'className', 'onPanelChange'])}
+      {...omit(props, [
+        'onChange',
+        'onCalendarChange',
+        'style',
+        'className',
+        'id',
+        'onPanelChange',
+      ])}
       showNow={mergedShowNow}
       showTime={mergedShowTime}
+      // Range
+      range
       multiple={multiplePanel}
+      activeOffset={activeOffset}
       // Disabled
       disabledDate={mergedDisabledDate}
       // Focus
@@ -622,6 +633,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
         // Visible
         visible={mergedOpen}
         onClose={onPopupClose}
+        // Range
+        range
       >
         <RangeSelector
           // Shared
@@ -657,6 +670,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
           // Invalid
           invalid={submitInvalidates}
           onInvalid={onSelectorInvalid}
+          // Offset
+          onActiveOffset={setActiveOffset}
         />
       </PickerTrigger>
     </PickerContext.Provider>

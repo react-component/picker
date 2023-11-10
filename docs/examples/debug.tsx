@@ -54,7 +54,7 @@ export default () => {
         // direction="rtl"
         // className="good"
         // style={{ opacity: 0.5 }}
-        // picker="year"
+        picker="time"
         // value={[moment('2000-01-01'), null]}
         // presets={[
         //   {
@@ -97,9 +97,11 @@ export default () => {
         //   // align: true,
         // }}
         preserveInvalidOnBlur
-        // showTime={{
-        //   // defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],
-        // }}
+        showTime={
+          {
+            // defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],
+          }
+        }
         // onOk={() => {
         //   console.log('🍷 Ok!');
         // }}
@@ -115,7 +117,7 @@ export default () => {
         onOpenChange={(nextOpen) => {
           console.log('🏆 Next Open:', nextOpen);
         }}
-        // open
+        open
         // mode={['month', 'year']}
         // onPanelChange={(val, mode) => {
         //   console.log('🏆 Panel Change:', val?.[0]?.format('YYYY-MM-DD'), mode);

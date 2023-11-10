@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import pickAttrs from 'rc-util/lib/pickAttrs';
+import ResizeObserver, { type ResizeObserverProps } from 'rc-resize-observer';
 import * as React from 'react';
 import type { SharedPickerProps, ValueDate } from '../../interface';
 import PickerContext from '../context';
@@ -18,6 +18,13 @@ export interface PopupProps<DateType = any, PresetValue = DateType>
   presets: ValueDate<DateType>[];
   onPresetHover: (presetValue: PresetValue) => void;
   onPresetSubmit: (presetValue: RangeValueType<DateType>) => void;
+
+  // Range
+  range?: boolean;
+  activeOffset?: number;
+
+  // Direction
+  direction?: 'ltr' | 'rtl';
 }
 
 export default function Popup(props: PopupProps) {
@@ -26,18 +33,51 @@ export default function Popup(props: PopupProps) {
     internalMode,
     picker,
     showNow,
+
+    // Range
+    range,
     multiple,
+    activeOffset = 0,
 
     // Presets
     presets,
     onPresetHover,
     onPresetSubmit,
 
-    ...restProps
+    // Direction
+    direction,
   } = props;
 
   const { prefixCls } = React.useContext(PickerContext);
   const panelPrefixCls = `${prefixCls}-panel`;
+
+  const rtl = direction === 'rtl';
+
+  // ========================= Refs =========================
+  const wrapperRef = React.useRef<HTMLDivElement>(null);
+
+  // ======================== Offset ========================
+  const [containerWidth, setContainerWidth] = React.useState<number>(0);
+  const [containerOffset, setContainerOffset] = React.useState<number>(0);
+
+  const onResize: ResizeObserverProps['onResize'] = (info) => {
+    if (info.offsetWidth) {
+      setContainerWidth(info.offsetWidth);
+    }
+  };
+
+  React.useEffect(() => {
+    // `activeOffset` is always align with the active input element
+    // So we need only check container contains the `activeOffset`
+    if (range) {
+      if (activeOffset + containerWidth < wrapperRef.current?.offsetWidth) {
+        setContainerOffset(activeOffset);
+      } else {
+        console.log('111');
+        setContainerOffset(0);
+      }
+    }
+  }, [containerWidth, activeOffset, range]);
 
   // ======================== Custom ========================
   let mergedNodes: React.ReactNode = (
@@ -60,13 +100,13 @@ export default function Popup(props: PopupProps) {
   }
 
   // ======================== Render ========================
-  const divProps = pickAttrs(restProps, {
-    attr: true,
-  });
-
   const containerPrefixCls = `${panelPrefixCls}-container`;
 
-  return (
+  const marginLeft = 'marginLeft';
+  const marginRight = 'marginRight';
+
+  // Container
+  let renderNode = (
     <div
       tabIndex={-1}
       className={classNames(
@@ -74,13 +114,35 @@ export default function Popup(props: PopupProps) {
         // Used for Today Button style, safe to remove if no need
         `${prefixCls}-${internalMode}-panel-container`,
       )}
+      style={{
+        [rtl ? marginRight : marginLeft]: containerOffset,
+        [rtl ? marginLeft : marginRight]: 'auto',
+      }}
       // Still wish not to lose focus on mouse down
       onMouseDown={(e) => {
         e.preventDefault();
       }}
-      {...divProps}
     >
       {mergedNodes}
     </div>
   );
+
+  if (range) {
+    renderNode = (
+      <div
+        ref={wrapperRef}
+        className={classNames(`${prefixCls}-range-wrapper`, `${prefixCls}-${picker}-range-wrapper`)}
+      >
+        <div
+          className={`${prefixCls}-range-arrow`}
+          style={{ [rtl ? 'right' : 'left']: activeOffset }}
+        />
+
+        {/* Watch for container size */}
+        <ResizeObserver onResize={onResize}>{renderNode}</ResizeObserver>
+      </div>
+    );
+  }
+
+  return renderNode;
 }

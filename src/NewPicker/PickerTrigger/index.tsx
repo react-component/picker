@@ -100,6 +100,7 @@ function PickerTrigger({
         [`${dropdownPrefixCls}-rtl`]: direction === 'rtl',
       })}
       popupStyle={popupStyle}
+      stretch="minWidth"
       getPopupContainer={getPopupContainer}
       onPopupVisibleChange={(nextVisible) => {
         if (!nextVisible) {
