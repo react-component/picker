@@ -75,27 +75,12 @@ export default function useRangePickerValue<DateType = any>(
   // `activeIndex` must be valid to avoid getting empty `pickerValue`
   const mergedActiveIndex = activeIndex || 0;
 
-  // // ====================== Time Value ======================
-  // const fillTime = useEvent((date: DateType, index: number) => {
-  //   return fillTimePickerValue(generateConfig, date, timeDefaultValue[index]);
-  // });
-
   // ===================== Picker Value =====================
-  const getDefaultPickerValue = (index: number) => {
-    return defaultPickerValue[index] || calendarValue[index] || generateConfig.getNow();
-    // return fillTime(rawDate, index);
-  };
+  const getDefaultPickerValue = (index: number) =>
+    defaultPickerValue[index] || calendarValue[index] || generateConfig.getNow();
 
   // Align `pickerValue` with `showTime.defaultValue`
   const [startPickerValue, endPickerValue] = pickerValue;
-  // const [startPickerValue, endPickerValue] = React.useMemo(() => {
-  //   const [startValue, endValue] = pickerValue;
-
-  //   const filledStart = startValue && fillTime(startValue, 0);
-  //   const filledEnd = endValue && fillTime(endValue, 1);
-
-  //   return [filledStart, filledEnd];
-  // }, [pickerValue, fillTime]);
 
   // PickerValue state
   const [mergedStartPickerValue, setStartPickerValue] = useMergedState(
