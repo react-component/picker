@@ -3,9 +3,9 @@ import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import omit from 'rc-util/lib/omit';
 import warning from 'rc-util/lib/warning';
 import * as React from 'react';
-import useShowTime from '../hooks/useShowTime';
 import useTimeConfig from '../hooks/useTimeConfig';
 import type {
+  CellRender,
   InternalMode,
   OnOpenChange,
   OpenConfig,
@@ -31,7 +31,7 @@ import useRangeValue from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
 import { useClearIcon } from './Selector/hooks/useClearIcon';
-import RangeSelector from './Selector/RangeSelector';
+import RangeSelector, { type SelectorIdType } from './Selector/RangeSelector';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
   const singleConfig = config ?? defaultConfig;
@@ -45,7 +45,11 @@ function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig:
 
 export type RangeValueType<DateType> = [start?: DateType, end?: DateType];
 
-export interface RangePickerProps<DateType> extends Omit<SharedPickerProps<DateType>, 'showTime'> {
+export interface RangePickerProps<DateType>
+  extends Omit<SharedPickerProps<DateType>, 'showTime' | 'id'> {
+  // Structure
+  id?: SelectorIdType;
+
   // Value
   value?: RangeValueType<DateType>;
   defaultValue?: RangeValueType<DateType>;
@@ -142,7 +146,6 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     locale,
     generateConfig,
     picker = 'date',
-    showTime,
     showNow,
     showToday,
 
@@ -178,6 +181,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
     // Render
     components = {},
+    cellRender,
   } = props;
 
   // ========================= Refs =========================
@@ -207,7 +211,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // When user first focus one input, any submit will trigger focus another one.
   // When second time focus one input, submit will not trigger focus again.
   // When click outside to close the panel, trigger event if it can trigger onChange.
-  const [activeIndex, setActiveIndex] = React.useState<number>(null);
+  const [activeIndex, setActiveIndex] = React.useState<number>(0);
   const [focused, setFocused] = React.useState<boolean>(false);
   const lastOperationRef = React.useRef<'input' | 'panel'>(null);
 
@@ -495,6 +499,14 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     triggerOpen(false);
   };
 
+  // >>> cellRender
+  const onInternalCellRender: CellRender<DateType> = (date, info) => {
+    return cellRender(date, {
+      ...info,
+      range: activeIndex === 0 ? 'start' : 'end',
+    });
+  };
+
   // >>> Value
   const panelValue = calendarValue[activeIndex] || null;
 
@@ -523,7 +535,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       // PickerValue
       pickerValue={currentPickerValue}
       onPickerValueChange={setCurrentPickerValue}
-      //Hover
+      // Hover
       hoverValue={hoverValues}
       onHover={onPanelHover}
       // Submit
@@ -533,6 +545,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       presets={presetList}
       onPresetHover={onPresetHover}
       onPresetSubmit={onPresetSubmit}
+      // Render
+      cellRender={cellRender ? onInternalCellRender : undefined}
     />
   );
 

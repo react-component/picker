@@ -5,7 +5,16 @@ import PickerContext from '../context';
 import Icon, { ClearIcon } from './Icon';
 import Input, { type InputProps, type InputRef } from './Input';
 
+export type SelectorIdType =
+  | string
+  | {
+      start?: string;
+      end?: string;
+    };
+
 export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateType> {
+  id?: SelectorIdType;
+
   separator?: React.ReactNode;
 
   value?: [DateType?, DateType?];
@@ -24,6 +33,8 @@ function RangeSelector<DateType = any>(
   ref: React.Ref<SelectorRef>,
 ) {
   const {
+    id,
+
     clearIcon,
     suffixIcon,
     separator = '~',
@@ -74,6 +85,17 @@ function RangeSelector<DateType = any>(
 
   // ======================== Prefix ========================
   const { prefixCls } = React.useContext(PickerContext);
+
+  // ========================== Id ==========================
+  const ids = React.useMemo(() => {
+    if (typeof id === 'string') {
+      return [id];
+    }
+
+    const mergedId = id || {};
+
+    return [mergedId.start, mergedId.end];
+  }, [id]);
 
   // ========================= Refs =========================
   const rootRef = React.useRef<HTMLDivElement>();
@@ -130,6 +152,8 @@ function RangeSelector<DateType = any>(
     readOnly: inputReadOnly,
 
     // ============= By Index =============
+    id: ids[index],
+
     value: valueTexts[index],
 
     invalid: invalid[index],

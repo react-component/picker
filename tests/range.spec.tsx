@@ -993,31 +993,38 @@ describe('Picker.Range', () => {
     testOrderOnTime(true, '02:00:00', '23:00:00');
   });
 
-  return;
+  describe('id', () => {
+    it('basic', () => {
+      const { container } = render(<DayRangePicker id="bamboo" />);
+      expect(container.querySelector('input').id).toEqual('bamboo');
+    });
 
-  it('id', () => {
-    const { container } = render(<DayRangePicker id="bamboo" />);
-    expect(container.querySelector('input').id).toEqual('bamboo');
+    it('semantic', () => {
+      const { container } = render(<DayRangePicker id={{ start: 'little', end: 'light' }} />);
+      expect(container.querySelectorAll('input')[0].id).toEqual('little');
+      expect(container.querySelectorAll('input')[1].id).toEqual('light');
+    });
   });
 
   it('dateRender', () => {
-    let range = 'start';
+    let range = '';
 
     const { container } = render(
       <DayRangePicker
         open
         cellRender={(date, info) => {
-          expect(info.range).toEqual(range);
+          range = info.range;
           if (typeof date !== 'number') {
             return date.format('YYYY-MM-DD');
           }
         }}
       />,
     );
-    expect(findLast(document, 'tbody td').textContent).toEqual('1990-11-10');
+    expect(range).toBe('start');
+    expect(findLast(document, 'tbody td').textContent).toEqual('1990-11-11');
 
-    range = 'end';
     openPicker(container, 1);
+    expect(range).toBe('end');
   });
 
   // https://github.com/ant-design/ant-design/issues/21084
@@ -1029,6 +1036,8 @@ describe('Picker.Range', () => {
     selectCell(4);
     matchValues(container, '1989-09-03', '1989-09-04');
   });
+
+  return;
 
   describe('can select endDate when in same level', () => {
     /**

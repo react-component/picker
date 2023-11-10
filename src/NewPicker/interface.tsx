@@ -306,6 +306,7 @@ export interface SharedPickerProps<DateType = any> {
 
   // Render
   components?: Components;
+  cellRender?: CellRender<DateType>;
   /**
    * When use `date` picker,
    * Show the button to set current datetime.
