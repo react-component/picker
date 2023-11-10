@@ -1,6 +1,6 @@
-import type { InternalMode } from '../NewPicker/interface';
 import type { GenerateConfig } from '../generate';
 import type { CustomFormat, Locale, NullableDateType, PanelMode, PickerMode } from '../interface';
+import type { InternalMode } from '../NewPicker/interface';
 import { DECADE_UNIT_DIFF } from '../panels/DecadePanel/constant';
 
 export const WEEK_DAY_COUNT = 7;
@@ -263,6 +263,10 @@ export function formatValue<DateType>(
     format: string | CustomFormat<DateType>;
   },
 ) {
+  if (!value) {
+    return '';
+  }
+
   return typeof format === 'function'
     ? format(value)
     : generateConfig.locale.format(locale.locale, value, format);

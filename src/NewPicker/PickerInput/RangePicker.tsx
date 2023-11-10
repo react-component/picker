@@ -22,6 +22,7 @@ import PickerTrigger from '../PickerTrigger';
 import { fillIndex } from '../util';
 import PickerContext from './context';
 import { useFieldFormat } from './hooks/useFieldFormat';
+import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
 import usePresets from './hooks/usePresets';
@@ -160,6 +161,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
     // Format
     format,
+    inputReadOnly,
 
     // Motion
     transitionName,
@@ -244,6 +246,9 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
   // ======================== Format ========================
   const [formatList, maskFormat] = useFieldFormat(internalPicker, locale, format);
+
+  // ======================= ReadOnly =======================
+  const mergedInputReadOnly = useInputReadOnly(formatList, inputReadOnly);
 
   // ========================= Open =========================
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
@@ -635,10 +640,12 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
           onSubmit={triggerChangeAndFocusNext}
           // Change
           value={hoverValues}
-          format={formatList}
           maskFormat={maskFormat}
           onChange={onSelectorChange}
           onInputChange={onSelectorInputChange}
+          // Format
+          format={formatList}
+          inputReadOnly={mergedInputReadOnly}
           // Disabled
           disabled={mergedDisabled}
           // Open

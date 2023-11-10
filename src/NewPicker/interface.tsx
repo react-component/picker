@@ -229,6 +229,8 @@ export type SemanticStructure = 'popup';
 
 export type CustomFormat<DateType> = (value: DateType) => string;
 
+export type FormatType<DateType = any> = string | CustomFormat<DateType>;
+
 export interface SharedPickerProps<DateType = any> {
   // MISC
   direction?: 'ltr' | 'rtl';
@@ -255,9 +257,8 @@ export interface SharedPickerProps<DateType = any> {
    * Once use config mode, it must be fill with format your config.
    */
   format?:
-    | string
-    | CustomFormat<DateType>
-    | (string | CustomFormat<DateType>)[]
+    | FormatType<DateType>
+    | FormatType<DateType>[]
     | {
         format: string;
         align?: boolean;
@@ -367,7 +368,7 @@ export interface SelectorProps<DateType = any> {
   onClear: VoidFunction;
 
   // Change
-  format: string[];
+  format: FormatType<DateType>[];
   /**
    * Convert with user typing for the format template.
    * This will force align the input with template mask.

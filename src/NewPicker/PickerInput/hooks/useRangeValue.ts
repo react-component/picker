@@ -1,6 +1,7 @@
 import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
-import { isSame, isSameTimestamp } from '../../../utils/dateUtil';
+import { formatValue, isSame, isSameTimestamp } from '../../../utils/dateUtil';
+import type { FormatType } from '../../interface';
 import type { RangePickerProps, RangeValueType } from '../RangePicker';
 import { useLockEffect } from './useLockState';
 
@@ -25,7 +26,7 @@ export default function useRangeValue<DateType = any>(
     | 'picker'
   >,
   disabled: [boolean, boolean],
-  formatList: string[],
+  formatList: FormatType[],
   focused: boolean,
   lastOperationRef: React.RefObject<'input' | 'panel'>,
   isInvalidateDate: (date: DateType) => boolean,
@@ -84,7 +85,7 @@ export default function useRangeValue<DateType = any>(
   // ============================ Change ============================
   const getDateTexts = ([start, end]: RangeValueType<DateType>) => {
     return [start, end].map((date) =>
-      date ? generateConfig.locale.format(locale.locale, date, formatList[0]) : '',
+      formatValue(date, { generateConfig, locale, format: formatList[0] }),
     ) as [string, string];
   };
 

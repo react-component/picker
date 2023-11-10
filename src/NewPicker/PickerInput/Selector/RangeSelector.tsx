@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
+import { formatValue } from '../../../utils/dateUtil';
 import type { OpenConfig, SelectorProps, SelectorRef } from '../../interface';
 import PickerContext from '../context';
 import Icon, { ClearIcon } from './Icon';
@@ -133,7 +134,12 @@ function RangeSelector<DateType = any>(
   const firstFormat = format[0];
 
   const getText = React.useCallback(
-    (date: any) => (date ? generateConfig.locale.format(locale.locale, date, firstFormat) : ''),
+    (date: DateType) =>
+      formatValue(date, {
+        locale,
+        format: firstFormat,
+        generateConfig,
+      }),
     [locale, generateConfig, firstFormat],
   );
 
@@ -187,12 +193,17 @@ function RangeSelector<DateType = any>(
       onInputChange();
 
       for (let i = 0; i < format.length; i += 1) {
-        const parsed = parseDate(text, format[i]);
+        const singleFormat = format[i];
 
-        if (parsed) {
-          onInvalid(index, false);
-          onChange(parsed, index);
-          return;
+        // Only support string type
+        if (typeof singleFormat === 'string') {
+          const parsed = parseDate(text, singleFormat);
+
+          if (parsed) {
+            onInvalid(index, false);
+            onChange(parsed, index);
+            return;
+          }
         }
       }
 

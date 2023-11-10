@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { InternalMode, Locale, SharedPickerProps } from '../../interface';
+import type { FormatType, InternalMode, Locale, SharedPickerProps } from '../../interface';
 import { toArray } from '../../util';
 
 function getRowFormat(picker: InternalMode, locale: Locale, format?: SharedPickerProps['format']) {
@@ -27,11 +27,11 @@ function getRowFormat(picker: InternalMode, locale: Locale, format?: SharedPicke
   }
 }
 
-export function useFieldFormat(
+export function useFieldFormat<DateType = any>(
   picker: InternalMode,
   locale: Locale,
   format?: SharedPickerProps['format'],
-): [formatList: string[], maskFormat?: string] {
+): [formatList: FormatType<DateType>[], maskFormat?: string] {
   return React.useMemo(() => {
     const rawFormat = getRowFormat(picker, locale, format);
 
@@ -43,7 +43,9 @@ export function useFieldFormat(
 
     return [
       // Format list
-      formatList.map((config) => (typeof config === 'string' ? config : config.format)),
+      formatList.map((config) =>
+        typeof config === 'string' || typeof config === 'function' ? config : config.format,
+      ),
       // Mask Format
       maskFormat,
     ];

@@ -1037,8 +1037,6 @@ describe('Picker.Range', () => {
     matchValues(container, '1989-09-03', '1989-09-04');
   });
 
-  return;
-
   describe('can select endDate when in same level', () => {
     /**
      * Selection should support in same level.
@@ -1054,7 +1052,7 @@ describe('Picker.Range', () => {
         picker: 'week',
         defaultValue: ['2020-06-13'],
         targetCell: '9',
-        match: ['2020-24th'],
+        match: ['2020-24周'],
       },
       {
         picker: 'quarter',
@@ -1132,7 +1130,7 @@ describe('Picker.Range', () => {
     const { container } = render(
       <DayRangePicker
         allowClear
-        format={[(val: Moment) => `custom format:${val.format('YYYYMMDD')}`, 'YYYY-MM-DD']}
+        format={[(val: Dayjs) => `custom format:${val.format('YYYYMMDD')}`, 'YYYY-MM-DD']}
         defaultValue={[getDay('2020-09-17'), getDay('2020-10-17')]}
       />,
     );
@@ -1154,12 +1152,12 @@ describe('Picker.Range', () => {
     expect(document.querySelectorAll('input')[1].value).toEqual('custom format:20201024');
 
     // clear
-    const clearNode = document.querySelector('.rc-picker-clear');
-    // expect(clearNode.simulate.bind(clearNode, 'mouseUp')).not.toThrow();
-    fireEvent.mouseUp(clearNode);
+    clearValue();
     expect(document.querySelectorAll('input')[0].value).toEqual('');
     expect(document.querySelectorAll('input')[1].value).toEqual('');
   });
+
+  return;
 
   describe('auto open', () => {
     it('empty: start -> end -> close', () => {
