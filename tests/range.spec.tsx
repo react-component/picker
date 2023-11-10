@@ -1157,8 +1157,6 @@ describe('Picker.Range', () => {
     expect(document.querySelectorAll('input')[1].value).toEqual('');
   });
 
-  return;
-
   describe('auto open', () => {
     it('empty: start -> end -> close', () => {
       const { container } = render(<DayRangePicker />);
@@ -1217,11 +1215,9 @@ describe('Picker.Range', () => {
       openPicker(container, 1);
       inputValue('1990-11-28', 1);
       keyDown(container, 1, KeyCode.ENTER);
-      // closePicker(container, 1);
       expect(isOpen()).toBeTruthy();
 
       inputValue('1989-01-01');
-      // closePicker(container, 0);
       keyDown(container, 0, KeyCode.ENTER);
       expect(isOpen()).toBeFalsy();
     });
@@ -1270,6 +1266,8 @@ describe('Picker.Range', () => {
       expect(isOpen()).toBeFalsy();
     });
   });
+
+  return;
 
   describe('click at non-input elements', () => {
     it('should focus on the first element by default', () => {

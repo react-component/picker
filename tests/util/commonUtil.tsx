@@ -128,8 +128,8 @@ export class MomentRangePicker extends React.Component<MomentRangePickerProps> {
 export function openPicker(container: HTMLElement, index = 0) {
   const input = container.querySelectorAll('input')[index];
   fireEvent.mouseDown(input);
-  fireEvent.click(input);
   fireEvent.focus(input);
+  fireEvent.click(input);
 }
 
 export function closePicker(container: HTMLElement, index = 0) {

@@ -213,7 +213,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // When user first focus one input, any submit will trigger focus another one.
   // When second time focus one input, submit will not trigger focus again.
   // When click outside to close the panel, trigger event if it can trigger onChange.
-  const [activeIndex, setActiveIndex] = React.useState<number>(0);
+  const [activeIndex, setActiveIndex] = React.useState<number>(null);
   const [focused, setFocused] = React.useState<boolean>(false);
   const lastOperationRef = React.useRef<'input' | 'panel'>(null);
 
@@ -508,7 +508,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   const onInternalCellRender: CellRender<DateType> = (date, info) => {
     return cellRender(date, {
       ...info,
-      range: activeIndex === 0 ? 'start' : 'end',
+      range: activeIndex === 1 ? 'end' : 'start',
     });
   };
 

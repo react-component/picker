@@ -26,9 +26,9 @@ const showTimeKeys = [
 // This will be removed by terser or uglify.
 if (process.env.NODE_ENV === 'not-exist-env') {
   type KeyRecord = Record<(typeof showTimeKeys)[number], boolean>;
-  const checker: Record<keyof SharedTimeProps<any>, boolean> = {} as KeyRecord;
 
-  console.log(checker);
+  // eslint-disable-next-line
+  const checker: Record<keyof SharedTimeProps<any>, boolean> = {} as KeyRecord;
 }
 
 /**
