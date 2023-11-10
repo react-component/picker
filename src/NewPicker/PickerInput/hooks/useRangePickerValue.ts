@@ -34,7 +34,7 @@ export function offsetPanelDate<DateType = any>(
 
 const EMPTY_LIST: RangeValueType<any> = [];
 
-// Merge the `showTime.defaultValue` into `pickerValue`
+/** Merge the `showTime.defaultValue` into `pickerValue` */
 function fillTimePickerValue<DateType>(
   generateConfig: GenerateConfig<DateType>,
   date: DateType,
@@ -75,25 +75,29 @@ export default function useRangePickerValue<DateType = any>(
   // `activeIndex` must be valid to avoid getting empty `pickerValue`
   const mergedActiveIndex = activeIndex || 0;
 
-  // ===================== Picker Value =====================
+  // // ====================== Time Value ======================
+  // const fillTime = useEvent((date: DateType, index: number) => {
+  //   return fillTimePickerValue(generateConfig, date, timeDefaultValue[index]);
+  // });
 
+  // ===================== Picker Value =====================
   const getDefaultPickerValue = (index: number) => {
-    const rawDate = defaultPickerValue[index] || calendarValue[index] || generateConfig.getNow();
-    return fillTimePickerValue(generateConfig, rawDate, timeDefaultValue[index]);
+    return defaultPickerValue[index] || calendarValue[index] || generateConfig.getNow();
+    // return fillTime(rawDate, index);
   };
 
-  const [startPickerValue, endPickerValue] = React.useMemo(() => {
-    const [startValue, endValue] = pickerValue;
+  // Align `pickerValue` with `showTime.defaultValue`
+  const [startPickerValue, endPickerValue] = pickerValue;
+  // const [startPickerValue, endPickerValue] = React.useMemo(() => {
+  //   const [startValue, endValue] = pickerValue;
 
-    const filledStart =
-      startValue && fillTimePickerValue(generateConfig, startValue, timeDefaultValue[0]);
-    const filledEnd =
-      endValue && fillTimePickerValue(generateConfig, endValue, timeDefaultValue[1]);
+  //   const filledStart = startValue && fillTime(startValue, 0);
+  //   const filledEnd = endValue && fillTime(endValue, 1);
 
-    return [filledStart, filledEnd];
-  }, [pickerValue, timeDefaultValue, generateConfig]);
+  //   return [filledStart, filledEnd];
+  // }, [pickerValue, fillTime]);
 
-  // State
+  // PickerValue state
   const [mergedStartPickerValue, setStartPickerValue] = useMergedState(
     () => getDefaultPickerValue(0),
     {
@@ -105,7 +109,23 @@ export default function useRangePickerValue<DateType = any>(
     value: endPickerValue,
   });
 
-  const currentPickerValue = [mergedStartPickerValue, mergedEndPickerValue][mergedActiveIndex];
+  // Current PickerValue
+  const currentPickerValue = React.useMemo(
+    () =>
+      fillTimePickerValue(
+        generateConfig,
+        [mergedStartPickerValue, mergedEndPickerValue][mergedActiveIndex],
+        timeDefaultValue[mergedActiveIndex],
+      ),
+    [
+      mergedStartPickerValue,
+      mergedEndPickerValue,
+      mergedActiveIndex,
+      generateConfig,
+      timeDefaultValue,
+    ],
+  );
+
   const setCurrentPickerValue = (
     nextPickerValue: DateType,
     source: 'reset' | 'panel' = 'panel',
@@ -164,14 +184,18 @@ export default function useRangePickerValue<DateType = any>(
   // >>> calendarValue: Sync with `calendarValue` if changed
   useLayoutEffect(() => {
     if (open) {
-      if (mergedActiveIndex === 0 && calendarValue[0]) {
-        setCurrentPickerValue(calendarValue[0], 'reset');
-      } else if (mergedActiveIndex === 1 && calendarValue[1]) {
+      const [startDate, endDate] = calendarValue;
+
+      if (mergedActiveIndex === 1 && endDate) {
         setCurrentPickerValue(
           // End PickerValue need additional shift
-          getEndDatePickerValue(calendarValue[0], calendarValue[1]),
+          getEndDatePickerValue(startDate, endDate),
           'reset',
         );
+      } else if (startDate) {
+        // When `active = 0` and `startDate` is valid
+        // Or `active = 1` and `endDate` is invalid but `startDate` is valid
+        setCurrentPickerValue(startDate, 'reset');
       }
     }
   }, [open, calendarValue, mergedActiveIndex]);

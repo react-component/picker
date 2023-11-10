@@ -41,6 +41,7 @@ export default () => {
     // [null, moment('2023-11-15')],
     // [moment('2023-11-5'), moment('2023-12-29')],
     // [moment('2000-09-03'), moment('1990-09-03')],
+    // [moment('1989-09-03'), null],
     null,
   );
 
@@ -99,9 +100,9 @@ export default () => {
         showTime={{
           defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],
         }}
-        onOk={() => {
-          console.log('🍷 Ok!');
-        }}
+        // onOk={() => {
+        //   console.log('🍷 Ok!');
+        // }}
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
           setRangeValue(val);

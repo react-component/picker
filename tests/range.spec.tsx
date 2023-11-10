@@ -527,6 +527,7 @@ describe('Picker.Range', () => {
       openPicker(container);
       selectCell(13);
       fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      console.log('~~~~~~~~');
       selectCell(23);
 
       matchValues(container, '1990-09-13 01:02:03', '1990-09-23 05:06:07');
@@ -819,8 +820,6 @@ describe('Picker.Range', () => {
     expect(document.querySelector('input').value).toEqual('');
   });
 
-  return;
-
   describe('viewDate', () => {
     function matchTitle(title: string) {
       expect(document.querySelector('.rc-picker-header-view').textContent).toEqual(title);
@@ -831,37 +830,37 @@ describe('Picker.Range', () => {
         picker: 'year',
         // Default picker value
         defaultPickerValue: [getDay('1990-09-03'), getDay('2000-11-28')],
-        defaultPickerValueTitle: ['1990-1999', '2000-2009'],
+        defaultPickerValueTitle: ['1990年-1999年', '2000年-2009年'],
         // Closing value
         closingValue: [getDay('1989-09-03'), getDay('1990-11-28')],
-        closingValueTitle: '1980-1989',
+        closingValueTitle: '1980年-1989年',
         // Far away value
         farValue: [getDay('1989-09-03'), getDay('2090-11-28')],
-        farValueTitle: ['1980-1989', '2080-2089'],
+        farValueTitle: ['1980年-1989年', '2080年-2089年'],
       },
       {
         picker: 'month',
         // Default picker value
         defaultPickerValue: [getDay('1990-09-03'), getDay('2000-11-28')],
-        defaultPickerValueTitle: ['1990', '2000'],
+        defaultPickerValueTitle: ['1990年', '2000年'],
         // Closing value
         closingValue: [getDay('1989-09-03'), getDay('1989-10-11')],
-        closingValueTitle: '1989',
+        closingValueTitle: '1989年',
         // Far away value
         farValue: [getDay('1989-09-03'), getDay('2000-10-11')],
-        farValueTitle: ['1989', '1999'],
+        farValueTitle: ['1989年', '1999年'],
       },
       {
         picker: 'date',
         // Default picker value
         defaultPickerValue: [getDay('1990-09-03'), getDay('2000-11-28')],
-        defaultPickerValueTitle: ['Sep1990', 'Nov2000'],
+        defaultPickerValueTitle: ['1990年9月', '2000年11月'],
         // Closing value
         closingValue: [getDay('1989-09-03'), getDay('1989-10-11')],
-        closingValueTitle: 'Sep1989',
+        closingValueTitle: '1989年9月',
         // Far away value
         farValue: [getDay('1989-09-03'), getDay('2000-10-11')],
-        farValueTitle: ['Sep1989', 'Sep2000'],
+        farValueTitle: ['1989年9月', '2000年9月'],
       },
     ].forEach(
       ({
@@ -928,12 +927,14 @@ describe('Picker.Range', () => {
     it('click switch 1 offset', () => {
       const { container } = render(<DayRangePicker />);
       openPicker(container);
-      expect(document.querySelector('.rc-picker-header-view').textContent).toEqual('Sep1990');
+      expect(document.querySelector('.rc-picker-header-view').textContent).toEqual('1990年9月');
       const nextBtns = document.querySelectorAll('.rc-picker-header-next-btn');
       fireEvent.click(nextBtns[nextBtns.length - 1]);
-      expect(document.querySelector('.rc-picker-header-view').textContent).toEqual('Oct1990');
+      expect(document.querySelector('.rc-picker-header-view').textContent).toEqual('1990年10月');
     });
   });
+
+  return;
 
   // https://github.com/ant-design/ant-design/issues/20868
   it('change picker should reset mode', () => {
