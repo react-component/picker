@@ -186,6 +186,9 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     // Render
     components = {},
     cellRender,
+
+    // Native
+    onClick,
   } = props;
 
   // ========================= Refs =========================
@@ -436,7 +439,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   };
 
   // ======================== Click =========================
-  const onSelectorClick: React.MouseEventHandler<HTMLDivElement> = () => {
+  const onSelectorClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
     if (focusedIndex === null) {
       // Click to focus the enabled input
       const enabledIndex = mergedDisabled.findIndex((d) => !d);
@@ -446,6 +449,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     }
 
     triggerOpen(true);
+
+    onClick?.(event);
   };
 
   const onSelectorClear = () => {

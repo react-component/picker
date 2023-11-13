@@ -280,13 +280,13 @@ describe('Picker.Range', () => {
 
       // Disabled date
       openPicker(container);
-      cellNode = selectCell(25);
+      cellNode = selectCell(25, 1);
       expect(cellNode).toHaveClass('rc-picker-cell-disabled');
       expect(onChange).not.toHaveBeenCalled();
 
       // Enabled date
       openPicker(container);
-      cellNode = selectCell(7);
+      cellNode = selectCell(7, 1);
       expect(cellNode).not.toHaveClass('rc-picker-cell-disabled');
       expect(onChange).toHaveBeenCalledWith(
         [expect.anything(), expect.anything()],
@@ -1596,8 +1596,6 @@ describe('Picker.Range', () => {
     expect(handleMouseLeave).toHaveBeenCalled();
   });
 
-  return;
-
   // https://github.com/ant-design/ant-design/issues/31334
   it('keyboard should not trigger on disabledDate', () => {
     const onCalendarChange = jest.fn();
@@ -1635,7 +1633,6 @@ describe('Picker.Range', () => {
   it('range picker should have onClick event', () => {
     const handleClick = jest.fn();
     const { container } = render(<DayRangePicker onClick={handleClick} />);
-    // wrapper.simulate('click');
     fireEvent.click(container.querySelector('.rc-picker'));
     expect(handleClick).toHaveBeenCalled();
   });
@@ -1643,7 +1640,6 @@ describe('Picker.Range', () => {
   it('range picker should have onMouseDown event', () => {
     const handleMouseDown = jest.fn();
     const { container } = render(<DayRangePicker onMouseDown={handleMouseDown} />);
-    // wrapper.simulate('mousedown');
     fireEvent.mouseDown(container.querySelector('.rc-picker'));
     expect(handleMouseDown).toHaveBeenCalled();
   });
@@ -1674,7 +1670,7 @@ describe('Picker.Range', () => {
     const { container } = render(
       <DayRangePicker
         allowClear
-        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        defaultValue={[getDay('1990-09-03'), getDay('1989-11-28')]}
         clearIcon={<span>X</span>}
         suffixIcon={<span>O</span>}
       />,
@@ -1710,7 +1706,7 @@ describe('Picker.Range', () => {
     const { container } = render(
       <DayRangePicker
         allowClear
-        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        defaultValue={[getDay('1990-09-03'), getDay('1989-11-28')]}
         clearIcon={<span>X</span>}
         suffixIcon={<span>O</span>}
       />,
@@ -1724,21 +1720,15 @@ describe('Picker.Range', () => {
     const mock = spyElementPrototypes(HTMLElement, {
       offsetWidth: {
         get() {
-          if (this.className.includes('range-arrow')) {
-            return 14;
-          } else if (this.className.includes('panel-container')) {
-            return 311;
-          } else if (this.className.includes('input')) {
-            return 285;
-          } else if (this.className.includes('range-separator')) {
-            return 10;
+          if (this.className.includes('rc-picker-range-wrapper')) {
+            return 200;
           }
         },
       },
       offsetLeft: {
         get() {
-          if (this.className.includes('range-arrow')) {
-            return 305;
+          if (this.className.includes('rc-picker-input')) {
+            return 100;
           }
         },
       },
@@ -1746,14 +1736,14 @@ describe('Picker.Range', () => {
     const { container } = render(
       <DayRangePicker
         allowClear
-        defaultValue={[moment('1990-09-03'), moment('1989-11-28')]}
+        defaultValue={[getDay('1990-09-03'), getDay('1989-11-28')]}
         clearIcon={<span>X</span>}
         suffixIcon={<span>O</span>}
       />,
     );
     openPicker(container, 1);
     expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({
-      marginLeft: '295px',
+      marginLeft: '100px',
     });
     mock.mockRestore();
   });
@@ -1772,6 +1762,7 @@ describe('Picker.Range', () => {
     fireEvent.click(findWeekCell('35'));
     fireEvent.mouseLeave(findWeekCell('35'));
 
+    console.log(document.body.innerHTML);
     expect(findWeekCell('35').parentElement).toHaveClass('rc-picker-week-panel-row-range-start');
 
     // End Hover
@@ -1787,6 +1778,8 @@ describe('Picker.Range', () => {
     // No selected cell
     expect(document.querySelector('.rc-picker-cell-selected')).toBeFalsy();
   });
+
+  return;
 
   it('range picker should use the passed in default when part is disabled', () => {
     render(<DayRangePicker defaultValue={[null, null]} disabled={[false, true]} />);

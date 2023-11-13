@@ -40,7 +40,7 @@ export default () => {
     // has end
     // [null, moment('2023-11-15')],
     // [moment('2023-11-5'), moment('2023-12-29')],
-    // [moment('2000-09-03'), moment('1990-09-03')],
+    [moment('2000-09-03'), moment('1990-09-03')],
     // [moment('1990-09-03'), null],
     // null,
     undefined,
@@ -55,7 +55,7 @@ export default () => {
         // direction="rtl"
         // className="good"
         // style={{ opacity: 0.5 }}
-        // picker="time"
+        picker="week"
         // presets={[
         //   {
         //     label: 'Now',
@@ -118,7 +118,7 @@ export default () => {
         onOpenChange={(nextOpen) => {
           console.log('🏆 Next Open:', nextOpen);
         }}
-        // open
+        open
         // mode={['month', 'year']}
         // onPanelChange={(val, mode) => {
         //   console.log('🏆 Panel Change:', val?.[0]?.format('YYYY-MM-DD'), mode);

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { isSameWeek } from '../../../utils/dateUtil';
+import { isInRange, isSameWeek } from '../../../utils/dateUtil';
 import type { SharedPanelProps } from '../../interface';
 import DatePanel from '../DatePanel';
 
@@ -10,20 +10,34 @@ export default function WeekPanel<DateType = any>(props: SharedPanelProps<DateTy
   // =============================== Row ================================
   const rowPrefixCls = `${prefixCls}-week-panel-row`;
 
+  console.clear();
   const rowClassName = (date: DateType) => {
-    // const isRangeStart = isSameWeek(generateConfig, locale.locale, rangeStart, date);
-    // const isRangeEnd = isSameWeek(generateConfig, locale.locale, rangeEnd, date);
+    let rangeCls = {};
 
-    return classNames(rowPrefixCls, {
-      [`${rowPrefixCls}-selected`]:
-        !hoverValue && isSameWeek(generateConfig, locale.locale, value, date),
+    if (hoverValue) {
+      const [rangeStart, rangeEnd] = hoverValue || [];
+
+      const isRangeStart = isSameWeek(generateConfig, locale.locale, rangeStart, date);
+      const isRangeEnd = isSameWeek(generateConfig, locale.locale, rangeEnd, date);
+
+      rangeCls = {
+        [`${rowPrefixCls}-range-start`]: isRangeStart,
+        [`${rowPrefixCls}-range-end`]: isRangeEnd,
+        [`${rowPrefixCls}-range-hover`]:
+          !isRangeStart && !isRangeEnd && isInRange(generateConfig, rangeStart, rangeEnd, date),
+      };
+    }
+
+    return classNames(
+      rowPrefixCls,
+      {
+        [`${rowPrefixCls}-selected`]:
+          !hoverValue && isSameWeek(generateConfig, locale.locale, value, date),
+      },
 
       // Patch for hover range
-      // [`${rowPrefixCls}-range-start`]: isRangeStart,
-      // [`${rowPrefixCls}-range-end`]: isRangeEnd,
-      // [`${rowPrefixCls}-range-hover`]:
-      //   !isRangeStart && !isRangeEnd && isInRange(generateConfig, rangeStart, rangeEnd, date),
-    });
+      rangeCls,
+    );
   };
 
   // ============================== Render ==============================

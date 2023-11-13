@@ -95,6 +95,9 @@ function RangeSelector<DateType = any>(
     // Offset
     onActiveOffset,
 
+    // Native
+    onMouseDown,
+
     ...restProps
   } = props;
 
@@ -305,6 +308,8 @@ function RangeSelector<DateType = any>(
         ) {
           e.preventDefault();
         }
+
+        onMouseDown?.(e);
       }}
     >
       <Input ref={inputStartRef} {...getInputProps(0)} />
