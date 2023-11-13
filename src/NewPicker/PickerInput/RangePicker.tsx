@@ -407,7 +407,19 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     }
 
     // Focus or blur the open panel
-    const activeLen = activeList?.length;
+    const validateActiveList = (activeList || []).filter(
+      (index) =>
+        // Filled value
+        nextValue[index] ||
+        // Skip disabled
+        mergedDisabled[index] ||
+        // Skip allow empty
+        mergedAllowEmpty[index],
+    );
+
+    // Should merge repeat fill one field action
+    const activeLen = new Set(validateActiveList).size;
+
     if (activeLen > 1 || hasDisabled) {
       // Close anyway
       triggerOpen(false, { index: activeIndex, force: true });
@@ -417,7 +429,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       triggerCalendarChange(nextValue);
 
       // Open to the next field
-      selectorRef.current.focus(activeList[0] === 0 ? 1 : 0);
+      selectorRef.current.focus(validateActiveList[0] === 0 ? 1 : 0);
     }
   };
 

@@ -1520,7 +1520,7 @@ describe('Picker.Range', () => {
 
   // https://github.com/ant-design/ant-design/issues/26024
   it('panel should keep open when nextValue is empty', () => {
-    const { container } = render(<DayRangePicker />);
+    const { container } = render(<DayRangePicker placeholder={['Start', 'End']} />);
 
     openPicker(container, 0);
 
@@ -1528,8 +1528,9 @@ describe('Picker.Range', () => {
     expect(document.querySelectorAll('input')[0].value).toBe('1990-09-07');
 
     // back to first panel and clear input value
-    fireEvent.mouseDown(document.querySelectorAll('input')[0]);
-    fireEvent.focus(document.querySelectorAll('input')[0]);
+    // `testing-lib` fire the `focus` event but not change the `document.activeElement`
+    // We call `focus` manually here
+    document.querySelectorAll('input')[0].focus();
     inputValue('', 0);
 
     // reselect date

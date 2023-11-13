@@ -76,13 +76,13 @@ export default () => {
         // ]}
         value={rangeValue}
         placeholder={['Start', 'End']}
-        defaultValue={[moment('1990-11-28'), moment('2000-09-03')]}
+        // defaultValue={[moment('1990-11-28'), moment('2000-09-03')]}
         // onPickerValueChange={(dates, info) => {
         //   console.log('🍭 Picker Value Change:', dates, info);
         // }}
         // disabled={[true, false]}
         suffixIcon="🧶"
-        disabledDate={() => true}
+        // disabledDate={() => true}
         // onFocus={() => {
         //   console.log('🍷 Focus!');
         // }}
@@ -97,7 +97,7 @@ export default () => {
         //   // align: true,
         // }}
         // preserveInvalidOnBlur
-        showTime
+        // showTime
         // showTime={
         //   {
         //     // defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],
@@ -114,7 +114,7 @@ export default () => {
         //   console.log('🎉 Calendar Change:', val, text, info);
         // }}
         // preserveInvalidOnBlur
-        allowEmpty={[false, true]}
+        // allowEmpty={[false, true]}
         onOpenChange={(nextOpen) => {
           console.log('🏆 Next Open:', nextOpen);
         }}
