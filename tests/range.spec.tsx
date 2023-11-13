@@ -1492,8 +1492,6 @@ describe('Picker.Range', () => {
     });
   });
 
-  return;
-
   // https://github.com/ant-design/ant-design/issues/25746
   it('ok button should be disabled when disabledDate is true', () => {
     const disabledDate = () => {
@@ -1543,6 +1541,8 @@ describe('Picker.Range', () => {
 
     matchValues(container, '1990-09-09', '1990-10-09');
   });
+
+  return;
 
   it('right date panel switch to month should keep in the same year', () => {
     const { container } = render(<DayRangePicker />);

@@ -523,6 +523,9 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // >>> Value
   const panelValue = calendarValue[activeIndex] || null;
 
+  // >>> invalid
+  const panelValueInvalid = !panelValue || isInvalidateDate(panelValue);
+
   // >>> Render
   const panel = (
     <Popup
@@ -553,6 +556,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       onPanelChange={triggerModeChange}
       // Value
       value={panelValue}
+      invalid={panelValueInvalid}
       onChange={null}
       onCalendarChange={onPanelCalendarChange}
       // PickerValue

@@ -82,7 +82,7 @@ export default () => {
         // }}
         // disabled={[true, false]}
         suffixIcon="🧶"
-        disabledDate={(date) => date.date() === 11}
+        disabledDate={() => true}
         // onFocus={() => {
         //   console.log('🍷 Focus!');
         // }}
@@ -96,7 +96,8 @@ export default () => {
         //   //   // format: 'YYYYMMDD',
         //   // align: true,
         // }}
-        preserveInvalidOnBlur
+        // preserveInvalidOnBlur
+        showTime
         // showTime={
         //   {
         //     // defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],

@@ -11,6 +11,10 @@ export interface FooterProps<DateType = any> {
   // Value
   value?: DateType;
 
+  // Invalid
+  /** From Footer component used only. Check if can OK button click */
+  invalid?: boolean;
+
   // Submit
   onSubmit: (date?: DateType) => void;
   needConfirm: boolean;
@@ -20,8 +24,17 @@ export interface FooterProps<DateType = any> {
 }
 
 export default function Footer(props: FooterProps) {
-  const { mode, internalMode, renderExtraFooter, showNow, onSubmit, onOk, value, needConfirm } =
-    props;
+  const {
+    mode,
+    internalMode,
+    renderExtraFooter,
+    showNow,
+    onSubmit,
+    onOk,
+    value,
+    invalid,
+    needConfirm,
+  } = props;
 
   const {
     prefixCls,
@@ -48,12 +61,10 @@ export default function Footer(props: FooterProps) {
     </li>
   );
 
-  const validDate = value && generateConfig.isValidate(value);
-
   const okNode = needConfirm && (
     <li className={`${prefixCls}-ok`}>
       <Button
-        disabled={!validDate}
+        disabled={invalid}
         onClick={() => {
           onOk?.();
           onSubmit();

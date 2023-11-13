@@ -18,7 +18,12 @@ export default function useInvalidate<DateType = any>(
 ) {
   // Check disabled date
   const isInvalidate = useEvent((date: DateType) => {
-    if (disabledDate && disabledDate(date, { type: picker })) {
+    if (
+      // Date object is invalid
+      !generateConfig.isValidate(date) ||
+      // Date is disabled by `disabledDate`
+      (disabledDate && disabledDate(date, { type: picker }))
+    ) {
       return true;
     }
 
