@@ -52,6 +52,7 @@ function RangeSelector<DateType = any>(
     activeHelp,
     allHelp,
 
+    focused,
     onFocus,
     onBlur,
     locale,
@@ -290,7 +291,7 @@ function RangeSelector<DateType = any>(
         prefixCls,
         `${prefixCls}-range`,
         {
-          [`${prefixCls}-focused`]: activeIndex !== null,
+          [`${prefixCls}-focused`]: focused,
           [`${prefixCls}-invalid`]: invalid.some((i) => i),
           [`${prefixCls}-rtl`]: rtl,
         },

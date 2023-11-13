@@ -689,6 +689,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
           activeIndex={focusedIndex}
           activeHelp={!!internalHoverValues}
           allHelp={!!internalHoverValues && hoverSource === 'preset'}
+          focused={focused}
           onFocus={onSelectorFocus}
           onBlur={onSelectorBlur}
           onSubmit={triggerChangeAndFocusNext}

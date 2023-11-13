@@ -94,7 +94,7 @@ exports[`Picker.Range panelRender 1`] = `
       class="rc-picker rc-picker-range"
     >
       <div
-        class="rc-picker-input"
+        class="rc-picker-input rc-picker-input-active"
       >
         <input
           aria-invalid="false"

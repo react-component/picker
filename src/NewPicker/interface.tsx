@@ -360,6 +360,7 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
   activeIndex: number | null;
   /** Add `-placeholder` className as a help info */
   activeHelp?: boolean;
+  focused: boolean;
   onFocus: (event: React.FocusEvent<HTMLInputElement>, index?: number) => void;
   onBlur: (event: React.FocusEvent<HTMLInputElement>, index?: number) => void;
   /** Trigger by `enter` key */
