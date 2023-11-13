@@ -73,7 +73,6 @@ export default function Popup(props: PopupProps) {
       if (activeOffset + containerWidth < wrapperRef.current?.offsetWidth) {
         setContainerOffset(activeOffset);
       } else {
-        console.log('111');
         setContainerOffset(0);
       }
     }
