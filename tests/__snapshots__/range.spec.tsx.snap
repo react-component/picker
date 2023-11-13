@@ -81,7 +81,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in rtl
     </div>
     <div
       class="rc-picker-active-bar"
-      style="position: absolute; width: 0px; left: 0px;"
+      style="position: absolute; width: 0px; right: 0px;"
     />
   </div>
 </div>

@@ -448,6 +448,13 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     return internalHoverValues || calendarValue;
   }, [calendarValue, internalHoverValues]);
 
+  // Clean up `internalHoverValues` when closed
+  React.useEffect(() => {
+    if (!mergedOpen) {
+      setInternalHoverValues(null);
+    }
+  }, [mergedOpen]);
+
   // ========================================================
   // ==                       Panels                       ==
   // ========================================================

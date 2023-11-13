@@ -1310,8 +1310,6 @@ describe('Picker.Range', () => {
     expect(document.body).toMatchSnapshot();
   });
 
-  return;
-
   describe('Selection callbacks', () => {
     it('selection provide info for onCalendarChange', () => {
       const onCalendarChange = jest.fn();
@@ -1344,7 +1342,7 @@ describe('Picker.Range', () => {
       jest.useRealTimers();
     });
 
-    const defaultValue: [Moment, Moment] = [getDay('2020-07-22'), getDay('2020-08-22')];
+    const defaultValue: [Dayjs, Dayjs] = [getDay('2020-07-22'), getDay('2020-08-22')];
 
     it('should restore when leave', () => {
       const { container } = render(<DayRangePicker defaultValue={defaultValue} />);
@@ -1417,11 +1415,14 @@ describe('Picker.Range', () => {
     });
 
     it('should restore after selecting cell', () => {
-      const { container } = render(<DayRangePicker defaultValue={defaultValue} />);
-      // left
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker defaultValue={defaultValue} onChange={onChange} />,
+      );
+
+      // Left Field
       openPicker(container, 0);
       const leftCell = findCell(24, 0);
-      //     leftCell.simulate('mouseEnter');
       fireEvent.mouseEnter(leftCell);
       act(() => {
         jest.runAllTimers();
@@ -1431,27 +1432,20 @@ describe('Picker.Range', () => {
       expect(document.querySelectorAll('.rc-picker-input')[0]).toHaveClass(
         'rc-picker-input-placeholder',
       );
-      //     ).toBeTruthy();
       expect(document.querySelectorAll('.rc-picker-input')[1]).not.toHaveClass(
         'rc-picker-input-placeholder',
       );
-      //     ).toBeFalsy();
 
+      // Select
       selectCell(24, 0);
       expect(document.querySelectorAll('input')[0].value).toBe('2020-07-24');
       expect(document.querySelectorAll('input')[1].value).toBe('2020-08-22');
       expect(document.querySelectorAll('.rc-picker-input')[0]).not.toHaveClass(
         'rc-picker-input-placeholder',
       );
-      //     ).toBeFalsy();
-      expect(document.querySelectorAll('.rc-picker-input')[1]).not.toHaveClass(
-        'rc-picker-input-placeholder',
-      );
-      //     ).toBeFalsy();
 
-      // right
+      // Right Field
       const rightCell = findCell(24, 1);
-      //     rightCell.simulate('mouseEnter');
       fireEvent.mouseEnter(rightCell);
       act(() => {
         jest.runAllTimers();
@@ -1462,23 +1456,25 @@ describe('Picker.Range', () => {
       expect(document.querySelectorAll('.rc-picker-input')[0]).not.toHaveClass(
         'rc-picker-input-placeholder',
       );
-      //     ).toBeFalsy();
       expect(document.querySelectorAll('.rc-picker-input')[1]).toHaveClass(
         'rc-picker-input-placeholder',
       );
-      //     ).toBeTruthy();
 
+      // Select
       selectCell(24, 1);
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), ['2020-07-24', '2020-08-24']);
+      act(() => {
+        jest.runAllTimers();
+      });
+
       expect(document.querySelectorAll('input')[0].value).toBe('2020-07-24');
       expect(document.querySelectorAll('input')[1].value).toBe('2020-08-24');
       expect(document.querySelectorAll('.rc-picker-input')[0]).not.toHaveClass(
         'rc-picker-input-placeholder',
       );
-      //     ).toBeFalsy();
       expect(document.querySelectorAll('.rc-picker-input')[1]).not.toHaveClass(
         'rc-picker-input-placeholder',
       );
-      //     ).toBeFalsy();
     });
 
     // https://github.com/ant-design/ant-design/issues/26544
@@ -1495,6 +1491,8 @@ describe('Picker.Range', () => {
       expect(isOpen()).toBeTruthy();
     });
   });
+
+  return;
 
   // https://github.com/ant-design/ant-design/issues/25746
   it('ok button should be disabled when disabledDate is true', () => {

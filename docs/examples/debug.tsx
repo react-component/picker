@@ -41,8 +41,9 @@ export default () => {
     // [null, moment('2023-11-15')],
     // [moment('2023-11-5'), moment('2023-12-29')],
     // [moment('2000-09-03'), moment('1990-09-03')],
-    [moment('1990-09-03'), null],
+    // [moment('1990-09-03'), null],
     // null,
+    undefined,
   );
 
   return (
@@ -54,8 +55,7 @@ export default () => {
         // direction="rtl"
         // className="good"
         // style={{ opacity: 0.5 }}
-        picker="time"
-        // value={[moment('2000-01-01'), null]}
+        // picker="time"
         // presets={[
         //   {
         //     label: 'Now',
@@ -76,7 +76,7 @@ export default () => {
         // ]}
         value={rangeValue}
         placeholder={['Start', 'End']}
-        // defaultPickerValue={[moment('2020-01-01'), null]}
+        defaultValue={[moment('1990-11-28'), moment('2000-09-03')]}
         // onPickerValueChange={(dates, info) => {
         //   console.log('🍭 Picker Value Change:', dates, info);
         // }}
@@ -97,11 +97,11 @@ export default () => {
         //   // align: true,
         // }}
         preserveInvalidOnBlur
-        showTime={
-          {
-            // defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],
-          }
-        }
+        // showTime={
+        //   {
+        //     // defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],
+        //   }
+        // }
         // onOk={() => {
         //   console.log('🍷 Ok!');
         // }}
@@ -117,7 +117,7 @@ export default () => {
         onOpenChange={(nextOpen) => {
           console.log('🏆 Next Open:', nextOpen);
         }}
-        open
+        // open
         // mode={['month', 'year']}
         // onPanelChange={(val, mode) => {
         //   console.log('🏆 Panel Change:', val?.[0]?.format('YYYY-MM-DD'), mode);
@@ -125,7 +125,6 @@ export default () => {
         // onPickerValueChange={(val) => {
         //   console.log('👻 Picker Value Change:', val);
         // }}
-        // open
         // renderExtraFooter={(mode) => mode}
         components={
           {
