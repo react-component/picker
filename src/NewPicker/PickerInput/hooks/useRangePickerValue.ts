@@ -171,7 +171,12 @@ export default function useRangePickerValue<DateType = any>(
     if (open) {
       const [startDate, endDate] = calendarValue;
 
-      if (mergedActiveIndex === 1 && endDate) {
+      if (
+        // When `active = 1` and `endDate` is valid
+        (mergedActiveIndex === 1 && endDate) ||
+        // Or `active = 0` and `startDate` is invalid but `endDate` is valid
+        (mergedActiveIndex === 0 && !startDate && endDate)
+      ) {
         setCurrentPickerValue(
           // End PickerValue need additional shift
           getEndDatePickerValue(startDate, endDate),

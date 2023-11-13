@@ -231,7 +231,12 @@ export type CustomFormat<DateType> = (value: DateType) => string;
 
 export type FormatType<DateType = any> = string | CustomFormat<DateType>;
 
-export interface SharedPickerProps<DateType = any> {
+export type SharedHTMLAttrs = Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'value' | 'defaultValue' | 'onChange' | 'placeholder' | 'id' | 'onInvalid'
+>;
+
+export interface SharedPickerProps<DateType = any> extends SharedHTMLAttrs {
   // MISC
   direction?: 'ltr' | 'rtl';
 
@@ -343,7 +348,7 @@ export interface OpenConfig {
 }
 
 export type OnOpenChange = (open: boolean, config?: OpenConfig) => void;
-export interface SelectorProps<DateType = any> {
+export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
   clearIcon?: React.ReactNode;
   suffixIcon?: React.ReactNode;
   className?: string;

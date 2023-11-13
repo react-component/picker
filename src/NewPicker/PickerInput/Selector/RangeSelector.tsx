@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
 import { formatValue } from '../../../utils/dateUtil';
 import type { OpenConfig, SelectorProps, SelectorRef } from '../../interface';
@@ -93,6 +94,8 @@ function RangeSelector<DateType = any>(
 
     // Offset
     onActiveOffset,
+
+    ...restProps
   } = props;
 
   const rtl = direction === 'rtl';
@@ -279,6 +282,7 @@ function RangeSelector<DateType = any>(
   // ======================== Render ========================
   return (
     <div
+      {...pickAttrs(restProps, false)}
       className={classNames(
         prefixCls,
         `${prefixCls}-range`,

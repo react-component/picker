@@ -1,6 +1,7 @@
 import { useEvent, useMergedState } from 'rc-util';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import omit from 'rc-util/lib/omit';
+import pickAttrs from 'rc-util/lib/pickAttrs';
 import warning from 'rc-util/lib/warning';
 import * as React from 'react';
 import useTimeConfig from '../hooks/useTimeConfig';
@@ -14,6 +15,7 @@ import type {
   RangeTimeProps,
   SelectorProps,
   SelectorRef,
+  SharedHTMLAttrs,
   SharedPickerProps,
   ValueDate,
 } from '../interface';
@@ -538,18 +540,25 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // >>> invalid
   const panelValueInvalid = !panelValue || isInvalidateDate(panelValue);
 
+  const panelProps = React.useMemo(() => {
+    const domProps = pickAttrs(props, false);
+    const restProps = omit(props, [
+      ...(Object.keys(domProps) as (keyof SharedHTMLAttrs)[]),
+      'onChange',
+      'onCalendarChange',
+      'style',
+      'className',
+      'id',
+      'onPanelChange',
+    ]);
+    return restProps;
+  }, [props]);
+
   // >>> Render
   const panel = (
     <Popup
       // MISC
-      {...omit(props, [
-        'onChange',
-        'onCalendarChange',
-        'style',
-        'className',
-        'id',
-        'onPanelChange',
-      ])}
+      {...panelProps}
       showNow={mergedShowNow}
       showTime={mergedShowTime}
       // Range
