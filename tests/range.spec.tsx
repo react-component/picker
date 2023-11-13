@@ -1840,8 +1840,6 @@ describe('Picker.Range', () => {
     expect(document.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
   });
 
-  return;
-
   describe('trigger onCalendarChange', () => {
     const switchInput = (container: HTMLElement) => {
       openPicker(container, 0);
