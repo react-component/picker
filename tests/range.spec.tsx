@@ -1164,13 +1164,16 @@ describe('Picker.Range', () => {
 
       openPicker(container, 0);
       inputValue('1990-11-28');
-      // closePicker(container, 0);
       keyDown(container, 0, KeyCode.ENTER);
       expect(isOpen()).toBeTruthy();
 
-      inputValue('1991-01-01');
-      // closePicker(container, 1);
+      inputValue('1991-01-01', 1);
       keyDown(container, 1, KeyCode.ENTER);
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
       expect(isOpen()).toBeFalsy();
     });
 
