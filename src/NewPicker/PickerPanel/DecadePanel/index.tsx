@@ -68,7 +68,7 @@ export default function DecadePanel<DateType = any>(props: SharedPanelProps<Date
   return (
     <PanelContext.Provider
       value={{
-        type: 'date',
+        type: 'decade',
         ...info,
       }}
     >

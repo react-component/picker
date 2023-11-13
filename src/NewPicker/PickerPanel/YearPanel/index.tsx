@@ -81,7 +81,7 @@ export default function YearPanel<DateType = any>(props: SharedPanelProps<DateTy
   return (
     <PanelContext.Provider
       value={{
-        type: 'date',
+        type: 'year',
         ...info,
       }}
     >

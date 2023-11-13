@@ -40,10 +40,10 @@ export default () => {
     // has end
     // [null, moment('2023-11-15')],
     // [moment('2023-11-5'), moment('2023-12-29')],
-    [moment('2000-09-03'), moment('1990-09-03')],
+    // [moment('2000-09-03'), moment('1990-09-03')],
     // [moment('1990-09-03'), null],
     // null,
-    undefined,
+    // undefined,
   );
 
   return (
@@ -55,7 +55,10 @@ export default () => {
         // direction="rtl"
         // className="good"
         // style={{ opacity: 0.5 }}
-        // picker="week"
+        // picker="month"
+        // monthCellRender={(date) => {
+        //   return <>MM{date.month()}</>;
+        // }}
         // presets={[
         //   {
         //     label: 'Now',

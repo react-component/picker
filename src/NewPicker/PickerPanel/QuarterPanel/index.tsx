@@ -65,7 +65,7 @@ export default function QuarterPanel<DateType = any>(props: SharedPanelProps<Dat
   return (
     <PanelContext.Provider
       value={{
-        type: 'date',
+        type: 'quarter',
         ...info,
       }}
     >

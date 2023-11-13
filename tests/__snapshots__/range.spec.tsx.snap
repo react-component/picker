@@ -159,9 +159,8 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
         class="rc-picker-input rc-picker-input-active"
       >
         <input
+          aria-invalid="false"
           autocomplete="off"
-          placeholder=""
-          size="12"
           value=""
         />
       </div>
@@ -174,16 +173,14 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
         class="rc-picker-input"
       >
         <input
+          aria-invalid="false"
           autocomplete="off"
-          placeholder=""
-          readonly=""
-          size="12"
           value=""
         />
       </div>
       <div
         class="rc-picker-active-bar"
-        style="left: 0px; width: 0px; position: absolute;"
+        style="position: absolute; width: 0px; left: 0px;"
       />
     </div>
   </div>
@@ -194,15 +191,15 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
     >
       <div
         class="rc-picker-range-wrapper rc-picker-date-range-wrapper"
-        style="min-width: 0;"
       >
         <div
           class="rc-picker-range-arrow"
           style="left: 0px;"
         />
         <div
-          class="rc-picker-panel-container"
-          style="margin-left: 0px;"
+          class="rc-picker-panel-container rc-picker-date-panel-container"
+          style="margin-left: 0px; margin-right: auto;"
+          tabindex="-1"
         >
           <div
             class="rc-picker-panel-layout"
@@ -213,7 +210,6 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
               >
                 <div
                   class="rc-picker-panel"
-                  tabindex="-1"
                 >
                   <div
                     class="rc-picker-date-panel"
@@ -239,18 +235,18 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         class="rc-picker-header-view"
                       >
                         <button
-                          class="rc-picker-month-btn"
-                          tabindex="-1"
-                          type="button"
-                        >
-                          Sep
-                        </button>
-                        <button
                           class="rc-picker-year-btn"
                           tabindex="-1"
                           type="button"
                         >
-                          1990
+                          1990年
+                        </button>
+                        <button
+                          class="rc-picker-month-btn"
+                          tabindex="-1"
+                          type="button"
+                        >
+                          9月
                         </button>
                       </div>
                       <button
@@ -279,25 +275,25 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         <thead>
                           <tr>
                             <th>
-                              Su
+                              一
                             </th>
                             <th>
-                              Mo
+                              二
                             </th>
                             <th>
-                              Tu
+                              三
                             </th>
                             <th>
-                              We
+                              四
                             </th>
                             <th>
-                              Th
+                              五
                             </th>
                             <th>
-                              Fr
+                              六
                             </th>
                             <th>
-                              Sa
+                              日
                             </th>
                           </tr>
                         </thead>
@@ -305,348 +301,348 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                           <tr>
                             <td
                               class="rc-picker-cell"
-                              title="1990-08-26"
                             >
                               <div>
-                                26
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-08-27"
-                            >
-                              <div>
+                                D
                                 27
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-08-28"
                             >
                               <div>
+                                D
                                 28
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-08-29"
                             >
                               <div>
+                                D
                                 29
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-08-30"
                             >
                               <div>
+                                D
                                 30
                               </div>
                             </td>
                             <td
-                              class="rc-picker-cell rc-picker-cell-end"
-                              title="1990-08-31"
+                              class="rc-picker-cell"
                             >
                               <div>
+                                D
                                 31
                               </div>
                             </td>
                             <td
-                              class="rc-picker-cell rc-picker-cell-start rc-picker-cell-in-view"
-                              title="1990-09-01"
+                              class="rc-picker-cell rc-picker-cell-in-view"
                             >
                               <div>
+                                D
                                 1
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                            >
+                              <div>
+                                D
+                                2
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-02"
-                            >
-                              <div>
-                                2
-                              </div>
-                            </td>
-                            <td
                               class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
-                              title="1990-09-03"
                             >
                               <div>
+                                D
                                 3
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-04"
                             >
                               <div>
+                                D
                                 4
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-05"
                             >
                               <div>
+                                D
                                 5
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-06"
                             >
                               <div>
+                                D
                                 6
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-07"
                             >
                               <div>
+                                D
                                 7
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-08"
                             >
                               <div>
+                                D
                                 8
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                            >
+                              <div>
+                                D
+                                9
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-09"
                             >
                               <div>
-                                9
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-10"
-                            >
-                              <div>
+                                D
                                 10
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-11"
                             >
                               <div>
+                                D
                                 11
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-12"
                             >
                               <div>
+                                D
                                 12
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-13"
                             >
                               <div>
+                                D
                                 13
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-14"
                             >
                               <div>
+                                D
                                 14
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-15"
                             >
                               <div>
+                                D
                                 15
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                            >
+                              <div>
+                                D
+                                16
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-16"
                             >
                               <div>
-                                16
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-17"
-                            >
-                              <div>
+                                D
                                 17
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-18"
                             >
                               <div>
+                                D
                                 18
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-19"
                             >
                               <div>
+                                D
                                 19
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-20"
                             >
                               <div>
+                                D
                                 20
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-21"
                             >
                               <div>
+                                D
                                 21
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-22"
                             >
                               <div>
+                                D
                                 22
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                            >
+                              <div>
+                                D
+                                23
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-23"
                             >
                               <div>
-                                23
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-24"
-                            >
-                              <div>
+                                D
                                 24
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-25"
                             >
                               <div>
+                                D
                                 25
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-26"
                             >
                               <div>
+                                D
                                 26
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-27"
                             >
                               <div>
+                                D
                                 27
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-28"
                             >
                               <div>
+                                D
                                 28
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09-29"
                             >
                               <div>
+                                D
                                 29
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                            >
+                              <div>
+                                D
+                                30
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
-                              class="rc-picker-cell rc-picker-cell-end rc-picker-cell-in-view"
-                              title="1990-09-30"
+                              class="rc-picker-cell"
                             >
                               <div>
-                                30
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-start"
-                              title="1990-10-01"
-                            >
-                              <div>
+                                D
                                 1
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-10-02"
                             >
                               <div>
+                                D
                                 2
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-10-03"
                             >
                               <div>
+                                D
                                 3
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-10-04"
                             >
                               <div>
+                                D
                                 4
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-10-05"
                             >
                               <div>
+                                D
                                 5
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-10-06"
                             >
                               <div>
+                                D
                                 6
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                            >
+                              <div>
+                                D
+                                7
                               </div>
                             </td>
                           </tr>
@@ -657,7 +653,6 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                 </div>
                 <div
                   class="rc-picker-panel"
-                  tabindex="-1"
                 >
                   <div
                     class="rc-picker-date-panel"
@@ -685,18 +680,18 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         class="rc-picker-header-view"
                       >
                         <button
-                          class="rc-picker-month-btn"
-                          tabindex="-1"
-                          type="button"
-                        >
-                          Oct
-                        </button>
-                        <button
                           class="rc-picker-year-btn"
                           tabindex="-1"
                           type="button"
                         >
-                          1990
+                          1990年
+                        </button>
+                        <button
+                          class="rc-picker-month-btn"
+                          tabindex="-1"
+                          type="button"
+                        >
+                          10月
                         </button>
                       </div>
                       <button
@@ -723,374 +718,374 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         <thead>
                           <tr>
                             <th>
-                              Su
+                              一
                             </th>
                             <th>
-                              Mo
+                              二
                             </th>
                             <th>
-                              Tu
+                              三
                             </th>
                             <th>
-                              We
+                              四
                             </th>
                             <th>
-                              Th
+                              五
                             </th>
                             <th>
-                              Fr
+                              六
                             </th>
                             <th>
-                              Sa
+                              日
                             </th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
                             <td
-                              class="rc-picker-cell rc-picker-cell-end"
-                              title="1990-09-30"
+                              class="rc-picker-cell rc-picker-cell-in-view"
                             >
                               <div>
-                                30
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-start rc-picker-cell-in-view"
-                              title="1990-10-01"
-                            >
-                              <div>
+                                D
                                 1
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-02"
                             >
                               <div>
+                                D
                                 2
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-03"
                             >
                               <div>
+                                D
                                 3
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-04"
                             >
                               <div>
+                                D
                                 4
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-05"
                             >
                               <div>
+                                D
                                 5
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-06"
                             >
                               <div>
+                                D
                                 6
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                            >
+                              <div>
+                                D
+                                7
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-07"
                             >
                               <div>
-                                7
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-08"
-                            >
-                              <div>
+                                D
                                 8
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-09"
                             >
                               <div>
+                                D
                                 9
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-10"
                             >
                               <div>
+                                D
                                 10
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-11"
                             >
                               <div>
+                                D
                                 11
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-12"
                             >
                               <div>
+                                D
                                 12
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-13"
                             >
                               <div>
+                                D
                                 13
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                            >
+                              <div>
+                                D
+                                14
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-14"
                             >
                               <div>
-                                14
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-15"
-                            >
-                              <div>
+                                D
                                 15
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-16"
                             >
                               <div>
+                                D
                                 16
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-17"
                             >
                               <div>
+                                D
                                 17
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-18"
                             >
                               <div>
+                                D
                                 18
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-19"
                             >
                               <div>
+                                D
                                 19
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-20"
                             >
                               <div>
+                                D
                                 20
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                            >
+                              <div>
+                                D
+                                21
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-21"
                             >
                               <div>
-                                21
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-22"
-                            >
-                              <div>
+                                D
                                 22
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-23"
                             >
                               <div>
+                                D
                                 23
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-24"
                             >
                               <div>
+                                D
                                 24
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-25"
                             >
                               <div>
+                                D
                                 25
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-26"
                             >
                               <div>
+                                D
                                 26
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-27"
                             >
                               <div>
+                                D
                                 27
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                            >
+                              <div>
+                                D
+                                28
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-28"
                             >
                               <div>
-                                28
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-29"
-                            >
-                              <div>
+                                D
                                 29
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10-30"
                             >
                               <div>
+                                D
                                 30
                               </div>
                             </td>
                             <td
-                              class="rc-picker-cell rc-picker-cell-end rc-picker-cell-in-view"
-                              title="1990-10-31"
+                              class="rc-picker-cell rc-picker-cell-in-view"
                             >
                               <div>
+                                D
                                 31
                               </div>
                             </td>
                             <td
-                              class="rc-picker-cell rc-picker-cell-start"
-                              title="1990-11-01"
+                              class="rc-picker-cell"
                             >
                               <div>
+                                D
                                 1
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-11-02"
                             >
                               <div>
+                                D
                                 2
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-11-03"
                             >
                               <div>
+                                D
                                 3
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                            >
+                              <div>
+                                D
+                                4
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
                               class="rc-picker-cell"
-                              title="1990-11-04"
                             >
                               <div>
-                                4
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell"
-                              title="1990-11-05"
-                            >
-                              <div>
+                                D
                                 5
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-11-06"
                             >
                               <div>
+                                D
                                 6
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-11-07"
                             >
                               <div>
+                                D
                                 7
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-11-08"
                             >
                               <div>
+                                D
                                 8
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-11-09"
                             >
                               <div>
+                                D
                                 9
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell"
-                              title="1990-11-10"
                             >
                               <div>
+                                D
                                 10
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                            >
+                              <div>
+                                D
+                                11
                               </div>
                             </td>
                           </tr>
@@ -1119,9 +1114,8 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
         class="rc-picker-input rc-picker-input-active"
       >
         <input
+          aria-invalid="false"
           autocomplete="off"
-          placeholder=""
-          size="12"
           value=""
         />
       </div>
@@ -1134,16 +1128,14 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
         class="rc-picker-input"
       >
         <input
+          aria-invalid="false"
           autocomplete="off"
-          placeholder=""
-          readonly=""
-          size="12"
           value=""
         />
       </div>
       <div
         class="rc-picker-active-bar"
-        style="left: 0px; width: 0px; position: absolute;"
+        style="position: absolute; width: 0px; left: 0px;"
       />
     </div>
   </div>
@@ -1154,15 +1146,15 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
     >
       <div
         class="rc-picker-range-wrapper rc-picker-month-range-wrapper"
-        style="min-width: 0;"
       >
         <div
           class="rc-picker-range-arrow"
           style="left: 0px;"
         />
         <div
-          class="rc-picker-panel-container"
-          style="margin-left: 0px;"
+          class="rc-picker-panel-container rc-picker-month-panel-container"
+          style="margin-left: 0px; margin-right: auto;"
+          tabindex="-1"
         >
           <div
             class="rc-picker-panel-layout"
@@ -1173,7 +1165,6 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
               >
                 <div
                   class="rc-picker-panel"
-                  tabindex="-1"
                 >
                   <div
                     class="rc-picker-month-panel"
@@ -1182,29 +1173,30 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                       class="rc-picker-header"
                     >
                       <button
-                        class="rc-picker-header-super-prev-btn"
+                        class="rc-picker-header-prev-btn"
                         tabindex="-1"
                         type="button"
                       >
-                        «
+                        ‹
                       </button>
                       <div
                         class="rc-picker-header-view"
                       >
                         <button
                           class="rc-picker-year-btn"
+                          tabindex="-1"
                           type="button"
                         >
-                          1990
+                          1990年
                         </button>
                       </div>
                       <button
-                        class="rc-picker-header-super-next-btn"
+                        class="rc-picker-header-next-btn"
                         style="visibility: hidden;"
                         tabindex="-1"
                         type="button"
                       >
-                        »
+                        ›
                       </button>
                     </div>
                     <div
@@ -1217,103 +1209,101 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                           <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-01"
                             >
                               <div>
+                                M
                                 1
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-02"
                             >
                               <div>
+                                M
                                 2
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-03"
                             >
                               <div>
+                                M
                                 3
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                            >
+                              <div>
+                                M
+                                4
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-04"
                             >
                               <div>
-                                4
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-05"
-                            >
-                              <div>
+                                M
                                 5
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-06"
                             >
                               <div>
+                                M
                                 6
                               </div>
                             </td>
-                          </tr>
-                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-07"
                             >
                               <div>
+                                M
                                 7
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-08"
                             >
                               <div>
+                                M
                                 8
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-09"
-                            >
-                              <div>
-                                9
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-10"
+                              class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
                             >
                               <div>
+                                M
+                                9
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                            >
+                              <div>
+                                M
                                 10
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-11"
                             >
                               <div>
+                                M
                                 11
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1990-12"
                             >
                               <div>
+                                M
                                 12
                               </div>
                             </td>
@@ -1325,7 +1315,6 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                 </div>
                 <div
                   class="rc-picker-panel"
-                  tabindex="-1"
                 >
                   <div
                     class="rc-picker-month-panel"
@@ -1334,29 +1323,30 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                       class="rc-picker-header"
                     >
                       <button
-                        class="rc-picker-header-super-prev-btn"
+                        class="rc-picker-header-prev-btn"
                         style="visibility: hidden;"
                         tabindex="-1"
                         type="button"
                       >
-                        «
+                        ‹
                       </button>
                       <div
                         class="rc-picker-header-view"
                       >
                         <button
                           class="rc-picker-year-btn"
+                          tabindex="-1"
                           type="button"
                         >
-                          1991
+                          1991年
                         </button>
                       </div>
                       <button
-                        class="rc-picker-header-super-next-btn"
+                        class="rc-picker-header-next-btn"
                         tabindex="-1"
                         type="button"
                       >
-                        »
+                        ›
                       </button>
                     </div>
                     <div
@@ -1369,103 +1359,101 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                           <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1991-01"
                             >
                               <div>
+                                M
                                 1
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1991-02"
                             >
                               <div>
+                                M
                                 2
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1991-03"
                             >
                               <div>
+                                M
                                 3
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                            >
+                              <div>
+                                M
+                                4
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1991-04"
                             >
                               <div>
-                                4
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1991-05"
-                            >
-                              <div>
+                                M
                                 5
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1991-06"
                             >
                               <div>
+                                M
                                 6
                               </div>
                             </td>
-                          </tr>
-                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1991-07"
                             >
                               <div>
+                                M
                                 7
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1991-08"
                             >
                               <div>
+                                M
                                 8
-                              </div>
-                            </td>
-                            <td
-                              class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1991-09"
-                            >
-                              <div>
-                                9
                               </div>
                             </td>
                           </tr>
                           <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1991-10"
                             >
                               <div>
+                                M
+                                9
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                            >
+                              <div>
+                                M
                                 10
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1991-11"
                             >
                               <div>
+                                M
                                 11
                               </div>
                             </td>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
-                              title="1991-12"
                             >
                               <div>
+                                M
                                 12
                               </div>
                             </td>

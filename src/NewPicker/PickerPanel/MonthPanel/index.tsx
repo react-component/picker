@@ -77,7 +77,7 @@ export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateT
   return (
     <PanelContext.Provider
       value={{
-        type: 'date',
+        type: 'month',
         ...info,
       }}
     >

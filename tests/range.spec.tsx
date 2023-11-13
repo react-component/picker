@@ -1807,8 +1807,6 @@ describe('Picker.Range', () => {
     expect(baseElement).toMatchSnapshot();
   });
 
-  return;
-
   it('no -disabled cell when set open directly', () => {
     render(
       <DayRangePicker
@@ -1841,6 +1839,8 @@ describe('Picker.Range', () => {
     fireEvent.click(document.querySelector('.rc-picker-cell'));
     expect(document.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
   });
+
+  return;
 
   describe('trigger onCalendarChange', () => {
     const switchInput = (container: HTMLElement) => {

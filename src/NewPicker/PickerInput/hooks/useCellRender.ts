@@ -15,6 +15,7 @@ export default function useCellRender<DateType = any>(
 
     return (current: DateType | number, info: CellRenderInfo<DateType>) => {
       const date = current as DateType;
+
       if (dateRender && info.type === 'date') {
         return dateRender(date, info.today);
       }
