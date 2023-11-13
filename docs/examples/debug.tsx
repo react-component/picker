@@ -55,7 +55,7 @@ export default () => {
         // direction="rtl"
         // className="good"
         // style={{ opacity: 0.5 }}
-        picker="week"
+        // picker="week"
         // presets={[
         //   {
         //     label: 'Now',
@@ -97,7 +97,7 @@ export default () => {
         //   // align: true,
         // }}
         // preserveInvalidOnBlur
-        showTime
+        // showTime
         // showTime={
         //   {
         //     // defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],

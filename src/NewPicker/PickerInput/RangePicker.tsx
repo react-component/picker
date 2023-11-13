@@ -6,7 +6,6 @@ import warning from 'rc-util/lib/warning';
 import * as React from 'react';
 import useTimeConfig from '../hooks/useTimeConfig';
 import type {
-  CellRender,
   InternalMode,
   OnOpenChange,
   OpenConfig,
@@ -23,6 +22,7 @@ import type { PickerPanelProps } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import { fillIndex } from '../util';
 import PickerContext from './context';
+import useCellRender from './hooks/useCellRender';
 import { useFieldFormat } from './hooks/useFieldFormat';
 import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
@@ -186,6 +186,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     // Render
     components = {},
     cellRender,
+    dateRender,
+    monthCellRender,
 
     // Native
     onClick,
@@ -532,12 +534,12 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   };
 
   // >>> cellRender
-  const onInternalCellRender: CellRender<DateType> = (date, info) => {
-    return cellRender(date, {
-      ...info,
-      range: activeIndex === 1 ? 'end' : 'start',
-    });
-  };
+  const onInternalCellRender = useCellRender(
+    cellRender,
+    dateRender,
+    monthCellRender,
+    activeIndex === 1 ? 'end' : 'start',
+  );
 
   // >>> Value
   const panelValue = calendarValue[activeIndex] || null;
@@ -599,7 +601,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       onPresetHover={onPresetHover}
       onPresetSubmit={onPresetSubmit}
       // Render
-      cellRender={cellRender ? onInternalCellRender : undefined}
+      cellRender={onInternalCellRender}
     />
   );
 

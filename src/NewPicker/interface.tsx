@@ -313,6 +313,10 @@ export interface SharedPickerProps<DateType = any> extends SharedHTMLAttrs {
   // Render
   components?: Components;
   cellRender?: CellRender<DateType>;
+  /** @deprecated use cellRender instead of dateRender */
+  dateRender?: (currentDate: DateType, today: DateType) => React.ReactNode;
+  /** @deprecated use cellRender instead of monthCellRender */
+  monthCellRender?: (currentDate: DateType, locale: Locale) => React.ReactNode;
   /**
    * When use `date` picker,
    * Show the button to set current datetime.

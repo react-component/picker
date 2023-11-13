@@ -1574,7 +1574,6 @@ describe('Picker.Range', () => {
     selectCell(24);
     fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
-    console.log(container.innerHTML);
     fireEvent.click(document.querySelector('ul').querySelector('li'));
     fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
@@ -1762,7 +1761,6 @@ describe('Picker.Range', () => {
     fireEvent.click(findWeekCell('35'));
     fireEvent.mouseLeave(findWeekCell('35'));
 
-    console.log(document.body.innerHTML);
     expect(findWeekCell('35').parentElement).toHaveClass('rc-picker-week-panel-row-range-start');
 
     // End Hover
@@ -1779,19 +1777,18 @@ describe('Picker.Range', () => {
     expect(document.querySelector('.rc-picker-cell-selected')).toBeFalsy();
   });
 
-  return;
-
   it('range picker should use the passed in default when part is disabled', () => {
     render(<DayRangePicker defaultValue={[null, null]} disabled={[false, true]} />);
 
     expect(document.querySelectorAll('input')[1].value).toBeFalsy();
   });
+
   it('use dateRender and monthCellRender in month range picker', () => {
     const { container, baseElement } = render(
       <DayRangePicker
         picker="month"
-        dateRender={(date) => <div>{date.get('date')}</div>}
-        monthCellRender={(date) => <div>{date.get('month') + 1}</div>}
+        dateRender={(date) => <div>D{date.get('date')}</div>}
+        monthCellRender={(date) => <div>M{date.get('month') + 1}</div>}
       />,
     );
     openPicker(container);
@@ -1802,13 +1799,15 @@ describe('Picker.Range', () => {
     const { container, baseElement } = render(
       <DayRangePicker
         picker="date"
-        dateRender={(date) => <div>{date.get('date')}</div>}
-        monthCellRender={(date) => <div>{date.get('month') + 1}</div>}
+        dateRender={(date) => <div>D{date.get('date')}</div>}
+        monthCellRender={(date) => <div>M{date.get('month') + 1}</div>}
       />,
     );
     openPicker(container);
     expect(baseElement).toMatchSnapshot();
   });
+
+  return;
 
   it('no -disabled cell when set open directly', () => {
     render(
