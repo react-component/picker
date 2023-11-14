@@ -15,7 +15,7 @@ export default function WeekPanel<DateType = any>(props: SharedPanelProps<DateTy
     let rangeCls = {};
 
     if (hoverValue) {
-      const [rangeStart, rangeEnd] = hoverValue || [];
+      const [rangeStart, rangeEnd] = hoverValue;
 
       const isRangeStart = isSameWeek(generateConfig, locale.locale, rangeStart, date);
       const isRangeEnd = isSameWeek(generateConfig, locale.locale, rangeEnd, date);

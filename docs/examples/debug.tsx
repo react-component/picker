@@ -34,17 +34,16 @@ export default () => {
   const singleRef = React.useRef<PickerRef>(null);
 
   const [value, setValue] = React.useState<Moment>(null);
-  const [rangeValue, setRangeValue] = React.useState<[Moment?, Moment?]>(
-    // has start
-    // [moment('2023-11-15'), null],
-    // has end
-    // [null, moment('2023-11-15')],
-    // [moment('2023-11-5'), moment('2023-12-29')],
-    // [moment('2000-09-03'), moment('1990-09-03')],
-    // [moment('1990-09-03'), null],
-    // null,
-    // undefined,
-  );
+  const [rangeValue, setRangeValue] = React.useState<[Moment?, Moment?]>();
+  // has start
+  // [moment('2023-11-15'), null],
+  // has end
+  // [null, moment('2023-11-15')],
+  // [moment('2023-11-5'), moment('2023-12-29')],
+  // [moment('2000-09-03'), moment('1990-09-03')],
+  // [moment('1990-09-03'), null],
+  // null,
+  // undefined,
 
   return (
     <div>
@@ -121,14 +120,14 @@ export default () => {
         onOpenChange={(nextOpen) => {
           console.log('🏆 Next Open:', nextOpen);
         }}
-        open
+        // open
         // mode={['month', 'year']}
         // onPanelChange={(val, mode) => {
         //   console.log('🏆 Panel Change:', val?.[0]?.format('YYYY-MM-DD'), mode);
         // }}
-        // onPickerValueChange={(val) => {
-        //   console.log('👻 Picker Value Change:', val);
-        // }}
+        onPickerValueChange={(val, info) => {
+          console.log('👻 Picker Value Change:', val, val?.[1]?.format('YYYY-MM-DD'), info);
+        }}
         // renderExtraFooter={(mode) => mode}
         components={
           {

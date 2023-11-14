@@ -178,7 +178,9 @@ function PickerPanel<DateType = any>(
     defaultPickerValue || mergedValue || now,
     {
       value: pickerValue,
-      onChange: onPickerValueChange,
+      onChange: (val) => {
+        onPickerValueChange?.(val);
+      },
     },
   );
 

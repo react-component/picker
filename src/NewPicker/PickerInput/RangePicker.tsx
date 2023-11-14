@@ -90,6 +90,7 @@ export interface RangePickerProps<DateType>
     date: [DateType, DateType],
     info: {
       source: 'reset' | 'panel';
+      range: 'start' | 'end';
     },
   ) => void;
 

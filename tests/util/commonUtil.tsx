@@ -1,9 +1,9 @@
 import React from 'react';
 // import { mount as originMount, ReactWrapper } from 'enzyme';
 import { act, fireEvent } from '@testing-library/react';
-import dayjs, { type Dayjs } from 'dayjs';
+import dayjs, { isDayjs, type Dayjs } from 'dayjs';
 import 'dayjs/locale/zh-cn';
-import moment, { type Moment, type unitOfTime } from 'moment';
+import moment, { isMoment, type Moment } from 'moment';
 import Picker, { PickerPanel, type PickerProps } from '../../src';
 import dayGenerateConfig from '../../src/generate/dayjs';
 import momentGenerateConfig from '../../src/generate/moment';
@@ -53,13 +53,20 @@ export function getMoment(str: string): Moment {
   throw new Error(`Format not match with: ${str}`);
 }
 
-export function isSame(date: Moment | null, dateStr: string, type: unitOfTime.StartOf = 'date') {
+export function isSame(date: Moment | Dayjs | null, dateStr: string, type: any = 'date') {
   if (!date) {
     return false;
   }
 
-  if (date.isSame(getMoment(dateStr), type)) {
-    return true;
+  if (isMoment(date)) {
+    if (date.isSame(getMoment(dateStr), type)) {
+      return true;
+    }
+  }
+  if (isDayjs(date)) {
+    if (date.isSame(getDay(dateStr), type)) {
+      return true;
+    }
   }
 
   throw new Error(`${date.format(FULL_FORMAT)} is not same as expected: ${dateStr}`);
