@@ -4,19 +4,28 @@ import type { Locale, PickerRef } from '../../src/NewPicker/interface';
 import RangePicker from '../../src/NewPicker/PickerInput/RangePicker';
 import PickerPanel, { type PickerPanelProps } from '../../src/NewPicker/PickerPanel';
 
-import moment, { type Moment } from 'moment';
-import 'moment/locale/zh-cn';
-import momentGenerateConfig from '../../src/generate/moment';
+import dayjs, { type Dayjs } from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import buddhistEra from 'dayjs/plugin/buddhistEra';
+import dayjsGenerateConfig from '../../src/generate/dayjs';
 import zhCN from '../../src/locale/zh_CN';
 
-moment.locale('zh-cn');
-window.moment = moment;
+dayjs.locale('zh-cn');
+dayjs.extend(buddhistEra);
 
-const myLocale: Locale = { ...zhCN, quarterCellFormat: '第Q季度' };
+(window as any).dayjs = dayjs;
+
+const myLocale: Locale = {
+  ...zhCN,
+  quarterCellFormat: '第Q季度',
+  fieldYearFormat: 'BBBB',
+  yearCellFormat: 'BBBB',
+  yearFormat: 'BBBB',
+};
 
 const sharedLocale = {
   locale: myLocale,
-  generateConfig: momentGenerateConfig,
+  generateConfig: dayjsGenerateConfig,
 };
 
 function CellPicker(props: Partial<PickerPanelProps>) {
@@ -33,15 +42,15 @@ const MyTime = () => <div>2333</div>;
 export default () => {
   const singleRef = React.useRef<PickerRef>(null);
 
-  const [value, setValue] = React.useState<Moment>(null);
-  const [rangeValue, setRangeValue] = React.useState<[Moment?, Moment?]>();
+  const [value, setValue] = React.useState<Dayjs>(null);
+  const [rangeValue, setRangeValue] = React.useState<[Dayjs?, Dayjs?]>();
   // has start
-  // [moment('2023-11-15'), null],
+  // [dayjs('2023-11-15'), null],
   // has end
-  // [null, moment('2023-11-15')],
-  // [moment('2023-11-5'), moment('2023-12-29')],
-  // [moment('2000-09-03'), moment('1990-09-03')],
-  // [moment('1990-09-03'), null],
+  // [null, dayjs('2023-11-15')],
+  // [dayjs('2023-11-5'), dayjs('2023-12-29')],
+  // [dayjs('2000-09-03'), dayjs('1990-09-03')],
+  // [dayjs('1990-09-03'), null],
   // null,
   // undefined,
 
@@ -54,31 +63,31 @@ export default () => {
         // direction="rtl"
         // className="good"
         // style={{ opacity: 0.5 }}
-        picker="week"
+        picker="year"
         // monthCellRender={(date) => {
         //   return <>MM{date.month()}</>;
         // }}
         // presets={[
         //   {
         //     label: 'Now',
-        //     value: [moment(), moment()],
+        //     value: [dayjs(), dayjs()],
         //   },
         //   {
         //     label: 'This Week',
-        //     value: [moment().add(-7, 'd'), moment()],
+        //     value: [dayjs().add(-7, 'd'), dayjs()],
         //   },
         //   {
         //     label: 'Last Week',
-        //     value: [moment().add(-14, 'd'), moment().add(-7, 'd')],
+        //     value: [dayjs().add(-14, 'd'), dayjs().add(-7, 'd')],
         //   },
         //   {
         //     label: 'Wrong Order',
-        //     value: [moment(), moment().add(-14, 'd')],
+        //     value: [dayjs(), dayjs().add(-14, 'd')],
         //   },
         // ]}
         value={rangeValue}
         placeholder={['Start', 'End']}
-        // defaultValue={[moment('1990-11-28'), moment('2000-09-03')]}
+        // defaultValue={[dayjs('1990-11-28'), dayjs('2000-09-03')]}
         // onPickerValueChange={(dates, info) => {
         //   console.log('🍭 Picker Value Change:', dates, info);
         // }}
@@ -93,7 +102,7 @@ export default () => {
         // }}
         // changeOnBlur
         format={{
-          format: 'YYYY--MM--DD',
+          format: 'BBBB',
           // format: 'YYYY-MM-DD HH:mm:ss.SSS',
           //   // format: 'YYYYMMDD',
           // align: true,
@@ -102,7 +111,7 @@ export default () => {
         // showTime
         // showTime={
         //   {
-        //     // defaultValue: [moment('2000-01-01 01:03:05'), moment('2000-01-01 03:07:22')],
+        //     // defaultValue: [dayjs('2000-01-01 01:03:05'), dayjs('2000-01-01 03:07:22')],
         //   }
         // }
         // onOk={() => {
@@ -154,9 +163,9 @@ export default () => {
           showTime={{
             format: 'HH:mm:ss.SSS',
             showTitle: true,
-            // defaultValue: moment('2000-01-01 01:03:05.800'),
+            // defaultValue: dayjs('2000-01-01 01:03:05.800'),
           }}
-          pickerValue={moment('2000-01-01 01:03:05.800')}
+          pickerValue={dayjs('2000-01-01 01:03:05.800')}
         /> */}
         {/* <CellPicker
           picker="date"
@@ -170,9 +179,9 @@ export default () => {
         /> */}
 
         {/* <CellPicker
-          defaultValue={moment().add(1, 'day')}
+          defaultValue={dayjs().add(1, 'day')}
           disabledDate={(date) => date.date() === 11}
-          // cellRender={(date: Moment, info) => {
+          // cellRender={(date: Dayjs, info) => {
           //   if (info.type === 'date') {
           //     return date.format('Do');
           //   }
@@ -183,13 +192,13 @@ export default () => {
 
         <CellPicker
           picker="week"
-          defaultValue={moment('2000-01-01')}
+          defaultValue={dayjs('2000-01-01')}
           disabledDate={(date) => date.week() === 3}
         />
 
         <CellPicker
           picker="month"
-          defaultValue={moment('2000-01-01')}
+          defaultValue={dayjs('2000-01-01')}
           disabledDate={(date) => date.week() === 3}
           value={value}
           onChange={setValue}
@@ -197,19 +206,19 @@ export default () => {
 
         <CellPicker
           picker="year"
-          defaultValue={moment('2023-04-05')}
+          defaultValue={dayjs('2023-04-05')}
           disabledDate={(date) => date.week() === 3}
         />
 
         <CellPicker
           picker="decade"
-          defaultValue={moment('2023-04-05')}
+          defaultValue={dayjs('2023-04-05')}
           disabledDate={(date) => date.week() === 3}
         />
 
         <CellPicker
           picker="time"
-          defaultValue={moment('1990-10-23 13:05:08.200')}
+          defaultValue={dayjs('1990-10-23 13:05:08.200')}
           disabledDate={(date) => date.week() === 3}
           showTime={{
             format: 'HH:mm:ss.SSS',

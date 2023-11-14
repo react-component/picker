@@ -3,6 +3,7 @@ import { act, fireEvent, render } from '@testing-library/react';
 import { type Dayjs } from 'dayjs';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
+import zh_CN from '../src/locale/zh_CN';
 import {
   closePicker,
   DayRangePicker,
@@ -190,6 +191,39 @@ describe('NewPicker.Range', () => {
         jest.runAllTimers();
       });
       expect(firstInput).toHaveValue('invalidate 123');
+    });
+  });
+
+  describe('format', () => {
+    it('support BBBB', () => {
+      const onChange = jest.fn();
+
+      const { container } = render(
+        <DayRangePicker
+          picker="year"
+          onChange={onChange}
+          locale={{
+            ...zh_CN,
+            fieldYearFormat: 'BBBB',
+            yearCellFormat: 'BBBB',
+            yearFormat: 'BBBB',
+          }}
+        />,
+      );
+
+      openPicker(container);
+
+      // Title
+      expect(document.querySelector('.rc-picker-header-view').textContent).toEqual('2533-2542');
+
+      // Cell
+      selectCell(2538);
+      selectCell(2551, 1);
+
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), ['2538', '2551']);
+
+      expect(container.querySelectorAll('input')[0]).toHaveValue('2538');
+      expect(container.querySelectorAll('input')[1]).toHaveValue('2551');
     });
   });
 });
