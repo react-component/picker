@@ -221,26 +221,25 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     const amDate = generateConfig.setHour(base, 6);
     const pmDate = generateConfig.setHour(base, 18);
 
+    const formatMeridiem = (date: DateType, defaultLabel: string) => {
+      const { meridiemCellFormat } = locale;
+      return meridiemCellFormat
+        ? formatValue(amDate, {
+            generateConfig,
+            locale,
+            format: meridiemCellFormat,
+          })
+        : defaultLabel;
+    };
+
     return [
       {
-        label: locale.meridiemFormat
-          ? formatValue(amDate, {
-              generateConfig,
-              locale,
-              format: locale.meridiemFormat,
-            })
-          : 'AM',
+        label: formatMeridiem(amDate, 'AM'),
         value: 'am',
         disabled: rowHourUnits.every((h) => h.disabled || !isAM(h.value as number)),
       },
       {
-        label: locale.meridiemFormat
-          ? formatValue(pmDate, {
-              generateConfig,
-              locale,
-              format: locale.meridiemFormat,
-            })
-          : 'PM',
+        label: formatMeridiem(pmDate, 'PM'),
         value: 'pm',
         disabled: rowHourUnits.every((h) => h.disabled || isAM(h.value as number)),
       },

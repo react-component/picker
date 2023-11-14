@@ -31,7 +31,7 @@ export default function QuarterPanel<DateType = any>(props: SharedPanelProps<Dat
   const getCellText = (date: DateType) => {
     return formatValue(date, {
       locale,
-      format: locale.quarterCellFormat || '[Q]Q',
+      format: locale.quarterCellFormat,
       generateConfig,
     });
   };

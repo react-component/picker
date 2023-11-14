@@ -28,7 +28,7 @@ export default function DecadePanel<DateType = any>(props: SharedPanelProps<Date
   };
 
   const getCellText = (date: DateType) => {
-    const yearCellFormat = locale.yearCellFormat || 'YYYY';
+    const yearCellFormat = locale.yearCellFormat;
 
     const startYearStr = formatValue(date, {
       locale,

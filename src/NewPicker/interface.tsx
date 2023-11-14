@@ -10,16 +10,20 @@ export type Locale = {
 
   // ==================== Input Format ====================
   // Input format
+  /** @deprecated Please use `fieldDateFormat` instead */
+  dateFormat?: string;
+  /** @deprecated Please use `fieldDateTimeFormat` instead */
+  dateTimeFormat?: string;
   /** Input field formatter like YYYY-MM-DD HH:mm:ss */
-  fieldDateTimeFormat: string;
+  fieldDateTimeFormat?: string;
   /** Input field formatter like YYYY-MM-DD */
-  fieldDateFormat: string;
+  fieldDateFormat?: string;
   /** Input field formatter like HH:mm:ss */
-  fieldTimeFormat: string;
+  fieldTimeFormat?: string;
   /** Input field formatter like YYYY-MM */
-  fieldMonthFormat: string;
+  fieldMonthFormat?: string;
   /** Input field formatter like YYYY */
-  fieldYearFormat: string;
+  fieldYearFormat?: string;
   /** Input field formatter like wwww-go */
   fieldWeekFormat?: string;
   /** Input field formatter like YYYY-Q */
@@ -30,7 +34,7 @@ export type Locale = {
   /** Display month before year in date panel header */
   monthBeforeYear?: boolean;
   /** year format in header panel */
-  yearFormat: string;
+  yearFormat?: string;
   /** month format in header panel */
   monthFormat?: string;
 
@@ -39,10 +43,12 @@ export type Locale = {
   yearCellFormat?: string;
   /** quarter format in body panel */
   quarterCellFormat?: string;
+  /** @deprecated Please use `dateCellFormat` instead */
+  dayFormat?: string;
   /** day format in body panel */
-  dayFormat: string;
+  dateCellFormat?: string;
   /** meridiem format in body panel */
-  meridiemFormat?: string;
+  meridiemCellFormat?: string;
 
   // Column desc
   hour?: string;

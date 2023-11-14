@@ -110,7 +110,7 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
   const getCellText = (date: DateType) => {
     return formatValue(date, {
       locale,
-      format: locale.dayFormat,
+      format: locale.dateCellFormat,
       generateConfig,
     });
   };
@@ -176,11 +176,7 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
         ...info,
       }}
     >
-      <div
-        className={classNames(panelPrefixCls, {
-          // [`${panelPrefixCls}-active`]: active,
-        })}
-      >
+      <div className={panelPrefixCls}>
         {/* Header */}
         <PanelHeader
           onOffset={(offset) => {
@@ -196,6 +192,13 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
         {/* Body */}
         <PanelBody
           mode="date"
+          titleCell={(date) =>
+            formatValue(date, {
+              locale,
+              format: locale.fieldDateFormat,
+              generateConfig,
+            })
+          }
           {...props}
           colNum={WEEK_DAY_COUNT}
           rowNum={6}

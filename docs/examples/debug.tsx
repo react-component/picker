@@ -58,24 +58,24 @@ export default () => {
         // monthCellRender={(date) => {
         //   return <>MM{date.month()}</>;
         // }}
-        presets={[
-          {
-            label: 'Now',
-            value: [moment(), moment()],
-          },
-          {
-            label: 'This Week',
-            value: [moment().add(-7, 'd'), moment()],
-          },
-          {
-            label: 'Last Week',
-            value: [moment().add(-14, 'd'), moment().add(-7, 'd')],
-          },
-          {
-            label: 'Wrong Order',
-            value: [moment(), moment().add(-14, 'd')],
-          },
-        ]}
+        // presets={[
+        //   {
+        //     label: 'Now',
+        //     value: [moment(), moment()],
+        //   },
+        //   {
+        //     label: 'This Week',
+        //     value: [moment().add(-7, 'd'), moment()],
+        //   },
+        //   {
+        //     label: 'Last Week',
+        //     value: [moment().add(-14, 'd'), moment().add(-7, 'd')],
+        //   },
+        //   {
+        //     label: 'Wrong Order',
+        //     value: [moment(), moment().add(-14, 'd')],
+        //   },
+        // ]}
         value={rangeValue}
         placeholder={['Start', 'End']}
         // defaultValue={[moment('1990-11-28'), moment('2000-09-03')]}
@@ -92,12 +92,12 @@ export default () => {
         //   console.log('🍷 Blur!');
         // }}
         // changeOnBlur
-        // format={{
-        //   format: 'YYYY-MM-DD',
-        //   // format: 'YYYY-MM-DD HH:mm:ss.SSS',
-        //   //   // format: 'YYYYMMDD',
-        //   // align: true,
-        // }}
+        format={{
+          format: 'YYYY--MM--DD',
+          // format: 'YYYY-MM-DD HH:mm:ss.SSS',
+          //   // format: 'YYYYMMDD',
+          // align: true,
+        }}
         // preserveInvalidOnBlur
         // showTime
         // showTime={

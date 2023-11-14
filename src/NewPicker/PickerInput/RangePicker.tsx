@@ -4,6 +4,7 @@ import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import warning from 'rc-util/lib/warning';
 import * as React from 'react';
+import useLocale from '../hooks/useLocale';
 import useTimeConfig from '../hooks/useTimeConfig';
 import type {
   InternalMode,
@@ -207,6 +208,9 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     },
   }));
 
+  // ======================== Locale ========================
+  const filledLocale = useLocale(locale);
+
   // =================== Disabled & Empty ===================
   const mergedDisabled = separateConfig(disabled, false);
   const mergedAllowEmpty = separateConfig(allowEmpty, false);
@@ -214,8 +218,20 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // ========================= Icon =========================
   const mergedClearIcon = useClearIcon(prefixCls, allowClear, clearIcon);
 
+  // ========================= Prop =========================
+  const filledProps = React.useMemo(
+    () => ({
+      ...props,
+      locale: filledLocale,
+      allowEmpty: mergedAllowEmpty,
+      order,
+      picker,
+    }),
+    [props],
+  );
+
   // ======================= ShowTime =======================
-  const mergedShowTime = useTimeConfig(props);
+  const mergedShowTime = useTimeConfig(filledProps);
 
   // ======================== Active ========================
   // When user first focus one input, any submit will trigger focus another one.
@@ -255,7 +271,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   const mergedShowNow = useShowNow(internalPicker, mergedMode, showNow, showToday);
 
   // ======================== Format ========================
-  const [formatList, maskFormat] = useFieldFormat(internalPicker, locale, format);
+  const [formatList, maskFormat] = useFieldFormat(internalPicker, filledLocale, format);
 
   // ======================= ReadOnly =======================
   const mergedInputReadOnly = useInputReadOnly(formatList, inputReadOnly);
@@ -277,12 +293,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
   // ======================== Value =========================
   const [calendarValue, triggerCalendarChange, triggerSubmitChange, emptyValue] = useRangeValue(
-    {
-      ...props,
-      allowEmpty: mergedAllowEmpty,
-      order,
-      picker,
-    },
+    filledProps,
     mergedDisabled,
     formatList,
     focused,
@@ -297,7 +308,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     mergedDisabled,
     activeIndex,
     generateConfig,
-    locale,
+    filledLocale,
     disabledDate,
   );
 
@@ -342,7 +353,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // ===================== Picker Value =====================
   const [currentPickerValue, setCurrentPickerValue] = useRangePickerValue(
     generateConfig,
-    locale,
+    filledLocale,
     calendarValue,
     mergedOpen,
     activeIndex,
@@ -551,8 +562,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   const panelValueInvalid = !panelValue || isInvalidateDate(panelValue);
 
   const panelProps = React.useMemo(() => {
-    const domProps = pickAttrs(props, false);
-    const restProps = omit(props, [
+    const domProps = pickAttrs(filledProps, false);
+    const restProps = omit(filledProps, [
       ...(Object.keys(domProps) as (keyof SharedHTMLAttrs)[]),
       'onChange',
       'onCalendarChange',
@@ -562,7 +573,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       'onPanelChange',
     ]);
     return restProps;
-  }, [props]);
+  }, [filledProps]);
 
   // >>> Render
   const panel = (
@@ -612,11 +623,11 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   const context = React.useMemo(
     () => ({
       prefixCls,
-      locale,
+      locale: filledLocale,
       generateConfig,
       button: components.button,
     }),
-    [prefixCls, locale, generateConfig, components.button],
+    [prefixCls, filledLocale, generateConfig, components.button],
   );
 
   // ======================== Effect ========================
@@ -680,7 +691,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       >
         <RangeSelector
           // Shared
-          {...props}
+          {...filledProps}
           // Ref
           ref={selectorRef}
           // Icon

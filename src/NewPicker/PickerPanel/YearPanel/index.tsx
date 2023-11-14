@@ -38,7 +38,7 @@ export default function YearPanel<DateType = any>(props: SharedPanelProps<DateTy
   const getCellText = (date: DateType) => {
     return formatValue(date, {
       locale,
-      format: locale.yearCellFormat || 'YYYY',
+      format: locale.yearCellFormat,
       generateConfig,
     });
   };

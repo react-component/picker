@@ -12,7 +12,7 @@
  *  - TimePicker support `changeOnScroll`
  *  - TimePicker support `showTitle`
  *  - TimePicker support `millisecond`
- *  - Support meridiemFormat for AM/PM
+ *  - Support meridiemCellFormat for AM/PM
  *  - Get correct `disabledHours` when set `use12Hours`
  *  - Support `showWeek`
  *

@@ -10,20 +10,20 @@ function getRowFormat(picker: InternalMode, locale: Locale, format?: SharedPicke
   switch (picker) {
     // All from the `locale.fieldXXXFormat` first
     case 'time':
-      return locale.fieldTimeFormat || 'HH:mm:ss';
+      return locale.fieldTimeFormat;
     case 'datetime':
-      return locale.fieldDateTimeFormat || 'YYYY-MM-DD HH:mm:ss';
+      return locale.fieldDateTimeFormat;
     case 'month':
-      return locale.fieldMonthFormat || 'YYYY-MM';
+      return locale.fieldMonthFormat;
     case 'year':
-      return locale.fieldYearFormat || 'YYYY';
+      return locale.fieldYearFormat;
     case 'quarter':
-      return locale.fieldQuarterFormat || 'YYYY-[Q]Q';
+      return locale.fieldQuarterFormat;
     case 'week':
-      return locale.fieldWeekFormat || 'gggg-wo';
+      return locale.fieldWeekFormat;
 
     default:
-      return locale.fieldDateFormat || 'YYYY-MM-DD';
+      return locale.fieldDateFormat;
   }
 }
 
