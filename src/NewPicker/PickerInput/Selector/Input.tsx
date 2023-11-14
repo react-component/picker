@@ -199,6 +199,8 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
   // ======================= Keyboard =======================
   const onSharedKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    console.log('key', event.key);
+
     if (event.key === 'Enter') {
       onEnter();
     }
@@ -208,7 +210,6 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     onSharedKeyDown(event);
 
     const { key } = event;
-    console.log('key', key);
 
     // Save the cache with cell text
     let nextCellText: string = null;

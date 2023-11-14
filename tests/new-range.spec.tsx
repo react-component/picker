@@ -1,9 +1,9 @@
 // In theory, all RangePicker test cases should be paired with SinglePicker
 import { fireEvent, render } from '@testing-library/react';
-import { Dayjs } from 'dayjs';
+import { type Dayjs } from 'dayjs';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
-import { DayRangePicker, getDay, isSame, openPicker, selectCell } from './util/commonUtil';
+import { DayRangePicker, getDay, isOpen, isSame, openPicker, selectCell } from './util/commonUtil';
 
 describe('NewPicker.Range', () => {
   beforeEach(() => {
@@ -127,6 +127,25 @@ describe('NewPicker.Range', () => {
           range: 'end',
         }),
       );
+    });
+  });
+
+  describe('field', () => {
+    it('not open for function key', () => {
+      const { container } = render(<DayRangePicker />);
+      const firstInput = container.querySelector<HTMLInputElement>('input');
+
+      fireEvent.keyDown(firstInput, {
+        key: 'Shift',
+      });
+      expect(isOpen()).toBeFalsy();
+
+      fireEvent.change(firstInput, {
+        target: {
+          value: 'a',
+        },
+      });
+      expect(isOpen()).toBeTruthy();
     });
   });
 });
