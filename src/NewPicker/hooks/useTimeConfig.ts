@@ -41,6 +41,15 @@ function pickTimeProps<DateType = any>(props: object): SharedTimeProps<DateType>
       timeProps[key] = props[key];
     }
   });
+
+  if (timeProps.format) {
+    let format = timeProps.format;
+    if (Array.isArray(format)) {
+      format = format[0];
+    }
+    timeProps.format = typeof format === 'object' ? format.format : format;
+  }
+
   return timeProps;
 }
 
@@ -57,7 +66,7 @@ export default function useTimeConfig<Config extends object>(
   }
 
   if (picker === 'time') {
-    return pickTimeProps(showTime || {}) as Config;
+    return showTime || (pickTimeProps(componentProps) as Config);
   }
 
   return showTime || null;

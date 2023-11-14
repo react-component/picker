@@ -205,7 +205,7 @@ describe('NewPicker.Range', () => {
           locale={{
             ...zh_CN,
             fieldYearFormat: 'BBBB',
-            yearCellFormat: 'BBBB',
+            cellYearFormat: 'BBBB',
             yearFormat: 'BBBB',
           }}
         />,
@@ -224,6 +224,15 @@ describe('NewPicker.Range', () => {
 
       expect(container.querySelectorAll('input')[0]).toHaveValue('2538');
       expect(container.querySelectorAll('input')[1]).toHaveValue('2551');
+    });
+
+    it('support LTS', () => {
+      const { rerender } = render(<DayRangePicker picker="time" format="LT" open />);
+      expect(document.querySelectorAll('.rc-picker-time-panel-column')).toHaveLength(3);
+
+      // With second
+      rerender(<DayRangePicker picker="time" format="LTS" open />);
+      expect(document.querySelectorAll('.rc-picker-time-panel-column')).toHaveLength(4);
     });
   });
 });

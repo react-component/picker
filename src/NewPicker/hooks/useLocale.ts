@@ -7,7 +7,7 @@ import type { Locale } from '../interface';
 export default function useLocale(locale: Locale) {
   return React.useMemo(() => {
     // Not fill `monthFormat` since `locale.shortMonths` handle this
-    // Not fill `meridiemCellFormat` since AM & PM by default
+    // Not fill `cellMeridiemFormat` since AM & PM by default
     const {
       // Input Field
       dateFormat,
@@ -25,12 +25,12 @@ export default function useLocale(locale: Locale) {
       // monthFormat,
 
       // Cell format
-      yearCellFormat,
-      quarterCellFormat,
+      cellYearFormat,
+      cellQuarterFormat,
       dayFormat,
-      dateCellFormat,
+      cellDateFormat,
 
-      // meridiemCellFormat,
+      // cellMeridiemFormat,
     } = locale;
 
     return {
@@ -46,9 +46,9 @@ export default function useLocale(locale: Locale) {
 
       yearFormat: yearFormat || 'YYYY',
 
-      yearCellFormat: yearCellFormat || 'YYYY',
-      quarterCellFormat: quarterCellFormat || '[Q]Q',
-      dateCellFormat: dateCellFormat || dayFormat || 'D',
+      cellYearFormat: cellYearFormat || 'YYYY',
+      cellQuarterFormat: cellQuarterFormat || '[Q]Q',
+      cellDateFormat: cellDateFormat || dayFormat || 'D',
     };
   }, [locale]);
 }

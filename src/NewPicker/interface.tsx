@@ -40,15 +40,15 @@ export type Locale = {
 
   // Cell format
   /** year format in body panel */
-  yearCellFormat?: string;
+  cellYearFormat?: string;
   /** quarter format in body panel */
-  quarterCellFormat?: string;
-  /** @deprecated Please use `dateCellFormat` instead */
+  cellQuarterFormat?: string;
+  /** @deprecated Please use `cellDateFormat` instead */
   dayFormat?: string;
   /** day format in body panel */
-  dateCellFormat?: string;
+  cellDateFormat?: string;
   /** meridiem format in body panel */
-  meridiemCellFormat?: string;
+  cellMeridiemFormat?: string;
 
   // Column desc
   hour?: string;

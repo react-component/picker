@@ -110,7 +110,7 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
   const getCellText = (date: DateType) => {
     return formatValue(date, {
       locale,
-      format: locale.dateCellFormat,
+      format: locale.cellDateFormat,
       generateConfig,
     });
   };

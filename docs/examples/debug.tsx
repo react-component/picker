@@ -63,7 +63,7 @@ export default () => {
         // direction="rtl"
         // className="good"
         // style={{ opacity: 0.5 }}
-        picker="year"
+        picker="time"
         // monthCellRender={(date) => {
         //   return <>MM{date.month()}</>;
         // }}
@@ -102,7 +102,7 @@ export default () => {
         // }}
         // changeOnBlur
         format={{
-          format: 'BBBB',
+          format: 'LTS',
           // format: 'YYYY-MM-DD HH:mm:ss.SSS',
           //   // format: 'YYYYMMDD',
           // align: true,

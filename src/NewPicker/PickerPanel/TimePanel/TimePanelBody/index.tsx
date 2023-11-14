@@ -222,12 +222,12 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     const pmDate = generateConfig.setHour(base, 18);
 
     const formatMeridiem = (date: DateType, defaultLabel: string) => {
-      const { meridiemCellFormat } = locale;
-      return meridiemCellFormat
+      const { cellMeridiemFormat } = locale;
+      return cellMeridiemFormat
         ? formatValue(amDate, {
             generateConfig,
             locale,
-            format: meridiemCellFormat,
+            format: cellMeridiemFormat,
           })
         : defaultLabel;
     };
