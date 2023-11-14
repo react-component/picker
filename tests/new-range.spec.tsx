@@ -1,9 +1,17 @@
 // In theory, all RangePicker test cases should be paired with SinglePicker
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import { type Dayjs } from 'dayjs';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
-import { DayRangePicker, getDay, isOpen, isSame, openPicker, selectCell } from './util/commonUtil';
+import {
+  closePicker,
+  DayRangePicker,
+  getDay,
+  isOpen,
+  isSame,
+  openPicker,
+  selectCell,
+} from './util/commonUtil';
 
 describe('NewPicker.Range', () => {
   beforeEach(() => {
@@ -146,6 +154,42 @@ describe('NewPicker.Range', () => {
         },
       });
       expect(isOpen()).toBeTruthy();
+    });
+
+    it('preserveInvalidOnBlur=false', () => {
+      const { container } = render(<DayRangePicker />);
+      const firstInput = container.querySelector<HTMLInputElement>('input');
+
+      openPicker(container);
+      fireEvent.change(firstInput, {
+        target: {
+          value: 'invalidate 123',
+        },
+      });
+
+      closePicker(container);
+      act(() => {
+        jest.runAllTimers();
+      });
+      expect(firstInput).toHaveValue('');
+    });
+
+    it('preserveInvalidOnBlur=true', () => {
+      const { container } = render(<DayRangePicker preserveInvalidOnBlur />);
+      const firstInput = container.querySelector<HTMLInputElement>('input');
+
+      openPicker(container);
+      fireEvent.change(firstInput, {
+        target: {
+          value: 'invalidate 123',
+        },
+      });
+
+      closePicker(container);
+      act(() => {
+        jest.runAllTimers();
+      });
+      expect(firstInput).toHaveValue('invalidate 123');
     });
   });
 });
