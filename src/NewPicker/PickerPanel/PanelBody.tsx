@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { isInRange, isSame } from '../../utils/dateUtil';
+import { formatValue, isInRange, isSame } from '../../utils/dateUtil';
 import type { PanelMode } from '../interface';
 import { PanelContext } from './context';
 
@@ -9,7 +9,7 @@ export interface PanelBodyProps<DateType = any> {
   colNum: number;
   baseDate: DateType;
 
-  titleCell?: (date: DateType) => string;
+  titleFormat?: string;
 
   // Render
   getCellDate: (date: DateType, offset: number) => DateType;
@@ -36,7 +36,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
     getCellDate,
     prefixColumn,
     rowClassName,
-    titleCell,
+    titleFormat,
     getCellText,
     getCellClassName,
     headerCells,
@@ -93,13 +93,22 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
         rangeEnd = isSame(generateConfig, locale, currentDate, hoverEnd, mode);
       }
 
+      // Title
+      const title = titleFormat
+        ? formatValue(currentDate, {
+            locale,
+            format: titleFormat,
+            generateConfig,
+          })
+        : undefined;
+
       // Render
       const inner = <div className={`${cellPrefixCls}-inner`}>{getCellText(currentDate)}</div>;
 
       rowNode.push(
         <td
           key={col}
-          title={titleCell?.(currentDate)}
+          title={title}
           className={classNames(cellPrefixCls, {
             [`${cellPrefixCls}-disabled`]: disabled,
             [`${cellPrefixCls}-in-range`]: inRange && !rangeStart && !rangeEnd,

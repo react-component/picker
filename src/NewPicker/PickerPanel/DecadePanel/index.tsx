@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import * as React from 'react';
 import { formatValue, isSameDecade } from '../../../utils/dateUtil';
 import type { SharedPanelProps } from '../../interface';
@@ -72,11 +71,7 @@ export default function DecadePanel<DateType = any>(props: SharedPanelProps<Date
         ...info,
       }}
     >
-      <div
-        className={classNames(panelPrefixCls, {
-          // [`${panelPrefixCls}-active`]: active,
-        })}
-      >
+      <div className={panelPrefixCls}>
         {/* Header */}
         <PanelHeader
           onOffset={(offset) => {

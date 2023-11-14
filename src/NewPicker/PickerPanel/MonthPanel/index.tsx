@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import * as React from 'react';
 import { formatValue, isSameMonth } from '../../../utils/dateUtil';
 import type { SharedPanelProps } from '../../interface';
@@ -81,11 +80,7 @@ export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateT
         ...info,
       }}
     >
-      <div
-        className={classNames(panelPrefixCls, {
-          // [`${panelPrefixCls}-active`]: active,
-        })}
-      >
+      <div className={panelPrefixCls}>
         {/* Header */}
         <PanelHeader
           onOffset={(offset) => {
@@ -99,6 +94,7 @@ export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateT
         <PanelBody
           {...props}
           mode="month"
+          titleFormat={locale.fieldMonthFormat}
           colNum={4}
           rowNum={3}
           baseDate={baseDate}

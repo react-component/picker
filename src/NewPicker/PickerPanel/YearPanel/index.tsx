@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import * as React from 'react';
 import { formatValue, isSameYear } from '../../../utils/dateUtil';
 import type { SharedPanelProps } from '../../interface';
@@ -85,11 +84,7 @@ export default function YearPanel<DateType = any>(props: SharedPanelProps<DateTy
         ...info,
       }}
     >
-      <div
-        className={classNames(panelPrefixCls, {
-          // [`${panelPrefixCls}-active`]: active,
-        })}
-      >
+      <div className={panelPrefixCls}>
         {/* Header */}
         <PanelHeader
           onOffset={(offset) => {
@@ -103,6 +98,7 @@ export default function YearPanel<DateType = any>(props: SharedPanelProps<DateTy
         <PanelBody
           {...props}
           mode="year"
+          titleFormat={locale.fieldYearFormat}
           colNum={3}
           rowNum={4}
           baseDate={baseDate}

@@ -82,6 +82,7 @@ export default function QuarterPanel<DateType = any>(props: SharedPanelProps<Dat
         {/* Body */}
         <PanelBody
           {...props}
+          titleFormat={locale.fieldQuarterFormat}
           mode="quarter"
           colNum={4}
           rowNum={1}

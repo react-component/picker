@@ -54,7 +54,7 @@ export default () => {
         // direction="rtl"
         // className="good"
         // style={{ opacity: 0.5 }}
-        // picker="month"
+        picker="week"
         // monthCellRender={(date) => {
         //   return <>MM{date.month()}</>;
         // }}

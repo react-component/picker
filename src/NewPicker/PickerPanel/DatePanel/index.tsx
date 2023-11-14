@@ -192,13 +192,7 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
         {/* Body */}
         <PanelBody
           mode="date"
-          titleCell={(date) =>
-            formatValue(date, {
-              locale,
-              format: locale.fieldDateFormat,
-              generateConfig,
-            })
-          }
+          titleFormat={locale.fieldDateFormat}
           {...props}
           colNum={WEEK_DAY_COUNT}
           rowNum={6}
