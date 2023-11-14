@@ -1,5 +1,6 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
+import useLocale from '../hooks/useLocale';
 import useTimeConfig from '../hooks/useTimeConfig';
 import type {
   CellRender,
@@ -134,6 +135,9 @@ function PickerPanel<DateType = any>(
     nativeElement: rootRef.current,
   }));
 
+  // ========================= Locale =========================
+  const filledLocale = useLocale(locale);
+
   // ======================== ShowTime ========================
   const mergedShowTime = useTimeConfig(props);
 
@@ -252,7 +256,7 @@ function PickerPanel<DateType = any>(
         showWeek={showWeek}
         // MISC
         prefixCls={mergedPrefixCls}
-        locale={locale}
+        locale={filledLocale}
         generateConfig={generateConfig}
         // Mode
         onModeChange={triggerModeChange}
