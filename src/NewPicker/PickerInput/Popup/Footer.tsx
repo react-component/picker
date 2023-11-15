@@ -31,7 +31,6 @@ export default function Footer(props: FooterProps) {
     showNow,
     onSubmit,
     onOk,
-    value,
     invalid,
     needConfirm,
   } = props;

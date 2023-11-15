@@ -400,5 +400,62 @@ describe('NewPicker.Range', () => {
       expect(onChange).not.toHaveBeenCalled();
       expect(onCalendarChange).toHaveBeenCalled();
     });
+
+    it('not trigger onChange if showNow is invalidate', () => {
+      const onChange = jest.fn();
+      const onCalendarChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          onChange={onChange}
+          onCalendarChange={onCalendarChange}
+          showNow
+          showTime
+          disabledDate={() => true}
+        />,
+      );
+
+      openPicker(container);
+      fireEvent.click(document.querySelector('.rc-picker-now-btn'));
+      fireEvent.click(document.querySelector('.rc-picker-now-btn'));
+
+      expect(onChange).not.toHaveBeenCalled();
+      expect(onCalendarChange).toHaveBeenCalledWith(
+        expect.anything(),
+        ['1990-09-03 00:00:00', '1990-09-03 00:00:00'],
+        expect.anything(),
+      );
+    });
+  });
+
+  it('showTime.defaultValue', () => {
+    const onCalendarChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker
+        onCalendarChange={onCalendarChange}
+        showTime={{
+          defaultValue: [getDay('01:03:05'), getDay('02:04:06')],
+        }}
+      />,
+    );
+
+    openPicker(container);
+
+    // Start field
+    selectCell(6);
+    expect(onCalendarChange).toHaveBeenCalledWith(
+      expect.anything(),
+      ['1990-09-06 01:03:05', ''],
+      expect.anything(),
+    );
+    onCalendarChange.mockReset();
+
+    // End field
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    selectCell(7);
+    expect(onCalendarChange).toHaveBeenCalledWith(
+      expect.anything(),
+      ['1990-09-06 01:sss03:05', '1990-09-07 02:04:06'],
+      expect.anything(),
+    );
   });
 });
