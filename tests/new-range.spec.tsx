@@ -509,7 +509,6 @@ describe('NewPicker.Range', () => {
           value: '01:00:00',
         },
       });
-      console.log(container.innerHTML);
       expect(document.querySelector('.rc-picker-ok button')).not.toBeDisabled();
 
       // Disabled
@@ -552,5 +551,23 @@ describe('NewPicker.Range', () => {
       ['1990-09-06 01:03:05', '1990-09-07 02:04:06'],
       expect.anything(),
     );
+  });
+
+  it('not trigger onChange when in half', () => {
+    const onChange = jest.fn();
+
+    const { container } = render(
+      <DayRangePicker
+        onChange={onChange}
+        defaultValue={[getDay('1990-09-10 00:00:00'), getDay('1990-09-20 00:00:00')]}
+      />,
+    );
+
+    openPicker(container);
+    selectCell(5);
+    expect(onChange).not.toHaveBeenCalled();
+
+    selectCell(22);
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-05', '1990-09-22']);
   });
 });

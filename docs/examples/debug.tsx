@@ -75,7 +75,7 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
-        picker="time"
+        // picker="time"
         // direction="rtl"
         // className="good"
         // style={{ opacity: 0.5 }}
@@ -125,13 +125,13 @@ export default () => {
         // preserveInvalidOnBlur
         // showTime
         // showNow
-        showTime={{
-          // defaultValue: [dayjs('2000-01-01 00:00:00'), dayjs('2000-01-01 00:00:00')],
-          disabledTime: () => ({
-            disabledHours: () => [0],
-          }),
-          // defaultValue: [dayjs('2000-01-01 01:03:05'), dayjs('2000-01-01 03:07:22')],
-        }}
+        // showTime={{
+        //   // defaultValue: [dayjs('2000-01-01 00:00:00'), dayjs('2000-01-01 00:00:00')],
+        //   disabledTime: () => ({
+        //     disabledHours: () => [0],
+        //   }),
+        //   // defaultValue: [dayjs('2000-01-01 01:03:05'), dayjs('2000-01-01 03:07:22')],
+        // }}
         // onOk={() => {
         //   console.log('🍷 Ok!');
         // }}
