@@ -124,11 +124,12 @@ export default () => {
         }}
         // preserveInvalidOnBlur
         // showTime
-        showTime={
-          {
-            // defaultValue: [dayjs('2000-01-01 01:03:05'), dayjs('2000-01-01 03:07:22')],
-          }
-        }
+        showTime={{
+          disabledTime: () => ({
+            disabledHours: () => new Array(24).fill(0).map((_, index) => index),
+          }),
+          // defaultValue: [dayjs('2000-01-01 01:03:05'), dayjs('2000-01-01 03:07:22')],
+        }}
         // onOk={() => {
         //   console.log('🍷 Ok!');
         // }}

@@ -337,7 +337,7 @@ describe('NewPicker.Range', () => {
     );
   });
 
-  describe('disabledDate', () => {
+  describe('disabled', () => {
     it('select time column should not trigger change', () => {
       const onCalendarChange = jest.fn();
       const { container } = render(
@@ -353,6 +353,22 @@ describe('NewPicker.Range', () => {
 
       // Check button disabled
       expect(document.querySelector('.rc-picker-ok button')).toBeDisabled();
+    });
+
+    it('not trigger on disabled all hours', () => {
+      const onCalendarChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          onCalendarChange={onCalendarChange}
+          showTime={{
+            disabledTime: () => ({
+              disabledHours: () => new Array(24).fill(0).map((_, index) => index),
+            }),
+          }}
+        />,
+      );
+
+      openPicker(container);
     });
   });
 });
