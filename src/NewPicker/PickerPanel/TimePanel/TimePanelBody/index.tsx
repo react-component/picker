@@ -223,7 +223,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     const formatMeridiem = (date: DateType, defaultLabel: string) => {
       const { cellMeridiemFormat } = locale;
       return cellMeridiemFormat
-        ? formatValue(amDate, {
+        ? formatValue(date, {
             generateConfig,
             locale,
             format: cellMeridiemFormat,

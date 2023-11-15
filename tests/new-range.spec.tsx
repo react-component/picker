@@ -266,6 +266,31 @@ describe('NewPicker.Range', () => {
       expect(document.querySelector('[title="1990-Q1"]').textContent).toEqual('第1季度');
     });
 
+    it('cellMeridiemFormat should work', () => {
+      render(
+        <DayRangePicker
+          picker="time"
+          locale={{
+            ...zh_CN,
+            cellMeridiemFormat: 'A',
+          }}
+          showTime={{
+            use12Hours: true,
+          }}
+          open
+        />,
+      );
+
+      expect(
+        document.querySelectorAll('[data-type="meridiem"] .rc-picker-time-panel-cell')[0]
+          .textContent,
+      ).toEqual('早上');
+      expect(
+        document.querySelectorAll('[data-type="meridiem"] .rc-picker-time-panel-cell')[1]
+          .textContent,
+      ).toEqual('晚上');
+    });
+
     it('components support', () => {
       render(
         <DayRangePicker

@@ -122,9 +122,11 @@ export default () => {
         }}
         // preserveInvalidOnBlur
         // showTime
-        showTime={{
-          // defaultValue: [dayjs('2000-01-01 01:03:05'), dayjs('2000-01-01 03:07:22')],
-        }}
+        showTime={
+          {
+            // defaultValue: [dayjs('2000-01-01 01:03:05'), dayjs('2000-01-01 03:07:22')],
+          }
+        }
         // onOk={() => {
         //   console.log('🍷 Ok!');
         // }}
@@ -168,11 +170,16 @@ export default () => {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
         <CellPicker
           picker="time"
+          locale={{
+            ...zhCN,
+            cellMeridiemFormat: 'A',
+          }}
           components={{
             time: MyTime,
           }}
           showTime={{
-            format: 'HH:mm:ss.SSS',
+            format: 'HH:mm:ss',
+            use12Hours: true,
             // showTitle: true,
             // defaultValue: dayjs('2000-01-01 01:03:05.800'),
           }}
