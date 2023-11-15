@@ -7,6 +7,10 @@
  *  - `pickerValue` is now full controlled
  *    - `defaultPickerValue` will take effect on every field active with popup opening.
  *  - [Break] clear button return the event with `onClick`
+ * 
+ * - Locale
+ *  - Remove `dateFormat` since it's never used
+ *  - Remove `dateTimeFormat` since it's never used
  *
  * - Picker
  *  - TimePicker support `changeOnScroll`

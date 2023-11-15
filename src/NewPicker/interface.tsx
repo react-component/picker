@@ -12,8 +12,6 @@ export type Locale = {
   // Input format
   /** @deprecated Please use `fieldDateFormat` instead */
   dateFormat?: string;
-  /** @deprecated Please use `fieldDateTimeFormat` instead */
-  dateTimeFormat?: string;
   /** Input field formatter like YYYY-MM-DD HH:mm:ss */
   fieldDateTimeFormat?: string;
   /** Input field formatter like YYYY-MM-DD */

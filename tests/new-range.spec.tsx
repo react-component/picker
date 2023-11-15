@@ -1,6 +1,7 @@
 // In theory, all RangePicker test cases should be paired with SinglePicker
 import { act, fireEvent, render } from '@testing-library/react';
-import { type Dayjs } from 'dayjs';
+import dayjs, { type Dayjs } from 'dayjs';
+import 'dayjs/locale/ar';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import zh_CN from '../src/locale/zh_CN';
@@ -18,6 +19,7 @@ describe('NewPicker.Range', () => {
   beforeEach(() => {
     resetWarned();
     jest.useFakeTimers().setSystemTime(getDay('1990-09-03 00:00:00').valueOf());
+    dayjs.locale('zh-cn');
   });
 
   afterEach(() => {
@@ -233,6 +235,20 @@ describe('NewPicker.Range', () => {
       // With second
       rerender(<DayRangePicker picker="time" format="LTS" open />);
       expect(document.querySelectorAll('.rc-picker-time-panel-column')).toHaveLength(4);
+    });
+
+    it('cellDateFormat should work', () => {
+      render(
+        <DayRangePicker
+          locale={{
+            ...zh_CN,
+            cellDateFormat: '!DD!',
+          }}
+          open
+        />,
+      );
+
+      expect(document.querySelector('[title="1990-11-04"]').textContent).toEqual('!04!');
     });
   });
 });

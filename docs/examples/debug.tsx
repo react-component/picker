@@ -5,22 +5,27 @@ import RangePicker from '../../src/NewPicker/PickerInput/RangePicker';
 import PickerPanel, { type PickerPanelProps } from '../../src/NewPicker/PickerPanel';
 
 import dayjs, { type Dayjs } from 'dayjs';
+import 'dayjs/locale/ar';
 import 'dayjs/locale/zh-cn';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
 import dayjsGenerateConfig from '../../src/generate/dayjs';
 import zhCN from '../../src/locale/zh_CN';
 
 dayjs.locale('zh-cn');
+dayjs.locale('ar');
 dayjs.extend(buddhistEra);
+
+console.log('>>', dayjs().format('YYYY-MM-dd'));
 
 (window as any).dayjs = dayjs;
 
 const myLocale: Locale = {
   ...zhCN,
-  quarterCellFormat: '第Q季度',
-  fieldYearFormat: 'BBBB',
-  yearCellFormat: 'BBBB',
-  yearFormat: 'BBBB',
+  cellQuarterFormat: '第Q季度',
+  // fieldYearFormat: 'BBBB',
+  // cellYearFormat: 'BBBB',
+  // yearFormat: 'BBBB',
+  cellDateFormat: '!d!',
 };
 
 const sharedLocale = {
@@ -63,7 +68,7 @@ export default () => {
         // direction="rtl"
         // className="good"
         // style={{ opacity: 0.5 }}
-        picker="time"
+        // picker="time"
         // monthCellRender={(date) => {
         //   return <>MM{date.month()}</>;
         // }}

@@ -10,8 +10,6 @@ export default function useLocale(locale: Locale) {
     // Not fill `cellMeridiemFormat` since AM & PM by default
     const {
       // Input Field
-      dateFormat,
-      dateTimeFormat,
       fieldDateTimeFormat,
       fieldDateFormat,
       fieldTimeFormat,
@@ -36,8 +34,8 @@ export default function useLocale(locale: Locale) {
     return {
       ...locale,
 
-      fieldDateTimeFormat: fieldDateTimeFormat || dateTimeFormat || 'YYYY-MM-DD HH:mm:ss',
-      fieldDateFormat: fieldDateFormat || dateFormat || 'YYYY-MM-DD',
+      fieldDateTimeFormat: fieldDateTimeFormat || 'YYYY-MM-DD HH:mm:ss',
+      fieldDateFormat: fieldDateFormat || 'YYYY-MM-DD',
       fieldTimeFormat: fieldTimeFormat || 'HH:mm:ss',
       fieldMonthFormat: fieldMonthFormat || 'YYYY-MM',
       fieldYearFormat: fieldYearFormat || 'YYYY',
