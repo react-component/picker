@@ -369,6 +369,12 @@ describe('NewPicker.Range', () => {
       );
 
       openPicker(container);
+      selectCell(9);
+
+      expect(onCalendarChange).toHaveBeenCalled();
+
+      // Check button disabled
+      expect(document.querySelector('.rc-picker-ok button')).toBeDisabled();
     });
   });
 });

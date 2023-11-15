@@ -75,7 +75,7 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
-        picker="time"
+        // picker="time"
         // direction="rtl"
         // className="good"
         // style={{ opacity: 0.5 }}

@@ -186,7 +186,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     return (
       val ??
       // Fallback to enabled value
-      enabledUnits[0].value
+      enabledUnits?.[0]?.value
     );
   };
 
