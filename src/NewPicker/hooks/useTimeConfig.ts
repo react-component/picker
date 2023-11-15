@@ -2,7 +2,6 @@ import type { PickerMode, SharedTimeProps } from '../interface';
 
 const showTimeKeys = [
   'format',
-  'showTitle',
   'showNow',
   'showHour',
   'showMinute',

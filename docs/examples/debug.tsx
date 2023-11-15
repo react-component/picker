@@ -10,12 +10,13 @@ import 'dayjs/locale/zh-cn';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
 import dayjsGenerateConfig from '../../src/generate/dayjs';
 import zhCN from '../../src/locale/zh_CN';
+import TimePanel from '../../src/NewPicker/PickerPanel/TimePanel';
 
 dayjs.locale('zh-cn');
-dayjs.locale('ar');
+// dayjs.locale('ar');
 dayjs.extend(buddhistEra);
 
-console.log('>>', dayjs().format('YYYY-MM-dd'));
+// console.log('>>', dayjs().format('YYYY-MM-dd'));
 
 (window as any).dayjs = dayjs;
 
@@ -25,7 +26,7 @@ const myLocale: Locale = {
   // fieldYearFormat: 'BBBB',
   // cellYearFormat: 'BBBB',
   // yearFormat: 'BBBB',
-  cellDateFormat: '!d!',
+  // cellDateFormat: '!d!',
 };
 
 const sharedLocale = {
@@ -42,7 +43,14 @@ function CellPicker(props: Partial<PickerPanelProps>) {
   );
 }
 
-const MyTime = () => <div>2333</div>;
+const MyTime = (props: any) => {
+  return (
+    <div>
+      2333
+      <TimePanel {...props} />
+    </div>
+  );
+};
 
 export default () => {
   const singleRef = React.useRef<PickerRef>(null);
@@ -65,10 +73,10 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
+        picker="time"
         // direction="rtl"
         // className="good"
         // style={{ opacity: 0.5 }}
-        // picker="time"
         // monthCellRender={(date) => {
         //   return <>MM{date.month()}</>;
         // }}
@@ -114,11 +122,9 @@ export default () => {
         }}
         // preserveInvalidOnBlur
         // showTime
-        // showTime={
-        //   {
-        //     // defaultValue: [dayjs('2000-01-01 01:03:05'), dayjs('2000-01-01 03:07:22')],
-        //   }
-        // }
+        showTime={{
+          // defaultValue: [dayjs('2000-01-01 01:03:05'), dayjs('2000-01-01 03:07:22')],
+        }}
         // onOk={() => {
         //   console.log('🍷 Ok!');
         // }}
@@ -160,18 +166,18 @@ export default () => {
       </button>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        {/* <CellPicker
+        <CellPicker
           picker="time"
-          // components={{
-          //   time: MyTime,
-          // }}
+          components={{
+            time: MyTime,
+          }}
           showTime={{
             format: 'HH:mm:ss.SSS',
-            showTitle: true,
+            // showTitle: true,
             // defaultValue: dayjs('2000-01-01 01:03:05.800'),
           }}
           pickerValue={dayjs('2000-01-01 01:03:05.800')}
-        /> */}
+        />
         {/* <CellPicker
           picker="date"
           // showTime={{

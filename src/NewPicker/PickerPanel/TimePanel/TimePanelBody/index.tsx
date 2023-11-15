@@ -54,7 +54,6 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     showSecond,
     showMillisecond,
     use12Hours,
-    showTitle,
 
     // Steps
     hourStep,
@@ -333,8 +332,6 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     <div className={`${prefixCls}-content`}>
       {mergedShowHour && (
         <TimeColumn
-          showTitle={showTitle}
-          title={locale.hour}
           units={hourUnits}
           value={hour}
           optionalValue={pickerHour}
@@ -345,8 +342,6 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
       )}
       {mergedShowMinute && (
         <TimeColumn
-          showTitle={showTitle}
-          title={locale.minute}
           units={minuteUnits}
           value={minute}
           optionalValue={pickerMinute}
@@ -357,8 +352,6 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
       )}
       {mergedShowSecond && (
         <TimeColumn
-          showTitle={showTitle}
-          title={locale.second}
           units={secondUnits}
           value={second}
           optionalValue={pickerSecond}
@@ -369,8 +362,6 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
       )}
       {mergedShowMillisecond && (
         <TimeColumn
-          showTitle={showTitle}
-          title={locale.millisecond}
           units={millisecondUnits}
           value={millisecond}
           optionalValue={pickerMillisecond}
@@ -381,8 +372,6 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
       )}
       {mergedShowMeridiem && (
         <TimeColumn
-          showTitle={showTitle}
-          title={locale.meridiem}
           units={meridiemUnits}
           value={meridiem}
           type="meridiem"

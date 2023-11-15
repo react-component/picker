@@ -14,7 +14,6 @@
  *
  * - Picker
  *  - TimePicker support `changeOnScroll`
- *  - TimePicker support `showTitle`
  *  - TimePicker support `millisecond`
  *  - Support cellMeridiemFormat for AM/PM
  *  - Get correct `disabledHours` when set `use12Hours`

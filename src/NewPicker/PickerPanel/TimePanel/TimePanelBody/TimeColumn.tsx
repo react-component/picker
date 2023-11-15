@@ -20,12 +20,10 @@ export interface TimeUnitColumnProps {
   type: 'hour' | 'minute' | 'second' | 'millisecond' | 'meridiem';
   onChange: (value: number | string) => void;
   changeOnScroll?: boolean;
-  showTitle?: boolean;
-  title?: React.ReactNode;
 }
 
 export default function TimeColumn(props: TimeUnitColumnProps) {
-  const { showTitle, title, units, value, optionalValue, type, onChange, changeOnScroll } = props;
+  const { units, value, optionalValue, type, onChange, changeOnScroll } = props;
 
   const { prefixCls, cellRender, now, locale } = React.useContext(PanelContext);
 
@@ -108,21 +106,9 @@ export default function TimeColumn(props: TimeUnitColumnProps) {
 
   // ========================= Render =========================
   const columnPrefixCls = `${panelPrefixCls}-column`;
-  const columnHolderPrefixCls = `${columnPrefixCls}-holder`;
 
   return (
-    <div
-      className={classNames(columnHolderPrefixCls, {
-        [`${columnHolderPrefixCls}-show-title`]: showTitle,
-      })}
-      data-type={type}
-    >
-      {showTitle && (
-        <div className={`${columnPrefixCls}-title`}>
-          {title !== undefined ? title || '\u00A0' : type}
-        </div>
-      )}
-
+    <div className={`${columnPrefixCls}-holder`} data-type={type}>
       <ul className={columnPrefixCls} ref={ulRef} onScroll={onInternalScroll}>
         {units.map(({ label, value: unitValue, disabled }) => {
           const inner = <div className={`${cellPrefixCls}-inner`}>{label}</div>;

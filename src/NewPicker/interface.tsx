@@ -48,13 +48,6 @@ export type Locale = {
   /** meridiem format in body panel */
   cellMeridiemFormat?: string;
 
-  // Column desc
-  hour?: string;
-  minute?: string;
-  second?: string;
-  millisecond?: string;
-  meridiem?: string;
-
   // ======================================================
   // ==                       MISC                       ==
   // ======================================================
@@ -107,7 +100,7 @@ export type CellRenderInfo<DateType> = {
   range?: 'start' | 'end';
   type: PanelMode;
   locale?: Locale;
-  subType?: 'hour' | 'minute' | 'second' | 'meridiem';
+  subType?: 'hour' | 'minute' | 'second' | 'millisecond' | 'meridiem';
 };
 
 export type CellRender<DateType, CurrentType = DateType | number> = (
@@ -131,8 +124,6 @@ export interface DisabledTimes {
 export interface SharedTimeProps<DateType = any> {
   /** Only work in picker is `time` */
   format?: string;
-  /** Only work in picker is `time` */
-  showTitle?: boolean;
   /** Only work in picker is `time` */
   showNow?: boolean;
   /** Only work in picker is `time` */

@@ -266,16 +266,49 @@ describe('NewPicker.Range', () => {
       expect(document.querySelector('[title="1990-Q1"]').textContent).toEqual('第1季度');
     });
 
-    it('time show header', () => {
+    it('components support', () => {
       render(
         <DayRangePicker
           picker="time"
-          showTime={{
-            showTitle: true,
+          components={{
+            time: () => <h1 className="bamboo">Hello</h1>,
           }}
           open
         />,
       );
+
+      expect(document.querySelector('.bamboo').textContent).toEqual('Hello');
     });
+  });
+
+  it('showTime.changeOnScroll', () => {
+    const onCalendarChange = jest.fn();
+
+    const { container } = render(
+      <DayRangePicker
+        picker="time"
+        value={[getDay('1990-09-03 11:11:11'), getDay('1990-09-03 11:11:11')]}
+        showTime={{
+          changeOnScroll: true,
+        }}
+        onCalendarChange={onCalendarChange}
+      />,
+    );
+
+    openPicker(container);
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    fireEvent.scroll(document.querySelector('.rc-picker-time-panel-column'));
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    expect(onCalendarChange).toHaveBeenCalledWith(
+      expect.anything(),
+      ['00:11:11', '11:11:11'],
+      expect.anything(),
+    );
   });
 });
