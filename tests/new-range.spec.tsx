@@ -486,6 +486,40 @@ describe('NewPicker.Range', () => {
       });
       expect(startInput).toHaveAttribute('aria-invalid', 'true');
     });
+
+    it('type disabled time should not clickable ok', () => {
+      const { container } = render(
+        <DayRangePicker
+          picker="time"
+          showTime={{
+            disabledTime: () => ({
+              disabledHours: () => [0],
+            }),
+          }}
+        />,
+      );
+
+      const input = container.querySelectorAll<HTMLInputElement>('input')[0];
+
+      openPicker(container);
+
+      // Enabled
+      fireEvent.change(input, {
+        target: {
+          value: '01:00:00',
+        },
+      });
+      console.log(container.innerHTML);
+      expect(document.querySelector('.rc-picker-ok button')).not.toBeDisabled();
+
+      // Disabled
+      fireEvent.change(input, {
+        target: {
+          value: '00:00:00',
+        },
+      });
+      expect(document.querySelector('.rc-picker-ok button')).toBeDisabled();
+    });
   });
 
   it('showTime.defaultValue', () => {
