@@ -196,7 +196,7 @@ describe('NewPicker.Range', () => {
     });
   });
 
-  describe('format', () => {
+  describe('format and panel', () => {
     it('support BBBB', () => {
       const onChange = jest.fn();
 
@@ -249,6 +249,33 @@ describe('NewPicker.Range', () => {
       );
 
       expect(document.querySelector('[title="1990-11-04"]').textContent).toEqual('!04!');
+    });
+
+    it('cellQuarterFormat should work', () => {
+      render(
+        <DayRangePicker
+          locale={{
+            ...zh_CN,
+            cellQuarterFormat: '第Q季度',
+          }}
+          picker="quarter"
+          open
+        />,
+      );
+
+      expect(document.querySelector('[title="1990-Q1"]').textContent).toEqual('第1季度');
+    });
+
+    it('time show header', () => {
+      render(
+        <DayRangePicker
+          picker="time"
+          showTime={{
+            showTitle: true,
+          }}
+          open
+        />,
+      );
     });
   });
 });
