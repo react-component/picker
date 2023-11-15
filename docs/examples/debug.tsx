@@ -82,24 +82,24 @@ export default () => {
         // monthCellRender={(date) => {
         //   return <>MM{date.month()}</>;
         // }}
-        // presets={[
-        //   {
-        //     label: 'Now',
-        //     value: [dayjs(), dayjs()],
-        //   },
-        //   {
-        //     label: 'This Week',
-        //     value: [dayjs().add(-7, 'd'), dayjs()],
-        //   },
-        //   {
-        //     label: 'Last Week',
-        //     value: [dayjs().add(-14, 'd'), dayjs().add(-7, 'd')],
-        //   },
-        //   {
-        //     label: 'Wrong Order',
-        //     value: [dayjs(), dayjs().add(-14, 'd')],
-        //   },
-        // ]}
+        presets={[
+          {
+            label: 'Now',
+            value: [dayjs(), dayjs()],
+          },
+          {
+            label: 'This Week',
+            value: [dayjs().add(-7, 'd'), dayjs()],
+          },
+          {
+            label: 'Last Week',
+            value: [dayjs().add(-14, 'd'), dayjs().add(-7, 'd')],
+          },
+          {
+            label: 'Wrong Order',
+            value: [dayjs(), dayjs().add(-14, 'd')],
+          },
+        ]}
         value={rangeValue}
         placeholder={['Start', 'End']}
         // defaultValue={[dayjs('1990-11-28'), dayjs('2000-09-03')]}
@@ -108,7 +108,7 @@ export default () => {
         // }}
         // disabled={[true, false]}
         suffixIcon="🧶"
-        disabledDate={(date) => date.date() === 15}
+        disabledDate={(date) => true}
         // onFocus={() => {
         //   console.log('🍷 Focus!');
         // }}
@@ -116,20 +116,20 @@ export default () => {
         //   console.log('🍷 Blur!');
         // }}
         // changeOnBlur
-        format={{
-          format: 'LTS',
-          // format: 'YYYY-MM-DD HH:mm:ss.SSS',
-          //   // format: 'YYYYMMDD',
-          // align: true,
-        }}
+        // format={{
+        //   // format: 'LTS',
+        //   // format: 'YYYY-MM-DD HH:mm:ss.SSS',
+        //   //   // format: 'YYYYMMDD',
+        //   // align: true,
+        // }}
         // preserveInvalidOnBlur
         // showTime
-        showTime={{
-          disabledTime: () => ({
-            disabledHours: () => new Array(24).fill(0).map((_, index) => index),
-          }),
-          // defaultValue: [dayjs('2000-01-01 01:03:05'), dayjs('2000-01-01 03:07:22')],
-        }}
+        // showTime={{
+        //   disabledTime: () => ({
+        //     disabledHours: () => new Array(24).fill(0).map((_, index) => index),
+        //   }),
+        //   // defaultValue: [dayjs('2000-01-01 01:03:05'), dayjs('2000-01-01 03:07:22')],
+        // }}
         // onOk={() => {
         //   console.log('🍷 Ok!');
         // }}

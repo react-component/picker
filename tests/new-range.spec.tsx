@@ -376,5 +376,29 @@ describe('NewPicker.Range', () => {
       // Check button disabled
       expect(document.querySelector('.rc-picker-ok button')).toBeDisabled();
     });
+
+    it('not trigger onChange if presets is invalidate', () => {
+      const onChange = jest.fn();
+      const onCalendarChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          onChange={onChange}
+          onCalendarChange={onCalendarChange}
+          presets={[
+            {
+              label: 'Now',
+              value: [dayjs(), dayjs()],
+            },
+          ]}
+          disabledDate={() => true}
+        />,
+      );
+
+      openPicker(container);
+      fireEvent.click(document.querySelector('.rc-picker-presets li'));
+
+      expect(onChange).not.toHaveBeenCalled();
+      expect(onCalendarChange).toHaveBeenCalled();
+    });
   });
 });

@@ -504,8 +504,18 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   };
 
   const onPresetSubmit = (nextValues: RangeValueType<DateType>) => {
-    triggerSubmitChange(nextValues);
-    triggerOpen(false, { force: true });
+    // https://github.com/ant-design/ant-design/issues/18765
+    const [start, end] = nextValues;
+    const isStartInvalidate = start && isInvalidateDate(start);
+    const isEndInvalidate = end && isInvalidateDate(end);
+
+    // Invalidate value should only trigger `onCalendarChange`
+    if (isStartInvalidate || isEndInvalidate) {
+      triggerCalendarChange(nextValues);
+    } else {
+      triggerSubmitChange(nextValues);
+      triggerOpen(false, { force: true });
+    }
   };
 
   // ======================== Panel =========================
