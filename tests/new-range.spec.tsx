@@ -336,4 +336,23 @@ describe('NewPicker.Range', () => {
       expect.anything(),
     );
   });
+
+  describe('disabledDate', () => {
+    it('select time column should not trigger change', () => {
+      const onCalendarChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker disabledDate={() => true} onCalendarChange={onCalendarChange} showTime />,
+      );
+
+      openPicker(container);
+      fireEvent.click(
+        document.querySelector('.rc-picker-time-panel-column .rc-picker-time-panel-cell'),
+      );
+
+      expect(onCalendarChange).toHaveBeenCalled();
+
+      // Check button disabled
+      expect(document.querySelector('.rc-picker-ok button')).toBeDisabled();
+    });
+  });
 });

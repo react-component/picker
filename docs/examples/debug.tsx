@@ -8,6 +8,7 @@ import dayjs, { type Dayjs } from 'dayjs';
 import 'dayjs/locale/ar';
 import 'dayjs/locale/zh-cn';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import dayjsGenerateConfig from '../../src/generate/dayjs';
 import zhCN from '../../src/locale/zh_CN';
 import TimePanel from '../../src/NewPicker/PickerPanel/TimePanel';
@@ -15,6 +16,7 @@ import TimePanel from '../../src/NewPicker/PickerPanel/TimePanel';
 dayjs.locale('zh-cn');
 // dayjs.locale('ar');
 dayjs.extend(buddhistEra);
+dayjs.extend(LocalizedFormat);
 
 // console.log('>>', dayjs().format('YYYY-MM-dd'));
 
@@ -106,7 +108,7 @@ export default () => {
         // }}
         // disabled={[true, false]}
         suffixIcon="🧶"
-        // disabledDate={() => true}
+        disabledDate={(date) => date.date() === 15}
         // onFocus={() => {
         //   console.log('🍷 Focus!');
         // }}
@@ -134,9 +136,9 @@ export default () => {
           console.log('🔥 Change:', val, text);
           setRangeValue(val);
         }}
-        // onCalendarChange={(val, text, info) => {
-        //   console.log('🎉 Calendar Change:', val, text, info);
-        // }}
+        onCalendarChange={(val, text, info) => {
+          console.log('🎉 Calendar Change:', val, text, info);
+        }}
         // preserveInvalidOnBlur
         // allowEmpty={[false, true]}
         onOpenChange={(nextOpen) => {
@@ -168,7 +170,7 @@ export default () => {
       </button>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        <CellPicker
+        {/* <CellPicker
           picker="time"
           locale={{
             ...zhCN,
@@ -184,7 +186,7 @@ export default () => {
             // defaultValue: dayjs('2000-01-01 01:03:05.800'),
           }}
           pickerValue={dayjs('2000-01-01 01:03:05.800')}
-        />
+        /> */}
         {/* <CellPicker
           picker="date"
           // showTime={{

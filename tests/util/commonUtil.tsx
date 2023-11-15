@@ -4,6 +4,7 @@ import { act, fireEvent } from '@testing-library/react';
 import dayjs, { isDayjs, type Dayjs } from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 import moment, { isMoment, type Moment } from 'moment';
 import Picker, { PickerPanel, type PickerProps } from '../../src';
 import dayGenerateConfig from '../../src/generate/dayjs';
@@ -26,6 +27,7 @@ import RangePicker, {
 
 dayjs.locale('zh-cn');
 dayjs.extend(buddhistEra);
+dayjs.extend(localizedFormat);
 
 const FULL_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
