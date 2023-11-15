@@ -292,7 +292,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, mergedShowTime);
 
   // ======================== Value =========================
-  const [calendarValue, triggerCalendarChange, oriTriggerSubmitChange, emptyValue] = useRangeValue(
+  const [calendarValue, triggerCalendarChange, triggerSubmitChange, emptyValue] = useRangeValue(
     filledProps,
     mergedDisabled,
     formatList,
@@ -301,21 +301,6 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     isInvalidateDate,
     needConfirm,
   );
-
-  const triggerSubmitChange = (nextValues: RangeValueType<DateType>) => {
-    // https://github.com/ant-design/ant-design/issues/18765
-    const isStartInvalidate = nextValues && nextValues[0] && isInvalidateDate(nextValues[0]);
-    const isEndInvalidate = nextValues && nextValues[0] && isInvalidateDate(nextValues[0]);
-
-    // Invalidate value should only trigger `onCalendarChange`
-    if (isStartInvalidate || isEndInvalidate) {
-      triggerCalendarChange(nextValues);
-      return false;
-    }
-
-    oriTriggerSubmitChange(nextValues);
-    return true;
-  };
 
   // ===================== DisabledDate =====================
   const mergedDisabledDate = useRangeDisabledDate(

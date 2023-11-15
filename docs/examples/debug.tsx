@@ -82,24 +82,24 @@ export default () => {
         // monthCellRender={(date) => {
         //   return <>MM{date.month()}</>;
         // }}
-        // presets={[
-        //   {
-        //     label: 'Now',
-        //     value: [dayjs(), dayjs()],
-        //   },
-        //   {
-        //     label: 'This Week',
-        //     value: [dayjs().add(-7, 'd'), dayjs()],
-        //   },
-        //   {
-        //     label: 'Last Week',
-        //     value: [dayjs().add(-14, 'd'), dayjs().add(-7, 'd')],
-        //   },
-        //   {
-        //     label: 'Wrong Order',
-        //     value: [dayjs(), dayjs().add(-14, 'd')],
-        //   },
-        // ]}
+        presets={[
+          {
+            label: 'Now',
+            value: [dayjs(), dayjs()],
+          },
+          {
+            label: 'This Week',
+            value: [dayjs().add(-7, 'd'), dayjs()],
+          },
+          {
+            label: 'Last Week',
+            value: [dayjs().add(-14, 'd'), dayjs().add(-7, 'd')],
+          },
+          {
+            label: 'Wrong Order',
+            value: [dayjs(), dayjs().add(-14, 'd')],
+          },
+        ]}
         value={rangeValue}
         placeholder={['Start', 'End']}
         // defaultValue={[dayjs('1990-11-28'), dayjs('2000-09-03')]}
@@ -123,8 +123,8 @@ export default () => {
         //   // align: true,
         // }}
         // preserveInvalidOnBlur
-        showTime
-        showNow
+        // showTime
+        // showNow
         // showTime={{
         //   defaultValue: [dayjs('2000-01-01 00:00:00'), dayjs('2000-01-01 00:00:00')],
         //   disabledTime: () => ({

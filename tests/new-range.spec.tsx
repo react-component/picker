@@ -425,6 +425,67 @@ describe('NewPicker.Range', () => {
         expect.anything(),
       );
     });
+
+    it('not select disabled time', () => {
+      const onCalendarChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          picker="time"
+          showTime={{
+            disabledTime: () => ({
+              disabledMinutes: () => [0],
+            }),
+          }}
+          onCalendarChange={onCalendarChange}
+        />,
+      );
+
+      openPicker(container);
+      fireEvent.click(
+        document.querySelector('.rc-picker-time-panel-column .rc-picker-time-panel-cell'),
+      );
+
+      expect(onCalendarChange).toHaveBeenCalledWith(
+        expect.anything(),
+        ['00:01:00', ''],
+        expect.anything(),
+      );
+    });
+
+    it('disabledTime has error style', () => {
+      // rc-picker-invalid
+      const { container } = render(
+        <DayRangePicker
+          picker="time"
+          showTime={{
+            disabledTime: () => ({
+              disabledHours: () => [0],
+            }),
+          }}
+        />,
+      );
+
+      const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+      const endInput = container.querySelectorAll<HTMLInputElement>('input')[1];
+
+      fireEvent.focus(startInput);
+      fireEvent.change(startInput, {
+        target: {
+          value: '00:00:00',
+        },
+      });
+      expect(startInput).toHaveAttribute('aria-invalid', 'true');
+      fireEvent.keyDown(startInput, {
+        key: 'Enter',
+      });
+
+      fireEvent.change(endInput, {
+        target: {
+          value: '00:00:00',
+        },
+      });
+      expect(startInput).toHaveAttribute('aria-invalid', 'true');
+    });
   });
 
   it('showTime.defaultValue', () => {
@@ -454,7 +515,7 @@ describe('NewPicker.Range', () => {
     selectCell(7);
     expect(onCalendarChange).toHaveBeenCalledWith(
       expect.anything(),
-      ['1990-09-06 01:sss03:05', '1990-09-07 02:04:06'],
+      ['1990-09-06 01:03:05', '1990-09-07 02:04:06'],
       expect.anything(),
     );
   });

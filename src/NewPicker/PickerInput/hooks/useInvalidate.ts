@@ -27,7 +27,7 @@ export default function useInvalidate<DateType = any>(
       return true;
     }
 
-    if (picker === 'date' && showTime) {
+    if ((picker === 'date' || picker === 'time') && showTime) {
       const { disabledHours, disabledMinutes, disabledSeconds, disabledMilliSeconds } =
         showTime.disabledTime?.(date) || {};
 

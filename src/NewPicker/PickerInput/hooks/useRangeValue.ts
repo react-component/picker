@@ -34,7 +34,7 @@ export default function useRangeValue<DateType = any>(
 ): [
   calendarValue: RangeValueType<DateType>,
   triggerCalendarChange: TriggerChange<DateType>,
-  triggerSubmitChange: (value: RangeValueType<DateType>) => void,
+  triggerSubmitChange: (value: RangeValueType<DateType>) => boolean,
   emptyValue: boolean,
 ] {
   const {
@@ -197,12 +197,12 @@ export default function useRangeValue<DateType = any>(
     }
 
     setLastSubmitResult([allPassed]);
+
+    return allPassed;
   });
 
   // From the 2 active panel finished
-  const triggerSubmitChange = (nextValue: RangeValueType<DateType>) => {
-    triggerSubmit(nextValue);
-  };
+  const triggerSubmitChange = (nextValue: RangeValueType<DateType>) => triggerSubmit(nextValue);
 
   // ============================ Effect ============================
   useLockEffect(focused, () => {
