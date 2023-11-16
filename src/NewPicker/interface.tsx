@@ -302,6 +302,13 @@ export interface SharedPickerProps<DateType = any> extends SharedHTMLAttrs {
    */
   changeOnBlur?: boolean;
 
+  /**
+   * By default. Only `time` or `datetime` show the confirm button.
+   * `true` to make every picker need confirm.
+   * `false` to trigger change on blur when panel match the picker type.
+   */
+  needConfirm?: boolean;
+
   // Motion
   transitionName?: string;
 
