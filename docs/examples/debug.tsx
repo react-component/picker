@@ -63,10 +63,10 @@ export default () => {
     // [dayjs('2023-11-15'), null],
     // has end
     // [null, dayjs('2023-11-15')],
-    // [dayjs('2023-11-5'), dayjs('2023-12-29')],
+    [dayjs('2020-03-30'), dayjs('2020-05-20')],
     // [dayjs('2000-09-03'), dayjs('1990-09-03')],
     // [dayjs('1990-09-03'), null],
-    null,
+    // null,
     // undefined,
   );
 
@@ -76,6 +76,7 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
+        picker="quarter"
         // needConfirm
         // needConfirm={false}
         // open

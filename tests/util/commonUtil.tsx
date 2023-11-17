@@ -139,7 +139,11 @@ export class MomentRangePicker extends React.Component<MomentRangePickerProps> {
 export function openPicker(container: HTMLElement, index = 0) {
   const input = container.querySelectorAll('input')[index];
   fireEvent.mouseDown(input);
-  fireEvent.focus(input);
+
+  // Testing lib not trigger real focus
+  act(() => {
+    input.focus();
+  });
   fireEvent.click(input);
 }
 
