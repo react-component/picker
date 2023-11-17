@@ -416,20 +416,20 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // const hasDisabled = mergedDisabled.some((disabledItem) => disabledItem);
 
   /** Trigger for single field submit */
-  const triggerPartSubmit = (date?: DateType) => {
+  const triggerPartConfirm = (date?: DateType) => {
     let nextValue = calendarValue;
 
     if (date) {
       nextValue = fillMergedValue(date, activeIndex);
     }
 
-    triggerSubmitChange(nextValue);
-
     // Check if need focus next
     const nextIndex = nextActiveIndex();
     if (nextIndex === null) {
+      triggerSubmitChange(nextValue);
       triggerOpen(false, { force: true });
     } else {
+      triggerCalendarChange(nextValue);
       selectorRef.current.focus(nextIndex);
     }
   };
@@ -584,7 +584,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       onHover={onPanelHover}
       // Submit
       needConfirm={mergedNeedConfirm}
-      onSubmit={triggerPartSubmit}
+      onSubmit={triggerPartConfirm}
       // Preset
       presets={presetList}
       onPresetHover={onPresetHover}
@@ -661,13 +661,13 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
           clearIcon={mergedClearIcon}
           suffixIcon={suffixIcon}
           // Active
-          activeIndex={activeIndex}
+          activeIndex={focused || mergedOpen ? activeIndex : null}
           activeHelp={!!internalHoverValues}
           allHelp={!!internalHoverValues && hoverSource === 'preset'}
           focused={focused}
           onFocus={onSelectorFocus}
           onBlur={onSelectorBlur}
-          onSubmit={triggerPartSubmit}
+          onSubmit={triggerPartConfirm}
           // Change
           value={hoverValues}
           maskFormat={maskFormat}

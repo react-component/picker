@@ -58,16 +58,17 @@ export default () => {
   const singleRef = React.useRef<PickerRef>(null);
 
   const [value, setValue] = React.useState<Dayjs>(null);
-  const [rangeValue, setRangeValue] = React.useState<[Dayjs?, Dayjs?]>();
-  // has start
-  // [dayjs('2023-11-15'), null],
-  // has end
-  // [null, dayjs('2023-11-15')],
-  // [dayjs('2023-11-5'), dayjs('2023-12-29')],
-  // [dayjs('2000-09-03'), dayjs('1990-09-03')],
-  // [dayjs('1990-09-03'), null],
-  // null,
-  // undefined,
+  const [rangeValue, setRangeValue] = React.useState<[Dayjs?, Dayjs?]>(
+    // has start
+    // [dayjs('2023-11-15'), null],
+    // has end
+    // [null, dayjs('2023-11-15')],
+    [dayjs('2023-11-5'), dayjs('2023-12-29')],
+    // [dayjs('2000-09-03'), dayjs('1990-09-03')],
+    // [dayjs('1990-09-03'), null],
+    // null,
+    // undefined,
+  );
 
   return (
     <div>
@@ -75,10 +76,10 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
-        needConfirm
+        // needConfirm
         // needConfirm={false}
         // showTime
-        // value={rangeValue}
+        value={rangeValue}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
         onChange={(val, text) => {

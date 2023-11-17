@@ -46,13 +46,13 @@ export default function useRangeActive(
   const nextActiveIndex: NextActive = () => {
     const list = activeListRef.current;
     const activeSet = new Set(list);
-    const nextActiveIndex = list[list.length - 1] === 0 ? 1 : 0;
+    const nextIndex = list[list.length - 1] === 0 ? 1 : 0;
 
-    if (activeSet.size >= 2 || disabled[nextActiveIndex]) {
+    if (activeSet.size >= 2 || disabled[nextIndex]) {
       return null;
     }
 
-    return nextActiveIndex;
+    return nextIndex;
   };
 
   // ============================= Effect =============================
