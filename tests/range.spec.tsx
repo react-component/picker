@@ -1353,9 +1353,11 @@ describe('Picker.Range', () => {
       // left
       openPicker(container, 0);
       const leftCell = findCell(24);
-      // leftCell.simulate('mouseEnter');
       fireEvent.mouseEnter(leftCell);
-      jest.runAllTimers();
+
+      act(() => {
+        jest.runAllTimers();
+      });
 
       expect(document.querySelectorAll('input')[0].value).toBe('2020-07-24');
       expect(document.querySelectorAll('input')[1].value).toBe('2020-08-22');
@@ -1366,7 +1368,6 @@ describe('Picker.Range', () => {
         'rc-picker-input-placeholder',
       );
 
-      // leftCell.simulate('mouseLeave');
       fireEvent.mouseLeave(leftCell);
       act(() => {
         jest.runAllTimers();

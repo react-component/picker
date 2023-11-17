@@ -94,7 +94,7 @@ export default function Popup<DateType = any>(props: PopupProps<DateType>) {
 
   // Proxy `onHover`
   const onPanelHover = (date: DateType) => {
-    onHover(date || cacheValue);
+    onHover(needConfirm ? date || cacheValue : date);
   };
 
   // Sync back if `value` changed

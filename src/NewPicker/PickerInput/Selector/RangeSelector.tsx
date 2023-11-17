@@ -22,6 +22,7 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
   value?: [DateType?, DateType?];
   disabled: [boolean, boolean];
 
+  /** All the field show as `placeholder` */
   allHelp: boolean;
 
   placeholder?: [string, string];
