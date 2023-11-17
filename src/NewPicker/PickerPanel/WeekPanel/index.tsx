@@ -10,7 +10,6 @@ export default function WeekPanel<DateType = any>(props: SharedPanelProps<DateTy
   // =============================== Row ================================
   const rowPrefixCls = `${prefixCls}-week-panel-row`;
 
-  console.clear();
   const rowClassName = (date: DateType) => {
     let rangeCls = {};
 

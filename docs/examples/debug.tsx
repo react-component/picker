@@ -63,10 +63,10 @@ export default () => {
     // [dayjs('2023-11-15'), null],
     // has end
     // [null, dayjs('2023-11-15')],
-    [dayjs('2023-11-5'), dayjs('2023-12-29')],
+    // [dayjs('2023-11-5'), dayjs('2023-12-29')],
     // [dayjs('2000-09-03'), dayjs('1990-09-03')],
     // [dayjs('1990-09-03'), null],
-    // null,
+    null,
     // undefined,
   );
 
@@ -78,7 +78,7 @@ export default () => {
         {...sharedLocale}
         // needConfirm
         // needConfirm={false}
-        // showTime
+        showTime
         value={rangeValue}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
@@ -94,6 +94,10 @@ export default () => {
         }}
         onPickerValueChange={(val, info) => {
           console.log('👻 Picker Value Change:', val, val?.[1]?.format('YYYY-MM-DD'), info);
+        }}
+        id={{
+          start: 'inputStart',
+          end: 'inputEnd',
         }}
       />
       <br />

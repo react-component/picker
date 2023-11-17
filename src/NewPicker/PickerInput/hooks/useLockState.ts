@@ -46,12 +46,15 @@ export default function useLockState<T>(
  * But trigger `callback` in next frame when `condition` is `false`.
  */
 export function useLockEffect(condition: boolean, callback: (next: boolean) => void) {
+  const callbackRef = React.useRef(callback);
+  callbackRef.current = callback;
+
   useLayoutUpdateEffect(() => {
     if (condition) {
-      callback(condition);
+      callbackRef.current(condition);
     } else {
       const id = raf(() => {
-        callback(condition);
+        callbackRef.current(condition);
       });
 
       return () => {

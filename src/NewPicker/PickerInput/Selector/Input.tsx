@@ -199,8 +199,6 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
   // ======================= Keyboard =======================
   const onSharedKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
-    console.log('key', event.key);
-
     if (event.key === 'Enter') {
       onEnter();
     }
