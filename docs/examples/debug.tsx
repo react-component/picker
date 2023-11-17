@@ -75,66 +75,12 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
-        // picker="time"
-        // direction="rtl"
-        // className="good"
-        // style={{ opacity: 0.5 }}
-        // monthCellRender={(date) => {
-        //   return <>MM{date.month()}</>;
-        // }}
-        // presets={[
-        //   {
-        //     label: 'Now',
-        //     value: [dayjs(), dayjs()],
-        //   },
-        //   {
-        //     label: 'This Week',
-        //     value: [dayjs().add(-7, 'd'), dayjs()],
-        //   },
-        //   {
-        //     label: 'Last Week',
-        //     value: [dayjs().add(-14, 'd'), dayjs().add(-7, 'd')],
-        //   },
-        //   {
-        //     label: 'Wrong Order',
-        //     value: [dayjs(), dayjs().add(-14, 'd')],
-        //   },
-        // ]}
-        value={rangeValue}
-        placeholder={['Start', 'End']}
-        // defaultValue={[dayjs('1990-11-28'), dayjs('2000-09-03')]}
-        // onPickerValueChange={(dates, info) => {
-        //   console.log('🍭 Picker Value Change:', dates, info);
-        // }}
-        // disabled={[true, false]}
-        suffixIcon="🧶"
-        // disabledDate={() => true}
-        // onFocus={() => {
-        //   console.log('🍷 Focus!');
-        // }}
-        // onBlur={() => {
-        //   console.log('🍷 Blur!');
-        // }}
-        // changeOnBlur
-        // format={{
-        //   // format: 'LTS',
-        //   // format: 'YYYY-MM-DD HH:mm:ss.SSS',
-        //   //   // format: 'YYYYMMDD',
-        //   // align: true,
-        // }}
-        // preserveInvalidOnBlur
+        needConfirm
+        // needConfirm={false}
         // showTime
-        // showNow
-        // showTime={{
-        //   // defaultValue: [dayjs('2000-01-01 00:00:00'), dayjs('2000-01-01 00:00:00')],
-        //   disabledTime: () => ({
-        //     disabledHours: () => [0],
-        //   }),
-        //   // defaultValue: [dayjs('2000-01-01 01:03:05'), dayjs('2000-01-01 03:07:22')],
-        // }}
-        // onOk={() => {
-        //   console.log('🍷 Ok!');
-        // }}
+        // value={rangeValue}
+        placeholder={['Start', 'End']}
+        suffixIcon="🧶"
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
           setRangeValue(val);
@@ -142,25 +88,12 @@ export default () => {
         onCalendarChange={(val, text, info) => {
           console.log('🎉 Calendar Change:', val, text, info);
         }}
-        // preserveInvalidOnBlur
-        // allowEmpty={[false, true]}
         onOpenChange={(nextOpen) => {
           console.log('🏆 Next Open:', nextOpen);
         }}
-        // open
-        // mode={['month', 'year']}
-        // onPanelChange={(val, mode) => {
-        //   console.log('🏆 Panel Change:', val?.[0]?.format('YYYY-MM-DD'), mode);
-        // }}
         onPickerValueChange={(val, info) => {
           console.log('👻 Picker Value Change:', val, val?.[1]?.format('YYYY-MM-DD'), info);
         }}
-        // renderExtraFooter={(mode) => mode}
-        components={
-          {
-            // datetime: () => null,
-          }
-        }
       />
       <br />
 

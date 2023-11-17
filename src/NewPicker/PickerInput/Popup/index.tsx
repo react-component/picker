@@ -25,9 +25,13 @@ export interface PopupProps<DateType = any, PresetValue = DateType>
 
   // Direction
   direction?: 'ltr' | 'rtl';
+
+  // Change
+  needConfirm: boolean;
+  isInvalid: (date: DateType) => boolean;
 }
 
-export default function Popup(props: PopupProps) {
+export default function Popup<DateType = any>(props: PopupProps<DateType>) {
   const {
     panelRender,
     internalMode,
@@ -44,8 +48,22 @@ export default function Popup(props: PopupProps) {
     onPresetHover,
     onPresetSubmit,
 
+    // Focus
+    onFocus,
+    onBlur,
+
     // Direction
     direction,
+
+    // Hover
+    onHover,
+
+    // Change
+    value,
+    onCalendarChange,
+    needConfirm,
+    onSubmit,
+    isInvalid,
   } = props;
 
   const { prefixCls } = React.useContext(PickerContext);
@@ -55,6 +73,39 @@ export default function Popup(props: PopupProps) {
 
   // ========================= Refs =========================
   const wrapperRef = React.useRef<HTMLDivElement>(null);
+
+  // ======================== Values ========================
+  // Form the `needConfirm` config, the value from panel will save temporary.
+  // And flush when press `OK` button.
+
+  const [cacheValue, setCacheValue] = React.useState(value);
+
+  // Block `onCalendarChange` before confirmed
+  const onPanelCalendarChange = (date: DateType) => {
+    onCalendarChange(date);
+    onHover(date);
+
+    if (!needConfirm) {
+      onSubmit(date);
+    } else {
+      setCacheValue(date);
+    }
+  };
+
+  // Proxy `onHover`
+  const onPanelHover = (date: DateType) => {
+    onHover(date || cacheValue);
+  };
+
+  // Sync back if `value` changed
+  React.useEffect(() => {
+    setCacheValue(value);
+  }, [value]);
+
+  // ======================== Footer ========================
+  const onFooterSubmit = (date?: DateType) => {
+    onSubmit(date ?? cacheValue);
+  };
 
   // ======================== Offset ========================
   const [containerWidth, setContainerWidth] = React.useState<number>(0);
@@ -81,15 +132,27 @@ export default function Popup(props: PopupProps) {
   // ======================== Custom ========================
   let mergedNodes: React.ReactNode = (
     <div className={`${prefixCls}-panel-layout`}>
-      <PresetPanel
+      {/* `any` here since PresetPanel is reused for both Single & Range Picker which means return type is not stable */}
+      <PresetPanel<any>
         prefixCls={prefixCls}
         presets={presets}
         onClick={onPresetSubmit}
         onHover={onPresetHover}
       />
       <div>
-        <PopupPanel {...props} />
-        <Footer {...props} showNow={multiple ? false : showNow} />
+        <PopupPanel
+          {...props}
+          value={cacheValue}
+          onCalendarChange={onPanelCalendarChange}
+          onChange={null}
+          onHover={onPanelHover}
+        />
+        <Footer
+          {...props}
+          showNow={multiple ? false : showNow}
+          onSubmit={onFooterSubmit}
+          invalid={!cacheValue || isInvalid(cacheValue)}
+        />
       </div>
     </div>
   );
@@ -118,9 +181,11 @@ export default function Popup(props: PopupProps) {
         [rtl ? marginLeft : marginRight]: 'auto',
       }}
       // Still wish not to lose focus on mouse down
-      onMouseDown={(e) => {
-        e.preventDefault();
-      }}
+      // onMouseDown={(e) => {
+      //   // e.preventDefault();
+      // }}
+      onFocus={onFocus}
+      onBlur={onBlur}
     >
       {mergedNodes}
     </div>

@@ -4,12 +4,20 @@ import { formatValue, isSame, isSameTimestamp } from '../../../utils/dateUtil';
 import type { FormatType } from '../../interface';
 import type { RangePickerProps, RangeValueType } from '../RangePicker';
 import { useLockEffect } from './useLockState';
+import type { OperationType } from './useRangeActive';
 
 // Submit Logic (with order):
 // * Submit by next input
 // * None of the Picker has focused anymore
 
-type TriggerChange<DateType> = ([start, end]: RangeValueType<DateType>, source?: 'submit') => void;
+/**
+ * `eventOnly` means only trigger `onCalendarChange` event
+ * but not update internal `calendarValue` state
+ */
+type TriggerCalendarChange<DateType> = (
+  [start, end]: RangeValueType<DateType>,
+  eventOnly?: boolean,
+) => void;
 
 export default function useRangeValue<DateType = any>(
   info: Pick<
@@ -28,12 +36,12 @@ export default function useRangeValue<DateType = any>(
   disabled: [boolean, boolean],
   formatList: FormatType[],
   focused: boolean,
-  lastOperationRef: React.RefObject<'input' | 'panel'>,
+  lastOperation: () => OperationType,
   isInvalidateDate: (date: DateType) => boolean,
   needConfirm: boolean,
 ): [
   calendarValue: RangeValueType<DateType>,
-  triggerCalendarChange: TriggerChange<DateType>,
+  triggerCalendarChange: TriggerCalendarChange<DateType>,
   triggerSubmitChange: (value: RangeValueType<DateType>) => boolean,
   emptyValue: boolean,
 ] {
@@ -100,14 +108,16 @@ export default function useRangeValue<DateType = any>(
     return [isSameStart && isSameEnd, isSameStart, isSameEnd];
   };
 
-  const triggerCalendarChange = ([start, end]: RangeValueType<DateType>) => {
+  const triggerCalendarChange: TriggerCalendarChange<DateType> = ([start, end], eventOnly) => {
     const clone: RangeValueType<DateType> = [start, end];
 
     // Update merged value
     const [isSameMergedDates, isSameStart] = isSameDates(calendarValue, clone);
 
     if (!isSameMergedDates) {
-      setCalendarValue(clone);
+      if (!eventOnly) {
+        setCalendarValue(clone);
+      }
 
       // Trigger calendar change event
       if (onCalendarChange) {
@@ -209,7 +219,7 @@ export default function useRangeValue<DateType = any>(
     if (!focused) {
       // If panel no need panel confirm or last blur is not from panel
       // Trigger submit
-      if (!needConfirm || lastOperationRef.current !== 'panel') {
+      if (!needConfirm || lastOperation() !== 'panel') {
         triggerSubmit();
       } else {
         // Else should reset `calendarValue` to `submitValue`
@@ -218,13 +228,14 @@ export default function useRangeValue<DateType = any>(
     }
   });
 
+  // TODO: 非受控下 `value` 这个不会重置，逻辑应该不对
   // When blur & invalid, restore to empty one
   // This is used for typed only one input
-  React.useEffect(() => {
-    if (!lastSubmitResult[0] && !preserveInvalidOnBlur && value) {
-      triggerCalendarChange(value);
-    }
-  }, [lastSubmitResult]);
+  // React.useEffect(() => {
+  //   if (!lastSubmitResult[0] && !preserveInvalidOnBlur && value) {
+  //     triggerCalendarChange(value);
+  //   }
+  // }, [lastSubmitResult]);
 
   // ============================ Return ============================
   return [

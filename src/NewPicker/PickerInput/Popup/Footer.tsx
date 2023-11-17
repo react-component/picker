@@ -24,16 +24,8 @@ export interface FooterProps<DateType = any> {
 }
 
 export default function Footer(props: FooterProps) {
-  const {
-    mode,
-    internalMode,
-    renderExtraFooter,
-    showNow,
-    onSubmit,
-    onOk,
-    invalid,
-    needConfirm,
-  } = props;
+  const { mode, internalMode, renderExtraFooter, showNow, onSubmit, onOk, invalid, needConfirm } =
+    props;
 
   const {
     prefixCls,

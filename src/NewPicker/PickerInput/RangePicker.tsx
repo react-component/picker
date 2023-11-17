@@ -29,6 +29,7 @@ import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
 import usePresets from './hooks/usePresets';
+import useRangeActive from './hooks/useRangeActive';
 import useRangeDisabledDate from './hooks/useRangeDisabledDate';
 import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue from './hooks/useRangeValue';
@@ -132,8 +133,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     // Value
     defaultValue,
     value,
-    changeOnBlur,
     order = true,
+    needConfirm,
 
     // Disabled
     disabled,
@@ -233,19 +234,28 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // ======================= ShowTime =======================
   const mergedShowTime = useTimeConfig(filledProps);
 
+  // ========================= Open =========================
+  const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
+
+  const [mergedOpen, setMergeOpen] = useOpen(open, defaultOpen, onOpenChange);
+
+  const triggerOpen: OnOpenChange = (nextOpen, config?: OpenConfig) => {
+    // No need to open if all disabled
+    if (mergedDisabled.some((fieldDisabled) => !fieldDisabled) || !nextOpen) {
+      setMergeOpen(nextOpen, config);
+    }
+  };
+
+  // ======================== Picker ========================
+  /** Almost same as `picker`, but add `datetime` for `date` with `showTime` */
+  const internalPicker: InternalMode = picker === 'date' && mergedShowTime ? 'datetime' : picker;
+
+  const complexPicker = internalPicker === 'time' || internalPicker === 'datetime';
+  const mergedNeedConfirm = needConfirm ?? complexPicker;
+
   // ======================== Active ========================
-  // When user first focus one input, any submit will trigger focus another one.
-  // When second time focus one input, submit will not trigger focus again.
-  // When click outside to close the panel, trigger event if it can trigger onChange.
-  const [internalActiveIndex, setActiveIndex] = React.useState<number>(null);
-  const [focused, setFocused] = React.useState<boolean>(false);
-  const lastOperationRef = React.useRef<'input' | 'panel'>(null);
-
-  // If `open` is controlled, `activeIndex` should always have value
-  const activeIndex = open ? internalActiveIndex ?? 0 : internalActiveIndex;
-  const focusedIndex = open || focused ? activeIndex : null;
-
-  const [activeList, setActiveList] = React.useState<number[]>(null);
+  const [activeIndex, setActiveIndex, focused, triggerFocus, lastOperation, nextActiveIndex] =
+    useRangeActive(mergedOpen, mergedDisabled);
 
   // ========================= Mode =========================
   const [modes, setModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
@@ -254,15 +264,9 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
   const mergedMode = modes[activeIndex] || picker;
 
-  // ======================== Picker ========================
-  /** Almost same as `picker`, but add `datetime` for `date` with `showTime` */
-  const internalPicker: InternalMode = picker === 'date' && mergedShowTime ? 'datetime' : picker;
-
   /** Extends from `mergedMode` to patch `datetime` mode */
   const internalMode: InternalMode =
     mergedMode === 'date' && mergedShowTime ? 'datetime' : mergedMode;
-
-  const needConfirm = internalMode === 'time' || internalMode === 'datetime';
 
   // ====================== PanelCount ======================
   const multiplePanel = internalMode === picker && internalMode !== 'time';
@@ -276,18 +280,6 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // ======================= ReadOnly =======================
   const mergedInputReadOnly = useInputReadOnly(formatList, inputReadOnly);
 
-  // ========================= Open =========================
-  const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
-
-  const [mergedOpen, setMergeOpen] = useOpen(open, defaultOpen, onOpenChange);
-
-  const triggerOpen: OnOpenChange = (nextOpen, config?: OpenConfig) => {
-    // No need to open if all disabled
-    if (mergedDisabled.some((fieldDisabled) => !fieldDisabled) || !nextOpen) {
-      setMergeOpen(nextOpen, config);
-    }
-  };
-
   // ====================== Invalidate ======================
   const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, mergedShowTime);
 
@@ -297,9 +289,9 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     mergedDisabled,
     formatList,
     focused,
-    lastOperationRef,
+    lastOperation,
     isInvalidateDate,
-    needConfirm,
+    mergedNeedConfirm,
   );
 
   // ===================== DisabledDate =====================
@@ -397,66 +389,54 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   };
 
   const onSelectorInputChange = () => {
-    lastOperationRef.current = 'input';
+    lastOperation('input');
   };
 
   // ==================== Selector Focus ====================
   const onSelectorFocus: SelectorProps['onFocus'] = (event, index) => {
+    triggerOpen(true, {
+      inherit: true,
+    });
+
     setActiveIndex(index);
-    setFocused(true);
+    triggerFocus(true);
 
     onFocus?.(event);
   };
 
   const onSelectorBlur: SelectorProps['onBlur'] = (event) => {
-    setFocused(false);
+    triggerOpen(false);
 
-    // Always trigger submit since input is always means confirm
-    triggerCalendarChange(calendarValue);
+    triggerFocus(false);
 
     onBlur?.(event);
   };
 
   // ======================== Submit ========================
-  const hasDisabled = mergedDisabled.some((disabledItem) => disabledItem);
+  // const hasDisabled = mergedDisabled.some((disabledItem) => disabledItem);
 
-  const triggerChangeAndFocusNext = (date?: DateType) => {
+  /** Trigger for single field submit */
+  const triggerPartSubmit = (date?: DateType) => {
     let nextValue = calendarValue;
 
     if (date) {
       nextValue = fillMergedValue(date, activeIndex);
     }
 
-    // Focus or blur the open panel
-    const validateActiveList = (activeList || []).filter(
-      (index) =>
-        // Filled value
-        nextValue[index] ||
-        // Skip disabled
-        mergedDisabled[index] ||
-        // Skip allow empty
-        mergedAllowEmpty[index],
-    );
+    triggerSubmitChange(nextValue);
 
-    // Should merge repeat fill one field action
-    const activeLen = new Set(validateActiveList).size;
-
-    if (activeLen > 1 || hasDisabled) {
-      // Close anyway
-      triggerOpen(false, { index: activeIndex, force: true });
-      triggerSubmitChange(nextValue);
-    } else if (activeLen === 1) {
-      // Trigger
-      triggerCalendarChange(nextValue);
-
-      // Open to the next field
-      selectorRef.current.focus(validateActiveList[0] === 0 ? 1 : 0);
+    // Check if need focus next
+    const nextIndex = nextActiveIndex();
+    if (nextIndex === null) {
+      triggerOpen(false, { force: true });
+    } else {
+      selectorRef.current.focus(nextIndex);
     }
   };
 
   // ======================== Click =========================
   const onSelectorClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    if (focusedIndex === null) {
+    if (!selectorRef.current.nativeElement.contains(document.activeElement)) {
       // Click to focus the enabled input
       const enabledIndex = mergedDisabled.findIndex((d) => !d);
       if (enabledIndex >= 0) {
@@ -519,33 +499,26 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
   // >>> Focus
   const onPanelFocus: React.FocusEventHandler<HTMLDivElement> = () => {
-    setFocused(true);
+    triggerFocus(true);
     triggerOpen(true);
   };
 
   const onPanelBlur: React.FocusEventHandler<HTMLDivElement> = () => {
-    setFocused(false);
+    triggerFocus(false);
   };
 
   // >>> Calendar
   const onPanelCalendarChange: PickerPanelProps<DateType>['onChange'] = (date) => {
-    lastOperationRef.current = 'panel';
+    lastOperation('panel');
 
     const clone: RangeValueType<DateType> = fillIndex(calendarValue, activeIndex, date);
 
-    if (mergedMode === picker && !needConfirm) {
-      triggerChangeAndFocusNext(date);
-    } else {
-      triggerCalendarChange(clone);
-    }
+    // Only trigger calendar event but not update internal `calendarValue` state
+    triggerCalendarChange(clone, true);
   };
 
   // >>> Close
   const onPopupClose = () => {
-    if (changeOnBlur) {
-      triggerCalendarChange(calendarValue);
-    }
-
     // Close popup
     triggerOpen(false);
   };
@@ -562,7 +535,6 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   const panelValue = calendarValue[activeIndex] || null;
 
   // >>> invalid
-  const panelValueInvalid = !panelValue || isInvalidateDate(panelValue);
 
   const panelProps = React.useMemo(() => {
     const domProps = pickAttrs(filledProps, false);
@@ -580,7 +552,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
   // >>> Render
   const panel = (
-    <Popup
+    <Popup<any>
       // MISC
       {...panelProps}
       showNow={mergedShowNow}
@@ -601,7 +573,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       onPanelChange={triggerModeChange}
       // Value
       value={panelValue}
-      invalid={panelValueInvalid}
+      isInvalid={isInvalidateDate}
       onChange={null}
       onCalendarChange={onPanelCalendarChange}
       // PickerValue
@@ -611,8 +583,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       hoverValue={hoverValues}
       onHover={onPanelHover}
       // Submit
-      needConfirm={needConfirm}
-      onSubmit={triggerChangeAndFocusNext}
+      needConfirm={mergedNeedConfirm}
+      onSubmit={triggerPartSubmit}
       // Preset
       presets={presetList}
       onPresetHover={onPresetHover}
@@ -634,18 +606,6 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   );
 
   // ======================== Effect ========================
-  // >>> Active: Reset list
-  React.useEffect(() => {
-    if (!mergedOpen) {
-      setActiveList(null);
-    } else if (activeIndex !== null) {
-      setActiveList((ori) => {
-        const list = [...(ori || [])];
-        return list[list.length - 1] === activeIndex ? ori : [...list, activeIndex];
-      });
-    }
-  }, [activeIndex, mergedOpen]);
-
   // >>> Mode
   // Reset for every active
   useLayoutEffect(() => {
@@ -701,13 +661,13 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
           clearIcon={mergedClearIcon}
           suffixIcon={suffixIcon}
           // Active
-          activeIndex={focusedIndex}
+          activeIndex={activeIndex}
           activeHelp={!!internalHoverValues}
           allHelp={!!internalHoverValues && hoverSource === 'preset'}
           focused={focused}
           onFocus={onSelectorFocus}
           onBlur={onSelectorBlur}
-          onSubmit={triggerChangeAndFocusNext}
+          onSubmit={triggerPartSubmit}
           // Change
           value={hoverValues}
           maskFormat={maskFormat}
@@ -719,7 +679,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
           // Disabled
           disabled={mergedDisabled}
           // Open
-          open={mergedOpen ? focusedIndex : null}
+          open={mergedOpen ? activeIndex : null}
           onOpenChange={triggerOpen}
           // Click
           onClick={onSelectorClick}

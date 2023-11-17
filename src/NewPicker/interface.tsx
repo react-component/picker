@@ -295,17 +295,11 @@ export interface SharedPickerProps<DateType = any> extends SharedHTMLAttrs {
   onOpenChange?: (open: boolean) => void;
   popupAlign?: AlignType;
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
-  /**
-   * Trigger change event when click outside panel to blur.
-   * This is only affect `datetime` & `time` picker
-   * which do not have certain end action on the panel cell so need confirm button.
-   */
-  changeOnBlur?: boolean;
 
   /**
    * By default. Only `time` or `datetime` show the confirm button.
    * `true` to make every picker need confirm.
-   * `false` to trigger change on blur when panel match the picker type.
+   * `false` to trigger change on every time value by the mode = picker.
    */
   needConfirm?: boolean;
 

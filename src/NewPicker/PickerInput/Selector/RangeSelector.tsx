@@ -194,16 +194,11 @@ function RangeSelector<DateType = any>(
 
     onFocus: (event) => {
       onFocus(event, index);
-
-      triggerOpen(true, index, {
-        inherit: true,
-      });
     },
     onBlur: (event) => {
       // Blur do not trigger close
       // Since it may focus to the popup panel
       onBlur(event, index);
-      triggerOpen(false, index);
     },
 
     onEnter: onSubmit,
