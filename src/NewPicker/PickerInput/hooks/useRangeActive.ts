@@ -1,26 +1,26 @@
 import * as React from 'react';
+import type { RangeValueType } from '../RangePicker';
 
 export type OperationType = 'input' | 'panel';
 
-export type NextActive = () => number | null;
+export type NextActive<DateType> = (nextValue: RangeValueType<DateType>) => number | null;
 
 /**
  * When user first focus one input, any submit will trigger focus another one.
  * When second time focus one input, submit will not trigger focus again.
  * When click outside to close the panel, trigger event if it can trigger onChange.
  */
-export default function useRangeActive(
+export default function useRangeActive<DateType>(
   open: boolean,
   disabled: [boolean, boolean],
-  // complexPicker: boolean,
-  // needConfirm: boolean,
+  empty: [boolean, boolean],
 ): [
   activeIndex: number,
   setActiveIndex: (index: number) => void,
   focused: boolean,
   triggerFocus: (focused: boolean) => void,
   lastOperation: (type?: OperationType) => OperationType,
-  nextActiveIndex: NextActive,
+  nextActiveIndex: NextActive<DateType>,
 ] {
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [focused, setFocused] = React.useState<boolean>(false);
@@ -43,12 +43,12 @@ export default function useRangeActive(
 
   // ============================ Strategy ============================
   // Trigger when input enter or input blur or panel close
-  const nextActiveIndex: NextActive = () => {
+  const nextActiveIndex: NextActive<DateType> = (nextValue: RangeValueType<DateType>) => {
     const list = activeListRef.current;
-    const activeSet = new Set(list);
+    const filledActiveSet = new Set(list.filter((index) => nextValue[index] || empty[index]));
     const nextIndex = list[list.length - 1] === 0 ? 1 : 0;
 
-    if (activeSet.size >= 2 || disabled[nextIndex]) {
+    if (filledActiveSet.size >= 2 || disabled[nextIndex]) {
       return null;
     }
 

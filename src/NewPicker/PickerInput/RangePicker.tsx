@@ -255,7 +255,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
   // ======================== Active ========================
   const [activeIndex, setActiveIndex, focused, triggerFocus, lastOperation, nextActiveIndex] =
-    useRangeActive(mergedOpen, mergedDisabled);
+    useRangeActive(mergedOpen, mergedDisabled, mergedAllowEmpty);
 
   // ========================= Mode =========================
   const [modes, setModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
@@ -424,7 +424,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     }
 
     // Check if need focus next
-    const nextIndex = nextActiveIndex();
+    const nextIndex = nextActiveIndex(nextValue);
     if (nextIndex === null) {
       triggerSubmitChange(nextValue);
       triggerOpen(false, { force: true });

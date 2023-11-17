@@ -78,7 +78,8 @@ export default () => {
         {...sharedLocale}
         // needConfirm
         // needConfirm={false}
-        showTime
+        // open
+        // showTime
         value={rangeValue}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
