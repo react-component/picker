@@ -77,7 +77,7 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         picker="quarter"
-        // needConfirm
+        needConfirm
         // needConfirm={false}
         // open
         // showTime

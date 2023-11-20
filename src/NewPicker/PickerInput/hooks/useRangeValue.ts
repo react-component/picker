@@ -1,9 +1,9 @@
-import { useEvent, useMergedState } from 'rc-util';
+import { useEvent } from 'rc-util';
 import * as React from 'react';
 import { formatValue, isSame, isSameTimestamp } from '../../../utils/dateUtil';
 import type { FormatType } from '../../interface';
+import { fillIndex } from '../../util';
 import type { RangePickerProps, RangeValueType } from '../RangePicker';
-import { useLockEffect } from './useLockState';
 import type { OperationType } from './useRangeActive';
 
 // Submit Logic:
@@ -15,7 +15,8 @@ import type { OperationType } from './useRangeActive';
 //    * 🌅 When user click on the panel is no needConfirm, flush calendar value to submit value
 //    * 🌅 When user click on the panel is needConfirm and click OK, flush calendar value to submit value
 //    * All the flush will mark submitted as false
-// * Special blur Logic:
+// * Blur logic:
+//    * If `needConfirm`, reset calendar value to value
 //    * If `!needConfirm`, and last operation is panel and has empty value,
 //    * active another input.
 // * onChange:
@@ -49,6 +50,7 @@ export default function useRangeValue<DateType = any>(
 ): [
   calendarValue: RangeValueType<DateType>,
   triggerCalendarChange: TriggerCalendarChange<DateType>,
+  flushSubmit: (index: number, needTriggerChange: boolean) => void,
   triggerSubmitChange: (value: RangeValueType<DateType>) => boolean,
   emptyValue: boolean,
 ] {
@@ -75,31 +77,7 @@ export default function useRangeValue<DateType = any>(
 
   const orderOnChange = disabled.some((d) => d) ? false : order;
 
-  // ============================ Values ============================
-  // Used for internal value management.
-  // It should always use `mergedValue` in render logic
-  const [internalCalendarValue, setCalendarValue] = React.useState<RangeValueType<DateType>>(
-    defaultValue || null,
-  );
-  const calendarValue = internalCalendarValue || [null, null];
-
-  React.useEffect(() => {
-    if (value || value === null) {
-      setCalendarValue(value);
-    }
-  }, [value]);
-
-  // Used for trigger `onChange` event.
-  // Record current value which is wait for submit.
-  const [submitValue, setSubmitValue] = useMergedState(defaultValue, {
-    value,
-    postState: (valList: RangeValueType<DateType>): RangeValueType<DateType> =>
-      valList || [null, null],
-  });
-
-  const [submitted, setSubmitted] = React.useState(true);
-
-  // ============================ Change ============================
+  // ============================= Util =============================
   const getDateTexts = ([start, end]: RangeValueType<DateType>) => {
     return [start, end].map((date) =>
       formatValue(date, { generateConfig, locale, format: formatList[0] }),
@@ -117,11 +95,52 @@ export default function useRangeValue<DateType = any>(
     return [isSameStart && isSameEnd, isSameStart, isSameEnd];
   };
 
-  const triggerCalendarChange: TriggerCalendarChange<DateType> = ([start, end]) => {
+  // ============================ Values ============================
+  // Used for internal value management.
+  // It should always use `mergedValue` in render logic
+  const [internalCalendarValue, setInternalCalendarValue] = React.useState<
+    RangeValueType<DateType>
+  >(defaultValue || null);
+  const calendarValue = internalCalendarValue || [null, null];
+
+  // Add little trick here to ensure always use latest value
+  const calendarValueRef = React.useRef(calendarValue);
+  calendarValueRef.current = calendarValue;
+  const getCalendarValue = () => calendarValueRef.current;
+
+  // Used for trigger `onChange` event.
+  // Record current value which is wait for submit.
+  const [internalSubmitValue, setSubmitValue] = React.useState(defaultValue);
+  const submitValue = internalSubmitValue || [null, null];
+
+  const [needSubmit, setNeedSubmit] = React.useState(false);
+
+  // Update calendar value
+  const setCalendarValue = (val: RangeValueType<DateType>) => {
+    calendarValueRef.current = val;
+
+    setInternalCalendarValue(val);
+  };
+
+  const syncWithValue = useEvent(() => {
+    setCalendarValue(value);
+    setSubmitValue(value);
+    setNeedSubmit(false);
+  });
+
+  React.useEffect(() => {
+    if (value || value === null) {
+      syncWithValue();
+    }
+  }, [value]);
+
+  // ============================ Change ============================
+
+  const triggerCalendarChange: TriggerCalendarChange<DateType> = useEvent(([start, end]) => {
     const clone: RangeValueType<DateType> = [start, end];
 
     // Update merged value
-    const [isSameMergedDates, isSameStart] = isSameDates(calendarValue, clone);
+    const [isSameMergedDates, isSameStart] = isSameDates(getCalendarValue(), clone);
 
     if (!isSameMergedDates) {
       setCalendarValue(clone);
@@ -133,6 +152,15 @@ export default function useRangeValue<DateType = any>(
         });
       }
     }
+  });
+
+  // ========================= Flush Submit =========================
+  const flushSubmit = (index: number, needTriggerChange: boolean) => {
+    setSubmitValue((ori) => fillIndex(ori, index, getCalendarValue()[index]));
+
+    if (needTriggerChange) {
+      setNeedSubmit(true);
+    }
   };
 
   // ============================ Submit ============================
@@ -141,7 +169,7 @@ export default function useRangeValue<DateType = any>(
   const triggerSubmit = useEvent((nextValue?: RangeValueType<DateType>) => {
     const isNullValue = nextValue === null;
 
-    const clone: RangeValueType<DateType> = [...(nextValue || calendarValue)];
+    const clone: RangeValueType<DateType> = [...(nextValue || submitValue)];
 
     // Fill null value
     if (isNullValue) {
@@ -197,20 +225,14 @@ export default function useRangeValue<DateType = any>(
 
     if (allPassed) {
       // Sync submit value to not to trigger `onChange` again
-      setSubmitValue(clone);
+      syncWithValue();
 
       // Trigger `onChange` if needed
-      if (onChange) {
-        const [isSameSubmitDates] = isSameDates(submitValue, clone);
-
-        if (!isSameSubmitDates) {
-          onChange(
-            // Return null directly if all date are empty
-            isNullValue && clone.every((val) => !val) ? null : clone,
-            getDateTexts(clone),
-          );
-        }
-      }
+      onChange(
+        // Return null directly if all date are empty
+        isNullValue && clone.every((val) => !val) ? null : clone,
+        getDateTexts(clone),
+      );
     }
 
     setLastSubmitResult([allPassed]);
@@ -218,22 +240,25 @@ export default function useRangeValue<DateType = any>(
     return allPassed;
   });
 
-  // From the 2 active panel finished
-  const triggerSubmitChange = (nextValue: RangeValueType<DateType>) => triggerSubmit(nextValue);
-
   // ============================ Effect ============================
-  useLockEffect(focused, () => {
-    if (!focused) {
-      // If panel no need panel confirm or last blur is not from panel
-      // Trigger submit
-      if (!needConfirm || lastOperation() !== 'panel') {
-        triggerSubmit();
-      } else {
-        // Else should reset `calendarValue` to `submitValue`
-        setCalendarValue(submitValue);
-      }
+  React.useEffect(() => {
+    if (needSubmit) {
+      triggerSubmit();
     }
-  });
+  }, [needSubmit]);
+
+  // useLockEffect(focused, () => {
+  //   if (!focused) {
+  //     // If panel no need panel confirm or last blur is not from panel
+  //     // Trigger submit
+  //     if (!needConfirm || lastOperation() !== 'panel') {
+  //       triggerSubmit();
+  //     } else {
+  //       // Else should reset `calendarValue` to `submitValue`
+  //       setCalendarValue(submitValue);
+  //     }
+  //   }
+  // });
 
   // TODO: 非受控下 `value` 这个不会重置，逻辑应该不对
   // When blur & invalid, restore to empty one
@@ -248,7 +273,8 @@ export default function useRangeValue<DateType = any>(
   return [
     calendarValue,
     triggerCalendarChange,
-    triggerSubmitChange,
+    flushSubmit,
+    triggerSubmit,
     internalCalendarValue === null,
   ];
 }

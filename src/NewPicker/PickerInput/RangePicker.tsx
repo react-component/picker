@@ -284,15 +284,16 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, mergedShowTime);
 
   // ======================== Value =========================
-  const [calendarValue, triggerCalendarChange, triggerSubmitChange, emptyValue] = useRangeValue(
-    filledProps,
-    mergedDisabled,
-    formatList,
-    focused,
-    lastOperation,
-    isInvalidateDate,
-    mergedNeedConfirm,
-  );
+  const [calendarValue, triggerCalendarChange, flushSubmit, triggerSubmitChange, emptyValue] =
+    useRangeValue(
+      filledProps,
+      mergedDisabled,
+      formatList,
+      focused,
+      lastOperation,
+      isInvalidateDate,
+      mergedNeedConfirm,
+    );
 
   // ===================== DisabledDate =====================
   const mergedDisabledDate = useRangeDisabledDate(
@@ -378,12 +379,12 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   );
 
   // ======================== Change ========================
-  const fillMergedValue = (date: DateType, index: number) =>
+  const fillCalendarValue = (date: DateType, index: number) =>
     // Trigger change only when date changed
     fillIndex(calendarValue, index, date);
 
   const onSelectorChange = (date: DateType, index: number) => {
-    const clone = fillMergedValue(date, index);
+    const clone = fillCalendarValue(date, index);
 
     triggerCalendarChange(clone);
   };
@@ -415,6 +416,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // ======================== Submit ========================
   /**
    * Trigger by confirm operation.
+   * This function has already handle the `needConfirm` check logic.
    * - Selector: enter key
    * - Panel: OK button
    */
@@ -422,18 +424,30 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     let nextValue = calendarValue;
 
     if (date) {
-      nextValue = fillMergedValue(date, activeIndex);
+      nextValue = fillCalendarValue(date, activeIndex);
     }
 
-    // Check if need focus next
+    // Get next focus index
     const nextIndex = nextActiveIndex(nextValue);
+
+    // Change calendar value and tell flush it
+    triggerCalendarChange(nextValue);
+    flushSubmit(activeIndex, nextIndex === null);
+
     if (nextIndex === null) {
-      triggerSubmitChange(nextValue);
       triggerOpen(false, { force: true });
     } else {
-      triggerCalendarChange(nextValue);
       selectorRef.current.focus(nextIndex);
     }
+
+    // if (nextIndex === null) {
+    //   triggerCalendarChange(nextValue);
+    //   // triggerSubmitChange(nextValue);
+    //   triggerOpen(false, { force: true });
+    // } else {
+    //   triggerCalendarChange(nextValue);
+    //   selectorRef.current.focus(nextIndex);
+    // }
   };
 
   // ======================== Click =========================
@@ -495,7 +509,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
   // ======================== Panel =========================
   const onPanelHover = (date: DateType) => {
-    setInternalHoverValues(date ? fillMergedValue(date, activeIndex) : null);
+    setInternalHoverValues(date ? fillCalendarValue(date, activeIndex) : null);
     setHoverSource('cell');
   };
 

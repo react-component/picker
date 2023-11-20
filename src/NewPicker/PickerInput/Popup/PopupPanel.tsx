@@ -13,6 +13,7 @@ export type PopupPanelProps<DateType = any> = MustProp &
     multiple?: boolean;
   };
 
+// TODO: `needConfirm` 下，连续点击右边的面板会持续位移，应该只需要在切换 field 时才做位移
 export default function PopupPanel<DateType = any>(props: PopupPanelProps<DateType>) {
   const { picker, multiple, pickerValue, onPickerValueChange } = props;
   const { prefixCls, generateConfig } = React.useContext(PickerContext);
