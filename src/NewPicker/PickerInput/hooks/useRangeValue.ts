@@ -6,9 +6,20 @@ import type { RangePickerProps, RangeValueType } from '../RangePicker';
 import { useLockEffect } from './useLockState';
 import type { OperationType } from './useRangeActive';
 
-// Submit Logic (with order):
-// * Submit by next input
-// * None of the Picker has focused anymore
+// Submit Logic:
+// * Calender Value:
+//    * 💻 When user typing is validate, change the calendar value
+//    * 🌅 When user click on the panel, change the calendar value
+// * Submit Value:
+//    * 💻 When user blur the input, flush calendar value to submit value
+//    * 🌅 When user click on the panel is no needConfirm, flush calendar value to submit value
+//    * 🌅 When user click on the panel is needConfirm and click OK, flush calendar value to submit value
+//    * All the flush will mark submitted as false
+// * onChange:
+//    * If all the start & end field is used or all blur or panel closed
+//    * trigger onChange if submitted is false and reset it to true
+// * onBlur:
+//    * Reset calendar value to submit value
 
 /**
  * `eventOnly` means only trigger `onCalendarChange` event
@@ -83,12 +94,14 @@ export default function useRangeValue<DateType = any>(
   }, [value]);
 
   // Used for trigger `onChange` event.
-  // Record current submitted value.
+  // Record current value which is wait for submit.
   const [submitValue, setSubmitValue] = useMergedState(defaultValue, {
     value,
     postState: (valList: RangeValueType<DateType>): RangeValueType<DateType> =>
       valList || [null, null],
   });
+
+  const [submitted, setSubmitted] = React.useState(true);
 
   // ============================ Change ============================
   const getDateTexts = ([start, end]: RangeValueType<DateType>) => {
