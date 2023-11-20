@@ -1,10 +1,12 @@
-import { useEvent } from 'rc-util';
+import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
 import { formatValue, isSame, isSameTimestamp } from '../../../utils/dateUtil';
 import type { FormatType } from '../../interface';
 import { fillIndex } from '../../util';
 import type { RangePickerProps, RangeValueType } from '../RangePicker';
 import type { OperationType } from './useRangeActive';
+
+const EMPTY_VALUE: [null, null] = [null, null];
 
 // Submit Logic:
 // * Calender Value:
@@ -96,12 +98,17 @@ export default function useRangeValue<DateType = any>(
   };
 
   // ============================ Values ============================
+  // This is the root value which will sync with controlled or uncontrolled value
+  const [innerValue, setInnerValue] = useMergedState(defaultValue, {
+    value,
+  });
+  const mergedValue = innerValue || EMPTY_VALUE;
+
+  // ========================= Inner Values =========================
   // Used for internal value management.
   // It should always use `mergedValue` in render logic
-  const [internalCalendarValue, setInternalCalendarValue] = React.useState<
-    RangeValueType<DateType>
-  >(defaultValue || null);
-  const calendarValue = internalCalendarValue || [null, null];
+  const [calendarValue, setInternalCalendarValue] =
+    React.useState<RangeValueType<DateType>>(mergedValue);
 
   // Add little trick here to ensure always use latest value
   const calendarValueRef = React.useRef(calendarValue);
@@ -110,8 +117,7 @@ export default function useRangeValue<DateType = any>(
 
   // Used for trigger `onChange` event.
   // Record current value which is wait for submit.
-  const [internalSubmitValue, setSubmitValue] = React.useState(defaultValue);
-  const submitValue = internalSubmitValue || [null, null];
+  const [submitValue, setSubmitValue] = React.useState(mergedValue);
 
   const [needSubmit, setNeedSubmit] = React.useState(false);
 
@@ -123,19 +129,16 @@ export default function useRangeValue<DateType = any>(
   };
 
   const syncWithValue = useEvent(() => {
-    setCalendarValue(value);
-    setSubmitValue(value);
+    setCalendarValue(mergedValue);
+    setSubmitValue(mergedValue);
     setNeedSubmit(false);
   });
 
   React.useEffect(() => {
-    if (value || value === null) {
-      syncWithValue();
-    }
-  }, [value]);
+    syncWithValue();
+  }, [mergedValue]);
 
   // ============================ Change ============================
-
   const triggerCalendarChange: TriggerCalendarChange<DateType> = useEvent(([start, end]) => {
     const clone: RangeValueType<DateType> = [start, end];
 
@@ -270,11 +273,5 @@ export default function useRangeValue<DateType = any>(
   // }, [lastSubmitResult]);
 
   // ============================ Return ============================
-  return [
-    calendarValue,
-    triggerCalendarChange,
-    flushSubmit,
-    triggerSubmit,
-    internalCalendarValue === null,
-  ];
+  return [calendarValue, triggerCalendarChange, flushSubmit, triggerSubmit, innerValue === null];
 }
