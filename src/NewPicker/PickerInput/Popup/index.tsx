@@ -55,14 +55,8 @@ export default function Popup<DateType = any>(props: PopupProps<DateType>) {
     // Direction
     direction,
 
-    // Hover
-    onHover,
-
     // Change
     value,
-    onCalendarChange,
-    needConfirm,
-    onSubmit,
     isInvalid,
   } = props;
 
@@ -73,39 +67,6 @@ export default function Popup<DateType = any>(props: PopupProps<DateType>) {
 
   // ========================= Refs =========================
   const wrapperRef = React.useRef<HTMLDivElement>(null);
-
-  // ======================== Values ========================
-  // Form the `needConfirm` config, the value from panel will save temporary.
-  // And flush when press `OK` button.
-
-  const [cacheValue, setCacheValue] = React.useState(value);
-
-  // Block `onCalendarChange` before confirmed
-  const onPanelCalendarChange = (date: DateType) => {
-    onCalendarChange(date);
-    onHover(date);
-
-    if (!needConfirm) {
-      onSubmit(date);
-    } else {
-      setCacheValue(date);
-    }
-  };
-
-  // Proxy `onHover`
-  const onPanelHover = (date: DateType) => {
-    onHover(needConfirm ? date || cacheValue : date);
-  };
-
-  // Sync back if `value` changed
-  React.useEffect(() => {
-    setCacheValue(value);
-  }, [value]);
-
-  // ======================== Footer ========================
-  const onFooterSubmit = (date?: DateType) => {
-    onSubmit(date ?? cacheValue);
-  };
 
   // ======================== Offset ========================
   const [containerWidth, setContainerWidth] = React.useState<number>(0);
@@ -140,18 +101,11 @@ export default function Popup<DateType = any>(props: PopupProps<DateType>) {
         onHover={onPresetHover}
       />
       <div>
-        <PopupPanel
-          {...props}
-          value={cacheValue}
-          onCalendarChange={onPanelCalendarChange}
-          onChange={null}
-          onHover={onPanelHover}
-        />
+        <PopupPanel {...props} onChange={null} />
         <Footer
           {...props}
           showNow={multiple ? false : showNow}
-          onSubmit={onFooterSubmit}
-          invalid={!cacheValue || isInvalid(cacheValue)}
+          invalid={!value || isInvalid(value)}
         />
       </div>
     </div>

@@ -15,20 +15,16 @@ import type { OperationType } from './useRangeActive';
 //    * 🌅 When user click on the panel is no needConfirm, flush calendar value to submit value
 //    * 🌅 When user click on the panel is needConfirm and click OK, flush calendar value to submit value
 //    * All the flush will mark submitted as false
+// * Special blur Logic:
+//    * If `!needConfirm`, and last operation is panel and has empty value,
+//    * active another input.
 // * onChange:
 //    * If all the start & end field is used or all blur or panel closed
 //    * trigger onChange if submitted is false and reset it to true
 // * onBlur:
 //    * Reset calendar value to submit value
 
-/**
- * `eventOnly` means only trigger `onCalendarChange` event
- * but not update internal `calendarValue` state
- */
-type TriggerCalendarChange<DateType> = (
-  [start, end]: RangeValueType<DateType>,
-  eventOnly?: boolean,
-) => void;
+type TriggerCalendarChange<DateType> = ([start, end]: RangeValueType<DateType>) => void;
 
 export default function useRangeValue<DateType = any>(
   info: Pick<
@@ -121,16 +117,14 @@ export default function useRangeValue<DateType = any>(
     return [isSameStart && isSameEnd, isSameStart, isSameEnd];
   };
 
-  const triggerCalendarChange: TriggerCalendarChange<DateType> = ([start, end], eventOnly) => {
+  const triggerCalendarChange: TriggerCalendarChange<DateType> = ([start, end]) => {
     const clone: RangeValueType<DateType> = [start, end];
 
     // Update merged value
     const [isSameMergedDates, isSameStart] = isSameDates(calendarValue, clone);
 
     if (!isSameMergedDates) {
-      if (!eventOnly) {
-        setCalendarValue(clone);
-      }
+      setCalendarValue(clone);
 
       // Trigger calendar change event
       if (onCalendarChange) {

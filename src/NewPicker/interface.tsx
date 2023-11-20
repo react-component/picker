@@ -297,9 +297,9 @@ export interface SharedPickerProps<DateType = any> extends SharedHTMLAttrs {
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
 
   /**
-   * By default. Only `time` or `datetime` show the confirm button.
+   * By default. Only `time` or `datetime` show the confirm button in panel.
    * `true` to make every picker need confirm.
-   * `false` to trigger change on every time value by the mode = picker.
+   * `false` to trigger change on every time panel closed by the mode = picker.
    */
   needConfirm?: boolean;
 

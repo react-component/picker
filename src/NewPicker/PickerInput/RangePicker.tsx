@@ -413,9 +413,11 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   };
 
   // ======================== Submit ========================
-  // const hasDisabled = mergedDisabled.some((disabledItem) => disabledItem);
-
-  /** Trigger for single field submit */
+  /**
+   * Trigger by confirm operation.
+   * - Selector: enter key
+   * - Panel: OK button
+   */
   const triggerPartConfirm = (date?: DateType) => {
     let nextValue = calendarValue;
 
@@ -514,7 +516,18 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     const clone: RangeValueType<DateType> = fillIndex(calendarValue, activeIndex, date);
 
     // Only trigger calendar event but not update internal `calendarValue` state
-    triggerCalendarChange(clone, true);
+    triggerCalendarChange(clone);
+
+    // >>> Trigger next active if !needConfirm
+    // Fully logic check `useRangeValue` hook
+    if (
+      !needConfirm &&
+      internalPicker === internalMode &&
+      internalPicker !== 'datetime' &&
+      internalPicker !== 'time'
+    ) {
+      triggerPartConfirm(date);
+    }
   };
 
   // >>> Close
