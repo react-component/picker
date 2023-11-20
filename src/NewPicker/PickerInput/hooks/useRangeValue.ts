@@ -9,7 +9,7 @@ import type { OperationType } from './useRangeActive';
 const EMPTY_VALUE: [null, null] = [null, null];
 
 // Submit Logic:
-// * Calender Value:
+// * ✅ Calender Value:
 //    * 💻 When user typing is validate, change the calendar value
 //    * 🌅 When user click on the panel, change the calendar value
 // * Submit Value:
@@ -227,15 +227,19 @@ export default function useRangeValue<DateType = any>(
       (validateEmptyDateRange && validateOrder && validateDates);
 
     if (allPassed) {
-      // Sync submit value to not to trigger `onChange` again
-      syncWithValue();
+      // Sync value with submit value
+      setInnerValue(clone);
+
+      const [isSameMergedDates] = isSameDates(clone, mergedValue);
 
       // Trigger `onChange` if needed
-      onChange(
-        // Return null directly if all date are empty
-        isNullValue && clone.every((val) => !val) ? null : clone,
-        getDateTexts(clone),
-      );
+      if (onChange && !isSameMergedDates) {
+        onChange(
+          // Return null directly if all date are empty
+          isNullValue && clone.every((val) => !val) ? null : clone,
+          getDateTexts(clone),
+        );
+      }
     }
 
     setLastSubmitResult([allPassed]);
