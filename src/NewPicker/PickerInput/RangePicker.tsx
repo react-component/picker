@@ -285,17 +285,14 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, mergedShowTime);
 
   // ======================== Value =========================
-  const [calendarValue, triggerCalendarChange, flushSubmit, triggerSubmitChange, emptyValue] =
-    useRangeValue(
-      filledProps,
-      mergedDisabled,
-      formatList,
-      focused,
-      mergedOpen,
-      lastOperation,
-      isInvalidateDate,
-      mergedNeedConfirm,
-    );
+  const [calendarValue, triggerCalendarChange, flushSubmit, triggerSubmitChange] = useRangeValue(
+    filledProps,
+    mergedDisabled,
+    formatList,
+    focused,
+    mergedOpen,
+    isInvalidateDate,
+  );
 
   // ===================== DisabledDate =====================
   const mergedDisabledDate = useRangeDisabledDate(
@@ -343,7 +340,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
       return false;
     }) as [boolean, boolean];
-  }, [calendarValue, emptyValue, fieldsInvalidates, isInvalidateDate, mergedAllowEmpty]);
+  }, [calendarValue, fieldsInvalidates, isInvalidateDate, mergedAllowEmpty]);
 
   // ===================== Picker Value =====================
   const [currentPickerValue, setCurrentPickerValue] = useRangePickerValue(

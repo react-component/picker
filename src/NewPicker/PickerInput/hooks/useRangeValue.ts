@@ -6,7 +6,6 @@ import type { FormatType } from '../../interface';
 import { fillIndex } from '../../util';
 import type { RangePickerProps, RangeValueType } from '../RangePicker';
 import useLockEffect from './useLockEffect';
-import type { OperationType } from './useRangeActive';
 
 const EMPTY_VALUE: [null, null] = [null, null];
 
@@ -51,15 +50,12 @@ export default function useRangeValue<DateType = any>(
   formatList: FormatType[],
   focused: boolean,
   open: boolean,
-  lastOperation: () => OperationType,
   isInvalidateDate: (date: DateType) => boolean,
-  needConfirm: boolean,
 ): [
   calendarValue: RangeValueType<DateType>,
   triggerCalendarChange: TriggerCalendarChange<DateType>,
   flushSubmit: (index: number, needTriggerChange: boolean) => void,
   triggerSubmitChange: (value: RangeValueType<DateType>) => boolean,
-  emptyValue: boolean,
 ] {
   const {
     // MISC
@@ -148,8 +144,6 @@ export default function useRangeValue<DateType = any>(
   });
 
   // ============================ Submit ============================
-  const [lastSubmitResult, setLastSubmitResult] = React.useState<[passed: boolean]>([true]);
-
   const triggerSubmit = useEvent((nextValue?: RangeValueType<DateType>) => {
     const isNullValue = nextValue === null;
 
@@ -223,8 +217,6 @@ export default function useRangeValue<DateType = any>(
       }
     }
 
-    setLastSubmitResult([allPassed]);
-
     return allPassed;
   });
 
@@ -256,34 +248,6 @@ export default function useRangeValue<DateType = any>(
     2,
   );
 
-  // useLockEffect(focused, () => {
-  //   if (!focused) {
-  //     // If panel no need panel confirm or last blur is not from panel
-  //     // Trigger submit
-  //     if (!needConfirm || lastOperation() !== 'panel') {
-  //       triggerSubmit();
-  //     } else {
-  //       // Else should reset `calendarValue` to `submitValue`
-  //       setCalendarValue(submitValue);
-  //     }
-  //   }
-  // });
-
-  // TODO: 非受控下 `value` 这个不会重置，逻辑应该不对
-  // When blur & invalid, restore to empty one
-  // This is used for typed only one input
-  // React.useEffect(() => {
-  //   if (!lastSubmitResult[0] && !preserveInvalidOnBlur && value) {
-  //     triggerCalendarChange(value);
-  //   }
-  // }, [lastSubmitResult]);
-
   // ============================ Return ============================
-  return [
-    calendarValue(),
-    triggerCalendarChange,
-    flushSubmit,
-    triggerSubmit,
-    innerValue === null || innerValue === undefined,
-  ];
+  return [calendarValue(), triggerCalendarChange, flushSubmit, triggerSubmit];
 }
