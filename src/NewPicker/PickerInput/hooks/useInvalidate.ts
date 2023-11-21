@@ -31,20 +31,30 @@ export default function useInvalidate<DateType = any>(
       const { disabledHours, disabledMinutes, disabledSeconds, disabledMilliSeconds } =
         showTime.disabledTime?.(date) || {};
 
+      const {
+        disabledHours: legacyDisabledHours,
+        disabledMinutes: legacyDisabledMinutes,
+        disabledSeconds: legacyDisabledSeconds,
+      } = showTime;
+
+      const mergedDisabledHours = disabledHours || legacyDisabledHours;
+      const mergedDisabledMinutes = disabledMinutes || legacyDisabledMinutes;
+      const mergedDisabledSeconds = disabledSeconds || legacyDisabledSeconds;
+
       const hour = generateConfig.getHour(date);
       const minute = generateConfig.getMinute(date);
       const second = generateConfig.getSecond(date);
       const millisecond = generateConfig.getMillisecond(date);
 
-      if (disabledHours && disabledHours().includes(hour)) {
+      if (mergedDisabledHours && mergedDisabledHours().includes(hour)) {
         return true;
       }
 
-      if (disabledMinutes && disabledMinutes(hour).includes(minute)) {
+      if (mergedDisabledMinutes && mergedDisabledMinutes(hour).includes(minute)) {
         return true;
       }
 
-      if (disabledSeconds && disabledSeconds(hour, minute).includes(second)) {
+      if (mergedDisabledSeconds && mergedDisabledSeconds(hour, minute).includes(second)) {
         return true;
       }
 

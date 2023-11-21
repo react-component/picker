@@ -324,12 +324,12 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
         return true;
       }
 
+      const current = calendarValue[index];
+
       // Not check if all empty
-      if (emptyValue) {
+      if (!current) {
         return false;
       }
-
-      const current = calendarValue[index];
 
       // Not allow empty
       if (!mergedAllowEmpty[index] && !current) {
@@ -643,7 +643,15 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
   // >>> For complex picker, we need check if need to focus next one
   useLayoutEffect(() => {
-    if (!mergedOpen && complexPicker && !mergedNeedConfirm && lastOperation() === 'panel') {
+    const lastOp = lastOperation();
+
+    // Trade as confirm on field leave
+    if (!mergedOpen && lastOp === 'input') {
+      triggerPartConfirm();
+    }
+
+    // Submit with complex picker
+    if (!mergedOpen && complexPicker && !mergedNeedConfirm && lastOp === 'panel') {
       triggerOpen(true);
       triggerPartConfirm();
     }
