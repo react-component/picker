@@ -1,6 +1,7 @@
 import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
 import { formatValue, isSame, isSameTimestamp } from '../../../utils/dateUtil';
+import useSyncState from '../../hooks/useSyncState';
 import type { FormatType } from '../../interface';
 import { fillIndex } from '../../util';
 import type { RangePickerProps, RangeValueType } from '../RangePicker';
@@ -111,32 +112,16 @@ export default function useRangeValue<DateType = any>(
   // ========================= Inner Values =========================
   // Used for internal value management.
   // It should always use `mergedValue` in render logic
-  const [calendarValue, setInternalCalendarValue] =
-    React.useState<RangeValueType<DateType>>(mergedValue);
-
-  // Add little trick here to ensure always use latest value
-  const calendarValueRef = React.useRef(calendarValue);
-  calendarValueRef.current = calendarValue;
-  const getCalendarValue = () => calendarValueRef.current;
+  const [calendarValue, setCalendarValue] = useSyncState(mergedValue);
 
   // Used for trigger `onChange` event.
   // Record current value which is wait for submit.
-  const [submitValue, setSubmitValue] = React.useState(mergedValue);
-
-  // const [needSubmit, setNeedSubmit] = React.useState(false);
-
-  // Update calendar value
-  const setCalendarValue = (val: RangeValueType<DateType>) => {
-    calendarValueRef.current = val;
-
-    setInternalCalendarValue(val);
-  };
+  const [submitValue, setSubmitValue] = useSyncState(mergedValue);
 
   /** Sync calendarValue & submitValue back with value */
   const syncWithValue = useEvent(() => {
     setCalendarValue(mergedValue);
     setSubmitValue(mergedValue);
-    // setNeedSubmit(false);
   });
 
   React.useEffect(() => {
@@ -148,7 +133,7 @@ export default function useRangeValue<DateType = any>(
     const clone: RangeValueType<DateType> = [start, end];
 
     // Update merged value
-    const [isSameMergedDates, isSameStart] = isSameDates(getCalendarValue(), clone);
+    const [isSameMergedDates, isSameStart] = isSameDates(calendarValue(), clone);
 
     if (!isSameMergedDates) {
       setCalendarValue(clone);
@@ -168,7 +153,7 @@ export default function useRangeValue<DateType = any>(
   const triggerSubmit = useEvent((nextValue?: RangeValueType<DateType>) => {
     const isNullValue = nextValue === null;
 
-    const clone: RangeValueType<DateType> = [...(nextValue || submitValue)];
+    const clone: RangeValueType<DateType> = [...(nextValue || submitValue())];
 
     // Fill null value
     if (isNullValue) {
@@ -245,33 +230,22 @@ export default function useRangeValue<DateType = any>(
 
   // ========================= Flush Submit =========================
   const flushSubmit = useEvent((index: number, needTriggerChange: boolean) => {
-    const nextSubmitValue = fillIndex(submitValue, index, getCalendarValue()[index]);
+    const nextSubmitValue = fillIndex(submitValue(), index, calendarValue()[index]);
     setSubmitValue(nextSubmitValue);
 
     if (needTriggerChange) {
-      triggerSubmit(nextSubmitValue);
+      triggerSubmit();
     }
   });
 
   // ============================ Effect ============================
-  // // Submit with `needSubmit` mark
-  // React.useEffect(() => {
-  //   if (needSubmit) {
-  //     triggerSubmit();
-  //   }
-  // }, [needSubmit]);
-
   // All finished action trigger after 2 frames
   const interactiveFinished = !focused && !open;
-
-  // console.log('???', needSubmit);
 
   useLockEffect(
     interactiveFinished,
     () => {
       if (interactiveFinished) {
-        console.log('finished!!!');
-
         // Always try to trigger submit first
         triggerSubmit();
 
@@ -307,5 +281,5 @@ export default function useRangeValue<DateType = any>(
   // }, [lastSubmitResult]);
 
   // ============================ Return ============================
-  return [calendarValue, triggerCalendarChange, flushSubmit, triggerSubmit, innerValue === null];
+  return [calendarValue(), triggerCalendarChange, flushSubmit, triggerSubmit, innerValue === null];
 }
