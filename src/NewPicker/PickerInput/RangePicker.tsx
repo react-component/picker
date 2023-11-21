@@ -250,6 +250,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   /** Almost same as `picker`, but add `datetime` for `date` with `showTime` */
   const internalPicker: InternalMode = picker === 'date' && mergedShowTime ? 'datetime' : picker;
 
+  /** The picker is `datetime` or `time` */
   const complexPicker = internalPicker === 'time' || internalPicker === 'datetime';
   const mergedNeedConfirm = needConfirm ?? complexPicker;
 
@@ -404,6 +405,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     triggerFocus(true);
 
     onFocus?.(event);
+
+    lastOperation('input');
   };
 
   const onSelectorBlur: SelectorProps['onBlur'] = (event) => {
@@ -535,12 +538,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
     // >>> Trigger next active if !needConfirm
     // Fully logic check `useRangeValue` hook
-    if (
-      !needConfirm &&
-      internalPicker === internalMode &&
-      internalPicker !== 'datetime' &&
-      internalPicker !== 'time'
-    ) {
+    if (!needConfirm && !complexPicker && internalPicker === internalMode) {
       triggerPartConfirm(date);
     }
   };
@@ -642,6 +640,15 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       triggerModeChange(null, picker, false);
     }
   }, [mergedOpen, activeIndex, picker]);
+
+  // >>> For complex picker, we need check if need to focus next one
+  useLayoutEffect(() => {
+    if (!mergedOpen && complexPicker && !mergedNeedConfirm && lastOperation() === 'panel') {
+      console.log('next one!');
+      triggerPartConfirm();
+      triggerOpen(true);
+    }
+  }, [mergedOpen]);
 
   // ====================== DevWarning ======================
   if (process.env.NODE_ENV !== 'production') {

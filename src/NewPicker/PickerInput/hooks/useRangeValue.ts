@@ -243,16 +243,14 @@ export default function useRangeValue<DateType = any>(
   const interactiveFinished = !focused && !open;
 
   useLockEffect(
-    interactiveFinished,
+    !interactiveFinished,
     () => {
       if (interactiveFinished) {
         // Always try to trigger submit first
         triggerSubmit();
 
-        // Sync with value
-        if (needConfirm) {
-          syncWithValue();
-        }
+        // Sync with value anyway
+        syncWithValue();
       }
     },
     2,

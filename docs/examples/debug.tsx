@@ -76,11 +76,11 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
-        picker="quarter"
-        needConfirm
-        // needConfirm={false}
+        // picker="quarter"
+        // needConfirm
+        needConfirm={false}
         // open
-        // showTime
+        showTime
         value={rangeValue}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
