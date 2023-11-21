@@ -644,9 +644,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // >>> For complex picker, we need check if need to focus next one
   useLayoutEffect(() => {
     if (!mergedOpen && complexPicker && !mergedNeedConfirm && lastOperation() === 'panel') {
-      console.log('next one!');
-      triggerPartConfirm();
       triggerOpen(true);
+      triggerPartConfirm();
     }
   }, [mergedOpen]);
 

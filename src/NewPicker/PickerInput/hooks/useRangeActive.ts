@@ -1,6 +1,6 @@
-import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
 import type { RangeValueType } from '../RangePicker';
+import { useDelayEffect } from './useDelayState';
 
 export type OperationType = 'input' | 'panel';
 
@@ -48,7 +48,6 @@ export default function useRangeActive<DateType>(
     const list = activeListRef.current;
     const filledActiveSet = new Set(list.filter((index) => nextValue[index] || empty[index]));
     const nextIndex = list[list.length - 1] === 0 ? 1 : 0;
-    console.log('>>>>>>', list);
 
     if (filledActiveSet.size >= 2 || disabled[nextIndex]) {
       return null;
@@ -58,12 +57,11 @@ export default function useRangeActive<DateType>(
   };
 
   // ============================= Effect =============================
-  // Record for the open timing `activeIndex`
-  useLayoutEffect(() => {
+  useDelayEffect(open, () => {
     if (open) {
       activeListRef.current = [];
     }
-  }, [open]);
+  });
 
   // Record for the open timing `activeIndex`
   React.useEffect(() => {

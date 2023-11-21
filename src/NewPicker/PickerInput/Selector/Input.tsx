@@ -5,7 +5,7 @@ import raf from 'rc-util/lib/raf';
 import * as React from 'react';
 import { leftPad } from '../../../utils/miscUtil';
 import PickerContext from '../context';
-import { useLockEffect } from '../hooks/useLockState';
+import useLockEffect from '../hooks/useLockEffect';
 import Icon from './Icon';
 import MaskFormat from './MaskFormat';
 import { getMaskRange } from './util';

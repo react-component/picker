@@ -5,7 +5,7 @@ import useSyncState from '../../hooks/useSyncState';
 import type { FormatType } from '../../interface';
 import { fillIndex } from '../../util';
 import type { RangePickerProps, RangeValueType } from '../RangePicker';
-import { useLockEffect } from './useLockState';
+import useLockEffect from './useLockEffect';
 import type { OperationType } from './useRangeActive';
 
 const EMPTY_VALUE: [null, null] = [null, null];
