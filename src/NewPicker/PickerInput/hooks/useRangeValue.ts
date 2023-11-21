@@ -279,5 +279,11 @@ export default function useRangeValue<DateType = any>(
   // }, [lastSubmitResult]);
 
   // ============================ Return ============================
-  return [calendarValue(), triggerCalendarChange, flushSubmit, triggerSubmit, innerValue === null];
+  return [
+    calendarValue(),
+    triggerCalendarChange,
+    flushSubmit,
+    triggerSubmit,
+    innerValue === null || innerValue === undefined,
+  ];
 }
