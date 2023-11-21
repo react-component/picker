@@ -4,11 +4,15 @@ import { formatValue, isSame, isSameTimestamp } from '../../../utils/dateUtil';
 import type { FormatType } from '../../interface';
 import { fillIndex } from '../../util';
 import type { RangePickerProps, RangeValueType } from '../RangePicker';
+import { useLockEffect } from './useLockState';
 import type { OperationType } from './useRangeActive';
 
 const EMPTY_VALUE: [null, null] = [null, null];
 
 // Submit Logic:
+// * ✅ Value:
+//    * merged value using controlled value, if not, use stateValue
+//    * When merged value change, [1] resync calendar value and submit value
 // * ✅ Calender Value:
 //    * 💻 When user typing is validate, change the calendar value
 //    * 🌅 When user click on the panel, change the calendar value
@@ -16,16 +20,15 @@ const EMPTY_VALUE: [null, null] = [null, null];
 //    * 💻 When user blur the input, flush calendar value to submit value
 //    * 🌅 When user click on the panel is no needConfirm, flush calendar value to submit value
 //    * 🌅 When user click on the panel is needConfirm and click OK, flush calendar value to submit value
-//    * All the flush will mark submitted as false
-// * Blur logic:
-//    * If `needConfirm`, reset calendar value to value
-//    * If `!needConfirm`, and last operation is panel and has empty value,
-//    * active another input.
-// * onChange:
-//    * If all the start & end field is used or all blur or panel closed
-//    * trigger onChange if submitted is false and reset it to true
-// * onBlur:
-//    * Reset calendar value to submit value
+// * Blur logic & close logic:
+//    * ✅ For value, always try flush submit
+//    * ✅ If `needConfirm`, reset as [1]
+//    * Else (`!needConfirm`)
+//      * If has another index field, active another index
+// * ✅ Flush submit:
+//    * If all the start & end field is confirmed or all blur or panel closed
+//    * Update `needSubmit` mark to true
+//    * trigger onChange by `needSubmit` and update stateValue
 
 type TriggerCalendarChange<DateType> = ([start, end]: RangeValueType<DateType>) => void;
 
@@ -46,6 +49,7 @@ export default function useRangeValue<DateType = any>(
   disabled: [boolean, boolean],
   formatList: FormatType[],
   focused: boolean,
+  open: boolean,
   lastOperation: () => OperationType,
   isInvalidateDate: (date: DateType) => boolean,
   needConfirm: boolean,
@@ -119,7 +123,7 @@ export default function useRangeValue<DateType = any>(
   // Record current value which is wait for submit.
   const [submitValue, setSubmitValue] = React.useState(mergedValue);
 
-  const [needSubmit, setNeedSubmit] = React.useState(false);
+  // const [needSubmit, setNeedSubmit] = React.useState(false);
 
   // Update calendar value
   const setCalendarValue = (val: RangeValueType<DateType>) => {
@@ -128,10 +132,11 @@ export default function useRangeValue<DateType = any>(
     setInternalCalendarValue(val);
   };
 
+  /** Sync calendarValue & submitValue back with value */
   const syncWithValue = useEvent(() => {
     setCalendarValue(mergedValue);
     setSubmitValue(mergedValue);
-    setNeedSubmit(false);
+    // setNeedSubmit(false);
   });
 
   React.useEffect(() => {
@@ -156,15 +161,6 @@ export default function useRangeValue<DateType = any>(
       }
     }
   });
-
-  // ========================= Flush Submit =========================
-  const flushSubmit = (index: number, needTriggerChange: boolean) => {
-    setSubmitValue((ori) => fillIndex(ori, index, getCalendarValue()[index]));
-
-    if (needTriggerChange) {
-      setNeedSubmit(true);
-    }
-  };
 
   // ============================ Submit ============================
   const [lastSubmitResult, setLastSubmitResult] = React.useState<[passed: boolean]>([true]);
@@ -247,12 +243,46 @@ export default function useRangeValue<DateType = any>(
     return allPassed;
   });
 
-  // ============================ Effect ============================
-  React.useEffect(() => {
-    if (needSubmit) {
-      triggerSubmit();
+  // ========================= Flush Submit =========================
+  const flushSubmit = useEvent((index: number, needTriggerChange: boolean) => {
+    const nextSubmitValue = fillIndex(submitValue, index, getCalendarValue()[index]);
+    setSubmitValue(nextSubmitValue);
+
+    if (needTriggerChange) {
+      triggerSubmit(nextSubmitValue);
     }
-  }, [needSubmit]);
+  });
+
+  // ============================ Effect ============================
+  // // Submit with `needSubmit` mark
+  // React.useEffect(() => {
+  //   if (needSubmit) {
+  //     triggerSubmit();
+  //   }
+  // }, [needSubmit]);
+
+  // All finished action trigger after 2 frames
+  const interactiveFinished = !focused && !open;
+
+  // console.log('???', needSubmit);
+
+  useLockEffect(
+    interactiveFinished,
+    () => {
+      if (interactiveFinished) {
+        console.log('finished!!!');
+
+        // Always try to trigger submit first
+        triggerSubmit();
+
+        // Sync with value
+        if (needConfirm) {
+          syncWithValue();
+        }
+      }
+    },
+    2,
+  );
 
   // useLockEffect(focused, () => {
   //   if (!focused) {

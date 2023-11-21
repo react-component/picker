@@ -45,7 +45,11 @@ export default function useLockState<T>(
  * Trigger `callback` immediately when `condition` is `true`.
  * But trigger `callback` in next frame when `condition` is `false`.
  */
-export function useLockEffect(condition: boolean, callback: (next: boolean) => void) {
+export function useLockEffect(
+  condition: boolean,
+  callback: (next: boolean) => void,
+  delayFrames = 1,
+) {
   const callbackRef = React.useRef(callback);
   callbackRef.current = callback;
 
@@ -55,7 +59,7 @@ export function useLockEffect(condition: boolean, callback: (next: boolean) => v
     } else {
       const id = raf(() => {
         callbackRef.current(condition);
-      });
+      }, delayFrames);
 
       return () => {
         raf.cancel(id);

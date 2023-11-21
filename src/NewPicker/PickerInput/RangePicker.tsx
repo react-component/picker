@@ -290,6 +290,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       mergedDisabled,
       formatList,
       focused,
+      mergedOpen,
       lastOperation,
       isInvalidateDate,
       mergedNeedConfirm,
