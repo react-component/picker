@@ -15,6 +15,17 @@ import {
   selectCell,
 } from './util/commonUtil';
 
+// jest.mock('rc-util/lib/hooks/useLayoutEffect', () => {
+//   const react = jest.requireActual('react');
+//   const { useLayoutUpdateEffect } = jest.requireActual('rc-util/lib/hooks/useLayoutEffect');
+
+//   return {
+//     __esModule: true,
+//     default: react.useLayoutEffect,
+//     useLayoutUpdateEffect,
+//   };
+// });
+
 describe('NewPicker.Range', () => {
   beforeEach(() => {
     resetWarned();
@@ -569,5 +580,84 @@ describe('NewPicker.Range', () => {
 
     selectCell(22);
     expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-05', '1990-09-22']);
+  });
+
+  describe('needConfirm', () => {
+    it('normal picker need confirm', () => {
+      const onChange = jest.fn();
+      const { container } = render(<DayRangePicker onChange={onChange} needConfirm />);
+
+      // Nothing happen if not confirmed
+      openPicker(container);
+      selectCell(5);
+      closePicker(container);
+
+      expect(container.querySelectorAll('input')[0]).toHaveValue('');
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      // Changed by click OK
+      openPicker(container);
+      selectCell(10);
+      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+
+      expect(container.querySelectorAll('input')[0]).toHaveValue('1990-09-10');
+
+      // End time
+      selectCell(15, 1);
+      expect(onChange).not.toHaveBeenCalled();
+      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-10', '1990-10-15']);
+    });
+
+    it('no need confirm is blur to submit', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          needConfirm={false}
+          picker="time"
+          onChange={onChange}
+          onCalendarChange={() => console.log(123)}
+        />,
+      );
+
+      // Change start time (manually focus since fireEvent.focus not change activeElement)
+      openPicker(container);
+      fireEvent.click(
+        document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[6],
+      );
+      document.querySelector<HTMLDivElement>('.rc-picker-panel-container').focus();
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      // Close panel to auto focus next end field
+      fireEvent.click(document.body);
+      expect(container.querySelectorAll('input')[1]).toHaveFocus();
+
+      expect(isOpen()).toBeTruthy();
+
+      // Select end time
+      fireEvent.click(
+        document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[11],
+      );
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      // Close panel to auto focus next end field
+      fireEvent.click(document.body);
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), ['06:00:00', '11:00:00']);
+    });
   });
 });

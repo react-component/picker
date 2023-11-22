@@ -78,11 +78,11 @@ export default () => {
         {...sharedLocale}
         picker="time"
         // needConfirm
-        // needConfirm={false}
+        needConfirm={false}
         // open
-        showTime={{
-          disabledHours: () => [0],
-        }}
+        // showTime={{
+        //   disabledHours: () => [0],
+        // }}
         value={rangeValue}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"

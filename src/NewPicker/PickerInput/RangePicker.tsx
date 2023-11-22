@@ -421,7 +421,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
    * - Selector: enter key
    * - Panel: OK button
    */
-  const triggerPartConfirm = (date?: DateType) => {
+  const triggerPartConfirm = (date?: DateType, skipFocus?: boolean) => {
     let nextValue = calendarValue;
 
     if (date) {
@@ -437,18 +437,9 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
     if (nextIndex === null) {
       triggerOpen(false, { force: true });
-    } else {
+    } else if (!skipFocus) {
       selectorRef.current.focus(nextIndex);
     }
-
-    // if (nextIndex === null) {
-    //   triggerCalendarChange(nextValue);
-    //   // triggerSubmitChange(nextValue);
-    //   triggerOpen(false, { force: true });
-    // } else {
-    //   triggerCalendarChange(nextValue);
-    //   selectorRef.current.focus(nextIndex);
-    // }
   };
 
   // ======================== Click =========================
@@ -644,7 +635,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
     // Trade as confirm on field leave
     if (!mergedOpen && lastOp === 'input') {
-      triggerPartConfirm();
+      triggerOpen(false);
+      triggerPartConfirm(null, true);
     }
 
     // Submit with complex picker
