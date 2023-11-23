@@ -1074,9 +1074,7 @@ describe('Picker.Range', () => {
             defaultValue={[getDay(defaultValue[0]), getDay(defaultValue[1] || defaultValue[0])]}
           />,
         );
-        console.log('~~~~~~~~~~~~');
         openPicker(container, 1);
-        console.log('~~~~~~~~~~~~');
         selectCell(targetCell);
         closePicker(container, 1);
         expect(onChange).toHaveBeenCalled();
