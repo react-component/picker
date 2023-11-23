@@ -2,7 +2,7 @@ import { useEvent } from 'rc-util';
 import raf from 'rc-util/lib/raf';
 import * as React from 'react';
 
-const SPEED_PTG = 1 / 5;
+const SPEED_PTG = 1 / 3;
 
 export default function useScrollTo(
   ulRef: React.RefObject<HTMLUListElement>,

@@ -624,12 +624,7 @@ describe('NewPicker.Range', () => {
     it('no need confirm is blur to submit', () => {
       const onChange = jest.fn();
       const { container } = render(
-        <DayRangePicker
-          needConfirm={false}
-          picker="time"
-          onChange={onChange}
-          onCalendarChange={() => console.log(123)}
-        />,
+        <DayRangePicker needConfirm={false} picker="time" onChange={onChange} />,
       );
 
       // Change start time (manually focus since fireEvent.focus not change activeElement)
@@ -708,6 +703,9 @@ describe('NewPicker.Range', () => {
           value: '00:00:00',
         },
       });
+      fireEvent.keyDown(startInput, {
+        key: 'Tab',
+      });
 
       endInput.focus();
       fireEvent.change(endInput, {
@@ -715,8 +713,9 @@ describe('NewPicker.Range', () => {
           value: '02:00:00',
         },
       });
-
-      fireEvent.blur(endInput);
+      fireEvent.keyDown(startInput, {
+        key: 'Tab',
+      });
 
       expect(onChange).toHaveBeenCalledWith(expect.anything(), ['00:00:00', '02:00:00']);
     });

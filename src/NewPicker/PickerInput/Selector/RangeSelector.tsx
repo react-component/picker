@@ -56,6 +56,7 @@ function RangeSelector<DateType = any>(
     focused,
     onFocus,
     onBlur,
+    onKeyDown,
     locale,
     generateConfig,
 
@@ -236,6 +237,8 @@ function RangeSelector<DateType = any>(
           triggerOpen(false, index);
           break;
       }
+
+      onKeyDown?.(event);
     },
   });
 

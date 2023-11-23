@@ -591,13 +591,10 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     lastOperation('input');
   };
 
-  const onSelectorSubmit = (date: DateType) => {
-    lastOperation('input');
-    triggerPartConfirm(date);
-  };
-
   // ======================== Focus =========================
   const onSelectorFocus: SelectorProps['onFocus'] = (event, index) => {
+    lastOperation('input');
+
     triggerOpen(true, {
       inherit: true,
     });
@@ -613,9 +610,13 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
     triggerFocus(false);
 
-    triggerPartConfirm();
-
     onBlur?.(event);
+  };
+
+  const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event) => {
+    if (event.key === 'Tab') {
+      triggerPartConfirm(null, true);
+    }
   };
 
   // ======================= Context ========================
@@ -708,7 +709,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
           focused={focused}
           onFocus={onSelectorFocus}
           onBlur={onSelectorBlur}
-          onSubmit={onSelectorSubmit}
+          onKeyDown={onSelectorKeyDown}
+          onSubmit={triggerPartConfirm}
           // Change
           value={hoverValues}
           maskFormat={maskFormat}

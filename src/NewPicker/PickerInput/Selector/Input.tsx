@@ -59,12 +59,13 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     helped,
     onHelp,
     onEnter,
+    onKeyDown,
     preserveInvalidOnBlur,
     invalid,
     // Pass to input
     ...restProps
   } = props;
-  const { value, onFocus, onBlur, onKeyDown, onMouseUp } = props;
+  const { value, onFocus, onBlur, onMouseUp } = props;
 
   const { prefixCls } = React.useContext(PickerContext);
   const inputPrefixCls = `${prefixCls}-input`;
@@ -202,6 +203,8 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     if (event.key === 'Enter') {
       onEnter();
     }
+
+    onKeyDown?.(event);
   };
 
   const onFormatKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
@@ -312,8 +315,6 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
     // Always trigger selection sync after key down
     forceSelectionSync({});
-
-    onKeyDown?.(event);
   };
 
   // ======================== Format ========================

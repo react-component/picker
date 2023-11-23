@@ -79,7 +79,7 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         picker="time"
-        // open={false}
+        open={false}
         // needConfirm
         // needConfirm={false}
         // open
