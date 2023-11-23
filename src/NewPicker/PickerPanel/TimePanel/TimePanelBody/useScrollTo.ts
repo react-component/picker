@@ -20,16 +20,30 @@ export default function useScrollTo(
     scrollingRef.current = false;
   };
 
-  const startScroll = (targetTop: number) => {
+  const startScroll = () => {
     const ul = ulRef.current;
     scrollDistRef.current = null;
 
     if (ul) {
+      const targetLi = ul.querySelector<HTMLLIElement>(`[data-value="${value}"]`);
+      const firstLi = ul.querySelector<HTMLLIElement>(`li`);
+
       const doScroll = () => {
         stopScroll();
         scrollingRef.current = true;
 
-        const currentTop = ul.scrollTop;
+        const { scrollTop: currentTop, offsetHeight } = ul;
+
+        // Wait for element exist
+        if (offsetHeight <= 0) {
+          scrollRafRef.current = raf(doScroll);
+          return;
+        }
+
+        const firstLiTop = firstLi.offsetTop;
+        const targetLiTop = targetLi.offsetTop;
+        const targetTop = targetLiTop - firstLiTop;
+
         const nextTop = currentTop + (targetTop - currentTop) * SPEED_PTG;
         const dist = Math.abs(targetTop - nextTop);
 
@@ -58,19 +72,7 @@ export default function useScrollTo(
   };
 
   // ======================== Trigger =========================
-  const syncScroll = useEvent(() => {
-    const ul = ulRef.current;
-    const targetLi = ul?.querySelector<HTMLLIElement>(`[data-value="${value}"]`);
-
-    if (targetLi) {
-      const firstLiTop = ul.querySelector<HTMLLIElement>(`li`).offsetTop;
-      const targetLiTop = targetLi.offsetTop;
-
-      const nextTop = targetLiTop - firstLiTop;
-
-      startScroll(nextTop);
-    }
-  });
+  const syncScroll = useEvent(startScroll);
 
   return [syncScroll, stopScroll, isScrolling];
 }
