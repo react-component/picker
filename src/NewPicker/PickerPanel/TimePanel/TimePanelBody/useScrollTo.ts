@@ -32,17 +32,17 @@ export default function useScrollTo(
         stopScroll();
         scrollingRef.current = true;
 
-        const { scrollTop: currentTop, offsetHeight } = ul;
-
-        // Wait for element exist
-        if (offsetHeight <= 0) {
-          scrollRafRef.current = raf(doScroll);
-          return;
-        }
+        const { scrollTop: currentTop } = ul;
 
         const firstLiTop = firstLi.offsetTop;
         const targetLiTop = targetLi.offsetTop;
         const targetTop = targetLiTop - firstLiTop;
+
+        // Wait for element exist
+        if (targetLiTop === 0 && targetLi !== firstLi) {
+          scrollRafRef.current = raf(doScroll);
+          return;
+        }
 
         const nextTop = currentTop + (targetTop - currentTop) * SPEED_PTG;
         const dist = Math.abs(targetTop - nextTop);
@@ -67,7 +67,9 @@ export default function useScrollTo(
         scrollRafRef.current = raf(doScroll);
       };
 
-      doScroll();
+      if (targetLi && firstLi) {
+        doScroll();
+      }
     }
   };
 

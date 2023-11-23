@@ -48,7 +48,10 @@ export default function TimeColumn(props: TimeUnitColumnProps) {
     syncScroll();
     clearDelayCheck();
 
-    return stopScroll;
+    return () => {
+      stopScroll();
+      clearDelayCheck();
+    };
   }, [value, optionalValue, units]);
 
   // ========================= Change =========================

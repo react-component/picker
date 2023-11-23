@@ -2,6 +2,7 @@
 import { act, fireEvent, render } from '@testing-library/react';
 import dayjs, { type Dayjs } from 'dayjs';
 import 'dayjs/locale/ar';
+import { spyElementPrototype } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import zh_CN from '../src/locale/zh_CN';
@@ -16,22 +17,18 @@ import {
   selectCell,
 } from './util/commonUtil';
 
-// jest.mock('rc-util/lib/hooks/useLayoutEffect', () => {
-//   const react = jest.requireActual('react');
-//   const { useLayoutUpdateEffect } = jest.requireActual('rc-util/lib/hooks/useLayoutEffect');
-
-//   return {
-//     __esModule: true,
-//     default: react.useLayoutEffect,
-//     useLayoutUpdateEffect,
-//   };
-// });
-
 describe('NewPicker.Range', () => {
   beforeEach(() => {
     resetWarned();
     jest.useFakeTimers().setSystemTime(getDay('1990-09-03 00:00:00').valueOf());
     dayjs.locale('zh-cn');
+
+    spyElementPrototype(HTMLLIElement, 'offsetTop', {
+      get() {
+        const childList = Array.from(this.parentNode?.childNodes || []);
+        return childList.indexOf(this) * 30;
+      },
+    });
   });
 
   afterEach(() => {
@@ -337,7 +334,11 @@ describe('NewPicker.Range', () => {
       jest.runAllTimers();
     });
 
-    fireEvent.scroll(document.querySelector('.rc-picker-time-panel-column'));
+    fireEvent.scroll(document.querySelector('.rc-picker-time-panel-column'), {
+      target: {
+        scrollTop: 0,
+      },
+    });
     act(() => {
       jest.runAllTimers();
     });
