@@ -691,4 +691,34 @@ describe('NewPicker.Range', () => {
       ]);
     });
   });
+
+  describe('open', () => {
+    it('open = false can also submit', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker onChange={onChange} picker="time" open={false} />,
+      );
+
+      const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+      const endInput = container.querySelectorAll<HTMLInputElement>('input')[1];
+
+      startInput.focus();
+      fireEvent.change(startInput, {
+        target: {
+          value: '00:00:00',
+        },
+      });
+
+      endInput.focus();
+      fireEvent.change(endInput, {
+        target: {
+          value: '02:00:00',
+        },
+      });
+
+      fireEvent.blur(endInput);
+
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), ['00:00:00', '02:00:00']);
+    });
+  });
 });

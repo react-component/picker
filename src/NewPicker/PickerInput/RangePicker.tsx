@@ -382,38 +382,6 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     // Trigger change only when date changed
     fillIndex(calendarValue, index, date);
 
-  const onSelectorChange = (date: DateType, index: number) => {
-    const clone = fillCalendarValue(date, index);
-
-    triggerCalendarChange(clone);
-  };
-
-  const onSelectorInputChange = () => {
-    lastOperation('input');
-  };
-
-  // ==================== Selector Focus ====================
-  const onSelectorFocus: SelectorProps['onFocus'] = (event, index) => {
-    triggerOpen(true, {
-      inherit: true,
-    });
-
-    setActiveIndex(index);
-    triggerFocus(true);
-
-    onFocus?.(event);
-
-    lastOperation('input');
-  };
-
-  const onSelectorBlur: SelectorProps['onBlur'] = (event) => {
-    triggerOpen(false);
-
-    triggerFocus(false);
-
-    onBlur?.(event);
-  };
-
   // ======================== Submit ========================
   /**
    * Trigger by confirm operation.
@@ -608,6 +576,48 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     />
   );
 
+  // ========================================================
+  // ==                      Selector                      ==
+  // ========================================================
+
+  // ======================== Change ========================
+  const onSelectorChange = (date: DateType, index: number) => {
+    const clone = fillCalendarValue(date, index);
+
+    triggerCalendarChange(clone);
+  };
+
+  const onSelectorInputChange = () => {
+    lastOperation('input');
+  };
+
+  const onSelectorSubmit = (date: DateType) => {
+    lastOperation('input');
+    triggerPartConfirm(date);
+  };
+
+  // ======================== Focus =========================
+  const onSelectorFocus: SelectorProps['onFocus'] = (event, index) => {
+    triggerOpen(true, {
+      inherit: true,
+    });
+
+    setActiveIndex(index);
+    triggerFocus(true);
+
+    onFocus?.(event);
+  };
+
+  const onSelectorBlur: SelectorProps['onBlur'] = (event) => {
+    triggerOpen(false);
+
+    triggerFocus(false);
+
+    triggerPartConfirm();
+
+    onBlur?.(event);
+  };
+
   // ======================= Context ========================
   const context = React.useMemo(
     () => ({
@@ -698,7 +708,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
           focused={focused}
           onFocus={onSelectorFocus}
           onBlur={onSelectorBlur}
-          onSubmit={triggerPartConfirm}
+          onSubmit={onSelectorSubmit}
           // Change
           value={hoverValues}
           maskFormat={maskFormat}
