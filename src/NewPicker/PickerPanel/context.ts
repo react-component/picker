@@ -64,6 +64,7 @@ export function useInfo<DateType = any>(
 export interface PickerHackContextProps {
   hidePrev?: boolean;
   hideNext?: boolean;
+  onCellDblClick?: () => void;
 }
 
 /**

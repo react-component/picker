@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PickerPanel, { type PickerPanelProps } from '../../PickerPanel';
-import { PickerHackContext } from '../../PickerPanel/context';
+import { PickerHackContext, type PickerHackContextProps } from '../../PickerPanel/context';
 import PickerContext from '../context';
 import { offsetPanelDate } from '../hooks/useRangePickerValue';
 import { type FooterProps } from './Footer';
@@ -15,7 +15,7 @@ export type PopupPanelProps<DateType = any> = MustProp &
 
 // TODO: `needConfirm` 下，连续点击右边的面板会持续位移，应该只需要在切换 field 时才做位移
 export default function PopupPanel<DateType = any>(props: PopupPanelProps<DateType>) {
-  const { picker, multiple, pickerValue, onPickerValueChange } = props;
+  const { picker, multiple, pickerValue, onPickerValueChange, onSubmit } = props;
   const { prefixCls, generateConfig } = React.useContext(PickerContext);
 
   // ======================== Offset ========================
@@ -35,15 +35,22 @@ export default function PopupPanel<DateType = any>(props: PopupPanelProps<DateTy
     onPickerValueChange(internalOffsetDate(nextDate, -1));
   };
 
+  // ======================= Context ========================
+  const sharedContext: PickerHackContextProps = {
+    onCellDblClick: () => {
+      onSubmit();
+    },
+  };
+
   // ======================== Render ========================
   // Multiple
   if (multiple) {
     return (
       <div className={`${prefixCls}-panels`}>
-        <PickerHackContext.Provider value={{ hideNext: true }}>
+        <PickerHackContext.Provider value={{ ...sharedContext, hideNext: true }}>
           <PickerPanel {...props} />
         </PickerHackContext.Provider>
-        <PickerHackContext.Provider value={{ hidePrev: true }}>
+        <PickerHackContext.Provider value={{ ...sharedContext, hidePrev: true }}>
           <PickerPanel
             {...props}
             pickerValue={nextPickerValue}
@@ -55,5 +62,9 @@ export default function PopupPanel<DateType = any>(props: PopupPanelProps<DateTy
   }
 
   // Single
-  return <PickerPanel {...props} />;
+  return (
+    <PickerHackContext.Provider value={sharedContext}>
+      <PickerPanel {...props} />
+    </PickerHackContext.Provider>
+  );
 }

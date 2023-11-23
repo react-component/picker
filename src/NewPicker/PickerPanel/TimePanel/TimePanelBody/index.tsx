@@ -2,7 +2,7 @@ import * as React from 'react';
 import { formatValue } from '../../../../utils/dateUtil';
 import { leftPad } from '../../../../utils/miscUtil';
 import type { SharedPanelProps, SharedTimeProps } from '../../../interface';
-import { PanelContext, type PanelContextProps } from '../../context';
+import { PanelContext, PickerHackContext, type PanelContextProps } from '../../context';
 import TimeColumn, { type Unit } from './TimeColumn';
 import { findValidateTime } from './util';
 
@@ -80,6 +80,8 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     onChange,
     pickerValue,
   } = React.useContext<PanelContextProps<DateType>>(PanelContext);
+
+  const { onCellDblClick } = React.useContext(PickerHackContext);
 
   // ========================= Value ==========================
   // PickerValue will tell which one to align on the top
@@ -328,6 +330,11 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
   };
 
   // ========================= Render =========================
+  const sharedColumnProps = {
+    onDblClick: onCellDblClick,
+    changeOnScroll,
+  };
+
   return (
     <div className={`${prefixCls}-content`}>
       {mergedShowHour && (
@@ -337,7 +344,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
           optionalValue={pickerHour}
           type="hour"
           onChange={onHourChange}
-          changeOnScroll={changeOnScroll}
+          {...sharedColumnProps}
         />
       )}
       {mergedShowMinute && (
@@ -347,7 +354,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
           optionalValue={pickerMinute}
           type="minute"
           onChange={onMinuteChange}
-          changeOnScroll={changeOnScroll}
+          {...sharedColumnProps}
         />
       )}
       {mergedShowSecond && (
@@ -357,7 +364,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
           optionalValue={pickerSecond}
           type="second"
           onChange={onSecondChange}
-          changeOnScroll={changeOnScroll}
+          {...sharedColumnProps}
         />
       )}
       {mergedShowMillisecond && (
@@ -367,7 +374,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
           optionalValue={pickerMillisecond}
           type="millisecond"
           onChange={onMillisecondChange}
-          changeOnScroll={changeOnScroll}
+          {...sharedColumnProps}
         />
       )}
       {mergedShowMeridiem && (
@@ -376,7 +383,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
           value={meridiem}
           type="meridiem"
           onChange={onMeridiemChange}
-          changeOnScroll={changeOnScroll}
+          {...sharedColumnProps}
         />
       )}
     </div>

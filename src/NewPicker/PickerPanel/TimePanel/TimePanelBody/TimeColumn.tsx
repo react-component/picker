@@ -19,11 +19,12 @@ export interface TimeUnitColumnProps {
   optionalValue?: number | string;
   type: 'hour' | 'minute' | 'second' | 'millisecond' | 'meridiem';
   onChange: (value: number | string) => void;
+  onDblClick?: VoidFunction;
   changeOnScroll?: boolean;
 }
 
 export default function TimeColumn(props: TimeUnitColumnProps) {
-  const { units, value, optionalValue, type, onChange, changeOnScroll } = props;
+  const { units, value, optionalValue, type, onChange, onDblClick, changeOnScroll } = props;
 
   const { prefixCls, cellRender, now, locale } = React.useContext(PanelContext);
 
@@ -123,6 +124,11 @@ export default function TimeColumn(props: TimeUnitColumnProps) {
               onClick={() => {
                 if (!disabled) {
                   onChange(unitValue);
+                }
+              }}
+              onDoubleClick={() => {
+                if (!disabled && onDblClick) {
+                  onDblClick();
                 }
               }}
               data-value={unitValue}

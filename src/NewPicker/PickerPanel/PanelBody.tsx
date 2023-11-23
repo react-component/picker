@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { formatValue, isInRange, isSame } from '../../utils/dateUtil';
 import type { PanelMode } from '../interface';
-import { PanelContext } from './context';
+import { PanelContext, PickerHackContext } from './context';
 
 export interface PanelBodyProps<DateType = any> {
   rowNum: number;
@@ -56,6 +56,9 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
   } = React.useContext(PanelContext);
 
   const cellPrefixCls = `${prefixCls}-cell`;
+
+  // ============================= Context ==============================
+  const { onCellDblClick } = React.useContext(PickerHackContext);
 
   // =============================== Body ===============================
   const rows: React.ReactNode[] = [];
@@ -119,6 +122,11 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
           onClick={() => {
             if (!disabled) {
               onChange(currentDate);
+            }
+          }}
+          onDoubleClick={() => {
+            if (!disabled && onCellDblClick) {
+              onCellDblClick();
             }
           }}
           onMouseEnter={() => {
