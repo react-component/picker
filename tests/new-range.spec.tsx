@@ -8,6 +8,7 @@ import zh_CN from '../src/locale/zh_CN';
 import {
   closePicker,
   DayRangePicker,
+  findCell,
   getDay,
   isOpen,
   isSame,
@@ -658,6 +659,29 @@ describe('NewPicker.Range', () => {
       });
 
       expect(onChange).toHaveBeenCalledWith(expect.anything(), ['06:00:00', '11:00:00']);
+    });
+
+    it('double click to confirm if needConfirm', () => {
+      const onChange = jest.fn();
+
+      const { container } = render(<DayRangePicker showTime onChange={onChange} />);
+      openPicker(container);
+
+      fireEvent.click(findCell(5));
+      fireEvent.doubleClick(findCell(5));
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      const li = document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[11];
+      fireEvent.click(li);
+      fireEvent.doubleClick(li);
+
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), [
+        '1990-09-05 00:00:00',
+        '1990-09-05 11:00:00',
+      ]);
     });
   });
 });
