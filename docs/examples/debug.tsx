@@ -80,7 +80,10 @@ export default () => {
         // needConfirm
         needConfirm={false}
         // open
-        showTime
+        showTime={{
+          format: 'HH',
+          // changeOnScroll: true,
+        }}
         // showTime={{
         //   disabledHours: () => [0],
         // }}

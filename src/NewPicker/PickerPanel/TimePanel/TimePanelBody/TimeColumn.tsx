@@ -1,11 +1,10 @@
 import classNames from 'classnames';
-import { useEvent } from 'rc-util';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
-import raf from 'rc-util/lib/raf';
 import * as React from 'react';
 import { PanelContext } from '../../context';
+import useScrollTo from './useScrollTo';
 
-const SCROLL_DELAY = 500;
+const SCROLL_DELAY = 300;
 
 export type Unit<ValueType = number | string> = {
   label: React.ReactText;
@@ -35,56 +34,36 @@ export default function TimeColumn(props: TimeUnitColumnProps) {
   const ulRef = React.useRef<HTMLUListElement>(null);
 
   // ========================= Scroll =========================
-  const timeoutRef = React.useRef<any>();
+  const checkDelayRef = React.useRef<any>();
 
-  const cleanScroll = () => {
-    clearTimeout(timeoutRef.current!);
+  const clearDelayCheck = () => {
+    clearTimeout(checkDelayRef.current);
   };
 
-  const scrollRafRef = React.useRef<number>(null);
-
-  // Scroll to value position
-  const scrollToValue = useEvent((val: number | string) => {
-    raf.cancel(scrollRafRef.current);
-
-    // Do not trigger realign by this effect scroll
-    setTimeout(cleanScroll, 100);
-
-    scrollRafRef.current = raf(() => {
-      const ul = ulRef.current;
-      const targetLi = ul?.querySelector<HTMLLIElement>(`[data-value="${val}"]`);
-
-      if (targetLi) {
-        const firstLiTop = ul.querySelector<HTMLLIElement>(`li`).offsetTop;
-        const targetLiTop = targetLi.offsetTop;
-
-        const nextTop = targetLiTop - firstLiTop;
-
-        // IE not support `scrollTo`
-        ul.scrollTop = nextTop;
-      }
-    });
-  });
+  // ========================== Sync ==========================
+  const [syncScroll, stopScroll, isScrolling] = useScrollTo(ulRef, value ?? optionalValue);
 
   // Effect sync value scroll
   useLayoutEffect(() => {
-    scrollToValue(value ?? optionalValue);
-  }, [value, optionalValue, units, scrollToValue]);
+    syncScroll();
+    clearDelayCheck();
 
+    return stopScroll;
+  }, [value, optionalValue, units]);
+
+  // ========================= Change =========================
   // Scroll event if sync onScroll
   const onInternalScroll: React.UIEventHandler<HTMLUListElement> = (event) => {
+    clearDelayCheck();
+
     const target = event.target as HTMLUListElement;
 
-    if (changeOnScroll) {
-      cleanScroll();
-
-      timeoutRef.current = setTimeout(() => {
+    if (!isScrolling() && changeOnScroll) {
+      checkDelayRef.current = setTimeout(() => {
         const ul = ulRef.current!;
-
         const firstLiTop = ul.querySelector<HTMLLIElement>(`li`).offsetTop;
         const liList = Array.from(ul.querySelectorAll<HTMLLIElement>(`li`));
         const liTopList = liList.map((li) => li.offsetTop - firstLiTop);
-
         const liDistList = liTopList.map((top, index) => {
           if (units[index].disabled) {
             return Number.MAX_SAFE_INTEGER;
@@ -95,11 +74,9 @@ export default function TimeColumn(props: TimeUnitColumnProps) {
         // Find min distance index
         const minDist = Math.min(...liDistList);
         const minDistIndex = liDistList.findIndex((dist) => dist === minDist);
-
         const targetUnit = units[minDistIndex];
         if (targetUnit && !targetUnit.disabled) {
           onChange(targetUnit.value);
-          scrollToValue(targetUnit.value);
         }
       }, SCROLL_DELAY);
     }
