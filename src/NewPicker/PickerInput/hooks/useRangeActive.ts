@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { RangeValueType } from '../RangePicker';
-import { useDelayEffect } from './useDelayState';
+import useLockEffect from './useLockEffect';
 
 export type OperationType = 'input' | 'panel';
 
@@ -57,18 +57,17 @@ export default function useRangeActive<DateType>(
   };
 
   // ============================= Effect =============================
-  useDelayEffect(open, () => {
-    if (open) {
+  useLockEffect(focused, () => {
+    if (!focused) {
       activeListRef.current = [];
     }
   });
 
-  // Record for the open timing `activeIndex`
   React.useEffect(() => {
-    if (open) {
+    if (focused) {
       activeListRef.current.push(activeIndex);
     }
-  }, [open, activeIndex]);
+  }, [focused, activeIndex]);
 
   return [activeIndex, setActiveIndex, focused, triggerFocus, lastOperation, nextActiveIndex];
 }

@@ -72,18 +72,21 @@ export default () => {
 
   return (
     <div>
+      <input defaultValue="00:01:00" />
+
       {/* <SinglePicker ref={singleRef} suffixIcon="🧶" /> */}
       <br />
       <RangePicker
         {...sharedLocale}
-        // picker="time"
+        picker="time"
+        open={false}
         // needConfirm
-        needConfirm={false}
+        // needConfirm={false}
         // open
-        showTime={{
-          format: 'HH',
-          // changeOnScroll: true,
-        }}
+        // showTime={{
+        //   format: 'HH',
+        //   // changeOnScroll: true,
+        // }}
         // showTime={{
         //   disabledHours: () => [0],
         // }}

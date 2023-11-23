@@ -586,7 +586,12 @@ describe('NewPicker.Range', () => {
   describe('needConfirm', () => {
     it('normal picker need confirm', () => {
       const onChange = jest.fn();
-      const { container } = render(<DayRangePicker onChange={onChange} needConfirm />);
+      const { container } = render(
+        <>
+          <DayRangePicker onChange={onChange} needConfirm />
+          <button className="focus" />
+        </>,
+      );
 
       // Nothing happen if not confirmed
       openPicker(container);
@@ -598,6 +603,8 @@ describe('NewPicker.Range', () => {
       act(() => {
         jest.runAllTimers();
       });
+
+      container.querySelector<HTMLButtonElement>('.focus').focus();
 
       // Changed by click OK
       openPicker(container);

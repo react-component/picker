@@ -22,6 +22,7 @@ import {
   isSame,
   openPicker,
   selectCell,
+  waitFakeTimer,
 } from './util/commonUtil';
 
 global.error = console.error;
@@ -1837,9 +1838,11 @@ describe('Picker.Range', () => {
   });
 
   it('selected date when open is true should switch panel', () => {
-    render(<DayRangePicker open />);
+    const { container } = render(<DayRangePicker open />);
 
+    fireEvent.focus(container.querySelector('input'));
     fireEvent.click(document.querySelector('.rc-picker-cell'));
+
     expect(document.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
   });
 
@@ -1889,11 +1892,14 @@ describe('Picker.Range', () => {
   it('dateTime mode should be can use a confirm button to close the panel', () => {
     const onOpenChange = jest.fn();
 
-    render(<DayRangePicker open showTime onOpenChange={onOpenChange} />);
+    const { container } = render(<DayRangePicker open showTime onOpenChange={onOpenChange} />);
+    fireEvent.focus(container.querySelector('input'));
 
     for (let i = 0; i < 2; i++) {
       selectCell(24);
       fireEvent.click(document.querySelector('.rc-picker-ok button'));
+
+      waitFakeTimer();
     }
 
     expect(onOpenChange).toHaveBeenCalledWith(false);

@@ -136,6 +136,12 @@ export class MomentRangePicker extends React.Component<MomentRangePickerProps> {
 }
 
 // ====================================== UTIL ======================================
+export function waitFakeTimer() {
+  act(() => {
+    jest.runAllTimers();
+  });
+}
+
 export function openPicker(container: HTMLElement, index = 0) {
   const input = container.querySelectorAll('input')[index];
   fireEvent.mouseDown(input);
