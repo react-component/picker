@@ -114,6 +114,44 @@ describe('Picker.Range', () => {
     });
   });
 
+  it('endDate is after startDate', () => {
+    const onChange = jest.fn();
+    const onCalendarChange = jest.fn();
+    const wrapper = mount(
+      <MomentRangePicker
+        defaultValue={[getMoment('1987-11-28'), getMoment('1988-09-03')]}
+        onChange={onChange}
+        onCalendarChange={onCalendarChange}
+      />,
+    );
+
+    // Redo start date
+    wrapper.openPicker();
+    wrapper
+      .find('.rc-picker-year-btn')
+      .first()
+      .simulate('click');
+    wrapper.selectCell(1989);
+
+    wrapper
+      .find('.rc-picker-month-btn')
+      .first()
+      .simulate('click');
+    wrapper.selectCell('Feb');
+
+    wrapper.selectCell(13);
+    expect(onChange).not.toHaveBeenCalled();
+
+    expect(onCalendarChange.mock.calls[0][1]).toEqual(['1989-02-13', '']);
+
+    // End date
+    onCalendarChange.mockReset();
+    wrapper.selectCell(14);
+
+    expect(onChange.mock.calls[0][1]).toEqual(['1989-02-13', '1989-02-14']);
+    expect(onCalendarChange.mock.calls[0][1]).toEqual(['1989-02-13', '1989-02-14']);
+  });
+
   it('exchanged value should re-order', () => {
     const { container } = render(
       <MomentRangePicker defaultValue={[getMoment('1990-09-03'), getMoment('1989-11-28')]} />,
