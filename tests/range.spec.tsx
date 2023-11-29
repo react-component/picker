@@ -1889,7 +1889,7 @@ describe('Picker.Range', () => {
     });
   });
 
-  it('dateTime mode should be can use a confirm button to close the panel', () => {
+  it('dateTime mode should be can use a confirm button to close the panel', async () => {
     const onOpenChange = jest.fn();
 
     const { container } = render(<DayRangePicker open showTime onOpenChange={onOpenChange} />);
@@ -1899,7 +1899,7 @@ describe('Picker.Range', () => {
       selectCell(24);
       fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
-      waitFakeTimer();
+      await waitFakeTimer();
     }
 
     expect(onOpenChange).toHaveBeenCalledWith(false);
