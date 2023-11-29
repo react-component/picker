@@ -178,15 +178,18 @@ function PickerPanel<DateType = any>(
 
   // >>> PickerValue
   // PickerValue is used to control the current displaying panel
-  const [mergedPickerValue, setPickerValue] = useMergedState(
+  const [mergedPickerValue, setInternalPickerValue] = useMergedState(
     defaultPickerValue || mergedValue || now,
     {
       value: pickerValue,
-      onChange: (val) => {
-        onPickerValueChange?.(val);
-      },
     },
   );
+
+  const setPickerValue = (nextPickerValue: DateType) => {
+    setInternalPickerValue(nextPickerValue);
+
+    onPickerValueChange?.(nextPickerValue);
+  };
 
   const triggerModeChange = (nextMode: PanelMode, viewDate?: DateType) => {
     setMergedMode(nextMode);

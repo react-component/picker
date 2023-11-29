@@ -92,8 +92,13 @@ export default () => {
           console.log('🏆 Next Open:', nextOpen);
         }}
         onPickerValueChange={(val, info) => {
-          console.error('233');
-          console.log('👻 Picker Value Change:', val, val?.[1]?.format('YYYY-MM-DD'), info);
+          console.log(
+            '👻 Picker Value Change:',
+            val,
+            val?.[0]?.format('YYYY-MM-DD'),
+            val?.[1]?.format('YYYY-MM-DD'),
+            info,
+          );
         }}
         id={{
           start: 'inputStart',
