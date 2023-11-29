@@ -78,12 +78,15 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
+        style={{
+          marginLeft: 300,
+          width: 800,
+        }}
         // picker="time"
         // open={false}
-        open
         // needConfirm
         // needConfirm={false}
-        // open
+        open
         // showTime={{
         //   // format: 'HH',
         //   // changeOnScroll: true,
@@ -91,6 +94,7 @@ export default () => {
         // showTime={{
         //   disabledHours: () => [0],
         // }}
+        // defaultOpen
         value={rangeValue}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"

@@ -1,4 +1,6 @@
 import classNames from 'classnames';
+import ResizeObserver from 'rc-resize-observer';
+import { useEvent } from 'rc-util';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
 import { formatValue } from '../../../utils/dateUtil';
@@ -251,7 +253,7 @@ function RangeSelector<DateType = any>(
     [offsetUnit]: 0,
   });
 
-  React.useEffect(() => {
+  const syncActiveOffset = useEvent(() => {
     const input = getInput(activeIndex);
     if (input) {
       const { offsetWidth, offsetLeft, offsetParent } = input.nativeElement;
@@ -277,6 +279,10 @@ function RangeSelector<DateType = any>(
 
       onActiveOffset(offset);
     }
+  });
+
+  React.useEffect(() => {
+    syncActiveOffset();
   }, [activeIndex]);
 
   // ======================== Clear =========================
@@ -284,41 +290,43 @@ function RangeSelector<DateType = any>(
 
   // ======================== Render ========================
   return (
-    <div
-      {...pickAttrs(restProps, false)}
-      className={classNames(
-        prefixCls,
-        `${prefixCls}-range`,
-        {
-          [`${prefixCls}-focused`]: focused,
-          [`${prefixCls}-invalid`]: invalid.some((i) => i),
-          [`${prefixCls}-rtl`]: rtl,
-        },
-        className,
-      )}
-      style={style}
-      ref={rootRef}
-      onClick={onClick}
-      // Not lose current input focus
-      onMouseDown={(e) => {
-        const { target } = e;
-        if (
-          target !== inputStartRef.current.inputElement &&
-          target !== inputEndRef.current.inputElement
-        ) {
-          e.preventDefault();
-        }
+    <ResizeObserver onResize={syncActiveOffset}>
+      <div
+        {...pickAttrs(restProps, false)}
+        className={classNames(
+          prefixCls,
+          `${prefixCls}-range`,
+          {
+            [`${prefixCls}-focused`]: focused,
+            [`${prefixCls}-invalid`]: invalid.some((i) => i),
+            [`${prefixCls}-rtl`]: rtl,
+          },
+          className,
+        )}
+        style={style}
+        ref={rootRef}
+        onClick={onClick}
+        // Not lose current input focus
+        onMouseDown={(e) => {
+          const { target } = e;
+          if (
+            target !== inputStartRef.current.inputElement &&
+            target !== inputEndRef.current.inputElement
+          ) {
+            e.preventDefault();
+          }
 
-        onMouseDown?.(e);
-      }}
-    >
-      <Input ref={inputStartRef} {...getInputProps(0)} />
-      <div className={`${prefixCls}-range-separator`}>{separator}</div>
-      <Input ref={inputEndRef} {...getInputProps(1)} />
-      <div className={`${prefixCls}-active-bar`} style={activeBarStyle} />
-      <Icon type="suffix" icon={suffixIcon} />
-      {showClear && <ClearIcon type="clear" icon={clearIcon} onClear={onClear} />}
-    </div>
+          onMouseDown?.(e);
+        }}
+      >
+        <Input ref={inputStartRef} {...getInputProps(0)} />
+        <div className={`${prefixCls}-range-separator`}>{separator}</div>
+        <Input ref={inputEndRef} {...getInputProps(1)} />
+        <div className={`${prefixCls}-active-bar`} style={activeBarStyle} />
+        <Icon type="suffix" icon={suffixIcon} />
+        {showClear && <ClearIcon type="clear" icon={clearIcon} onClear={onClear} />}
+      </div>
+    </ResizeObserver>
   );
 }
 

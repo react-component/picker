@@ -737,6 +737,21 @@ describe('NewPicker.Range', () => {
 
       expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-07', '1990-09-11']);
     });
+
+    it('control mode expect onOpenChange trigger correct', async () => {
+      const onChange = jest.fn();
+      const onOpenChange = jest.fn();
+      render(<DayRangePicker open onChange={onChange} onOpenChange={onOpenChange} />);
+
+      await waitFakeTimer();
+
+      fireEvent.focus(document.querySelector('.rc-picker-panel-container'));
+      selectCell(5);
+      selectCell(10);
+
+      expect(onChange).toHaveBeenCalled();
+      expect(onOpenChange).toHaveBeenCalledWith(false);
+    });
   });
 
   describe('components', () => {
