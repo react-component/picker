@@ -78,15 +78,15 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
-        picker="time"
+        // picker="time"
         // open={false}
-        // needConfirm
+        needConfirm
         // needConfirm={false}
         // open
-        showTime={{
-          // format: 'HH',
-          // changeOnScroll: true,
-        }}
+        // showTime={{
+        //   // format: 'HH',
+        //   // changeOnScroll: true,
+        // }}
         // showTime={{
         //   disabledHours: () => [0],
         // }}

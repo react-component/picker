@@ -299,20 +299,6 @@ describe('NewPicker.Range', () => {
           .textContent,
       ).toEqual('晚上');
     });
-
-    it('components support', () => {
-      render(
-        <DayRangePicker
-          picker="time"
-          components={{
-            time: () => <h1 className="bamboo">Hello</h1>,
-          }}
-          open
-        />,
-      );
-
-      expect(document.querySelector('.bamboo').textContent).toEqual('Hello');
-    });
   });
 
   it('showTime.changeOnScroll', () => {
@@ -719,6 +705,38 @@ describe('NewPicker.Range', () => {
       });
 
       expect(onChange).toHaveBeenCalledWith(expect.anything(), ['00:00:00', '02:00:00']);
+    });
+  });
+
+  describe('components', () => {
+    it('panel', () => {
+      render(
+        <DayRangePicker
+          picker="time"
+          components={{
+            time: () => <h1 className="bamboo">Hello</h1>,
+          }}
+          open
+        />,
+      );
+
+      expect(document.querySelector('.bamboo').textContent).toEqual('Hello');
+    });
+
+    it('input', () => {
+      const Input = React.forwardRef<HTMLInputElement, React.HTMLAttributes<HTMLInputElement>>(
+        (props, ref) => <input {...props} ref={ref} data-id="input-it" />,
+      );
+
+      const { container } = render(
+        <DayRangePicker
+          components={{
+            input: Input,
+          }}
+        />,
+      );
+
+      expect(container.querySelector('input')).toHaveAttribute('data-id', 'input-it');
     });
   });
 });

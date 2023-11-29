@@ -626,8 +626,9 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       locale: filledLocale,
       generateConfig,
       button: components.button,
+      input: components.input,
     }),
-    [prefixCls, filledLocale, generateConfig, components.button],
+    [prefixCls, filledLocale, generateConfig, components.button, components.input],
   );
 
   // ======================== Effect ========================

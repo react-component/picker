@@ -67,7 +67,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   } = props;
   const { value, onFocus, onBlur, onMouseUp } = props;
 
-  const { prefixCls } = React.useContext(PickerContext);
+  const { prefixCls, input: Input = 'input' } = React.useContext(PickerContext);
   const inputPrefixCls = `${prefixCls}-input`;
 
   // ======================== Value =========================
@@ -375,7 +375,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
         [`${inputPrefixCls}-placeholder`]: helped,
       })}
     >
-      <input
+      <Input
         ref={inputRef}
         aria-invalid={invalid}
         {...restProps}

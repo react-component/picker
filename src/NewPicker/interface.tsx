@@ -216,6 +216,7 @@ export interface SharedPanelProps<DateType = any> {
 export type Components<DateType = any> = Partial<
   Record<InternalMode, React.ComponentType<SharedPanelProps<DateType>>> & {
     button?: React.ComponentType<any> | string;
+    input?: React.ComponentType<any> | string;
   }
 >;
 
