@@ -801,29 +801,29 @@ describe('NewPicker.Range', () => {
     it('key selection', () => {
       const { container } = render(<Demo />);
 
-      const firstInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+      const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
 
       // Year selection
-      fireEvent.focus(firstInput);
+      fireEvent.focus(startInput);
 
-      expect(firstInput.selectionStart).toEqual(0);
-      expect(firstInput.selectionEnd).toEqual(4);
+      expect(startInput.selectionStart).toEqual(0);
+      expect(startInput.selectionEnd).toEqual(4);
 
       // Month selection
-      fireEvent.keyDown(firstInput, {
+      fireEvent.keyDown(startInput, {
         key: 'ArrowRight',
       });
 
-      expect(firstInput.selectionStart).toEqual(4);
-      expect(firstInput.selectionEnd).toEqual(6);
+      expect(startInput.selectionStart).toEqual(4);
+      expect(startInput.selectionEnd).toEqual(6);
 
       // Back to year selection
-      fireEvent.keyDown(firstInput, {
+      fireEvent.keyDown(startInput, {
         key: 'ArrowLeft',
       });
 
-      expect(firstInput.selectionStart).toEqual(0);
-      expect(firstInput.selectionEnd).toEqual(4);
+      expect(startInput.selectionStart).toEqual(0);
+      expect(startInput.selectionEnd).toEqual(4);
     });
 
     it('paste', async () => {
@@ -856,6 +856,83 @@ describe('NewPicker.Range', () => {
       });
 
       expect(onChange).toHaveBeenCalledWith(expect.anything(), ['20200903', '20200905']);
+    });
+
+    it('click to change selection cell', () => {
+      const { container } = render(<Demo />);
+
+      const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+
+      // Year selection
+      fireEvent.focus(startInput);
+
+      fireEvent.mouseDown(startInput);
+      startInput.selectionStart = 5;
+      fireEvent.mouseUp(startInput);
+      expect(startInput.selectionStart).toEqual(4);
+      expect(startInput.selectionEnd).toEqual(6);
+    });
+
+    it('blur to reset back text', async () => {
+      const { container } = render(<Demo />);
+
+      const firstInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+
+      fireEvent.focus(firstInput);
+      expect(firstInput).toHaveValue('YYYYMMDD');
+
+      fireEvent.blur(firstInput);
+      await waitFakeTimer();
+      expect(firstInput).toHaveValue('');
+    });
+
+    it('backspace to reset', async () => {
+      const { container } = render(
+        <Demo defaultValue={[getDay('2000-01-01'), getDay('2000-05-05')]} />,
+      );
+
+      const firstInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+      fireEvent.focus(firstInput);
+
+      fireEvent.keyDown(firstInput, {
+        key: 'Backspace',
+      });
+
+      expect(firstInput).toHaveValue('YYYY0101');
+    });
+
+    it('up and down', () => {
+      const { container } = render(<Demo />);
+
+      const firstInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+      fireEvent.focus(firstInput);
+
+      fireEvent.keyDown(firstInput, {
+        key: 'ArrowUp',
+      });
+      expect(firstInput).toHaveValue('1990MMDD');
+
+      fireEvent.keyDown(firstInput, {
+        key: 'ArrowDown',
+      });
+      expect(firstInput).toHaveValue('1989MMDD');
+    });
+
+    it('number key', () => {
+      const { container } = render(<Demo />);
+
+      const firstInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+      fireEvent.focus(firstInput);
+
+      const fullText = '20000309';
+
+      for (let i = 0; i < fullText.length; i += 1) {
+        fireEvent.keyDown(firstInput, {
+          key: fullText[i],
+        });
+      }
+
+      expect(firstInput).toHaveValue('20000309');
     });
   });
 });

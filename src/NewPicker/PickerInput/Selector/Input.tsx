@@ -31,7 +31,7 @@ export interface InputRef {
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   format?: string;
-  validateFormat: (value: string, format: string) => boolean;
+  validateFormat: (value: string) => boolean;
   active?: boolean;
   suffixIcon?: React.ReactNode;
   value?: string;
@@ -119,8 +119,11 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   };
 
   // ======================== Change ========================
+  /**
+   * Triggered by paste, keyDown and focus to show format
+   */
   const triggerInputChange = useEvent((text: string) => {
-    if (validateFormat(text, format)) {
+    if (validateFormat(text)) {
       onChange(text);
     }
     setInputValue(text);
@@ -143,7 +146,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     // Get paste text
     const pasteText = event.clipboardData.getData('text');
 
-    if (validateFormat(pasteText, format)) {
+    if (validateFormat(pasteText)) {
       triggerInputChange(pasteText);
     }
   };
@@ -200,7 +203,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
   // ======================= Keyboard =======================
   const onSharedKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
-    if (event.key === 'Enter' && validateFormat(inputValue, format)) {
+    if (event.key === 'Enter' && validateFormat(inputValue)) {
       onSubmit();
     }
 

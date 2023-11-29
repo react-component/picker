@@ -169,14 +169,29 @@ function RangeSelector<DateType = any>(
 
   const valueTexts = React.useMemo(() => [getText(value[0]), getText(value[1])], [value, getText]);
 
+  // ======================= Validate =======================
+  const validateFormat = (text: string) => {
+    for (let i = 0; i < format.length; i += 1) {
+      const singleFormat = format[i];
+
+      // Only support string type
+      if (typeof singleFormat === 'string') {
+        const parsed = parseDate(text, singleFormat);
+
+        if (parsed) {
+          return parsed;
+        }
+      }
+    }
+
+    return false;
+  };
+
   // ======================== Inputs ========================
   const getInputProps = (index: number): InputProps => ({
     // ============== Shared ==============
     format: maskFormat,
-    validateFormat: (str: string, formatStr: string) => {
-      const parsed = parseDate(str, formatStr);
-      return !!parsed;
-    },
+    validateFormat: (text) => !!validateFormat(text),
     preserveInvalidOnBlur,
 
     readOnly: inputReadOnly,
@@ -211,19 +226,12 @@ function RangeSelector<DateType = any>(
     onChange: (text) => {
       onInputChange();
 
-      for (let i = 0; i < format.length; i += 1) {
-        const singleFormat = format[i];
+      const parsed = validateFormat(text);
 
-        // Only support string type
-        if (typeof singleFormat === 'string') {
-          const parsed = parseDate(text, singleFormat);
-
-          if (parsed) {
-            onInvalid(index, false);
-            onChange(parsed, index);
-            return;
-          }
-        }
+      if (parsed) {
+        onInvalid(index, false);
+        onChange(parsed, index);
+        return;
       }
 
       // Tell outer that the value typed is invalid.
