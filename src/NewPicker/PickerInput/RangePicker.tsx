@@ -399,6 +399,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     // Get next focus index
     const nextIndex = nextActiveIndex(nextValue);
 
+    console.log('???@!!!', nextIndex, activeIndex);
+
     // Change calendar value and tell flush it
     triggerCalendarChange(nextValue);
     flushSubmit(activeIndex, nextIndex === null);

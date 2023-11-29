@@ -15,6 +15,7 @@ import {
   isSame,
   openPicker,
   selectCell,
+  waitFakeTimer,
 } from './util/commonUtil';
 
 describe('NewPicker.Range', () => {
@@ -705,6 +706,36 @@ describe('NewPicker.Range', () => {
       });
 
       expect(onChange).toHaveBeenCalledWith(expect.anything(), ['00:00:00', '02:00:00']);
+    });
+
+    // https://github.com/ant-design/ant-design/issues/30525
+    it('strange open case', async () => {
+      const onChange = jest.fn();
+      const renderDemo = (open: boolean) => <DayRangePicker open={open} onChange={onChange} />;
+      const { rerender } = render(renderDemo(true));
+      await waitFakeTimer();
+
+      fireEvent.focus(document.querySelector('.rc-picker-panel-container'));
+      selectCell(5);
+      selectCell(10);
+
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-05', '1990-09-10']);
+      onChange.mockReset();
+
+      // Force close and open again
+      rerender(renderDemo(false));
+      fireEvent.blur(document.querySelector('.rc-picker-panel-container'));
+      await waitFakeTimer();
+
+      rerender(renderDemo(true));
+      fireEvent.blur(document.querySelector('.rc-picker-panel-container'));
+      await waitFakeTimer();
+
+      fireEvent.focus(document.querySelector('.rc-picker-panel-container'));
+      selectCell(7);
+      selectCell(11);
+
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-07', '1990-09-11']);
     });
   });
 

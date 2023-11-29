@@ -80,7 +80,8 @@ export default () => {
         {...sharedLocale}
         // picker="time"
         // open={false}
-        needConfirm
+        open
+        // needConfirm
         // needConfirm={false}
         // open
         // showTime={{

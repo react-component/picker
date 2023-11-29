@@ -55,6 +55,7 @@ export default function useRangeActive<DateType>(
 
     return nextIndex;
   };
+ 
 
   // ============================= Effect =============================
   useLockEffect(focused, () => {

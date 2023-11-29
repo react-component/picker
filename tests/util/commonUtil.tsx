@@ -136,9 +136,10 @@ export class MomentRangePicker extends React.Component<MomentRangePickerProps> {
 }
 
 // ====================================== UTIL ======================================
-export function waitFakeTimer() {
-  act(() => {
+export async function waitFakeTimer() {
+  await act(async () => {
     jest.runAllTimers();
+    await Promise.resolve();
   });
 }
 
