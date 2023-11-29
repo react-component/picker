@@ -111,6 +111,28 @@ describe('NewPicker.Range', () => {
       );
     });
 
+    it('correct onPickerValueChange range', () => {
+      const onPickerValueChange = jest.fn();
+      const { container } = render(<DayRangePicker onPickerValueChange={onPickerValueChange} />);
+
+      openPicker(container);
+      selectCell(5);
+
+      // One is start picker value change, another is end picker reset
+      expect(onPickerValueChange).toHaveBeenCalledTimes(2);
+
+      expect(onPickerValueChange.mock.calls[0][1]).toEqual(
+        expect.objectContaining({
+          range: 'start',
+        }),
+      );
+      expect(onPickerValueChange.mock.calls[1][1]).toEqual(
+        expect.objectContaining({
+          range: 'end',
+        }),
+      );
+    });
+
     it('half set defaultPickerValue', () => {
       const onPickerValueChange = jest.fn();
 
@@ -934,5 +956,27 @@ describe('NewPicker.Range', () => {
 
       expect(firstInput).toHaveValue('20000309');
     });
+  });
+
+  it('support required', () => {
+    const { container } = render(<DayRangePicker required />);
+    expect(container.querySelectorAll('input')[0]).toBeRequired();
+    expect(container.querySelectorAll('input')[1]).toBeRequired();
+  });
+
+  it('renderExtraFooter not close', () => {
+    const onOpenChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker
+        onOpenChange={onOpenChange}
+        renderExtraFooter={() => <input className="bamboo" />}
+      />,
+    );
+
+    openPicker(container);
+
+    fireEvent.focus(document.querySelector('.bamboo'));
+
+    expect(onOpenChange).not.toHaveBeenCalledWith(false);
   });
 });

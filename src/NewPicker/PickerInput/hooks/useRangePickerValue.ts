@@ -111,6 +111,8 @@ export default function useRangePickerValue<DateType = any>(
     ],
   );
 
+  console.log('???????', mergedActiveIndex);
+
   const setCurrentPickerValue = (
     nextPickerValue: DateType,
     source: 'reset' | 'panel' = 'panel',

@@ -78,23 +78,6 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
-        // picker="time"
-        // open={false}
-        // needConfirm
-        // needConfirm={false}
-        format={{
-          format: 'YYYYMMDD',
-          align: true,
-        }}
-        // open
-        // showTime={{
-        //   // format: 'HH',
-        //   // changeOnScroll: true,
-        // }}
-        // showTime={{
-        //   disabledHours: () => [0],
-        // }}
-        // defaultOpen
         value={rangeValue}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
@@ -109,12 +92,14 @@ export default () => {
           console.log('🏆 Next Open:', nextOpen);
         }}
         onPickerValueChange={(val, info) => {
+          console.error('233');
           console.log('👻 Picker Value Change:', val, val?.[1]?.format('YYYY-MM-DD'), info);
         }}
         id={{
           start: 'inputStart',
           end: 'inputEnd',
         }}
+        renderExtraFooter={() => <input />}
       />
       <br />
 

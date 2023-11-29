@@ -228,8 +228,8 @@ export type CustomFormat<DateType> = (value: DateType) => string;
 export type FormatType<DateType = any> = string | CustomFormat<DateType>;
 
 export type SharedHTMLAttrs = Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  'value' | 'defaultValue' | 'onChange' | 'placeholder' | 'id' | 'onInvalid'
+  React.InputHTMLAttributes<HTMLDivElement>,
+  'value' | 'defaultValue' | 'onChange' | 'placeholder' | 'id' | 'onInvalid' | 'disabled'
 >;
 
 export interface SharedPickerProps<DateType = any> extends SharedHTMLAttrs {

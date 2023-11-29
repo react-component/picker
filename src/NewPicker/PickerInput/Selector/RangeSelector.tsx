@@ -103,6 +103,10 @@ function RangeSelector<DateType = any>(
     // Native
     onMouseDown,
 
+    // Input
+    required,
+    'aria-required': ariaRequired,
+
     ...restProps
   } = props;
 
@@ -195,6 +199,9 @@ function RangeSelector<DateType = any>(
     preserveInvalidOnBlur,
 
     readOnly: inputReadOnly,
+
+    required,
+    'aria-required': ariaRequired,
 
     // ============= By Index =============
     id: ids[index],

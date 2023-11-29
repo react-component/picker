@@ -9,7 +9,7 @@ import PopupPanel, { type PopupPanelProps } from './PopupPanel';
 import PresetPanel from './PresetPanel';
 
 export interface PopupProps<DateType = any, PresetValue = DateType>
-  extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onFocus' | 'onBlur'>,
+  extends Pick<React.InputHTMLAttributes<HTMLDivElement>, 'onFocus' | 'onBlur'>,
     FooterProps<DateType>,
     PopupPanelProps<DateType> {
   panelRender?: SharedPickerProps['panelRender'];
