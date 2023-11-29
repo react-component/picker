@@ -205,7 +205,7 @@ function RangeSelector<DateType = any>(
       onBlur(event, index);
     },
 
-    onEnter: onSubmit,
+    onSubmit,
 
     // Get validate text value
     onChange: (text) => {

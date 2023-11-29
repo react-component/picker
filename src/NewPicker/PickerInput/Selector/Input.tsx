@@ -36,7 +36,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   suffixIcon?: React.ReactNode;
   value?: string;
   onChange: (value: string) => void;
-  onEnter: VoidFunction;
+  onSubmit: VoidFunction;
   /** Meaning current is from the hover cell getting the placeholder text */
   helped?: boolean;
   /**
@@ -58,7 +58,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     onInput,
     helped,
     onHelp,
-    onEnter,
+    onSubmit,
     onKeyDown,
     preserveInvalidOnBlur,
     invalid,
@@ -67,7 +67,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   } = props;
   const { value, onFocus, onBlur, onMouseUp } = props;
 
-  const { prefixCls, input: Input = 'input' } = React.useContext(PickerContext);
+  const { prefixCls, input: Component = 'input' } = React.useContext(PickerContext);
   const inputPrefixCls = `${prefixCls}-input`;
 
   // ======================== Value =========================
@@ -200,8 +200,8 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
   // ======================= Keyboard =======================
   const onSharedKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
-    if (event.key === 'Enter') {
-      onEnter();
+    if (event.key === 'Enter' && validateFormat(inputValue, format)) {
+      onSubmit();
     }
 
     onKeyDown?.(event);
@@ -375,7 +375,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
         [`${inputPrefixCls}-placeholder`]: helped,
       })}
     >
-      <Input
+      <Component
         ref={inputRef}
         aria-invalid={invalid}
         {...restProps}

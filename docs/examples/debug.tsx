@@ -78,15 +78,15 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
-        style={{
-          marginLeft: 300,
-          width: 800,
-        }}
         // picker="time"
         // open={false}
         // needConfirm
         // needConfirm={false}
-        open
+        format={{
+          format: 'YYYYMMDD',
+          align: true,
+        }}
+        // open
         // showTime={{
         //   // format: 'HH',
         //   // changeOnScroll: true,

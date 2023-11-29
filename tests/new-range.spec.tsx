@@ -6,6 +6,7 @@ import { spyElementPrototype } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import zh_CN from '../src/locale/zh_CN';
+import type { RangePickerProps } from '../src/NewPicker';
 import {
   closePicker,
   DayRangePicker,
@@ -783,6 +784,78 @@ describe('NewPicker.Range', () => {
       );
 
       expect(container.querySelector('input')).toHaveAttribute('data-id', 'input-it');
+    });
+  });
+
+  describe('format', () => {
+    const Demo = (props?: Partial<RangePickerProps<Dayjs>>) => (
+      <DayRangePicker
+        format={{
+          format: 'YYYYMMDD',
+          align: true,
+        }}
+        {...props}
+      />
+    );
+
+    it('key selection', () => {
+      const { container } = render(<Demo />);
+
+      const firstInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+
+      // Year selection
+      fireEvent.focus(firstInput);
+
+      expect(firstInput.selectionStart).toEqual(0);
+      expect(firstInput.selectionEnd).toEqual(4);
+
+      // Month selection
+      fireEvent.keyDown(firstInput, {
+        key: 'ArrowRight',
+      });
+
+      expect(firstInput.selectionStart).toEqual(4);
+      expect(firstInput.selectionEnd).toEqual(6);
+
+      // Back to year selection
+      fireEvent.keyDown(firstInput, {
+        key: 'ArrowLeft',
+      });
+
+      expect(firstInput.selectionStart).toEqual(0);
+      expect(firstInput.selectionEnd).toEqual(4);
+    });
+
+    it('paste', async () => {
+      const onChange = jest.fn();
+      const { container } = render(<Demo onChange={onChange} />);
+
+      const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+      const endInput = container.querySelectorAll<HTMLInputElement>('input')[1];
+
+      fireEvent.focus(startInput);
+      fireEvent.paste(startInput, {
+        clipboardData: {
+          getData: () => '20200903',
+        },
+      });
+      fireEvent.keyDown(startInput, {
+        key: 'Enter',
+      });
+
+      // End field
+      await waitFakeTimer();
+      fireEvent.focus(endInput);
+      fireEvent.paste(endInput, {
+        clipboardData: {
+          getData: () => '20200905',
+        },
+      });
+      fireEvent.keyDown(endInput, {
+        key: 'Enter',
+      });
+
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), ['20200903', '20200905']);
     });
   });
 });
