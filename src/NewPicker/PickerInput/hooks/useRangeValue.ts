@@ -241,6 +241,10 @@ export default function useRangeValue<DateType = any>(
         // Always try to trigger submit first
         triggerSubmit();
 
+        // Trigger calendar change since this is a effect reset
+        // https://github.com/ant-design/ant-design/issues/22351
+        triggerCalendarChange(mergedValue);
+
         // Sync with value anyway
         syncWithValue();
       }

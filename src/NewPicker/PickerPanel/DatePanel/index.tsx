@@ -50,7 +50,7 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
 
   // =========================== PrefixColumn ===========================
   const prefixColumn =
-    mode === ('week' || showWeek)
+    mode === 'week' || showWeek
       ? (date: DateType) => {
           // >>> Additional check for disabled
           const disabled = disabledDate?.(date, { type: 'week' });

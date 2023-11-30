@@ -7,6 +7,7 @@ import * as React from 'react';
 import useLocale from '../hooks/useLocale';
 import useTimeConfig from '../hooks/useTimeConfig';
 import type {
+  BaseInfo,
   InternalMode,
   OnOpenChange,
   OpenConfig,
@@ -62,9 +63,7 @@ export interface RangePickerProps<DateType>
   onCalendarChange?: (
     dates: RangeValueType<DateType>,
     dateStrings: [string, string],
-    info: {
-      range: 'start' | 'end';
-    },
+    info: BaseInfo,
   ) => void;
 
   // Placeholder
@@ -90,9 +89,8 @@ export interface RangePickerProps<DateType>
    */
   onPickerValueChange?: (
     date: [DateType, DateType],
-    info: {
+    info: BaseInfo & {
       source: 'reset' | 'panel';
-      range: 'start' | 'end';
     },
   ) => void;
 
@@ -257,6 +255,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   // ======================== Active ========================
   const [activeIndex, setActiveIndex, focused, triggerFocus, lastOperation, nextActiveIndex] =
     useRangeActive(mergedOpen, mergedDisabled, mergedAllowEmpty);
+
+  const activeRange = activeIndex === 1 ? 'end' : 'start';
 
   // ========================= Mode =========================
   const [modes, setModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
@@ -506,12 +506,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   };
 
   // >>> cellRender
-  const onInternalCellRender = useCellRender(
-    cellRender,
-    dateRender,
-    monthCellRender,
-    activeIndex === 1 ? 'end' : 'start',
-  );
+  const onInternalCellRender = useCellRender(cellRender, dateRender, monthCellRender, activeRange);
 
   // >>> Value
   const panelValue = calendarValue[activeIndex] || null;
@@ -602,7 +597,9 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     setActiveIndex(index);
     triggerFocus(true);
 
-    onFocus?.(event);
+    onFocus?.(event, {
+      range: activeRange,
+    });
   };
 
   const onSelectorBlur: SelectorProps['onBlur'] = (event) => {
@@ -610,7 +607,9 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
 
     triggerFocus(false);
 
-    onBlur?.(event);
+    onBlur?.(event, {
+      range: activeRange,
+    });
   };
 
   const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event) => {

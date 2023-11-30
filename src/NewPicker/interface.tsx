@@ -91,17 +91,19 @@ export type DisabledDate<DateType = any> = (
   },
 ) => boolean;
 
-export type CellRenderInfo<DateType> = {
+export interface BaseInfo {
+  range?: 'start' | 'end';
+}
+
+export interface CellRenderInfo<DateType> extends BaseInfo {
   prefixCls: string;
   // The cell wrapper element
   originNode: React.ReactElement;
   today: DateType;
-  // mask current cell as start or end when range picker
-  range?: 'start' | 'end';
   type: PanelMode;
   locale?: Locale;
   subType?: 'hour' | 'minute' | 'second' | 'millisecond' | 'meridiem';
-};
+}
 
 export type CellRender<DateType, CurrentType = DateType | number> = (
   current: CurrentType,
@@ -229,8 +231,21 @@ export type FormatType<DateType = any> = string | CustomFormat<DateType>;
 
 export type SharedHTMLAttrs = Omit<
   React.InputHTMLAttributes<HTMLDivElement>,
-  'value' | 'defaultValue' | 'onChange' | 'placeholder' | 'id' | 'onInvalid' | 'disabled'
+  | 'value'
+  | 'defaultValue'
+  | 'onChange'
+  | 'placeholder'
+  | 'id'
+  | 'onInvalid'
+  | 'disabled'
+  | 'onFocus'
+  | 'onBlur'
 >;
+
+export type PickerFocusEventHandler = (
+  e: React.FocusEvent<HTMLInputElement>,
+  info: BaseInfo,
+) => void;
 
 export interface SharedPickerProps<DateType = any> extends SharedHTMLAttrs {
   // MISC
@@ -250,7 +265,10 @@ export interface SharedPickerProps<DateType = any> extends SharedHTMLAttrs {
 
   // Picker
   picker?: PickerMode;
+  /** Only work when picker is `date` or `time` */
   showTime?: boolean | SharedTimeProps<DateType>;
+  /** Only work when picker is `date` */
+  showWeek?: boolean;
   /**
    * Config the input field parse and format.
    * When set `format.align`, it will force user input align with your input,
@@ -282,8 +300,8 @@ export interface SharedPickerProps<DateType = any> extends SharedHTMLAttrs {
   clearIcon?: React.ReactNode;
 
   // Active
-  onFocus?: React.FocusEventHandler<HTMLInputElement>;
-  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onFocus?: PickerFocusEventHandler;
+  onBlur?: PickerFocusEventHandler;
 
   inputReadOnly?: boolean;
 

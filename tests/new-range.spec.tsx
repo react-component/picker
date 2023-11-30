@@ -979,4 +979,27 @@ describe('NewPicker.Range', () => {
 
     expect(onOpenChange).not.toHaveBeenCalledWith(false);
   });
+
+  it('halfway close should also trigger onCalendarChange', () => {
+    const onCalendarChange = jest.fn();
+    const { container } = render(<DayRangePicker onCalendarChange={onCalendarChange} />);
+
+    openPicker(container);
+    selectCell(5);
+
+    expect(onCalendarChange).toHaveBeenCalled();
+    onCalendarChange.mockReset();
+
+    // Close
+    closePicker(container);
+    expect(onCalendarChange).toHaveBeenCalledWith([null, null], ['', ''], expect.anything());
+  });
+
+  it('showWeek', () => {
+    const { container } = render(<DayRangePicker showWeek />);
+
+    openPicker(container);
+
+    expect(document.querySelector('.rc-picker-cell-week')).toBeTruthy();
+  });
 });

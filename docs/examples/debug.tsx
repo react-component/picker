@@ -78,7 +78,9 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
+        showWeek
         value={rangeValue}
+        open
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
         onChange={(val, text) => {
