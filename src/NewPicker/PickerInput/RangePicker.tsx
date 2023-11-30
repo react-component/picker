@@ -121,6 +121,10 @@ export interface RangePickerProps<DateType>
   ) => void;
 }
 
+function getActiveRange(activeIndex: number) {
+  return activeIndex === 1 ? 'end' : 'start';
+}
+
 function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: React.Ref<PickerRef>) {
   const {
     // Style
@@ -256,7 +260,21 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   const [activeIndex, setActiveIndex, focused, triggerFocus, lastOperation, nextActiveIndex] =
     useRangeActive(mergedOpen, mergedDisabled, mergedAllowEmpty);
 
-  const activeRange = activeIndex === 1 ? 'end' : 'start';
+  const onSharedFocus = (event: React.FocusEvent<HTMLElement>, index?: number) => {
+    triggerFocus(true);
+
+    onFocus?.(event, {
+      range: getActiveRange(index ?? activeIndex),
+    });
+  };
+
+  const onSharedBlur = (event: React.FocusEvent<HTMLElement>, index?: number) => {
+    triggerFocus(false);
+
+    onBlur?.(event, {
+      range: getActiveRange(index ?? activeIndex),
+    });
+  };
 
   // ========================= Mode =========================
   const [modes, setModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
@@ -474,13 +492,9 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   };
 
   // >>> Focus
-  const onPanelFocus: React.FocusEventHandler<HTMLDivElement> = () => {
-    triggerFocus(true);
+  const onPanelFocus: React.FocusEventHandler<HTMLElement> = (event) => {
     triggerOpen(true);
-  };
-
-  const onPanelBlur: React.FocusEventHandler<HTMLDivElement> = () => {
-    triggerFocus(false);
+    onSharedFocus(event);
   };
 
   // >>> Calendar
@@ -506,7 +520,12 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   };
 
   // >>> cellRender
-  const onInternalCellRender = useCellRender(cellRender, dateRender, monthCellRender, activeRange);
+  const onInternalCellRender = useCellRender(
+    cellRender,
+    dateRender,
+    monthCellRender,
+    getActiveRange(activeIndex),
+  );
 
   // >>> Value
   const panelValue = calendarValue[activeIndex] || null;
@@ -542,7 +561,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
       disabledDate={mergedDisabledDate}
       // Focus
       onFocus={onPanelFocus}
-      onBlur={onPanelBlur}
+      onBlur={onSharedBlur}
       // Mode
       picker={picker}
       mode={mergedMode}
@@ -586,7 +605,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     lastOperation('input');
   };
 
-  // ======================== Focus =========================
+  // ======================= Selector =======================
   const onSelectorFocus: SelectorProps['onFocus'] = (event, index) => {
     lastOperation('input');
 
@@ -595,21 +614,14 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     });
 
     setActiveIndex(index);
-    triggerFocus(true);
 
-    onFocus?.(event, {
-      range: activeRange,
-    });
+    onSharedFocus(event, index);
   };
 
-  const onSelectorBlur: SelectorProps['onBlur'] = (event) => {
+  const onSelectorBlur: SelectorProps['onBlur'] = (event, index) => {
     triggerOpen(false);
 
-    triggerFocus(false);
-
-    onBlur?.(event, {
-      range: activeRange,
-    });
+    onSharedBlur(event, index);
   };
 
   const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event) => {

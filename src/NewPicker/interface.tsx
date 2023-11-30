@@ -242,10 +242,7 @@ export type SharedHTMLAttrs = Omit<
   | 'onBlur'
 >;
 
-export type PickerFocusEventHandler = (
-  e: React.FocusEvent<HTMLInputElement>,
-  info: BaseInfo,
-) => void;
+export type PickerFocusEventHandler = (e: React.FocusEvent<HTMLElement>, info: BaseInfo) => void;
 
 export interface SharedPickerProps<DateType = any> extends SharedHTMLAttrs {
   // MISC

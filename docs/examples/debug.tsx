@@ -80,9 +80,15 @@ export default () => {
         {...sharedLocale}
         showWeek
         value={rangeValue}
-        open
+        // open
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
+        onFocus={(_, info) => {
+          console.log('👁️ Focus', info);
+        }}
+        onBlur={(_, info) => {
+          console.log('👁️ Blur', info);
+        }}
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
           setRangeValue(val);

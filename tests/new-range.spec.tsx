@@ -1002,4 +1002,38 @@ describe('NewPicker.Range', () => {
 
     expect(document.querySelector('.rc-picker-cell-week')).toBeTruthy();
   });
+
+  it('focus event', () => {
+    const onFocus = jest.fn();
+    const onBlur = jest.fn();
+
+    const { container } = render(<DayRangePicker onFocus={onFocus} onBlur={onBlur} />);
+
+    openPicker(container);
+    expect(onFocus).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({ range: 'start' }),
+    );
+    onFocus.mockReset();
+
+    closePicker(container);
+    expect(onBlur).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({ range: 'start' }),
+    );
+    onBlur.mockReset();
+
+    // End field
+    openPicker(container, 1);
+    expect(onFocus).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({ range: 'end' }),
+    );
+
+    closePicker(container, 1);
+    expect(onBlur).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({ range: 'end' }),
+    );
+  });
 });
