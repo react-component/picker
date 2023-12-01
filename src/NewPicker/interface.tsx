@@ -90,6 +90,12 @@ export type DisabledDate<DateType = any> = (
   date: DateType,
   info: {
     type: PanelMode;
+    /**
+     * Only work in RangePicker.
+     * Tell the first date user selected on this range selection.
+     * This is not care about what field user click.
+     */
+    from?: DateType;
   },
 ) => boolean;
 
@@ -320,8 +326,8 @@ export interface SharedPickerProps<DateType extends object = any> extends Shared
 
   // Disabled
   disabledDate?: DisabledDate<DateType>;
-  minDate?: LimitDate<DateType>;
-  maxDate?: LimitDate<DateType>;
+  minDate?: DateType;
+  maxDate?: DateType;
 
   // Open
   defaultOpen?: boolean;

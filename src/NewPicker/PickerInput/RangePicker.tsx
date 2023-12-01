@@ -369,8 +369,8 @@ function RangePicker<DateType extends object = any>(
     generateConfig,
     filledLocale,
     disabledBoundaryDate,
-    minDate,
-    maxDate,
+    // minDate,
+    // maxDate,
   );
 
   // ======================= Validate =======================
