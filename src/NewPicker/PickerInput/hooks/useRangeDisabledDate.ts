@@ -3,7 +3,7 @@ import { isSame } from '../../../utils/dateUtil';
 import type { DisabledDate, LimitDate, Locale } from '../../interface';
 import type { RangeValueType } from '../RangePicker';
 
-export default function useRangeDisabledDate<DateType = any>(
+export default function useRangeDisabledDate<DateType extends object = any>(
   values: RangeValueType<DateType>,
   disabled: [boolean, boolean],
   activeIndexList: number[],
@@ -16,7 +16,6 @@ export default function useRangeDisabledDate<DateType = any>(
   const activeIndex = activeIndexList[activeIndexList.length - 1];
 
   const firstValuedIndex = activeIndexList.find((index) => values[index]);
-  console.log('firstValuedIndex', firstValuedIndex);
 
   const rangeDisabledDate: DisabledDate<DateType> = (date, info) => {
     const [start, end] = values;
@@ -53,6 +52,23 @@ export default function useRangeDisabledDate<DateType = any>(
       from: values[firstValuedIndex],
     };
     const mergedMinDate = typeof minDate === 'function' ? minDate(limitInfo) : minDate;
+    const mergedMaxDate = typeof maxDate === 'function' ? maxDate(limitInfo) : maxDate;
+
+    if (
+      mergedMinDate &&
+      generateConfig.isAfter(mergedMinDate, date) &&
+      !isSame(generateConfig, locale, mergedMinDate, date, info.type)
+    ) {
+      return true;
+    }
+
+    if (
+      mergedMaxDate &&
+      generateConfig.isAfter(date, mergedMaxDate) &&
+      !isSame(generateConfig, locale, mergedMaxDate, date, info.type)
+    ) {
+      return true;
+    }
 
     // ============================= Origin =============================
     return disabledDate?.(date, info);

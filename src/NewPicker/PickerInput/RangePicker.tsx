@@ -125,7 +125,10 @@ function getActiveRange(activeIndex: number) {
   return activeIndex === 1 ? 'end' : 'start';
 }
 
-function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: React.Ref<PickerRef>) {
+function RangePicker<DateType extends object = any>(
+  props: RangePickerProps<DateType>,
+  ref: React.Ref<PickerRef>,
+) {
   const {
     // Style
     prefixCls = 'rc-picker',
@@ -142,6 +145,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     disabled,
     allowEmpty,
     disabledDate,
+    minDate,
+    maxDate,
 
     // Open
     defaultOpen,
@@ -327,6 +332,8 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     generateConfig,
     filledLocale,
     disabledDate,
+    minDate,
+    maxDate,
   );
 
   // ======================= Validate =======================

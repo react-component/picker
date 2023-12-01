@@ -78,10 +78,10 @@ export default () => {
       <br />
       <RangePicker
         {...sharedLocale}
-        showWeek
         value={rangeValue}
-        // open
-        minDate={dayjs()}
+        minDate={() => {
+          return dayjs();
+        }}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
         onFocus={(_, info) => {
