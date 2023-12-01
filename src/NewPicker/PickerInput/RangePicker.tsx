@@ -326,10 +326,21 @@ function RangePicker<DateType extends object = any>(
   const mergedInputReadOnly = useInputReadOnly(formatList, inputReadOnly);
 
   // ======================= Boundary =======================
-  const isInvalidBoundary = useDisabledBoundary(generateConfig, locale, minDate, maxDate);
+  const disabledBoundaryDate = useDisabledBoundary(
+    generateConfig,
+    locale,
+    disabledDate,
+    minDate,
+    maxDate,
+  );
 
   // ====================== Invalidate ======================
-  const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, mergedShowTime);
+  const isInvalidateDate = useInvalidate(
+    generateConfig,
+    picker,
+    disabledBoundaryDate,
+    mergedShowTime,
+  );
 
   // ======================== Value =========================
   const [
@@ -357,7 +368,7 @@ function RangePicker<DateType extends object = any>(
     activeIndexList,
     generateConfig,
     filledLocale,
-    disabledDate,
+    disabledBoundaryDate,
     minDate,
     maxDate,
   );

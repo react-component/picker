@@ -1,6 +1,7 @@
+import { useEvent } from 'rc-util';
 import type { GenerateConfig } from '../../../generate';
 import { isSame } from '../../../utils/dateUtil';
-import type { InternalMode, LimitDate, Locale } from '../../interface';
+import type { DisabledDate, InternalMode, LimitDate, Locale } from '../../interface';
 
 export type IsInvalidBoundary<DateType> = (
   currentDate: DateType,
@@ -8,12 +9,24 @@ export type IsInvalidBoundary<DateType> = (
   fromDate?: DateType,
 ) => boolean;
 
+/**
+ * Merge `disabledDate` with `minDate` & `maxDate`.
+ */
 export default function useDisabledBoundary<DateType extends object = any>(
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
+  disabledDate?: DisabledDate<DateType>,
   minDate?: LimitDate<DateType>,
   maxDate?: LimitDate<DateType>,
-): IsInvalidBoundary<DateType> {
+) {
+  const mergedDisabledDate = useEvent<DisabledDate<DateType>>((date, info) => {
+    if (disabledDate && disabledDate(date, info)) {
+      return true;
+    }
+
+    return false;
+  });
+
   const isInValidBoundary: IsInvalidBoundary<DateType> = (date, type, from) => {
     const toBoundaryDate = (boundary?: LimitDate<DateType>) =>
       typeof boundary === 'function'
@@ -44,5 +57,5 @@ export default function useDisabledBoundary<DateType extends object = any>(
     return false;
   };
 
-  return isInValidBoundary;
+  return mergedDisabledDate;
 }

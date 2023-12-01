@@ -1,6 +1,6 @@
 import type { GenerateConfig } from '../../../generate';
 import { isSame } from '../../../utils/dateUtil';
-import type { DisabledDate, LimitDate, Locale } from '../../interface';
+import type { DisabledDate, Locale } from '../../interface';
 import type { RangeValueType } from '../RangePicker';
 
 export default function useRangeDisabledDate<DateType extends object = any>(
@@ -10,8 +10,8 @@ export default function useRangeDisabledDate<DateType extends object = any>(
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
   disabledDate?: DisabledDate<DateType>,
-  minDate?: LimitDate<DateType>,
-  maxDate?: LimitDate<DateType>,
+  // minDate?: LimitDate<DateType>,
+  // maxDate?: LimitDate<DateType>,
 ) {
   const activeIndex = activeIndexList[activeIndexList.length - 1];
   const firstValuedIndex = activeIndexList.find((index) => values[index]);
@@ -47,27 +47,27 @@ export default function useRangeDisabledDate<DateType extends object = any>(
     }
 
     // =========================== Min or Max ===========================
-    const limitInfo = {
-      from: activeIndex !== firstValuedIndex ? values[firstValuedIndex] : undefined,
-    };
-    const mergedMinDate = typeof minDate === 'function' ? minDate(limitInfo) : minDate;
-    const mergedMaxDate = typeof maxDate === 'function' ? maxDate(limitInfo) : maxDate;
+    // const limitInfo = {
+    //   from: activeIndex !== firstValuedIndex ? values[firstValuedIndex] : undefined,
+    // };
+    // const mergedMinDate = typeof minDate === 'function' ? minDate(limitInfo) : minDate;
+    // const mergedMaxDate = typeof maxDate === 'function' ? maxDate(limitInfo) : maxDate;
 
-    if (
-      mergedMinDate &&
-      generateConfig.isAfter(mergedMinDate, date) &&
-      !isSame(generateConfig, locale, mergedMinDate, date, info.type)
-    ) {
-      return true;
-    }
+    // if (
+    //   mergedMinDate &&
+    //   generateConfig.isAfter(mergedMinDate, date) &&
+    //   !isSame(generateConfig, locale, mergedMinDate, date, info.type)
+    // ) {
+    //   return true;
+    // }
 
-    if (
-      mergedMaxDate &&
-      generateConfig.isAfter(date, mergedMaxDate) &&
-      !isSame(generateConfig, locale, mergedMaxDate, date, info.type)
-    ) {
-      return true;
-    }
+    // if (
+    //   mergedMaxDate &&
+    //   generateConfig.isAfter(date, mergedMaxDate) &&
+    //   !isSame(generateConfig, locale, mergedMaxDate, date, info.type)
+    // ) {
+    //   return true;
+    // }
 
     // ============================= Origin =============================
     return disabledDate?.(date, info);
