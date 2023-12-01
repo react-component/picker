@@ -113,8 +113,6 @@ export function useInnerValue<DateType extends object = any>(
 export default function useRangeValue<DateType extends object = any>(
   info: Pick<
     RangePickerProps<DateType>,
-    // | 'value'
-    // | 'defaultValue'
     | 'generateConfig'
     | 'locale'
     | 'allowEmpty'
@@ -146,10 +144,6 @@ export default function useRangeValue<DateType extends object = any>(
 
     picker,
 
-    // Value
-    // value,
-    // defaultValue,
-    // onCalendarChange,
     onChange,
 
     // Focus
@@ -180,50 +174,19 @@ export default function useRangeValue<DateType extends object = any>(
     return [isSameStart && isSameEnd, isSameStart, isSameEnd];
   };
 
-  // // ============================ Values ============================
-  // // This is the root value which will sync with controlled or uncontrolled value
-  // const [innerValue, setInnerValue] = useMergedState(defaultValue, {
-  //   value,
-  // });
-  // const mergedValue = innerValue || EMPTY_VALUE;
-
-  // // ========================= Inner Values =========================
-  // // Used for internal value management.
-  // // It should always use `mergedValue` in render logic
-  // const [calendarValue, setCalendarValue] = useSyncState(mergedValue);
-
+  // ============================ Values ============================
   // Used for trigger `onChange` event.
   // Record current value which is wait for submit.
   const [submitValue, setSubmitValue] = useSyncState(mergedValue);
 
   /** Sync calendarValue & submitValue back with value */
   const syncWithValue = useEvent(() => {
-    // setCalendarValue(mergedValue);
     setSubmitValue(mergedValue);
   });
 
   React.useEffect(() => {
     syncWithValue();
   }, [mergedValue]);
-
-  // // ============================ Change ============================
-  // const triggerCalendarChange: TriggerCalendarChange<DateType> = useEvent(([start, end]) => {
-  //   const clone: RangeValueType<DateType> = [start, end];
-
-  //   // Update merged value
-  //   const [isSameMergedDates, isSameStart] = isSameDates(calendarValue(), clone);
-
-  //   if (!isSameMergedDates) {
-  //     setCalendarValue(clone);
-
-  //     // Trigger calendar change event
-  //     if (onCalendarChange) {
-  //       onCalendarChange(clone, getDateTexts(clone), {
-  //         range: isSameStart ? 'end' : 'start',
-  //       });
-  //     }
-  //   }
-  // });
 
   // ============================ Submit ============================
   const triggerSubmit = useEvent((nextValue?: RangeValueType<DateType>) => {
