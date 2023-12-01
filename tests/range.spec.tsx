@@ -298,6 +298,11 @@ describe('Picker.Range', () => {
     });
 
     it('null value with disabled', () => {
+      // Should not warning with allowEmpty
+      render(<DayRangePicker disabled={[false, true]} allowEmpty value={[null, null]} />);
+      expect(errorSpy).not.toHaveBeenCalled();
+
+      // Should warning
       render(<DayRangePicker disabled={[false, true]} value={[null, null]} />);
 
       expect(errorSpy).toHaveBeenCalledWith(

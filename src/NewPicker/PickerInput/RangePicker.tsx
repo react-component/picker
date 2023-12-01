@@ -108,7 +108,7 @@ export interface RangePickerProps<DateType>
 
   // Control
   disabled?: boolean | [boolean, boolean];
-  allowEmpty?: [boolean, boolean];
+  allowEmpty?: boolean | [boolean, boolean];
 
   // Time
   showTime?: boolean | RangeTimeProps<DateType>;
@@ -674,13 +674,17 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
     const isIndexEmpty = (index: number) => {
       return (
         // Value is empty
-        (value && !value[index]) ||
+        !value?.[index] &&
         // DefaultValue is empty
-        (defaultValue && !defaultValue[index])
+        !defaultValue?.[index]
       );
     };
 
-    if (mergedDisabled.some((fieldDisabled, index) => fieldDisabled && isIndexEmpty(index))) {
+    if (
+      mergedDisabled.some(
+        (fieldDisabled, index) => fieldDisabled && isIndexEmpty(index) && !mergedAllowEmpty[index],
+      )
+    ) {
       warning(
         false,
         '`disabled` should not set with empty `value`. You should set `allowEmpty` or `value` instead.',
