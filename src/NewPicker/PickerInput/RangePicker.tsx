@@ -51,7 +51,7 @@ function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig:
 
 export type RangeValueType<DateType> = [start?: DateType, end?: DateType];
 
-export interface RangePickerProps<DateType>
+export interface RangePickerProps<DateType extends object>
   extends Omit<SharedPickerProps<DateType>, 'showTime' | 'id'> {
   // Structure
   id?: SelectorIdType;
@@ -768,7 +768,7 @@ function RangePicker<DateType extends object = any>(
   );
 }
 
-const RefRangePicker = React.forwardRef(RangePicker) as <DateType>(
+const RefRangePicker = React.forwardRef(RangePicker) as <DateType extends object = any>(
   props: RangePickerProps<DateType> & { ref?: React.Ref<PickerRef> },
 ) => React.ReactElement;
 

@@ -12,6 +12,8 @@ export type Locale = {
   // Input format
   /** @deprecated Please use `fieldDateFormat` instead */
   dateFormat?: string;
+  /** @deprecated Please use `fieldDateTimeFormat` instead */
+  dateTimeFormat?: string;
   /** Input field formatter like YYYY-MM-DD HH:mm:ss */
   fieldDateTimeFormat?: string;
   /** Input field formatter like YYYY-MM-DD */
@@ -258,7 +260,7 @@ export type SharedHTMLAttrs = Omit<
 
 export type PickerFocusEventHandler = (e: React.FocusEvent<HTMLElement>, info: BaseInfo) => void;
 
-export interface SharedPickerProps<DateType = any> extends SharedHTMLAttrs {
+export interface SharedPickerProps<DateType extends object = any> extends SharedHTMLAttrs {
   // MISC
   direction?: 'ltr' | 'rtl';
 

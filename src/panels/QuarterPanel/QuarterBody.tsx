@@ -61,7 +61,7 @@ function QuarterBody<DateType>(props: QuarterBodyProps<DateType>) {
       getCellText={date =>
         formatValue(date, {
           locale,
-          format: locale.quarterFormat || '[Q]Q',
+          format: locale.cellQuarterFormat || '[Q]Q',
           generateConfig,
         })
       }

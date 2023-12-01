@@ -5,14 +5,8 @@ const locale: Locale = {
 
   yearFormat: 'YYYY年',
 
-  dateCellFormat: 'D',
-  meridiemCellFormat: 'A',
-
-  hour: '时',
-  minute: '分',
-  second: '秒',
-  millisecond: '毫秒',
-  meridiem: '',
+  cellDateFormat: 'D',
+  cellMeridiemFormat: 'A',
 
   today: '今天',
   now: '此刻',

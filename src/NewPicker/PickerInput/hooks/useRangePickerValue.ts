@@ -56,7 +56,7 @@ function fillTimePickerValue<DateType>(
   return tmpDate;
 }
 
-export default function useRangePickerValue<DateType = any>(
+export default function useRangePickerValue<DateType extends object = any>(
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
   calendarValue: RangeValueType<DateType>,

@@ -32,7 +32,7 @@ const EMPTY_VALUE: [null, null] = [null, null];
 
 type TriggerCalendarChange<DateType> = ([start, end]: RangeValueType<DateType>) => void;
 
-export default function useRangeValue<DateType = any>(
+export default function useRangeValue<DateType extends object = any>(
   info: Pick<
     RangePickerProps<DateType>,
     | 'value'
@@ -71,7 +71,7 @@ export default function useRangeValue<DateType = any>(
     onChange,
 
     // Focus
-    preserveInvalidOnBlur,
+    // preserveInvalidOnBlur,
 
     // Checker
     allowEmpty,

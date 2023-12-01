@@ -10,7 +10,7 @@ import type {
 /**
  * Check if provided date is valid for the `disabledDate` & `showTime.disabledTime`.
  */
-export default function useInvalidate<DateType = any>(
+export default function useInvalidate<DateType extends object = any>(
   generateConfig: GenerateConfig<DateType>,
   picker: PanelMode,
   disabledDate?: SharedPickerProps<DateType>['disabledDate'],
