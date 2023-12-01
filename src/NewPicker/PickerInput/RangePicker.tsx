@@ -34,7 +34,7 @@ import usePresets from './hooks/usePresets';
 import useRangeActive from './hooks/useRangeActive';
 import useRangeDisabledDate from './hooks/useRangeDisabledDate';
 import useRangePickerValue from './hooks/useRangePickerValue';
-import useRangeValue from './hooks/useRangeValue';
+import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
 import { useClearIcon } from './Selector/hooks/useClearIcon';
@@ -166,6 +166,7 @@ function RangePicker<DateType extends object = any>(
     // Mode
     mode,
     onPanelChange,
+    onCalendarChange,
 
     // Picker Value
     defaultPickerValue,
@@ -262,6 +263,21 @@ function RangePicker<DateType extends object = any>(
   const complexPicker = internalPicker === 'time' || internalPicker === 'datetime';
   const mergedNeedConfirm = needConfirm ?? complexPicker;
 
+  // ======================== Format ========================
+  const [formatList, maskFormat] = useFieldFormat(internalPicker, filledLocale, format);
+
+  // ======================== Values ========================
+  const [mergedValue, setInnerValue, getCalendarValue, triggerCalendarChange] = useInnerValue(
+    generateConfig,
+    locale,
+    formatList,
+    defaultValue,
+    value,
+    onCalendarChange,
+  );
+
+  const calendarValue = getCalendarValue();
+
   // ======================== Active ========================
   const [
     activeIndex,
@@ -306,9 +322,6 @@ function RangePicker<DateType extends object = any>(
   // ======================= Show Now =======================
   const mergedShowNow = useShowNow(internalPicker, mergedMode, showNow, showToday);
 
-  // ======================== Format ========================
-  const [formatList, maskFormat] = useFieldFormat(internalPicker, filledLocale, format);
-
   // ======================= ReadOnly =======================
   const mergedInputReadOnly = useInputReadOnly(formatList, inputReadOnly);
 
@@ -320,13 +333,22 @@ function RangePicker<DateType extends object = any>(
 
   // ======================== Value =========================
   const [
-    calendarValue,
-    triggerCalendarChange,
     /** Trigger `onChange` by check `disabledDate` */
     flushSubmit,
     /** Trigger `onChange` directly without check `disabledDate` */
     triggerSubmitChange,
-  ] = useRangeValue(filledProps, mergedDisabled, formatList, focused, mergedOpen, isInvalidateDate);
+  ] = useRangeValue(
+    filledProps,
+    mergedValue,
+    setInnerValue,
+    getCalendarValue,
+    triggerCalendarChange,
+    mergedDisabled,
+    formatList,
+    focused,
+    mergedOpen,
+    isInvalidateDate,
+  );
 
   // ===================== DisabledDate =====================
   const mergedDisabledDate = useRangeDisabledDate(
