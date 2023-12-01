@@ -176,6 +176,16 @@ export type RangeTimeProps<DateType = any> = Omit<SharedTimeProps<DateType>, 'de
 // ======================= Components =======================
 export type OnPanelChange<DateType> = (value: DateType, mode: PanelMode) => void;
 
+export type LimitDate<DateType extends object = any> =
+  | DateType
+  | ((info: {
+      /**
+       * Tell the first date user selected on this range selection.
+       * This is not care about what field user click.
+       */
+      from?: DateType;
+    }) => DateType);
+
 export interface SharedPanelProps<DateType = any> {
   // Style
   prefixCls: string;
@@ -195,6 +205,8 @@ export interface SharedPanelProps<DateType = any> {
 
   // Render
   disabledDate?: DisabledDate<DateType>;
+  minDate?: DateType;
+  maxDate?: DateType;
   cellRender?: CellRender<DateType>;
 
   // Hover
@@ -304,6 +316,8 @@ export interface SharedPickerProps<DateType = any> extends SharedHTMLAttrs {
 
   // Disabled
   disabledDate?: DisabledDate<DateType>;
+  minDate?: LimitDate<DateType>;
+  maxDate?: LimitDate<DateType>;
 
   // Open
   defaultOpen?: boolean;

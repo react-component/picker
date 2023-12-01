@@ -1,19 +1,27 @@
 import type { GenerateConfig } from '../../../generate';
 import { isSame } from '../../../utils/dateUtil';
-import type { DisabledDate, Locale } from '../../interface';
+import type { DisabledDate, LimitDate, Locale } from '../../interface';
 import type { RangeValueType } from '../RangePicker';
 
 export default function useRangeDisabledDate<DateType = any>(
   values: RangeValueType<DateType>,
   disabled: [boolean, boolean],
-  activeIndex: number,
+  activeIndexList: number[],
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
   disabledDate?: DisabledDate<DateType>,
+  minDate?: LimitDate<DateType>,
+  maxDate?: LimitDate<DateType>,
 ) {
+  const activeIndex = activeIndexList[activeIndexList.length - 1];
+
+  const firstValuedIndex = activeIndexList.find((index) => values[index]);
+  console.log('firstValuedIndex', firstValuedIndex);
+
   const rangeDisabledDate: DisabledDate<DateType> = (date, info) => {
     const [start, end] = values;
 
+    // ============================ Disabled ============================
     // Should not select days before the start date
     if (
       activeIndex === 1 &&
@@ -40,6 +48,13 @@ export default function useRangeDisabledDate<DateType = any>(
       return true;
     }
 
+    // =========================== Min or Max ===========================
+    const limitInfo = {
+      from: values[firstValuedIndex],
+    };
+    const mergedMinDate = typeof minDate === 'function' ? minDate(limitInfo) : minDate;
+
+    // ============================= Origin =============================
     return disabledDate?.(date, info);
   };
 

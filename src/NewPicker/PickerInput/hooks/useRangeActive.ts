@@ -22,6 +22,7 @@ export default function useRangeActive<DateType>(
   triggerFocus: (focused: boolean) => void,
   lastOperation: (type?: OperationType) => OperationType,
   nextActiveIndex: NextActive<DateType>,
+  activeList: number[],
 ] {
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [focused, setFocused] = React.useState<boolean>(false);
@@ -69,5 +70,13 @@ export default function useRangeActive<DateType>(
     }
   }, [focused, activeIndex]);
 
-  return [activeIndex, setActiveIndex, focused, triggerFocus, lastOperation, nextActiveIndex];
+  return [
+    activeIndex,
+    setActiveIndex,
+    focused,
+    triggerFocus,
+    lastOperation,
+    nextActiveIndex,
+    activeListRef.current,
+  ];
 }

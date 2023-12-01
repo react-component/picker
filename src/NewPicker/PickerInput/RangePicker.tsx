@@ -257,8 +257,15 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   const mergedNeedConfirm = needConfirm ?? complexPicker;
 
   // ======================== Active ========================
-  const [activeIndex, setActiveIndex, focused, triggerFocus, lastOperation, nextActiveIndex] =
-    useRangeActive(mergedOpen, mergedDisabled, mergedAllowEmpty);
+  const [
+    activeIndex,
+    setActiveIndex,
+    focused,
+    triggerFocus,
+    lastOperation,
+    nextActiveIndex,
+    activeIndexList,
+  ] = useRangeActive(mergedOpen, mergedDisabled, mergedAllowEmpty);
 
   const onSharedFocus = (event: React.FocusEvent<HTMLElement>, index?: number) => {
     triggerFocus(true);
@@ -316,7 +323,7 @@ function RangePicker<DateType = any>(props: RangePickerProps<DateType>, ref: Rea
   const mergedDisabledDate = useRangeDisabledDate(
     calendarValue,
     mergedDisabled,
-    activeIndex,
+    activeIndexList,
     generateConfig,
     filledLocale,
     disabledDate,

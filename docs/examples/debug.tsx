@@ -81,6 +81,7 @@ export default () => {
         showWeek
         value={rangeValue}
         // open
+        minDate={dayjs()}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
         onFocus={(_, info) => {
