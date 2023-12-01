@@ -186,7 +186,7 @@ export type LimitDate<DateType extends object = any> =
        * This is not care about what field user click.
        */
       from?: DateType;
-    }) => DateType);
+    }) => DateType | null | undefined);
 
 export interface SharedPanelProps<DateType = any> {
   // Style

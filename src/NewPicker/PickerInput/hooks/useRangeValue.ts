@@ -32,6 +32,8 @@ const EMPTY_VALUE: [null, null] = [null, null];
 
 type TriggerCalendarChange<DateType> = ([start, end]: RangeValueType<DateType>) => void;
 
+export function useCalendarValue<DateType extends object = any>() {}
+
 export default function useRangeValue<DateType extends object = any>(
   info: Pick<
     RangePickerProps<DateType>,
@@ -54,7 +56,9 @@ export default function useRangeValue<DateType extends object = any>(
 ): [
   calendarValue: RangeValueType<DateType>,
   triggerCalendarChange: TriggerCalendarChange<DateType>,
+  /** Trigger `onChange` by check `disabledDate` */
   flushSubmit: (index: number, needTriggerChange: boolean) => void,
+  /** Trigger `onChange` directly without check `disabledDate` */
   triggerSubmitChange: (value: RangeValueType<DateType>) => boolean,
 ] {
   const {

@@ -25,6 +25,7 @@ import PickerTrigger from '../PickerTrigger';
 import { fillIndex } from '../util';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
+import useDisabledBoundary from './hooks/useDisabledBoundary';
 import { useFieldFormat } from './hooks/useFieldFormat';
 import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
@@ -311,18 +312,21 @@ function RangePicker<DateType extends object = any>(
   // ======================= ReadOnly =======================
   const mergedInputReadOnly = useInputReadOnly(formatList, inputReadOnly);
 
+  // ======================= Boundary =======================
+  const isInvalidBoundary = useDisabledBoundary(generateConfig, locale, minDate, maxDate);
+
   // ====================== Invalidate ======================
   const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, mergedShowTime);
 
   // ======================== Value =========================
-  const [calendarValue, triggerCalendarChange, flushSubmit, triggerSubmitChange] = useRangeValue(
-    filledProps,
-    mergedDisabled,
-    formatList,
-    focused,
-    mergedOpen,
-    isInvalidateDate,
-  );
+  const [
+    calendarValue,
+    triggerCalendarChange,
+    /** Trigger `onChange` by check `disabledDate` */
+    flushSubmit,
+    /** Trigger `onChange` directly without check `disabledDate` */
+    triggerSubmitChange,
+  ] = useRangeValue(filledProps, mergedDisabled, formatList, focused, mergedOpen, isInvalidateDate);
 
   // ===================== DisabledDate =====================
   const mergedDisabledDate = useRangeDisabledDate(

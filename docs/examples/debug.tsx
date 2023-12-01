@@ -79,9 +79,13 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         value={rangeValue}
-        minDate={() => {
-          return dayjs();
-        }}
+        disabledDate={() => true}
+        // minDate={({ from }) => {
+        //   return from ? from.add(-7, 'day') : null;
+        // }}
+        // maxDate={({ from }) => {
+        //   return from ? from.add(7, 'day') : null;
+        // }}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
         onFocus={(_, info) => {

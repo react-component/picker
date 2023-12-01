@@ -14,7 +14,6 @@ export default function useRangeDisabledDate<DateType extends object = any>(
   maxDate?: LimitDate<DateType>,
 ) {
   const activeIndex = activeIndexList[activeIndexList.length - 1];
-
   const firstValuedIndex = activeIndexList.find((index) => values[index]);
 
   const rangeDisabledDate: DisabledDate<DateType> = (date, info) => {
@@ -49,7 +48,7 @@ export default function useRangeDisabledDate<DateType extends object = any>(
 
     // =========================== Min or Max ===========================
     const limitInfo = {
-      from: values[firstValuedIndex],
+      from: activeIndex !== firstValuedIndex ? values[firstValuedIndex] : undefined,
     };
     const mergedMinDate = typeof minDate === 'function' ? minDate(limitInfo) : minDate;
     const mergedMaxDate = typeof maxDate === 'function' ? maxDate(limitInfo) : maxDate;
