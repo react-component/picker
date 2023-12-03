@@ -79,7 +79,12 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         value={rangeValue}
-        disabledDate={() => true}
+        disabledDate={(date, { from }) => {
+          if (from) {
+            return date.isBefore(from.add(-7, 'day')) || date.isAfter(from.add(7, 'day'));
+          }
+          return false;
+        }}
         // minDate={({ from }) => {
         //   return from ? from.add(-7, 'day') : null;
         // }}

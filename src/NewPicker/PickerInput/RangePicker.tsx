@@ -383,6 +383,9 @@ function RangePicker<DateType extends object = any>(
     setFieldsInvalidates((ori) => fillIndex(ori, index, valid));
   };
 
+  /**
+   * For the Selector Input to mark as `aria-disabled`
+   */
   const submitInvalidates = React.useMemo(() => {
     return fieldsInvalidates.map((invalid, index) => {
       // If typing invalidate

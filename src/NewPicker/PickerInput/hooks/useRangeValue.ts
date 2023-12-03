@@ -237,7 +237,7 @@ export default function useRangeValue<DateType extends object = any>(
       // Validate start
       (!start || !isInvalidateDate(start)) &&
       // Validate end
-      (!end || !isInvalidateDate(end));
+      (!end || !isInvalidateDate(end, { from: start }));
 
     // >>> Result
     const allPassed =

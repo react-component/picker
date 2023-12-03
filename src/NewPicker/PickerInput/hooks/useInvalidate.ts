@@ -17,12 +17,12 @@ export default function useInvalidate<DateType extends object = any>(
   showTime?: SharedTimeProps<DateType> | RangeTimeProps<DateType>,
 ) {
   // Check disabled date
-  const isInvalidate = useEvent((date: DateType) => {
+  const isInvalidate = useEvent((date: DateType, info: { from?: DateType } = {}) => {
     if (
       // Date object is invalid
       !generateConfig.isValidate(date) ||
       // Date is disabled by `disabledDate`
-      (disabledDate && disabledDate(date, { type: picker }))
+      (disabledDate && disabledDate(date, { type: picker, ...info }))
     ) {
       return true;
     }

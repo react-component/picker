@@ -19,6 +19,11 @@ export default function useRangeDisabledDate<DateType extends object = any>(
   const rangeDisabledDate: DisabledDate<DateType> = (date, info) => {
     const [start, end] = values;
 
+    const mergedInfo = {
+      ...info,
+      from: activeIndex !== firstValuedIndex ? values[firstValuedIndex] : undefined,
+    };
+
     // ============================ Disabled ============================
     // Should not select days before the start date
     if (
@@ -26,7 +31,7 @@ export default function useRangeDisabledDate<DateType extends object = any>(
       disabled[0] &&
       start &&
       // Same date isOK
-      !isSame(generateConfig, locale, start, date, info.type) &&
+      !isSame(generateConfig, locale, start, date, mergedInfo.type) &&
       // Before start date
       generateConfig.isAfter(start, date)
     ) {
@@ -39,7 +44,7 @@ export default function useRangeDisabledDate<DateType extends object = any>(
       disabled[1] &&
       end &&
       // Same date isOK
-      !isSame(generateConfig, locale, end, date, info.type) &&
+      !isSame(generateConfig, locale, end, date, mergedInfo.type) &&
       // After end date
       generateConfig.isAfter(date, end)
     ) {
@@ -69,8 +74,10 @@ export default function useRangeDisabledDate<DateType extends object = any>(
     //   return true;
     // }
 
+    // TODO: Select Range then select the date after end date
+
     // ============================= Origin =============================
-    return disabledDate?.(date, info);
+    return disabledDate?.(date, mergedInfo);
   };
 
   return rangeDisabledDate;
