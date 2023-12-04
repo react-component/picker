@@ -126,13 +126,11 @@ export default function useRangePickerValue<DateType extends object = any>(
       (!isSame(generateConfig, locale, mergedStartPickerValue, clone[0], pickerMode) ||
         !isSame(generateConfig, locale, mergedEndPickerValue, clone[1], pickerMode))
     ) {
-      console.error('>>>', clone[0]?.format('YYYY-MM-DD'), clone[1]?.format('YYYY-MM-DD'));
       onPickerValueChange(clone, { source, range: mergedActiveIndex === 1 ? 'end' : 'start' });
     }
   };
 
   // ======================== Effect ========================
-  // // TODO: If date picker, first panel is all disabled
   /**
    * EndDate pickerValue is little different. It should be:
    * - If date picker (without time), endDate is not same year & month as startDate
@@ -167,30 +165,6 @@ export default function useRangePickerValue<DateType extends object = any>(
     return endDate;
   };
 
-  // // >>> calendarValue: Sync with `calendarValue` if changed
-  // useLayoutEffect(() => {
-  //   if (open) {
-  //     const [startDate, endDate] = calendarValue;
-
-  //     if (
-  //       // When `active = 1` and `endDate` is valid
-  //       (mergedActiveIndex === 1 && endDate) ||
-  //       // Or `active = 0` and `startDate` is invalid but `endDate` is valid
-  //       (mergedActiveIndex === 0 && !startDate && endDate)
-  //     ) {
-  //       setCurrentPickerValue(
-  //         // End PickerValue need additional shift
-  //         getEndDatePickerValue(startDate, endDate),
-  //         'reset',
-  //       );
-  //     } else if (startDate) {
-  //       // When `active = 0` and `startDate` is valid
-  //       // Or `active = 1` and `endDate` is invalid but `startDate` is valid
-  //       setCurrentPickerValue(startDate, 'reset');
-  //     }
-  //   }
-  // }, [open, calendarValue, mergedActiveIndex]);
-
   // >>> When switch field, reset the picker value as prev field picker value
   const prevActiveIndexRef = React.useRef<number>(null);
   useLayoutEffect(() => {
@@ -201,29 +175,15 @@ export default function useRangePickerValue<DateType extends object = any>(
         if (prevActiveIndexRef.current !== null) {
           // If from another field, not jump picker value
           nextPickerValue = [mergedStartPickerValue, mergedEndPickerValue][mergedActiveIndex ^ 1];
-        } else {
-          // // Sync as calendar value
-          // nextPickerValue =
-          //   calendarValue[mergedActiveIndex] || calendarValue[mergedActiveIndex ^ 1];
-
-          // if (nextPickerValue) {
-          //   nextPickerValue =
-          //     mergedActiveIndex === 0
-          //       ? calendarValue[0]
-          //       : // End picker value need additional shift if in the same panel of start picker
-          //         getEndDatePickerValue(calendarValue[0], calendarValue[1]);
-          // }
-
-          if (calendarValue[mergedActiveIndex]) {
-            // Current field has value
-            nextPickerValue =
-              mergedActiveIndex === 0
-                ? calendarValue[0]
-                : getEndDatePickerValue(calendarValue[0], calendarValue[1]);
-          } else if (calendarValue[mergedActiveIndex ^ 1]) {
-            // Current field has no value but another field has value
-            nextPickerValue = calendarValue[mergedActiveIndex ^ 1];
-          }
+        } else if (calendarValue[mergedActiveIndex]) {
+          // Current field has value
+          nextPickerValue =
+            mergedActiveIndex === 0
+              ? calendarValue[0]
+              : getEndDatePickerValue(calendarValue[0], calendarValue[1]);
+        } else if (calendarValue[mergedActiveIndex ^ 1]) {
+          // Current field has no value but another field has value
+          nextPickerValue = calendarValue[mergedActiveIndex ^ 1];
         }
 
         // Only sync when has value
