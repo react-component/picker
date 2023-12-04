@@ -1128,4 +1128,22 @@ describe('NewPicker.Range', () => {
       expect(onChange).not.toHaveBeenCalled();
     });
   });
+
+  it('minDate and maxDate', () => {
+    const { container } = render(
+      <DayRangePicker minDate={dayjs()} maxDate={dayjs().add(1, 'month')} />,
+    );
+
+    openPicker(container);
+
+    expect(document.querySelectorAll('.rc-picker-header-super-prev-btn')[0]).toHaveStyle({
+      visibility: 'hidden',
+    });
+    expect(document.querySelectorAll('.rc-picker-header-super-next-btn')[1]).toHaveStyle({
+      visibility: 'hidden',
+    });
+
+    expect(findCell(2)).toHaveClass('rc-picker-cell-disabled');
+    expect(findCell(31, 1)).toHaveClass('rc-picker-cell-disabled');
+  });
 });

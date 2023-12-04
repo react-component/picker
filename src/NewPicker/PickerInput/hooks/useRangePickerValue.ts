@@ -194,6 +194,7 @@ export default function useRangePickerValue<DateType extends object = any>(
     }
   }, [open, mergedActiveIndex]);
 
+  // >>> Reset prevActiveIndex when panel closed
   React.useEffect(() => {
     if (open) {
       prevActiveIndexRef.current = mergedActiveIndex;

@@ -88,8 +88,8 @@ export default () => {
         //   }
         //   return false;
         // }}
-        minDate={dayjs().add(-1, 'day')}
-        maxDate={dayjs().add(2, 'month')}
+        minDate={dayjs().add(-12, 'month')}
+        maxDate={dayjs().add(-6, 'month')}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
         onFocus={(_, info) => {
