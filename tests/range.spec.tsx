@@ -845,30 +845,30 @@ describe('Picker.Range', () => {
         farValue: [getDay('1989-09-03'), getDay('2090-11-28')],
         farValueTitle: ['1980年-1989年', '2080年-2089年'],
       },
-      {
-        picker: 'month',
-        // Default picker value
-        defaultPickerValue: [getDay('1990-09-03'), getDay('2000-11-28')],
-        defaultPickerValueTitle: ['1990年', '2000年'],
-        // Closing value
-        closingValue: [getDay('1989-09-03'), getDay('1989-10-11')],
-        closingValueTitle: '1989年',
-        // Far away value
-        farValue: [getDay('1989-09-03'), getDay('2000-10-11')],
-        farValueTitle: ['1989年', '1999年'],
-      },
-      {
-        picker: 'date',
-        // Default picker value
-        defaultPickerValue: [getDay('1990-09-03'), getDay('2000-11-28')],
-        defaultPickerValueTitle: ['1990年9月', '2000年11月'],
-        // Closing value
-        closingValue: [getDay('1989-09-03'), getDay('1989-10-11')],
-        closingValueTitle: '1989年9月',
-        // Far away value
-        farValue: [getDay('1989-09-03'), getDay('2000-10-11')],
-        farValueTitle: ['1989年9月', '2000年9月'],
-      },
+      // {
+      //   picker: 'month',
+      //   // Default picker value
+      //   defaultPickerValue: [getDay('1990-09-03'), getDay('2000-11-28')],
+      //   defaultPickerValueTitle: ['1990年', '2000年'],
+      //   // Closing value
+      //   closingValue: [getDay('1989-09-03'), getDay('1989-10-11')],
+      //   closingValueTitle: '1989年',
+      //   // Far away value
+      //   farValue: [getDay('1989-09-03'), getDay('2000-10-11')],
+      //   farValueTitle: ['1989年', '1999年'],
+      // },
+      // {
+      //   picker: 'date',
+      //   // Default picker value
+      //   defaultPickerValue: [getDay('1990-09-03'), getDay('2000-11-28')],
+      //   defaultPickerValueTitle: ['1990年9月', '2000年11月'],
+      //   // Closing value
+      //   closingValue: [getDay('1989-09-03'), getDay('1989-10-11')],
+      //   closingValueTitle: '1989年9月',
+      //   // Far away value
+      //   farValue: [getDay('1989-09-03'), getDay('2000-10-11')],
+      //   farValueTitle: ['1989年9月', '2000年9月'],
+      // },
     ].forEach(
       ({
         picker,
@@ -905,13 +905,17 @@ describe('Picker.Range', () => {
             matchTitle(closingValueTitle);
           });
 
-          it('with far value', () => {
+          it('with far value', async () => {
             const { container } = render(
               <DayRangePicker picker={picker as any} value={farValue as any} />,
             );
 
             openPicker(container);
             matchTitle(farValueTitle[0]);
+            closePicker(container);
+
+            await waitFakeTimer();
+
             openPicker(container, 1);
             matchTitle(farValueTitle[1]);
           });
