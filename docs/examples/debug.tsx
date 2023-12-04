@@ -79,20 +79,17 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         value={rangeValue}
-        disabled={[false, true]}
-        defaultValue={[null, dayjs('1990-09-22')]}
+        needConfirm
+        // disabled={[false, true]}
+        // defaultValue={[null, dayjs('1990-09-22')]}
         // disabledDate={(date, { from }) => {
         //   if (from) {
         //     return date.isBefore(from.add(-7, 'day')) || date.isAfter(from.add(7, 'day'));
         //   }
         //   return false;
         // }}
-        // minDate={({ from }) => {
-        //   return from ? from.add(-7, 'day') : null;
-        // }}
-        // maxDate={({ from }) => {
-        //   return from ? from.add(7, 'day') : null;
-        // }}
+        minDate={dayjs().add(-1, 'day')}
+        maxDate={dayjs().add(2, 'month')}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
         onFocus={(_, info) => {

@@ -326,7 +326,9 @@ export interface SharedPickerProps<DateType extends object = any> extends Shared
 
   // Disabled
   disabledDate?: DisabledDate<DateType>;
+  /** Limit the selectable range. This will limit picker navigation also */
   minDate?: DateType;
+  /** Limit the selectable range. This will limit picker navigation also */
   maxDate?: DateType;
 
   // Open
