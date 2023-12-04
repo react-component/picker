@@ -59,15 +59,9 @@ export default () => {
 
   const [value, setValue] = React.useState<Dayjs>(null);
   const [rangeValue, setRangeValue] = React.useState<[Dayjs?, Dayjs?]>(
-    // has start
-    // [dayjs('2023-11-15'), null],
-    // has end
-    // [null, dayjs('2023-11-15')],
-    // [dayjs('2020-03-30'), dayjs('2020-05-20')],
-    // [dayjs('2000-12-15'), dayjs('2000-12-22')],
-    // [dayjs('1990-09-03'), null],
+    [dayjs('2000-12-15'), dayjs('2020-12-22')],
     // null,
-    undefined,
+    // undefined,
   );
 
   return (
@@ -79,19 +73,6 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         value={rangeValue}
-        needConfirm
-        // disabled={[false, true]}
-        // defaultValue={[null, dayjs('1990-09-22')]}
-        // disabledDate={(date, { from }) => {
-        //   if (from) {
-        //     return date.isBefore(from.add(-7, 'day')) || date.isAfter(from.add(7, 'day'));
-        //   }
-        //   return false;
-        // }}
-        // minDate={dayjs().add(6, 'month')}
-        // maxDate={dayjs().add(12, 'month')}
-        // minDate={dayjs().add(-12, 'month')}
-        maxDate={dayjs().add(-6, 'month')}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
         onFocus={(_, info) => {

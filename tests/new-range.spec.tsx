@@ -172,6 +172,19 @@ describe('NewPicker.Range', () => {
         }),
       );
     });
+
+    it('end pickerValue will follow prev start pickerValue', async () => {
+      const { container } = render(
+        <DayRangePicker defaultValue={[getDay('2000-01-01'), getDay('2001-03-03')]} />,
+      );
+      openPicker(container);
+
+      selectCell(5);
+      await waitFakeTimer();
+
+
+      expect(document.querySelector('.rc-picker-header-view').textContent).toBe('2000年1月');
+    });
   });
 
   describe('field', () => {
@@ -541,6 +554,19 @@ describe('NewPicker.Range', () => {
         },
       });
       expect(document.querySelector('.rc-picker-ok button')).toBeDisabled();
+    });
+
+    it('disabledDate provides info.type', () => {
+      const disabledDate = jest.fn(() => false);
+
+      render(<DayRangePicker open mode={['year', 'year']} disabledDate={disabledDate} />);
+
+      expect(disabledDate).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          type: 'year',
+        }),
+      );
     });
   });
 
