@@ -1129,21 +1129,37 @@ describe('NewPicker.Range', () => {
     });
   });
 
-  it('minDate and maxDate', () => {
-    const { container } = render(
-      <DayRangePicker minDate={dayjs()} maxDate={dayjs().add(1, 'month')} />,
-    );
+  describe('minDate and maxDate', () => {
+    it('correct disabled', () => {
+      const { container } = render(
+        <DayRangePicker minDate={dayjs()} maxDate={dayjs().add(1, 'month')} />,
+      );
 
-    openPicker(container);
+      openPicker(container);
 
-    expect(document.querySelectorAll('.rc-picker-header-super-prev-btn')[0]).toHaveStyle({
-      visibility: 'hidden',
+      expect(document.querySelectorAll('.rc-picker-header-super-prev-btn')[0]).toHaveStyle({
+        visibility: 'hidden',
+      });
+      expect(document.querySelectorAll('.rc-picker-header-super-next-btn')[1]).toHaveStyle({
+        visibility: 'hidden',
+      });
+
+      expect(findCell(2)).toHaveClass('rc-picker-cell-disabled');
+      expect(findCell(31, 1)).toHaveClass('rc-picker-cell-disabled');
     });
-    expect(document.querySelectorAll('.rc-picker-header-super-next-btn')[1]).toHaveStyle({
-      visibility: 'hidden',
+
+    it('auto switch pickerValue - minDate', () => {
+      const { container } = render(<DayRangePicker minDate={dayjs().add(7, 'month')} />);
+
+      openPicker(container);
+      expect(document.querySelector('.rc-picker-header-view').textContent).toBe('1991年4月');
     });
 
-    expect(findCell(2)).toHaveClass('rc-picker-cell-disabled');
-    expect(findCell(31, 1)).toHaveClass('rc-picker-cell-disabled');
+    it('auto switch pickerValue - maxDate', () => {
+      const { container } = render(<DayRangePicker maxDate={dayjs()} />);
+
+      openPicker(container);
+      expect(document.querySelector('.rc-picker-header-view').textContent).toBe('1990年8月');
+    });
   });
 });

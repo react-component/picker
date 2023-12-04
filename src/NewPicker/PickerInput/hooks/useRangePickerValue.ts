@@ -206,7 +206,9 @@ export default function useRangePickerValue<DateType extends object = any>(
           }
 
           // maxDate < nextPickerValue
-          const offsetPickerValue = offsetPanelDate(generateConfig, pickerMode, nextPickerValue, 1);
+          const offsetPickerValue = multiplePanel
+            ? offsetPanelDate(generateConfig, pickerMode, nextPickerValue, 1)
+            : nextPickerValue;
           if (maxDate && generateConfig.isAfter(offsetPickerValue, maxDate)) {
             nextPickerValue = offsetPanelDate(generateConfig, pickerMode, maxDate, -1);
           }
