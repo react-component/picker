@@ -64,10 +64,10 @@ export default () => {
     // has end
     // [null, dayjs('2023-11-15')],
     // [dayjs('2020-03-30'), dayjs('2020-05-20')],
-    // [dayjs('2000-09-03'), dayjs('1990-09-03')],
+    [dayjs('2000-12-15'), dayjs('2000-12-22')],
     // [dayjs('1990-09-03'), null],
     // null,
-    undefined,
+    // undefined,
   );
 
   return (

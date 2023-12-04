@@ -126,6 +126,7 @@ export default function useRangePickerValue<DateType extends object = any>(
       (!isSame(generateConfig, locale, mergedStartPickerValue, clone[0], pickerMode) ||
         !isSame(generateConfig, locale, mergedEndPickerValue, clone[1], pickerMode))
     ) {
+      console.error('>>>', clone[0]?.format('YYYY-MM-DD'), clone[1]?.format('YYYY-MM-DD'));
       onPickerValueChange(clone, { source, range: mergedActiveIndex === 1 ? 'end' : 'start' });
     }
   };
