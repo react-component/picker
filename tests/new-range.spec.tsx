@@ -1036,4 +1036,96 @@ describe('NewPicker.Range', () => {
       expect.objectContaining({ range: 'end' }),
     );
   });
+
+  describe('7 days', () => {
+    const SevenRangePicker = (props: Partial<RangePickerProps<Dayjs>>) => (
+      <DayRangePicker
+        {...props}
+        disabledDate={(date, { from }) => {
+          if (from) {
+            return date.isBefore(from.add(-7, 'day')) || date.isAfter(from.add(7, 'day'));
+          }
+          return false;
+        }}
+      />
+    );
+
+    it('panel selection', () => {
+      const onChange = jest.fn();
+      const { container } = render(<SevenRangePicker onChange={onChange} />);
+
+      openPicker(container);
+      selectCell(15);
+
+      expect(findCell(1)).toHaveClass('rc-picker-cell-disabled');
+      expect(findCell(30)).toHaveClass('rc-picker-cell-disabled');
+
+      selectCell(22);
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-15', '1990-09-22']);
+    });
+
+    it('keyboard selection success', () => {
+      const onChange = jest.fn();
+      const { container } = render(<SevenRangePicker onChange={onChange} />);
+
+      const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+      const endInput = container.querySelectorAll<HTMLInputElement>('input')[1];
+
+      // Start
+      fireEvent.focus(startInput);
+      fireEvent.change(startInput, {
+        target: {
+          value: '2000-01-07',
+        },
+      });
+      fireEvent.keyDown(startInput, {
+        key: 'Enter',
+      });
+
+      // End
+      fireEvent.focus(endInput);
+      fireEvent.change(endInput, {
+        target: {
+          value: '2000-01-14',
+        },
+      });
+      fireEvent.keyDown(endInput, {
+        key: 'Enter',
+      });
+
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), ['2000-01-07', '2000-01-14']);
+    });
+
+    it('keyboard selection out of range', () => {
+      const onChange = jest.fn();
+      const { container } = render(<SevenRangePicker onChange={onChange} />);
+
+      const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+      const endInput = container.querySelectorAll<HTMLInputElement>('input')[1];
+
+      // Start
+      fireEvent.focus(startInput);
+      fireEvent.change(startInput, {
+        target: {
+          value: '2000-01-07',
+        },
+      });
+      fireEvent.keyDown(startInput, {
+        key: 'Enter',
+      });
+
+      // End
+      fireEvent.focus(endInput);
+      fireEvent.change(endInput, {
+        target: {
+          value: '2001-01-08',
+        },
+      });
+      fireEvent.keyDown(endInput, {
+        key: 'Enter',
+      });
+
+      expect(onChange).not.toHaveBeenCalled();
+    });
+  });
 });
