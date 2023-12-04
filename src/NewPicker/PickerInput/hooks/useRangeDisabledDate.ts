@@ -10,8 +10,6 @@ export default function useRangeDisabledDate<DateType extends object = any>(
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
   disabledDate?: DisabledDate<DateType>,
-  // minDate?: LimitDate<DateType>,
-  // maxDate?: LimitDate<DateType>,
 ) {
   const activeIndex = activeIndexList[activeIndexList.length - 1];
   const firstValuedIndex = activeIndexList.find((index) => values[index]);

@@ -64,10 +64,10 @@ export default () => {
     // has end
     // [null, dayjs('2023-11-15')],
     // [dayjs('2020-03-30'), dayjs('2020-05-20')],
-    [dayjs('2000-12-15'), dayjs('2000-12-22')],
+    // [dayjs('2000-12-15'), dayjs('2000-12-22')],
     // [dayjs('1990-09-03'), null],
     // null,
-    // undefined,
+    undefined,
   );
 
   return (
@@ -79,12 +79,14 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         value={rangeValue}
-        disabledDate={(date, { from }) => {
-          if (from) {
-            return date.isBefore(from.add(-7, 'day')) || date.isAfter(from.add(7, 'day'));
-          }
-          return false;
-        }}
+        disabled={[false, true]}
+        defaultValue={[null, dayjs('1990-09-22')]}
+        // disabledDate={(date, { from }) => {
+        //   if (from) {
+        //     return date.isBefore(from.add(-7, 'day')) || date.isAfter(from.add(7, 'day'));
+        //   }
+        //   return false;
+        // }}
         // minDate={({ from }) => {
         //   return from ? from.add(-7, 'day') : null;
         // }}

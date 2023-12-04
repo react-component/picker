@@ -156,7 +156,7 @@ describe('Picker.Range', () => {
   });
 
   describe('Can not select when part field disabled', () => {
-    it('disabled start', () => {
+    it('no selection of disabled start', () => {
       const { container } = render(
         <DayRangePicker
           disabled={[true, false]}
@@ -168,7 +168,7 @@ describe('Picker.Range', () => {
       expect(findCell(14)).toHaveClass('rc-picker-cell-disabled');
     });
 
-    it('disabled end', () => {
+    it('no selection of disabled end', () => {
       const { container } = render(
         <DayRangePicker
           disabled={[false, true]}
@@ -289,7 +289,7 @@ describe('Picker.Range', () => {
 
       // Enabled date
       openPicker(container);
-      cellNode = selectCell(7, 1);
+      cellNode = selectCell(7);
       expect(cellNode).not.toHaveClass('rc-picker-cell-disabled');
       expect(onChange).toHaveBeenCalledWith(
         [expect.anything(), expect.anything()],
