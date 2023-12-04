@@ -427,6 +427,8 @@ function RangePicker<DateType extends object = any>(
     pickerValue,
     mergedShowTime?.defaultValue,
     onPickerValueChange,
+    minDate,
+    maxDate,
   );
 
   // >>> Mode need wait for `pickerValue`

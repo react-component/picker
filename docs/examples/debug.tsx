@@ -88,7 +88,9 @@ export default () => {
         //   }
         //   return false;
         // }}
-        minDate={dayjs().add(-12, 'month')}
+        // minDate={dayjs().add(6, 'month')}
+        // maxDate={dayjs().add(12, 'month')}
+        // minDate={dayjs().add(-12, 'month')}
         maxDate={dayjs().add(-6, 'month')}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"

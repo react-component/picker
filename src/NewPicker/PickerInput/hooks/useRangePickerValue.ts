@@ -70,6 +70,8 @@ export default function useRangePickerValue<DateType extends object = any>(
   // We will take `showTime.defaultValue` as the part of `pickerValue`
   timeDefaultValue: RangeValueType<DateType> = EMPTY_LIST,
   onPickerValueChange?: RangePickerProps<DateType>['onPickerValueChange'],
+  minDate: DateType,
+  maxDate: DateType,
 ): [currentIndexPickerValue: DateType, setCurrentIndexPickerValue: (value: DateType) => void] {
   // ======================== Active ========================
   // `activeIndex` must be valid to avoid getting empty `pickerValue`
@@ -170,7 +172,17 @@ export default function useRangePickerValue<DateType extends object = any>(
   useLayoutEffect(() => {
     if (open) {
       if (!defaultPickerValue[mergedActiveIndex]) {
-        let nextPickerValue: DateType;
+        let nextPickerValue: DateType = generateConfig.getNow();
+
+        /**
+         * 1. If has prevActiveIndex, use it to avoid panel jump
+         * 2. If current field has value
+         *    - If `activeIndex` is 1 and `calendarValue[0]` is not same panel as `calendarValue[1]`,
+         *      offset `calendarValue[1]` and set it
+         *    - Else use `calendarValue[activeIndex]`
+         * 3. If current field has no value but another field has value, use another field value
+         * 4. Else use now (not any `calendarValue` can ref)
+         */
 
         if (prevActiveIndexRef.current !== null) {
           // If from another field, not jump picker value
@@ -186,8 +198,19 @@ export default function useRangePickerValue<DateType extends object = any>(
           nextPickerValue = calendarValue[mergedActiveIndex ^ 1];
         }
 
-        // Only sync when has value
+        // Only sync when has value, this will sync in the `min-max` logic
         if (nextPickerValue) {
+          // nextPickerValue < minDate
+          if (minDate && generateConfig.isAfter(minDate, nextPickerValue)) {
+            nextPickerValue = minDate;
+          }
+
+          // maxDate < nextPickerValue
+          const offsetPickerValue = offsetPanelDate(generateConfig, pickerMode, nextPickerValue, 1);
+          if (maxDate && generateConfig.isAfter(offsetPickerValue, maxDate)) {
+            nextPickerValue = offsetPanelDate(generateConfig, pickerMode, maxDate, -1);
+          }
+
           setCurrentPickerValue(nextPickerValue, 'reset');
         }
       }
