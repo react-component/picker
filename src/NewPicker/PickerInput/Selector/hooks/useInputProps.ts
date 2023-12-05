@@ -165,12 +165,16 @@ export default function useInputProps<DateType extends object = any>(
         onInvalid(!!text, index);
       },
       onHelp: () => {
-        onOpenChange(true);
+        onOpenChange(true, {
+          index,
+        });
       },
       onKeyDown: (event) => {
         switch (event.key) {
           case 'Escape':
-            onOpenChange(false);
+            onOpenChange(false, {
+              index,
+            });
             break;
         }
 
