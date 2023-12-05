@@ -1,7 +1,9 @@
+import * as React from 'react';
+import { formatValue } from '../../../../utils/dateUtil';
 import type { SelectorProps } from '../../../interface';
 import type { InputProps } from '../Input';
 
-export default function useInputProps(
+export default function useInputProps<DateType extends object = any>(
   props: Pick<
     SelectorProps,
     | 'maskFormat'
@@ -13,7 +15,16 @@ export default function useInputProps(
     | 'required'
     | 'aria-required'
     | 'onSubmit'
-  >,
+    | 'onFocus'
+    | 'onBlur'
+    | 'onInputChange'
+  > & {
+    id?: string | string[];
+    value?: DateType | [DateType?, DateType?];
+    invalid?: boolean | [boolean, boolean];
+    placeholder?: string | [string, string];
+    disabled?: boolean | [boolean, boolean];
+  },
 ) {
   const {
     format,
@@ -25,6 +36,15 @@ export default function useInputProps(
     required,
     'aria-required': ariaRequired,
     onSubmit,
+    onFocus,
+    onBlur,
+    onInputChange,
+
+    id,
+    value,
+    invalid,
+    placeholder,
+    disabled,
   } = props;
 
   // ======================== Parser ========================
@@ -32,6 +52,24 @@ export default function useInputProps(
     const parsed = generateConfig.locale.parse(locale.locale, str, [formatStr]);
     return parsed && generateConfig.isValidate(parsed) ? parsed : null;
   };
+
+  // ========================= Text =========================
+  const firstFormat = format[0];
+
+  const getText = React.useCallback(
+    (date: DateType) =>
+      formatValue(date, {
+        locale,
+        format: firstFormat,
+        generateConfig,
+      }),
+    [locale, generateConfig, firstFormat],
+  );
+
+  const valueTexts = React.useMemo(
+    () => (Array.isArray(value) ? [getText(value[0]), getText(value[1])] : getText(value)),
+    [value, getText],
+  );
 
   // ======================= Validate =======================
   const validateFormat = (text: string) => {
@@ -52,7 +90,11 @@ export default function useInputProps(
   };
 
   // ======================== Input =========================
-  const getInputProps = (index: number): InputProps => {
+  const getInputProps = (index?: number): InputProps => {
+    function getProp<T>(propValue: T | T[]): T {
+      return index !== undefined ? propValue[index] : propValue;
+    }
+
     return {
       // ============== Shared ==============
       format: maskFormat,
@@ -65,19 +107,19 @@ export default function useInputProps(
       'aria-required': ariaRequired,
 
       // ============= By Index =============
-      id: ids[index],
+      id: getProp(id),
 
-      value: valueTexts[index],
+      value: getProp(valueTexts),
 
-      invalid: invalid[index],
+      invalid: getProp(invalid),
 
-      placeholder: (placeholder || [])[index],
+      placeholder: getProp(placeholder),
 
       active: activeIndex === index,
 
       helped: allHelp || (activeHelp && activeIndex === index),
 
-      disabled: disabled[index],
+      disabled: getProp(disabled),
 
       onFocus: (event) => {
         onFocus(event, index);

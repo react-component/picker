@@ -27,7 +27,7 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
   /** All the field show as `placeholder` */
   allHelp: boolean;
 
-  placeholder?: [string, string];
+  placeholder?: string | [string, string];
 
   // Invalid
   invalid: [boolean, boolean];
@@ -144,6 +144,12 @@ function RangeSelector<DateType = any>(
     },
   }));
 
+  // ===================== Placeholder ======================
+  const mergedPlaceholder = React.useMemo(
+    () => (Array.isArray(placeholder) ? placeholder : [placeholder, placeholder]),
+    [placeholder],
+  );
+
   // ========================= Open =========================
   const triggerOpen = (nextOpen: boolean, index: number, config: OpenConfig = {}) => {
     onOpenChange(nextOpen, {
@@ -210,7 +216,7 @@ function RangeSelector<DateType = any>(
 
     invalid: invalid[index],
 
-    placeholder: (placeholder || [])[index],
+    placeholder: mergedPlaceholder[index],
 
     active: activeIndex === index,
 
