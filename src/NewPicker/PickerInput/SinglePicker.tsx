@@ -2,15 +2,12 @@ import { useEvent, useMergedState } from 'rc-util';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
-import warning from 'rc-util/lib/warning';
 import * as React from 'react';
 import useLocale from '../hooks/useLocale';
 import useTimeConfig from '../hooks/useTimeConfig';
 import type {
   BaseInfo,
   InternalMode,
-  OnOpenChange,
-  OpenConfig,
   PanelMode,
   PickerRef,
   SelectorProps,
@@ -31,7 +28,6 @@ import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
 import usePresets from './hooks/usePresets';
 import useRangeActive from './hooks/useRangeActive';
-import useRangeDisabledDate from './hooks/useRangeDisabledDate';
 import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
@@ -196,14 +192,7 @@ function Picker<DateType extends object = any>(
   // ========================= Open =========================
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
 
-  const [mergedOpen, setMergeOpen] = useOpen(open, defaultOpen, onOpenChange);
-
-  const triggerOpen: OnOpenChange = (nextOpen, config?: OpenConfig) => {
-    // No need to open if all disabled
-    if (disabled.some((fieldDisabled) => !fieldDisabled) || !nextOpen) {
-      setMergeOpen(nextOpen, config);
-    }
-  };
+  const [mergedOpen, triggerOpen] = useOpen(open, defaultOpen, onOpenChange);
 
   // ======================== Picker ========================
   /** Almost same as `picker`, but add `datetime` for `date` with `showTime` */
@@ -311,18 +300,6 @@ function Picker<DateType extends object = any>(
     isInvalidateDate,
   );
 
-  // ===================== DisabledDate =====================
-  const disabledDate = useRangeDisabledDate(
-    calendarValue,
-    disabled,
-    activeIndexList,
-    generateConfig,
-    filledLocale,
-    disabledBoundaryDate,
-    // minDate,
-    // maxDate,
-  );
-
   // ======================= Validate =======================
   const [fieldsInvalidates, setFieldsInvalidates] = React.useState<[boolean, boolean]>([
     false,
@@ -348,11 +325,6 @@ function Picker<DateType extends object = any>(
       // Not check if all empty
       if (!current) {
         return false;
-      }
-
-      // Not allow empty
-      if (!mergedAllowEmpty[index] && !current) {
-        return true;
       }
 
       // Invalidate
@@ -674,29 +646,6 @@ function Picker<DateType extends object = any>(
       triggerPartConfirm();
     }
   }, [mergedOpen]);
-
-  // ====================== DevWarning ======================
-  if (process.env.NODE_ENV !== 'production') {
-    const isIndexEmpty = (index: number) => {
-      return (
-        // Value is empty
-        !value?.[index] &&
-        // DefaultValue is empty
-        !defaultValue?.[index]
-      );
-    };
-
-    if (
-      disabled.some(
-        (fieldDisabled, index) => fieldDisabled && isIndexEmpty(index) && !mergedAllowEmpty[index],
-      )
-    ) {
-      warning(
-        false,
-        '`disabled` should not set with empty `value`. You should set `allowEmpty` or `value` instead.',
-      );
-    }
-  }
 
   // ======================== Render ========================
   return (

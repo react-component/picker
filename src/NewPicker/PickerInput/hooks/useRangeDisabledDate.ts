@@ -3,6 +3,10 @@ import { isSame } from '../../../utils/dateUtil';
 import type { DisabledDate, Locale } from '../../interface';
 import type { RangeValueType } from '../RangePicker';
 
+/**
+ * RangePicker need additional logic to handle the `disabled` case. e.g.
+ * [disabled, enabled] should end date not before start date
+ */
 export default function useRangeDisabledDate<DateType extends object = any>(
   values: RangeValueType<DateType>,
   disabled: [boolean, boolean],
@@ -48,31 +52,6 @@ export default function useRangeDisabledDate<DateType extends object = any>(
     ) {
       return true;
     }
-
-    // =========================== Min or Max ===========================
-    // const limitInfo = {
-    //   from: activeIndex !== firstValuedIndex ? values[firstValuedIndex] : undefined,
-    // };
-    // const mergedMinDate = typeof minDate === 'function' ? minDate(limitInfo) : minDate;
-    // const mergedMaxDate = typeof maxDate === 'function' ? maxDate(limitInfo) : maxDate;
-
-    // if (
-    //   mergedMinDate &&
-    //   generateConfig.isAfter(mergedMinDate, date) &&
-    //   !isSame(generateConfig, locale, mergedMinDate, date, info.type)
-    // ) {
-    //   return true;
-    // }
-
-    // if (
-    //   mergedMaxDate &&
-    //   generateConfig.isAfter(date, mergedMaxDate) &&
-    //   !isSame(generateConfig, locale, mergedMaxDate, date, info.type)
-    // ) {
-    //   return true;
-    // }
-
-    // TODO: Select Range then select the date after end date
 
     // ============================= Origin =============================
     return disabledDate?.(date, mergedInfo);
