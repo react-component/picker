@@ -18,12 +18,20 @@ export default function useInputProps<DateType extends object = any>(
     | 'onFocus'
     | 'onBlur'
     | 'onInputChange'
+    | 'onInvalid'
+    | 'onOpenChange'
+    | 'onKeyDown'
+    | 'onChange'
+    | 'activeHelp'
   > & {
     id?: string | string[];
     value?: DateType | [DateType?, DateType?];
     invalid?: boolean | [boolean, boolean];
     placeholder?: string | [string, string];
     disabled?: boolean | [boolean, boolean];
+
+    // RangePicker only
+    allHelp: boolean;
     activeIndex?: number | null;
   },
 ) {
@@ -40,6 +48,11 @@ export default function useInputProps<DateType extends object = any>(
     onFocus,
     onBlur,
     onInputChange,
+    onInvalid,
+    onOpenChange,
+    onKeyDown,
+    onChange,
+    activeHelp,
 
     id,
     value,
@@ -47,6 +60,7 @@ export default function useInputProps<DateType extends object = any>(
     placeholder,
     disabled,
     activeIndex,
+    allHelp,
   } = props;
 
   // ======================== Parser ========================
@@ -141,14 +155,14 @@ export default function useInputProps<DateType extends object = any>(
         const parsed = validateFormat(text);
 
         if (parsed) {
-          onInvalid(index, false);
+          onInvalid(false, index);
           onChange(parsed, index);
           return;
         }
 
         // Tell outer that the value typed is invalid.
         // If text is empty, it means valid.
-        onInvalid(index, !!text);
+        onInvalid(!!text, index);
       },
       onHelp: () => {
         onOpenChange(true);
