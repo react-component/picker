@@ -37,7 +37,38 @@ const sharedLocale = {
 const MyInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   (props, ref) => {
     console.log('>>>', props);
-    return <input {...props} ref={ref} />;
+    const { 'data-range': range, value, style } = props as any;
+
+    // return (
+    //   <div>
+    //     <input {...props} ref={ref} />
+    //   </div>
+    // );
+
+    return (
+      <div style={{ position: 'relative' }}>
+        <input
+          {...props}
+          style={{
+            ...style,
+            opacity: value ? 1 : 0,
+          }}
+          ref={ref}
+        />
+        {!value && (
+          <div
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              pointerEvents: 'none',
+            }}
+          >
+            {range === 'start' ? '从未' : '至今'}
+          </div>
+        )}
+      </div>
+    );
   },
 );
 MyInput.displayName = 'MyInput';
@@ -61,11 +92,11 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         value={rangeValue}
-        components={{
-          input: MyInput,
-        }}
+        // components={{
+        //   input: MyInput,
+        // }}
         // showTime
-        showNow
+        panelRender={(ori) => <>2333{ori}</>}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
         onFocus={(_, info) => {
