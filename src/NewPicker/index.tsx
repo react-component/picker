@@ -3,7 +3,7 @@
  * - Common
  *  - [Break] Support special year format, all the year will follow the locale config.
  *  - Blur all of field will trigger `onChange` if validate
- *  - Support `preserveInvalidOnBlur` to not to clean input if invalid
+ *  - Support `changeOnBlur` to not to clean input if invalid
  *  - `pickerValue` is now full controlled
  *    - `defaultPickerValue` will take effect on every field active with popup opening.
  *  - [Break] clear button return the event with `onClick`

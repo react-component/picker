@@ -82,7 +82,7 @@ function RangeSelector<DateType = any>(
     // Valid
     format,
     maskFormat,
-    preserveInvalidOnBlur,
+    changeOnBlur,
     onInvalid,
 
     // Disabled
@@ -196,7 +196,7 @@ function RangeSelector<DateType = any>(
     // ============== Shared ==============
     format: maskFormat,
     validateFormat: (text) => !!validateFormat(text),
-    preserveInvalidOnBlur,
+    changeOnBlur,
 
     readOnly: inputReadOnly,
 
@@ -334,9 +334,9 @@ function RangeSelector<DateType = any>(
           onMouseDown?.(e);
         }}
       >
-        <Input ref={inputStartRef} {...getInputProps(0)} />
+        <Input ref={inputStartRef} {...getInputProps(0)} date-range="start" />
         <div className={`${prefixCls}-range-separator`}>{separator}</div>
-        <Input ref={inputEndRef} {...getInputProps(1)} />
+        <Input ref={inputEndRef} {...getInputProps(1)} date-range="end" />
         <div className={`${prefixCls}-active-bar`} style={activeBarStyle} />
         <Icon type="suffix" icon={suffixIcon} />
         {showClear && <ClearIcon type="clear" icon={clearIcon} onClear={onClear} />}

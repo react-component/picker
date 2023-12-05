@@ -44,7 +44,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
    * Like open the popup for interactive.
    */
   onHelp: () => void;
-  preserveInvalidOnBlur?: boolean;
+  changeOnBlur?: boolean;
   invalid?: boolean;
 }
 
@@ -60,7 +60,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     onHelp,
     onSubmit,
     onKeyDown,
-    preserveInvalidOnBlur,
+    changeOnBlur = true,
     invalid,
     // Pass to input
     ...restProps
@@ -196,7 +196,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   // ======================== Active ========================
   // Check if blur need reset input value
   useLockEffect(active, () => {
-    if (!active && !preserveInvalidOnBlur) {
+    if (!active && changeOnBlur) {
       setInputValue(value);
     }
   });

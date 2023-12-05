@@ -182,7 +182,6 @@ describe('NewPicker.Range', () => {
       selectCell(5);
       await waitFakeTimer();
 
-
       expect(document.querySelector('.rc-picker-header-view').textContent).toBe('2000年1月');
     });
   });
@@ -205,7 +204,7 @@ describe('NewPicker.Range', () => {
       expect(isOpen()).toBeTruthy();
     });
 
-    it('preserveInvalidOnBlur=false', () => {
+    it('changeOnBlur=true', () => {
       const { container } = render(<DayRangePicker />);
       const firstInput = container.querySelector<HTMLInputElement>('input');
 
@@ -223,8 +222,8 @@ describe('NewPicker.Range', () => {
       expect(firstInput).toHaveValue('');
     });
 
-    it('preserveInvalidOnBlur=true', () => {
-      const { container } = render(<DayRangePicker preserveInvalidOnBlur />);
+    it('changeOnBlur=false', () => {
+      const { container } = render(<DayRangePicker changeOnBlur={false} />);
       const firstInput = container.querySelector<HTMLInputElement>('input');
 
       openPicker(container);

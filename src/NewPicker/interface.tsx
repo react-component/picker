@@ -305,7 +305,7 @@ export interface SharedPickerProps<DateType extends object = any> extends Shared
    * When user input invalidate date, keep it in the input field.
    * This is only used for strong a11y requirement which do not want modify after blur.
    */
-  preserveInvalidOnBlur?: boolean;
+  changeOnBlur?: boolean;
 
   // Icons
   suffixIcon?: React.ReactNode;
@@ -425,7 +425,11 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
   onChange: (date: DateType, index?: number) => void;
   onInputChange: VoidFunction;
   /** When user input invalidate date, keep it in the input field */
-  preserveInvalidOnBlur?: boolean;
+  /**
+   * By default value in input field will be reset with previous valid value when blur.
+   * Set to `false` will keep invalid text in input field when blur.
+   */
+  changeOnBlur?: boolean;
 
   // Open
   /** Open index */

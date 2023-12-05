@@ -119,7 +119,6 @@ export default function useRangeValue<DateType extends object = any>(
     | 'order'
     | 'onCalendarChange'
     | 'onChange'
-    | 'preserveInvalidOnBlur'
     | 'picker'
   >,
   mergedValue: RangeValueType<DateType>,
@@ -145,9 +144,6 @@ export default function useRangeValue<DateType extends object = any>(
     picker,
 
     onChange,
-
-    // Focus
-    // preserveInvalidOnBlur,
 
     // Checker
     allowEmpty,

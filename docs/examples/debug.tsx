@@ -2,7 +2,6 @@ import * as React from 'react';
 import '../../assets/index.less';
 import type { Locale, PickerRef } from '../../src/NewPicker/interface';
 import RangePicker from '../../src/NewPicker/PickerInput/RangePicker';
-import PickerPanel, { type PickerPanelProps } from '../../src/NewPicker/PickerPanel';
 
 import dayjs, { type Dayjs } from 'dayjs';
 import 'dayjs/locale/ar';
@@ -11,7 +10,6 @@ import buddhistEra from 'dayjs/plugin/buddhistEra';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import dayjsGenerateConfig from '../../src/generate/dayjs';
 import zhCN from '../../src/locale/zh_CN';
-import TimePanel from '../../src/NewPicker/PickerPanel/TimePanel';
 
 dayjs.locale('zh-cn');
 // dayjs.locale('ar');
@@ -36,32 +34,22 @@ const sharedLocale = {
   generateConfig: dayjsGenerateConfig,
 };
 
-function CellPicker(props: Partial<PickerPanelProps>) {
-  return (
-    <div>
-      <h5 style={{ margin: 0 }}>{props.picker || 'date'}</h5>
-      <PickerPanel {...sharedLocale} {...props} />
-    </div>
-  );
-}
-
-const MyTime = (props: any) => {
-  return (
-    <div>
-      2333
-      <TimePanel {...props} />
-    </div>
-  );
-};
+const MyInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
+  (props, ref) => {
+    console.log('>>>', props);
+    return <input {...props} ref={ref} />;
+  },
+);
+MyInput.displayName = 'MyInput';
 
 export default () => {
   const singleRef = React.useRef<PickerRef>(null);
 
   const [value, setValue] = React.useState<Dayjs>(null);
   const [rangeValue, setRangeValue] = React.useState<[Dayjs?, Dayjs?]>(
-    [dayjs('2000-12-15'), dayjs('2020-12-22')],
+    // [dayjs('2000-12-15'), dayjs('2020-12-22')],
     // null,
-    // undefined,
+    undefined,
   );
 
   return (
@@ -73,6 +61,11 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         value={rangeValue}
+        components={{
+          input: MyInput,
+        }}
+        // showTime
+        showNow
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
         onFocus={(_, info) => {
@@ -104,7 +97,6 @@ export default () => {
           start: 'inputStart',
           end: 'inputEnd',
         }}
-        renderExtraFooter={() => <input />}
       />
       <br />
 
