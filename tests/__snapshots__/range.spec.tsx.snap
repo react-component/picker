@@ -11,6 +11,7 @@ exports[`Picker.Range icon 1`] = `
       <input
         aria-invalid="false"
         autocomplete="off"
+        date-range="start"
         value="1990-09-03"
       />
     </div>
@@ -25,6 +26,7 @@ exports[`Picker.Range icon 1`] = `
       <input
         aria-invalid="false"
         autocomplete="off"
+        date-range="end"
         value="1990-09-03"
       />
     </div>
@@ -62,6 +64,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in rtl
       <input
         aria-invalid="false"
         autocomplete="off"
+        date-range="start"
         value=""
       />
     </div>
@@ -76,6 +79,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in rtl
       <input
         aria-invalid="false"
         autocomplete="off"
+        date-range="end"
         value=""
       />
     </div>
@@ -99,6 +103,7 @@ exports[`Picker.Range panelRender 1`] = `
         <input
           aria-invalid="false"
           autocomplete="off"
+          date-range="start"
           value=""
         />
       </div>
@@ -113,6 +118,7 @@ exports[`Picker.Range panelRender 1`] = `
         <input
           aria-invalid="false"
           autocomplete="off"
+          date-range="end"
           value=""
         />
       </div>
@@ -161,6 +167,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
         <input
           aria-invalid="false"
           autocomplete="off"
+          date-range="start"
           value=""
         />
       </div>
@@ -175,6 +182,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
         <input
           aria-invalid="false"
           autocomplete="off"
+          date-range="end"
           value=""
         />
       </div>
@@ -1200,6 +1208,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
         <input
           aria-invalid="false"
           autocomplete="off"
+          date-range="start"
           value=""
         />
       </div>
@@ -1214,6 +1223,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
         <input
           aria-invalid="false"
           autocomplete="off"
+          date-range="end"
           value=""
         />
       </div>
