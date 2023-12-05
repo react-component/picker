@@ -42,7 +42,7 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
   onActiveOffset: (offset: number) => void;
 }
 
-function RangeSelector<DateType = any>(
+function RangeSelector<DateType extends object = any>(
   props: RangeSelectorProps<DateType>,
   ref: React.Ref<SelectorRef>,
 ) {
@@ -200,7 +200,7 @@ function RangeSelector<DateType = any>(
   }, [activeIndex]);
 
   // ======================== Clear =========================
-  const showClear = (clearIcon && value[0] && !disabled[0]) || (value[1] && !disabled[1]);
+  const showClear = clearIcon && ((value[0] && !disabled[0]) || (value[1] && !disabled[1]));
 
   // ======================== Render ========================
   return (
