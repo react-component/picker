@@ -95,7 +95,6 @@ function RangeSelector<DateType extends object = any>(
     direction,
 
     // Open
-    open,
     onOpenChange,
 
     // Offset

@@ -75,7 +75,6 @@ function SingleSelector<DateType extends object = any>(
     direction,
 
     // Open
-    open,
     onOpenChange,
 
     // Native

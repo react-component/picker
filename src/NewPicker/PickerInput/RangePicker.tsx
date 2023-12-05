@@ -794,7 +794,6 @@ function RangePicker<DateType extends object = any>(
           // Disabled
           disabled={mergedDisabled}
           // Open
-          open={mergedOpen ? activeIndex : null}
           onOpenChange={triggerOpen}
           // Click
           onClick={onSelectorClick}

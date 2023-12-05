@@ -37,7 +37,7 @@ import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
 import { useClearIcon } from './Selector/hooks/useClearIcon';
-import RangeSelector from './Selector/RangeSelector';
+import SingleSelector from './Selector/SingleSelector';
 
 export interface PickerProps<DateType extends object> extends SharedPickerProps<DateType> {
   // Value
@@ -176,7 +176,6 @@ function Picker<DateType extends object = any>(
 
   // ======================== Locale ========================
   const filledLocale = useLocale(locale);
-
 
   // ========================= Icon =========================
   const mergedClearIcon = useClearIcon(prefixCls, allowClear, clearIcon);
@@ -717,7 +716,7 @@ function Picker<DateType extends object = any>(
         // Range
         range
       >
-        <RangeSelector
+        <SingleSelector
           // Shared
           {...filledProps}
           // Ref
@@ -745,7 +744,6 @@ function Picker<DateType extends object = any>(
           // Disabled
           disabled={disabled}
           // Open
-          open={mergedOpen ? activeIndex : null}
           onOpenChange={triggerOpen}
           // Click
           onClick={onSelectorClick}
