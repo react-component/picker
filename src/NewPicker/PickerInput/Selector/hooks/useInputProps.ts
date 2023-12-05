@@ -24,6 +24,7 @@ export default function useInputProps<DateType extends object = any>(
     invalid?: boolean | [boolean, boolean];
     placeholder?: string | [string, string];
     disabled?: boolean | [boolean, boolean];
+    activeIndex?: number | null;
   },
 ) {
   const {
@@ -45,6 +46,7 @@ export default function useInputProps<DateType extends object = any>(
     invalid,
     placeholder,
     disabled,
+    activeIndex,
   } = props;
 
   // ======================== Parser ========================

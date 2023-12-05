@@ -379,7 +379,7 @@ function RangePicker<DateType extends object = any>(
     false,
   ]);
 
-  const onSelectorInvalid = (index: number, valid: boolean) => {
+  const onSelectorInvalid = (valid: boolean, index: number) => {
     setFieldsInvalidates((ori) => fillIndex(ori, index, valid));
   };
 

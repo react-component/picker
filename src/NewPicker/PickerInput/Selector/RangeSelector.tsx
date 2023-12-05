@@ -19,6 +19,8 @@ export type SelectorIdType =
 export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateType> {
   id?: SelectorIdType;
 
+  activeIndex: number | null;
+
   separator?: React.ReactNode;
 
   value?: [DateType?, DateType?];
@@ -31,7 +33,6 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
 
   // Invalid
   invalid: [boolean, boolean];
-  onInvalid: (index: number, valid: boolean) => void;
 
   // Offset
   /**
@@ -242,14 +243,14 @@ function RangeSelector<DateType = any>(
       const parsed = validateFormat(text);
 
       if (parsed) {
-        onInvalid(index, false);
+        onInvalid(false, index);
         onChange(parsed, index);
         return;
       }
 
       // Tell outer that the value typed is invalid.
       // If text is empty, it means valid.
-      onInvalid(index, !!text);
+      onInvalid(!!text, index);
     },
     onHelp: () => {
       triggerOpen(true, index);

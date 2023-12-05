@@ -395,7 +395,6 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
   suffixIcon?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
-  activeIndex: number | null;
   /** Add `-placeholder` className as a help info */
   activeHelp?: boolean;
   focused: boolean;
@@ -424,6 +423,7 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
   maskFormat?: string;
   onChange: (date: DateType, index?: number) => void;
   onInputChange: VoidFunction;
+  onInvalid: (valid: boolean, index?: number) => void;
   /** When user input invalidate date, keep it in the input field */
   /**
    * By default value in input field will be reset with previous valid value when blur.
