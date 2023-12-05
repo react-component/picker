@@ -46,6 +46,8 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   onHelp: () => void;
   changeOnBlur?: boolean;
   invalid?: boolean;
+
+  clearIcon?: React.ReactNode;
 }
 
 const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
@@ -62,6 +64,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     onKeyDown,
     changeOnBlur = true,
     invalid,
+    clearIcon,
     // Pass to input
     ...restProps
   } = props;
@@ -392,6 +395,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
         autoComplete="off"
       />
       <Icon type="suffix" icon={suffixIcon} />
+      {clearIcon}
     </div>
   );
 });

@@ -18,7 +18,7 @@ export default function Icon(props: IconProps) {
   ) : null;
 }
 
-export interface ClearIconProps extends IconProps {
+export interface ClearIconProps extends Omit<IconProps, 'type'> {
   onClear: VoidFunction;
 }
 
@@ -26,6 +26,7 @@ export function ClearIcon({ onClear, ...restProps }: ClearIconProps) {
   return (
     <Icon
       {...restProps}
+      type="clear"
       role="button"
       onMouseDown={(e) => {
         e.preventDefault();

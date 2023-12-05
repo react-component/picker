@@ -339,7 +339,7 @@ function RangeSelector<DateType = any>(
         <Input ref={inputEndRef} {...getInputProps(1)} date-range="end" />
         <div className={`${prefixCls}-active-bar`} style={activeBarStyle} />
         <Icon type="suffix" icon={suffixIcon} />
-        {showClear && <ClearIcon type="clear" icon={clearIcon} onClear={onClear} />}
+        {showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
       </div>
     </ResizeObserver>
   );
