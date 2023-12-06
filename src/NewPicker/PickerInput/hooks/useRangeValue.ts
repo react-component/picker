@@ -97,6 +97,8 @@ export function useInnerValue<ValueType extends object[], DateType extends Value
     dateStrings: Replace2String<Required<ValueType>>,
     info: BaseInfo,
   ) => void,
+  /** Used for RangePicker */
+  valueLen = 2,
 ) {
   // This is the root value which will sync with controlled or uncontrolled value
   const [innerValue, setInnerValue] = useMergedState(defaultValue, {
@@ -113,6 +115,12 @@ export function useInnerValue<ValueType extends object[], DateType extends Value
   const triggerCalendarChange: TriggerCalendarChange<ValueType> = useEvent(
     (nextCalendarValues: ValueType) => {
       const clone = [...nextCalendarValues] as ValueType;
+
+      if (valueLen) {
+        for (let i = 0; i < valueLen; i += 1) {
+          clone[i] = clone[i] || null;
+        }
+      }
 
       // Update merged value
       const [isSameMergedDates, isSameStart] = isSameDates(calendarValue(), clone);

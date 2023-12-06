@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { toArray } from '../../../utils/miscUtil';
 import { fillLocale } from '../../hooks/useLocale';
 import { getTimeConfig } from '../../hooks/useTimeConfig';
 import type { InternalMode } from '../../interface';
@@ -20,9 +21,13 @@ type PickedProps<DateType extends object = any> = Pick<
 > & {
   // RangePicker showTime definition is different with Picker
   showTime?: any;
+  value?: any;
+  defaultValue?: any;
 };
 
 type ExcludeBooleanType<T> = T extends boolean ? never : T;
+
+type ToArrayType<T> = T extends any[] ? T : [T];
 
 /**
  * Align the outer props with unique typed and fill undefined props.
@@ -37,9 +42,11 @@ export default function useFilledProps<
   props: InProps,
   updater?: () => UpdaterProps,
 ): [
-  filledProps: Omit<InProps, keyof UpdaterProps | 'showTime'> &
+  filledProps: Omit<InProps, keyof UpdaterProps | 'showTime' | 'value' | 'defaultValue'> &
     UpdaterProps & {
       showTime?: ExcludeBooleanType<InProps['showTime']>;
+      value?: ToArrayType<InProps['value']>;
+      defaultValue?: ToArrayType<InProps['value']>;
     },
   internalPicker: InternalMode,
   complexPicker: boolean,
@@ -55,7 +62,12 @@ export default function useFilledProps<
     allowClear,
     clearIcon,
     needConfirm,
+    value,
+    defaultValue,
   } = props;
+
+  const values = React.useMemo(() => (value ? toArray(value) : value), [value]);
+  const defaultValues = React.useMemo(() => toArray(defaultValue), [defaultValue]);
 
   const filledProps = React.useMemo(
     () => ({
@@ -69,6 +81,8 @@ export default function useFilledProps<
       components,
       clearIcon: fillClearIcon(prefixCls, allowClear, clearIcon),
       showTime: getTimeConfig(props),
+      value: values,
+      defaultValue: defaultValues,
       ...updater?.(),
     }),
     [props],

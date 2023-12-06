@@ -21,7 +21,7 @@ import useCellRender from './hooks/useCellRender';
 import useDisabledBoundary from './hooks/useDisabledBoundary';
 import { useFieldFormat } from './hooks/useFieldFormat';
 import useFilledProps from './hooks/useFilledProps';
-import useRangeValue, { useInnerValue } from './hooks/useFlexibleValue';
+import useRangeValue from './hooks/useFlexibleValue';
 import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
@@ -29,6 +29,7 @@ import { usePickerRef } from './hooks/usePickerRef';
 import usePresets from './hooks/usePresets';
 import useRangeActive from './hooks/useRangeActive';
 import useRangePickerValue from './hooks/useRangePickerValue';
+import { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
 import SingleSelector from './Selector/SingleSelector';
@@ -183,15 +184,21 @@ function Picker<DateType extends object = any>(
   // ======================== Format ========================
   const [formatList, maskFormat] = useFieldFormat(internalPicker, locale, format);
 
+  // ======================= Calendar =======================
+  const onInternalCalendarChange: any = (
+    dates: DateType[],
+    dateStrings: string[],
+    info: BaseInfo,
+  ) => {};
+
   // ======================== Values ========================
   const [mergedValue, setInnerValue, getCalendarValue, triggerCalendarChange] = useInnerValue(
-    multiple,
     generateConfig,
     locale,
     formatList,
     defaultValue,
     value,
-    onCalendarChange,
+    onInternalCalendarChange,
   );
 
   const calendarValue = getCalendarValue();

@@ -18,60 +18,60 @@ const EMPTY_VALUE: any[] = [];
 
 type TriggerCalendarChange<DateType> = (dates: DateType[]) => void;
 
-export function useInnerValue<DateType extends object = any>(
-  multiple: boolean,
-  generateConfig: GenerateConfig<DateType>,
-  locale: Locale,
-  formatList: FormatType[],
+// export function useInnerValue<DateType extends object = any>(
+//   multiple: boolean,
+//   generateConfig: GenerateConfig<DateType>,
+//   locale: Locale,
+//   formatList: FormatType[],
 
-  defaultValue?: DateType,
-  value?: DateType,
-  onCalendarChange?: PickerProps<DateType>['onCalendarChange'],
-) {
-  // This is the root value which will sync with controlled or uncontrolled value
-  const [innerValue, setInnerValue] = useMergedState(defaultValue, {
-    value,
-  });
-  const mergedValue = React.useMemo<DateType[]>(() => {
-    const filledValue = innerValue || EMPTY_VALUE;
+//   defaultValue?: DateType,
+//   value?: DateType,
+//   onCalendarChange?: PickerProps<DateType>['onCalendarChange'],
+// ) {
+//   // This is the root value which will sync with controlled or uncontrolled value
+//   const [innerValue, setInnerValue] = useMergedState(defaultValue, {
+//     value,
+//   });
+//   const mergedValue = React.useMemo<DateType[]>(() => {
+//     const filledValue = innerValue || EMPTY_VALUE;
 
-    return Array.isArray(filledValue) ? filledValue : [filledValue];
-  }, [innerValue]);
+//     return Array.isArray(filledValue) ? filledValue : [filledValue];
+//   }, [innerValue]);
 
-  // ========================= Inner Values =========================
-  const [calendarValue, setCalendarValue] = useCalendarValue(mergedValue);
+//   // ========================= Inner Values =========================
+//   const [calendarValue, setCalendarValue] = useCalendarValue(mergedValue);
 
-  // ============================ Change ============================
-  const [getDateTexts, isSameDates] = useUtil<DateType, DateType[]>(
-    generateConfig,
-    locale,
-    formatList,
-  );
+//   // ============================ Change ============================
+//   const [getDateTexts, isSameDates] = useUtil<DateType, DateType[]>(
+//     generateConfig,
+//     locale,
+//     formatList,
+//   );
 
-  function pickByMultiple<T>(values: T[]): any {
-    return multiple ? values : values[0];
-  }
+//   function pickByMultiple<T>(values: T[]): any {
+//     return multiple ? values : values[0];
+//   }
 
-  const triggerCalendarChange: TriggerCalendarChange<DateType> = useEvent((dates) => {
-    const clone: DateType[] = [...dates];
+//   const triggerCalendarChange: TriggerCalendarChange<DateType> = useEvent((dates) => {
+//     const clone: DateType[] = [...dates];
 
-    // Update merged value
-    const [isSameMergedDates, isSameStart] = isSameDates(calendarValue(), clone);
+//     // Update merged value
+//     const [isSameMergedDates, isSameStart] = isSameDates(calendarValue(), clone);
 
-    if (!isSameMergedDates) {
-      setCalendarValue(clone);
+//     if (!isSameMergedDates) {
+//       setCalendarValue(clone);
 
-      // Trigger calendar change event
-      if (onCalendarChange) {
-        onCalendarChange(pickByMultiple(clone), pickByMultiple(getDateTexts(clone)), {
-          range: isSameStart ? 'end' : 'start',
-        });
-      }
-    }
-  });
+//       // Trigger calendar change event
+//       if (onCalendarChange) {
+//         onCalendarChange(pickByMultiple(clone), pickByMultiple(getDateTexts(clone)), {
+//           range: isSameStart ? 'end' : 'start',
+//         });
+//       }
+//     }
+//   });
 
-  return [mergedValue, setInnerValue, calendarValue, triggerCalendarChange] as const;
-}
+//   return [mergedValue, setInnerValue, calendarValue, triggerCalendarChange] as const;
+// }
 
 export default function useFlexibleValue<DateType extends object = any>(
   info: Pick<
