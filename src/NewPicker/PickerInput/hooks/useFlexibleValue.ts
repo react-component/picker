@@ -5,58 +5,30 @@ import { formatValue, isSame, isSameTimestamp } from '../../../utils/dateUtil';
 import useSyncState from '../../hooks/useSyncState';
 import type { FormatType, Locale } from '../../interface';
 import { fillIndex } from '../../util';
-import type { RangePickerProps, RangeValueType } from '../RangePicker';
+import type { RangePickerProps } from '../RangePicker';
 import useLockEffect from './useLockEffect';
+import { useCalendarValue } from './useRangeValue';
 
-const EMPTY_VALUE: [null, null] = [null, null];
+const EMPTY_VALUE: any[] = [];
 
-// Submit Logic:
-// * ✅ Value:
-//    * merged value using controlled value, if not, use stateValue
-//    * When merged value change, [1] resync calendar value and submit value
-// * ✅ Calender Value:
-//    * 💻 When user typing is validate, change the calendar value
-//    * 🌅 When user click on the panel, change the calendar value
-// * Submit Value:
-//    * 💻 When user blur the input, flush calendar value to submit value
-//    * 🌅 When user click on the panel is no needConfirm, flush calendar value to submit value
-//    * 🌅 When user click on the panel is needConfirm and click OK, flush calendar value to submit value
-// * Blur logic & close logic:
-//    * ✅ For value, always try flush submit
-//    * ✅ If `needConfirm`, reset as [1]
-//    * Else (`!needConfirm`)
-//      * If has another index field, active another index
-// * ✅ Flush submit:
-//    * If all the start & end field is confirmed or all blur or panel closed
-//    * Update `needSubmit` mark to true
-//    * trigger onChange by `needSubmit` and update stateValue
+// Single Value is similar to Range Value, but it's more simple.
+// This is design to support single value or multiple value,
+// Thus this hook reuse part of the util from `useRangeValue`.
 
-type TriggerCalendarChange<DateType> = ([start, end]: RangeValueType<DateType>) => void;
+type TriggerCalendarChange<DateType> = ([start, end]: DateType) => void;
 
-function useUtil<
-  DateType extends object = any,
-  MergedValueType extends DateType[] = RangeValueType<DateType>,
->(generateConfig: GenerateConfig<DateType>, locale: Locale, formatList: FormatType[]) {
-  const getDateTexts = ([start, end]: RangeValueType<DateType>) => {
+function useUtil<DateType extends object = any>(
+  generateConfig: GenerateConfig<DateType>,
+  locale: Locale,
+  formatList: FormatType[],
+) {
+  const getDateTexts = ([start, end]: DateType) => {
     return [start, end].map((date) =>
       formatValue(date, { generateConfig, locale, format: formatList[0] }),
     ) as [string, string];
   };
 
-  const isSameDates = (source: MergedValueType, target: MergedValueType) => {
-    const maxLen = Math.max(source.length, target.length);
-    let diffIndex = -1;
-
-    // for (let i = 0; i < maxLen; i += 1) {
-    //   const prev = source[i] || null;
-    //   const next = target[i] || null;
-
-    //   if (prev !== next && !isSameTimestamp(generateConfig, prev, next)) {
-    //     diffIndex = i;
-    //     break;
-    //   }
-    // }
-
+  const isSameDates = (source: DateType, target: DateType) => {
     const [prevStart = null, prevEnd = null] = source;
     const [nextStart = null, nextEnd = null] = target;
 
@@ -70,41 +42,23 @@ function useUtil<
   return [getDateTexts, isSameDates] as const;
 }
 
-/**
- * Used for internal value management.
- * It should always use `mergedValue` in render logic
- */
-export function useCalendarValue<
-  DateType extends object = any,
-  MergedValueType extends DateType[] = RangeValueType<DateType>,
->(mergedValue: MergedValueType) {
-  const [calendarValue, setCalendarValue] = useSyncState(mergedValue);
-
-  /** Sync calendarValue & submitValue back with value */
-  const syncWithValue = useEvent(() => {
-    setCalendarValue(mergedValue);
-  });
-
-  React.useEffect(() => {
-    syncWithValue();
-  }, [mergedValue]);
-
-  return [calendarValue, setCalendarValue] as const;
-}
-
 export function useInnerValue<DateType extends object = any>(
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
   formatList: FormatType[],
-  defaultValue?: RangeValueType<DateType>,
-  value?: RangeValueType<DateType>,
+  defaultValue?: DateType,
+  value?: DateType,
   onCalendarChange?: RangePickerProps<DateType>['onCalendarChange'],
 ) {
   // This is the root value which will sync with controlled or uncontrolled value
   const [innerValue, setInnerValue] = useMergedState(defaultValue, {
     value,
   });
-  const mergedValue = innerValue || EMPTY_VALUE;
+  const mergedValue = React.useMemo<DateType[]>(() => {
+    const filledValue = innerValue || EMPTY_VALUE;
+
+    return Array.isArray(filledValue) ? filledValue : [filledValue];
+  }, [innerValue]);
 
   // ========================= Inner Values =========================
   const [calendarValue, setCalendarValue] = useCalendarValue(mergedValue);
@@ -113,7 +67,7 @@ export function useInnerValue<DateType extends object = any>(
   const [getDateTexts, isSameDates] = useUtil(generateConfig, locale, formatList);
 
   const triggerCalendarChange: TriggerCalendarChange<DateType> = useEvent(([start, end]) => {
-    const clone: RangeValueType<DateType> = [start, end];
+    const clone: DateType = [start, end];
 
     // Update merged value
     const [isSameMergedDates, isSameStart] = isSameDates(calendarValue(), clone);
@@ -133,7 +87,7 @@ export function useInnerValue<DateType extends object = any>(
   return [mergedValue, setInnerValue, calendarValue, triggerCalendarChange] as const;
 }
 
-export default function useRangeValue<DateType extends object = any>(
+export default function useFlexibleValue<DateType extends object = any>(
   info: Pick<
     RangePickerProps<DateType>,
     | 'generateConfig'
@@ -144,20 +98,20 @@ export default function useRangeValue<DateType extends object = any>(
     | 'onChange'
     | 'picker'
   >,
-  mergedValue: RangeValueType<DateType>,
-  setInnerValue: (nextValue: RangeValueType<DateType>) => void,
-  getCalendarValue: () => RangeValueType<DateType>,
+  mergedValue: DateType,
+  setInnerValue: (nextValue: DateType) => void,
+  getCalendarValue: () => DateType,
   triggerCalendarChange: TriggerCalendarChange<DateType>,
   disabled: [boolean, boolean],
   formatList: FormatType[],
   focused: boolean,
   open: boolean,
-  isInvalidateDate: (date: DateType, info?: { from?: DateType }) => boolean,
+  isInvalidateDate: (date: DateType) => boolean,
 ): [
   /** Trigger `onChange` by check `disabledDate` */
   flushSubmit: (index: number, needTriggerChange: boolean) => void,
   /** Trigger `onChange` directly without check `disabledDate` */
-  triggerSubmitChange: (value: RangeValueType<DateType>) => boolean,
+  triggerSubmitChange: (value: DateType) => boolean,
 ] {
   const {
     // MISC
@@ -176,13 +130,13 @@ export default function useRangeValue<DateType extends object = any>(
   const orderOnChange = disabled.some((d) => d) ? false : order;
 
   // ============================= Util =============================
-  const getDateTexts = ([start, end]: RangeValueType<DateType>) => {
+  const getDateTexts = ([start, end]: DateType) => {
     return [start, end].map((date) =>
       formatValue(date, { generateConfig, locale, format: formatList[0] }),
     ) as [string, string];
   };
 
-  const isSameDates = (source: RangeValueType<DateType>, target: RangeValueType<DateType>) => {
+  const isSameDates = (source: DateType, target: DateType) => {
     const [prevStart = null, prevEnd = null] = source;
     const [nextStart = null, nextEnd = null] = target;
 
@@ -208,10 +162,10 @@ export default function useRangeValue<DateType extends object = any>(
   }, [mergedValue]);
 
   // ============================ Submit ============================
-  const triggerSubmit = useEvent((nextValue?: RangeValueType<DateType>) => {
+  const triggerSubmit = useEvent((nextValue?: DateType) => {
     const isNullValue = nextValue === null;
 
-    const clone: RangeValueType<DateType> = [...(nextValue || submitValue())];
+    const clone: DateType = [...(nextValue || submitValue())];
 
     // Fill null value
     if (isNullValue) {

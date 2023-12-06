@@ -29,8 +29,8 @@ import useOpen from './hooks/useOpen';
 import usePresets from './hooks/usePresets';
 import useRangeActive from './hooks/useRangeActive';
 import useRangePickerValue from './hooks/useRangePickerValue';
-import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
+import useRangeValue, { useInnerValue } from './hooks/useFlexibleValue';
 import Popup from './Popup';
 import { useClearIcon } from './Selector/hooks/useClearIcon';
 import SingleSelector from './Selector/SingleSelector';
@@ -428,8 +428,7 @@ function Picker<DateType extends object = any>(
 
   // ======================== Hover =========================
   const [hoverSource, setHoverSource] = React.useState<'cell' | 'preset'>(null);
-  const [internalHoverValues, setInternalHoverValues] =
-    React.useState<DateType>(null);
+  const [internalHoverValues, setInternalHoverValues] = React.useState<DateType>(null);
 
   const hoverValues = React.useMemo(() => {
     return internalHoverValues || calendarValue;
