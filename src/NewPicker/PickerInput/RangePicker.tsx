@@ -26,6 +26,7 @@ import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useDisabledBoundary from './hooks/useDisabledBoundary';
 import { useFieldFormat } from './hooks/useFieldFormat';
+import useFilledProps from './hooks/useFilledProps';
 import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
@@ -219,16 +220,10 @@ function RangePicker<DateType extends object = any>(
   const mergedClearIcon = useClearIcon(prefixCls, allowClear, clearIcon);
 
   // ========================= Prop =========================
-  const filledProps = React.useMemo(
-    () => ({
-      ...props,
-      locale: filledLocale,
-      allowEmpty: mergedAllowEmpty,
-      order,
-      picker,
-    }),
-    [props],
-  );
+  const filledProps = useFilledProps(props, {
+    allowEmpty: mergedAllowEmpty,
+    order,
+  });
 
   // ======================= ShowTime =======================
   const mergedShowTime = useTimeConfig(filledProps);
