@@ -1,7 +1,7 @@
 import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
 import type { GenerateConfig } from '../../../generate';
-import { formatValue, isSame, isSameTimestamp } from '../../../utils/dateUtil';
+import { isSame } from '../../../utils/dateUtil';
 import useSyncState from '../../hooks/useSyncState';
 import type { FormatType, Locale } from '../../interface';
 import { fillIndex } from '../../util';
@@ -88,7 +88,7 @@ export default function useFlexibleValue<DateType extends object = any>(
   setInnerValue: (nextValue: DateType) => void,
   getCalendarValue: () => DateType,
   triggerCalendarChange: TriggerCalendarChange<DateType>,
-  disabled: [boolean, boolean],
+  disabled: boolean,
   formatList: FormatType[],
   focused: boolean,
   open: boolean,
@@ -113,25 +113,10 @@ export default function useFlexibleValue<DateType extends object = any>(
     order,
   } = info;
 
-  const orderOnChange = disabled.some((d) => d) ? false : order;
+  const orderOnChange = true;
 
   // ============================= Util =============================
-  const getDateTexts = ([start, end]: DateType) => {
-    return [start, end].map((date) =>
-      formatValue(date, { generateConfig, locale, format: formatList[0] }),
-    ) as [string, string];
-  };
-
-  const isSameDates = (source: DateType, target: DateType) => {
-    const [prevStart = null, prevEnd = null] = source;
-    const [nextStart = null, nextEnd = null] = target;
-
-    const isSameStart =
-      prevStart === nextStart || isSameTimestamp(generateConfig, prevStart, nextStart);
-    const isSameEnd = prevEnd === nextEnd || isSameTimestamp(generateConfig, prevEnd, nextEnd);
-
-    return [isSameStart && isSameEnd, isSameStart, isSameEnd];
-  };
+  const [getDateTexts, isSameDates] = useUtil(generateConfig, locale, formatList);
 
   // ============================ Values ============================
   // Used for trigger `onChange` event.
