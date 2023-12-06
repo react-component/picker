@@ -129,7 +129,7 @@ function RangePicker<DateType extends object = any>(
   ref: React.Ref<PickerRef>,
 ) {
   // ========================= Prop =========================
-  const filledProps = useFilledProps(props, () => {
+  const [filledProps, internalPicker, complexPicker] = useFilledProps(props, () => {
     const { disabled, allowEmpty } = props;
 
     const mergedDisabled = separateConfig(disabled, false);
@@ -226,14 +226,6 @@ function RangePicker<DateType extends object = any>(
       setMergeOpen(nextOpen, config);
     }
   };
-
-  // ======================== Picker ========================
-  /** Almost same as `picker`, but add `datetime` for `date` with `showTime` */
-  const internalPicker: InternalMode = picker === 'date' && showTime ? 'datetime' : picker;
-
-  /** The picker is `datetime` or `time` */
-  const complexPicker = internalPicker === 'time' || internalPicker === 'datetime';
-  const mergedNeedConfirm = needConfirm ?? complexPicker;
 
   // ======================== Format ========================
   const [formatList, maskFormat] = useFieldFormat(internalPicker, locale, format);
@@ -601,7 +593,7 @@ function RangePicker<DateType extends object = any>(
       hoverValue={hoverValues}
       onHover={onPanelHover}
       // Submit
-      needConfirm={mergedNeedConfirm}
+      needConfirm={needConfirm}
       onSubmit={triggerPartConfirm}
       // Preset
       presets={presetList}
@@ -685,7 +677,7 @@ function RangePicker<DateType extends object = any>(
     }
 
     // Submit with complex picker
-    if (!mergedOpen && complexPicker && !mergedNeedConfirm && lastOp === 'panel') {
+    if (!mergedOpen && complexPicker && !needConfirm && lastOp === 'panel') {
       triggerOpen(true);
       triggerPartConfirm();
     }

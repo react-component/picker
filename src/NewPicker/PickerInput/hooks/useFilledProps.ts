@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { fillLocale } from '../../hooks/useLocale';
 import { getTimeConfig } from '../../hooks/useTimeConfig';
+import type { InternalMode } from '../../interface';
 import type { RangePickerProps } from '../RangePicker';
 import { fillClearIcon } from '../Selector/hooks/useClearIcon';
 
@@ -15,6 +16,7 @@ type PickedProps<DateType extends object = any> = Pick<
   | 'components'
   | 'clearIcon'
   | 'allowClear'
+  | 'needConfirm'
 > & {
   // RangePicker showTime definition is different with Picker
   showTime?: any;
@@ -22,9 +24,9 @@ type PickedProps<DateType extends object = any> = Pick<
 
 type ExcludeBooleanType<T> = T extends boolean ? never : T;
 
-/** Align the outer props with unique typed and fill undefined props */
 /**
  * Align the outer props with unique typed and fill undefined props.
+ * This is shared with both RangePicker and Picker.
  * This will auto handle the legacy props fill like `clearIcon` + `allowClear` = `clearIcon`
  */
 export default function useFilledProps<
@@ -34,10 +36,14 @@ export default function useFilledProps<
 >(
   props: InProps,
   updater?: () => UpdaterProps,
-): Omit<InProps, keyof UpdaterProps | 'showTime'> &
-  UpdaterProps & {
-    showTime?: ExcludeBooleanType<InProps['showTime']>;
-  } {
+): [
+  filledProps: Omit<InProps, keyof UpdaterProps | 'showTime'> &
+    UpdaterProps & {
+      showTime?: ExcludeBooleanType<InProps['showTime']>;
+    },
+  internalPicker: InternalMode,
+  complexPicker: boolean,
+] {
   const {
     locale,
     picker = 'date',
@@ -48,6 +54,7 @@ export default function useFilledProps<
     components = {},
     allowClear,
     clearIcon,
+    needConfirm,
   } = props;
 
   const filledProps = React.useMemo(
@@ -67,5 +74,23 @@ export default function useFilledProps<
     [props],
   );
 
-  return filledProps;
+  // ======================== Picker ========================
+  /** Almost same as `picker`, but add `datetime` for `date` with `showTime` */
+  const internalPicker: InternalMode =
+    picker === 'date' && filledProps.showTime ? 'datetime' : picker;
+
+  /** The picker is `datetime` or `time` */
+  const complexPicker = internalPicker === 'time' || internalPicker === 'datetime';
+  const mergedNeedConfirm = needConfirm ?? complexPicker;
+
+  // ======================== Merged ========================
+  const mergedProps = React.useMemo(
+    () => ({
+      ...filledProps,
+      needConfirm: mergedNeedConfirm,
+    }),
+    [filledProps, mergedNeedConfirm],
+  );
+
+  return [mergedProps, internalPicker, complexPicker];
 }
