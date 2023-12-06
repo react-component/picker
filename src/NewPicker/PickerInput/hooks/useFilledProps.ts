@@ -28,13 +28,13 @@ type ExcludeBooleanType<T> = T extends boolean ? never : T;
  * This will auto handle the legacy props fill like `clearIcon` + `allowClear` = `clearIcon`
  */
 export default function useFilledProps<
-  DateType extends object = any,
-  InProps extends PickedProps<DateType> = PickedProps<DateType>,
-  UpdaterProps = any,
+  DateType extends object,
+  InProps extends PickedProps<DateType>,
+  UpdaterProps extends object,
 >(
   props: InProps,
   updater?: () => UpdaterProps,
-): Omit<InProps, keyof UpdaterProps> &
+): Omit<InProps, keyof UpdaterProps | 'showTime'> &
   UpdaterProps & {
     showTime?: ExcludeBooleanType<InProps['showTime']>;
   } {
