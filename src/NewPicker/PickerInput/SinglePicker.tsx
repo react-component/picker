@@ -11,7 +11,6 @@ import type {
   PanelMode,
   PickerRef,
   SelectorProps,
-  SelectorRef,
   SharedHTMLAttrs,
   SharedPickerProps,
   ValueDate,
@@ -27,6 +26,7 @@ import useRangeValue, { useInnerValue } from './hooks/useFlexibleValue';
 import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
+import { usePickerRef } from './hooks/usePickerRef';
 import usePresets from './hooks/usePresets';
 import useRangeActive from './hooks/useRangeActive';
 import useRangePickerValue from './hooks/useRangePickerValue';
@@ -75,7 +75,7 @@ export interface BasePickerProps<DateType extends object> extends SharedPickerPr
   onPanelChange?: (values: DateType, modes: PanelMode) => void;
 }
 
-export interface SinglePickerProps<DateType extends object> extends SharedPickerProps<DateType> {
+export interface SinglePickerProps<DateType extends object> extends BasePickerProps<DateType> {
   // Value
   value?: DateType;
   defaultValue?: DateType;
@@ -83,7 +83,7 @@ export interface SinglePickerProps<DateType extends object> extends SharedPicker
   onCalendarChange?: (date: DateType, dateString: string, info: BaseInfo) => void;
 }
 
-export interface MultiplePickerProps<DateType extends object> extends SharedPickerProps<DateType> {
+export interface MultiplePickerProps<DateType extends object> extends BasePickerProps<DateType> {
   multiple: true;
 
   // Value
@@ -174,17 +174,7 @@ function Picker<DateType extends object = any>(
   } = props;
 
   // ========================= Refs =========================
-  const selectorRef = React.useRef<SelectorRef>();
-
-  React.useImperativeHandle(ref, () => ({
-    nativeElement: selectorRef.current?.nativeElement,
-    focus: () => {
-      selectorRef.current?.focus();
-    },
-    blur: () => {
-      selectorRef.current?.blur();
-    },
-  }));
+  const selectorRef = usePickerRef(ref);
 
   // ======================== Locale ========================
   const filledLocale = useLocale(locale);

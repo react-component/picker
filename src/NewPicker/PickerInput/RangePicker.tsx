@@ -15,7 +15,6 @@ import type {
   PickerRef,
   RangeTimeProps,
   SelectorProps,
-  SelectorRef,
   SharedHTMLAttrs,
   SharedPickerProps,
   ValueDate,
@@ -30,6 +29,7 @@ import { useFieldFormat } from './hooks/useFieldFormat';
 import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
+import { usePickerRef } from './hooks/usePickerRef';
 import usePresets from './hooks/usePresets';
 import useRangeActive from './hooks/useRangeActive';
 import useRangeDisabledDate from './hooks/useRangeDisabledDate';
@@ -206,17 +206,7 @@ function RangePicker<DateType extends object = any>(
   } = props;
 
   // ========================= Refs =========================
-  const selectorRef = React.useRef<SelectorRef>();
-
-  React.useImperativeHandle(ref, () => ({
-    nativeElement: selectorRef.current?.nativeElement,
-    focus: () => {
-      selectorRef.current?.focus();
-    },
-    blur: () => {
-      selectorRef.current?.blur();
-    },
-  }));
+  const selectorRef = usePickerRef(ref);
 
   // ======================== Locale ========================
   const filledLocale = useLocale(locale);
