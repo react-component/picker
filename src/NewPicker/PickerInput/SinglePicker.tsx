@@ -100,7 +100,7 @@ function Picker<DateType extends object = any>(
   ref: React.Ref<PickerRef>,
 ) {
   // ========================= Prop =========================
-  const filledProps = useFilledProps(props);
+  const [filledProps, internalPicker, complexPicker] = useFilledProps(props);
 
   const {
     // Style
@@ -138,6 +138,7 @@ function Picker<DateType extends object = any>(
     mode,
     onPanelChange,
     onCalendarChange,
+    multiple,
 
     // Picker Value
     defaultPickerValue,
@@ -179,14 +180,6 @@ function Picker<DateType extends object = any>(
 
   const [mergedOpen, triggerOpen] = useOpen(open, defaultOpen, onOpenChange);
 
-  // ======================== Picker ========================
-  /** Almost same as `picker`, but add `datetime` for `date` with `showTime` */
-  const internalPicker: InternalMode = picker === 'date' && showTime ? 'datetime' : picker;
-
-  /** The picker is `datetime` or `time` */
-  const complexPicker = internalPicker === 'time' || internalPicker === 'datetime';
-  const mergedNeedConfirm = needConfirm ?? complexPicker;
-
   // ======================== Format ========================
   const [formatList, maskFormat] = useFieldFormat(internalPicker, locale, format);
 
@@ -194,6 +187,7 @@ function Picker<DateType extends object = any>(
   const [mergedValue, setInnerValue, getCalendarValue, triggerCalendarChange] = useInnerValue(
     generateConfig,
     locale,
+    multiple,
     formatList,
     defaultValue,
     value,
@@ -531,7 +525,7 @@ function Picker<DateType extends object = any>(
       hoverValue={hoverValues}
       onHover={onPanelHover}
       // Submit
-      needConfirm={mergedNeedConfirm}
+      needConfirm={needConfirm}
       onSubmit={triggerPartConfirm}
       // Preset
       presets={presetList}
@@ -615,7 +609,7 @@ function Picker<DateType extends object = any>(
     }
 
     // Submit with complex picker
-    if (!mergedOpen && complexPicker && !mergedNeedConfirm && lastOp === 'panel') {
+    if (!mergedOpen && complexPicker && !needConfirm && lastOp === 'panel') {
       triggerOpen(true);
       triggerPartConfirm();
     }

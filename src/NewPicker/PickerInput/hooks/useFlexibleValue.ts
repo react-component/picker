@@ -6,6 +6,7 @@ import useSyncState from '../../hooks/useSyncState';
 import type { FormatType, Locale } from '../../interface';
 import { fillIndex } from '../../util';
 import type { RangePickerProps } from '../RangePicker';
+import type { PickerProps } from '../SinglePicker';
 import useLockEffect from './useLockEffect';
 import { useCalendarValue, useUtil } from './useRangeValue';
 
@@ -18,12 +19,14 @@ const EMPTY_VALUE: any[] = [];
 type TriggerCalendarChange<DateType> = (dates: DateType[]) => void;
 
 export function useInnerValue<DateType extends object = any>(
+  multiple: boolean,
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
   formatList: FormatType[],
+
   defaultValue?: DateType,
   value?: DateType,
-  onCalendarChange?: RangePickerProps<DateType>['onCalendarChange'],
+  onCalendarChange?: PickerProps<DateType>['onCalendarChange'],
 ) {
   // This is the root value which will sync with controlled or uncontrolled value
   const [innerValue, setInnerValue] = useMergedState(defaultValue, {
@@ -45,6 +48,10 @@ export function useInnerValue<DateType extends object = any>(
     formatList,
   );
 
+  function pickByMultiple<T>(values: T[]): any {
+    return multiple ? values : values[0];
+  }
+
   const triggerCalendarChange: TriggerCalendarChange<DateType> = useEvent((dates) => {
     const clone: DateType[] = [...dates];
 
@@ -56,7 +63,7 @@ export function useInnerValue<DateType extends object = any>(
 
       // Trigger calendar change event
       if (onCalendarChange) {
-        onCalendarChange(clone, getDateTexts(clone), {
+        onCalendarChange(pickByMultiple(clone), pickByMultiple(getDateTexts(clone)), {
           range: isSameStart ? 'end' : 'start',
         });
       }

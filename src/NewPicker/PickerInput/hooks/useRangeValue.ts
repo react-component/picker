@@ -33,14 +33,18 @@ const EMPTY_VALUE: [null, null] = [null, null];
 
 type TriggerCalendarChange<DateType> = ([start, end]: RangeValueType<DateType>) => void;
 
+type RefillType<T> = {
+  [P in keyof T]: string;
+};
+
 export function useUtil<
   DateType extends object = any,
   MergedValueType extends DateType[] = RangeValueType<DateType>,
 >(generateConfig: GenerateConfig<DateType>, locale: Locale, formatList: FormatType[]) {
-  const getDateTexts = ([start, end]: RangeValueType<DateType>) => {
-    return [start, end].map((date) =>
+  const getDateTexts = (dates: MergedValueType) => {
+    return dates.map((date) =>
       formatValue(date, { generateConfig, locale, format: formatList[0] }),
-    ) as [string, string];
+    ) as any as RefillType<Required<MergedValueType>>;
   };
 
   const isSameDates = (source: MergedValueType, target: MergedValueType) => {
@@ -116,7 +120,8 @@ export function useInnerValue<DateType extends object = any>(
 
       // Trigger calendar change event
       if (onCalendarChange) {
-        onCalendarChange(clone, getDateTexts(clone), {
+        const cellTexts = getDateTexts(clone);
+        onCalendarChange(clone, cellTexts, {
           range: isSameStart ? 'end' : 'start',
         });
       }
