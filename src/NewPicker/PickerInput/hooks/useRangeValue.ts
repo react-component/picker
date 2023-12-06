@@ -3,12 +3,12 @@ import * as React from 'react';
 import type { GenerateConfig } from '../../../generate';
 import { formatValue, isSame, isSameTimestamp } from '../../../utils/dateUtil';
 import useSyncState from '../../hooks/useSyncState';
-import type { FormatType, Locale } from '../../interface';
+import type { BaseInfo, FormatType, Locale } from '../../interface';
 import { fillIndex } from '../../util';
 import type { RangePickerProps, RangeValueType } from '../RangePicker';
 import useLockEffect from './useLockEffect';
 
-const EMPTY_VALUE: [null, null] = [null, null];
+const EMPTY_VALUE: any[] = [];
 
 // Submit Logic:
 // * ✅ Value:
@@ -31,20 +31,20 @@ const EMPTY_VALUE: [null, null] = [null, null];
 //    * Update `needSubmit` mark to true
 //    * trigger onChange by `needSubmit` and update stateValue
 
-type TriggerCalendarChange<DateType> = ([start, end]: RangeValueType<DateType>) => void;
+type TriggerCalendarChange<ValueType extends object[]> = (calendarValues: ValueType) => void;
 
-type RefillType<T> = {
+type Replace2String<T> = {
   [P in keyof T]: string;
 };
 
 export function useUtil<
-  DateType extends object = any,
-  MergedValueType extends DateType[] = RangeValueType<DateType>,
+  MergedValueType extends object[],
+  DateType extends MergedValueType[number] = any,
 >(generateConfig: GenerateConfig<DateType>, locale: Locale, formatList: FormatType[]) {
   const getDateTexts = (dates: MergedValueType) => {
     return dates.map((date) =>
       formatValue(date, { generateConfig, locale, format: formatList[0] }),
-    ) as any as RefillType<Required<MergedValueType>>;
+    ) as any as Replace2String<Required<MergedValueType>>;
   };
 
   const isSameDates = (source: MergedValueType, target: MergedValueType) => {
@@ -71,10 +71,7 @@ export function useUtil<
  * Used for internal value management.
  * It should always use `mergedValue` in render logic
  */
-export function useCalendarValue<
-  DateType extends object = any,
-  MergedValueType extends DateType[] = RangeValueType<DateType>,
->(mergedValue: MergedValueType) {
+export function useCalendarValue<MergedValueType extends object[]>(mergedValue: MergedValueType) {
   const [calendarValue, setCalendarValue] = useSyncState(mergedValue);
 
   /** Sync calendarValue & submitValue back with value */
@@ -89,44 +86,50 @@ export function useCalendarValue<
   return [calendarValue, setCalendarValue] as const;
 }
 
-export function useInnerValue<DateType extends object = any>(
+export function useInnerValue<ValueType extends object[], DateType extends ValueType[number]>(
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
   formatList: FormatType[],
-  defaultValue?: RangeValueType<DateType>,
-  value?: RangeValueType<DateType>,
-  onCalendarChange?: RangePickerProps<DateType>['onCalendarChange'],
+  defaultValue?: ValueType,
+  value?: ValueType,
+  onCalendarChange?: (
+    dates: ValueType,
+    dateStrings: Replace2String<Required<ValueType>>,
+    info: BaseInfo,
+  ) => void,
 ) {
   // This is the root value which will sync with controlled or uncontrolled value
   const [innerValue, setInnerValue] = useMergedState(defaultValue, {
     value,
   });
-  const mergedValue = innerValue || EMPTY_VALUE;
+  const mergedValue = innerValue || (EMPTY_VALUE as ValueType);
 
   // ========================= Inner Values =========================
   const [calendarValue, setCalendarValue] = useCalendarValue(mergedValue);
 
   // ============================ Change ============================
-  const [getDateTexts, isSameDates] = useUtil(generateConfig, locale, formatList);
+  const [getDateTexts, isSameDates] = useUtil<ValueType>(generateConfig, locale, formatList);
 
-  const triggerCalendarChange: TriggerCalendarChange<DateType> = useEvent(([start, end]) => {
-    const clone: RangeValueType<DateType> = [start, end];
+  const triggerCalendarChange: TriggerCalendarChange<ValueType> = useEvent(
+    (nextCalendarValues: ValueType) => {
+      const clone = [...nextCalendarValues] as ValueType;
 
-    // Update merged value
-    const [isSameMergedDates, isSameStart] = isSameDates(calendarValue(), clone);
+      // Update merged value
+      const [isSameMergedDates, isSameStart] = isSameDates(calendarValue(), clone);
 
-    if (!isSameMergedDates) {
-      setCalendarValue(clone);
+      if (!isSameMergedDates) {
+        setCalendarValue(clone);
 
-      // Trigger calendar change event
-      if (onCalendarChange) {
-        const cellTexts = getDateTexts(clone);
-        onCalendarChange(clone, cellTexts, {
-          range: isSameStart ? 'end' : 'start',
-        });
+        // Trigger calendar change event
+        if (onCalendarChange) {
+          const cellTexts = getDateTexts(clone);
+          onCalendarChange(clone, cellTexts, {
+            range: isSameStart ? 'end' : 'start',
+          });
+        }
       }
-    }
-  });
+    },
+  );
 
   return [mergedValue, setInnerValue, calendarValue, triggerCalendarChange] as const;
 }
@@ -145,7 +148,7 @@ export default function useRangeValue<DateType extends object = any>(
   mergedValue: RangeValueType<DateType>,
   setInnerValue: (nextValue: RangeValueType<DateType>) => void,
   getCalendarValue: () => RangeValueType<DateType>,
-  triggerCalendarChange: TriggerCalendarChange<DateType>,
+  triggerCalendarChange: TriggerCalendarChange<RangeValueType<DateType>>,
   disabled: [boolean, boolean],
   formatList: FormatType[],
   focused: boolean,
@@ -174,7 +177,11 @@ export default function useRangeValue<DateType extends object = any>(
   const orderOnChange = disabled.some((d) => d) ? false : order;
 
   // ============================= Util =============================
-  const [getDateTexts, isSameDates] = useUtil(generateConfig, locale, formatList);
+  const [getDateTexts, isSameDates] = useUtil<RangeValueType<DateType>>(
+    generateConfig,
+    locale,
+    formatList,
+  );
 
   // ============================ Values ============================
   // Used for trigger `onChange` event.
@@ -194,7 +201,7 @@ export default function useRangeValue<DateType extends object = any>(
   const triggerSubmit = useEvent((nextValue?: RangeValueType<DateType>) => {
     const isNullValue = nextValue === null;
 
-    const clone: RangeValueType<DateType> = [...(nextValue || submitValue())];
+    const clone = [...(nextValue || submitValue())] as RangeValueType<DateType>;
 
     // Fill null value
     if (isNullValue) {
