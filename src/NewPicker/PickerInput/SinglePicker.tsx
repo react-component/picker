@@ -32,7 +32,6 @@ import useRangeActive from './hooks/useRangeActive';
 import useRangePickerValue from './hooks/useRangePickerValue';
 import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
-import { useClearIcon } from './Selector/hooks/useClearIcon';
 import SingleSelector from './Selector/SingleSelector';
 
 export interface BasePickerProps<DateType extends object> extends SharedPickerProps<DateType> {
@@ -162,10 +161,6 @@ function Picker<DateType extends object = any>(
     // Presets
     presets,
 
-    // Icons
-    allowClear,
-    clearIcon,
-
     // Render
     components,
     cellRender,
@@ -178,9 +173,6 @@ function Picker<DateType extends object = any>(
 
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
-
-  // ========================= Icon =========================
-  const mergedClearIcon = useClearIcon(prefixCls, allowClear, clearIcon);
 
   // ======================= ShowTime =======================
   const mergedShowTime = useTimeConfig(filledProps);
@@ -660,7 +652,6 @@ function Picker<DateType extends object = any>(
           // Ref
           ref={selectorRef}
           // Icon
-          clearIcon={mergedClearIcon}
           suffixIcon={suffixIcon}
           // Active
           activeIndex={focused || mergedOpen ? activeIndex : null}

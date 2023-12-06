@@ -37,7 +37,6 @@ import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
-import { useClearIcon } from './Selector/hooks/useClearIcon';
 import RangeSelector, { type SelectorIdType } from './Selector/RangeSelector';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
@@ -203,10 +202,6 @@ function RangePicker<DateType extends object = any>(
     presets,
     ranges,
 
-    // Icons
-    allowClear,
-    clearIcon,
-
     // Render
     components,
     cellRender,
@@ -219,9 +214,6 @@ function RangePicker<DateType extends object = any>(
 
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
-
-  // ========================= Icon =========================
-  const mergedClearIcon = useClearIcon(prefixCls, allowClear, clearIcon);
 
   // ======================= ShowTime =======================
   const mergedShowTime = useTimeConfig(filledProps);
@@ -755,7 +747,6 @@ function RangePicker<DateType extends object = any>(
           // Ref
           ref={selectorRef}
           // Icon
-          clearIcon={mergedClearIcon}
           suffixIcon={suffixIcon}
           // Active
           activeIndex={focused || mergedOpen ? activeIndex : null}
