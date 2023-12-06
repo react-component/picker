@@ -4,7 +4,6 @@ import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import warning from 'rc-util/lib/warning';
 import * as React from 'react';
-import useLocale from '../hooks/useLocale';
 import useTimeConfig from '../hooks/useTimeConfig';
 import type {
   BaseInfo,
@@ -131,16 +130,28 @@ function RangePicker<DateType extends object = any>(
   props: RangePickerProps<DateType>,
   ref: React.Ref<PickerRef>,
 ) {
+  // ========================= Prop =========================
+  const filledProps = useFilledProps(props, () => {
+    const { disabled, allowEmpty } = props;
+
+    const mergedDisabled = separateConfig(disabled, false);
+    const mergedAllowEmpty = separateConfig(allowEmpty, false);
+
+    return {
+      disabled: mergedDisabled,
+      allowEmpty: mergedAllowEmpty,
+    };
+  });
+
   const {
     // Style
-    prefixCls = 'rc-picker',
-    styles = {},
-    classNames = {},
+    prefixCls,
+    styles,
+    classNames,
 
     // Value
     defaultValue,
     value,
-    order = true,
     needConfirm,
 
     // Disabled
@@ -160,7 +171,7 @@ function RangePicker<DateType extends object = any>(
     // Picker
     locale,
     generateConfig,
-    picker = 'date',
+    picker,
     showNow,
     showToday,
 
@@ -197,33 +208,20 @@ function RangePicker<DateType extends object = any>(
     clearIcon,
 
     // Render
-    components = {},
+    components,
     cellRender,
     dateRender,
     monthCellRender,
 
     // Native
     onClick,
-  } = props;
+  } = filledProps;
 
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
 
-  // ======================== Locale ========================
-  const filledLocale = useLocale(locale);
-
-  // =================== Disabled & Empty ===================
-  const mergedDisabled = separateConfig(disabled, false);
-  const mergedAllowEmpty = separateConfig(allowEmpty, false);
-
   // ========================= Icon =========================
   const mergedClearIcon = useClearIcon(prefixCls, allowClear, clearIcon);
-
-  // ========================= Prop =========================
-  const filledProps = useFilledProps(props, {
-    allowEmpty: mergedAllowEmpty,
-    order,
-  });
 
   // ======================= ShowTime =======================
   const mergedShowTime = useTimeConfig(filledProps);
@@ -235,7 +233,7 @@ function RangePicker<DateType extends object = any>(
 
   const triggerOpen: OnOpenChange = (nextOpen, config?: OpenConfig) => {
     // No need to open if all disabled
-    if (mergedDisabled.some((fieldDisabled) => !fieldDisabled) || !nextOpen) {
+    if (disabled.some((fieldDisabled) => !fieldDisabled) || !nextOpen) {
       setMergeOpen(nextOpen, config);
     }
   };
@@ -249,7 +247,7 @@ function RangePicker<DateType extends object = any>(
   const mergedNeedConfirm = needConfirm ?? complexPicker;
 
   // ======================== Format ========================
-  const [formatList, maskFormat] = useFieldFormat(internalPicker, filledLocale, format);
+  const [formatList, maskFormat] = useFieldFormat(internalPicker, locale, format);
 
   // ======================== Values ========================
   const [mergedValue, setInnerValue, getCalendarValue, triggerCalendarChange] = useInnerValue(
@@ -272,7 +270,7 @@ function RangePicker<DateType extends object = any>(
     lastOperation,
     nextActiveIndex,
     activeIndexList,
-  ] = useRangeActive(mergedOpen, mergedDisabled, mergedAllowEmpty);
+  ] = useRangeActive(mergedOpen, disabled, allowEmpty);
 
   const onSharedFocus = (event: React.FocusEvent<HTMLElement>, index?: number) => {
     triggerFocus(true);
@@ -339,7 +337,7 @@ function RangePicker<DateType extends object = any>(
     setInnerValue,
     getCalendarValue,
     triggerCalendarChange,
-    mergedDisabled,
+    disabled,
     formatList,
     focused,
     mergedOpen,
@@ -349,10 +347,10 @@ function RangePicker<DateType extends object = any>(
   // ===================== DisabledDate =====================
   const mergedDisabledDate = useRangeDisabledDate(
     calendarValue,
-    mergedDisabled,
+    disabled,
     activeIndexList,
     generateConfig,
-    filledLocale,
+    locale,
     disabledBoundaryDate,
     // minDate,
     // maxDate,
@@ -386,7 +384,7 @@ function RangePicker<DateType extends object = any>(
       }
 
       // Not allow empty
-      if (!mergedAllowEmpty[index] && !current) {
+      if (!allowEmpty[index] && !current) {
         return true;
       }
 
@@ -397,12 +395,12 @@ function RangePicker<DateType extends object = any>(
 
       return false;
     }) as [boolean, boolean];
-  }, [calendarValue, fieldsInvalidates, isInvalidateDate, mergedAllowEmpty]);
+  }, [calendarValue, fieldsInvalidates, isInvalidateDate, allowEmpty]);
 
   // ===================== Picker Value =====================
   const [currentPickerValue, setCurrentPickerValue] = useRangePickerValue(
     generateConfig,
-    filledLocale,
+    locale,
     calendarValue,
     mergedOpen,
     activeIndex,
@@ -473,7 +471,7 @@ function RangePicker<DateType extends object = any>(
   const onSelectorClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
     if (!selectorRef.current.nativeElement.contains(document.activeElement)) {
       // Click to focus the enabled input
-      const enabledIndex = mergedDisabled.findIndex((d) => !d);
+      const enabledIndex = disabled.findIndex((d) => !d);
       if (enabledIndex >= 0) {
         selectorRef.current.focus(enabledIndex);
       }
@@ -675,12 +673,12 @@ function RangePicker<DateType extends object = any>(
   const context = React.useMemo(
     () => ({
       prefixCls,
-      locale: filledLocale,
+      locale,
       generateConfig,
       button: components.button,
       input: components.input,
     }),
-    [prefixCls, filledLocale, generateConfig, components.button, components.input],
+    [prefixCls, locale, generateConfig, components.button, components.input],
   );
 
   // ======================== Effect ========================
@@ -722,8 +720,8 @@ function RangePicker<DateType extends object = any>(
     };
 
     if (
-      mergedDisabled.some(
-        (fieldDisabled, index) => fieldDisabled && isIndexEmpty(index) && !mergedAllowEmpty[index],
+      disabled.some(
+        (fieldDisabled, index) => fieldDisabled && isIndexEmpty(index) && !allowEmpty[index],
       )
     ) {
       warning(
@@ -777,7 +775,7 @@ function RangePicker<DateType extends object = any>(
           format={formatList}
           inputReadOnly={mergedInputReadOnly}
           // Disabled
-          disabled={mergedDisabled}
+          disabled={disabled}
           // Open
           onOpenChange={triggerOpen}
           // Click

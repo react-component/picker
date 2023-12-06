@@ -1,22 +1,43 @@
 import * as React from 'react';
 import useLocale from '../../hooks/useLocale';
-import type { Locale, PickerMode } from '../../interface';
+import type { RangePickerProps } from '../RangePicker';
 
-export default function useFilledProps<T extends { locale: Locale; picker?: PickerMode }>(
-  props: T,
-  additionalProps?: Partial<T>,
-): T {
-  const { locale, picker = 'date' } = props;
+type PickedProps<DateType extends object = any> = Pick<
+  RangePickerProps<DateType>,
+  'locale' | 'picker' | 'prefixCls' | 'styles' | 'classNames' | 'order' | 'components'
+>;
+
+export default function useFilledProps<
+  DateType extends object = any,
+  InProps extends PickedProps<DateType> = PickedProps<DateType>,
+  UpdaterProps = any,
+>(props: InProps, updater?: () => UpdaterProps): Omit<InProps, keyof UpdaterProps> & UpdaterProps {
+  const {
+    locale,
+    picker = 'date',
+    prefixCls = 'rc-picker',
+    styles = {},
+    classNames = {},
+    order = true,
+    components = {},
+  } = props;
 
   const filledLocale = useLocale(locale);
 
-  return React.useMemo(
+  const filledProps = React.useMemo(
     () => ({
       ...props,
+      prefixCls,
       locale: filledLocale,
       picker,
-      ...additionalProps,
+      styles,
+      classNames,
+      order,
+      components,
+      ...updater?.(),
     }),
     [props],
   );
+
+  return filledProps;
 }
