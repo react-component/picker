@@ -364,7 +364,7 @@ function Picker<DateType extends object = any>(
 
       // Compatible with `onPanelChange`
       if (onPanelChange && triggerEvent !== false) {
-        const clonePickerValue: RangeValueType<DateType> = [...calendarValue];
+        const clonePickerValue: DateType = [...calendarValue];
         if (nextPickerValue) {
           clonePickerValue[activeIndex] = nextPickerValue;
         }
@@ -429,7 +429,7 @@ function Picker<DateType extends object = any>(
   // ======================== Hover =========================
   const [hoverSource, setHoverSource] = React.useState<'cell' | 'preset'>(null);
   const [internalHoverValues, setInternalHoverValues] =
-    React.useState<RangeValueType<DateType>>(null);
+    React.useState<DateType>(null);
 
   const hoverValues = React.useMemo(() => {
     return internalHoverValues || calendarValue;
@@ -450,12 +450,12 @@ function Picker<DateType extends object = any>(
   // ======================= Presets ========================
   const presetList = usePresets(presets, ranges);
 
-  const onPresetHover = (nextValues: RangeValueType<DateType> | null) => {
+  const onPresetHover = (nextValues: DateType | null) => {
     setInternalHoverValues(nextValues);
     setHoverSource('preset');
   };
 
-  const onPresetSubmit = (nextValues: RangeValueType<DateType>) => {
+  const onPresetSubmit = (nextValues: DateType) => {
     const passed = triggerSubmitChange(nextValues);
 
     if (passed) {
@@ -479,7 +479,7 @@ function Picker<DateType extends object = any>(
   const onPanelCalendarChange: PickerPanelProps<DateType>['onChange'] = (date) => {
     lastOperation('panel');
 
-    const clone: RangeValueType<DateType> = fillIndex(calendarValue, activeIndex, date);
+    const clone: DateType = fillIndex(calendarValue, activeIndex, date);
 
     // Only trigger calendar event but not update internal `calendarValue` state
     triggerCalendarChange(clone);
@@ -531,10 +531,6 @@ function Picker<DateType extends object = any>(
       {...panelProps}
       showNow={mergedShowNow}
       showTime={mergedShowTime}
-      // Range
-      range
-      multiple={multiplePanel}
-      activeOffset={activeOffset}
       // Disabled
       disabledDate={disabledDate}
       // Focus
@@ -662,8 +658,6 @@ function Picker<DateType extends object = any>(
         // Visible
         visible={mergedOpen}
         onClose={onPopupClose}
-        // Range
-        range
       >
         <SingleSelector
           // Shared
