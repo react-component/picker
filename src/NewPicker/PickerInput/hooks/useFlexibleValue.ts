@@ -121,7 +121,12 @@ export default function useFlexibleValue<DateType extends object = any>(
   // ============================ Values ============================
   // Used for trigger `onChange` event.
   // Record current value which is wait for submit.
-  const [submitValue, setSubmitValue] = useSyncState(mergedValue);
+  const [innerSubmitValue, setSubmitValue] = useSyncState(mergedValue);
+  const submitValue = React.useMemo<DateType[]>(() => {
+    const filledValue = innerSubmitValue || EMPTY_VALUE;
+
+    return Array.isArray(filledValue) ? filledValue : [filledValue];
+  }, [innerSubmitValue]);
 
   /** Sync calendarValue & submitValue back with value */
   const syncWithValue = useEvent(() => {
@@ -133,7 +138,7 @@ export default function useFlexibleValue<DateType extends object = any>(
   }, [mergedValue]);
 
   // ============================ Submit ============================
-  const triggerSubmit = useEvent((nextValue?: DateType) => {
+  const triggerSubmit = useEvent((nextValue?: DateType[]) => {
     const isNullValue = nextValue === null;
 
     const clone: DateType = [...(nextValue || submitValue())];
