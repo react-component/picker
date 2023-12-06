@@ -174,22 +174,7 @@ export default function useRangeValue<DateType extends object = any>(
   const orderOnChange = disabled.some((d) => d) ? false : order;
 
   // ============================= Util =============================
-  const getDateTexts = ([start, end]: RangeValueType<DateType>) => {
-    return [start, end].map((date) =>
-      formatValue(date, { generateConfig, locale, format: formatList[0] }),
-    ) as [string, string];
-  };
-
-  const isSameDates = (source: RangeValueType<DateType>, target: RangeValueType<DateType>) => {
-    const [prevStart = null, prevEnd = null] = source;
-    const [nextStart = null, nextEnd = null] = target;
-
-    const isSameStart =
-      prevStart === nextStart || isSameTimestamp(generateConfig, prevStart, nextStart);
-    const isSameEnd = prevEnd === nextEnd || isSameTimestamp(generateConfig, prevEnd, nextEnd);
-
-    return [isSameStart && isSameEnd, isSameStart, isSameEnd];
-  };
+  const [getDateTexts, isSameDates] = useUtil(generateConfig, locale, formatList);
 
   // ============================ Values ============================
   // Used for trigger `onChange` event.

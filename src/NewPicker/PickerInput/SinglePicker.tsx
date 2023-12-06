@@ -185,9 +185,9 @@ function Picker<DateType extends object = any>(
 
   // ======================== Values ========================
   const [mergedValue, setInnerValue, getCalendarValue, triggerCalendarChange] = useInnerValue(
+    multiple,
     generateConfig,
     locale,
-    multiple,
     formatList,
     defaultValue,
     value,
