@@ -47,24 +47,17 @@ function useUtil<
     const maxLen = Math.max(source.length, target.length);
     let diffIndex = -1;
 
-    // for (let i = 0; i < maxLen; i += 1) {
-    //   const prev = source[i] || null;
-    //   const next = target[i] || null;
+    for (let i = 0; i < maxLen; i += 1) {
+      const prev = source[i] || null;
+      const next = target[i] || null;
 
-    //   if (prev !== next && !isSameTimestamp(generateConfig, prev, next)) {
-    //     diffIndex = i;
-    //     break;
-    //   }
-    // }
+      if (prev !== next && !isSameTimestamp(generateConfig, prev, next)) {
+        diffIndex = i;
+        break;
+      }
+    }
 
-    const [prevStart = null, prevEnd = null] = source;
-    const [nextStart = null, nextEnd = null] = target;
-
-    const isSameStart =
-      prevStart === nextStart || isSameTimestamp(generateConfig, prevStart, nextStart);
-    const isSameEnd = prevEnd === nextEnd || isSameTimestamp(generateConfig, prevEnd, nextEnd);
-
-    return [isSameStart && isSameEnd, isSameStart, isSameEnd];
+    return [diffIndex < 0, diffIndex !== 0];
   };
 
   return [getDateTexts, isSameDates] as const;
