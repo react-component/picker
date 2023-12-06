@@ -23,6 +23,7 @@ import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useDisabledBoundary from './hooks/useDisabledBoundary';
 import { useFieldFormat } from './hooks/useFieldFormat';
+import useRangeValue, { useInnerValue } from './hooks/useFlexibleValue';
 import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
@@ -30,18 +31,11 @@ import usePresets from './hooks/usePresets';
 import useRangeActive from './hooks/useRangeActive';
 import useRangePickerValue from './hooks/useRangePickerValue';
 import useShowNow from './hooks/useShowNow';
-import useRangeValue, { useInnerValue } from './hooks/useFlexibleValue';
 import Popup from './Popup';
 import { useClearIcon } from './Selector/hooks/useClearIcon';
 import SingleSelector from './Selector/SingleSelector';
 
-export interface PickerProps<DateType extends object> extends SharedPickerProps<DateType> {
-  // Value
-  value?: DateType;
-  defaultValue?: DateType;
-  onChange?: (date: DateType, dateString: string) => void;
-  onCalendarChange?: (date: DateType, dateString: string, info: BaseInfo) => void;
-
+export interface BasePickerProps<DateType extends object> extends SharedPickerProps<DateType> {
   // Placeholder
   placeholder?: string;
 
@@ -80,6 +74,28 @@ export interface PickerProps<DateType extends object> extends SharedPickerProps<
   mode?: PanelMode;
   onPanelChange?: (values: DateType, modes: PanelMode) => void;
 }
+
+export interface SinglePickerProps<DateType extends object> extends SharedPickerProps<DateType> {
+  // Value
+  value?: DateType;
+  defaultValue?: DateType;
+  onChange?: (date: DateType, dateString: string) => void;
+  onCalendarChange?: (date: DateType, dateString: string, info: BaseInfo) => void;
+}
+
+export interface MultiplePickerProps<DateType extends object> extends SharedPickerProps<DateType> {
+  multiple: true;
+
+  // Value
+  value?: DateType[];
+  defaultValue?: DateType[];
+  onChange?: (date: DateType[], dateString: string[]) => void;
+  onCalendarChange?: (date: DateType[], dateString: string[], info: BaseInfo) => void;
+}
+
+export type PickerProps<DateType extends object> =
+  | SinglePickerProps<DateType>
+  | MultiplePickerProps<DateType>;
 
 function Picker<DateType extends object = any>(
   props: PickerProps<DateType>,

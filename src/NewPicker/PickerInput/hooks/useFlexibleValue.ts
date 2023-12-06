@@ -7,7 +7,7 @@ import type { FormatType, Locale } from '../../interface';
 import { fillIndex } from '../../util';
 import type { RangePickerProps } from '../RangePicker';
 import useLockEffect from './useLockEffect';
-import { useCalendarValue } from './useRangeValue';
+import { useCalendarValue, useUtil } from './useRangeValue';
 
 const EMPTY_VALUE: any[] = [];
 
@@ -15,32 +15,7 @@ const EMPTY_VALUE: any[] = [];
 // This is design to support single value or multiple value,
 // Thus this hook reuse part of the util from `useRangeValue`.
 
-type TriggerCalendarChange<DateType> = ([start, end]: DateType) => void;
-
-function useUtil<DateType extends object = any>(
-  generateConfig: GenerateConfig<DateType>,
-  locale: Locale,
-  formatList: FormatType[],
-) {
-  const getDateTexts = ([start, end]: DateType) => {
-    return [start, end].map((date) =>
-      formatValue(date, { generateConfig, locale, format: formatList[0] }),
-    ) as [string, string];
-  };
-
-  const isSameDates = (source: DateType, target: DateType) => {
-    const [prevStart = null, prevEnd = null] = source;
-    const [nextStart = null, nextEnd = null] = target;
-
-    const isSameStart =
-      prevStart === nextStart || isSameTimestamp(generateConfig, prevStart, nextStart);
-    const isSameEnd = prevEnd === nextEnd || isSameTimestamp(generateConfig, prevEnd, nextEnd);
-
-    return [isSameStart && isSameEnd, isSameStart, isSameEnd];
-  };
-
-  return [getDateTexts, isSameDates] as const;
-}
+type TriggerCalendarChange<DateType> = (dates: DateType[]) => void;
 
 export function useInnerValue<DateType extends object = any>(
   generateConfig: GenerateConfig<DateType>,
@@ -64,10 +39,14 @@ export function useInnerValue<DateType extends object = any>(
   const [calendarValue, setCalendarValue] = useCalendarValue(mergedValue);
 
   // ============================ Change ============================
-  const [getDateTexts, isSameDates] = useUtil(generateConfig, locale, formatList);
+  const [getDateTexts, isSameDates] = useUtil<DateType, DateType[]>(
+    generateConfig,
+    locale,
+    formatList,
+  );
 
-  const triggerCalendarChange: TriggerCalendarChange<DateType> = useEvent(([start, end]) => {
-    const clone: DateType = [start, end];
+  const triggerCalendarChange: TriggerCalendarChange<DateType> = useEvent((dates) => {
+    const clone: DateType[] = [...dates];
 
     // Update merged value
     const [isSameMergedDates, isSameStart] = isSameDates(calendarValue(), clone);

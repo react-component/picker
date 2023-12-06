@@ -33,7 +33,7 @@ const EMPTY_VALUE: [null, null] = [null, null];
 
 type TriggerCalendarChange<DateType> = ([start, end]: RangeValueType<DateType>) => void;
 
-function useUtil<
+export function useUtil<
   DateType extends object = any,
   MergedValueType extends DateType[] = RangeValueType<DateType>,
 >(generateConfig: GenerateConfig<DateType>, locale: Locale, formatList: FormatType[]) {
