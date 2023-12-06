@@ -1,7 +1,7 @@
 import { useMergedState } from 'rc-util';
 import * as React from 'react';
 import useLocale from '../hooks/useLocale';
-import useTimeConfig from '../hooks/useTimeConfig';
+import { getTimeConfig } from '../hooks/useTimeConfig';
 import type {
   CellRender,
   Components,
@@ -139,7 +139,7 @@ function PickerPanel<DateType = any>(
   const filledLocale = useLocale(locale);
 
   // ======================== ShowTime ========================
-  const mergedShowTime = useTimeConfig(props);
+  const mergedShowTime = getTimeConfig(props);
 
   // ========================== Now ===========================
   const now = generateConfig.getNow();

@@ -52,7 +52,7 @@ function pickTimeProps<DateType = any>(props: object): SharedTimeProps<DateType>
   return timeProps;
 }
 
-export default function useTimeConfig<Config extends object>(
+export function getTimeConfig<Config extends object>(
   componentProps: {
     picker?: PickerMode;
     showTime?: boolean | Config;

@@ -4,7 +4,6 @@ import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import warning from 'rc-util/lib/warning';
 import * as React from 'react';
-import useTimeConfig from '../hooks/useTimeConfig';
 import type {
   BaseInfo,
   InternalMode,
@@ -173,6 +172,7 @@ function RangePicker<DateType extends object = any>(
     picker,
     showNow,
     showToday,
+    showTime,
 
     // Mode
     mode,
@@ -215,9 +215,6 @@ function RangePicker<DateType extends object = any>(
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
 
-  // ======================= ShowTime =======================
-  const mergedShowTime = useTimeConfig(filledProps);
-
   // ========================= Open =========================
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
 
@@ -232,7 +229,7 @@ function RangePicker<DateType extends object = any>(
 
   // ======================== Picker ========================
   /** Almost same as `picker`, but add `datetime` for `date` with `showTime` */
-  const internalPicker: InternalMode = picker === 'date' && mergedShowTime ? 'datetime' : picker;
+  const internalPicker: InternalMode = picker === 'date' && showTime ? 'datetime' : picker;
 
   /** The picker is `datetime` or `time` */
   const complexPicker = internalPicker === 'time' || internalPicker === 'datetime';
@@ -288,8 +285,7 @@ function RangePicker<DateType extends object = any>(
   const mergedMode = modes[activeIndex] || picker;
 
   /** Extends from `mergedMode` to patch `datetime` mode */
-  const internalMode: InternalMode =
-    mergedMode === 'date' && mergedShowTime ? 'datetime' : mergedMode;
+  const internalMode: InternalMode = mergedMode === 'date' && showTime ? 'datetime' : mergedMode;
 
   // ====================== PanelCount ======================
   const multiplePanel = internalMode === picker && internalMode !== 'time';
@@ -310,12 +306,7 @@ function RangePicker<DateType extends object = any>(
   );
 
   // ====================== Invalidate ======================
-  const isInvalidateDate = useInvalidate(
-    generateConfig,
-    picker,
-    disabledBoundaryDate,
-    mergedShowTime,
-  );
+  const isInvalidateDate = useInvalidate(generateConfig, picker, disabledBoundaryDate, showTime);
 
   // ======================== Value =========================
   const [
@@ -400,7 +391,7 @@ function RangePicker<DateType extends object = any>(
     multiplePanel,
     defaultPickerValue,
     pickerValue,
-    mergedShowTime?.defaultValue,
+    showTime?.defaultValue,
     onPickerValueChange,
     minDate,
     maxDate,
@@ -583,7 +574,7 @@ function RangePicker<DateType extends object = any>(
       // MISC
       {...panelProps}
       showNow={mergedShowNow}
-      showTime={mergedShowTime}
+      showTime={showTime}
       // Range
       range
       multiple={multiplePanel}

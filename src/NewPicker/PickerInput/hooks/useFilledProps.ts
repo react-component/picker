@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { fillLocale } from '../../hooks/useLocale';
+import { getTimeConfig } from '../../hooks/useTimeConfig';
 import type { RangePickerProps } from '../RangePicker';
 import { fillClearIcon } from '../Selector/hooks/useClearIcon';
 
@@ -14,7 +15,12 @@ type PickedProps<DateType extends object = any> = Pick<
   | 'components'
   | 'clearIcon'
   | 'allowClear'
->;
+> & {
+  // RangePicker showTime definition is different with Picker
+  showTime?: any;
+};
+
+type ExcludeBooleanType<T> = T extends boolean ? never : T;
 
 /** Align the outer props with unique typed and fill undefined props */
 /**
@@ -25,7 +31,13 @@ export default function useFilledProps<
   DateType extends object = any,
   InProps extends PickedProps<DateType> = PickedProps<DateType>,
   UpdaterProps = any,
->(props: InProps, updater?: () => UpdaterProps): Omit<InProps, keyof UpdaterProps> & UpdaterProps {
+>(
+  props: InProps,
+  updater?: () => UpdaterProps,
+): Omit<InProps, keyof UpdaterProps> &
+  UpdaterProps & {
+    showTime?: ExcludeBooleanType<InProps['showTime']>;
+  } {
   const {
     locale,
     picker = 'date',
@@ -49,6 +61,7 @@ export default function useFilledProps<
       order,
       components,
       clearIcon: fillClearIcon(prefixCls, allowClear, clearIcon),
+      showTime: getTimeConfig(props),
       ...updater?.(),
     }),
     [props],
