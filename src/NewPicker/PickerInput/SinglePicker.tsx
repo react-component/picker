@@ -3,7 +3,6 @@ import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
-import useLocale from '../hooks/useLocale';
 import useTimeConfig from '../hooks/useTimeConfig';
 import type {
   BaseInfo,
@@ -22,6 +21,7 @@ import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useDisabledBoundary from './hooks/useDisabledBoundary';
 import { useFieldFormat } from './hooks/useFieldFormat';
+import useFilledProps from './hooks/useFilledProps';
 import useRangeValue, { useInnerValue } from './hooks/useFlexibleValue';
 import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
@@ -101,11 +101,14 @@ function Picker<DateType extends object = any>(
   props: PickerProps<DateType>,
   ref: React.Ref<PickerRef>,
 ) {
+  // ========================= Prop =========================
+  const filledProps = useFilledProps(props);
+
   const {
     // Style
-    prefixCls = 'rc-picker',
-    styles = {},
-    classNames = {},
+    prefixCls,
+    styles,
+    classNames,
 
     // Value
     defaultValue,
@@ -128,7 +131,7 @@ function Picker<DateType extends object = any>(
     // Picker
     locale,
     generateConfig,
-    picker = 'date',
+    picker,
     showNow,
     showToday,
 
@@ -164,33 +167,20 @@ function Picker<DateType extends object = any>(
     clearIcon,
 
     // Render
-    components = {},
+    components,
     cellRender,
     dateRender,
     monthCellRender,
 
     // Native
     onClick,
-  } = props;
+  } = filledProps;
 
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
 
-  // ======================== Locale ========================
-  const filledLocale = useLocale(locale);
-
   // ========================= Icon =========================
   const mergedClearIcon = useClearIcon(prefixCls, allowClear, clearIcon);
-
-  // ========================= Prop =========================
-  const filledProps = React.useMemo(
-    () => ({
-      ...props,
-      locale: filledLocale,
-      picker,
-    }),
-    [props],
-  );
 
   // ======================= ShowTime =======================
   const mergedShowTime = useTimeConfig(filledProps);
@@ -209,7 +199,7 @@ function Picker<DateType extends object = any>(
   const mergedNeedConfirm = needConfirm ?? complexPicker;
 
   // ======================== Format ========================
-  const [formatList, maskFormat] = useFieldFormat(internalPicker, filledLocale, format);
+  const [formatList, maskFormat] = useFieldFormat(internalPicker, locale, format);
 
   // ======================== Values ========================
   const [mergedValue, setInnerValue, getCalendarValue, triggerCalendarChange] = useInnerValue(
@@ -345,7 +335,7 @@ function Picker<DateType extends object = any>(
   // ===================== Picker Value =====================
   const [currentPickerValue, setCurrentPickerValue] = useRangePickerValue(
     generateConfig,
-    filledLocale,
+    locale,
     calendarValue,
     mergedOpen,
     activeIndex,
@@ -613,12 +603,12 @@ function Picker<DateType extends object = any>(
   const context = React.useMemo(
     () => ({
       prefixCls,
-      locale: filledLocale,
+      locale,
       generateConfig,
       button: components.button,
       input: components.input,
     }),
-    [prefixCls, filledLocale, generateConfig, components.button, components.input],
+    [prefixCls, locale, generateConfig, components.button, components.input],
   );
 
   // ======================== Effect ========================

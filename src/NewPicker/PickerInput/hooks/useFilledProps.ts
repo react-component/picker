@@ -7,6 +7,7 @@ type PickedProps<DateType extends object = any> = Pick<
   'locale' | 'picker' | 'prefixCls' | 'styles' | 'classNames' | 'order' | 'components'
 >;
 
+/** Align the outer props with unique typed and fill undefined props */
 export default function useFilledProps<
   DateType extends object = any,
   InProps extends PickedProps<DateType> = PickedProps<DateType>,
