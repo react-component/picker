@@ -40,9 +40,9 @@ type PickedProps<DateType extends object = any> = Pick<
 
 type ExcludeBooleanType<T> = T extends boolean ? never : T;
 
-type ToArrayType<T> = T extends any[] ? T : [T];
-
 type GetGeneric<T> = T extends PickedProps<infer U> ? U : never;
+
+type ToArrayType<T, DateType> = T extends any[] ? T : DateType[];
 
 /**
  * Align the outer props with unique typed and fill undefined props.
@@ -61,8 +61,8 @@ export default function useFilledProps<
   filledProps: Omit<InProps, keyof UpdaterProps | 'showTime' | 'value' | 'defaultValue'> &
     UpdaterProps & {
       showTime?: ExcludeBooleanType<InProps['showTime']>;
-      value?: ToArrayType<InProps['value']>;
-      defaultValue?: ToArrayType<InProps['value']>;
+      value?: ToArrayType<InProps['value'], DateType>;
+      defaultValue?: ToArrayType<InProps['value'], DateType>;
     },
   internalPicker: InternalMode,
   complexPicker: boolean,
