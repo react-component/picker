@@ -219,7 +219,7 @@ function Picker<DateType extends object = any>(
     lastOperation,
     activeIndex,
     setActiveIndex,
-    nextActiveIndex,
+    // nextActiveIndex,
     // activeIndexList,
   ] = useRangeActive([disabled]);
 
@@ -321,46 +321,46 @@ function Picker<DateType extends object = any>(
   );
 
   // ======================== Change ========================
-  const fillCalendarValue = (date: DateType, index: number) =>
-    // Trigger change only when date changed
-    fillIndex(calendarValue, index, date);
+  // const fillCalendarValue = (date: DateType, index: number) =>
+  //   // Trigger change only when date changed
+  //   fillIndex(calendarValue, index, date);
 
   // ======================== Submit ========================
   /**
-   * Trigger by confirm operation.
-   * This function has already handle the `needConfirm` check logic.
-   * - Selector: enter key
-   * - Panel: OK button
+   * Different with RangePicker, confirm should check `multiple` logic.
+   * And confirm should not provide `date` value
    */
-  const triggerPartConfirm = (date?: DateType, skipFocus?: boolean) => {
-    let nextValue = calendarValue;
+  const triggerConfirm = () => {
+    // const triggerConfirm = (date?: DateType, skipFocus?: boolean) => {
+    // let nextValue = calendarValue;
 
-    if (date) {
-      nextValue = fillCalendarValue(date, activeIndex);
-    }
+    // if (date) {
+    //   nextValue = fillCalendarValue(date, activeIndex);
+    // }
 
     // Get next focus index
-    const nextIndex = nextActiveIndex(nextValue);
+    // const nextIndex = nextActiveIndex(nextValue);
 
     // Change calendar value and tell flush it
-    triggerCalendarChange(nextValue);
-    flushSubmit(activeIndex, nextIndex === null);
+    // triggerCalendarChange(nextValue);
+    // flushSubmit(activeIndex, nextIndex === null);
+    triggerSubmitChange(getCalendarValue());
 
-    if (nextIndex === null) {
-      triggerOpen(false, { force: true });
-    } else if (!skipFocus) {
-      selectorRef.current.focus(nextIndex);
-    }
+    // if (nextIndex === null) {
+    //   triggerOpen(false, { force: true });
+    // } else if (!skipFocus) {
+    //   selectorRef.current.focus(nextIndex);
+    // }
   };
 
   // ======================== Click =========================
   const onSelectorClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    if (!selectorRef.current.nativeElement.contains(document.activeElement)) {
+    if (!disabled && !selectorRef.current.nativeElement.contains(document.activeElement)) {
       // Click to focus the enabled input
-      const enabledIndex = disabled.findIndex((d) => !d);
-      if (enabledIndex >= 0) {
-        selectorRef.current.focus(enabledIndex);
-      }
+      // const enabledIndex = disabled.findIndex((d) => !d);
+      // if (enabledIndex >= 0) {
+      selectorRef.current.focus();
+      // }
     }
 
     triggerOpen(true);
@@ -433,7 +433,7 @@ function Picker<DateType extends object = any>(
     // >>> Trigger next active if !needConfirm
     // Fully logic check `useRangeValue` hook
     if (!needConfirm && !complexPicker && internalPicker === internalMode) {
-      triggerPartConfirm(date);
+      triggerConfirm(date);
     }
   };
 
@@ -500,7 +500,7 @@ function Picker<DateType extends object = any>(
       onHover={onPanelHover}
       // Submit
       needConfirm={needConfirm}
-      onSubmit={triggerPartConfirm}
+      onSubmit={triggerConfirm}
       // Preset
       presets={presetList}
       onPresetHover={onPresetHover}
@@ -546,7 +546,7 @@ function Picker<DateType extends object = any>(
 
   const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event) => {
     if (event.key === 'Tab') {
-      triggerPartConfirm(null, true);
+      triggerConfirm(null, true);
     }
   };
 
@@ -579,13 +579,13 @@ function Picker<DateType extends object = any>(
     // Trade as confirm on field leave
     if (!mergedOpen && lastOp === 'input') {
       triggerOpen(false);
-      triggerPartConfirm(null, true);
+      triggerConfirm(null, true);
     }
 
     // Submit with complex picker
     if (!mergedOpen && complexPicker && !needConfirm && lastOp === 'panel') {
       triggerOpen(true);
-      triggerPartConfirm();
+      triggerConfirm();
     }
   }, [mergedOpen]);
 
@@ -620,7 +620,7 @@ function Picker<DateType extends object = any>(
           onFocus={onSelectorFocus}
           onBlur={onSelectorBlur}
           onKeyDown={onSelectorKeyDown}
-          onSubmit={triggerPartConfirm}
+          onSubmit={triggerConfirm}
           // Change
           value={hoverValues}
           maskFormat={maskFormat}
