@@ -93,7 +93,8 @@ export type PickerProps<DateType extends object = any> =
   | SinglePickerProps<DateType>
   | MultiplePickerProps<DateType>;
 
-type ReplacedPickerProps<DateType extends object = any> = {
+/** Internal usage. For cross function get same aligned props */
+export type ReplacedPickerProps<DateType extends object = any> = {
   onChange?: (date: DateType | DateType[], dateString: string | string[]) => void;
   onCalendarChange?: (
     date: DateType | DateType[],

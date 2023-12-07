@@ -5,7 +5,8 @@ import { formatValue, isSame, isSameTimestamp } from '../../../utils/dateUtil';
 import useSyncState from '../../hooks/useSyncState';
 import type { BaseInfo, FormatType, Locale } from '../../interface';
 import { fillIndex } from '../../util';
-import type { RangePickerProps, RangeValueType } from '../RangePicker';
+import type { RangePickerProps } from '../RangePicker';
+import type { ReplacedPickerProps } from '../SinglePicker';
 import useLockEffect from './useLockEffect';
 
 const EMPTY_VALUE: any[] = [];
@@ -142,21 +143,19 @@ export function useInnerValue<ValueType extends object[], DateType extends Value
   return [mergedValue, setInnerValue, calendarValue, triggerCalendarChange] as const;
 }
 
-export default function useRangeValue<DateType extends object = any>(
+export default function useRangeValue<
+  ValueType extends object[],
+  DateType extends ValueType[number],
+>(
   info: Pick<
     RangePickerProps<DateType>,
-    | 'generateConfig'
-    | 'locale'
-    | 'allowEmpty'
-    | 'order'
-    | 'onCalendarChange'
-    | 'onChange'
-    | 'picker'
-  >,
-  mergedValue: RangeValueType<DateType>,
-  setInnerValue: (nextValue: RangeValueType<DateType>) => void,
-  getCalendarValue: () => RangeValueType<DateType>,
-  triggerCalendarChange: TriggerCalendarChange<RangeValueType<DateType>>,
+    'generateConfig' | 'locale' | 'allowEmpty' | 'order' | 'picker'
+  > &
+    ReplacedPickerProps<DateType>,
+  mergedValue: ValueType,
+  setInnerValue: (nextValue: ValueType) => void,
+  getCalendarValue: () => ValueType,
+  triggerCalendarChange: TriggerCalendarChange<ValueType>,
   disabled: [boolean, boolean],
   formatList: FormatType[],
   focused: boolean,
@@ -166,7 +165,7 @@ export default function useRangeValue<DateType extends object = any>(
   /** Trigger `onChange` by check `disabledDate` */
   flushSubmit: (index: number, needTriggerChange: boolean) => void,
   /** Trigger `onChange` directly without check `disabledDate` */
-  triggerSubmitChange: (value: RangeValueType<DateType>) => boolean,
+  triggerSubmitChange: (value: ValueType) => boolean,
 ] {
   const {
     // MISC
@@ -185,11 +184,7 @@ export default function useRangeValue<DateType extends object = any>(
   const orderOnChange = disabled.some((d) => d) ? false : order;
 
   // ============================= Util =============================
-  const [getDateTexts, isSameDates] = useUtil<RangeValueType<DateType>>(
-    generateConfig,
-    locale,
-    formatList,
-  );
+  const [getDateTexts, isSameDates] = useUtil<ValueType>(generateConfig, locale, formatList);
 
   // ============================ Values ============================
   // Used for trigger `onChange` event.
@@ -206,10 +201,10 @@ export default function useRangeValue<DateType extends object = any>(
   }, [mergedValue]);
 
   // ============================ Submit ============================
-  const triggerSubmit = useEvent((nextValue?: RangeValueType<DateType>) => {
+  const triggerSubmit = useEvent((nextValue?: ValueType) => {
     const isNullValue = nextValue === null;
 
-    const clone = [...(nextValue || submitValue())] as RangeValueType<DateType>;
+    const clone = [...(nextValue || submitValue())] as ValueType;
 
     // Fill null value
     if (isNullValue) {
