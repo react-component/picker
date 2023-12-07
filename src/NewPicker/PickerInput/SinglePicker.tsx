@@ -309,19 +309,13 @@ function Picker<DateType extends object = any>(
   // >>> Mode need wait for `pickerValue`
   const triggerModeChange = useEvent(
     (nextPickerValue: DateType, nextMode: PanelMode, triggerEvent?: boolean) => {
-      const clone = fillIndex(modes, activeIndex, nextMode);
-
-      if (clone[0] !== modes[0] || clone[1] !== modes[1]) {
-        setMode(clone);
-      }
+      setMode(nextMode);
 
       // Compatible with `onPanelChange`
       if (onPanelChange && triggerEvent !== false) {
-        const clonePickerValue: DateType = [...calendarValue];
-        if (nextPickerValue) {
-          clonePickerValue[activeIndex] = nextPickerValue;
-        }
-        onPanelChange(clonePickerValue, clone);
+        const lastPickerValue: DateType =
+          nextPickerValue || calendarValue[calendarValue.length - 1];
+        onPanelChange(lastPickerValue, nextMode);
       }
     },
   );
