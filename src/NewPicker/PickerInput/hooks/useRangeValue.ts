@@ -87,7 +87,7 @@ export function useCalendarValue<MergedValueType extends object[]>(mergedValue: 
   return [calendarValue, setCalendarValue] as const;
 }
 
-export function useInnerValue<ValueType extends object[], DateType extends ValueType[number]>(
+export function useInnerValue<ValueType extends DateType[], DateType extends object = any>(
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
   formatList: FormatType[],
@@ -143,10 +143,7 @@ export function useInnerValue<ValueType extends object[], DateType extends Value
   return [mergedValue, setInnerValue, calendarValue, triggerCalendarChange] as const;
 }
 
-export default function useRangeValue<
-  ValueType extends object[],
-  DateType extends ValueType[number],
->(
+export default function useRangeValue<ValueType extends DateType[], DateType extends object = any>(
   info: Pick<
     RangePickerProps<DateType>,
     'generateConfig' | 'locale' | 'allowEmpty' | 'order' | 'picker'
