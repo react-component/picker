@@ -220,7 +220,7 @@ function Picker<DateType extends object = any>(
     activeIndex,
     setActiveIndex,
     nextActiveIndex,
-    activeIndexList,
+    // activeIndexList,
   ] = useRangeActive([disabled]);
 
   const onSharedFocus = (event: React.FocusEvent<HTMLElement>) => {
@@ -278,6 +278,18 @@ function Picker<DateType extends object = any>(
   // ===================== Picker Value =====================
   const timeDefaultValue = showTime?.defaultValue;
 
+  // Proxy to single pickerValue
+  const onInternalPickerValueChange = (
+    dates: DateType[],
+    info: BaseInfo & { source: 'reset' | 'panel' },
+  ) => {
+    if (onPickerValueChange) {
+      const cleanInfo = { ...info };
+      delete cleanInfo.range;
+      onPickerValueChange(dates[0], cleanInfo);
+    }
+  };
+
   const [currentPickerValue, setCurrentPickerValue] = useRangePickerValue(
     generateConfig,
     locale,
@@ -289,7 +301,7 @@ function Picker<DateType extends object = any>(
     defaultPickerValue,
     pickerValue,
     timeDefaultValue ? [timeDefaultValue] : undefined,
-    onPickerValueChange,
+    onInternalPickerValueChange,
     minDate,
     maxDate,
   );
