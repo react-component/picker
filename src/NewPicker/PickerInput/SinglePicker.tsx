@@ -18,6 +18,7 @@ import PickerTrigger from '../PickerTrigger';
 import { fillIndex } from '../util';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
+import useFieldsInvalidate from './hooks/useFieldsInvalidate';
 import useFilledProps from './hooks/useFilledProps';
 import useOpen from './hooks/useOpen';
 import { usePickerRef } from './hooks/usePickerRef';
@@ -248,6 +249,7 @@ function Picker<DateType extends object = any>(
   const mergedShowNow = useShowNow(internalPicker, mergedMode, showNow, showToday);
 
   // ======================== Value =========================
+  // TODO: Fix submit logic
   const [
     /** Trigger `onChange` by check `disabledDate` */
     flushSubmit,
@@ -267,40 +269,10 @@ function Picker<DateType extends object = any>(
   );
 
   // ======================= Validate =======================
-  const [fieldsInvalidates, setFieldsInvalidates] = React.useState<[boolean, boolean]>([
-    false,
-    false,
-  ]);
-
-  const onSelectorInvalid = (index: number, valid: boolean) => {
-    setFieldsInvalidates((ori) => fillIndex(ori, index, valid));
-  };
-
-  /**
-   * For the Selector Input to mark as `aria-disabled`
-   */
-  const submitInvalidates = React.useMemo(() => {
-    return fieldsInvalidates.map((invalid, index) => {
-      // If typing invalidate
-      if (invalid) {
-        return true;
-      }
-
-      const current = calendarValue[index];
-
-      // Not check if all empty
-      if (!current) {
-        return false;
-      }
-
-      // Invalidate
-      if (current && isInvalidateDate(current)) {
-        return true;
-      }
-
-      return false;
-    }) as [boolean, boolean];
-  }, [calendarValue, fieldsInvalidates, isInvalidateDate, mergedAllowEmpty]);
+  const [submitInvalidates, onSelectorInvalid] = useFieldsInvalidate(
+    calendarValue,
+    isInvalidateDate,
+  );
 
   // ===================== Picker Value =====================
   const [currentPickerValue, setCurrentPickerValue] = useRangePickerValue(
