@@ -245,14 +245,14 @@ function RangePicker<DateType extends object = any>(
 
   // ======================== Active ========================
   const [
-    activeIndex,
-    setActiveIndex,
     focused,
     triggerFocus,
     lastOperation,
+    activeIndex,
+    setActiveIndex,
     nextActiveIndex,
     activeIndexList,
-  ] = useRangeActive(mergedOpen, disabled, allowEmpty);
+  ] = useRangeActive(disabled, allowEmpty);
 
   const onSharedFocus = (event: React.FocusEvent<HTMLElement>, index?: number) => {
     triggerFocus(true);

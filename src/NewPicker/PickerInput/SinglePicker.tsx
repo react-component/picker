@@ -21,7 +21,6 @@ import useCellRender from './hooks/useCellRender';
 import useDisabledBoundary from './hooks/useDisabledBoundary';
 import { useFieldFormat } from './hooks/useFieldFormat';
 import useFilledProps from './hooks/useFilledProps';
-import useRangeValue from './hooks/useFlexibleValue';
 import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
@@ -29,7 +28,7 @@ import { usePickerRef } from './hooks/usePickerRef';
 import usePresets from './hooks/usePresets';
 import useRangeActive from './hooks/useRangeActive';
 import useRangePickerValue from './hooks/useRangePickerValue';
-import { useInnerValue } from './hooks/useRangeValue';
+import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
 import SingleSelector from './Selector/SingleSelector';
@@ -188,6 +187,11 @@ function Picker<DateType extends object = any>(
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
 
+  // ========================= Util =========================
+  function pickerParam<T>(values: T | T[]) {
+    return multiple ? values : values[0];
+  }
+
   // ========================= Open =========================
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
 
@@ -197,10 +201,6 @@ function Picker<DateType extends object = any>(
   const [formatList, maskFormat] = useFieldFormat(internalPicker, locale, format);
 
   // ======================= Calendar =======================
-  function pickerParam<T>(values: T | T[]) {
-    return multiple ? values : values[0];
-  }
-
   const onInternalCalendarChange = (dates: DateType[], dateStrings: string[], info: BaseInfo) => {
     onCalendarChange?.(pickerParam(dates), pickerParam(dateStrings), info);
   };
@@ -219,14 +219,14 @@ function Picker<DateType extends object = any>(
 
   // ======================== Active ========================
   const [
-    activeIndex,
-    setActiveIndex,
     focused,
     triggerFocus,
     lastOperation,
+    activeIndex,
+    setActiveIndex,
     nextActiveIndex,
     activeIndexList,
-  ] = useRangeActive(mergedOpen, disabled, mergedAllowEmpty);
+  ] = useRangeActive([disabled], []);
 
   const onSharedFocus = (event: React.FocusEvent<HTMLElement>, index?: number) => {
     triggerFocus(true);

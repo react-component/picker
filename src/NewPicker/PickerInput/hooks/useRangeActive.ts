@@ -12,15 +12,14 @@ export type NextActive<DateType> = (nextValue: RangeValueType<DateType>) => numb
  * When click outside to close the panel, trigger event if it can trigger onChange.
  */
 export default function useRangeActive<DateType>(
-  open: boolean,
-  disabled: [boolean, boolean],
-  empty: [boolean, boolean],
+  disabled: boolean[],
+  empty: boolean[],
 ): [
-  activeIndex: number,
-  setActiveIndex: (index: number) => void,
   focused: boolean,
   triggerFocus: (focused: boolean) => void,
   lastOperation: (type?: OperationType) => OperationType,
+  activeIndex: number,
+  setActiveIndex: (index: number) => void,
   nextActiveIndex: NextActive<DateType>,
   activeList: number[],
 ] {
@@ -71,11 +70,11 @@ export default function useRangeActive<DateType>(
   }, [focused, activeIndex]);
 
   return [
-    activeIndex,
-    setActiveIndex,
     focused,
     triggerFocus,
     lastOperation,
+    activeIndex,
+    setActiveIndex,
     nextActiveIndex,
     activeListRef.current,
   ];
