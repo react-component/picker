@@ -96,6 +96,7 @@ export default () => {
         //   input: MyInput,
         // }}
         // showTime
+        disabled
         panelRender={(ori) => <>2333{ori}</>}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"

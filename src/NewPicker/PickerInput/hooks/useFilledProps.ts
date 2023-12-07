@@ -8,6 +8,9 @@ import { fillClearIcon } from '../Selector/hooks/useClearIcon';
 import useDisabledBoundary from './useDisabledBoundary';
 import { useFieldFormat } from './useFieldFormat';
 import useInputReadOnly from './useInputReadOnly';
+import useInvalidate from './useInvalidate';
+
+type UseInvalidate<DateType extends object = any> = typeof useInvalidate<DateType>;
 
 type PickedProps<DateType extends object = any> = Pick<
   RangePickerProps<DateType>,
@@ -63,6 +66,7 @@ export default function useFilledProps<
   complexPicker: boolean,
   formatList: FormatType<DateType>[],
   maskFormat: string,
+  isInvalidateDate: ReturnType<UseInvalidate<DateType>>,
 ] {
   const {
     generateConfig,
@@ -90,6 +94,7 @@ export default function useFilledProps<
   const defaultValues = React.useMemo(() => toArray(defaultValue), [defaultValue]);
 
   const mergedLocale = fillLocale(locale);
+  const mergedShowTime = getTimeConfig(props);
 
   const filledProps = React.useMemo(
     () => ({
@@ -102,7 +107,7 @@ export default function useFilledProps<
       order,
       components,
       clearIcon: fillClearIcon(prefixCls, allowClear, clearIcon),
-      showTime: getTimeConfig(props),
+      showTime: mergedShowTime,
       value: values,
       defaultValue: defaultValues,
       ...updater?.(),
@@ -134,6 +139,9 @@ export default function useFilledProps<
     maxDate,
   );
 
+  // ====================== Invalidate ======================
+  const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, mergedShowTime);
+
   // ======================== Merged ========================
   const mergedProps = React.useMemo(
     () => ({
@@ -145,5 +153,5 @@ export default function useFilledProps<
     [filledProps, mergedNeedConfirm, mergedInputReadOnly, disabledBoundaryDate],
   );
 
-  return [mergedProps, internalPicker, complexPicker, formatList, maskFormat];
+  return [mergedProps, internalPicker, complexPicker, formatList, maskFormat, isInvalidateDate];
 }

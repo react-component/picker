@@ -34,8 +34,8 @@ const EMPTY_VALUE: any[] = [];
 
 type TriggerCalendarChange<ValueType extends object[]> = (calendarValues: ValueType) => void;
 
-type Replace2String<T> = {
-  [P in keyof T]: string;
+type ReplaceListType<List, Type> = {
+  [P in keyof List]: Type;
 };
 
 export function useUtil<
@@ -45,7 +45,7 @@ export function useUtil<
   const getDateTexts = (dates: MergedValueType) => {
     return dates.map((date) =>
       formatValue(date, { generateConfig, locale, format: formatList[0] }),
-    ) as any as Replace2String<Required<MergedValueType>>;
+    ) as any as ReplaceListType<Required<MergedValueType>, string>;
   };
 
   const isSameDates = (source: MergedValueType, target: MergedValueType) => {
@@ -95,7 +95,7 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
   value?: ValueType,
   onCalendarChange?: (
     dates: ValueType,
-    dateStrings: Replace2String<Required<ValueType>>,
+    dateStrings: ReplaceListType<Required<ValueType>, string>,
     info: BaseInfo,
   ) => void,
   /** Used for RangePicker */
@@ -153,7 +153,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   setInnerValue: (nextValue: ValueType) => void,
   getCalendarValue: () => ValueType,
   triggerCalendarChange: TriggerCalendarChange<ValueType>,
-  disabled: [boolean, boolean],
+  disabled: ReplaceListType<Required<ValueType>, boolean>,
   formatList: FormatType[],
   focused: boolean,
   open: boolean,

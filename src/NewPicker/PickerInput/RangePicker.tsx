@@ -23,7 +23,6 @@ import { fillIndex } from '../util';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useFilledProps from './hooks/useFilledProps';
-import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
 import { usePickerRef } from './hooks/usePickerRef';
 import usePresets from './hooks/usePresets';
@@ -126,9 +125,8 @@ function RangePicker<DateType extends object = any>(
   ref: React.Ref<PickerRef>,
 ) {
   // ========================= Prop =========================
-  const [filledProps, internalPicker, complexPicker, formatList, maskFormat] = useFilledProps(
-    props,
-    () => {
+  const [filledProps, internalPicker, complexPicker, formatList, maskFormat, isInvalidateDate] =
+    useFilledProps(props, () => {
       const { disabled, allowEmpty } = props;
 
       const mergedDisabled = separateConfig(disabled, false);
@@ -138,8 +136,7 @@ function RangePicker<DateType extends object = any>(
         disabled: mergedDisabled,
         allowEmpty: mergedAllowEmpty,
       };
-    },
-  );
+    });
 
   const {
     // Style
@@ -281,9 +278,6 @@ function RangePicker<DateType extends object = any>(
 
   // ======================= Show Now =======================
   const mergedShowNow = useShowNow(internalPicker, mergedMode, showNow, showToday);
-
-  // ====================== Invalidate ======================
-  const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, showTime);
 
   // ======================== Value =========================
   const [
