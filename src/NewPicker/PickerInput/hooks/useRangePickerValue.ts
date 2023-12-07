@@ -4,7 +4,7 @@ import * as React from 'react';
 import type { GenerateConfig } from '../../../generate';
 import { isSame } from '../../../utils/dateUtil';
 import type { InternalMode, Locale, PanelMode } from '../../interface';
-import type { RangePickerProps, RangeValueType } from '../RangePicker';
+import type { RangePickerProps } from '../RangePicker';
 
 export function offsetPanelDate<DateType = any>(
   generateConfig: GenerateConfig<DateType>,
@@ -32,7 +32,7 @@ export function offsetPanelDate<DateType = any>(
   }
 }
 
-const EMPTY_LIST: RangeValueType<any> = [];
+const EMPTY_LIST = [];
 
 /** Merge the `showTime.defaultValue` into `pickerValue` */
 function fillTimePickerValue<DateType>(
@@ -56,22 +56,22 @@ function fillTimePickerValue<DateType>(
   return tmpDate;
 }
 
-export default function useRangePickerValue<DateType extends object = any>(
+export default function useRangePickerValue<DateType extends object, ValueType extends DateType[]>(
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
-  calendarValue: RangeValueType<DateType>,
+  calendarValue: ValueType,
   open: boolean,
   activeIndex: number,
   pickerMode: InternalMode,
   multiplePanel: boolean,
-  defaultPickerValue: RangeValueType<DateType> = EMPTY_LIST,
-  pickerValue: RangeValueType<DateType> = EMPTY_LIST,
+  defaultPickerValue: ValueType = EMPTY_LIST as ValueType,
+  pickerValue: ValueType = EMPTY_LIST as ValueType,
   // This is legacy from origin logic.
   // We will take `showTime.defaultValue` as the part of `pickerValue`
-  timeDefaultValue: RangeValueType<DateType> = EMPTY_LIST,
+  timeDefaultValue: ValueType = EMPTY_LIST as ValueType,
   onPickerValueChange?: RangePickerProps<DateType>['onPickerValueChange'],
-  minDate: DateType,
-  maxDate: DateType,
+  minDate?: DateType,
+  maxDate?: DateType,
 ): [currentIndexPickerValue: DateType, setCurrentIndexPickerValue: (value: DateType) => void] {
   // ======================== Active ========================
   // `activeIndex` must be valid to avoid getting empty `pickerValue`
