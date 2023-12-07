@@ -19,7 +19,6 @@ import { fillIndex } from '../util';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useDisabledBoundary from './hooks/useDisabledBoundary';
-import { useFieldFormat } from './hooks/useFieldFormat';
 import useFilledProps from './hooks/useFilledProps';
 import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
@@ -82,6 +81,7 @@ export interface SinglePickerProps<DateType extends object> extends BasePickerPr
 }
 
 export interface MultiplePickerProps<DateType extends object> extends BasePickerProps<DateType> {
+  /** Not support `time` or `datetime` picker */
   multiple: true;
 
   // Value
@@ -112,7 +112,8 @@ function Picker<DateType extends object = any>(
   ref: React.Ref<PickerRef>,
 ) {
   // ========================= Prop =========================
-  const [filledProps, internalPicker, complexPicker] = useFilledProps(props);
+  const [filledProps, internalPicker, complexPicker, formatList, maskFormat] =
+    useFilledProps(props);
 
   const {
     // Style
@@ -197,9 +198,6 @@ function Picker<DateType extends object = any>(
 
   const [mergedOpen, triggerOpen] = useOpen(open, defaultOpen, onOpenChange);
 
-  // ======================== Format ========================
-  const [formatList, maskFormat] = useFieldFormat(internalPicker, locale, format);
-
   // ======================= Calendar =======================
   const onInternalCalendarChange = (dates: DateType[], dateStrings: string[], info: BaseInfo) => {
     onCalendarChange?.(pickerParam(dates), pickerParam(dateStrings), info);
@@ -226,36 +224,30 @@ function Picker<DateType extends object = any>(
     setActiveIndex,
     nextActiveIndex,
     activeIndexList,
-  ] = useRangeActive([disabled], []);
+  ] = useRangeActive([disabled]);
 
-  const onSharedFocus = (event: React.FocusEvent<HTMLElement>, index?: number) => {
+  const onSharedFocus = (event: React.FocusEvent<HTMLElement>) => {
     triggerFocus(true);
 
-    onFocus?.(event, {
-      range: getActiveRange(index ?? activeIndex),
-    });
+    onFocus?.(event, {});
   };
 
-  const onSharedBlur = (event: React.FocusEvent<HTMLElement>, index?: number) => {
+  const onSharedBlur = (event: React.FocusEvent<HTMLElement>) => {
     triggerFocus(false);
 
-    onBlur?.(event, {
-      range: getActiveRange(index ?? activeIndex),
-    });
+    onBlur?.(event, {});
   };
 
   // ========================= Mode =========================
-  const [modes, setModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
+  const [mergedMode, setMode] = useMergedState(picker, {
     value: mode,
   });
-
-  const mergedMode = modes[activeIndex] || picker;
 
   /** Extends from `mergedMode` to patch `datetime` mode */
   const internalMode: InternalMode = mergedMode === 'date' && showTime ? 'datetime' : mergedMode;
 
-  // ====================== PanelCount ======================
-  const multiplePanel = internalMode === picker && internalMode !== 'time';
+  // // ====================== PanelCount ======================
+  // const multiplePanel = internalMode === picker && internalMode !== 'time';
 
   // ======================= Show Now =======================
   const mergedShowNow = useShowNow(internalPicker, mergedMode, showNow, showToday);
@@ -353,7 +345,7 @@ function Picker<DateType extends object = any>(
       const clone = fillIndex(modes, activeIndex, nextMode);
 
       if (clone[0] !== modes[0] || clone[1] !== modes[1]) {
-        setModes(clone);
+        setMode(clone);
       }
 
       // Compatible with `onPanelChange`

@@ -23,7 +23,6 @@ import { fillIndex } from '../util';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useDisabledBoundary from './hooks/useDisabledBoundary';
-import { useFieldFormat } from './hooks/useFieldFormat';
 import useFilledProps from './hooks/useFilledProps';
 import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
@@ -129,17 +128,20 @@ function RangePicker<DateType extends object = any>(
   ref: React.Ref<PickerRef>,
 ) {
   // ========================= Prop =========================
-  const [filledProps, internalPicker, complexPicker] = useFilledProps(props, () => {
-    const { disabled, allowEmpty } = props;
+  const [filledProps, internalPicker, complexPicker, formatList, maskFormat] = useFilledProps(
+    props,
+    () => {
+      const { disabled, allowEmpty } = props;
 
-    const mergedDisabled = separateConfig(disabled, false);
-    const mergedAllowEmpty = separateConfig(allowEmpty, false);
+      const mergedDisabled = separateConfig(disabled, false);
+      const mergedAllowEmpty = separateConfig(allowEmpty, false);
 
-    return {
-      disabled: mergedDisabled,
-      allowEmpty: mergedAllowEmpty,
-    };
-  });
+      return {
+        disabled: mergedDisabled,
+        allowEmpty: mergedAllowEmpty,
+      };
+    },
+  );
 
   const {
     // Style
@@ -226,9 +228,6 @@ function RangePicker<DateType extends object = any>(
       setMergeOpen(nextOpen, config);
     }
   };
-
-  // ======================== Format ========================
-  const [formatList, maskFormat] = useFieldFormat(internalPicker, locale, format);
 
   // ======================== Values ========================
   const [mergedValue, setInnerValue, getCalendarValue, triggerCalendarChange] = useInnerValue(

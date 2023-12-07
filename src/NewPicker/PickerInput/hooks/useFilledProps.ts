@@ -2,9 +2,10 @@ import * as React from 'react';
 import { toArray } from '../../../utils/miscUtil';
 import { fillLocale } from '../../hooks/useLocale';
 import { getTimeConfig } from '../../hooks/useTimeConfig';
-import type { InternalMode } from '../../interface';
+import type { FormatType, InternalMode } from '../../interface';
 import type { RangePickerProps } from '../RangePicker';
 import { fillClearIcon } from '../Selector/hooks/useClearIcon';
+import { useFieldFormat } from './useFieldFormat';
 
 type PickedProps<DateType extends object = any> = Pick<
   RangePickerProps<DateType>,
@@ -18,7 +19,9 @@ type PickedProps<DateType extends object = any> = Pick<
   | 'clearIcon'
   | 'allowClear'
   | 'needConfirm'
+  | 'format'
 > & {
+  multiple?: boolean;
   // RangePicker showTime definition is different with Picker
   showTime?: any;
   value?: any;
@@ -51,6 +54,8 @@ export default function useFilledProps<
     },
   internalPicker: InternalMode,
   complexPicker: boolean,
+  formatList: FormatType<DateType>[],
+  maskFormat: string,
 ] {
   const {
     locale,
@@ -65,16 +70,20 @@ export default function useFilledProps<
     needConfirm,
     value,
     defaultValue,
+    multiple,
+    format,
   } = props;
 
   const values = React.useMemo(() => (value ? toArray(value) : value), [value]);
   const defaultValues = React.useMemo(() => toArray(defaultValue), [defaultValue]);
 
+  const mergedLocale = fillLocale(locale);
+
   const filledProps = React.useMemo(
     () => ({
       ...props,
       prefixCls,
-      locale: fillLocale(locale),
+      locale: mergedLocale,
       picker,
       styles,
       classNames,
@@ -95,8 +104,11 @@ export default function useFilledProps<
     picker === 'date' && filledProps.showTime ? 'datetime' : picker;
 
   /** The picker is `datetime` or `time` */
-  const complexPicker = internalPicker === 'time' || internalPicker === 'datetime';
+  const complexPicker = internalPicker === 'time' || internalPicker === 'datetime' || multiple;
   const mergedNeedConfirm = needConfirm ?? complexPicker;
+
+  // ======================== Format ========================
+  const [formatList, maskFormat] = useFieldFormat<DateType>(internalPicker, mergedLocale, format);
 
   // ======================== Merged ========================
   const mergedProps = React.useMemo(
@@ -107,5 +119,5 @@ export default function useFilledProps<
     [filledProps, mergedNeedConfirm],
   );
 
-  return [mergedProps, internalPicker, complexPicker];
+  return [mergedProps, internalPicker, complexPicker, formatList, maskFormat];
 }
