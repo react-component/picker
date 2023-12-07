@@ -291,7 +291,7 @@ function RangePicker<DateType extends object = any>(
     flushSubmit,
     /** Trigger `onChange` directly without check `disabledDate` */
     triggerSubmitChange,
-  ] = useRangeValue(
+  ] = useRangeValue<RangeValueType<DateType>, DateType>(
     filledProps,
     mergedValue,
     setInnerValue,
