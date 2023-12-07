@@ -92,9 +92,21 @@ export interface MultiplePickerProps<DateType extends object> extends BasePicker
   onCalendarChange?: (date: DateType[], dateString: string[], info: BaseInfo) => void;
 }
 
-export type PickerProps<DateType extends object> =
+export type PickerProps<DateType extends object = any> =
   | SinglePickerProps<DateType>
   | MultiplePickerProps<DateType>;
+
+type InternalPickerProps<DateType extends object = any> = Omit<
+  MultiplePickerProps<DateType>,
+  'onChange' | 'onCalendarChange'
+> & {
+  onChange?: (date: DateType | DateType[], dateString: string | string[]) => void;
+  onCalendarChange?: (
+    date: DateType | DateType[],
+    dateString: string | string[],
+    info: BaseInfo,
+  ) => void;
+};
 
 function Picker<DateType extends object = any>(
   props: PickerProps<DateType>,
@@ -171,7 +183,7 @@ function Picker<DateType extends object = any>(
 
     // Native
     onClick,
-  } = filledProps;
+  } = filledProps as InternalPickerProps<DateType>;
 
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
@@ -185,11 +197,13 @@ function Picker<DateType extends object = any>(
   const [formatList, maskFormat] = useFieldFormat(internalPicker, locale, format);
 
   // ======================= Calendar =======================
-  const onInternalCalendarChange: any = (
-    dates: DateType[],
-    dateStrings: string[],
-    info: BaseInfo,
-  ) => {};
+  function pickerParam<T>(values: T | T[]) {
+    return multiple ? values : values[0];
+  }
+
+  const onInternalCalendarChange = (dates: DateType[], dateStrings: string[], info: BaseInfo) => {
+    onCalendarChange?.(pickerParam(dates), pickerParam(dateStrings), info);
+  };
 
   // ======================== Values ========================
   const [mergedValue, setInnerValue, getCalendarValue, triggerCalendarChange] = useInnerValue(

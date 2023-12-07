@@ -31,8 +31,9 @@ type ToArrayType<T> = T extends any[] ? T : [T];
 
 /**
  * Align the outer props with unique typed and fill undefined props.
- * This is shared with both RangePicker and Picker.
- * This will auto handle the legacy props fill like `clearIcon` + `allowClear` = `clearIcon`
+ * This is shared with both RangePicker and Picker. This will do:
+ * - Convert `value` & `defaultValue` to array
+ * - handle the legacy props fill like `clearIcon` + `allowClear` = `clearIcon`
  */
 export default function useFilledProps<
   DateType extends object,
