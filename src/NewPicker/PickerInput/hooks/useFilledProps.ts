@@ -42,6 +42,8 @@ type ExcludeBooleanType<T> = T extends boolean ? never : T;
 
 type ToArrayType<T> = T extends any[] ? T : [T];
 
+type GetGeneric<T> = T extends PickedProps<infer U> ? U : never;
+
 /**
  * Align the outer props with unique typed and fill undefined props.
  * This is shared with both RangePicker and Picker. This will do:
@@ -49,8 +51,8 @@ type ToArrayType<T> = T extends any[] ? T : [T];
  * - handle the legacy props fill like `clearIcon` + `allowClear` = `clearIcon`
  */
 export default function useFilledProps<
-  DateType extends object,
-  InProps extends PickedProps<DateType>,
+  InProps extends PickedProps,
+  DateType extends GetGeneric<InProps>,
   UpdaterProps extends object,
 >(
   props: InProps,
