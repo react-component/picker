@@ -36,6 +36,8 @@ type PickedProps<DateType extends object = any> = Pick<
   showTime?: any;
   value?: any;
   defaultValue?: any;
+  pickerValue?: any;
+  defaultPickerValue?: any;
 };
 
 type ExcludeBooleanType<T> = T extends boolean ? never : T;
@@ -43,6 +45,11 @@ type ExcludeBooleanType<T> = T extends boolean ? never : T;
 type GetGeneric<T> = T extends PickedProps<infer U> ? U : never;
 
 type ToArrayType<T, DateType> = T extends any[] ? T : DateType[];
+
+function useArrayIfNeeded<T>(value: T | T[]) {
+  const values = React.useMemo(() => (value ? toArray(value) : value), [value]);
+  return values;
+}
 
 /**
  * Align the outer props with unique typed and fill undefined props.
@@ -63,6 +70,8 @@ export default function useFilledProps<
       showTime?: ExcludeBooleanType<InProps['showTime']>;
       value?: ToArrayType<InProps['value'], DateType>;
       defaultValue?: ToArrayType<InProps['value'], DateType>;
+      pickerValue?: ToArrayType<InProps['value'], DateType>;
+      defaultPickerValue?: ToArrayType<InProps['value'], DateType>;
     },
   internalPicker: InternalMode,
   complexPicker: boolean,
@@ -82,18 +91,23 @@ export default function useFilledProps<
     allowClear,
     clearIcon,
     needConfirm,
-    value,
-    defaultValue,
     multiple,
     format,
     inputReadOnly,
     disabledDate,
     minDate,
     maxDate,
+
+    value,
+    defaultValue,
+    pickerValue,
+    defaultPickerValue,
   } = props;
 
-  const values = React.useMemo(() => (value ? toArray(value) : value), [value]);
-  const defaultValues = React.useMemo(() => toArray(defaultValue), [defaultValue]);
+  const values = useArrayIfNeeded(value);
+  const defaultValues = useArrayIfNeeded(defaultValue);
+  const pickerValues = useArrayIfNeeded(pickerValue);
+  const defaultPickerValues = useArrayIfNeeded(defaultPickerValue);
 
   const mergedLocale = fillLocale(locale);
   const mergedShowTime = getTimeConfig(props);
@@ -112,6 +126,8 @@ export default function useFilledProps<
       showTime: mergedShowTime,
       value: values,
       defaultValue: defaultValues,
+      pickerValue: pickerValues,
+      defaultPickerValue: defaultPickerValues,
       ...updater?.(),
     }),
     [props],

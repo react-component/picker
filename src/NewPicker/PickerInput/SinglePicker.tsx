@@ -212,6 +212,7 @@ function Picker<DateType extends object = any>(
   const calendarValue = getCalendarValue();
 
   // ======================== Active ========================
+  // In SinglePicker, we will always get `activeIndex` is 0.
   const [
     focused,
     triggerFocus,
@@ -275,6 +276,8 @@ function Picker<DateType extends object = any>(
   );
 
   // ===================== Picker Value =====================
+  const timeDefaultValue = showTime?.defaultValue;
+
   const [currentPickerValue, setCurrentPickerValue] = useRangePickerValue(
     generateConfig,
     locale,
@@ -282,10 +285,10 @@ function Picker<DateType extends object = any>(
     mergedOpen,
     activeIndex,
     internalPicker,
-    multiplePanel,
+    false, // multiplePanel,
     defaultPickerValue,
     pickerValue,
-    showTime?.defaultValue,
+    timeDefaultValue ? [timeDefaultValue] : undefined,
     onPickerValueChange,
     minDate,
     maxDate,
