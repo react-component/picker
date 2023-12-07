@@ -18,9 +18,7 @@ import PickerTrigger from '../PickerTrigger';
 import { fillIndex } from '../util';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
-import useDisabledBoundary from './hooks/useDisabledBoundary';
 import useFilledProps from './hooks/useFilledProps';
-import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
 import { usePickerRef } from './hooks/usePickerRef';
@@ -95,10 +93,7 @@ export type PickerProps<DateType extends object = any> =
   | SinglePickerProps<DateType>
   | MultiplePickerProps<DateType>;
 
-type InternalPickerProps<DateType extends object = any> = Omit<
-  MultiplePickerProps<DateType>,
-  'onChange' | 'onCalendarChange'
-> & {
+type ReplacedPickerProps<DateType extends object = any> = {
   onChange?: (date: DateType | DateType[], dateString: string | string[]) => void;
   onCalendarChange?: (
     date: DateType | DateType[],
@@ -159,7 +154,6 @@ function Picker<DateType extends object = any>(
     onPickerValueChange,
 
     // Format
-    format,
     inputReadOnly,
 
     // Motion
@@ -183,7 +177,8 @@ function Picker<DateType extends object = any>(
 
     // Native
     onClick,
-  } = filledProps as InternalPickerProps<DateType>;
+  } = filledProps as Omit<typeof filledProps, keyof ReplacedPickerProps<DateType>> &
+    ReplacedPickerProps<DateType>;
 
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
@@ -252,20 +247,8 @@ function Picker<DateType extends object = any>(
   // ======================= Show Now =======================
   const mergedShowNow = useShowNow(internalPicker, mergedMode, showNow, showToday);
 
-  // ======================= ReadOnly =======================
-  const mergedInputReadOnly = useInputReadOnly(formatList, inputReadOnly);
-
-  // ======================= Boundary =======================
-  const disabledBoundaryDate = useDisabledBoundary(
-    generateConfig,
-    locale,
-    disabledDate,
-    minDate,
-    maxDate,
-  );
-
   // ====================== Invalidate ======================
-  const isInvalidateDate = useInvalidate(generateConfig, picker, disabledBoundaryDate, showTime);
+  const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, showTime);
 
   // ======================== Value =========================
   const [
@@ -667,7 +650,7 @@ function Picker<DateType extends object = any>(
           onInputChange={onSelectorInputChange}
           // Format
           format={formatList}
-          inputReadOnly={mergedInputReadOnly}
+          inputReadOnly={inputReadOnly}
           // Disabled
           disabled={disabled}
           // Open

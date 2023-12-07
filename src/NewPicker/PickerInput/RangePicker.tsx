@@ -22,9 +22,7 @@ import PickerTrigger from '../PickerTrigger';
 import { fillIndex } from '../util';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
-import useDisabledBoundary from './hooks/useDisabledBoundary';
 import useFilledProps from './hooks/useFilledProps';
-import useInputReadOnly from './hooks/useInputReadOnly';
 import useInvalidate from './hooks/useInvalidate';
 import useOpen from './hooks/useOpen';
 import { usePickerRef } from './hooks/usePickerRef';
@@ -187,7 +185,6 @@ function RangePicker<DateType extends object = any>(
     onPickerValueChange,
 
     // Format
-    format,
     inputReadOnly,
 
     // Motion
@@ -285,20 +282,8 @@ function RangePicker<DateType extends object = any>(
   // ======================= Show Now =======================
   const mergedShowNow = useShowNow(internalPicker, mergedMode, showNow, showToday);
 
-  // ======================= ReadOnly =======================
-  const mergedInputReadOnly = useInputReadOnly(formatList, inputReadOnly);
-
-  // ======================= Boundary =======================
-  const disabledBoundaryDate = useDisabledBoundary(
-    generateConfig,
-    locale,
-    disabledDate,
-    minDate,
-    maxDate,
-  );
-
   // ====================== Invalidate ======================
-  const isInvalidateDate = useInvalidate(generateConfig, picker, disabledBoundaryDate, showTime);
+  const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, showTime);
 
   // ======================== Value =========================
   const [
@@ -326,7 +311,7 @@ function RangePicker<DateType extends object = any>(
     activeIndexList,
     generateConfig,
     locale,
-    disabledBoundaryDate,
+    disabledDate,
     // minDate,
     // maxDate,
   );
@@ -747,7 +732,7 @@ function RangePicker<DateType extends object = any>(
           onInputChange={onSelectorInputChange}
           // Format
           format={formatList}
-          inputReadOnly={mergedInputReadOnly}
+          inputReadOnly={inputReadOnly}
           // Disabled
           disabled={disabled}
           // Open

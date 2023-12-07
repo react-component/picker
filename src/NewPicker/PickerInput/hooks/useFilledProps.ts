@@ -5,10 +5,13 @@ import { getTimeConfig } from '../../hooks/useTimeConfig';
 import type { FormatType, InternalMode } from '../../interface';
 import type { RangePickerProps } from '../RangePicker';
 import { fillClearIcon } from '../Selector/hooks/useClearIcon';
+import useDisabledBoundary from './useDisabledBoundary';
 import { useFieldFormat } from './useFieldFormat';
+import useInputReadOnly from './useInputReadOnly';
 
 type PickedProps<DateType extends object = any> = Pick<
   RangePickerProps<DateType>,
+  | 'generateConfig'
   | 'locale'
   | 'picker'
   | 'prefixCls'
@@ -20,6 +23,10 @@ type PickedProps<DateType extends object = any> = Pick<
   | 'allowClear'
   | 'needConfirm'
   | 'format'
+  | 'inputReadOnly'
+  | 'disabledDate'
+  | 'minDate'
+  | 'maxDate'
 > & {
   multiple?: boolean;
   // RangePicker showTime definition is different with Picker
@@ -58,6 +65,7 @@ export default function useFilledProps<
   maskFormat: string,
 ] {
   const {
+    generateConfig,
     locale,
     picker = 'date',
     prefixCls = 'rc-picker',
@@ -72,6 +80,10 @@ export default function useFilledProps<
     defaultValue,
     multiple,
     format,
+    inputReadOnly,
+    disabledDate,
+    minDate,
+    maxDate,
   } = props;
 
   const values = React.useMemo(() => (value ? toArray(value) : value), [value]);
@@ -110,13 +122,27 @@ export default function useFilledProps<
   // ======================== Format ========================
   const [formatList, maskFormat] = useFieldFormat<DateType>(internalPicker, mergedLocale, format);
 
+  // ======================= ReadOnly =======================
+  const mergedInputReadOnly = useInputReadOnly(formatList, inputReadOnly);
+
+  // ======================= Boundary =======================
+  const disabledBoundaryDate = useDisabledBoundary(
+    generateConfig,
+    locale,
+    disabledDate,
+    minDate,
+    maxDate,
+  );
+
   // ======================== Merged ========================
   const mergedProps = React.useMemo(
     () => ({
       ...filledProps,
       needConfirm: mergedNeedConfirm,
+      inputReadOnly: mergedInputReadOnly,
+      disabledDate: disabledBoundaryDate,
     }),
-    [filledProps, mergedNeedConfirm],
+    [filledProps, mergedNeedConfirm, mergedInputReadOnly, disabledBoundaryDate],
   );
 
   return [mergedProps, internalPicker, complexPicker, formatList, maskFormat];
