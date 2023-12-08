@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { formatValue, isInRange, isSame } from '../../utils/dateUtil';
-import type { PanelMode } from '../interface';
+import type { InternalMode } from '../interface';
 import { PanelContext, PickerHackContext } from './context';
 
 export interface PanelBodyProps<DateType = any> {
@@ -24,7 +24,7 @@ export interface PanelBodyProps<DateType = any> {
   rowClassName?: (date: DateType) => string;
 
   // Mode
-  mode: PanelMode;
+  mode: InternalMode;
 }
 
 export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType>) {

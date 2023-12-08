@@ -1,7 +1,7 @@
 import { useEvent } from 'rc-util';
 import React from 'react';
 import useToggleDates from '../hooks/useToggleDates';
-import type { InternalMode, SharedPanelProps } from '../interface';
+import type { PanelMode, SharedPanelProps } from '../interface';
 
 export interface PanelContextProps<DateType = any>
   extends Pick<
@@ -19,7 +19,7 @@ export interface PanelContextProps<DateType = any>
     | 'values'
     | 'pickerValue'
   > {
-  type: InternalMode;
+  type: PanelMode;
 
   // Shared
   now: DateType;
@@ -34,7 +34,7 @@ export const PanelContext = React.createContext<PanelContextProps>(null!);
  */
 export function useInfo<DateType = any>(
   props: SharedPanelProps<DateType>,
-  type: InternalMode,
+  type: PanelMode,
 ): [sharedProps: PanelContextProps<DateType>, now: DateType] {
   const {
     prefixCls,
