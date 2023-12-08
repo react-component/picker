@@ -1,6 +1,5 @@
 import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
-import { isSame } from '../../utils/dateUtil';
 import useLocale from '../hooks/useLocale';
 import { getTimeConfig } from '../hooks/useTimeConfig';
 import type {
@@ -186,14 +185,14 @@ function PickerPanel<DateType extends object = any>(
     value,
   });
 
-  const mergedValue = React.useMemo(() => toArray(innerValue), [innerValue])[0];
+  const mergedValue = React.useMemo(() => toArray(innerValue), [innerValue]);
 
   // Sync value and only trigger onChange event when changed
   const triggerChange = useEvent((nextValue: DateType | null) => {
     setMergedValue(nextValue);
 
     if (
-      onChange 
+      onChange
       // &&
       // !isSame(
       //   generateConfig,
@@ -221,7 +220,7 @@ function PickerPanel<DateType extends object = any>(
   // >>> PickerValue
   // PickerValue is used to control the current displaying panel
   const [mergedPickerValue, setInternalPickerValue] = useMergedState(
-    defaultPickerValue || mergedValue || now,
+    defaultPickerValue || mergedValue[0] || now,
     {
       value: pickerValue,
     },
@@ -243,9 +242,11 @@ function PickerPanel<DateType extends object = any>(
     onPanelChange?.(viewDate || pickerValue, nextMode);
   };
 
-  const onPanelValueChange = (newVal: DateType) => {
-    onInternalSelect(newVal);
-    setPickerValue(newVal);
+  const onPanelValuesChange = (nextValues: DateType[]) => {
+    const nextSingleValue = toArray(nextValues)[0];
+
+    onInternalSelect(nextSingleValue);
+    setPickerValue(nextSingleValue);
 
     // Update mode if needed
     if (mergedMode !== picker) {
@@ -253,15 +254,19 @@ function PickerPanel<DateType extends object = any>(
       const index = queue.indexOf(mergedMode);
       const nextMode = queue[index + 1];
       if (index >= 0 && nextMode) {
-        triggerModeChange(nextMode, newVal);
+        triggerModeChange(nextMode, nextSingleValue);
       } else if (mergedMode === 'month') {
         if (picker === 'date') {
-          triggerModeChange('date', newVal);
+          triggerModeChange('date', nextSingleValue);
         } else if (picker === 'week') {
-          triggerModeChange('week', newVal);
+          triggerModeChange('week', nextSingleValue);
         }
       }
     }
+  };
+
+  const onPanelValueChange = (nextValue: DateType) => {
+    onPanelValuesChange([nextValue]);
   };
 
   // ======================= Hover Date =======================
@@ -308,8 +313,10 @@ function PickerPanel<DateType extends object = any>(
         // Value
         pickerValue={mergedPickerValue}
         onPickerValueChange={setPickerValue}
-        value={mergedValue}
+        value={mergedValue[0]}
         onChange={onPanelValueChange}
+        values={mergedValue}
+        onValuesChange={onPanelValuesChange}
         // Render
         cellRender={cellRender}
         disabledDate={disabledDate}

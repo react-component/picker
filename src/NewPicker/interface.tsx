@@ -206,15 +206,25 @@ export interface SharedPanelProps<DateType = any> {
   pickerValue: DateType;
   onPickerValueChange: (date: DateType) => void;
   value?: DateType;
+  /**
+   * Trigger for single value change.
+   * You can realize `onValuesChange` and ignore this to
+   * both handle single or multiple mode if need.
+   */
   onChange: (date: DateType) => void;
+
+  /**
+   * Used for `multiple` mode.
+   * When not `multiple`, it will be `[value]`.
+   */
+  values?: DateType[];
+  onValuesChange: (values: DateType[]) => void;
 
   // Mode
   onModeChange: (mode: PanelMode, date?: DateType) => void;
 
   // Render
   disabledDate?: DisabledDate<DateType>;
-  minDate?: DateType;
-  maxDate?: DateType;
   cellRender?: CellRender<DateType>;
 
   // Hover
