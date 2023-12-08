@@ -72,6 +72,8 @@ export interface BasePickerProps<DateType extends object> extends SharedPickerPr
 }
 
 export interface SinglePickerProps<DateType extends object> extends BasePickerProps<DateType> {
+  multiple?: false;
+
   // Value
   value?: DateType;
   defaultValue?: DateType;
@@ -447,7 +449,7 @@ function Picker<DateType extends object = any>(
   };
 
   // >>> Calendar
-  const onPanelCalendarChange: PickerPanelProps<DateType>['onChange'] = (date) => {
+  const onPanelSelect: PickerPanelProps<DateType>['onChange'] = (date) => {
     lastOperation('panel');
 
     const clone: DateType = fillIndex(calendarValue, activeIndex, date);
@@ -516,7 +518,7 @@ function Picker<DateType extends object = any>(
       value={panelValue}
       isInvalid={isInvalidateDate}
       onChange={null}
-      onCalendarChange={onPanelCalendarChange}
+      onSelect={onPanelSelect}
       // PickerValue
       pickerValue={currentPickerValue}
       onPickerValueChange={setCurrentPickerValue}

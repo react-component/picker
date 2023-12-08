@@ -37,7 +37,7 @@ export interface PickerPanelRef {
   nativeElement: HTMLDivElement;
 }
 
-export interface PickerPanelProps<DateType = any>
+export interface BasePickerPanelProps<DateType extends object = any>
   extends Pick<
     SharedPanelProps<DateType>,
     // MISC
@@ -50,9 +50,6 @@ export interface PickerPanelProps<DateType = any>
   prefixCls?: string;
 
   // Value
-  defaultValue?: DateType | null;
-  value?: DateType | null;
-  onChange?: (date: DateType) => void;
   onSelect?: (date: DateType) => void;
 
   // Panel control
@@ -85,7 +82,29 @@ export interface PickerPanelProps<DateType = any>
   components?: Components;
 }
 
-function PickerPanel<DateType = any>(
+export interface SinglePickerPanelProps<DateType extends object = any>
+  extends BasePickerPanelProps<DateType> {
+  multiple?: false;
+
+  defaultValue?: DateType | null;
+  value?: DateType | null;
+  onChange?: (date: DateType) => void;
+}
+
+export interface MultiplePickerPanelProps<DateType extends object = any>
+  extends BasePickerPanelProps<DateType> {
+  multiple: true;
+
+  defaultValue?: DateType[] | null;
+  value?: DateType[] | null;
+  onChange?: (date: DateType[]) => void;
+}
+
+export type PickerPanelProps<DateType extends object = any> =
+  | SinglePickerPanelProps<DateType>
+  | MultiplePickerPanelProps<DateType>;
+
+function PickerPanel<DateType extends object = any>(
   props: PickerPanelProps<DateType>,
   ref: React.Ref<PickerPanelRef>,
 ) {
