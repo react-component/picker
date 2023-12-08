@@ -52,6 +52,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
     onHover,
     hoverValue,
     generateConfig,
+    values,
     locale,
   } = React.useContext(PanelContext);
 
@@ -117,6 +118,10 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
             [`${cellPrefixCls}-in-range`]: inRange && !rangeStart && !rangeEnd,
             [`${cellPrefixCls}-range-start`]: rangeStart,
             [`${cellPrefixCls}-range-end`]: rangeEnd,
+            [`${prefixCls}-cell-selected`]:
+              !hoverValue &&
+              mode !== 'week' &&
+              isSame(generateConfig, locale, currentDate, values[0], mode),
             ...getCellClassName(currentDate),
           })}
           onClick={() => {

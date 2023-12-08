@@ -6,16 +6,8 @@ import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
 
 export default function QuarterPanel<DateType = any>(props: SharedPanelProps<DateType>) {
-  const {
-    prefixCls,
-    locale,
-    generateConfig,
-    pickerValue,
-    value,
-    onPickerValueChange,
-    onModeChange,
-    hoverValue,
-  } = props;
+  const { prefixCls, locale, generateConfig, pickerValue, onPickerValueChange, onModeChange } =
+    props;
 
   const panelPrefixCls = `${prefixCls}-quarter-panel`;
 
@@ -39,7 +31,6 @@ export default function QuarterPanel<DateType = any>(props: SharedPanelProps<Dat
   const getCellClassName = (date: DateType) => ({
     [`${prefixCls}-cell-in-view`]: true,
     [`${prefixCls}-cell-today`]: isSameQuarter(generateConfig, date, now),
-    [`${prefixCls}-cell-selected`]: !hoverValue && isSameQuarter(generateConfig, date, value),
   });
 
   // ========================= Header =========================

@@ -93,6 +93,7 @@ export interface SinglePickerPanelProps<DateType extends object = any>
 
 export interface MultiplePickerPanelProps<DateType extends object = any>
   extends BasePickerPanelProps<DateType> {
+  /** multiple selection. Not support time or datetime picker */
   multiple: true;
 
   defaultValue?: DateType[] | null;

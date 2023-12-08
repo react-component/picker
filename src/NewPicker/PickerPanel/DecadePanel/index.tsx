@@ -6,8 +6,7 @@ import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
 
 export default function DecadePanel<DateType = any>(props: SharedPanelProps<DateType>) {
-  const { prefixCls, locale, generateConfig, pickerValue, value, onPickerValueChange, hoverValue } =
-    props;
+  const { prefixCls, locale, generateConfig, pickerValue, onPickerValueChange } = props;
 
   const panelPrefixCls = `${prefixCls}-decade-panel`;
 
@@ -48,7 +47,6 @@ export default function DecadePanel<DateType = any>(props: SharedPanelProps<Date
     return {
       [`${prefixCls}-cell-in-view`]: startYear <= dateYear && dateYear <= endYear,
       [`${prefixCls}-cell-today`]: isSameDecade(generateConfig, date, now),
-      [`${prefixCls}-cell-selected`]: !hoverValue && isSameDecade(generateConfig, date, value),
     };
   };
 

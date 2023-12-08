@@ -27,11 +27,9 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
     locale,
     generateConfig,
     pickerValue,
-    value,
     onPickerValueChange,
     onModeChange,
     mode,
-    hoverValue,
     disabledDate,
     onChange,
     onHover,
@@ -115,12 +113,14 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
     });
   };
 
-  const getCellClassName = (date: DateType) => ({
-    [`${prefixCls}-cell-in-view`]: isSameMonth(generateConfig, date, pickerValue),
-    [`${prefixCls}-cell-today`]: isSameDate(generateConfig, date, now),
-    [`${prefixCls}-cell-selected`]:
-      !hoverValue && mode !== 'week' && isSameDate(generateConfig, date, value),
-  });
+  const getCellClassName = (date: DateType) => {
+    const classObj = {
+      [`${prefixCls}-cell-in-view`]: isSameMonth(generateConfig, date, pickerValue),
+      [`${prefixCls}-cell-today`]: isSameDate(generateConfig, date, now),
+    };
+
+    return classObj;
+  };
 
   // ========================= Header =========================
   const monthsLocale: string[] =

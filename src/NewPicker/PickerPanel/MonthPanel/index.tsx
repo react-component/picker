@@ -6,16 +6,8 @@ import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
 
 export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateType>) {
-  const {
-    prefixCls,
-    locale,
-    generateConfig,
-    pickerValue,
-    value,
-    onPickerValueChange,
-    onModeChange,
-    hoverValue,
-  } = props;
+  const { prefixCls, locale, generateConfig, pickerValue, onPickerValueChange, onModeChange } =
+    props;
 
   const panelPrefixCls = `${prefixCls}-month-panel`;
 
@@ -50,7 +42,6 @@ export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateT
   const getCellClassName = (date: DateType) => ({
     [`${prefixCls}-cell-in-view`]: true,
     [`${prefixCls}-cell-today`]: isSameMonth(generateConfig, date, now),
-    [`${prefixCls}-cell-selected`]: !hoverValue && isSameMonth(generateConfig, date, value),
   });
 
   // ========================= Header =========================
