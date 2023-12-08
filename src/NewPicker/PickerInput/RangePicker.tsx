@@ -425,6 +425,7 @@ function RangePicker<DateType extends object = any>(
   // ========================================================
   // ==                       Panels                       ==
   // ========================================================
+  // Save the offset with active bar position
   const [activeOffset, setActiveOffset] = React.useState(0);
 
   // ======================= Presets ========================

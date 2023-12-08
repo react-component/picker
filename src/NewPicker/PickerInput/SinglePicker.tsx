@@ -3,6 +3,7 @@ import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
+import { isSame } from '../../utils/dateUtil';
 import type {
   BaseInfo,
   InternalMode,
@@ -187,6 +188,23 @@ function Picker<DateType extends object = any>(
   // ========================= Util =========================
   function pickerParam<T>(values: T | T[]) {
     return multiple ? values : values[0];
+  }
+
+  /**
+   * Toggles the presence of a value in an array.
+   * If the value exists in the array, removed it.
+   * Else add it.
+   */
+  function toggleDates(list: DateType[], target: DateType) {
+    const index = list.findIndex((date) =>
+      isSame(generateConfig, locale, date, target, internalPicker),
+    );
+
+    if (index === -1) {
+      return [...list, target];
+    }
+
+    return [...list].splice(index, 1);
   }
 
   // ========================= Open =========================
@@ -375,43 +393,50 @@ function Picker<DateType extends object = any>(
 
   // ======================== Hover =========================
   const [hoverSource, setHoverSource] = React.useState<'cell' | 'preset'>(null);
-  const [internalHoverValues, setInternalHoverValues] = React.useState<DateType>(null);
+  const [internalHoverValue, setInternalHoverValue] = React.useState<DateType>(null);
 
   const hoverValues = React.useMemo(() => {
-    return internalHoverValues || calendarValue;
-  }, [calendarValue, internalHoverValues]);
+    return internalHoverValue || calendarValue;
+  }, [calendarValue, internalHoverValue]);
 
   // Clean up `internalHoverValues` when closed
   React.useEffect(() => {
     if (!mergedOpen) {
-      setInternalHoverValues(null);
+      setInternalHoverValue(null);
     }
   }, [mergedOpen]);
 
   // ========================================================
   // ==                       Panels                       ==
   // ========================================================
-  const [activeOffset, setActiveOffset] = React.useState(0);
+  // const [activeOffset, setActiveOffset] = React.useState(0);
 
   // ======================= Presets ========================
-  const presetList = usePresets(presets, ranges);
+  const presetList = usePresets(presets);
 
-  const onPresetHover = (nextValues: DateType | null) => {
-    setInternalHoverValues(nextValues);
+  const onPresetHover = (nextValue: DateType | null) => {
+    setInternalHoverValue(nextValue);
     setHoverSource('preset');
   };
 
-  const onPresetSubmit = (nextValues: DateType) => {
-    const passed = triggerSubmitChange(nextValues);
+  const onPresetSubmit = (nextValue: DateType) => {
+    // const passed = triggerSubmitChange(nextValues);
 
-    if (passed) {
+    // if (passed) {
+    //   triggerOpen(false, { force: true });
+    // }
+
+    const nextCalendarValues = multiple ? toggleDates(getCalendarValue(), nextValue) : [nextValue];
+    const passed = triggerSubmitChange(nextCalendarValues);
+
+    if (passed && !multiple) {
       triggerOpen(false, { force: true });
     }
   };
 
   // ======================== Panel =========================
-  const onPanelHover = (date: DateType) => {
-    setInternalHoverValues(date ? fillCalendarValue(date, activeIndex) : null);
+  const onPanelHover = (date: DateType | null) => {
+    setInternalHoverValue(date);
     setHoverSource('cell');
   };
 
@@ -614,8 +639,8 @@ function Picker<DateType extends object = any>(
           suffixIcon={suffixIcon}
           // Active
           activeIndex={focused || mergedOpen ? activeIndex : null}
-          activeHelp={!!internalHoverValues}
-          allHelp={!!internalHoverValues && hoverSource === 'preset'}
+          activeHelp={!!internalHoverValue}
+          allHelp={!!internalHoverValue && hoverSource === 'preset'}
           focused={focused}
           onFocus={onSelectorFocus}
           onBlur={onSelectorBlur}

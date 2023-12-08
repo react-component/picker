@@ -146,7 +146,7 @@ export default function useFilledProps<
   const [formatList, maskFormat] = useFieldFormat<DateType>(internalPicker, mergedLocale, format);
 
   // ======================= ReadOnly =======================
-  const mergedInputReadOnly = useInputReadOnly(formatList, inputReadOnly);
+  const mergedInputReadOnly = useInputReadOnly(formatList, inputReadOnly, multiple);
 
   // ======================= Boundary =======================
   const disabledBoundaryDate = useDisabledBoundary(

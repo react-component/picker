@@ -87,6 +87,10 @@ export function useCalendarValue<MergedValueType extends object[]>(mergedValue: 
   return [calendarValue, setCalendarValue] as const;
 }
 
+/**
+ * Control the internal `value` align with prop `value` and provide a temp `calendarValue` for ui.
+ * `calendarValue` will be reset when blur & focus & open.
+ */
 export function useInnerValue<ValueType extends DateType[], DateType extends object = any>(
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
