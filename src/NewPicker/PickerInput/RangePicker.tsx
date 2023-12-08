@@ -530,7 +530,7 @@ function RangePicker<DateType extends object = any>(
       value={panelValue}
       isInvalid={isInvalidateDate}
       onChange={null}
-      onCalendarChange={onPanelCalendarChange}
+      onSelect={onPanelCalendarChange}
       // PickerValue
       pickerValue={currentPickerValue}
       onPickerValueChange={setCurrentPickerValue}

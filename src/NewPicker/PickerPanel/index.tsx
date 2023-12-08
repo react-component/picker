@@ -1,5 +1,6 @@
-import { useMergedState } from 'rc-util';
+import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
+import { isSame } from '../../utils/dateUtil';
 import useLocale from '../hooks/useLocale';
 import { getTimeConfig } from '../hooks/useTimeConfig';
 import type {
@@ -52,7 +53,7 @@ export interface PickerPanelProps<DateType = any>
   defaultValue?: DateType | null;
   value?: DateType | null;
   onChange?: (date: DateType) => void;
-  onCalendarChange?: (date: DateType) => void;
+  onSelect?: (date: DateType) => void;
 
   // Panel control
   defaultPickerValue?: DateType | null;
@@ -100,7 +101,7 @@ function PickerPanel<DateType = any>(
     defaultValue,
     value,
     onChange,
-    onCalendarChange,
+    onSelect,
 
     // Picker control
     defaultPickerValue,
@@ -155,7 +156,24 @@ function PickerPanel<DateType = any>(
   // Interactive with `onChange` event which only trigger when the `mode` is `picker`
   const [mergedValue, setMergedValue] = useMergedState<DateType | null>(defaultValue, {
     value,
-    onChange,
+  });
+
+  // Sync value and only trigger onChange event when changed
+  const triggerChange = useEvent((nextValue: DateType | null) => {
+    setMergedValue(nextValue);
+
+    if (
+      onChange &&
+      !isSame(
+        generateConfig,
+        locale,
+        mergedValue,
+        nextValue,
+        picker === 'date' && mergedShowTime ? 'datetime' : picker,
+      )
+    ) {
+      onChange?.(nextValue);
+    }
   });
 
   // >>> CalendarValue
@@ -165,10 +183,11 @@ function PickerPanel<DateType = any>(
   const updateCalendarValue = (newDate: DateType) => {
     setCalendarValue(newDate);
 
-    onCalendarChange?.(newDate);
+    onSelect?.(newDate);
 
     if (mergedMode === picker) {
-      setMergedValue(newDate);
+      // setMergedValue(newDate);
+      triggerChange(newDate);
     }
   };
 

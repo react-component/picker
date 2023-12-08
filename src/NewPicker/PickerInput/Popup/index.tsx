@@ -101,7 +101,7 @@ export default function Popup<DateType = any>(props: PopupProps<DateType>) {
         onHover={onPresetHover}
       />
       <div>
-        <PopupPanel {...props} onChange={null} />
+        <PopupPanel {...props} />
         <Footer
           {...props}
           showNow={multiple ? false : showNow}
