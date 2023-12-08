@@ -2,6 +2,7 @@ import * as React from 'react';
 import '../../assets/index.less';
 import type { Locale, PickerRef } from '../../src/NewPicker/interface';
 import RangePicker from '../../src/NewPicker/PickerInput/RangePicker';
+import PickerPanel from '../../src/NewPicker/PickerPanel';
 
 import dayjs, { type Dayjs } from 'dayjs';
 import 'dayjs/locale/ar';
@@ -141,6 +142,7 @@ export default () => {
       </button>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+        <PickerPanel generateConfig={dayjsGenerateConfig} locale={zhCN} value={dayjs()} />
         {/* <CellPicker
           picker="time"
           locale={{
