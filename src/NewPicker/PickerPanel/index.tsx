@@ -186,7 +186,10 @@ function PickerPanel<DateType extends object = any>(
     value,
   });
 
-  const mergedValue = React.useMemo(() => toArray(innerValue), [innerValue]);
+  const mergedValue = React.useMemo(() => {
+    const values = toArray(innerValue);
+    return multiple ? values : values.slice(0, 1);
+  }, [innerValue, multiple]);
 
   // Sync value and only trigger onChange event when changed
   const triggerChange = useEvent((nextValue: DateType | null) => {
@@ -319,6 +322,7 @@ function PickerPanel<DateType extends object = any>(
         onChange={onPanelValueChange}
         values={mergedValue}
         onValuesChange={onPanelValuesChange}
+        multiple={multiple}
         // Render
         cellRender={cellRender}
         disabledDate={disabledDate}

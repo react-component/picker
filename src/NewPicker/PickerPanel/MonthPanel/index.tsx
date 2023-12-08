@@ -12,7 +12,7 @@ export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateT
   const panelPrefixCls = `${prefixCls}-month-panel`;
 
   // ========================== Base ==========================
-  const [info, now] = useInfo(props);
+  const [info, now] = useInfo(props, 'month');
   const baseDate = generateConfig.setMonth(pickerValue, 0);
 
   // ========================= Month ==========================
@@ -65,12 +65,7 @@ export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateT
 
   // ========================= Render =========================
   return (
-    <PanelContext.Provider
-      value={{
-        type: 'month',
-        ...info,
-      }}
-    >
+    <PanelContext.Provider value={info}>
       <div className={panelPrefixCls}>
         {/* Header */}
         <PanelHeader

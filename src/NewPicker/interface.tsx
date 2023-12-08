@@ -206,6 +206,7 @@ export interface SharedPanelProps<DateType = any> {
   pickerValue: DateType;
   onPickerValueChange: (date: DateType) => void;
   value?: DateType;
+  multiple?: boolean;
   /**
    * Trigger for single value change.
    * You can realize `onValuesChange` and ignore this to

@@ -7,7 +7,7 @@ import {
   isSameMonth,
   WEEK_DAY_COUNT,
 } from '../../../utils/dateUtil';
-import type { PanelMode, SharedPanelProps } from '../../interface';
+import type { InternalMode, PanelMode, SharedPanelProps } from '../../interface';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
@@ -16,8 +16,8 @@ export interface DatePanelProps<DateType> extends SharedPanelProps<DateType> {
   panelName?: PanelMode;
   rowClassName?: (date: DateType) => string;
 
-  /** Used for `WeekPanel` */
-  mode?: PanelMode;
+  /** Used for `WeekPanel` or `DateTimePanel` */
+  mode?: InternalMode;
 }
 
 export default function DatePanel<DateType = any>(props: DatePanelProps<DateType>) {
@@ -29,7 +29,7 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
     pickerValue,
     onPickerValueChange,
     onModeChange,
-    mode,
+    mode = 'date',
     disabledDate,
     onChange,
     onHover,
@@ -41,7 +41,7 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
   const cellPrefixCls = `${prefixCls}-cell`;
 
   // ========================== Base ==========================
-  const [info, now] = useInfo(props);
+  const [info, now] = useInfo(props, mode);
   const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale.locale);
   const baseDate = getWeekStartDate(locale.locale, generateConfig, pickerValue);
   const month = generateConfig.getMonth(pickerValue);
@@ -170,12 +170,7 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
 
   // ========================= Render =========================
   return (
-    <PanelContext.Provider
-      value={{
-        type: 'date',
-        ...info,
-      }}
-    >
+    <PanelContext.Provider value={info}>
       <div className={panelPrefixCls}>
         {/* Header */}
         <PanelHeader

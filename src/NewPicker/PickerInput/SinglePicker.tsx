@@ -3,7 +3,7 @@ import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
-import { isSame } from '../../utils/dateUtil';
+import useToggleDates from '../hooks/useToggleDates';
 import type {
   BaseInfo,
   InternalMode,
@@ -192,22 +192,7 @@ function Picker<DateType extends object = any>(
     return multiple ? values : values[0];
   }
 
-  /**
-   * Toggles the presence of a value in an array.
-   * If the value exists in the array, removed it.
-   * Else add it.
-   */
-  function toggleDates(list: DateType[], target: DateType) {
-    const index = list.findIndex((date) =>
-      isSame(generateConfig, locale, date, target, internalPicker),
-    );
-
-    if (index === -1) {
-      return [...list, target];
-    }
-
-    return [...list].splice(index, 1);
-  }
+  const toggleDates = useToggleDates(generateConfig, locale, internalPicker);
 
   // ========================= Open =========================
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';

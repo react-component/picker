@@ -12,7 +12,7 @@ export default function QuarterPanel<DateType = any>(props: SharedPanelProps<Dat
   const panelPrefixCls = `${prefixCls}-quarter-panel`;
 
   // ========================== Base ==========================
-  const [info, now] = useInfo(props);
+  const [info, now] = useInfo(props, 'quarter');
   const baseDate = generateConfig.setMonth(pickerValue, 0);
 
   // ========================= Cells ==========================
@@ -54,12 +54,7 @@ export default function QuarterPanel<DateType = any>(props: SharedPanelProps<Dat
 
   // ========================= Render =========================
   return (
-    <PanelContext.Provider
-      value={{
-        type: 'quarter',
-        ...info,
-      }}
-    >
+    <PanelContext.Provider value={info}>
       <div className={panelPrefixCls}>
         {/* Header */}
         <PanelHeader

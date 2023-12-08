@@ -1,5 +1,7 @@
+import { useEvent } from 'rc-util';
 import React from 'react';
-import type { PanelMode, SharedPanelProps } from '../interface';
+import useToggleDates from '../hooks/useToggleDates';
+import type { InternalMode, SharedPanelProps } from '../interface';
 
 export interface PanelContextProps<DateType = any>
   extends Pick<
@@ -9,18 +11,19 @@ export interface PanelContextProps<DateType = any>
     | 'cellRender'
     | 'generateConfig'
     | 'locale'
-    | 'onChange'
+    // | 'onChange'
     | 'onValuesChange'
     | 'hoverValue'
     | 'onHover'
-    | 'value'
+    // | 'value'
     | 'values'
     | 'pickerValue'
   > {
-  type: PanelMode;
+  type: InternalMode;
 
   // Shared
   now: DateType;
+  toggleDate: (date: DateType) => void;
 }
 
 /** Used for each single Panel. e.g. DatePanel */
@@ -31,37 +34,51 @@ export const PanelContext = React.createContext<PanelContextProps>(null!);
  */
 export function useInfo<DateType = any>(
   props: SharedPanelProps<DateType>,
-): [sharedProps: Omit<PanelContextProps<DateType>, 'type'>, now: DateType] {
+  type: InternalMode,
+): [sharedProps: PanelContextProps<DateType>, now: DateType] {
   const {
     prefixCls,
     generateConfig,
     locale,
     disabledDate,
     cellRender,
-    onChange,
+    // onChange,
     onValuesChange,
     hoverValue,
     onHover,
-    value,
+    // value,
     values,
     pickerValue,
+    multiple,
   } = props;
 
+  // ========================= MISC =========================
   const now = generateConfig.getNow();
+
+  // ======================== Toggle ========================
+  const toggleDates = useToggleDates(generateConfig, locale, type);
+  const toggleDate = useEvent((date: DateType) => {
+    const nextValues = multiple ? toggleDates(values, date) : [date];
+    onValuesChange(nextValues);
+  });
+
+  // ========================= Info =========================
   const info = {
     now,
-    value,
+    // value,
     values,
     pickerValue,
     prefixCls,
     disabledDate,
     cellRender,
-    onChange,
+    // onChange,
     onValuesChange,
     hoverValue,
     onHover,
     locale,
     generateConfig,
+    toggleDate,
+    type,
   };
 
   return [info, now];

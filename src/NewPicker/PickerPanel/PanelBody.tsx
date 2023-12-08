@@ -48,12 +48,13 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
     now,
     disabledDate,
     cellRender,
-    onValuesChange,
     onHover,
     hoverValue,
     generateConfig,
     values,
     locale,
+    toggleDate,
+    onValuesChange,
   } = React.useContext(PanelContext);
 
   const cellPrefixCls = `${prefixCls}-cell`;
@@ -120,12 +121,14 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
             [`${cellPrefixCls}-range-end`]: rangeEnd,
             [`${prefixCls}-cell-selected`]:
               !hoverValue &&
+              // WeekPicker use row instead
               mode !== 'week' &&
               isSame(generateConfig, locale, currentDate, values[0], mode),
             ...getCellClassName(currentDate),
           })}
           onClick={() => {
             if (!disabled) {
+              // toggleDate(currentDate);
               onValuesChange([currentDate]);
             }
           }}

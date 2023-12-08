@@ -1,17 +1,23 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { formatValue } from '../../../utils/dateUtil';
-import type { SharedPanelProps } from '../../interface';
+import type { InternalMode, SharedPanelProps } from '../../interface';
 import { PanelContext, useInfo } from '../context';
 import PanelHeader from '../PanelHeader';
 import TimePanelBody from './TimePanelBody';
 
-export default function TimePanel<DateType = any>(props: SharedPanelProps<DateType>) {
+export interface TimePanelProps<DateType> extends SharedPanelProps<DateType> {
+  /** Used for `DateTimePanel` */
+  mode?: InternalMode;
+}
+
+export default function TimePanel<DateType = any>(props: TimePanelProps<DateType>) {
   const {
     prefixCls,
     value,
     locale,
     generateConfig,
+    mode = 'time',
 
     // Format
     showTime = {},
@@ -22,17 +28,11 @@ export default function TimePanel<DateType = any>(props: SharedPanelProps<DateTy
   const panelPrefixCls = `${prefixCls}-time-panel`;
 
   // ========================== Base ==========================
-  const [info] = useInfo(props);
+  const [info] = useInfo(props, mode);
 
   // ========================= Render =========================
   return (
-    <PanelContext.Provider
-      value={{
-        type: 'date',
-        ...info,
-        // value: mergedValue,
-      }}
-    >
+    <PanelContext.Provider value={info}>
       <div className={classNames(panelPrefixCls)}>
         <PanelHeader>
           {value

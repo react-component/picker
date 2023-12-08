@@ -11,7 +11,7 @@ export default function DecadePanel<DateType = any>(props: SharedPanelProps<Date
   const panelPrefixCls = `${prefixCls}-decade-panel`;
 
   // ========================== Base ==========================
-  const [info, now] = useInfo(props);
+  const [info, now] = useInfo(props, 'decade');
   const startYear = Math.floor(generateConfig.getYear(pickerValue) / 100) * 100;
   const endYear = startYear + 99;
 
@@ -63,12 +63,7 @@ export default function DecadePanel<DateType = any>(props: SharedPanelProps<Date
 
   // ========================= Render =========================
   return (
-    <PanelContext.Provider
-      value={{
-        type: 'decade',
-        ...info,
-      }}
-    >
+    <PanelContext.Provider value={info}>
       <div className={panelPrefixCls}>
         {/* Header */}
         <PanelHeader

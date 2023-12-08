@@ -12,7 +12,7 @@ export default function YearPanel<DateType = any>(props: SharedPanelProps<DateTy
   const panelPrefixCls = `${prefixCls}-year-panel`;
 
   // ========================== Base ==========================
-  const [info, now] = useInfo(props);
+  const [info, now] = useInfo(props, 'year');
   const startYear = Math.floor(generateConfig.getYear(pickerValue) / 10) * 10;
   const endYear = startYear + 9;
 
@@ -68,13 +68,9 @@ export default function YearPanel<DateType = any>(props: SharedPanelProps<DateTy
   );
 
   // ========================= Render =========================
+  // TODO: Remove `mode=year`
   return (
-    <PanelContext.Provider
-      value={{
-        type: 'year',
-        ...info,
-      }}
-    >
+    <PanelContext.Provider value={info}>
       <div className={panelPrefixCls}>
         {/* Header */}
         <PanelHeader
