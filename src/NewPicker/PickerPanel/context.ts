@@ -1,23 +1,26 @@
 import React from 'react';
-import type { GenerateConfig } from '../../generate';
-import type { CellRender, DisabledDate, Locale, PanelMode, SharedPanelProps } from '../interface';
+import type { PanelMode, SharedPanelProps } from '../interface';
 
-export interface PanelContextProps<DateType = any> {
+export interface PanelContextProps<DateType = any>
+  extends Pick<
+    SharedPanelProps,
+    | 'prefixCls'
+    | 'disabledDate'
+    | 'cellRender'
+    | 'generateConfig'
+    | 'locale'
+    | 'onChange'
+    | 'onValuesChange'
+    | 'hoverValue'
+    | 'onHover'
+    | 'value'
+    | 'values'
+    | 'pickerValue'
+  > {
   type: PanelMode;
 
   // Shared
-  prefixCls: string;
   now: DateType;
-  disabledDate?: DisabledDate<DateType>;
-  cellRender?: CellRender<DateType>;
-  onChange: (date: DateType) => void;
-  locale: Locale;
-  hoverValue: [DateType, DateType] | null;
-  onHover?: (date: DateType | null) => void;
-  value?: DateType;
-  /** `pickerValue` is always exist */
-  pickerValue: DateType;
-  generateConfig: GenerateConfig<DateType>;
 }
 
 /** Used for each single Panel. e.g. DatePanel */
@@ -36,9 +39,11 @@ export function useInfo<DateType = any>(
     disabledDate,
     cellRender,
     onChange,
+    onValuesChange,
     hoverValue,
     onHover,
     value,
+    values,
     pickerValue,
   } = props;
 
@@ -46,11 +51,13 @@ export function useInfo<DateType = any>(
   const info = {
     now,
     value,
+    values,
     pickerValue,
     prefixCls,
     disabledDate,
     cellRender,
     onChange,
+    onValuesChange,
     hoverValue,
     onHover,
     locale,

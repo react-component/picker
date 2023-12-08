@@ -218,6 +218,9 @@ export interface SharedPanelProps<DateType = any> {
    * When not `multiple`, it will be `[value]`.
    */
   values?: DateType[];
+  /**
+   * For multiple value usage.
+   */
   onValuesChange: (values: DateType[]) => void;
 
   // Mode

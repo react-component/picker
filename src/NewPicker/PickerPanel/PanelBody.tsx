@@ -48,7 +48,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
     now,
     disabledDate,
     cellRender,
-    onChange,
+    onValuesChange,
     onHover,
     hoverValue,
     generateConfig,
@@ -121,7 +121,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
           })}
           onClick={() => {
             if (!disabled) {
-              onChange(currentDate);
+              onValuesChange([currentDate]);
             }
           }}
           onDoubleClick={() => {

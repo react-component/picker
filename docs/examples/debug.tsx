@@ -141,7 +141,12 @@ export default () => {
       </button>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        <PickerPanel generateConfig={dayjsGenerateConfig} locale={zhCN} value={dayjs()} />
+        <PickerPanel
+          generateConfig={dayjsGenerateConfig}
+          locale={zhCN}
+          defaultValue={[dayjs()]}
+          multiple
+        />
         {/* <CellPicker
           picker="time"
           locale={{

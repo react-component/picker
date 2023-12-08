@@ -266,6 +266,7 @@ function PickerPanel<DateType extends object = any>(
   };
 
   const onPanelValueChange = (nextValue: DateType) => {
+    console.error('change!!!');
     onPanelValuesChange([nextValue]);
   };
 
