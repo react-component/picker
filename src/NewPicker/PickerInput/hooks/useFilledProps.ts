@@ -46,7 +46,7 @@ type GetGeneric<T> = T extends PickedProps<infer U> ? U : never;
 
 type ToArrayType<T, DateType> = T extends any[] ? T : DateType[];
 
-function useArrayIfNeeded<T>(value: T | T[]) {
+function useList<T>(value: T | T[]) {
   const values = React.useMemo(() => (value ? toArray(value) : value), [value]);
   return values;
 }
@@ -104,10 +104,10 @@ export default function useFilledProps<
     defaultPickerValue,
   } = props;
 
-  const values = useArrayIfNeeded(value);
-  const defaultValues = useArrayIfNeeded(defaultValue);
-  const pickerValues = useArrayIfNeeded(pickerValue);
-  const defaultPickerValues = useArrayIfNeeded(defaultPickerValue);
+  const values = useList(value);
+  const defaultValues = useList(defaultValue);
+  const pickerValues = useList(pickerValue);
+  const defaultPickerValues = useList(defaultPickerValue);
 
   const mergedLocale = fillLocale(locale);
   const mergedShowTime = getTimeConfig(props);

@@ -13,6 +13,7 @@ import type {
   SharedTimeProps,
 } from '../interface';
 import PickerContext from '../PickerInput/context';
+import { toArray } from '../util';
 import DatePanel from './DatePanel';
 import DateTimePanel from './DateTimePanel';
 import DecadePanel from './DecadePanel';
@@ -104,6 +105,13 @@ export type PickerPanelProps<DateType extends object = any> =
   | SinglePickerPanelProps<DateType>
   | MultiplePickerPanelProps<DateType>;
 
+type InternalPickerPanelProps<DateType extends object = any> = Omit<
+  PickerPanelProps<DateType>,
+  'onChange'
+> & {
+  onChange?: (date: DateType | DateType[]) => void;
+};
+
 function PickerPanel<DateType extends object = any>(
   props: PickerPanelProps<DateType>,
   ref: React.Ref<PickerPanelRef>,
@@ -117,6 +125,7 @@ function PickerPanel<DateType extends object = any>(
     prefixCls,
 
     // Value
+    multiple,
     defaultValue,
     value,
     onChange,
@@ -144,7 +153,7 @@ function PickerPanel<DateType extends object = any>(
 
     // Components
     components = {},
-  } = props;
+  } = props as InternalPickerPanelProps<DateType>;
 
   const mergedPrefixCls = React.useContext(PickerContext)?.prefixCls || prefixCls || 'rc-picker';
 
@@ -173,23 +182,26 @@ function PickerPanel<DateType extends object = any>(
   // ========================= Value ==========================
   // >>> Real value
   // Interactive with `onChange` event which only trigger when the `mode` is `picker`
-  const [mergedValue, setMergedValue] = useMergedState<DateType | null>(defaultValue, {
+  const [innerValue, setMergedValue] = useMergedState(defaultValue, {
     value,
   });
+
+  const mergedValue = React.useMemo(() => toArray(innerValue), [innerValue])[0];
 
   // Sync value and only trigger onChange event when changed
   const triggerChange = useEvent((nextValue: DateType | null) => {
     setMergedValue(nextValue);
 
     if (
-      onChange &&
-      !isSame(
-        generateConfig,
-        locale,
-        mergedValue,
-        nextValue,
-        picker === 'date' && mergedShowTime ? 'datetime' : picker,
-      )
+      onChange 
+      // &&
+      // !isSame(
+      //   generateConfig,
+      //   locale,
+      //   mergedValue,
+      //   nextValue,
+      //   picker === 'date' && mergedShowTime ? 'datetime' : picker,
+      // )
     ) {
       onChange?.(nextValue);
     }
@@ -316,6 +328,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Make support generic
-export default RefPanelPicker as <DateType = any>(
+export default RefPanelPicker as <DateType extends object = any>(
   props: PickerPanelProps<DateType> & { ref?: React.Ref<PickerPanelRef> },
 ) => React.ReactElement;
