@@ -179,21 +179,13 @@ function PickerPanel<DateType = any>(
   // >>> CalendarValue
   // CalendarValue is a temp value for user operation
   // which will only trigger `onCalendarChange` but not `onChange`
-  const [calendarValue, setCalendarValue] = React.useState(mergedValue);
-  const updateCalendarValue = (newDate: DateType) => {
-    setCalendarValue(newDate);
-
+  const onInternalSelect = (newDate: DateType) => {
     onSelect?.(newDate);
 
     if (mergedMode === picker) {
-      // setMergedValue(newDate);
       triggerChange(newDate);
     }
   };
-
-  React.useEffect(() => {
-    setCalendarValue(mergedValue);
-  }, [mergedValue]);
 
   // >>> PickerValue
   // PickerValue is used to control the current displaying panel
@@ -221,7 +213,7 @@ function PickerPanel<DateType = any>(
   };
 
   const onPanelValueChange = (newVal: DateType) => {
-    updateCalendarValue(newVal);
+    onInternalSelect(newVal);
     setPickerValue(newVal);
 
     // Update mode if needed
@@ -285,7 +277,7 @@ function PickerPanel<DateType = any>(
         // Value
         pickerValue={mergedPickerValue}
         onPickerValueChange={setPickerValue}
-        value={calendarValue}
+        value={mergedValue}
         onChange={onPanelValueChange}
         // Render
         cellRender={cellRender}
