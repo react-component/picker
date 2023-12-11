@@ -266,7 +266,6 @@ describe('Picker.Basic', () => {
         expect(onChange).not.toHaveBeenCalled();
         keyDown(KeyCode.ENTER);
 
-        console.log(document.body.innerHTML);
         expect(isSame(onChange.mock.calls[0][0], matchDate, picker as any)).toBeTruthy();
         expect(document.querySelector(selected)).toBeTruthy();
         onChange.mockReset();

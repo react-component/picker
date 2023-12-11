@@ -92,7 +92,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
 
   // ======================== Custom ========================
   const disableSubmit = React.useMemo(() => {
-    const valueList = toArray(value);
+    const valueList = toArray(value).filter((val) => val);
 
     // Empty is invalid
     if (!valueList.length) {

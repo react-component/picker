@@ -117,13 +117,13 @@ export default () => {
         // needConfirm={false}
       />
       <br />
-      {/* <RangePicker
+      <RangePicker
         {...sharedLocale}
         value={rangeValue}
         // components={{
         //   input: MyInput,
         // }}
-        showTime
+        // showTime
         panelRender={(ori) => <>2333{ori}</>}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
@@ -156,7 +156,7 @@ export default () => {
           start: 'inputStart',
           end: 'inputEnd',
         }}
-      /> */}
+      />
       <br />
 
       <button

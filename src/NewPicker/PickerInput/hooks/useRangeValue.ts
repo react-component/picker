@@ -38,10 +38,11 @@ type ReplaceListType<List, Type> = {
   [P in keyof List]: Type;
 };
 
-export function useUtil<
-  MergedValueType extends object[],
-  DateType extends MergedValueType[number] = any,
->(generateConfig: GenerateConfig<DateType>, locale: Locale, formatList: FormatType[]) {
+function useUtil<MergedValueType extends object[], DateType extends MergedValueType[number] = any>(
+  generateConfig: GenerateConfig<DateType>,
+  locale: Locale,
+  formatList: FormatType[],
+) {
   const getDateTexts = (dates: MergedValueType) => {
     return dates.map((date) =>
       formatValue(date, { generateConfig, locale, format: formatList[0] }),
@@ -209,11 +210,13 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
 
     // Fill null value
     if (isNullValue) {
-      disabled.forEach((fieldDisabled, index) => {
-        if (!fieldDisabled) {
-          clone[index] = null;
+      const maxLen = Math.max(disabled.length, clone.length);
+
+      for (let i = 0; i < maxLen; i += 1) {
+        if (!disabled[i]) {
+          clone[i] = null;
         }
-      });
+      }
     }
 
     // Only when exist value to sort

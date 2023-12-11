@@ -199,6 +199,10 @@ function Picker<DateType extends object = any>(
 
   // ========================= Util =========================
   function pickerParam<T>(values: T | T[]) {
+    if (values === null) {
+      return null;
+    }
+
     return multiple ? values : values[0];
   }
 
@@ -267,7 +271,6 @@ function Picker<DateType extends object = any>(
 
   // ======================== Value =========================
   // TODO: Fix submit logic
-
   const onInternalChange: PickerProps['onChange'] =
     onChange &&
     ((dates, dateStrings) => {
