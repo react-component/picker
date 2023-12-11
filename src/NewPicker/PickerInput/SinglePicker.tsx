@@ -69,30 +69,41 @@ export interface BasePickerProps<DateType extends object> extends SharedPickerPr
   onPanelChange?: (values: DateType, modes: PanelMode) => void;
 }
 
-export interface SinglePickerProps<DateType extends object> extends BasePickerProps<DateType> {
-  multiple?: false;
+// export interface SinglePickerProps<DateType extends object> extends BasePickerProps<DateType> {
+//   multiple?: false;
 
-  // Value
-  value?: DateType;
-  defaultValue?: DateType;
-  onChange?: (date: DateType, dateString: string) => void;
-  onCalendarChange?: (date: DateType, dateString: string, info: BaseInfo) => void;
-}
+//   // Value
+//   value?: DateType;
+//   defaultValue?: DateType;
+//   onChange?: (date: DateType, dateString: string) => void;
+//   onCalendarChange?: (date: DateType, dateString: string, info: BaseInfo) => void;
+// }
 
-export interface MultiplePickerProps<DateType extends object> extends BasePickerProps<DateType> {
+// export interface MultiplePickerProps<DateType extends object> extends BasePickerProps<DateType> {
+//   /** Not support `time` or `datetime` picker */
+//   multiple: true;
+
+//   // Value
+//   value?: DateType[];
+//   defaultValue?: DateType[];
+//   onChange?: (date: DateType[], dateString: string[]) => void;
+//   onCalendarChange?: (date: DateType[], dateString: string[], info: BaseInfo) => void;
+// }
+
+export type PickerProps<DateType extends object = any> = BasePickerProps<DateType> & {
   /** Not support `time` or `datetime` picker */
-  multiple: true;
+  multiple?: boolean;
 
   // Value
-  value?: DateType[];
-  defaultValue?: DateType[];
-  onChange?: (date: DateType[], dateString: string[]) => void;
-  onCalendarChange?: (date: DateType[], dateString: string[], info: BaseInfo) => void;
-}
-
-export type PickerProps<DateType extends object = any> =
-  | SinglePickerProps<DateType>
-  | MultiplePickerProps<DateType>;
+  value?: DateType | DateType[];
+  defaultValue?: DateType | DateType[];
+  onChange?: (date: DateType | DateType[], dateString: string | string[]) => void;
+  onCalendarChange?: (
+    date: DateType | DateType[],
+    dateString: string | string[],
+    info: BaseInfo,
+  ) => void;
+};
 
 /** Internal usage. For cross function get same aligned props */
 export type ReplacedPickerProps<DateType extends object = any> = {

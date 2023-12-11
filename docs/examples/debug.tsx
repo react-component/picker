@@ -96,15 +96,18 @@ export default () => {
 
       <br />
 
-      {/* <SinglePicker
+      <SinglePicker
         // Shared
         {...sharedLocale}
         multiple
         ref={singleRef}
         suffixIcon="🧶"
-      /> */}
+        onChange={(val, text) => {
+          console.log('🔥 Change:', val, text);
+        }}
+      />
       <br />
-      <RangePicker
+      {/* <RangePicker
         {...sharedLocale}
         value={rangeValue}
         // components={{
@@ -143,7 +146,7 @@ export default () => {
           start: 'inputStart',
           end: 'inputEnd',
         }}
-      />
+      /> */}
       <br />
 
       <button

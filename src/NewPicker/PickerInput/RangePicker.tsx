@@ -90,10 +90,6 @@ export interface RangePickerProps<DateType extends object>
     },
   ) => void;
 
-  // range
-  /** Default will always order of selection after submit */
-  order?: boolean;
-
   // Preset
   presets?: ValueDate<Exclude<RangeValueType<DateType>, null>>[];
   /** @deprecated Please use `presets` instead */

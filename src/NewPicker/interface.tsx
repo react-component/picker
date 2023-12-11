@@ -344,6 +344,10 @@ export interface SharedPickerProps<DateType extends object = any> extends Shared
 
   inputReadOnly?: boolean;
 
+  // range
+  /** Default will always order of selection after submit */
+  order?: boolean;
+
   // Disabled
   disabledDate?: DisabledDate<DateType>;
   /** Limit the selectable range. This will limit picker navigation also */
