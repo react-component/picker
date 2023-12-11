@@ -19,7 +19,10 @@ export default function useToggleDates<DateType>(
       return [...list, target];
     }
 
-    return [...list].splice(index, 1);
+    const sliceList = [...list];
+    sliceList.splice(index, 1);
+
+    return sliceList;
   }
 
   return toggleDates;

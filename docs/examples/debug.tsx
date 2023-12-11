@@ -146,6 +146,9 @@ export default () => {
           locale={zhCN}
           defaultValue={[dayjs()]}
           multiple
+          onChange={(val) => {
+            console.log('🔥 Change:', val);
+          }}
         />
         {/* <CellPicker
           picker="time"

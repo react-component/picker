@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { formatValue, isInRange, isSame } from '../../utils/dateUtil';
-import type { PanelMode } from '../interface';
 import { PanelContext, PickerHackContext } from './context';
 
 export interface PanelBodyProps<DateType = any> {
@@ -22,14 +21,10 @@ export interface PanelBodyProps<DateType = any> {
   // Used for week panel
   prefixColumn?: (date: DateType) => React.ReactNode;
   rowClassName?: (date: DateType) => string;
-
-  // Mode
-  panelType?: PanelMode;
 }
 
 export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType>) {
   const {
-    panelType,
     rowNum,
     colNum,
     baseDate,
@@ -44,7 +39,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
 
   const {
     prefixCls,
-    panelType: contextPanelType,
+    panelType: type,
     now,
     disabledDate,
     cellRender,
@@ -56,12 +51,14 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
     onSelect,
   } = React.useContext(PanelContext);
 
-  const type = panelType || contextPanelType;
-
   const cellPrefixCls = `${prefixCls}-cell`;
 
   // ============================= Context ==============================
   const { onCellDblClick } = React.useContext(PickerHackContext);
+
+  // ============================== Value ===============================
+  const matchValues = (date: DateType) =>
+    values.some((singleValue) => isSame(generateConfig, locale, date, singleValue, type));
 
   // =============================== Body ===============================
   const rows: React.ReactNode[] = [];
@@ -124,7 +121,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
               !hoverValue &&
               // WeekPicker use row instead
               type !== 'week' &&
-              isSame(generateConfig, locale, currentDate, values[0], type),
+              matchValues(currentDate),
             ...getCellClassName(currentDate),
           })}
           onClick={() => {
