@@ -36,6 +36,8 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
     showWeek,
   } = props;
 
+  console.log('>>>>>>>>', props);
+
   const panelPrefixCls = `${prefixCls}-${panelName}-panel`;
 
   const cellPrefixCls = `${prefixCls}-cell`;

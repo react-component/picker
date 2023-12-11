@@ -5,6 +5,7 @@ import { getTimeConfig } from '../hooks/useTimeConfig';
 import type {
   CellRender,
   Components,
+  InternalMode,
   OnPanelChange,
   PanelMode,
   PickerMode,
@@ -298,8 +299,11 @@ function PickerPanel<DateType extends object = any>(
   }, [hoverValue, generateConfig]);
 
   // ======================= Components =======================
-  const componentName = mergedMode === 'date' && mergedShowTime ? 'datetime' : mergedMode;
-  const PanelComponent = components[componentName] || DefaultComponents[componentName] || DatePanel;
+  const internalMode: InternalMode =
+    mergedMode === 'date' && mergedShowTime ? 'datetime' : mergedMode;
+  const PanelComponent = components[internalMode] || DefaultComponents[internalMode] || DatePanel;
+
+  const internalPicker: InternalMode = picker === 'date' && mergedShowTime ? 'datetime' : picker;
 
   // ========================= Render =========================
   return (
