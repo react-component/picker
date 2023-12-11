@@ -14,12 +14,12 @@ import {
   clearValue,
   closePicker,
   confirmOK,
+  // MomentPicker,
+  DayPicker,
   findCell,
   getMoment,
   isOpen,
   isSame,
-  // MomentPicker,
-  DayPicker,
   openPicker,
   selectCell,
 } from './util/commonUtil';
@@ -97,8 +97,6 @@ describe('Picker.Basic', () => {
     });
   });
 
-  return;
-
   describe('picker', () => {
     const modeList: { picker: PickerMode; className: string }[] = [
       {
@@ -166,7 +164,7 @@ describe('Picker.Basic', () => {
 
       for (let i = 0; i < 10; i += 1) {
         act(() => {
-          fireEvent.mouseDown(document.body);
+          fireEvent.click(document.body);
         });
         expect(onOpenChange).toHaveBeenCalledTimes(i + 1);
       }
@@ -181,6 +179,8 @@ describe('Picker.Basic', () => {
       expect(isOpen()).toBeFalsy();
     });
   });
+
+  return;
 
   describe('value', () => {
     it('defaultValue', () => {
@@ -606,9 +606,7 @@ describe('Picker.Basic', () => {
 
     it("time shouldn't display now when showNow is false", () => {
       const onSelect = jest.fn();
-      const { container } = render(
-        <DayPicker onSelect={onSelect} picker="time" showNow={false} />,
-      );
+      const { container } = render(<DayPicker onSelect={onSelect} picker="time" showNow={false} />);
       openPicker(container);
       expect(document.querySelector('.rc-picker-now > a')).toBeFalsy();
     });
@@ -618,9 +616,7 @@ describe('Picker.Basic', () => {
     it('work with now', () => {
       jest.setSystemTime(getMoment('1990-09-03 00:09:00').valueOf());
       const onSelect = jest.fn();
-      const { container } = render(
-        <DayPicker onSelect={onSelect} picker="time" minuteStep={10} />,
-      );
+      const { container } = render(<DayPicker onSelect={onSelect} picker="time" minuteStep={10} />);
       openPicker(container);
       // document.querySelector('.rc-picker-now > a').simulate('click');
       fireEvent.click(document.querySelector('.rc-picker-now > a'));

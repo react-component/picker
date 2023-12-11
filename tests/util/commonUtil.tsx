@@ -229,7 +229,7 @@ export const DayPicker = React.forwardRef<
   PickerRef,
   Partial<Omit<NewPickerProps<Dayjs>, 'generateConfig'>>
 >((props, ref) => {
-  return <NewPicker generateConfig={dayGenerateConfig} locale={zh_CN} {...props} ref={ref} />;
+  return <NewPicker generateConfig={dayGenerateConfig} locale={enUS} {...props} ref={ref} />;
 });
 
 export const DayRangePicker = React.forwardRef<

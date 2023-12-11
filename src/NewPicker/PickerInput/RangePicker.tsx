@@ -211,7 +211,7 @@ function RangePicker<DateType extends object = any>(
   // ========================= Open =========================
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
 
-  const [mergedOpen, setMergeOpen] = useOpen(open, defaultOpen, onOpenChange);
+  const [mergedOpen, setMergeOpen] = useOpen(open, defaultOpen, disabled, onOpenChange);
 
   const triggerOpen: OnOpenChange = (nextOpen, config?: OpenConfig) => {
     // No need to open if all disabled

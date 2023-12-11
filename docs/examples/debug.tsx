@@ -100,6 +100,8 @@ export default () => {
         // Shared
         {...sharedLocale}
         multiple
+        open
+        disabled
         ref={singleRef}
         suffixIcon="🧶"
         onChange={(val, text) => {

@@ -261,12 +261,10 @@ describe('Picker.Range', () => {
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
     });
 
-    it('panel can not be clicked with open and disabled', () => {
-      const onChange = jest.fn();
-      const { baseElement } = render(<DayRangePicker disabled open onChange={onChange} />);
-      expect(baseElement.querySelector('.rc-picker-cell')).toBeTruthy();
-      fireEvent.click(baseElement.querySelector('.rc-picker-cell'));
-      expect(onChange).not.toBeCalled();
+    it('disabled should not open', () => {
+      render(<DayRangePicker disabled open />);
+
+      expect(isOpen()).toBeFalsy();
     });
 
     it('startDate will have disabledDate when endDate is not selectable', () => {

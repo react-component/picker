@@ -206,7 +206,7 @@ function Picker<DateType extends object = any>(
   // ========================= Open =========================
   const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
 
-  const [mergedOpen, triggerOpen] = useOpen(open, defaultOpen, onOpenChange);
+  const [mergedOpen, triggerOpen] = useOpen(open, defaultOpen, [disabled], onOpenChange);
 
   // ======================= Calendar =======================
   const onInternalCalendarChange = (dates: DateType[], dateStrings: string[], info: BaseInfo) => {
