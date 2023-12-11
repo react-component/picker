@@ -95,6 +95,8 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
   formatList: FormatType[],
+  /** Used for RangePicker. `true` means [DateType, DateType] or will be DateType[] */
+  rangeValue: boolean,
   defaultValue?: ValueType,
   value?: ValueType,
   onCalendarChange?: (
@@ -102,8 +104,6 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
     dateStrings: ReplaceListType<Required<ValueType>, string>,
     info: BaseInfo,
   ) => void,
-  /** Used for RangePicker */
-  valueLen = 2,
 ) {
   // This is the root value which will sync with controlled or uncontrolled value
   const [innerValue, setInnerValue] = useMergedState(defaultValue, {
@@ -121,8 +121,8 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
     (nextCalendarValues: ValueType) => {
       const clone = [...nextCalendarValues] as ValueType;
 
-      if (valueLen) {
-        for (let i = 0; i < valueLen; i += 1) {
+      if (rangeValue) {
+        for (let i = 0; i < 2; i += 1) {
           clone[i] = clone[i] || null;
         }
       }

@@ -229,10 +229,10 @@ function RangePicker<DateType extends object = any>(
     generateConfig,
     locale,
     formatList,
+    true,
     defaultValue,
     value,
     onCalendarChange,
-    2,
   );
 
   const calendarValue = getCalendarValue();

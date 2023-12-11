@@ -207,6 +207,7 @@ function Picker<DateType extends object = any>(
     generateConfig,
     locale,
     formatList,
+    false,
     defaultValue,
     value,
     onInternalCalendarChange,
@@ -438,25 +439,25 @@ function Picker<DateType extends object = any>(
   };
 
   // >>> Calendar
-  // const onPanelSelect: PickerPanelProps<DateType>['onChange'] = (date) => {
-  //   lastOperation('panel');
+  const onPanelSelect = (date: DateType) => {
+    lastOperation('panel');
 
-  //   const clone: DateType = fillIndex(calendarValue, activeIndex, date);
+    const nextValues = multiple ? toggleDates(getCalendarValue(), date) : [date];
+    console.log('Select:', date, nextValues);
 
-  //   // Only trigger calendar event but not update internal `calendarValue` state
-  //   triggerCalendarChange(clone);
+    //   const clone: DateType = fillIndex(calendarValue, activeIndex, date);
 
-  //   // >>> Trigger next active if !needConfirm
-  //   // Fully logic check `useRangeValue` hook
-  //   if (!needConfirm && !complexPicker && internalPicker === internalMode) {
-  //     triggerConfirm(date);
-  //   }
-  // };
+    // Only trigger calendar event but not update internal `calendarValue` state
+    triggerCalendarChange(nextValues);
 
-  const onPopupChange = (nextValues: Date | DateType[]) => {
-    // TODO: handle this
-    console.log('>>>', nextValues);
+    // >>> Trigger next active if !needConfirm
+    // Fully logic check `useRangeValue` hook
+    if (!needConfirm && !complexPicker && internalPicker === internalMode) {
+      // triggerConfirm(date);
+      triggerConfirm();
+    }
   };
+  console.log('Cal:', calendarValue);
 
   // >>> Close
   const onPopupClose = () => {
@@ -508,10 +509,8 @@ function Picker<DateType extends object = any>(
       // Value
       value={panelValue}
       isInvalid={isInvalidateDate}
-      // onChange={null}
-      // onSelect={onPanelSelect}
-      onChange={onPopupChange}
-      onSelect={null}
+      onChange={null}
+      onSelect={onPanelSelect}
       // PickerValue
       pickerValue={currentPickerValue}
       onPickerValueChange={setCurrentPickerValue}
