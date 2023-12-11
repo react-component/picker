@@ -14,9 +14,7 @@ import type {
   SharedPickerProps,
   ValueDate,
 } from '../interface';
-import type { PickerPanelProps } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
-import { fillIndex } from '../util';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';
@@ -434,19 +432,24 @@ function Picker<DateType extends object = any>(
   };
 
   // >>> Calendar
-  const onPanelSelect: PickerPanelProps<DateType>['onChange'] = (date) => {
-    lastOperation('panel');
+  // const onPanelSelect: PickerPanelProps<DateType>['onChange'] = (date) => {
+  //   lastOperation('panel');
 
-    const clone: DateType = fillIndex(calendarValue, activeIndex, date);
+  //   const clone: DateType = fillIndex(calendarValue, activeIndex, date);
 
-    // Only trigger calendar event but not update internal `calendarValue` state
-    triggerCalendarChange(clone);
+  //   // Only trigger calendar event but not update internal `calendarValue` state
+  //   triggerCalendarChange(clone);
 
-    // >>> Trigger next active if !needConfirm
-    // Fully logic check `useRangeValue` hook
-    if (!needConfirm && !complexPicker && internalPicker === internalMode) {
-      triggerConfirm(date);
-    }
+  //   // >>> Trigger next active if !needConfirm
+  //   // Fully logic check `useRangeValue` hook
+  //   if (!needConfirm && !complexPicker && internalPicker === internalMode) {
+  //     triggerConfirm(date);
+  //   }
+  // };
+
+  const onPopupChange = (nextValues: Date | DateType[]) => {
+    // TODO: handle this
+    console.log('>>>', nextValues);
   };
 
   // >>> Close
@@ -456,12 +459,7 @@ function Picker<DateType extends object = any>(
   };
 
   // >>> cellRender
-  const onInternalCellRender = useCellRender(
-    cellRender,
-    dateRender,
-    monthCellRender,
-    getActiveRange(activeIndex),
-  );
+  const onInternalCellRender = useCellRender(cellRender, dateRender, monthCellRender);
 
   // >>> Value
   const panelValue = calendarValue[activeIndex] || null;
@@ -502,8 +500,10 @@ function Picker<DateType extends object = any>(
       // Value
       value={panelValue}
       isInvalid={isInvalidateDate}
-      onChange={null}
-      onSelect={onPanelSelect}
+      // onChange={null}
+      // onSelect={onPanelSelect}
+      onChange={onPopupChange}
+      onSelect={null}
       // PickerValue
       pickerValue={currentPickerValue}
       onPickerValueChange={setCurrentPickerValue}

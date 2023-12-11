@@ -61,6 +61,10 @@ export interface BasePickerPanelProps<DateType extends object = any>
 
   // Mode
   mode?: PanelMode;
+  /**
+   * Compatible with origin API.
+   * Not mean the PickerPanel `onChange` event.
+   */
   onPanelChange?: OnPanelChange<DateType>;
   picker?: PickerMode;
 
