@@ -178,7 +178,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     onChange,
 
     // Checker
-    allowEmpty = [],
+    allowEmpty,
     order,
   } = info;
 
@@ -231,11 +231,12 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     const startEmpty = !start;
     const endEmpty = !end;
 
-    const validateEmptyDateRange =
-      // Validate empty start
-      (!startEmpty || allowEmpty[0]) &&
-      // Validate empty end
-      (!endEmpty || allowEmpty[1]);
+    const validateEmptyDateRange = allowEmpty
+      ? // Validate empty start
+        (!startEmpty || allowEmpty[0]) &&
+        // Validate empty end
+        (!endEmpty || allowEmpty[1])
+      : true;
 
     // >>> Order
     const validateOrder =

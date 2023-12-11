@@ -99,16 +99,16 @@ export default () => {
       <SinglePicker
         // Shared
         {...sharedLocale}
-        multiple
-        open
-        disabled
+        // multiple
+        // open
+        // disabled
         ref={singleRef}
         suffixIcon="🧶"
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
         }}
         style={{ width: 300 }}
-        needConfirm={false}
+        // needConfirm={false}
       />
       <br />
       {/* <RangePicker
