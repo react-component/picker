@@ -16,10 +16,10 @@ export default function TimePanel<DateType = any>(props: TimePanelProps<DateType
     generateConfig,
 
     // Format
-    showTime = {},
+    showTime,
   } = props;
 
-  const { format = 'HH:mm:ss' } = showTime;
+  const { format = 'HH:mm:ss' } = showTime || {};
 
   const panelPrefixCls = `${prefixCls}-time-panel`;
 

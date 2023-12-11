@@ -7,7 +7,7 @@
  *  - `pickerValue` is now full controlled
  *    - `defaultPickerValue` will take effect on every field active with popup opening.
  *  - [Break] clear button return the event with `onClick`
- * 
+ *
  * - Locale
  *  - Remove `dateFormat` since it's never used
  *  - Remove `dateTimeFormat` since it's never used
@@ -29,6 +29,7 @@
 
 import type { PickerRef } from './interface';
 import RangePicker, { type RangePickerProps } from './PickerInput/RangePicker';
+import Picker, { type PickerProps } from './PickerInput/SinglePicker';
 
-export { RangePicker };
-export type { RangePickerProps, PickerRef };
+export { Picker, RangePicker };
+export type { RangePickerProps, PickerProps, PickerRef };

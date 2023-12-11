@@ -11,8 +11,12 @@ import dayGenerateConfig from '../../src/generate/dayjs';
 import momentGenerateConfig from '../../src/generate/moment';
 import enUS from '../../src/locale/en_US';
 import zh_CN from '../../src/locale/zh_CN';
-import type { PickerRef, RangePickerProps } from '../../src/NewPicker';
-import { RangePicker as NewRangePicker } from '../../src/NewPicker';
+import type {
+  PickerProps as NewPickerProps,
+  PickerRef,
+  RangePickerProps,
+} from '../../src/NewPicker';
+import { Picker as NewPicker, RangePicker as NewRangePicker } from '../../src/NewPicker';
 import type { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
 import type {
   PickerPanelBaseProps,
@@ -221,6 +225,13 @@ export function inputValue(text: string, index = 0) {
 }
 
 // ===================================== Day JS =====================================
+export const DayPicker = React.forwardRef<
+  PickerRef,
+  Partial<Omit<NewPickerProps<Dayjs>, 'generateConfig'>>
+>((props, ref) => {
+  return <NewPicker generateConfig={dayGenerateConfig} locale={zh_CN} {...props} ref={ref} />;
+});
+
 export const DayRangePicker = React.forwardRef<
   PickerRef,
   Partial<Omit<RangePickerProps<Dayjs>, 'generateConfig'>>

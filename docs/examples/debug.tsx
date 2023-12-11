@@ -106,6 +106,7 @@ export default () => {
           console.log('🔥 Change:', val, text);
         }}
         style={{ width: 300 }}
+        needConfirm={false}
       />
       <br />
       {/* <RangePicker

@@ -458,7 +458,6 @@ function Picker<DateType extends object = any>(
     lastOperation('panel');
 
     const nextValues = multiple ? toggleDates(getCalendarValue(), date) : [date];
-    console.log('Select:', date, nextValues);
 
     //   const clone: DateType = fillIndex(calendarValue, activeIndex, date);
 
@@ -472,7 +471,6 @@ function Picker<DateType extends object = any>(
       triggerConfirm();
     }
   };
-  console.log('Cal:', calendarValue);
 
   // >>> Close
   const onPopupClose = () => {
