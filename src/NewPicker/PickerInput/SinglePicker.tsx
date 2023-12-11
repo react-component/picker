@@ -387,8 +387,12 @@ function Picker<DateType extends object = any>(
   const [internalHoverValue, setInternalHoverValue] = React.useState<DateType>(null);
 
   const hoverValues = React.useMemo(() => {
-    return internalHoverValue ? [internalHoverValue] : calendarValue;
-  }, [calendarValue, internalHoverValue]);
+    if (!multiple) {
+      return internalHoverValue ? [internalHoverValue] : calendarValue;
+    }
+
+    return [...calendarValue, internalHoverValue];
+  }, [calendarValue, internalHoverValue, multiple]);
 
   // Clean up `internalHoverValues` when closed
   React.useEffect(() => {
@@ -469,7 +473,7 @@ function Picker<DateType extends object = any>(
   const onInternalCellRender = useCellRender(cellRender, dateRender, monthCellRender);
 
   // >>> Value
-  const panelValue = calendarValue[activeIndex] || null;
+  // const panelValue = calendarValue[activeIndex] || null;
 
   // >>> invalid
 
@@ -507,7 +511,7 @@ function Picker<DateType extends object = any>(
       internalMode={internalMode}
       onPanelChange={triggerModeChange}
       // Value
-      value={panelValue}
+      value={calendarValue}
       isInvalid={isInvalidateDate}
       onChange={null}
       onSelect={onPanelSelect}
@@ -515,7 +519,7 @@ function Picker<DateType extends object = any>(
       pickerValue={currentPickerValue}
       onPickerValueChange={setCurrentPickerValue}
       // Hover
-      hoverValue={hoverValues}
+      // hoverValue={hoverValues}
       onHover={onPanelHover}
       // Submit
       needConfirm={needConfirm}

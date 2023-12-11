@@ -1,8 +1,4 @@
-export function leftPad(
-  str: string | number,
-  length: number,
-  fill: string = '0',
-) {
+export function leftPad(str: string | number, length: number, fill: string = '0') {
   let current = String(str);
   while (current.length < length) {
     current = `${fill}${current}`;
@@ -12,6 +8,9 @@ export function leftPad(
 
 export const tuple = <T extends string[]>(...args: T) => args;
 
+/**
+ * Convert `value` to array. Will provide `[]` if is null or undefined.
+ */
 export function toArray<T>(val: T | T[]): T[] {
   if (val === null || val === undefined) {
     return [];
@@ -20,10 +19,7 @@ export function toArray<T>(val: T | T[]): T[] {
   return Array.isArray(val) ? val : [val];
 }
 
-export function getValue<T>(
-  values: null | undefined | (T | null)[],
-  index: number,
-): T | null {
+export function getValue<T>(values: null | undefined | (T | null)[], index: number): T | null {
   return values ? values[index] : null;
 }
 
@@ -34,21 +30,16 @@ export function updateValues<T, R = [T | null, T | null] | null>(
   value: T | UpdateValue<T>,
   index: number,
 ): R {
-  const newValues: [T | null, T | null] = [
-    getValue(values, 0),
-    getValue(values, 1),
-  ];
+  const newValues: [T | null, T | null] = [getValue(values, 0), getValue(values, 1)];
 
   newValues[index] =
-    typeof value === 'function'
-      ? (value as UpdateValue<T | null>)(newValues[index])
-      : value;
+    typeof value === 'function' ? (value as UpdateValue<T | null>)(newValues[index]) : value;
 
   if (!newValues[0] && !newValues[1]) {
-    return (null as unknown) as R;
+    return null as unknown as R;
   }
 
-  return (newValues as unknown) as R;
+  return newValues as unknown as R;
 }
 
 export function executeValue<T>(value: T | (() => T)): T {

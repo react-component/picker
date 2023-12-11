@@ -58,7 +58,9 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
 
   // ============================== Value ===============================
   const matchValues = (date: DateType) =>
-    values.some((singleValue) => isSame(generateConfig, locale, date, singleValue, type));
+    values.some(
+      (singleValue) => singleValue && isSame(generateConfig, locale, date, singleValue, type),
+    );
 
   // =============================== Body ===============================
   const rows: React.ReactNode[] = [];

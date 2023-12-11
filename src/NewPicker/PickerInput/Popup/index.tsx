@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import ResizeObserver, { type ResizeObserverProps } from 'rc-resize-observer';
 import * as React from 'react';
+import { toArray } from '../../../utils/miscUtil';
 import type { SharedPickerProps, ValueDate } from '../../interface';
 import PickerContext from '../context';
 import Footer, { type FooterProps } from './Footer';
@@ -90,6 +91,17 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   }, [containerWidth, activeOffset, range]);
 
   // ======================== Custom ========================
+  const submittable = React.useMemo(() => {
+    const valueList = toArray(value);
+
+    // Empty is invalid
+    if (!valueList.length) {
+      return true;
+    }
+
+    return valueList.some((date) => !isInvalid(date));
+  }, [value, isInvalid]);
+
   let mergedNodes: React.ReactNode = (
     <div className={`${prefixCls}-panel-layout`}>
       {/* `any` here since PresetPanel is reused for both Single & Range Picker which means return type is not stable */}
