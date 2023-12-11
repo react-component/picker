@@ -457,7 +457,7 @@ function RangePicker<DateType extends object = any>(
   };
 
   // >>> Calendar
-  const onPanelSelect: PickerPanelProps<DateType>['onChange'] = (date) => {
+  const onPanelSelect: PickerPanelProps<DateType>['onChange'] = (date: DateType) => {
     lastOperation('panel');
 
     const clone: RangeValueType<DateType> = fillIndex(calendarValue, activeIndex, date);

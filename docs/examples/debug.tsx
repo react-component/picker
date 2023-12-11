@@ -2,6 +2,7 @@ import * as React from 'react';
 import '../../assets/index.less';
 import type { Locale, PickerRef } from '../../src/NewPicker/interface';
 import RangePicker from '../../src/NewPicker/PickerInput/RangePicker';
+import SinglePicker from '../../src/NewPicker/PickerInput/SinglePicker';
 import PickerPanel from '../../src/NewPicker/PickerPanel';
 
 import dayjs, { type Dayjs } from 'dayjs';
@@ -17,7 +18,8 @@ dayjs.locale('zh-cn');
 dayjs.extend(buddhistEra);
 dayjs.extend(LocalizedFormat);
 
-// console.log('>>', dayjs().format('YYYY-MM-dd'));
+console.log('>>', RangePicker, SinglePicker, PickerPanel);
+console.clear();
 
 (window as any).dayjs = dayjs;
 
@@ -145,7 +147,7 @@ export default () => {
           generateConfig={dayjsGenerateConfig}
           locale={zhCN}
           defaultValue={[dayjs()]}
-          multiple
+          multiple={true as boolean}
           onChange={(val) => {
             console.log('🔥 Change:', val);
           }}

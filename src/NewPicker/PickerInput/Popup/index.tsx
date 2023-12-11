@@ -8,7 +8,7 @@ import Footer, { type FooterProps } from './Footer';
 import PopupPanel, { type PopupPanelProps } from './PopupPanel';
 import PresetPanel from './PresetPanel';
 
-export interface PopupProps<DateType = any, PresetValue = DateType>
+export interface PopupProps<DateType extends object = any, PresetValue = DateType>
   extends Pick<React.InputHTMLAttributes<HTMLDivElement>, 'onFocus' | 'onBlur'>,
     FooterProps<DateType>,
     PopupPanelProps<DateType> {

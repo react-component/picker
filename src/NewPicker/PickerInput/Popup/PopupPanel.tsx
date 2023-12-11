@@ -5,17 +5,24 @@ import PickerContext from '../context';
 import { offsetPanelDate } from '../hooks/useRangePickerValue';
 import { type FooterProps } from './Footer';
 
-export type MustProp = Required<Pick<PickerPanelProps, 'mode' | 'onPanelChange'>>;
+export type MustProp<DateType extends object> = Required<
+  Pick<PickerPanelProps<DateType>, 'mode' | 'onPanelChange'>
+>;
 
-export type PopupPanelProps<DateType = any> = MustProp &
-  PickerPanelProps<DateType> &
+export type PopupPanelProps<DateType extends object = any> = MustProp<DateType> &
+  Pick<
+    PickerPanelProps<DateType>,
+    'picker' | 'pickerValue' | 'onPickerValueChange' | 'generateConfig' | 'locale' | 'multiple'
+  > &
   FooterProps<DateType> & {
     multiple?: boolean;
     minDate?: DateType;
     maxDate?: DateType;
   };
 
-export default function PopupPanel<DateType = any>(props: PopupPanelProps<DateType>) {
+export default function PopupPanel<DateType extends object = any>(
+  props: PopupPanelProps<DateType>,
+) {
   const { picker, multiple, pickerValue, onPickerValueChange, onSubmit, minDate, maxDate } = props;
   const { prefixCls, generateConfig } = React.useContext(PickerContext);
 
@@ -81,12 +88,12 @@ export default function PopupPanel<DateType = any>(props: PopupPanelProps<DateTy
         <PickerHackContext.Provider
           value={{ ...sharedContext, hideNext: true, hidePrev: firstPanelNeedLimit.hidePrev }}
         >
-          <PickerPanel {...props} />
+          <PickerPanel<DateType> {...props} />
         </PickerHackContext.Provider>
         <PickerHackContext.Provider
           value={{ ...sharedContext, hidePrev: true, hideNext: secondPanelNeedLimit.hideNext }}
         >
-          <PickerPanel
+          <PickerPanel<DateType>
             {...props}
             pickerValue={nextPickerValue}
             onPickerValueChange={onNextPickerValueChange}
