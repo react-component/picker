@@ -8,9 +8,6 @@ export interface FooterProps<DateType = any> {
   renderExtraFooter?: SharedPickerProps['renderExtraFooter'];
   showNow: boolean;
 
-  // Value
-  value?: DateType;
-
   // Invalid
   /** From Footer component used only. Check if can OK button click */
   invalid?: boolean;

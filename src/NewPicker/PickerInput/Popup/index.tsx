@@ -28,7 +28,7 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
 
   // Change
   needConfirm: boolean;
-  isInvalid: (date: DateType) => boolean;
+  isInvalid: (date: DateType | DateType[]) => boolean;
 }
 
 export default function Popup<DateType extends object = any>(props: PopupProps<DateType>) {
