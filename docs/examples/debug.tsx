@@ -105,6 +105,7 @@ export default () => {
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
         }}
+        style={{ width: 300 }}
       />
       <br />
       {/* <RangePicker

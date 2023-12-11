@@ -367,7 +367,7 @@ function Picker<DateType extends object = any>(
     triggerSubmitChange(getCalendarValue());
 
     // if (nextIndex === null) {
-    //   triggerOpen(false, { force: true });
+    triggerOpen(false, { force: true });
     // } else if (!skipFocus) {
     //   selectorRef.current.focus(nextIndex);
     // }
