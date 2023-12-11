@@ -1,6 +1,4 @@
-// import { useEvent } from 'rc-util';
 import React from 'react';
-// import useToggleDates from '../hooks/useToggleDates';
 import type { InternalMode, PanelMode, SharedPanelProps } from '../interface';
 
 export interface PanelContextProps<DateType = any>
@@ -11,12 +9,9 @@ export interface PanelContextProps<DateType = any>
     | 'cellRender'
     | 'generateConfig'
     | 'locale'
-    // | 'onChange'
-    // | 'onValuesChange'
     | 'onSelect'
     | 'hoverValue'
     | 'onHover'
-    // | 'value'
     | 'values'
     | 'pickerValue'
   > {
@@ -46,38 +41,24 @@ export function useInfo<DateType = any>(
     locale,
     disabledDate,
     cellRender,
-    // onChange,
-    // onValuesChange,
     hoverValue,
     onHover,
-    // value,
     values,
     pickerValue,
-    // multiple,
     onSelect,
   } = props;
 
   // ========================= MISC =========================
   const now = generateConfig.getNow();
 
-  // // ======================== Toggle ========================
-  // const toggleDates = useToggleDates(generateConfig, locale, internalPicker);
-  // const toggleDate = useEvent((date: DateType) => {
-  //   const nextValues = multiple ? toggleDates(values, date) : [date];
-  //   onValuesChange(nextValues);
-  // });
-
   // ========================= Info =========================
   const info = {
     now,
-    // value,
     values,
     pickerValue,
     prefixCls,
     disabledDate,
     cellRender,
-    // onChange,
-    // onValuesChange,
     hoverValue,
     onHover,
     locale,

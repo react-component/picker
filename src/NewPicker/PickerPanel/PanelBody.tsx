@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { formatValue, isInRange, isSame } from '../../utils/dateUtil';
-import type { InternalMode } from '../interface';
+import type { PanelMode } from '../interface';
 import { PanelContext, PickerHackContext } from './context';
 
 export interface PanelBodyProps<DateType = any> {
@@ -24,12 +24,12 @@ export interface PanelBodyProps<DateType = any> {
   rowClassName?: (date: DateType) => string;
 
   // Mode
-  mode: InternalMode;
+  panelType: PanelMode;
 }
 
 export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType>) {
   const {
-    mode,
+    panelType,
     rowNum,
     colNum,
     baseDate,
@@ -44,7 +44,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
 
   const {
     prefixCls,
-    type,
+    panelType: contextPanelType,
     now,
     disabledDate,
     cellRender,
@@ -53,9 +53,10 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
     generateConfig,
     values,
     locale,
-    toggleDate,
-    onValuesChange,
+    onSelect,
   } = React.useContext(PanelContext);
+
+  const type = panelType || contextPanelType;
 
   const cellPrefixCls = `${prefixCls}-cell`;
 
@@ -74,7 +75,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
       const currentDate = getCellDate(baseDate, offset);
 
       const disabled = disabledDate?.(currentDate, {
-        type,
+        type: type,
       });
 
       // Row Start Cell
@@ -94,8 +95,8 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
       if (hoverValue) {
         const [hoverStart, hoverEnd] = hoverValue;
         inRange = isInRange(generateConfig, hoverStart, hoverEnd, currentDate);
-        rangeStart = isSame(generateConfig, locale, currentDate, hoverStart, mode);
-        rangeEnd = isSame(generateConfig, locale, currentDate, hoverEnd, mode);
+        rangeStart = isSame(generateConfig, locale, currentDate, hoverStart, type);
+        rangeEnd = isSame(generateConfig, locale, currentDate, hoverEnd, type);
       }
 
       // Title
@@ -122,14 +123,13 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
             [`${prefixCls}-cell-selected`]:
               !hoverValue &&
               // WeekPicker use row instead
-              mode !== 'week' &&
-              isSame(generateConfig, locale, currentDate, values[0], mode),
+              type !== 'week' &&
+              isSame(generateConfig, locale, currentDate, values[0], type),
             ...getCellClassName(currentDate),
           })}
           onClick={() => {
             if (!disabled) {
-              // toggleDate(currentDate);
-              onValuesChange([currentDate]);
+              onSelect(currentDate);
             }
           }}
           onDoubleClick={() => {
@@ -153,7 +153,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
                 prefixCls,
                 originNode: inner,
                 today: now,
-                type,
+                type: type,
                 locale,
               })
             : inner}
