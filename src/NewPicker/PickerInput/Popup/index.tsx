@@ -3,7 +3,6 @@ import ResizeObserver, { type ResizeObserverProps } from 'rc-resize-observer';
 import * as React from 'react';
 import type { SharedPickerProps, ValueDate } from '../../interface';
 import PickerContext from '../context';
-import type { RangeValueType } from '../RangePicker';
 import Footer, { type FooterProps } from './Footer';
 import PopupPanel, { type PopupPanelProps } from './PopupPanel';
 import PresetPanel from './PresetPanel';
@@ -17,7 +16,7 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   // Presets
   presets: ValueDate<DateType>[];
   onPresetHover: (presetValue: PresetValue) => void;
-  onPresetSubmit: (presetValue: RangeValueType<DateType>) => void;
+  onPresetSubmit: (presetValue: PresetValue) => void;
 
   // Range
   range?: boolean;

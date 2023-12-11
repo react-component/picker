@@ -499,7 +499,6 @@ function RangePicker<DateType extends object = any>(
       'onCalendarChange',
       'style',
       'className',
-      'id',
       'onPanelChange',
     ]);
     return restProps;

@@ -221,7 +221,7 @@ function Picker<DateType extends object = any>(
     triggerFocus,
     lastOperation,
     activeIndex,
-    setActiveIndex,
+    // setActiveIndex,
     // nextActiveIndex,
     // activeIndexList,
   ] = useRangeActive([disabled]);
@@ -276,6 +276,11 @@ function Picker<DateType extends object = any>(
   const [submitInvalidates, onSelectorInvalid] = useFieldsInvalidate(
     calendarValue,
     isInvalidateDate,
+  );
+
+  const submitInvalidate = React.useMemo(
+    () => submitInvalidates.some((invalidated) => invalidated),
+    [submitInvalidates],
   );
 
   // ===================== Picker Value =====================
@@ -404,6 +409,7 @@ function Picker<DateType extends object = any>(
     setHoverSource('preset');
   };
 
+  // TODO: handle this
   const onPresetSubmit = (nextValue: DateType) => {
     // const passed = triggerSubmitChange(nextValues);
 
@@ -474,7 +480,6 @@ function Picker<DateType extends object = any>(
       'onCalendarChange',
       'style',
       'className',
-      'id',
       'onPanelChange',
     ]);
     return restProps;
@@ -527,10 +532,9 @@ function Picker<DateType extends object = any>(
   // ========================================================
 
   // ======================== Change ========================
-  const onSelectorChange = (date: DateType, index: number) => {
-    const clone = fillCalendarValue(date, index);
-
-    triggerCalendarChange(clone);
+  // TODO: support multiple mode
+  const onSelectorChange = (date: DateType) => {
+    triggerCalendarChange([date]);
   };
 
   const onSelectorInputChange = () => {
@@ -538,27 +542,28 @@ function Picker<DateType extends object = any>(
   };
 
   // ======================= Selector =======================
-  const onSelectorFocus: SelectorProps['onFocus'] = (event, index) => {
+  const onSelectorFocus: SelectorProps['onFocus'] = (event) => {
     lastOperation('input');
 
     triggerOpen(true, {
       inherit: true,
     });
 
-    setActiveIndex(index);
+    // setActiveIndex(index);
 
-    onSharedFocus(event, index);
+    onSharedFocus(event);
   };
 
-  const onSelectorBlur: SelectorProps['onBlur'] = (event, index) => {
+  const onSelectorBlur: SelectorProps['onBlur'] = (event) => {
     triggerOpen(false);
 
-    onSharedBlur(event, index);
+    onSharedBlur(event);
   };
 
   const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event) => {
     if (event.key === 'Tab') {
-      triggerConfirm(null, true);
+      // triggerConfirm(null, true);
+      triggerConfirm();
     }
   };
 
@@ -591,7 +596,8 @@ function Picker<DateType extends object = any>(
     // Trade as confirm on field leave
     if (!mergedOpen && lastOp === 'input') {
       triggerOpen(false);
-      triggerConfirm(null, true);
+      // triggerConfirm(null, true);
+      triggerConfirm();
     }
 
     // Submit with complex picker
@@ -625,7 +631,7 @@ function Picker<DateType extends object = any>(
           // Icon
           suffixIcon={suffixIcon}
           // Active
-          activeIndex={focused || mergedOpen ? activeIndex : null}
+          // activeIndex={focused || mergedOpen ? activeIndex : null}
           activeHelp={!!internalHoverValue}
           allHelp={!!internalHoverValue && hoverSource === 'preset'}
           focused={focused}
@@ -649,10 +655,11 @@ function Picker<DateType extends object = any>(
           onClick={onSelectorClick}
           onClear={onSelectorClear}
           // Invalid
-          invalid={submitInvalidates}
-          onInvalid={onSelectorInvalid}
-          // Offset
-          onActiveOffset={setActiveOffset}
+          invalid={submitInvalidate}
+          onInvalid={(invalid) => {
+            // TODO: check this
+            onSelectorInvalid(invalid, 0);
+          }}
         />
       </PickerTrigger>
     </PickerContext.Provider>
