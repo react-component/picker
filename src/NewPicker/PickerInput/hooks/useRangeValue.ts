@@ -178,7 +178,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     onChange,
 
     // Checker
-    allowEmpty,
+    allowEmpty = [],
     order,
   } = info;
 

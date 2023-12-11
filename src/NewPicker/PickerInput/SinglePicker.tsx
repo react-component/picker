@@ -482,7 +482,10 @@ function Picker<DateType extends object = any>(
       'className',
       'onPanelChange',
     ]);
-    return restProps;
+    return {
+      ...restProps,
+      multiple: filledProps.multiple,
+    };
   }, [filledProps]);
 
   // >>> Render

@@ -12,7 +12,7 @@ export type MustProp<DateType extends object> = Required<
 export type PopupPanelProps<DateType extends object = any> = MustProp<DateType> &
   PickerPanelProps<DateType> &
   FooterProps<DateType> & {
-    multiple?: boolean;
+    multiplePanel?: boolean;
     minDate?: DateType;
     maxDate?: DateType;
   };
@@ -20,7 +20,8 @@ export type PopupPanelProps<DateType extends object = any> = MustProp<DateType> 
 export default function PopupPanel<DateType extends object = any>(
   props: PopupPanelProps<DateType>,
 ) {
-  const { picker, multiple, pickerValue, onPickerValueChange, onSubmit, minDate, maxDate } = props;
+  const { picker, multiplePanel, pickerValue, onPickerValueChange, onSubmit, minDate, maxDate } =
+    props;
   const { prefixCls, generateConfig } = React.useContext(PickerContext);
 
   // ======================== Offset ========================
@@ -79,7 +80,7 @@ export default function PopupPanel<DateType extends object = any>(
 
   // ======================== Render ========================
   // Multiple
-  if (multiple) {
+  if (multiplePanel) {
     return (
       <div className={`${prefixCls}-panels`}>
         <PickerHackContext.Provider

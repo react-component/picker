@@ -513,7 +513,7 @@ function RangePicker<DateType extends object = any>(
       showTime={showTime}
       // Range
       range
-      multiple={multiplePanel}
+      multiplePanel={multiplePanel}
       activeOffset={activeOffset}
       // Disabled
       disabledDate={mergedDisabledDate}

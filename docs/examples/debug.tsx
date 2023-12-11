@@ -96,7 +96,13 @@ export default () => {
 
       <br />
 
-      <SinglePicker {...sharedLocale} ref={singleRef} suffixIcon="🧶" />
+      <SinglePicker
+        // Shared
+        {...sharedLocale}
+        multiple
+        ref={singleRef}
+        suffixIcon="🧶"
+      />
       <br />
       {/* <RangePicker
         {...sharedLocale}
