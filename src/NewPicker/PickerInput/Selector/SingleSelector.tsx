@@ -107,8 +107,9 @@ function SingleSelector<DateType extends object = any>(
   }));
 
   // ======================== Inputs ========================
-  console.log('~~~>', props);
-  const getInputProps = useInputProps<DateType>(props, () => {});
+  const getInputProps = useInputProps<DateType>(props, ({ valueTexts }) => ({
+    value: valueTexts[0] || '',
+  }));
 
   // ======================== Clear =========================
   const showClear = clearIcon && value && !disabled;

@@ -386,7 +386,7 @@ function Picker<DateType extends object = any>(
   const [internalHoverValue, setInternalHoverValue] = React.useState<DateType>(null);
 
   const hoverValues = React.useMemo(() => {
-    return internalHoverValue || calendarValue;
+    return internalHoverValue ? [internalHoverValue] : calendarValue;
   }, [calendarValue, internalHoverValue]);
 
   // Clean up `internalHoverValues` when closed
