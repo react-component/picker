@@ -18,7 +18,6 @@ import {
   DayPicker,
   findCell,
   getDay,
-  getMoment,
   isOpen,
   isSame,
   openPicker,
@@ -181,8 +180,6 @@ describe('Picker.Basic', () => {
     });
   });
 
- 
-
   describe('value', () => {
     it('defaultValue', () => {
       const { container } = render(<DayPicker defaultValue={getDay('1989-11-28')} />);
@@ -227,8 +224,6 @@ describe('Picker.Basic', () => {
     });
   });
 
-  return;
-
   describe('typing to change value', () => {
     [
       {
@@ -237,13 +232,13 @@ describe('Picker.Basic', () => {
         selected: '.rc-picker-cell-selected',
         matchDate: '2000-11-11',
       },
-      {
-        name: 'week',
-        picker: 'week',
-        value: '2000-45th',
-        matchDate: '2000-10-29',
-        selected: '.rc-picker-week-panel-row-selected',
-      },
+      // {
+      //   name: 'week',
+      //   picker: 'week',
+      //   value: '2000-45th',
+      //   matchDate: '2000-10-29',
+      //   selected: '.rc-picker-week-panel-row-selected',
+      // },
     ].forEach(({ name, picker, value, matchDate, selected }) => {
       it(name, () => {
         const onChange = jest.fn();
@@ -251,15 +246,9 @@ describe('Picker.Basic', () => {
           <DayPicker onChange={onChange} picker={picker as any} allowClear />,
         );
         openPicker(container);
-        // document.querySelector('input').simulate('focus');
         fireEvent.focus(container.querySelector('input'));
 
         // Invalidate value
-        // document.querySelector('input').simulate('change', {
-        //   target: {
-        //     value: 'abc',
-        //   },
-        // });
         fireEvent.change(container.querySelector('input'), {
           target: {
             value: 'abc',
@@ -267,11 +256,6 @@ describe('Picker.Basic', () => {
         });
 
         // Validate value
-        // document.querySelector('input').simulate('change', {
-        //   target: {
-        //     value,
-        //   },
-        // });
         fireEvent.change(container.querySelector('input'), {
           target: {
             value,
@@ -282,6 +266,7 @@ describe('Picker.Basic', () => {
         expect(onChange).not.toHaveBeenCalled();
         keyDown(KeyCode.ENTER);
 
+        console.log(document.body.innerHTML);
         expect(isSame(onChange.mock.calls[0][0], matchDate, picker as any)).toBeTruthy();
         expect(document.querySelector(selected)).toBeTruthy();
         onChange.mockReset();
@@ -295,6 +280,8 @@ describe('Picker.Basic', () => {
       });
     });
   });
+
+  return;
 
   describe('focus test', () => {
     let domMock: ReturnType<typeof spyElementPrototypes>;
@@ -836,11 +823,7 @@ describe('Picker.Basic', () => {
       ['year', '1999'],
     ].forEach(([picker, text]) => {
       rerender(
-        <DayPicker
-          picker={picker as any}
-          showTime={false}
-          defaultValue={getDay('1999-09-03')}
-        />,
+        <DayPicker picker={picker as any} showTime={false} defaultValue={getDay('1999-09-03')} />,
       );
 
       expect(document.querySelector('input').value).toEqual(text);

@@ -184,7 +184,10 @@ export default function useRangePickerValue<DateType extends object, ValueType e
          * 4. Else use now (not any `calendarValue` can ref)
          */
 
-        if (prevActiveIndexRef.current !== null) {
+        if (
+          prevActiveIndexRef.current !== null &&
+          prevActiveIndexRef.current !== mergedActiveIndex
+        ) {
           // If from another field, not jump picker value
           nextPickerValue = [mergedStartPickerValue, mergedEndPickerValue][mergedActiveIndex ^ 1];
         } else if (calendarValue[mergedActiveIndex]) {
@@ -217,7 +220,7 @@ export default function useRangePickerValue<DateType extends object, ValueType e
         }
       }
     }
-  }, [open, mergedActiveIndex]);
+  }, [open, mergedActiveIndex, calendarValue[mergedActiveIndex]]);
 
   // >>> Reset prevActiveIndex when panel closed
   React.useEffect(() => {

@@ -92,7 +92,7 @@ export default () => {
 
   return (
     <div>
-      <input defaultValue="00:01:00" />
+      <input defaultValue="2030-03-0" />
 
       <br />
 
@@ -106,6 +106,12 @@ export default () => {
         suffixIcon="🧶"
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
+        }}
+        onCalendarChange={(val, text, info) => {
+          console.log('🎉 Calendar Change:', val, text, info);
+        }}
+        onPickerValueChange={(val, info) => {
+          console.log('👻 Picker Value Change:', val, val?.format('YYYY-MM-DD'), info);
         }}
         style={{ width: 300 }}
         // needConfirm={false}
