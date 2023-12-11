@@ -19,5 +19,5 @@ export default function useShowNow(
     return showToday;
   }
 
-  return true;
+  return false;
 }
