@@ -31,7 +31,7 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   isInvalid: (date: DateType) => boolean;
 }
 
-export default function Popup<DateType = any>(props: PopupProps<DateType>) {
+export default function Popup<DateType extends object = any>(props: PopupProps<DateType>) {
   const {
     panelRender,
     internalMode,

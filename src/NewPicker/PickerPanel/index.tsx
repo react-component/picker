@@ -103,16 +103,24 @@ export interface MultiplePickerPanelProps<DateType extends object = any>
   onChange?: (date: DateType[]) => void;
 }
 
-export type PickerPanelProps<DateType extends object = any> =
-  | SinglePickerPanelProps<DateType>
-  | MultiplePickerPanelProps<DateType>;
+// export type PickerPanelProps<DateType extends object = any> =
+//   | SinglePickerPanelProps<DateType>
+//   | MultiplePickerPanelProps<DateType>;
+export type PickerPanelProps<DateType extends object = any> = BasePickerPanelProps<DateType> & {
+  /** multiple selection. Not support time or datetime picker */
+  multiple?: boolean;
 
-type InternalPickerPanelProps<DateType extends object = any> = Omit<
-  PickerPanelProps<DateType>,
-  'onChange'
-> & {
+  defaultValue?: DateType | DateType[] | null;
+  value?: DateType | DateType[] | null;
   onChange?: (date: DateType | DateType[]) => void;
 };
+
+// type InternalPickerPanelProps<DateType extends object = any> = Omit<
+//   PickerPanelProps<DateType>,
+//   'onChange'
+// > & {
+//   onChange?: (date: DateType | DateType[]) => void;
+// };
 
 function PickerPanel<DateType extends object = any>(
   props: PickerPanelProps<DateType>,
@@ -155,7 +163,7 @@ function PickerPanel<DateType extends object = any>(
 
     // Components
     components = {},
-  } = props as InternalPickerPanelProps<DateType>;
+  } = props;
 
   const mergedPrefixCls = React.useContext(PickerContext)?.prefixCls || prefixCls || 'rc-picker';
 

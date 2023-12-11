@@ -86,6 +86,10 @@ export default () => {
     undefined,
   );
 
+  const setSingleValue = (nextVal: Dayjs) => {
+    setValue(nextVal);
+  };
+
   return (
     <div>
       <input defaultValue="00:01:00" />
@@ -146,11 +150,9 @@ export default () => {
         <PickerPanel
           generateConfig={dayjsGenerateConfig}
           locale={zhCN}
-          defaultValue={[dayjs()]}
+          value={value}
           multiple={true as boolean}
-          onChange={(val) => {
-            console.log('🔥 Change:', val);
-          }}
+          onChange={setSingleValue}
         />
         {/* <CellPicker
           picker="time"
