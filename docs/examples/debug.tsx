@@ -110,7 +110,7 @@ export default () => {
         // components={{
         //   input: MyInput,
         // }}
-        // showTime
+        showTime
         panelRender={(ori) => <>2333{ori}</>}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"

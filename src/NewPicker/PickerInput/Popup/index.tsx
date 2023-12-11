@@ -91,7 +91,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   }, [containerWidth, activeOffset, range]);
 
   // ======================== Custom ========================
-  const submittable = React.useMemo(() => {
+  const disableSubmit = React.useMemo(() => {
     const valueList = toArray(value);
 
     // Empty is invalid
@@ -99,7 +99,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
       return true;
     }
 
-    return valueList.some((date) => !isInvalid(date));
+    return valueList.some((val) => isInvalid(val));
   }, [value, isInvalid]);
 
   let mergedNodes: React.ReactNode = (
@@ -113,11 +113,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
       />
       <div>
         <PopupPanel {...props} />
-        <Footer
-          {...props}
-          showNow={multiple ? false : showNow}
-          invalid={!value || isInvalid(value)}
-        />
+        <Footer {...props} showNow={multiple ? false : showNow} invalid={disableSubmit} />
       </div>
     </div>
   );
