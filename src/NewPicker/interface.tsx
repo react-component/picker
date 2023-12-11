@@ -206,23 +206,29 @@ export interface SharedPanelProps<DateType = any> {
   pickerValue: DateType;
   onPickerValueChange: (date: DateType) => void;
   value?: DateType;
-  multiple?: boolean;
   /**
-   * Trigger for single value change.
-   * You can realize `onValuesChange` and ignore this to
-   * both handle single or multiple mode if need.
+   * Should trigger when user select the cell.
+   * PickerPanel will mark as `value` in single mode,
+   * Or toggle `values` in multiple mode.
    */
-  onChange: (date: DateType) => void;
+  onSelect: (date: DateType) => void;
+  // multiple?: boolean;
+  // /**
+  //  * Trigger for single value change.
+  //  * You can realize `onValuesChange` and ignore this to
+  //  * both handle single or multiple mode if need.
+  //  */
+  // onChange: (date: DateType) => void;
 
   /**
    * Used for `multiple` mode.
    * When not `multiple`, it will be `[value]`.
    */
   values?: DateType[];
-  /**
-   * For multiple value usage.
-   */
-  onValuesChange: (values: DateType[]) => void;
+  // /**
+  //  * For multiple value usage.
+  //  */
+  // onValuesChange: (values: DateType[]) => void;
 
   // Mode
   onModeChange: (mode: PanelMode, date?: DateType) => void;

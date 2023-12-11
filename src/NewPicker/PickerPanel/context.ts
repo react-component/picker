@@ -1,6 +1,6 @@
-import { useEvent } from 'rc-util';
+// import { useEvent } from 'rc-util';
 import React from 'react';
-import useToggleDates from '../hooks/useToggleDates';
+// import useToggleDates from '../hooks/useToggleDates';
 import type { InternalMode, PanelMode, SharedPanelProps } from '../interface';
 
 export interface PanelContextProps<DateType = any>
@@ -12,7 +12,8 @@ export interface PanelContextProps<DateType = any>
     | 'generateConfig'
     | 'locale'
     // | 'onChange'
-    | 'onValuesChange'
+    // | 'onValuesChange'
+    | 'onSelect'
     | 'hoverValue'
     | 'onHover'
     // | 'value'
@@ -26,7 +27,6 @@ export interface PanelContextProps<DateType = any>
 
   // Shared
   now: DateType;
-  toggleDate: (date: DateType) => void;
 }
 
 /** Used for each single Panel. e.g. DatePanel */
@@ -47,24 +47,25 @@ export function useInfo<DateType = any>(
     disabledDate,
     cellRender,
     // onChange,
-    onValuesChange,
+    // onValuesChange,
     hoverValue,
     onHover,
     // value,
     values,
     pickerValue,
-    multiple,
+    // multiple,
+    onSelect,
   } = props;
 
   // ========================= MISC =========================
   const now = generateConfig.getNow();
 
-  // ======================== Toggle ========================
-  const toggleDates = useToggleDates(generateConfig, locale, internalPicker);
-  const toggleDate = useEvent((date: DateType) => {
-    const nextValues = multiple ? toggleDates(values, date) : [date];
-    onValuesChange(nextValues);
-  });
+  // // ======================== Toggle ========================
+  // const toggleDates = useToggleDates(generateConfig, locale, internalPicker);
+  // const toggleDate = useEvent((date: DateType) => {
+  //   const nextValues = multiple ? toggleDates(values, date) : [date];
+  //   onValuesChange(nextValues);
+  // });
 
   // ========================= Info =========================
   const info = {
@@ -76,12 +77,12 @@ export function useInfo<DateType = any>(
     disabledDate,
     cellRender,
     // onChange,
-    onValuesChange,
+    // onValuesChange,
     hoverValue,
     onHover,
     locale,
     generateConfig,
-    toggleDate,
+    onSelect,
     panelType,
     internalPicker,
   };
