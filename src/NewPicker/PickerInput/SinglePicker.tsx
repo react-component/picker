@@ -133,6 +133,7 @@ function Picker<DateType extends object = any>(
     defaultValue,
     value,
     needConfirm,
+    onChange,
 
     // Disabled
     disabled,
@@ -266,13 +267,23 @@ function Picker<DateType extends object = any>(
 
   // ======================== Value =========================
   // TODO: Fix submit logic
+
+  const onInternalChange: PickerProps['onChange'] =
+    onChange &&
+    ((dates, dateStrings) => {
+      onChange(pickerParam(dates), pickerParam(dateStrings));
+    });
+
   const [
     /** Trigger `onChange` by check `disabledDate` */
     flushSubmit,
     /** Trigger `onChange` directly without check `disabledDate` */
     triggerSubmitChange,
   ] = useRangeValue(
-    filledProps,
+    {
+      ...filledProps,
+      onChange: onInternalChange,
+    },
     mergedValue,
     setInnerValue,
     getCalendarValue,
