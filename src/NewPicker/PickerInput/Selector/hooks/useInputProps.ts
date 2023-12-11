@@ -25,7 +25,7 @@ export default function useInputProps<DateType extends object = any>(
     | 'activeHelp'
   > & {
     id?: string | string[];
-    value?: DateType | [DateType?, DateType?];
+    value?: DateType[];
     invalid?: boolean | [boolean, boolean];
     placeholder?: string | [string, string];
     disabled?: boolean | [boolean, boolean];
@@ -34,6 +34,8 @@ export default function useInputProps<DateType extends object = any>(
     allHelp: boolean;
     activeIndex?: number | null;
   },
+  /** Used for SinglePicker */
+  postProps?: (info: { valueTexts: string[] }) => Partial<InputProps>,
 ) {
   const {
     format,
@@ -82,10 +84,7 @@ export default function useInputProps<DateType extends object = any>(
     [locale, generateConfig, firstFormat],
   );
 
-  const valueTexts = React.useMemo(
-    () => (Array.isArray(value) ? [getText(value[0]), getText(value[1])] : getText(value)),
-    [value, getText],
-  );
+  const valueTexts = React.useMemo(() => value.map(getText), [value, getText]);
 
   // ======================= Validate =======================
   const validateFormat = (text: string) => {
@@ -125,7 +124,7 @@ export default function useInputProps<DateType extends object = any>(
       // ============= By Index =============
       id: getProp(id),
 
-      value: getProp(valueTexts),
+      value: getProp(valueTexts) || '',
 
       invalid: getProp(invalid),
 
@@ -180,6 +179,12 @@ export default function useInputProps<DateType extends object = any>(
 
         onKeyDown?.(event);
       },
+
+      // ============= By Index =============
+      // ============ Post Props ============
+      ...postProps?.({
+        valueTexts,
+      }),
     };
   };
 

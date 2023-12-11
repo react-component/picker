@@ -11,7 +11,7 @@ export interface SingleSelectorProps<DateType extends object = any>
   extends SelectorProps<DateType> {
   id?: string;
 
-  value?: DateType;
+  value?: DateType[];
   disabled: boolean;
 
   /** All the field show as `placeholder` */
@@ -107,7 +107,8 @@ function SingleSelector<DateType extends object = any>(
   }));
 
   // ======================== Inputs ========================
-  const getInputProps = useInputProps<DateType>(props);
+  console.log('~~~>', props);
+  const getInputProps = useInputProps<DateType>(props, () => {});
 
   // ======================== Clear =========================
   const showClear = clearIcon && value && !disabled;

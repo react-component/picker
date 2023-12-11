@@ -94,9 +94,11 @@ export default () => {
     <div>
       <input defaultValue="00:01:00" />
 
-      {/* <SinglePicker ref={singleRef} suffixIcon="🧶" /> */}
       <br />
-      <RangePicker
+
+      <SinglePicker {...sharedLocale} ref={singleRef} suffixIcon="🧶" />
+      <br />
+      {/* <RangePicker
         {...sharedLocale}
         value={rangeValue}
         // components={{
@@ -135,7 +137,7 @@ export default () => {
           start: 'inputStart',
           end: 'inputEnd',
         }}
-      />
+      /> */}
       <br />
 
       <button
