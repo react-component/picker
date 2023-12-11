@@ -7,7 +7,7 @@ import {
   isSameMonth,
   WEEK_DAY_COUNT,
 } from '../../../utils/dateUtil';
-import type { InternalMode, PanelMode, SharedPanelProps } from '../../interface';
+import type { PanelMode, SharedPanelProps } from '../../interface';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
@@ -16,8 +16,8 @@ export interface DatePanelProps<DateType> extends SharedPanelProps<DateType> {
   panelName?: PanelMode;
   rowClassName?: (date: DateType) => string;
 
-  /** Used for `WeekPanel` or `DateTimePanel` */
-  mode?: InternalMode;
+  /** Used for `WeekPanel` */
+  mode?: PanelMode;
 }
 
 export default function DatePanel<DateType = any>(props: DatePanelProps<DateType>) {
@@ -31,12 +31,10 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
     onModeChange,
     mode = 'date',
     disabledDate,
-    onChange,
+    onSelect,
     onHover,
     showWeek,
   } = props;
-
-  console.log('>>>>>>>>', props);
 
   const panelPrefixCls = `${prefixCls}-${panelName}-panel`;
 
@@ -64,7 +62,7 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
               // Operation: Same as code in PanelBody
               onClick={() => {
                 if (!disabled) {
-                  onChange(date);
+                  onSelect(date);
                 }
               }}
               onMouseEnter={() => {
@@ -188,7 +186,6 @@ export default function DatePanel<DateType = any>(props: DatePanelProps<DateType
 
         {/* Body */}
         <PanelBody
-          mode="date"
           titleFormat={locale.fieldDateFormat}
           {...props}
           colNum={WEEK_DAY_COUNT}

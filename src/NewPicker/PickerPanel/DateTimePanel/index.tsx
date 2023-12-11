@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { InternalMode, SharedPanelProps } from '../../interface';
+import type { SharedPanelProps } from '../../interface';
 import DatePanel from '../DatePanel';
 import TimePanel from '../TimePanel';
 
@@ -8,18 +8,11 @@ export default function DateTimePanel<DateType = any>(props: SharedPanelProps<Da
 
   const panelPrefixCls = `${prefixCls}-datetime-panel`;
 
-  const passProps: SharedPanelProps<DateType> & {
-    mode: InternalMode;
-  } = {
-    ...props,
-    mode: 'datetime',
-  };
-
   // ============================== Render ==============================
   return (
     <div className={panelPrefixCls}>
-      <DatePanel {...passProps} />
-      <TimePanel {...passProps} />
+      <DatePanel {...props} />
+      <TimePanel {...props} />
     </div>
   );
 }

@@ -24,7 +24,7 @@ export interface PanelBodyProps<DateType = any> {
   rowClassName?: (date: DateType) => string;
 
   // Mode
-  panelType: PanelMode;
+  panelType?: PanelMode;
 }
 
 export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType>) {

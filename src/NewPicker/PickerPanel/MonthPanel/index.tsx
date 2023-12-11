@@ -79,7 +79,6 @@ export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateT
         {/* Body */}
         <PanelBody
           {...props}
-          mode="month"
           titleFormat={locale.fieldMonthFormat}
           colNum={4}
           rowNum={3}

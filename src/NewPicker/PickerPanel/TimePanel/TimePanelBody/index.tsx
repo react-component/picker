@@ -72,14 +72,10 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
     changeOnScroll,
   } = props;
 
-  const {
-    prefixCls,
-    value = null,
-    generateConfig,
-    locale,
-    onChange,
-    pickerValue,
-  } = React.useContext<PanelContextProps<DateType>>(PanelContext);
+  const { prefixCls, values, generateConfig, locale, onSelect, pickerValue } =
+    React.useContext<PanelContextProps<DateType>>(PanelContext);
+
+  const value = values?.[0] || null;
 
   const { onCellDblClick } = React.useContext(PickerHackContext);
 
@@ -260,7 +256,7 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
       generateConfig,
     );
 
-    onChange(validateDate);
+    onSelect(validateDate);
   };
 
   // ========================= Column =========================

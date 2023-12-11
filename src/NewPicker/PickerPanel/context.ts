@@ -1,5 +1,5 @@
 import React from 'react';
-import type { InternalMode, PanelMode, SharedPanelProps } from '../interface';
+import type { PanelMode, SharedPanelProps } from '../interface';
 
 export interface PanelContextProps<DateType = any>
   extends Pick<
@@ -17,8 +17,6 @@ export interface PanelContextProps<DateType = any>
   > {
   /** Tell current panel type */
   panelType: PanelMode;
-  /** Tell the current picker type. Includes 'datetime' */
-  internalPicker: InternalMode;
 
   // Shared
   now: DateType;
@@ -33,7 +31,6 @@ export const PanelContext = React.createContext<PanelContextProps>(null!);
 export function useInfo<DateType = any>(
   props: SharedPanelProps<DateType>,
   panelType: PanelMode,
-  internalPicker: InternalMode,
 ): [sharedProps: PanelContextProps<DateType>, now: DateType] {
   const {
     prefixCls,
@@ -65,7 +62,6 @@ export function useInfo<DateType = any>(
     generateConfig,
     onSelect,
     panelType,
-    internalPicker,
   };
 
   return [info, now];

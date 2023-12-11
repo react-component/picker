@@ -68,7 +68,6 @@ export default function YearPanel<DateType = any>(props: SharedPanelProps<DateTy
   );
 
   // ========================= Render =========================
-  // TODO: Remove `mode=year`
   return (
     <PanelContext.Provider value={info}>
       <div className={panelPrefixCls}>
@@ -84,7 +83,6 @@ export default function YearPanel<DateType = any>(props: SharedPanelProps<DateTy
         {/* Body */}
         <PanelBody
           {...props}
-          mode="year"
           titleFormat={locale.fieldYearFormat}
           colNum={3}
           rowNum={4}
