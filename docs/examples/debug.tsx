@@ -147,6 +147,7 @@ export default () => {
           console.log('🏆 Next Open:', nextOpen);
         }}
         onPickerValueChange={(val, info) => {
+          console.error('!');
           console.log(
             '👻 Picker Value Change:',
             val,

@@ -329,6 +329,7 @@ function Picker<DateType extends object = any>(
     generateConfig,
     locale,
     calendarValue,
+    [mergedMode],
     mergedOpen,
     activeIndex,
     internalPicker,

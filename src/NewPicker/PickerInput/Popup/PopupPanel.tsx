@@ -10,11 +10,13 @@ export type MustProp<DateType extends object> = Required<
 >;
 
 export type PopupPanelProps<DateType extends object = any> = MustProp<DateType> &
-  PickerPanelProps<DateType> &
+  Omit<PickerPanelProps<DateType>, 'onPickerValueChange'> &
   FooterProps<DateType> & {
     multiplePanel?: boolean;
     minDate?: DateType;
     maxDate?: DateType;
+
+    onPickerValueChange: (date: DateType) => void;
   };
 
 export default function PopupPanel<DateType extends object = any>(
@@ -37,7 +39,8 @@ export default function PopupPanel<DateType extends object = any>(
     [pickerValue, internalOffsetDate],
   );
 
-  const onNextPickerValueChange = (nextDate: DateType) => {
+  // Outside
+  const onSecondPickerValueChange = (nextDate: DateType) => {
     onPickerValueChange(internalOffsetDate(nextDate, -1));
   };
 
@@ -94,7 +97,7 @@ export default function PopupPanel<DateType extends object = any>(
           <PickerPanel<DateType>
             {...props}
             pickerValue={nextPickerValue}
-            onPickerValueChange={onNextPickerValueChange}
+            onPickerValueChange={onSecondPickerValueChange}
           />
         </PickerHackContext.Provider>
       </div>

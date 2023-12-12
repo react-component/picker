@@ -60,6 +60,7 @@ export default function useRangePickerValue<DateType extends object, ValueType e
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
   calendarValue: ValueType,
+  modes: PanelMode[],
   open: boolean,
   activeIndex: number,
   pickerMode: InternalMode,
@@ -128,7 +129,11 @@ export default function useRangePickerValue<DateType extends object, ValueType e
       (!isSame(generateConfig, locale, mergedStartPickerValue, clone[0], pickerMode) ||
         !isSame(generateConfig, locale, mergedEndPickerValue, clone[1], pickerMode))
     ) {
-      onPickerValueChange(clone, { source, range: mergedActiveIndex === 1 ? 'end' : 'start' });
+      onPickerValueChange(clone, {
+        source,
+        range: mergedActiveIndex === 1 ? 'end' : 'start',
+        mode: modes as any,
+      });
     }
   };
 

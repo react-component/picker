@@ -7,16 +7,18 @@ import * as React from 'react';
  */
 export default function useSyncState<T>(
   defaultValue: T,
-): [getter: () => T, setter: (nextValue: T) => void] {
+  controlledValue: T,
+): [getter: (useControlledValueFirst?: boolean) => T, setter: (nextValue: T) => void, value: T] {
   const valueRef = React.useRef(defaultValue);
   const [, forceUpdate] = React.useState({});
 
-  const getter = () => valueRef.current;
+  const getter = (useControlledValueFirst?: boolean) =>
+    useControlledValueFirst && controlledValue !== undefined ? controlledValue : valueRef.current;
 
   const setter = (nextValue: T) => {
     valueRef.current = nextValue;
     forceUpdate({});
   };
 
-  return [getter, setter];
+  return [getter, setter, getter()];
 }

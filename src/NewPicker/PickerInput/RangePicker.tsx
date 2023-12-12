@@ -79,14 +79,16 @@ export interface RangePickerProps<DateType extends object>
    */
   pickerValue?: [DateType, DateType] | null;
   /**
-   * Each popup panel `pickerValue` change will trigger the callback.
+   * Each popup panel `pickerValue` includes `mode` change will trigger the callback.
    * @param date The changed picker value
-   * @param info.source `panel` from the panel click. `reset` from popup open or field typing.
+   * @param info.source `panel` from the panel click. `reset` from popup open or field typing
+   * @param info.mode Next `mode` panel
    */
   onPickerValueChange?: (
     date: [DateType, DateType],
     info: BaseInfo & {
       source: 'reset' | 'panel';
+      mode: [PanelMode, PanelMode];
     },
   ) => void;
 
@@ -266,6 +268,8 @@ function RangePicker<DateType extends object = any>(
     value: mode,
   });
 
+  // useSyncState<[]>
+
   const mergedMode = modes[activeIndex] || picker;
 
   /** Extends from `mergedMode` to patch `datetime` mode */
@@ -318,6 +322,7 @@ function RangePicker<DateType extends object = any>(
     generateConfig,
     locale,
     calendarValue,
+    modes,
     mergedOpen,
     activeIndex,
     internalPicker,
@@ -529,7 +534,10 @@ function RangePicker<DateType extends object = any>(
       onSelect={onPanelSelect}
       // PickerValue
       pickerValue={currentPickerValue}
-      onPickerValueChange={setCurrentPickerValue}
+      onPickerValueChange={(nextPickerValue) => {
+        // We only need accept first param. Ignore second param.
+        setCurrentPickerValue(nextPickerValue);
+      }}
       // Hover
       hoverValue={hoverValues}
       onHover={onPanelHover}

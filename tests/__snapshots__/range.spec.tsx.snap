@@ -1268,11 +1268,11 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                       class="rc-picker-header"
                     >
                       <button
-                        class="rc-picker-header-prev-btn"
+                        class="rc-picker-header-super-prev-btn"
                         tabindex="-1"
                         type="button"
                       >
-                        ‹
+                        «
                       </button>
                       <div
                         class="rc-picker-header-view"
@@ -1286,12 +1286,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                         </button>
                       </div>
                       <button
-                        class="rc-picker-header-next-btn"
+                        class="rc-picker-header-super-next-btn"
                         style="visibility: hidden;"
                         tabindex="-1"
                         type="button"
                       >
-                        ›
+                        »
                       </button>
                     </div>
                     <div
@@ -1430,12 +1430,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                       class="rc-picker-header"
                     >
                       <button
-                        class="rc-picker-header-prev-btn"
+                        class="rc-picker-header-super-prev-btn"
                         style="visibility: hidden;"
                         tabindex="-1"
                         type="button"
                       >
-                        ‹
+                        «
                       </button>
                       <div
                         class="rc-picker-header-view"
@@ -1449,11 +1449,11 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                         </button>
                       </div>
                       <button
-                        class="rc-picker-header-next-btn"
+                        class="rc-picker-header-super-next-btn"
                         tabindex="-1"
                         type="button"
                       >
-                        ›
+                        »
                       </button>
                     </div>
                     <div
