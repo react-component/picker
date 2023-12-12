@@ -20,5 +20,5 @@ export default function useSyncState<T>(
     forceUpdate({});
   };
 
-  return [getter, setter, getter()];
+  return [getter, setter, getter(true)];
 }

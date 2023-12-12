@@ -109,7 +109,6 @@ export interface RangePickerProps<DateType extends object>
 
   // Mode
   mode?: [startMode: PanelMode, endMode: PanelMode];
-  /** @deprecated You can get more info from `onPickerValueChange` */
   onPanelChange?: (
     values: RangeValueType<DateType>,
     modes: [startMode: PanelMode, endMode: PanelMode],
@@ -267,8 +266,6 @@ function RangePicker<DateType extends object = any>(
   const [modes, setModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
     value: mode,
   });
-
-  // useSyncState<[]>
 
   const mergedMode = modes[activeIndex] || picker;
 
@@ -534,10 +531,7 @@ function RangePicker<DateType extends object = any>(
       onSelect={onPanelSelect}
       // PickerValue
       pickerValue={currentPickerValue}
-      onPickerValueChange={(nextPickerValue) => {
-        // We only need accept first param. Ignore second param.
-        setCurrentPickerValue(nextPickerValue);
-      }}
+      onPickerValueChange={setCurrentPickerValue}
       // Hover
       hoverValue={hoverValues}
       onHover={onPanelHover}
