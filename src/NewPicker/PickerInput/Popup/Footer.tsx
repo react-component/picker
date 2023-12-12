@@ -24,21 +24,19 @@ export interface FooterProps<DateType = any> {
 }
 
 export default function Footer(props: FooterProps) {
-  const { mode, internalMode, renderExtraFooter, showNow, onSubmit, onOk, invalid, needConfirm } =
-    props;
-
   const {
-    prefixCls,
-    locale,
-    generateConfig,
-    button: Button = 'button',
-  } = React.useContext(PickerContext);
+    mode,
+    internalMode,
+    renderExtraFooter,
+    showNow,
+    onSubmit,
+    onOk,
+    onNow,
+    invalid,
+    needConfirm,
+  } = props;
 
-  // ======================== Event =========================
-  const onNow = () => {
-    const now = generateConfig.getNow();
-    onSubmit(now);
-  };
+  const { prefixCls, locale, button: Button = 'button' } = React.useContext(PickerContext);
 
   // ======================== Extra =========================
   const extraNode = renderExtraFooter?.(mode);

@@ -444,6 +444,11 @@ function RangePicker<DateType extends object = any>(
     }
   };
 
+  const onNow = () => {
+    const now = generateConfig.getNow();
+    triggerPartConfirm(now);
+  };
+
   // ======================== Panel =========================
   const onPanelHover = (date: DateType) => {
     setInternalHoverValues(date ? fillCalendarValue(date, activeIndex) : null);
@@ -543,6 +548,8 @@ function RangePicker<DateType extends object = any>(
       presets={presetList}
       onPresetHover={onPresetHover}
       onPresetSubmit={onPresetSubmit}
+      // Now
+      onNow={onNow}
       // Render
       cellRender={onInternalCellRender}
     />

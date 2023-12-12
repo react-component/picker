@@ -427,14 +427,19 @@ function Picker<DateType extends object = any>(
     //   triggerOpen(false, { force: true });
     // }
 
-    triggerConfirm(nextValue);
+    // triggerConfirm(nextValue);
 
-    // const nextCalendarValues = multiple ? toggleDates(getCalendarValue(), nextValue) : [nextValue];
-    // const passed = triggerSubmitChange(nextCalendarValues);
+    const nextCalendarValues = multiple ? toggleDates(getCalendarValue(), nextValue) : [nextValue];
+    const passed = triggerSubmitChange(nextCalendarValues);
 
-    // if (passed && !multiple) {
-    //   triggerOpen(false, { force: true });
-    // }
+    if (passed && !multiple) {
+      triggerOpen(false, { force: true });
+    }
+  };
+
+  const onNow = () => {
+    const now = generateConfig.getNow();
+    onPresetSubmit(now);
   };
 
   // ======================== Panel =========================
@@ -532,6 +537,7 @@ function Picker<DateType extends object = any>(
       presets={presetList}
       onPresetHover={onPresetHover}
       onPresetSubmit={onPresetSubmit}
+      onNow={onNow}
       // Render
       cellRender={onInternalCellRender}
     />

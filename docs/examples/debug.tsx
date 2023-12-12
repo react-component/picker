@@ -99,7 +99,7 @@ export default () => {
       <SinglePicker
         // Shared
         {...sharedLocale}
-        // multiple
+        multiple
         // open
         // disabled
         ref={singleRef}
