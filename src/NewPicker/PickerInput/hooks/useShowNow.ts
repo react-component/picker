@@ -7,7 +7,7 @@ export default function useShowNow(
   showToday?: boolean,
   rangePicker?: boolean,
 ) {
-  if (mode !== 'date') {
+  if (mode !== 'date' && mode !== 'time') {
     return false;
   }
 
@@ -20,5 +20,5 @@ export default function useShowNow(
     return showToday;
   }
 
-  return !rangePicker && picker === 'date';
+  return !rangePicker && (picker === 'date' || picker === 'time');
 }

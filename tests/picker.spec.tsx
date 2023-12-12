@@ -579,14 +579,16 @@ describe('Picker.Basic', () => {
       ).toBeTruthy();
     });
 
-    it("date shouldn't display now", () => {
+    it('date close showNow', () => {
       const onCalendarChange = jest.fn();
-      const { container } = render(<DayPicker onCalendarChange={onCalendarChange} />);
+      const { container } = render(
+        <DayPicker onCalendarChange={onCalendarChange} showNow={false} />,
+      );
       openPicker(container);
       expect(document.querySelector('.rc-picker-now > a')).toBeFalsy();
     });
 
-    it("datetime shouldn't display now when showNow is false", () => {
+    it('datetime close showNow', () => {
       const onCalendarChange = jest.fn();
       const { container } = render(
         <DayPicker onCalendarChange={onCalendarChange} showTime showNow={false} />,
