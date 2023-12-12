@@ -1,5 +1,5 @@
-import raf from 'rc-util/lib/raf';
 import isVisible from 'rc-util/lib/Dom/isVisible';
+import raf from 'rc-util/lib/raf';
 import type { GenerateConfig } from '../generate';
 import type { CustomFormat, PanelMode, PickerMode } from '../interface';
 

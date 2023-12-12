@@ -24,7 +24,7 @@ export default function usePickerInput({
   forwardKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => boolean;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, preventDefault: () => void) => void;
   blurToCancel?: boolean;
-  changeOnBlur?: boolean
+  changeOnBlur?: boolean;
   onSubmit: () => void | boolean;
   onCancel: () => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;

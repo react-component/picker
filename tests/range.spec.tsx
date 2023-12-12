@@ -1965,9 +1965,7 @@ describe('Picker.Range', () => {
   it('dateTime mode should be can use a confirm button to close the panel', () => {
     const onOpenChange = jest.fn();
 
-    render(
-      <MomentRangePicker open showTime onOpenChange={onOpenChange} />,
-    );
+    render(<MomentRangePicker open showTime onOpenChange={onOpenChange} />);
 
     for (let i = 0; i < 2; i++) {
       selectCell(24);

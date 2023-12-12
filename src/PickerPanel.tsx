@@ -185,7 +185,10 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       isSecondStepValid,
       `\`secondStep\` ${secondStep} is invalid. It should be a factor of 60.`,
     );
-    warning(!defaultPickerValue, `'defaultPickerValue' is deprecated. Please use 'defaultValue' instead.`);
+    warning(
+      !defaultPickerValue,
+      `'defaultPickerValue' is deprecated. Please use 'defaultValue' instead.`,
+    );
     warning(!dateRender, `'dateRender' is deprecated. Please use 'cellRender' instead.`);
     warning(!monthCellRender, `'monthCellRender' is deprecated. Please use 'cellRender' instead.`);
   }
