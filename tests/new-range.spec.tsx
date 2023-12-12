@@ -453,12 +453,10 @@ describe('NewPicker.Range', () => {
       fireEvent.click(document.querySelector('.rc-picker-now-btn'));
       fireEvent.click(document.querySelector('.rc-picker-now-btn'));
 
+      expect(document.querySelector('.rc-picker-now-btn-disabled')).toBeTruthy();
+
       expect(onChange).not.toHaveBeenCalled();
-      expect(onCalendarChange).toHaveBeenCalledWith(
-        expect.anything(),
-        ['1990-09-03 00:00:00', '1990-09-03 00:00:00'],
-        expect.anything(),
-      );
+      expect(onCalendarChange).not.toHaveBeenCalled();
     });
 
     it('not select disabled time', () => {

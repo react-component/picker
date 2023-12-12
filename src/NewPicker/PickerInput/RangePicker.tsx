@@ -277,7 +277,7 @@ function RangePicker<DateType extends object = any>(
   const multiplePanel = internalMode === picker && internalMode !== 'time';
 
   // ======================= Show Now =======================
-  const mergedShowNow = useShowNow(internalPicker, mergedMode, showNow, showToday);
+  const mergedShowNow = useShowNow(picker, mergedMode, showNow, showToday, true);
 
   // ======================== Value =========================
   const [

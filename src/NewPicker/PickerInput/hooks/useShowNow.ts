@@ -5,6 +5,7 @@ export default function useShowNow(
   mode: PanelMode,
   showNow?: boolean,
   showToday?: boolean,
+  rangePicker?: boolean,
 ) {
   if (mode !== 'date') {
     return false;
@@ -15,9 +16,9 @@ export default function useShowNow(
   }
 
   // Compatible with old version `showToday`
-  if (picker === 'date' && typeof showToday === 'boolean') {
+  if (showToday !== undefined) {
     return showToday;
   }
 
-  return false;
+  return !rangePicker && picker === 'date';
 }

@@ -565,8 +565,6 @@ describe('Picker.Basic', () => {
     expect(document.querySelector('.rc-picker-input')).toMatchSnapshot();
   });
 
-  return;
-
   describe('showNow', () => {
     it('datetime should display now', () => {
       const onSelect = jest.fn();
@@ -607,6 +605,8 @@ describe('Picker.Basic', () => {
       expect(document.querySelector('.rc-picker-now > a')).toBeFalsy();
     });
   });
+
+  return;
 
   describe('time step', () => {
     it('work with now', () => {

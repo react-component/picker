@@ -100,10 +100,9 @@ export default () => {
         // Shared
         {...sharedLocale}
         // multiple
-        // open
         // disabled
         ref={singleRef}
-        showToday
+        showTime
         suffixIcon="🧶"
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
@@ -121,13 +120,12 @@ export default () => {
         // needConfirm={false}
       />
       <br />
-      {/* <RangePicker
+      <RangePicker
         {...sharedLocale}
         value={rangeValue}
-        // components={{
-        //   input: MyInput,
-        // }}
-        // showTime
+       disabledDate={() => true}
+        showTime
+        showNow
         panelRender={(ori) => <>2333{ori}</>}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"
@@ -148,7 +146,6 @@ export default () => {
           console.log('🏆 Next Open:', nextOpen);
         }}
         onPickerValueChange={(val, info) => {
-          console.error('!');
           console.log(
             '👻 Picker Value Change:',
             val,
@@ -161,7 +158,7 @@ export default () => {
           start: 'inputStart',
           end: 'inputEnd',
         }}
-      /> */}
+      />
       <br />
 
       <button
