@@ -67,7 +67,7 @@ export default function DecadePanel<DateType = any>(props: SharedPanelProps<Date
       <div className={panelPrefixCls}>
         {/* Header */}
         <PanelHeader
-          onOffset={(offset) => {
+          onSuperOffset={(offset) => {
             onPickerValueChange(generateConfig.addYear(pickerValue, offset * 100));
           }}
         >

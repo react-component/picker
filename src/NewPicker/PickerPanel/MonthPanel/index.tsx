@@ -69,7 +69,7 @@ export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateT
       <div className={panelPrefixCls}>
         {/* Header */}
         <PanelHeader
-          onOffset={(offset) => {
+          onSuperOffset={(offset) => {
             onPickerValueChange(generateConfig.addYear(pickerValue, offset));
           }}
         >

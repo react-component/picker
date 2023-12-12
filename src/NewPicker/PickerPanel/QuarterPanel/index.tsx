@@ -58,7 +58,7 @@ export default function QuarterPanel<DateType = any>(props: SharedPanelProps<Dat
       <div className={panelPrefixCls}>
         {/* Header */}
         <PanelHeader
-          onOffset={(offset) => {
+          onSuperOffset={(offset) => {
             onPickerValueChange(generateConfig.addYear(pickerValue, offset));
           }}
         >

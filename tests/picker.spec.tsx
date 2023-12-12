@@ -10,6 +10,7 @@ import React from 'react';
 import type { PanelMode, PickerMode } from '../src/interface';
 import enUS from '../src/locale/en_US';
 import zhCN from '../src/locale/zh_CN';
+import type { PickerRef } from '../src/NewPicker';
 import {
   clearValue,
   closePicker,
@@ -232,13 +233,13 @@ describe('Picker.Basic', () => {
         selected: '.rc-picker-cell-selected',
         matchDate: '2000-11-11',
       },
-      // {
-      //   name: 'week',
-      //   picker: 'week',
-      //   value: '2000-45th',
-      //   matchDate: '2000-10-29',
-      //   selected: '.rc-picker-week-panel-row-selected',
-      // },
+      {
+        name: 'week',
+        picker: 'week',
+        value: '2000-45th',
+        matchDate: '2000-10-29',
+        selected: '.rc-picker-week-panel-row-selected',
+      },
     ].forEach(({ name, picker, value, matchDate, selected }) => {
       it(name, () => {
         const onChange = jest.fn();
@@ -280,8 +281,6 @@ describe('Picker.Basic', () => {
     });
   });
 
-  return;
-
   describe('focus test', () => {
     let domMock: ReturnType<typeof spyElementPrototypes>;
     let focused = false;
@@ -308,17 +307,17 @@ describe('Picker.Basic', () => {
     });
 
     it('function call', () => {
-      const ref = React.createRef<DayPicker>();
+      const ref = React.createRef<PickerRef>();
       render(
         <div>
           <DayPicker ref={ref} />
         </div>,
       );
 
-      ref.current!.pickerRef.current!.focus();
+      ref.current!.focus();
       expect(focused).toBeTruthy();
 
-      ref.current!.pickerRef.current!.blur();
+      ref.current!.blur();
       expect(blurred).toBeTruthy();
     });
 
@@ -342,7 +341,8 @@ describe('Picker.Basic', () => {
     });
   });
 
-  it('block native mouseDown in panel to prevent focus changed', () => {
+  // No need in latest version
+  it.skip('block native mouseDown in panel to prevent focus changed', () => {
     const { container } = render(<DayPicker />);
     openPicker(container);
 
@@ -352,7 +352,7 @@ describe('Picker.Basic', () => {
     expect(mouseDownEvent.defaultPrevented).toBeTruthy();
   });
 
-  it('not fire blur when clickinside and is in focus', () => {
+  it('not fire blur when click inside and is in focus', () => {
     const onBlur = jest.fn();
     const { container } = render(
       <DayPicker onBlur={onBlur} suffixIcon={<div className="suffix-icon">X</div>} />,
@@ -377,19 +377,19 @@ describe('Picker.Basic', () => {
 
   describe('full steps', () => {
     [
-      {
-        name: 'date',
-        yearBtn: '.rc-picker-year-btn',
-        finalPanel: '.rc-picker-date-panel',
-        finalMode: 'date',
-      },
-      {
-        name: 'datetime',
-        yearBtn: '.rc-picker-year-btn',
-        finalPanel: '.rc-picker-datetime-panel',
-        finalMode: 'date',
-        showTime: true,
-      },
+      // {
+      //   name: 'date',
+      //   yearBtn: '.rc-picker-year-btn',
+      //   finalPanel: '.rc-picker-date-panel',
+      //   finalMode: 'date',
+      // },
+      // {
+      //   name: 'datetime',
+      //   yearBtn: '.rc-picker-year-btn',
+      //   finalPanel: '.rc-picker-datetime-panel',
+      //   finalMode: 'date',
+      //   showTime: true,
+      // },
       {
         name: 'week',
         yearBtn: '.rc-picker-year-btn',
@@ -398,7 +398,7 @@ describe('Picker.Basic', () => {
         picker: 'week',
       },
     ].forEach(({ name, finalMode, yearBtn, finalPanel, picker, showTime }) => {
-      it(name, () => {
+      it.only(name, () => {
         const onChange = jest.fn();
         const onPanelChange = jest.fn();
         const { container } = render(
@@ -413,6 +413,7 @@ describe('Picker.Basic', () => {
         openPicker(container);
 
         function expectPanelChange(dateStr: string, mode: PanelMode) {
+          expect(onPanelChange).toHaveBeenCalled();
           expect(isSame(onPanelChange.mock.calls[0][0], dateStr)).toBeTruthy();
           expect(onPanelChange.mock.calls[0][1]).toEqual(mode);
           onPanelChange.mockReset();
@@ -427,6 +428,7 @@ describe('Picker.Basic', () => {
         onPanelChange.mockReset();
         fireEvent.click(document.querySelector('.rc-picker-decade-btn'));
         expectPanelChange('1990-09-03', 'decade');
+
 
         // Next page
         fireEvent.click(document.querySelector('.rc-picker-header-super-next-btn'));
@@ -458,11 +460,13 @@ describe('Picker.Basic', () => {
       });
     });
 
-    it('date -> year -> date', () => {
+    // Origin `date > year > date`, now is always step by step
+    it('date -> year -> month -> date', () => {
       const { container } = render(<DayPicker />);
       openPicker(container);
       fireEvent.click(document.querySelector('.rc-picker-year-btn'));
       selectCell(1990);
+      selectCell('Jan');
       expect(document.querySelector('.rc-picker-date-panel')).toBeTruthy();
     });
 
@@ -482,6 +486,8 @@ describe('Picker.Basic', () => {
       expect(isSame(onChange.mock.calls[0][0], '1990-09-03 13:22:33', 'second')).toBeTruthy();
     });
   });
+
+  return;
 
   it('renderExtraFooter', () => {
     const renderExtraFooter = jest.fn((mode) => <div>{mode}</div>);

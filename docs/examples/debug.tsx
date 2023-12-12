@@ -113,6 +113,9 @@ export default () => {
         onPickerValueChange={(val, info) => {
           console.log('👻 Picker Value Change:', val, val?.format('YYYY-MM-DD'), info);
         }}
+        onPanelChange={(val, info) => {
+          console.log('🎼 Panel Change:', val, val?.format('YYYY-MM-DD'), info);
+        }}
         style={{ width: 300 }}
         // needConfirm={false}
       />
