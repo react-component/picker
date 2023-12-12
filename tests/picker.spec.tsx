@@ -618,8 +618,6 @@ describe('Picker.Basic', () => {
     });
   });
 
-  return;
-
   describe('time step', () => {
     it('work with now', () => {
       jest.setSystemTime(getDay('1990-09-03 00:09:00').valueOf());
@@ -717,6 +715,8 @@ describe('Picker.Basic', () => {
       expect(document.querySelectorAll('.rc-picker-time-panel-column')[0].children.length).toBe(24);
     });
   });
+
+  return;
 
   it('pass data- & aria- & role', () => {
     const { container } = render(<DayPicker data-test="233" aria-label="3334" role="search" />);

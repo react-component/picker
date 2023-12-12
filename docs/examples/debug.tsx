@@ -123,7 +123,9 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         value={rangeValue}
-       disabledDate={() => true}
+        disabledDate={() => true}
+        picker="time"
+        minuteStep={5}
         showTime
         showNow
         panelRender={(ori) => <>2333{ori}</>}

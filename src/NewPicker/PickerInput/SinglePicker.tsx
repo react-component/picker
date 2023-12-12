@@ -212,15 +212,7 @@ function Picker<DateType extends object = any>(
 
   // ======================== Active ========================
   // In SinglePicker, we will always get `activeIndex` is 0.
-  const [
-    focused,
-    triggerFocus,
-    lastOperation,
-    activeIndex,
-    // setActiveIndex,
-    // nextActiveIndex,
-    // activeIndexList,
-  ] = useRangeActive([disabled]);
+  const [focused, triggerFocus, lastOperation, activeIndex] = useRangeActive([disabled]);
 
   const onSharedFocus = (event: React.FocusEvent<HTMLElement>) => {
     triggerFocus(true);
@@ -242,14 +234,10 @@ function Picker<DateType extends object = any>(
   /** Extends from `mergedMode` to patch `datetime` mode */
   const internalMode: InternalMode = mergedMode === 'date' && showTime ? 'datetime' : mergedMode;
 
-  // // ====================== PanelCount ======================
-  // const multiplePanel = internalMode === picker && internalMode !== 'time';
-
   // ======================= Show Now =======================
   const mergedShowNow = useShowNow(picker, mergedMode, showNow, showToday);
 
   // ======================== Value =========================
-  // TODO: Fix submit logic
   const onInternalChange: PickerProps['onChange'] =
     onChange &&
     ((dates, dateStrings) => {
@@ -257,8 +245,7 @@ function Picker<DateType extends object = any>(
     });
 
   const [
-    /** Trigger `onChange` by check `disabledDate` */
-    flushSubmit,
+    ,
     /** Trigger `onChange` directly without check `disabledDate` */
     triggerSubmitChange,
   ] = useRangeValue(
