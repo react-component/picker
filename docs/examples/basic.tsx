@@ -41,7 +41,7 @@ export default () => {
   };
 
   const keyDown = (e, preventDefault) => {
-    if (e.keyCode === 13) preventDefault();
+    if (e.key === 'Enter') preventDefault();
   };
 
   return (

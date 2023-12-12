@@ -1,4 +1,3 @@
-import KeyCode from 'rc-util/lib/KeyCode';
 import raf from 'rc-util/lib/raf';
 import type * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -25,7 +24,7 @@ export default function usePickerInput({
   forwardKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => boolean;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, preventDefault: () => void) => void;
   blurToCancel?: boolean;
-  changeOnBlur?: boolean
+  changeOnBlur?: boolean;
   onSubmit: () => void | boolean;
   onCancel: () => void;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
@@ -58,8 +57,8 @@ export default function usePickerInput({
 
       if (preventDefaultRef.current) return;
 
-      switch (e.which) {
-        case KeyCode.ENTER: {
+      switch (e.key) {
+        case 'Enter': {
           if (!open) {
             triggerOpen(true);
           } else if (onSubmit() !== false) {
@@ -70,7 +69,7 @@ export default function usePickerInput({
           return;
         }
 
-        case KeyCode.TAB: {
+        case 'Tab': {
           if (typing && open && !e.shiftKey) {
             setTyping(false);
             e.preventDefault();
@@ -83,14 +82,14 @@ export default function usePickerInput({
           return;
         }
 
-        case KeyCode.ESC: {
+        case 'Escape': {
           setTyping(true);
           onCancel();
           return;
         }
       }
 
-      if (!open && ![KeyCode.SHIFT].includes(e.which)) {
+      if (!open && !['Shift'].includes(e.key)) {
         triggerOpen(true);
       } else if (!typing) {
         // Let popup panel handle keyboard

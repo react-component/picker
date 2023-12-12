@@ -7,7 +7,6 @@
 
 import classNames from 'classnames';
 import useMergedState from 'rc-util/lib/hooks/useMergedState';
-import KeyCode from 'rc-util/lib/KeyCode';
 import warning from 'rc-util/lib/warning';
 import * as React from 'react';
 import type { GenerateConfig } from './generate';
@@ -186,7 +185,10 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
       isSecondStepValid,
       `\`secondStep\` ${secondStep} is invalid. It should be a factor of 60.`,
     );
-    warning(!defaultPickerValue, `'defaultPickerValue' is deprecated. Please use 'defaultValue' instead.`);
+    warning(
+      !defaultPickerValue,
+      `'defaultPickerValue' is deprecated. Please use 'defaultValue' instead.`,
+    );
     warning(!dateRender, `'dateRender' is deprecated. Please use 'cellRender' instead.`);
     warning(!monthCellRender, `'monthCellRender' is deprecated. Please use 'cellRender' instead.`);
   }
@@ -305,32 +307,32 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
     }
   };
 
-  const isSelectable = (key) => {
+  const isSelectable = (key: string) => {
     if (CALENDAR_PANEL_MODE.includes(mergedMode)) {
       let date;
       let operationFnc;
       const isDateMode = mergedMode === 'date';
-      if (key === KeyCode.PAGE_UP || key === KeyCode.PAGE_DOWN) {
+      if (key === 'PageUp' || key === 'PageDown') {
         operationFnc = isDateMode ? generateConfig.addMonth : generateConfig.addYear;
       } else {
         operationFnc = isDateMode ? generateConfig.addDate : generateConfig.addMonth;
       }
 
       switch (key) {
-        case KeyCode.LEFT:
-        case KeyCode.PAGE_UP:
+        case 'ArrowLeft':
+        case 'PageUp':
           date = operationFnc(viewDate, -1);
           break;
-        case KeyCode.RIGHT:
-        case KeyCode.PAGE_DOWN:
+        case 'ArrowRight':
+        case 'PageDown':
           date = operationFnc(viewDate, 1);
           break;
-        case KeyCode.UP:
-        case KeyCode.DOWN:
+        case 'ArrowUp':
+        case 'ArrowDown':
           date = operationFnc(
             viewDate,
             Number(
-              `${key === KeyCode.UP ? '-' : ''}${isDateMode ? WEEK_DAY_COUNT : MONTH_COL_COUNT}`,
+              `${key === 'ArrowUp' ? '-' : ''}${isDateMode ? WEEK_DAY_COUNT : MONTH_COL_COUNT}`,
             ),
           );
           break;
@@ -347,21 +349,15 @@ function PickerPanel<DateType>(props: PickerPanelProps<DateType>) {
   const onInternalKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (panelRef.current && panelRef.current.onKeyDown) {
       let selectable = true;
-      const { which } = e;
+      const { key } = e;
       if (
-        [
-          KeyCode.LEFT,
-          KeyCode.RIGHT,
-          KeyCode.UP,
-          KeyCode.DOWN,
-          KeyCode.PAGE_UP,
-          KeyCode.PAGE_DOWN,
-          KeyCode.ENTER,
-        ].includes(which)
+        ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Enter'].includes(
+          key,
+        )
       ) {
         e.preventDefault();
-        if (which !== KeyCode.ENTER && tabIndex === 0) {
-          selectable = isSelectable(which);
+        if (key !== 'Enter' && tabIndex === 0) {
+          selectable = isSelectable(key);
         }
       }
 

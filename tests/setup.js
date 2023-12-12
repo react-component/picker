@@ -68,14 +68,14 @@
 //     this.find('.rc-picker-clear-btn').simulate('mouseDown');
 //     this.find('.rc-picker-clear-btn').simulate('mouseUp');
 //   },
-//   keyDown(which, info = {}, index = 0) {
+//   keyDown(key, info = {}, index = 0) {
 //     let component = this.find('input');
 
 //     if (component.length === 0) {
 //       component = this.find('.rc-picker-panel');
 //     }
 
-//     component.at(index).simulate('keydown', { ...info, which });
+//     component.at(index).simulate('keydown', { ...info, key });
 //   },
 //   inputValue(text, index = 0) {
 //     this.find('input')

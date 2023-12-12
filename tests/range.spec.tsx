@@ -1,7 +1,6 @@
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import type { Moment } from 'moment';
 import moment from 'moment';
-import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
@@ -51,12 +50,8 @@ describe('Picker.Range', () => {
     jest.useRealTimers();
   });
 
-  function keyDown(container: HTMLElement, index: number, keyCode: number) {
-    fireEvent.keyDown(container.querySelectorAll('input')[index], {
-      keyCode,
-      which: keyCode,
-      charCode: keyCode,
-    });
+  function keyDown(container: HTMLElement, index: number, key: string) {
+    fireEvent.keyDown(container.querySelectorAll('input')[index], { key });
   }
 
   describe('value', () => {
@@ -650,9 +645,9 @@ describe('Picker.Range', () => {
       },
     });
     // document.querySelector('input').last().simulate('keyDown', {
-    //   which: KeyCode.ENTER,
+    //   key: 'Enter',
     // });
-    keyDown(container, 0, KeyCode.ENTER);
+    keyDown(container, 0, 'Enter');
 
     expect(onChange).not.toHaveBeenCalled();
   });
@@ -1233,12 +1228,12 @@ describe('Picker.Range', () => {
       openPicker(container, 0);
       inputValue('1990-11-28');
       // closePicker(container, 0);
-      keyDown(container, 0, KeyCode.ENTER);
+      keyDown(container, 0, 'Enter');
       expect(isOpen()).toBeTruthy();
 
       inputValue('1991-01-01');
       // closePicker(container, 1);
-      keyDown(container, 1, KeyCode.ENTER);
+      keyDown(container, 1, 'Enter');
       expect(isOpen()).toBeFalsy();
     });
 
@@ -1250,13 +1245,13 @@ describe('Picker.Range', () => {
 
         openPicker(container, 0);
         inputValue('1990-11-28');
-        keyDown(container, 0, KeyCode.ENTER);
+        keyDown(container, 0, 'Enter');
         // closePicker(container, 0);
         expect(isOpen()).toBeTruthy();
 
         inputValue('1990-12-23');
         // closePicker(container, 1);
-        keyDown(container, 1, KeyCode.ENTER);
+        keyDown(container, 1, 'Enter');
         expect(isOpen()).toBeFalsy();
       });
 
@@ -1268,12 +1263,12 @@ describe('Picker.Range', () => {
         openPicker(container, 0);
         inputValue('1989-01-20');
         // closePicker(container, 0);
-        keyDown(container, 0, KeyCode.ENTER);
+        keyDown(container, 0, 'Enter');
         expect(isOpen()).toBeTruthy();
 
         inputValue('1989-01-25');
         // closePicker(container, 1);
-        keyDown(container, 1, KeyCode.ENTER);
+        keyDown(container, 1, 'Enter');
         expect(isOpen()).toBeFalsy();
       });
     });
@@ -1283,13 +1278,13 @@ describe('Picker.Range', () => {
 
       openPicker(container, 1);
       inputValue('1990-11-28', 1);
-      keyDown(container, 1, KeyCode.ENTER);
+      keyDown(container, 1, 'Enter');
       // closePicker(container, 1);
       expect(isOpen()).toBeTruthy();
 
       inputValue('1989-01-01');
       // closePicker(container, 0);
-      keyDown(container, 0, KeyCode.ENTER);
+      keyDown(container, 0, 'Enter');
       expect(isOpen()).toBeFalsy();
     });
 
@@ -1301,12 +1296,12 @@ describe('Picker.Range', () => {
 
         openPicker(container, 1);
         inputValue('1990-11-28', 1);
-        keyDown(container, 1, KeyCode.ENTER);
+        keyDown(container, 1, 'Enter');
         // closePicker(container, 1);
         expect(isOpen()).toBeTruthy();
 
         inputValue('1989-01-01');
-        keyDown(container, 0, KeyCode.ENTER);
+        keyDown(container, 0, 'Enter');
         // closePicker(container, 0);
         expect(isOpen()).toBeFalsy();
       });
@@ -1319,11 +1314,11 @@ describe('Picker.Range', () => {
         openPicker(container, 1);
         inputValue('1989-01-07', 1);
 
-        keyDown(container, 1, KeyCode.ENTER);
+        keyDown(container, 1, 'Enter');
         expect(isOpen()).toBeTruthy();
 
         inputValue('1989-01-01');
-        keyDown(container, 0, KeyCode.ENTER);
+        keyDown(container, 0, 'Enter');
         expect(isOpen()).toBeFalsy();
       });
     });
@@ -1686,24 +1681,20 @@ describe('Picker.Range', () => {
     );
     fireEvent.focus(document.querySelector('input'));
 
-    function pickerKeyDown(keyCode: number) {
-      fireEvent.keyDown(container.querySelector('.rc-picker'), {
-        keyCode,
-        which: keyCode,
-        charCode: keyCode,
-      });
+    function pickerKeyDown(key: string) {
+      fireEvent.keyDown(container.querySelector('.rc-picker'), { key });
     }
 
-    pickerKeyDown(KeyCode.ENTER);
-    pickerKeyDown(KeyCode.TAB);
+    pickerKeyDown('Enter');
+    pickerKeyDown('Tab');
     // Make sure the selected value is disabledDate. Because only a few values are disabledDate
-    pickerKeyDown(KeyCode.DOWN);
-    pickerKeyDown(KeyCode.DOWN);
-    pickerKeyDown(KeyCode.DOWN);
-    pickerKeyDown(KeyCode.DOWN);
-    pickerKeyDown(KeyCode.DOWN);
-    pickerKeyDown(KeyCode.DOWN);
-    pickerKeyDown(KeyCode.ENTER);
+    pickerKeyDown('ArrowDown');
+    pickerKeyDown('ArrowDown');
+    pickerKeyDown('ArrowDown');
+    pickerKeyDown('ArrowDown');
+    pickerKeyDown('ArrowDown');
+    pickerKeyDown('ArrowDown');
+    pickerKeyDown('Enter');
     expect(onCalendarChange).not.toHaveBeenCalled();
   });
 
@@ -1974,9 +1965,7 @@ describe('Picker.Range', () => {
   it('dateTime mode should be can use a confirm button to close the panel', () => {
     const onOpenChange = jest.fn();
 
-    render(
-      <MomentRangePicker open showTime onOpenChange={onOpenChange} />,
-    );
+    render(<MomentRangePicker open showTime onOpenChange={onOpenChange} />);
 
     for (let i = 0; i < 2; i++) {
       selectCell(24);

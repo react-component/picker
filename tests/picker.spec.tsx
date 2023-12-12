@@ -3,7 +3,6 @@ import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import type { Moment } from 'moment';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
@@ -44,12 +43,8 @@ describe('Picker.Basic', () => {
     jest.useRealTimers();
   });
 
-  function keyDown(keyCode: number) {
-    fireEvent.keyDown(document.querySelector('input'), {
-      keyCode,
-      which: keyCode,
-      charCode: keyCode,
-    });
+  function keyDown(key: string) {
+    fireEvent.keyDown(document.querySelector('input'), { key });
   }
 
   function selectColumn(colIndex: number, rowIndex: number) {
@@ -272,7 +267,7 @@ describe('Picker.Basic', () => {
 
         expect(document.querySelector('input').value).toEqual(value);
         expect(onChange).not.toHaveBeenCalled();
-        keyDown(KeyCode.ENTER);
+        keyDown('Enter');
 
         expect(isSame(onChange.mock.calls[0][0], matchDate, picker as any)).toBeTruthy();
         expect(document.querySelector(selected)).toBeTruthy();
@@ -368,7 +363,7 @@ describe('Picker.Basic', () => {
 
     openPicker(container);
     $input.focus();
-    keyDown(KeyCode.ESC);
+    keyDown('Escape');
 
     expect(document.activeElement).toBe($input);
 
@@ -1036,23 +1031,23 @@ describe('Picker.Basic', () => {
       const { container } = render(<MomentPicker />);
 
       closePicker(container);
-      keyDown(KeyCode.ENTER);
+      keyDown('Enter');
       expect(isOpen()).toBeTruthy();
     });
 
     it('should not open if prevent default is called', () => {
-      const onKeyDown = jest.fn(({ which }, preventDefault) => {
-        if (which === 13) preventDefault();
+      const onKeyDown = jest.fn(({ key }, preventDefault) => {
+        if (key === 'Enter') preventDefault();
       });
       const { container } = render(<MomentPicker onKeyDown={onKeyDown} />);
 
       openPicker(container);
       expect(isOpen()).toBeTruthy();
 
-      keyDown(KeyCode.ESC);
+      keyDown('Escape');
       expect(isOpen()).toBeFalsy();
 
-      keyDown(KeyCode.ENTER);
+      keyDown('Enter');
       expect(isOpen()).toBeFalsy();
     });
   });
@@ -1063,7 +1058,7 @@ describe('Picker.Basic', () => {
       target: { value: moment().add(1, 'year').format('YYYY-MM-DD') },
     });
 
-    keyDown(KeyCode.ENTER);
+    keyDown('Enter');
   });
 
   it('presets', () => {

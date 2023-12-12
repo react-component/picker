@@ -1,6 +1,5 @@
-import KeyCode from 'rc-util/lib/KeyCode';
-import raf from 'rc-util/lib/raf';
 import isVisible from 'rc-util/lib/Dom/isVisible';
+import raf from 'rc-util/lib/raf';
 import type { GenerateConfig } from '../generate';
 import type { CustomFormat, PanelMode, PickerMode } from '../interface';
 
@@ -70,10 +69,10 @@ export function createKeyDownHandler(
   event: React.KeyboardEvent<HTMLElement>,
   { onLeftRight, onCtrlLeftRight, onUpDown, onPageUpDown, onEnter }: KeyboardConfig,
 ): boolean {
-  const { which, ctrlKey, metaKey } = event;
+  const { key, ctrlKey, metaKey } = event;
 
-  switch (which) {
-    case KeyCode.LEFT:
+  switch (key) {
+    case 'ArrowLeft':
       if (ctrlKey || metaKey) {
         if (onCtrlLeftRight) {
           onCtrlLeftRight(-1);
@@ -86,7 +85,7 @@ export function createKeyDownHandler(
       /* istanbul ignore next */
       break;
 
-    case KeyCode.RIGHT:
+    case 'ArrowRight':
       if (ctrlKey || metaKey) {
         if (onCtrlLeftRight) {
           onCtrlLeftRight(1);
@@ -99,7 +98,7 @@ export function createKeyDownHandler(
       /* istanbul ignore next */
       break;
 
-    case KeyCode.UP:
+    case 'ArrowUp':
       if (onUpDown) {
         onUpDown(-1);
         return true;
@@ -107,7 +106,7 @@ export function createKeyDownHandler(
       /* istanbul ignore next */
       break;
 
-    case KeyCode.DOWN:
+    case 'ArrowDown':
       if (onUpDown) {
         onUpDown(1);
         return true;
@@ -115,7 +114,7 @@ export function createKeyDownHandler(
       /* istanbul ignore next */
       break;
 
-    case KeyCode.PAGE_UP:
+    case 'PageUp':
       if (onPageUpDown) {
         onPageUpDown(-1);
         return true;
@@ -123,7 +122,7 @@ export function createKeyDownHandler(
       /* istanbul ignore next */
       break;
 
-    case KeyCode.PAGE_DOWN:
+    case 'PageDown':
       if (onPageUpDown) {
         onPageUpDown(1);
         return true;
@@ -131,7 +130,7 @@ export function createKeyDownHandler(
       /* istanbul ignore next */
       break;
 
-    case KeyCode.ENTER:
+    case 'Enter':
       if (onEnter) {
         onEnter();
         return true;
