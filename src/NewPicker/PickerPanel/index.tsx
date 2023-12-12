@@ -255,10 +255,21 @@ function PickerPanel<DateType extends object = any>(
     },
   );
 
-  const setPickerValue = (nextPickerValue: DateType) => {
+  // Both trigger when manually pickerValue or mode change
+  const triggerPanelChange = (viewDate?: DateType, nextMode?: PanelMode) => {
+    if (onPanelChange) {
+      onPanelChange?.(viewDate || pickerValue, nextMode || mergedMode);
+    }
+  };
+
+  const setPickerValue = (nextPickerValue: DateType, triggerPanelEvent = false) => {
     setInternalPickerValue(nextPickerValue);
 
     onPickerValueChange?.(nextPickerValue);
+
+    if (triggerPanelEvent) {
+      triggerPanelChange(nextPickerValue);
+    }
   };
 
   const triggerModeChange = (nextMode: PanelMode, viewDate?: DateType) => {
@@ -268,7 +279,7 @@ function PickerPanel<DateType extends object = any>(
       setPickerValue(viewDate);
     }
 
-    onPanelChange?.(viewDate || pickerValue, nextMode);
+    triggerPanelChange(viewDate, nextMode);
   };
 
   const onPanelValueSelect = (nextValue: DateType) => {
@@ -316,7 +327,9 @@ function PickerPanel<DateType extends object = any>(
   }, [hoverValue, generateConfig]);
 
   // ======================= Components =======================
-  const PanelComponent = components[internalMode] || DefaultComponents[internalMode] || DatePanel;
+  const PanelComponent = (components[internalMode] ||
+    DefaultComponents[internalMode] ||
+    DatePanel) as typeof DatePanel;
 
   // ========================= Render =========================
   return (
@@ -334,7 +347,9 @@ function PickerPanel<DateType extends object = any>(
         onModeChange={triggerModeChange}
         // Value
         pickerValue={mergedPickerValue}
-        onPickerValueChange={setPickerValue}
+        onPickerValueChange={(nextPickerValue) => {
+          setPickerValue(nextPickerValue, true);
+        }}
         value={mergedValue[0]}
         onSelect={onPanelValueSelect}
         values={mergedValue}

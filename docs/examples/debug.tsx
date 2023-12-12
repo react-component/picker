@@ -178,8 +178,11 @@ export default () => {
           value={value}
           multiple={true as boolean}
           onChange={setSingleValue}
-          onPickerValueChange={(pickerValue, info) => {
-            console.log('🎼 PickerValue Change:', pickerValue, info);
+          // onPickerValueChange={(pickerValue) => {
+          //   console.log('🎼 PickerValue Change:', pickerValue);
+          // }}
+          onPanelChange={(panelValue, mode) => {
+            console.log('🎲 PanelValue Change:', panelValue, mode);
           }}
         />
         {/* <CellPicker
