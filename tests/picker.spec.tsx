@@ -529,10 +529,10 @@ describe('Picker.Basic', () => {
         <DayPicker onSelect={onSelect} disabledDate={() => true} showToday />,
       );
       openPicker(container);
-      expect(document.querySelector('.rc-picker-today-btn')).toHaveClass(
-        'rc-picker-today-btn-disabled',
+      expect(document.querySelector('.rc-picker-now-btn')).toHaveClass(
+        'rc-picker-now-btn-disabled',
       );
-      fireEvent.click(document.querySelector('.rc-picker-today-btn'));
+      fireEvent.click(document.querySelector('.rc-picker-now-btn'));
       expect(onSelect).not.toHaveBeenCalled();
     });
 
@@ -540,7 +540,7 @@ describe('Picker.Basic', () => {
       it(`not works on ${name}`, () => {
         const { container } = render(<DayPicker picker={name as any} showToday />);
         openPicker(container);
-        expect(document.querySelector('.rc-picker-today-btn')).toBeFalsy();
+        expect(document.querySelector('.rc-picker-now-btn')).toBeFalsy();
       });
     });
   });

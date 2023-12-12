@@ -1,5 +1,7 @@
+import classNames from 'classnames';
 import * as React from 'react';
-import type { InternalMode, PanelMode, SharedPickerProps } from '../../interface';
+import type { GenerateConfig } from '../../../generate';
+import type { DisabledDate, InternalMode, PanelMode, SharedPickerProps } from '../../interface';
 import PickerContext from '../context';
 
 export interface FooterProps<DateType = any> {
@@ -7,6 +9,8 @@ export interface FooterProps<DateType = any> {
   internalMode: InternalMode;
   renderExtraFooter?: SharedPickerProps['renderExtraFooter'];
   showNow: boolean;
+  generateConfig: GenerateConfig<DateType>;
+  disabledDate: DisabledDate<DateType>;
 
   // Invalid
   /** From Footer component used only. Check if can OK button click */
@@ -20,7 +24,7 @@ export interface FooterProps<DateType = any> {
   onOk?: VoidFunction;
 
   // Now
-  onNow: VoidFunction;
+  onNow: (now: DateType) => void;
 }
 
 export default function Footer(props: FooterProps) {
@@ -34,6 +38,8 @@ export default function Footer(props: FooterProps) {
     onNow,
     invalid,
     needConfirm,
+    generateConfig,
+    disabledDate,
   } = props;
 
   const { prefixCls, locale, button: Button = 'button' } = React.useContext(PickerContext);
@@ -42,14 +48,34 @@ export default function Footer(props: FooterProps) {
   const extraNode = renderExtraFooter?.(mode);
 
   // ======================== Ranges ========================
+  // >>> Now
+  const now = generateConfig.getNow();
+  const nowDisabled = disabledDate(now, {
+    type: mode,
+  });
+
+  const onInternalNow = () => {
+    if (!nowDisabled) {
+      onNow(now);
+    }
+  };
+
+  const nowPrefixCls = `${prefixCls}-now`;
+  const nowBtnPrefixCls = `${nowPrefixCls}-btn`;
+
   const presetNode = showNow && (
-    <li className={`${prefixCls}-now`}>
-      <a className={`${prefixCls}-now-btn`} onClick={onNow}>
+    <li className={nowPrefixCls}>
+      <a
+        className={classNames(nowBtnPrefixCls, nowDisabled && `${nowBtnPrefixCls}-disabled`)}
+        aria-disabled={nowDisabled}
+        onClick={onInternalNow}
+      >
         {internalMode === 'date' ? locale.today : locale.now}
       </a>
     </li>
   );
 
+  // >>> OK
   const okNode = needConfirm && (
     <li className={`${prefixCls}-ok`}>
       <Button

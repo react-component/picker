@@ -437,8 +437,7 @@ function Picker<DateType extends object = any>(
     }
   };
 
-  const onNow = () => {
-    const now = generateConfig.getNow();
+  const onNow = (now: DateType) => {
     onPresetSubmit(now);
   };
 
