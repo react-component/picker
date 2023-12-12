@@ -39,7 +39,7 @@ export default function DecadePanel<DateType = any>(props: SharedPanelProps<Date
       generateConfig,
     });
 
-    return `${startYearStr} - ${endYearStr}`;
+    return `${startYearStr}-${endYearStr}`;
   };
 
   const getCellClassName = (date: DateType) => {

@@ -434,6 +434,8 @@ describe('Picker.Basic', () => {
         fireEvent.click(document.querySelector('.rc-picker-header-super-next-btn'));
         expectPanelChange('2090-09-03', 'decade');
 
+        console.log(document.body.innerHTML);
+
         // Select decade
         selectCell('2010-2019');
         expectPanelChange('2010-09-03', 'year');
