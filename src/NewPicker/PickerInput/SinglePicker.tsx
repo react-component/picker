@@ -66,6 +66,7 @@ export interface BasePickerProps<DateType extends object> extends SharedPickerPr
 
   // Mode
   mode?: PanelMode;
+  /** @deprecated You can get more info from `onPickerValueChange` */
   onPanelChange?: (values: DateType, modes: PanelMode) => void;
 }
 

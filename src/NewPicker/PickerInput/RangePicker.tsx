@@ -107,6 +107,7 @@ export interface RangePickerProps<DateType extends object>
 
   // Mode
   mode?: [startMode: PanelMode, endMode: PanelMode];
+  /** @deprecated You can get more info from `onPickerValueChange` */
   onPanelChange?: (
     values: RangeValueType<DateType>,
     modes: [startMode: PanelMode, endMode: PanelMode],

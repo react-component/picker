@@ -57,11 +57,17 @@ export interface BasePickerPanelProps<DateType extends object = any>
   // Panel control
   defaultPickerValue?: DateType | null;
   pickerValue?: DateType | null;
-  onPickerValueChange?: (date: DateType) => void;
+  onPickerValueChange?: (
+    date: DateType,
+    info: {
+      mode: PanelMode;
+    },
+  ) => void;
 
   // Mode
   mode?: PanelMode;
   /**
+   * @deprecated You can get more info from `onPickerValueChange` instead.
    * Compatible with origin API.
    * Not mean the PickerPanel `onChange` event.
    */
@@ -255,17 +261,19 @@ function PickerPanel<DateType extends object = any>(
     },
   );
 
-  const setPickerValue = (nextPickerValue: DateType) => {
+  const setPickerValue = (nextPickerValue: DateType, nextMode?: PanelMode) => {
     setInternalPickerValue(nextPickerValue);
 
-    onPickerValueChange?.(nextPickerValue);
+    onPickerValueChange?.(nextPickerValue, {
+      mode: nextMode || mergedMode,
+    });
   };
 
   const triggerModeChange = (nextMode: PanelMode, viewDate?: DateType) => {
     setMergedMode(nextMode);
 
     if (viewDate) {
-      setPickerValue(viewDate);
+      setPickerValue(viewDate, nextMode);
     }
 
     onPanelChange?.(viewDate || pickerValue, nextMode);
