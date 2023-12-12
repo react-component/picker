@@ -559,13 +559,13 @@ describe('Picker.Basic', () => {
     );
   });
 
-  return;
-
   it('inputRender', () => {
-    render(<DayPicker inputRender={(props) => <input {...props} />} />);
+    render(<DayPicker inputRender={(props) => <input data-customize="yes" {...props} />} />);
 
     expect(document.querySelector('.rc-picker-input')).toMatchSnapshot();
   });
+
+  return;
 
   describe('showNow', () => {
     it('datetime should display now', () => {

@@ -112,7 +112,7 @@ function SingleSelector<DateType extends object = any>(
   }));
 
   // ======================== Clear =========================
-  const showClear = clearIcon && value && !disabled;
+  const showClear = !!(clearIcon && value.length && !disabled);
 
   // ======================== Render ========================
   return (

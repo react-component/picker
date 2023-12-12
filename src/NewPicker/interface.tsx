@@ -363,6 +363,8 @@ export interface SharedPickerProps<DateType extends object = any> extends Shared
 
   // Render
   components?: Components;
+  /** @deprecated Please use `components.input` instead. */
+  inputRender?: (props: React.InputHTMLAttributes<HTMLInputElement>) => React.ReactNode;
   cellRender?: CellRender<DateType>;
   /** @deprecated use cellRender instead of dateRender */
   dateRender?: (currentDate: DateType, today: DateType) => React.ReactNode;

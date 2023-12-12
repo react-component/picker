@@ -22,6 +22,7 @@ type PickedProps<DateType extends object = any> = Pick<
   | 'classNames'
   | 'order'
   | 'components'
+  | 'inputRender'
   | 'clearIcon'
   | 'allowClear'
   | 'needConfirm'
@@ -88,6 +89,7 @@ export default function useFilledProps<
     classNames = {},
     order = true,
     components = {},
+    inputRender,
     allowClear,
     clearIcon,
     needConfirm,
@@ -121,7 +123,10 @@ export default function useFilledProps<
       styles,
       classNames,
       order,
-      components,
+      components: {
+        input: inputRender,
+        ...components,
+      },
       clearIcon: fillClearIcon(prefixCls, allowClear, clearIcon),
       showTime: mergedShowTime,
       value: values,
