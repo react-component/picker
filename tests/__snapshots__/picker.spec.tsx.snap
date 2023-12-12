@@ -5,10 +5,8 @@ exports[`Picker.Basic icon 1`] = `
   class="rc-picker-input"
 >
   <input
+    aria-invalid="false"
     autocomplete="off"
-    readonly=""
-    size="12"
-    title="1990-09-03"
     value="1990-09-03"
   />
   <span

@@ -33,6 +33,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   format?: string;
   validateFormat: (value: string) => boolean;
   active?: boolean;
+  showActiveCls: boolean;
   suffixIcon?: React.ReactNode;
   value?: string;
   onChange: (value: string) => void;
@@ -53,6 +54,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
 const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   const {
     active,
+    showActiveCls = true,
     suffixIcon,
     format,
     validateFormat,
@@ -377,7 +379,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     <div
       ref={holderRef}
       className={classNames(inputPrefixCls, {
-        [`${inputPrefixCls}-active`]: active,
+        [`${inputPrefixCls}-active`]: active && showActiveCls,
         [`${inputPrefixCls}-placeholder`]: helped,
       })}
     >

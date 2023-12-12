@@ -433,8 +433,6 @@ describe('Picker.Basic', () => {
         fireEvent.click(document.querySelector('.rc-picker-header-super-next-btn'));
         expectPanelChange('2090-09-03', 'decade');
 
-        console.log(document.body.innerHTML);
-
         // Select decade
         selectCell('2010-2019');
         expectPanelChange('2010-09-03', 'year');
@@ -545,8 +543,6 @@ describe('Picker.Basic', () => {
     });
   });
 
-  return;
-
   it('icon', () => {
     expect(errorSpy).not.toHaveBeenCalled();
     render(
@@ -562,6 +558,8 @@ describe('Picker.Basic', () => {
       'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.',
     );
   });
+
+  return;
 
   it('inputRender', () => {
     render(<DayPicker inputRender={(props) => <input {...props} />} />);

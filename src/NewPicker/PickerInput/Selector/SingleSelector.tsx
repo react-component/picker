@@ -146,6 +146,7 @@ function SingleSelector<DateType extends object = any>(
         {...getInputProps()}
         suffixIcon={suffixIcon}
         clearIcon={showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
+        showActiveCls={false}
       />
     </div>
   );
