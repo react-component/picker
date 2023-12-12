@@ -1,5 +1,4 @@
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
-import KeyCode from 'rc-util/lib/KeyCode';
 import React from 'react';
 import {
   closePicker,
@@ -13,28 +12,18 @@ import {
 } from './util/commonUtil';
 
 describe('Picker.Keyboard', () => {
-  function keyDown(keyCode: number, info?: object, index = 0) {
+  function keyDown(key: string, info?: object, index = 0) {
     const input = document.querySelectorAll('input')[index];
-    const event = createEvent.keyDown(input, {
-      keyCode,
-      which: keyCode,
-      charCode: keyCode,
-      ...info,
-    });
+    const event = createEvent.keyDown(input, { key, ...info });
 
     fireEvent(input, event);
 
     return event;
   }
 
-  function panelKeyDown(keyCode: number, info?: object) {
-    fireEvent.keyDown(document.querySelector('.rc-picker-panel') as HTMLElement, {
-      keyCode,
-      which: keyCode,
-      charCode: keyCode,
-      ...info,
-    });
-    // document.querySelector('.rc-picker-panel').simulate('keyDown', { which: keyCode, ...info });
+  function panelKeyDown(key: string, info?: object) {
+    fireEvent.keyDown(document.querySelector('.rc-picker-panel') as HTMLElement, { key, ...info });
+    // document.querySelector('.rc-picker-panel').simulate('keyDown', { key, ...info });
   }
 
   beforeEach(() => {
@@ -52,71 +41,67 @@ describe('Picker.Keyboard', () => {
     const onSelect = jest.fn();
     const { container } = render(<MomentPicker onSelect={onSelect} onChange={onChange} />);
     fireEvent.focus(container.querySelector('input'));
-    fireEvent.keyDown(container.querySelector('input'), {
-      keyCode: KeyCode.ENTER,
-      which: KeyCode.ENTER,
-      charCode: KeyCode.ENTER,
-    });
+    fireEvent.keyDown(container.querySelector('input'), { key: 'Enter' });
     expect(isOpen()).toBeTruthy();
 
     // Tab to operate popup panel
-    keyDown(KeyCode.TAB);
+    keyDown('Tab');
     expect(document.querySelector('.rc-picker-panel-focused')).toBeTruthy();
 
     // Down
-    keyDown(KeyCode.DOWN);
+    keyDown('ArrowDown');
     expect(isSame(onSelect.mock.calls[0][0], '1990-09-10')).toBeTruthy();
 
     // UP
     onSelect.mockReset();
-    keyDown(KeyCode.UP);
+    keyDown('ArrowUp');
     expect(isSame(onSelect.mock.calls[0][0], '1990-09-03')).toBeTruthy();
 
     // LEFT
     onSelect.mockReset();
-    keyDown(KeyCode.LEFT);
+    keyDown('ArrowLeft');
     expect(isSame(onSelect.mock.calls[0][0], '1990-09-02')).toBeTruthy();
 
     // RIGHT
     onSelect.mockReset();
-    keyDown(KeyCode.RIGHT);
+    keyDown('ArrowRight');
     expect(isSame(onSelect.mock.calls[0][0], '1990-09-03')).toBeTruthy();
     expect(onChange).not.toHaveBeenCalled();
 
     // Control + Left
     onSelect.mockReset();
-    keyDown(KeyCode.LEFT, { ctrlKey: true });
+    keyDown('ArrowLeft', { ctrlKey: true });
     expect(isSame(onSelect.mock.calls[0][0], '1989-09-03')).toBeTruthy();
     expect(onChange).not.toHaveBeenCalled();
 
     // Control + RIGHT
     onSelect.mockReset();
-    keyDown(KeyCode.RIGHT, { ctrlKey: true });
+    keyDown('ArrowRight', { ctrlKey: true });
     expect(isSame(onSelect.mock.calls[0][0], '1990-09-03')).toBeTruthy();
     expect(onChange).not.toHaveBeenCalled();
 
     // PageUp
     onSelect.mockReset();
-    keyDown(KeyCode.PAGE_UP);
+    keyDown('PageUp');
     expect(isSame(onSelect.mock.calls[0][0], '1990-08-03')).toBeTruthy();
     expect(onChange).not.toHaveBeenCalled();
 
     // PageDown
     onSelect.mockReset();
-    keyDown(KeyCode.PAGE_DOWN);
+    keyDown('PageDown');
     expect(isSame(onSelect.mock.calls[0][0], '1990-09-03')).toBeTruthy();
     expect(onChange).not.toHaveBeenCalled();
 
     // Other key
     onSelect.mockReset();
-    keyDown(KeyCode.B);
+    keyDown('b');
     expect(onSelect).not.toHaveBeenCalled();
 
     // Double RIGHT
-    keyDown(KeyCode.RIGHT);
+    keyDown('ArrowRight');
 
     // ENTER
-    keyDown(KeyCode.ENTER);
+    keyDown('Enter');
     expect(isOpen()).toBeFalsy();
     expect(onChange.mock.calls[0][1]).toEqual('1990-09-04');
   });
@@ -127,17 +112,17 @@ describe('Picker.Keyboard', () => {
     openPicker(container);
 
     // Change value
-    keyDown(KeyCode.TAB);
-    keyDown(KeyCode.DOWN);
+    keyDown('Tab');
+    keyDown('ArrowDown');
 
     // ESC
-    keyDown(KeyCode.ESC);
+    keyDown('Escape');
     expect(onChange).not.toHaveBeenCalled();
   });
 
   it('any key to open', () => {
     render(<MomentPicker />);
-    keyDown(KeyCode.A);
+    keyDown('a');
     expect(isOpen()).toBeTruthy();
   });
 
@@ -146,7 +131,7 @@ describe('Picker.Keyboard', () => {
     openPicker(container);
 
     // Not change focus
-    keyDown(KeyCode.B);
+    keyDown('b');
     expect(isOpen()).toBeTruthy();
 
     expect(document.querySelector('.rc-picker-panel-focused')).toBeFalsy();
@@ -157,11 +142,11 @@ describe('Picker.Keyboard', () => {
     openPicker(container);
 
     // Focus Panel
-    keyDown(KeyCode.TAB);
+    keyDown('Tab');
     expect(document.querySelector('.rc-picker-panel-focused')).toBeTruthy();
 
     // Focus Back
-    keyDown(KeyCode.TAB, { shiftKey: true });
+    keyDown('Tab', { shiftKey: true });
     expect(document.querySelector('.rc-picker-panel-focused')).toBeFalsy();
   });
 
@@ -173,15 +158,15 @@ describe('Picker.Keyboard', () => {
       openPicker(container);
 
       // Focus Panel
-      keyDown(KeyCode.TAB);
+      keyDown('Tab');
       expect(document.querySelector('.rc-picker-panel-focused')).toBeTruthy();
 
       // Focus Date Panel
-      keyDown(KeyCode.TAB);
+      keyDown('Tab');
       expect(document.querySelector('.rc-picker-date-panel-active')).toBeTruthy();
 
       // Focus Time Panel
-      keyDown(KeyCode.TAB);
+      keyDown('Tab');
       expect(document.querySelector('.rc-picker-time-panel-active')).toBeTruthy();
 
       // Close should not focus
@@ -200,17 +185,17 @@ describe('Picker.Keyboard', () => {
           {
             name: 'Tab switch first',
             operate: () => {
-              panelKeyDown(KeyCode.TAB);
+              panelKeyDown('Tab');
             },
           },
           {
             name: 'Arrow switch first',
             operate: () => {
               // Nothing happen
-              panelKeyDown(KeyCode.A);
+              panelKeyDown('a');
 
               // Switch
-              panelKeyDown(KeyCode.DOWN);
+              panelKeyDown('ArrowDown');
             },
           },
         ].forEach(({ name, operate }) => {
@@ -227,29 +212,29 @@ describe('Picker.Keyboard', () => {
             expect(document.querySelector('.rc-picker-date-panel-active')).toBeTruthy();
 
             // Select
-            panelKeyDown(KeyCode.DOWN);
+            panelKeyDown('ArrowDown');
             expect(isSame(onSelect.mock.calls[0][0], '1990-09-10')).toBeTruthy();
 
             // Focus Time Panel
-            panelKeyDown(KeyCode.TAB);
+            panelKeyDown('Tab');
             expect(document.querySelector('.rc-picker-time-panel-active')).toBeTruthy();
 
             // Select
             onSelect.mockReset();
-            panelKeyDown(KeyCode.UP);
-            panelKeyDown(KeyCode.DOWN);
+            panelKeyDown('ArrowUp');
+            panelKeyDown('ArrowDown');
             expect(isSame(onSelect.mock.calls[0][0], '1990-09-10 01:00:00', 'second')).toBeTruthy();
 
             // Next column select
             onSelect.mockReset();
-            panelKeyDown(KeyCode.RIGHT);
-            panelKeyDown(KeyCode.UP);
+            panelKeyDown('ArrowRight');
+            panelKeyDown('ArrowUp');
             expect(isSame(onSelect.mock.calls[0][0], '1990-09-10 01:59:00', 'second')).toBeTruthy();
 
             // Enter to exit column edit
             onSelect.mockReset();
             expect(document.querySelector('.rc-picker-time-panel-column-active')).toBeTruthy();
-            panelKeyDown(KeyCode.ENTER);
+            panelKeyDown('Enter');
             expect(document.querySelector('.rc-picker-time-panel-column-active')).toBeFalsy();
             expect(isSame(onSelect.mock.calls[0][0], '1990-09-10 01:59:00', 'second')).toBeTruthy();
 
@@ -269,15 +254,15 @@ describe('Picker.Keyboard', () => {
         expect(document.querySelector('.rc-picker-decade-panel')).toBeTruthy();
 
         // Year
-        panelKeyDown(KeyCode.ENTER);
+        panelKeyDown('Enter');
         expect(document.querySelector('.rc-picker-year-panel')).toBeTruthy();
 
         // Month
-        panelKeyDown(KeyCode.ENTER);
+        panelKeyDown('Enter');
         expect(document.querySelector('.rc-picker-month-panel')).toBeTruthy();
 
         // Date
-        panelKeyDown(KeyCode.ENTER);
+        panelKeyDown('Enter');
         expect(document.querySelector('.rc-picker-date-panel')).toBeTruthy();
       });
     });
@@ -286,7 +271,7 @@ describe('Picker.Keyboard', () => {
   it('time enter will trigger onSelect', () => {
     const onSelect = jest.fn();
     render(<MomentPickerPanel picker="time" onSelect={onSelect} />);
-    panelKeyDown(KeyCode.ENTER);
+    panelKeyDown('Enter');
     expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second')).toBeTruthy();
   });
 
@@ -303,17 +288,17 @@ describe('Picker.Keyboard', () => {
       );
 
       // Left
-      panelKeyDown(KeyCode.LEFT);
+      panelKeyDown('ArrowLeft');
       expect(isSame(onSelect.mock.calls[0][0], '1990-08-03')).toBeTruthy();
 
       // Control + Right
       onSelect.mockReset();
-      panelKeyDown(KeyCode.RIGHT, { ctrlKey: true });
+      panelKeyDown('ArrowRight', { ctrlKey: true });
       expect(isSame(onSelect.mock.calls[0][0], '1991-08-03')).toBeTruthy();
 
       // Down
       onSelect.mockReset();
-      panelKeyDown(KeyCode.DOWN);
+      panelKeyDown('ArrowDown');
       expect(isSame(onSelect.mock.calls[0][0], '1991-11-03')).toBeTruthy();
     });
 
@@ -328,17 +313,17 @@ describe('Picker.Keyboard', () => {
       );
 
       // Left
-      panelKeyDown(KeyCode.LEFT);
+      panelKeyDown('ArrowLeft');
       expect(isSame(onSelect.mock.calls[0][0], '1990-06-03')).toBeTruthy();
 
       // Control + Right
       onSelect.mockReset();
-      panelKeyDown(KeyCode.RIGHT, { ctrlKey: true });
+      panelKeyDown('ArrowRight', { ctrlKey: true });
       expect(isSame(onSelect.mock.calls[0][0], '1991-06-03')).toBeTruthy();
 
       // Down
       onSelect.mockReset();
-      panelKeyDown(KeyCode.DOWN);
+      panelKeyDown('ArrowDown');
       expect(isSame(onSelect.mock.calls[0][0], '1992-06-03')).toBeTruthy();
     });
 
@@ -353,17 +338,17 @@ describe('Picker.Keyboard', () => {
       );
 
       // Left
-      panelKeyDown(KeyCode.LEFT);
+      panelKeyDown('ArrowLeft');
       expect(isSame(onSelect.mock.calls[0][0], '1989-09-03')).toBeTruthy();
 
       // Control + Right
       onSelect.mockReset();
-      panelKeyDown(KeyCode.RIGHT, { ctrlKey: true });
+      panelKeyDown('ArrowRight', { ctrlKey: true });
       expect(isSame(onSelect.mock.calls[0][0], '1999-09-03')).toBeTruthy();
 
       // Down
       onSelect.mockReset();
-      panelKeyDown(KeyCode.DOWN);
+      panelKeyDown('ArrowDown');
       expect(isSame(onSelect.mock.calls[0][0], '2002-09-03')).toBeTruthy();
     });
 
@@ -378,20 +363,20 @@ describe('Picker.Keyboard', () => {
       );
 
       // Left
-      panelKeyDown(KeyCode.LEFT);
-      panelKeyDown(KeyCode.ENTER);
+      panelKeyDown('ArrowLeft');
+      panelKeyDown('Enter');
       expect(isSame(onPanelChange.mock.calls[0][0], '1980', 'year')).toBeTruthy();
 
       // Control + Right
       onPanelChange.mockReset();
-      panelKeyDown(KeyCode.RIGHT, { ctrlKey: true });
-      panelKeyDown(KeyCode.ENTER);
+      panelKeyDown('ArrowRight', { ctrlKey: true });
+      panelKeyDown('Enter');
       expect(isSame(onPanelChange.mock.calls[0][0], '2080', 'year')).toBeTruthy();
 
       // Down
       onPanelChange.mockReset();
-      panelKeyDown(KeyCode.DOWN);
-      panelKeyDown(KeyCode.ENTER);
+      panelKeyDown('ArrowDown');
+      panelKeyDown('Enter');
       expect(isSame(onPanelChange.mock.calls[0][0], '2110', 'year')).toBeTruthy();
     });
   });
@@ -408,9 +393,9 @@ describe('Picker.Keyboard', () => {
       // Start Date
       openPicker(container);
       fireEvent.change(container.querySelector('input'), { target: { value: '1990-01-01' } });
-      keyDown(KeyCode.TAB);
-      keyDown(KeyCode.DOWN);
-      keyDown(KeyCode.ENTER);
+      keyDown('Tab');
+      keyDown('ArrowDown');
+      keyDown('Enter');
       expect(onCalendarChange.mock.calls[0][1]).toEqual(['1990-01-08', '']);
       expect(onChange).not.toHaveBeenCalled();
 
@@ -426,9 +411,9 @@ describe('Picker.Keyboard', () => {
       fireEvent.change(document.querySelectorAll('input')[1], {
         target: { value: '2000-01-01' },
       });
-      keyDown(KeyCode.TAB, {}, 1);
-      keyDown(KeyCode.DOWN, {}, 1);
-      keyDown(KeyCode.ENTER, {}, 1);
+      keyDown('Tab', {}, 1);
+      keyDown('ArrowDown', {}, 1);
+      keyDown('Enter', {}, 1);
       expect(onCalendarChange.mock.calls[0][1]).toEqual(['1990-01-08', '2000-01-08']);
       expect(onChange.mock.calls[0][1]).toEqual(['1990-01-08', '2000-01-08']);
 
@@ -451,7 +436,7 @@ describe('Picker.Keyboard', () => {
       expect(onFocus).toHaveBeenCalled();
 
       fireEvent.change(container.querySelector('input'), { target: { value: '1990-01-01' } });
-      keyDown(KeyCode.ESC);
+      keyDown('Escape');
       expect(container.querySelector('input').value).toEqual('');
     });
 
@@ -469,9 +454,9 @@ describe('Picker.Keyboard', () => {
       //   .first()
       //   .simulate('change', { target: { value: '' } });
       fireEvent.change(container.querySelector('input'), { target: { value: '' } });
-      keyDown(KeyCode.TAB);
-      keyDown(KeyCode.RIGHT);
-      keyDown(KeyCode.ENTER);
+      keyDown('Tab');
+      keyDown('ArrowRight');
+      keyDown('Enter');
       expect(onCalendarChange.mock.calls[0][1]).toEqual(['1990-09-04', '']);
       expect(onChange).not.toHaveBeenCalled();
     });
@@ -479,7 +464,7 @@ describe('Picker.Keyboard', () => {
 
   it('enter should prevent default to avoid form submit', () => {
     render(<MomentPicker />);
-    const event = keyDown(KeyCode.ENTER);
+    const event = keyDown('Enter');
 
     expect(event.defaultPrevented).toBeTruthy();
   });
@@ -498,14 +483,14 @@ describe('Picker.Keyboard', () => {
       );
       // document.querySelector('input').simulate('focus');
       fireEvent.focus(container.querySelector('input'));
-      keyDown(KeyCode.ENTER);
-      keyDown(KeyCode.TAB);
-      keyDown(KeyCode.TAB);
-      keyDown(KeyCode.DOWN);
+      keyDown('Enter');
+      keyDown('Tab');
+      keyDown('Tab');
+      keyDown('ArrowDown');
       expect(isSame(onSelect.mock.calls[0][0], '1990-09-10')).toBeTruthy();
 
       // Not enter to change
-      keyDown(KeyCode.ENTER);
+      keyDown('Enter');
       expect(onChange).not.toHaveBeenCalled();
 
       // Not button enabled
@@ -514,11 +499,11 @@ describe('Picker.Keyboard', () => {
       ).toBeTruthy();
 
       // Another can be enter
-      keyDown(KeyCode.RIGHT);
+      keyDown('ArrowRight');
       expect(
         document.querySelector<HTMLButtonElement>('.rc-picker-ok button').disabled,
       ).toBeFalsy();
-      keyDown(KeyCode.ENTER);
+      keyDown('Enter');
       expect(onChange).toHaveBeenCalled();
     });
 
@@ -535,19 +520,19 @@ describe('Picker.Keyboard', () => {
 
       fireEvent.focus(document.querySelector('.rc-picker-panel'));
       // 9-02、9-04、9-10 is disabled
-      panelKeyDown(KeyCode.LEFT);
-      panelKeyDown(KeyCode.RIGHT);
-      panelKeyDown(KeyCode.DOWN);
+      panelKeyDown('ArrowLeft');
+      panelKeyDown('ArrowRight');
+      panelKeyDown('ArrowDown');
       expect(onSelect).not.toHaveBeenCalled();
 
       // 7-27、8-27 is enabled
-      panelKeyDown(KeyCode.UP);
+      panelKeyDown('ArrowUp');
       expect(isSame(onSelect.mock.calls[0][0], '1990-08-27')).toBeTruthy();
       onSelect.mockReset();
-      panelKeyDown(KeyCode.PAGE_UP);
+      panelKeyDown('PageUp');
       expect(isSame(onSelect.mock.calls[0][0], '1990-07-27')).toBeTruthy();
       onSelect.mockReset();
-      panelKeyDown(KeyCode.PAGE_DOWN);
+      panelKeyDown('PageDown');
       expect(isSame(onSelect.mock.calls[0][0], '1990-08-27')).toBeTruthy();
     });
 
@@ -567,22 +552,22 @@ describe('Picker.Keyboard', () => {
       fireEvent.focus(document.querySelector('.rc-picker-panel'));
 
       // PAGE_UP and PAGE_DOWN do not trigger the select
-      panelKeyDown(KeyCode.PAGE_UP);
-      panelKeyDown(KeyCode.PAGE_DOWN);
+      panelKeyDown('PageUp');
+      panelKeyDown('PageDown');
       expect(onSelect).not.toHaveBeenCalled();
 
       // The disabled date is before August
-      panelKeyDown(KeyCode.LEFT);
-      panelKeyDown(KeyCode.UP);
+      panelKeyDown('ArrowLeft');
+      panelKeyDown('ArrowUp');
       expect(onSelect).not.toHaveBeenCalled();
 
       // August and subsequent dates are enable
-      panelKeyDown(KeyCode.RIGHT);
+      panelKeyDown('ArrowRight');
       expect(isSame(onSelect.mock.calls[0][0], '1990-10-03')).toBeTruthy();
       onSelect.mockReset();
-      panelKeyDown(KeyCode.LEFT);
+      panelKeyDown('ArrowLeft');
       onSelect.mockReset();
-      panelKeyDown(KeyCode.DOWN);
+      panelKeyDown('ArrowDown');
       expect(isSame(onSelect.mock.calls[0][0], '1990-12-03')).toBeTruthy();
     });
   });

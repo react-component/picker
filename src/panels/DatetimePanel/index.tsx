@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import KeyCode from 'rc-util/lib/KeyCode';
 import * as React from 'react';
 import type { DisabledTime, PanelRefProps } from '../../interface';
 import { tuple } from '../../utils/miscUtil';
@@ -68,7 +67,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
   operationRef.current = {
     onKeyDown: (event) => {
       // Switch active panel
-      if (event.which === KeyCode.TAB) {
+      if (event.key === 'Tab') {
         const nextActivePanel = getNextActive(event.shiftKey ? -1 : 1);
         setActivePanel(nextActivePanel);
 
@@ -91,7 +90,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       }
 
       // Switch first active panel if operate without panel
-      if ([KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN].includes(event.which)) {
+      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
         setActivePanel('date');
         return true;
       }

@@ -27,7 +27,7 @@ const FULL_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 //   findCell: (text: number | string, index?: number) => Wrapper;
 //   selectCell: (text: number | string, index?: number) => Wrapper;
 //   clearValue: (index?: number) => void;
-//   keyDown: (which: number, info?: object, index?: number) => void;
+//   keyDown: (key: string, info?: object, index?: number) => void;
 //   clickButton: (type: 'prev' | 'next' | 'super-prev' | 'super-next') => Wrapper;
 //   inputValue: (text: string, index?: number) => Wrapper;
 // };
