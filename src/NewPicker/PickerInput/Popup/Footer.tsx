@@ -18,6 +18,9 @@ export interface FooterProps<DateType = any> {
 
   // OK
   onOk?: VoidFunction;
+
+  // Now
+  onNow: VoidFunction;
 }
 
 export default function Footer(props: FooterProps) {

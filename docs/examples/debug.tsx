@@ -103,6 +103,7 @@ export default () => {
         // open
         // disabled
         ref={singleRef}
+        showToday
         suffixIcon="🧶"
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
@@ -120,7 +121,7 @@ export default () => {
         // needConfirm={false}
       />
       <br />
-      <RangePicker
+      {/* <RangePicker
         {...sharedLocale}
         value={rangeValue}
         // components={{
@@ -160,7 +161,7 @@ export default () => {
           start: 'inputStart',
           end: 'inputEnd',
         }}
-      />
+      /> */}
       <br />
 
       <button
@@ -172,7 +173,7 @@ export default () => {
       </button>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        <PickerPanel
+        {/* <PickerPanel
           generateConfig={dayjsGenerateConfig}
           locale={zhCN}
           value={value}
@@ -184,7 +185,7 @@ export default () => {
           onPanelChange={(panelValue, mode) => {
             console.log('🎲 PanelValue Change:', panelValue, mode);
           }}
-        />
+        /> */}
         {/* <CellPicker
           picker="time"
           locale={{

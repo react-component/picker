@@ -377,19 +377,19 @@ describe('Picker.Basic', () => {
 
   describe('full steps', () => {
     [
-      // {
-      //   name: 'date',
-      //   yearBtn: '.rc-picker-year-btn',
-      //   finalPanel: '.rc-picker-date-panel',
-      //   finalMode: 'date',
-      // },
-      // {
-      //   name: 'datetime',
-      //   yearBtn: '.rc-picker-year-btn',
-      //   finalPanel: '.rc-picker-datetime-panel',
-      //   finalMode: 'date',
-      //   showTime: true,
-      // },
+      {
+        name: 'date',
+        yearBtn: '.rc-picker-year-btn',
+        finalPanel: '.rc-picker-date-panel',
+        finalMode: 'date',
+      },
+      {
+        name: 'datetime',
+        yearBtn: '.rc-picker-year-btn',
+        finalPanel: '.rc-picker-datetime-panel',
+        finalMode: 'date',
+        showTime: true,
+      },
       {
         name: 'week',
         yearBtn: '.rc-picker-year-btn',
@@ -398,7 +398,7 @@ describe('Picker.Basic', () => {
         picker: 'week',
       },
     ].forEach(({ name, finalMode, yearBtn, finalPanel, picker, showTime }) => {
-      it.only(name, () => {
+      it(name, () => {
         const onChange = jest.fn();
         const onPanelChange = jest.fn();
         const { container } = render(
@@ -428,7 +428,6 @@ describe('Picker.Basic', () => {
         onPanelChange.mockReset();
         fireEvent.click(document.querySelector('.rc-picker-decade-btn'));
         expectPanelChange('1990-09-03', 'decade');
-
 
         // Next page
         fireEvent.click(document.querySelector('.rc-picker-header-super-next-btn'));
@@ -489,8 +488,6 @@ describe('Picker.Basic', () => {
     });
   });
 
-  return;
-
   it('renderExtraFooter', () => {
     const renderExtraFooter = jest.fn((mode) => <div>{mode}</div>);
     const { container } = render(<DayPicker renderExtraFooter={renderExtraFooter} />);
@@ -519,11 +516,11 @@ describe('Picker.Basic', () => {
 
   describe('showToday', () => {
     it('only works on date', () => {
-      const onSelect = jest.fn();
-      const { container } = render(<DayPicker onSelect={onSelect} showToday />);
+      const onCalendarChange = jest.fn();
+      const { container } = render(<DayPicker onCalendarChange={onCalendarChange} showToday />);
       openPicker(container);
-      fireEvent.click(document.querySelector('.rc-picker-today-btn'));
-      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03')).toBeTruthy();
+      fireEvent.click(document.querySelector('.rc-picker-now-btn'));
+      expect(isSame(onCalendarChange.mock.calls[0][0], '1990-09-03')).toBeTruthy();
     });
 
     it('disabled when in disabledDate', () => {
@@ -547,6 +544,8 @@ describe('Picker.Basic', () => {
       });
     });
   });
+
+  return;
 
   it('icon', () => {
     expect(errorSpy).not.toHaveBeenCalled();

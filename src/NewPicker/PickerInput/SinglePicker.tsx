@@ -69,27 +69,6 @@ export interface BasePickerProps<DateType extends object> extends SharedPickerPr
   onPanelChange?: (values: DateType, modes: PanelMode) => void;
 }
 
-// export interface SinglePickerProps<DateType extends object> extends BasePickerProps<DateType> {
-//   multiple?: false;
-
-//   // Value
-//   value?: DateType;
-//   defaultValue?: DateType;
-//   onChange?: (date: DateType, dateString: string) => void;
-//   onCalendarChange?: (date: DateType, dateString: string, info: BaseInfo) => void;
-// }
-
-// export interface MultiplePickerProps<DateType extends object> extends BasePickerProps<DateType> {
-//   /** Not support `time` or `datetime` picker */
-//   multiple: true;
-
-//   // Value
-//   value?: DateType[];
-//   defaultValue?: DateType[];
-//   onChange?: (date: DateType[], dateString: string[]) => void;
-//   onCalendarChange?: (date: DateType[], dateString: string[], info: BaseInfo) => void;
-// }
-
 export type PickerProps<DateType extends object = any> = BasePickerProps<DateType> & {
   /** Not support `time` or `datetime` picker */
   multiple?: boolean;
@@ -363,7 +342,7 @@ function Picker<DateType extends object = any>(
   // ======================== Submit ========================
   /**
    * Different with RangePicker, confirm should check `multiple` logic.
-   * And confirm should not provide `date` value
+   * This will never provide `date` instead.
    */
   const triggerConfirm = () => {
     // const triggerConfirm = (date?: DateType, skipFocus?: boolean) => {
@@ -448,12 +427,14 @@ function Picker<DateType extends object = any>(
     //   triggerOpen(false, { force: true });
     // }
 
-    const nextCalendarValues = multiple ? toggleDates(getCalendarValue(), nextValue) : [nextValue];
-    const passed = triggerSubmitChange(nextCalendarValues);
+    triggerConfirm(nextValue);
 
-    if (passed && !multiple) {
-      triggerOpen(false, { force: true });
-    }
+    // const nextCalendarValues = multiple ? toggleDates(getCalendarValue(), nextValue) : [nextValue];
+    // const passed = triggerSubmitChange(nextCalendarValues);
+
+    // if (passed && !multiple) {
+    //   triggerOpen(false, { force: true });
+    // }
   };
 
   // ======================== Panel =========================
@@ -482,7 +463,6 @@ function Picker<DateType extends object = any>(
     // >>> Trigger next active if !needConfirm
     // Fully logic check `useRangeValue` hook
     if (!needConfirm && !complexPicker && internalPicker === internalMode) {
-      // triggerConfirm(date);
       triggerConfirm();
     }
   };
@@ -592,7 +572,6 @@ function Picker<DateType extends object = any>(
 
   const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event) => {
     if (event.key === 'Tab') {
-      // triggerConfirm(null, true);
       triggerConfirm();
     }
   };
@@ -626,7 +605,6 @@ function Picker<DateType extends object = any>(
     // Trade as confirm on field leave
     if (!mergedOpen && lastOp === 'input') {
       triggerOpen(false);
-      // triggerConfirm(null, true);
       triggerConfirm();
     }
 

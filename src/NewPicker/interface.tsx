@@ -212,23 +212,12 @@ export interface SharedPanelProps<DateType = any> {
    * Or toggle `values` in multiple mode.
    */
   onSelect: (date: DateType) => void;
-  // multiple?: boolean;
-  // /**
-  //  * Trigger for single value change.
-  //  * You can realize `onValuesChange` and ignore this to
-  //  * both handle single or multiple mode if need.
-  //  */
-  // onChange: (date: DateType) => void;
 
   /**
    * Used for `multiple` mode.
    * When not `multiple`, it will be `[value]`.
    */
   values?: DateType[];
-  // /**
-  //  * For multiple value usage.
-  //  */
-  // onValuesChange: (values: DateType[]) => void;
 
   // Mode
   onModeChange: (mode: PanelMode, date?: DateType) => void;

@@ -15,7 +15,7 @@ export default function useShowNow(
   }
 
   // Compatible with old version `showToday`
-  if (picker === 'date' && showToday === false) {
+  if (picker === 'date' && typeof showToday === 'boolean') {
     return showToday;
   }
 
