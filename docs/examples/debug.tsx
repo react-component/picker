@@ -102,7 +102,7 @@ export default () => {
         // multiple
         // disabled
         ref={singleRef}
-        showTime
+        // showTime
         suffixIcon="🧶"
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
@@ -117,7 +117,7 @@ export default () => {
           console.log('🎼 Panel Change:', val, val?.format('YYYY-MM-DD'), info);
         }}
         style={{ width: 300 }}
-        // needConfirm={false}
+        renderExtraFooter={() => 'sad'}
       />
       <br />
       <RangePicker

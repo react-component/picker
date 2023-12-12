@@ -488,7 +488,9 @@ describe('Picker.Basic', () => {
 
   it('renderExtraFooter', () => {
     const renderExtraFooter = jest.fn((mode) => <div>{mode}</div>);
-    const { container } = render(<DayPicker renderExtraFooter={renderExtraFooter} />);
+    const { container } = render(
+      <DayPicker showNow={false} renderExtraFooter={renderExtraFooter} />,
+    );
 
     function matchFooter(mode: string) {
       expect(document.querySelector('.rc-picker-footer').textContent).toEqual(mode);
@@ -522,16 +524,16 @@ describe('Picker.Basic', () => {
     });
 
     it('disabled when in disabledDate', () => {
-      const onSelect = jest.fn();
+      const onCalendarChange = jest.fn();
       const { container } = render(
-        <DayPicker onSelect={onSelect} disabledDate={() => true} showToday />,
+        <DayPicker onCalendarChange={onCalendarChange} disabledDate={() => true} showToday />,
       );
       openPicker(container);
       expect(document.querySelector('.rc-picker-now-btn')).toHaveClass(
         'rc-picker-now-btn-disabled',
       );
       fireEvent.click(document.querySelector('.rc-picker-now-btn'));
-      expect(onSelect).not.toHaveBeenCalled();
+      expect(onCalendarChange).not.toHaveBeenCalled();
     });
 
     ['decade', 'year', 'quarter', 'month', 'week'].forEach((name) => {
@@ -567,40 +569,48 @@ describe('Picker.Basic', () => {
 
   describe('showNow', () => {
     it('datetime should display now', () => {
-      const onSelect = jest.fn();
-      const { container } = render(<DayPicker onSelect={onSelect} showTime />);
+      const onCalendarChange = jest.fn();
+      const { container } = render(<DayPicker onCalendarChange={onCalendarChange} showTime />);
       openPicker(container);
       fireEvent.click(document.querySelector('.rc-picker-now > a'));
 
-      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second')).toBeTruthy();
+      expect(
+        isSame(onCalendarChange.mock.calls[0][0], '1990-09-03 00:00:00', 'second'),
+      ).toBeTruthy();
     });
 
     it("date shouldn't display now", () => {
-      const onSelect = jest.fn();
-      const { container } = render(<DayPicker onSelect={onSelect} />);
+      const onCalendarChange = jest.fn();
+      const { container } = render(<DayPicker onCalendarChange={onCalendarChange} />);
       openPicker(container);
       expect(document.querySelector('.rc-picker-now > a')).toBeFalsy();
     });
 
     it("datetime shouldn't display now when showNow is false", () => {
-      const onSelect = jest.fn();
-      const { container } = render(<DayPicker onSelect={onSelect} showTime showNow={false} />);
+      const onCalendarChange = jest.fn();
+      const { container } = render(
+        <DayPicker onCalendarChange={onCalendarChange} showTime showNow={false} />,
+      );
       openPicker(container);
       expect(document.querySelector('.rc-picker-now > a')).toBeFalsy();
     });
 
     it('time should display now', () => {
-      const onSelect = jest.fn();
-      const { container } = render(<DayPicker onSelect={onSelect} picker="time" />);
+      const onCalendarChange = jest.fn();
+      const { container } = render(<DayPicker onCalendarChange={onCalendarChange} picker="time" />);
       openPicker(container);
       fireEvent.click(document.querySelector('.rc-picker-now > a'));
 
-      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:00', 'second')).toBeTruthy();
+      expect(
+        isSame(onCalendarChange.mock.calls[0][0], '1990-09-03 00:00:00', 'second'),
+      ).toBeTruthy();
     });
 
     it("time shouldn't display now when showNow is false", () => {
-      const onSelect = jest.fn();
-      const { container } = render(<DayPicker onSelect={onSelect} picker="time" showNow={false} />);
+      const onCalendarChange = jest.fn();
+      const { container } = render(
+        <DayPicker onCalendarChange={onCalendarChange} picker="time" showNow={false} />,
+      );
       openPicker(container);
       expect(document.querySelector('.rc-picker-now > a')).toBeFalsy();
     });
@@ -611,12 +621,16 @@ describe('Picker.Basic', () => {
   describe('time step', () => {
     it('work with now', () => {
       jest.setSystemTime(getDay('1990-09-03 00:09:00').valueOf());
-      const onSelect = jest.fn();
-      const { container } = render(<DayPicker onSelect={onSelect} picker="time" minuteStep={10} />);
+      const onCalendarChange = jest.fn();
+      const { container } = render(
+        <DayPicker onCalendarChange={onCalendarChange} picker="time" minuteStep={10} />,
+      );
       openPicker(container);
       // document.querySelector('.rc-picker-now > a').simulate('click');
       fireEvent.click(document.querySelector('.rc-picker-now > a'));
-      expect(isSame(onSelect.mock.calls[0][0], '1990-09-03 00:00:59', 'second')).toBeTruthy();
+      expect(
+        isSame(onCalendarChange.mock.calls[0][0], '1990-09-03 00:00:59', 'second'),
+      ).toBeTruthy();
       jest.setSystemTime(getDay('1990-09-03 00:00:00').valueOf());
     });
 
