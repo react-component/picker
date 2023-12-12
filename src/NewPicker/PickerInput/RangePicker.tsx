@@ -48,7 +48,8 @@ function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig:
 export type RangeValueType<DateType> = [start?: DateType, end?: DateType];
 
 export interface RangePickerProps<DateType extends object>
-  extends Omit<SharedPickerProps<DateType>, 'showTime' | 'id'> {
+  extends Omit<SharedPickerProps<DateType>, 'showTime' | 'id'>,
+    Omit<RangeTimeProps<DateType>, 'format' | 'defaultValue'> {
   // Structure
   id?: SelectorIdType;
 

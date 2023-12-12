@@ -12,6 +12,7 @@ import type {
   SelectorProps,
   SharedHTMLAttrs,
   SharedPickerProps,
+  SharedTimeProps,
   ValueDate,
 } from '../interface';
 import PickerTrigger from '../PickerTrigger';
@@ -29,7 +30,9 @@ import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
 import SingleSelector from './Selector/SingleSelector';
 
-export interface BasePickerProps<DateType extends object> extends SharedPickerProps<DateType> {
+export interface BasePickerProps<DateType extends object>
+  extends SharedPickerProps<DateType>,
+    Omit<SharedTimeProps<DateType>, 'format' | 'defaultValue'> {
   // Placeholder
   placeholder?: string;
 

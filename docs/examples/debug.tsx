@@ -101,8 +101,9 @@ export default () => {
         {...sharedLocale}
         // multiple
         // disabled
+        picker="time"
+        minuteStep={30}
         ref={singleRef}
-        // showTime
         suffixIcon="🧶"
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
@@ -117,7 +118,6 @@ export default () => {
           console.log('🎼 Panel Change:', val, val?.format('YYYY-MM-DD'), info);
         }}
         style={{ width: 300 }}
-        renderExtraFooter={() => 'sad'}
       />
       <br />
       <RangePicker
@@ -125,7 +125,6 @@ export default () => {
         value={rangeValue}
         disabledDate={() => true}
         picker="time"
-        minuteStep={5}
         showTime
         showNow
         panelRender={(ori) => <>2333{ori}</>}

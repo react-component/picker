@@ -626,7 +626,6 @@ describe('Picker.Basic', () => {
         <DayPicker onCalendarChange={onCalendarChange} picker="time" minuteStep={10} />,
       );
       openPicker(container);
-      // document.querySelector('.rc-picker-now > a').simulate('click');
       fireEvent.click(document.querySelector('.rc-picker-now > a'));
       expect(
         isSame(onCalendarChange.mock.calls[0][0], '1990-09-03 00:00:59', 'second'),
