@@ -6,6 +6,7 @@ export function findValidateTime<DateType>(
   getHourUnits: () => Unit<number>[],
   getMinuteUnits: (hour: number) => Unit<number>[],
   getSecondUnits: (hour: number, minute: number) => Unit<number>[],
+  getMillisecondUnits: (hour: number, minute: number, second: number) => Unit<number>[],
   generateConfig: GenerateConfig<DateType>,
 ) {
   let nextDate = date;
@@ -30,7 +31,14 @@ export function findValidateTime<DateType>(
   const nextMinute = alignValidate('getMinute', 'setMinute', getMinuteUnits(nextHour));
 
   // Find validate second
-  alignValidate('getSecond', 'setSecond', getSecondUnits(nextHour, nextMinute));
+  const nextSecond = alignValidate('getSecond', 'setSecond', getSecondUnits(nextHour, nextMinute));
+
+  // Find validate millisecond
+  alignValidate(
+    'getMillisecond',
+    'setMillisecond',
+    getMillisecondUnits(nextHour, nextMinute, nextSecond),
+  );
 
   return nextDate;
 }
