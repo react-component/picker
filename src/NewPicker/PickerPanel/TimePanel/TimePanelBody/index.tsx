@@ -1,45 +1,12 @@
 import * as React from 'react';
 import { formatValue } from '../../../../utils/dateUtil';
-import { leftPad } from '../../../../utils/miscUtil';
 import useTimeInfo from '../../../hooks/useTimeInfo';
 import type { SharedPanelProps, SharedTimeProps } from '../../../interface';
 import { PickerHackContext, usePanelContext } from '../../context';
 import TimeColumn, { type Unit } from './TimeColumn';
 
-function emptyDisabled<T>(): T[] {
-  return [];
-}
-
 function isAM(hour: number) {
   return hour < 12;
-}
-
-function checkShow(format: string, keywords: string[], propShow?: boolean) {
-  return propShow ?? keywords.some((keyword) => format.includes(keyword));
-}
-
-function generateUnits(
-  start: number,
-  end: number,
-  step = 1,
-  hideDisabledOptions = false,
-  disabledUnits: number[] = [],
-  pad = 2,
-) {
-  const units: Unit<number>[] = [];
-  const integerStep = step >= 1 ? step | 0 : 1;
-  for (let i = start; i <= end; i += integerStep) {
-    const disabled = disabledUnits.includes(i);
-
-    if (!disabled || !hideDisabledOptions) {
-      units.push({
-        label: leftPad(i, pad),
-        value: i,
-        disabled,
-      });
-    }
-  }
-  return units;
 }
 
 export type TimePanelBodyProps<DateType extends object = any> = SharedPanelProps<DateType>;
@@ -48,28 +15,6 @@ export default function TimePanelBody<DateType extends object = any>(
   props: SharedTimeProps<DateType>,
 ) {
   const {
-    format,
-
-    // Show
-    showHour,
-    showMinute,
-    showSecond,
-    showMillisecond,
-    use12Hours,
-
-    // Steps
-    hourStep,
-    minuteStep,
-    secondStep,
-    millisecondStep = 100,
-
-    // Disabled
-    hideDisabledOptions,
-    disabledTime,
-    disabledHours,
-    disabledMinutes,
-    disabledSeconds,
-
     // MISC
     changeOnScroll,
   } = props;
@@ -114,36 +59,8 @@ export default function TimePanelBody<DateType extends object = any>(
   const [millisecond, pickerMillisecond] = getUnitValue('getMillisecond');
   const meridiem = hour === null ? null : isAM(hour) ? 'am' : 'pm';
 
-  // // ======================== Disabled ========================
-  // const [
-  //   mergedDisabledHours,
-  //   mergedDisabledMinutes,
-  //   mergedDisabledSeconds,
-  //   mergedDisabledMilliseconds,
-  // ] = React.useMemo(() => {
-  //   const disabledConfig = disabledTime?.(value) || {};
-
-  //   return [
-  //     disabledConfig.disabledHours || disabledHours || emptyDisabled,
-  //     disabledConfig.disabledMinutes || disabledMinutes || emptyDisabled,
-  //     disabledConfig.disabledSeconds || disabledSeconds || emptyDisabled,
-  //     disabledConfig.disabledMilliSeconds || emptyDisabled,
-  //   ];
-  // }, [value, disabledTime, disabledHours, disabledMinutes, disabledSeconds]);
-
   // ========================= Column =========================
   // Hours
-  // const rowHourUnits = React.useMemo(() => {
-  //   const hours = generateUnits(0, 23, hourStep, hideDisabledOptions, mergedDisabledHours());
-
-  //   return mergedShowMeridiem
-  //     ? hours.map((unit) => ({
-  //         ...unit,
-  //         label: leftPad((unit.value as number) % 12 || 12, 2),
-  //       }))
-  //     : hours;
-  // }, [hideDisabledOptions, hourStep, mergedDisabledHours, mergedShowMeridiem]);
-
   const hourUnits = React.useMemo(() => {
     if (!mergedShowMeridiem) {
       return rowHourUnits;
@@ -153,40 +70,6 @@ export default function TimePanelBody<DateType extends object = any>(
       ? rowHourUnits.filter((h) => isAM(h.value as number))
       : rowHourUnits.filter((h) => !isAM(h.value as number));
   }, [hour, rowHourUnits, mergedShowMeridiem]);
-
-  // Minutes
-  // const getMinuteUnits = React.useCallback(
-  //   (nextHour: number) =>
-  //     generateUnits(0, 59, minuteStep, hideDisabledOptions, mergedDisabledMinutes(nextHour)),
-  //   [hideDisabledOptions, mergedDisabledMinutes, minuteStep],
-  // );
-
-  // Seconds
-  // const getSecondUnits = React.useCallback(
-  //   (nextHour: number, nextMinute: number) =>
-  //     generateUnits(
-  //       0,
-  //       59,
-  //       secondStep,
-  //       hideDisabledOptions,
-  //       mergedDisabledSeconds(nextHour, nextMinute),
-  //     ),
-  //   [hideDisabledOptions, mergedDisabledSeconds, secondStep],
-  // );
-
-  // Milliseconds
-  // const getMillisecondUnits = React.useCallback(
-  //   (nextHour: number, nextMinute: number, nextSecond: number) =>
-  //     generateUnits(
-  //       0,
-  //       999,
-  //       millisecondStep,
-  //       hideDisabledOptions,
-  //       mergedDisabledMilliseconds(nextHour, nextMinute, nextSecond),
-  //       3,
-  //     ),
-  //   [hideDisabledOptions, mergedDisabledMilliseconds, millisecondStep],
-  // );
 
   // >>> Pick Fallback
   const getEnabled = (units: Unit<number>[], val: number) => {
