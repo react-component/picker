@@ -117,10 +117,11 @@ function SingleSelector<DateType extends object = any>(
   // ======================== Render ========================
   return (
     <div
-      {...pickAttrs(restProps, false)}
+      // {...pickAttrs(restProps, {
+      //   attr: true,
+      // })}
       className={classNames(
         prefixCls,
-        `${prefixCls}-range`,
         {
           [`${prefixCls}-focused`]: focused,
           [`${prefixCls}-invalid`]: invalid,

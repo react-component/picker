@@ -1,3 +1,4 @@
+import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
 import { formatValue } from '../../../../utils/dateUtil';
 import type { SelectorProps } from '../../../interface';
@@ -110,7 +111,14 @@ export default function useInputProps<DateType extends object = any>(
       return index !== undefined ? propValue[index] : propValue;
     }
 
+    const pickedAttrs = pickAttrs(props, {
+      aria: true,
+      data: true,
+    });
+
     return {
+      ...pickedAttrs,
+
       // ============== Shared ==============
       format: maskFormat,
       validateFormat: (text) => !!validateFormat(text),
@@ -180,7 +188,6 @@ export default function useInputProps<DateType extends object = any>(
         onKeyDown?.(event);
       },
 
-      // ============= By Index =============
       // ============ Post Props ============
       ...postProps?.({
         valueTexts,

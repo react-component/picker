@@ -717,13 +717,13 @@ describe('Picker.Basic', () => {
     });
   });
 
-  return;
-
   it('pass data- & aria- & role', () => {
     const { container } = render(<DayPicker data-test="233" aria-label="3334" role="search" />);
 
     expect(container).toMatchSnapshot();
   });
+
+  return;
 
   it('support name & autoComplete prop', () => {
     const { container } = render(<DayPicker name="bamboo" autoComplete="off" />);

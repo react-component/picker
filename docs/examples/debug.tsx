@@ -101,6 +101,7 @@ export default () => {
         {...sharedLocale}
         // multiple
         // disabled
+        role="good"
         picker="time"
         minuteStep={7.5}
         ref={singleRef}

@@ -33,7 +33,8 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   format?: string;
   validateFormat: (value: string) => boolean;
   active?: boolean;
-  showActiveCls: boolean;
+  /** Used for single picker only */
+  showActiveCls?: boolean;
   suffixIcon?: React.ReactNode;
   value?: string;
   onChange: (value: string) => void;

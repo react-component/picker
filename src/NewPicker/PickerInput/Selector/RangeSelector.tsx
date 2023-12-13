@@ -205,7 +205,9 @@ function RangeSelector<DateType extends object = any>(
   return (
     <ResizeObserver onResize={syncActiveOffset}>
       <div
-        {...pickAttrs(restProps, false)}
+        // {...pickAttrs(restProps, {
+        //   attr: true,
+        // })}
         className={classNames(
           prefixCls,
           `${prefixCls}-range`,
