@@ -1,4 +1,5 @@
 import * as React from 'react';
+import type { GenerateConfig } from '../../generate';
 import { leftPad } from '../../utils/miscUtil';
 import type { SharedTimeProps } from '../interface';
 import { findValidateTime } from '../PickerPanel/TimePanel/TimePanelBody/util';
@@ -46,13 +47,11 @@ function generateUnits(
  */
 export default function useTimeInfo<DateType extends object = any>(
   date: DateType,
+  generateConfig: GenerateConfig<DateType>,
   props: SharedTimeProps<DateType>,
 ) {
   const {
     format,
-
-    // Util
-    generateConfig,
 
     // Show
     showHour,
@@ -151,11 +150,22 @@ export default function useTimeInfo<DateType extends object = any>(
       () => rowHourUnits,
       getMinuteUnits,
       getSecondUnits,
+      getMillisecondUnits,
       generateConfig,
     );
 
     return validateDate;
   };
 
-  return [] as const;
+  return [
+    // Show columns
+    mergedShowHour,
+    mergedShowMinute,
+    mergedShowSecond,
+    mergedShowMillisecond,
+    mergedShowMeridiem,
+
+    // getValidTime
+    getValidTime,
+  ] as const;
 }

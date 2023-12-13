@@ -5,7 +5,6 @@ import useTimeInfo from '../../../hooks/useTimeInfo';
 import type { SharedPanelProps, SharedTimeProps } from '../../../interface';
 import { PickerHackContext, usePanelContext } from '../../context';
 import TimeColumn, { type Unit } from './TimeColumn';
-import { findValidateTime } from './util';
 
 function emptyDisabled<T>(): T[] {
   return [];
@@ -83,7 +82,15 @@ export default function TimePanelBody<DateType extends object = any>(
   const { onCellDblClick } = React.useContext(PickerHackContext);
 
   // ========================== Info ==========================
-  const a = useTimeInfo(value, props);
+  const [
+    mergedShowHour,
+    mergedShowMinute,
+    mergedShowSecond,
+    mergedShowMillisecond,
+    mergedShowMeridiem,
+
+    getValidTime,
+  ] = useTimeInfo(value, generateConfig, props);
 
   // ========================= Value ==========================
   // PickerValue will tell which one to align on the top
@@ -102,12 +109,12 @@ export default function TimePanelBody<DateType extends object = any>(
   const [millisecond, pickerMillisecond] = getUnitValue('getMillisecond');
   const meridiem = hour === null ? null : isAM(hour) ? 'am' : 'pm';
 
-  // ========================== Show ==========================
-  const mergedShowHour = checkShow(format, ['H', 'LT', 'LLL'], showHour);
-  const mergedShowMinute = checkShow(format, ['m', 'LT', 'LLL'], showMinute);
-  const mergedShowSecond = checkShow(format, ['s', 'LTS'], showSecond);
-  const mergedShowMillisecond = checkShow(format, ['SSS'], showMillisecond);
-  const mergedShowMeridiem = checkShow(format, ['a', 'A', 'LT', 'LLL'], use12Hours);
+  // // ========================== Show ==========================
+  // const mergedShowHour = checkShow(format, ['H', 'LT', 'LLL'], showHour);
+  // const mergedShowMinute = checkShow(format, ['m', 'LT', 'LLL'], showMinute);
+  // const mergedShowSecond = checkShow(format, ['s', 'LTS'], showSecond);
+  // const mergedShowMillisecond = checkShow(format, ['SSS'], showMillisecond);
+  // const mergedShowMeridiem = checkShow(format, ['a', 'A', 'LT', 'LLL'], use12Hours);
 
   // ======================== Disabled ========================
   const [
@@ -254,14 +261,7 @@ export default function TimePanelBody<DateType extends object = any>(
    * Check if time is validate or will match to validate one
    */
   const triggerChange = (nextDate: DateType) => {
-    const validateDate = findValidateTime(
-      nextDate,
-      () => rowHourUnits,
-      getMinuteUnits,
-      getSecondUnits,
-      getMillisecondUnits,
-      generateConfig,
-    );
+    const validateDate = getValidTime(nextDate);
 
     onSelect(validateDate);
   };
