@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
-import { PanelContext } from '../../context';
+import { usePanelContext } from '../../context';
 import useScrollTo from './useScrollTo';
 
 const SCROLL_DELAY = 300;
@@ -22,10 +22,10 @@ export interface TimeUnitColumnProps {
   changeOnScroll?: boolean;
 }
 
-export default function TimeColumn(props: TimeUnitColumnProps) {
+export default function TimeColumn<DateType extends object>(props: TimeUnitColumnProps) {
   const { units, value, optionalValue, type, onChange, onDblClick, changeOnScroll } = props;
 
-  const { prefixCls, cellRender, now, locale } = React.useContext(PanelContext);
+  const { prefixCls, cellRender, now, locale } = usePanelContext<DateType>();
 
   const panelPrefixCls = `${prefixCls}-time-panel`;
   const cellPrefixCls = `${prefixCls}-time-panel-cell`;

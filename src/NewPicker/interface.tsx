@@ -113,7 +113,7 @@ export interface CellRenderInfo<DateType> extends BaseInfo {
   subType?: 'hour' | 'minute' | 'second' | 'millisecond' | 'meridiem';
 }
 
-export type CellRender<DateType, CurrentType = DateType | number> = (
+export type CellRender<DateType, CurrentType = DateType | number | string> = (
   current: CurrentType,
   info: CellRenderInfo<DateType>,
 ) => React.ReactNode;
@@ -131,7 +131,7 @@ export interface DisabledTimes {
   disabledMilliSeconds?: (hour: number, minute: number, second: number) => number[];
 }
 
-export interface SharedTimeProps<DateType = any> {
+export interface SharedTimeProps<DateType extends object = any> {
   /** Only work in picker is `time` */
   format?: string;
   /** Only work in picker is `time` */
@@ -177,7 +177,10 @@ export interface SharedTimeProps<DateType = any> {
   changeOnScroll?: boolean;
 }
 
-export type RangeTimeProps<DateType = any> = Omit<SharedTimeProps<DateType>, 'defaultValue'> & {
+export type RangeTimeProps<DateType extends object = any> = Omit<
+  SharedTimeProps<DateType>,
+  'defaultValue'
+> & {
   defaultValue?: [DateType, DateType];
 };
 
@@ -194,7 +197,7 @@ export type LimitDate<DateType extends object = any> =
       from?: DateType;
     }) => DateType | null | undefined);
 
-export interface SharedPanelProps<DateType = any> {
+export interface SharedPanelProps<DateType extends object = any> {
   // Style
   prefixCls: string;
 
@@ -244,7 +247,7 @@ export interface SharedPanelProps<DateType = any> {
   showWeek?: boolean;
 }
 
-export type Components<DateType = any> = Partial<
+export type Components<DateType extends object = any> = Partial<
   Record<InternalMode, React.ComponentType<SharedPanelProps<DateType>>> & {
     button?: React.ComponentType<any> | string;
     input?: React.ComponentType<any> | string;

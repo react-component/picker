@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { formatValue, isInRange, isSame } from '../../utils/dateUtil';
-import { PanelContext, PickerHackContext } from './context';
+import { PickerHackContext, usePanelContext } from './context';
 
 export interface PanelBodyProps<DateType = any> {
   rowNum: number;
@@ -23,7 +23,7 @@ export interface PanelBodyProps<DateType = any> {
   rowClassName?: (date: DateType) => string;
 }
 
-export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType>) {
+export default function PanelBody<DateType extends object = any>(props: PanelBodyProps<DateType>) {
   const {
     rowNum,
     colNum,
@@ -49,7 +49,7 @@ export default function PanelBody<DateType = any>(props: PanelBodyProps<DateType
     values,
     locale,
     onSelect,
-  } = React.useContext(PanelContext);
+  } = usePanelContext<DateType>();
 
   const cellPrefixCls = `${prefixCls}-cell`;
 

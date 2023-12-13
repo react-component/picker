@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PanelContext, PickerHackContext } from './context';
+import { PickerHackContext, usePanelContext } from './context';
 
 const HIDDEN_STYLE: React.CSSProperties = {
   visibility: 'hidden',
@@ -18,7 +18,7 @@ export interface HeaderProps {
   children?: React.ReactNode;
 }
 
-function PanelHeader(props: HeaderProps) {
+function PanelHeader<DateType extends object>(props: HeaderProps) {
   const {
     onOffset,
     onSuperOffset,
@@ -32,7 +32,7 @@ function PanelHeader(props: HeaderProps) {
     children,
   } = props;
 
-  const { prefixCls } = React.useContext(PanelContext);
+  const { prefixCls } = usePanelContext<DateType>();
 
   const headerPrefixCls = `${prefixCls}-header`;
 

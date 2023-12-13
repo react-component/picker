@@ -3,7 +3,7 @@ import { formatValue } from '../../../../utils/dateUtil';
 import { leftPad } from '../../../../utils/miscUtil';
 import useTimeInfo from '../../../hooks/useTimeInfo';
 import type { SharedPanelProps, SharedTimeProps } from '../../../interface';
-import { PanelContext, PickerHackContext, type PanelContextProps } from '../../context';
+import { PickerHackContext, usePanelContext } from '../../context';
 import TimeColumn, { type Unit } from './TimeColumn';
 import { findValidateTime } from './util';
 
@@ -43,9 +43,11 @@ function generateUnits(
   return units;
 }
 
-export type TimePanelBodyProps<DateType = any> = SharedPanelProps<DateType>;
+export type TimePanelBodyProps<DateType extends object = any> = SharedPanelProps<DateType>;
 
-export default function TimePanelBody<DateType = any>(props: SharedTimeProps<DateType>) {
+export default function TimePanelBody<DateType extends object = any>(
+  props: SharedTimeProps<DateType>,
+) {
   const {
     format,
 
@@ -74,14 +76,14 @@ export default function TimePanelBody<DateType = any>(props: SharedTimeProps<Dat
   } = props;
 
   const { prefixCls, values, generateConfig, locale, onSelect, pickerValue } =
-    React.useContext<PanelContextProps<DateType>>(PanelContext);
+    usePanelContext<DateType>();
 
   const value = values?.[0] || null;
 
   const { onCellDblClick } = React.useContext(PickerHackContext);
 
   // ========================== Info ==========================
-  // const a = useTimeInfo();
+  const a = useTimeInfo(value, props);
 
   // ========================= Value ==========================
   // PickerValue will tell which one to align on the top

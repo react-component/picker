@@ -1,9 +1,9 @@
-import React from 'react';
+import * as React from 'react';
 import type { PanelMode, SharedPanelProps } from '../interface';
 
-export interface PanelContextProps<DateType = any>
+export interface PanelContextProps<DateType extends object = any>
   extends Pick<
-    SharedPanelProps,
+    SharedPanelProps<DateType>,
     | 'prefixCls'
     | 'disabledDate'
     | 'cellRender'
@@ -25,10 +25,14 @@ export interface PanelContextProps<DateType = any>
 /** Used for each single Panel. e.g. DatePanel */
 export const PanelContext = React.createContext<PanelContextProps>(null!);
 
+export function usePanelContext<DateType extends object = any>(): PanelContextProps<DateType> {
+  return React.useContext<PanelContextProps<DateType>>(PanelContext);
+}
+
 /**
  * Get shared props for the SharedPanelProps interface.
  */
-export function useInfo<DateType = any>(
+export function useInfo<DateType extends object = any>(
   props: SharedPanelProps<DateType>,
   panelType: PanelMode,
 ): [sharedProps: PanelContextProps<DateType>, now: DateType] {
