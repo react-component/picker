@@ -1,16 +1,24 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import type { GenerateConfig } from '../../../generate';
-import type { DisabledDate, InternalMode, PanelMode, SharedPickerProps } from '../../interface';
+import useTimeInfo from '../../hooks/useTimeInfo';
+import type {
+  DisabledDate,
+  InternalMode,
+  PanelMode,
+  RangeTimeProps,
+  SharedPickerProps,
+} from '../../interface';
 import PickerContext from '../context';
 
-export interface FooterProps<DateType = any> {
+export interface FooterProps<DateType extends object = any> {
   mode: PanelMode;
   internalMode: InternalMode;
   renderExtraFooter?: SharedPickerProps['renderExtraFooter'];
   showNow: boolean;
   generateConfig: GenerateConfig<DateType>;
   disabledDate: DisabledDate<DateType>;
+  showTime?: RangeTimeProps<DateType>;
 
   // Invalid
   /** From Footer component used only. Check if can OK button click */
@@ -33,6 +41,7 @@ export default function Footer(props: FooterProps) {
     internalMode,
     renderExtraFooter,
     showNow,
+    showTime,
     onSubmit,
     onOk,
     onNow,
@@ -44,19 +53,23 @@ export default function Footer(props: FooterProps) {
 
   const { prefixCls, locale, button: Button = 'button' } = React.useContext(PickerContext);
 
+  // >>> Now
+  const now = generateConfig.getNow();
+
+  const [getValidTime] = useTimeInfo(now, generateConfig, showTime);
+
   // ======================== Extra =========================
   const extraNode = renderExtraFooter?.(mode);
 
   // ======================== Ranges ========================
-  // >>> Now
-  const now = generateConfig.getNow();
   const nowDisabled = disabledDate(now, {
     type: mode,
   });
 
   const onInternalNow = () => {
     if (!nowDisabled) {
-      onNow(now);
+      const validateNow = getValidTime(now);
+      onNow(validateNow);
     }
   };
 

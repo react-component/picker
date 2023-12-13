@@ -61,9 +61,15 @@ export function getTimeConfig<Config extends object>(
   const { showTime, picker } = componentProps;
 
   if (showTime || picker === 'time') {
-    return showTime && typeof showTime === 'object'
-      ? showTime
-      : (pickTimeProps(componentProps) as Config);
+    const timeConfig =
+      showTime && typeof showTime === 'object'
+        ? showTime
+        : (pickTimeProps(componentProps) as Config);
+
+    return {
+      format: 'HH:mm:ss',
+      ...timeConfig,
+    };
   }
 
   return null;

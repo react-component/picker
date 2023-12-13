@@ -48,10 +48,11 @@ function generateUnits(
 export default function useTimeInfo<DateType extends object = any>(
   date: DateType,
   generateConfig: GenerateConfig<DateType>,
-  props: SharedTimeProps<DateType>,
+  props: SharedTimeProps<DateType> = {},
 ) {
   const {
-    format,
+    // Fallback if `showTime` is empty
+    format = '',
 
     // Show
     showHour,
@@ -72,7 +73,7 @@ export default function useTimeInfo<DateType extends object = any>(
     disabledHours,
     disabledMinutes,
     disabledSeconds,
-  } = props;
+  } = props || {};
 
   // ========================== Show ==========================
   const mergedShowHour = checkShow(format, ['H', 'LT', 'LLL'], showHour);
@@ -158,6 +159,9 @@ export default function useTimeInfo<DateType extends object = any>(
   };
 
   return [
+    // getValidTime
+    getValidTime,
+
     // Show columns
     mergedShowHour,
     mergedShowMinute,
@@ -170,8 +174,5 @@ export default function useTimeInfo<DateType extends object = any>(
     getMinuteUnits,
     getSecondUnits,
     getMillisecondUnits,
-
-    // getValidTime
-    getValidTime,
   ] as const;
 }

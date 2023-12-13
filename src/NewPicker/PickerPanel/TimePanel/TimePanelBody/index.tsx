@@ -28,6 +28,8 @@ export default function TimePanelBody<DateType extends object = any>(
 
   // ========================== Info ==========================
   const [
+    getValidTime,
+
     mergedShowHour,
     mergedShowMinute,
     mergedShowSecond,
@@ -38,8 +40,6 @@ export default function TimePanelBody<DateType extends object = any>(
     getMinuteUnits,
     getSecondUnits,
     getMillisecondUnits,
-
-    getValidTime,
   ] = useTimeInfo(value, generateConfig, props);
 
   // ========================= Value ==========================
