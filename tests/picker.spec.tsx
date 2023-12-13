@@ -620,15 +620,17 @@ describe('Picker.Basic', () => {
 
   describe('time step', () => {
     it('work with now', () => {
-      jest.setSystemTime(getDay('1990-09-03 00:09:00').valueOf());
+      jest.setSystemTime(getDay('1990-09-03 00:11:00').valueOf());
       const onCalendarChange = jest.fn();
       const { container } = render(
         <DayPicker onCalendarChange={onCalendarChange} picker="time" minuteStep={10} />,
       );
+
       openPicker(container);
       fireEvent.click(document.querySelector('.rc-picker-now > a'));
+
       expect(
-        isSame(onCalendarChange.mock.calls[0][0], '1990-09-03 00:00:59', 'second'),
+        isSame(onCalendarChange.mock.calls[0][0], '1990-09-03 00:10:00', 'second'),
       ).toBeTruthy();
       jest.setSystemTime(getDay('1990-09-03 00:00:00').valueOf());
     });

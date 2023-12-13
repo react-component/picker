@@ -16,9 +16,16 @@ export function findValidateTime<DateType>(
     const nextUnit = units.find((unit) => unit.value === nextValue);
 
     if (!nextUnit || nextUnit.disabled) {
-      const validateUnit = units.find((unit) => !unit.disabled);
-      nextValue = validateUnit!.value;
-      nextDate = generateConfig[setUnitValue](nextDate, nextValue);
+      // Find most closest unit
+      const validateUnits = units.filter((unit) => !unit.disabled);
+      const reverseEnabledUnits = [...validateUnits].reverse();
+      const validateUnit =
+        reverseEnabledUnits.find((unit) => unit.value <= nextValue) || validateUnits[0];
+
+      if (validateUnit) {
+        nextValue = validateUnit.value;
+        nextDate = generateConfig[setUnitValue](nextDate, nextValue);
+      }
     }
 
     return nextValue;
