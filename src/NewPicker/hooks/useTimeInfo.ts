@@ -165,6 +165,12 @@ export default function useTimeInfo<DateType extends object = any>(
     mergedShowMillisecond,
     mergedShowMeridiem,
 
+    // Units
+    rowHourUnits,
+    getMinuteUnits,
+    getSecondUnits,
+    getMillisecondUnits,
+
     // getValidTime
     getValidTime,
   ] as const;
