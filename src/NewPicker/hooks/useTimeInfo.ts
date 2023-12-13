@@ -1,3 +1,4 @@
+import { warning } from 'rc-util';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import { leftPad } from '../../utils/miscUtil';
@@ -74,6 +75,23 @@ export default function useTimeInfo<DateType extends object = any>(
     disabledMinutes,
     disabledSeconds,
   } = props || {};
+
+  // ======================== Warnings ========================
+  if (process.env.NODE_ENV !== 'production') {
+    const isHourStepValid = 24 % hourStep === 0;
+    const isMinuteStepValid = 60 % minuteStep === 0;
+    const isSecondStepValid = 60 % secondStep === 0;
+
+    warning(isHourStepValid, `\`hourStep\` ${hourStep} is invalid. It should be a factor of 24.`);
+    warning(
+      isMinuteStepValid,
+      `\`minuteStep\` ${minuteStep} is invalid. It should be a factor of 60.`,
+    );
+    warning(
+      isSecondStepValid,
+      `\`secondStep\` ${secondStep} is invalid. It should be a factor of 60.`,
+    );
+  }
 
   // ========================== Show ==========================
   const mergedShowHour = checkShow(format, ['H', 'LT', 'LLL'], showHour);

@@ -698,7 +698,7 @@ describe('Picker.Basic', () => {
         openPicker(container);
 
         const column = document.querySelector(
-          `.rc-picker-time-panel-column:nth-child(${index + 1})`,
+          `.rc-picker-time-panel-column-holder:nth-child(${index + 1})`,
         );
         expect(column).toBeTruthy();
 

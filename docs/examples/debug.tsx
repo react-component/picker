@@ -102,7 +102,7 @@ export default () => {
         // multiple
         // disabled
         picker="time"
-        minuteStep={20}
+        minuteStep={7.5}
         ref={singleRef}
         suffixIcon="🧶"
         onChange={(val, text) => {
