@@ -30,9 +30,25 @@ import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
 import SingleSelector from './Selector/SingleSelector';
 
-export interface BasePickerProps<DateType extends object>
+export interface PickerProps<DateType extends object = any>
   extends SharedPickerProps<DateType>,
     Omit<SharedTimeProps<DateType>, 'format' | 'defaultValue'> {
+  // Structure
+  id?: string;
+
+  /** Not support `time` or `datetime` picker */
+  multiple?: boolean;
+
+  // Value
+  value?: DateType | DateType[];
+  defaultValue?: DateType | DateType[];
+  onChange?: (date: DateType | DateType[], dateString: string | string[]) => void;
+  onCalendarChange?: (
+    date: DateType | DateType[],
+    dateString: string | string[],
+    info: BaseInfo,
+  ) => void;
+
   // Placeholder
   placeholder?: string;
 
@@ -71,21 +87,6 @@ export interface BasePickerProps<DateType extends object>
   mode?: PanelMode;
   onPanelChange?: (values: DateType, modes: PanelMode) => void;
 }
-
-export type PickerProps<DateType extends object = any> = BasePickerProps<DateType> & {
-  /** Not support `time` or `datetime` picker */
-  multiple?: boolean;
-
-  // Value
-  value?: DateType | DateType[];
-  defaultValue?: DateType | DateType[];
-  onChange?: (date: DateType | DateType[], dateString: string | string[]) => void;
-  onCalendarChange?: (
-    date: DateType | DateType[],
-    dateString: string | string[],
-    info: BaseInfo,
-  ) => void;
-};
 
 /** Internal usage. For cross function get same aligned props */
 export type ReplacedPickerProps<DateType extends object = any> = {
@@ -241,7 +242,7 @@ function Picker<DateType extends object = any>(
   const mergedShowNow = useShowNow(picker, mergedMode, showNow, showToday);
 
   // ======================== Value =========================
-  const onInternalChange: PickerProps['onChange'] =
+  const onInternalChange: PickerProps<DateType>['onChange'] =
     onChange &&
     ((dates, dateStrings) => {
       onChange(pickerParam(dates), pickerParam(dateStrings));

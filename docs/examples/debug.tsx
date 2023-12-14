@@ -101,6 +101,10 @@ export default () => {
         {...sharedLocale}
         role="good"
         picker="time"
+        // showTime={{
+        //   defaultValue: dayjs('2000-01-01 01:03:05.800'),
+        // }}
+        pickerValue={dayjs('2000-01-01 01:03:05.800')}
         ref={singleRef}
         suffixIcon="🧶"
         onChange={(val, text) => {
@@ -118,7 +122,7 @@ export default () => {
         style={{ width: 300 }}
       />
       <br />
-      <RangePicker
+      {/* <RangePicker
         {...sharedLocale}
         value={rangeValue}
         disabledDate={() => true}
@@ -157,7 +161,7 @@ export default () => {
           start: 'inputStart',
           end: 'inputEnd',
         }}
-      />
+      /> */}
       <br />
 
       <button

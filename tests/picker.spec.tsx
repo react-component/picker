@@ -770,8 +770,6 @@ describe('Picker.Basic', () => {
     expect(onClick).toHaveBeenCalled();
   });
 
-  return;
-
   it('not open when disabled', () => {
     const { rerender } = render(<DayPicker disabled />);
     // document.querySelector('.rc-picker').simulate('click');
@@ -794,31 +792,32 @@ describe('Picker.Basic', () => {
     expect(isOpen()).toBeFalsy();
   });
 
-  it('defaultOpenValue in timePicker', () => {
-    resetWarned();
-    const onChange = jest.fn();
-    const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  // Removed `defaultOpenValue`
+  // it('defaultOpenValue in timePicker', () => {
+  //   resetWarned();
+  //   const onChange = jest.fn();
+  //   const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-    const { container } = render(
-      <DayPicker
-        picker="time"
-        defaultOpenValue={getDay('2000-01-01 00:10:23')}
-        onChange={onChange}
-      />,
-    );
+  //   const { container } = render(
+  //     <DayPicker
+  //       picker="time"
+  //       defaultOpenValue={getDay('2000-01-01 00:10:23')}
+  //       onChange={onChange}
+  //     />,
+  //   );
 
-    expect(errSpy).toHaveBeenCalledWith(
-      'Warning: `defaultOpenValue` may confuse user for the current value status. Please use `defaultValue` instead.',
-    );
+  //   expect(errSpy).toHaveBeenCalledWith(
+  //     'Warning: `defaultOpenValue` may confuse user for the current value status. Please use `defaultValue` instead.',
+  //   );
 
-    openPicker(container);
-    // document.querySelector('.rc-picker-ok button').simulate('click');
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+  //   openPicker(container);
+  //   // document.querySelector('.rc-picker-ok button').simulate('click');
+  //   fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
-    expect(isSame(onChange.mock.calls[0][0], '2000-01-01 00:10:23')).toBeTruthy();
+  //   expect(isSame(onChange.mock.calls[0][0], '2000-01-01 00:10:23')).toBeTruthy();
 
-    errSpy.mockRestore();
-  });
+  //   errSpy.mockRestore();
+  // });
 
   it('close to reset', () => {
     const { container } = render(<DayPicker defaultValue={getDay('2000-01-01')} />);
@@ -859,6 +858,8 @@ describe('Picker.Basic', () => {
     const { container } = render(<DayPicker id="light" />);
     expect(container.querySelector('input').id).toEqual('light');
   });
+
+  return;
 
   it('dateRender', () => {
     render(<DayPicker open dateRender={(date) => date.format('YYYY-MM-DD')} />);
