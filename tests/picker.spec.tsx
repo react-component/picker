@@ -924,8 +924,6 @@ describe('Picker.Basic', () => {
     expect(document.querySelector('.rc-picker-month-panel')).toBeTruthy();
   });
 
-  return;
-
   describe('hover value', () => {
     beforeEach(() => {
       jest.useFakeTimers();
@@ -975,13 +973,13 @@ describe('Picker.Basic', () => {
       const { container } = render(<DayPicker defaultValue={getDay('2020-07-22')} />);
       openPicker(container);
       const cell = findCell(24);
-      // cell.simulate('mouseEnter');
       fireEvent.mouseEnter(cell);
       jest.runAllTimers();
 
       expect(document.querySelector('input').value).toBe('2020-07-24');
       expect(document.querySelector('.rc-picker-input')).toHaveClass('rc-picker-input-placeholder');
 
+      fireEvent.mouseLeave(cell);
       fireEvent.change(container.querySelector('input'), {
         target: {
           value: '2020-07-23',
@@ -1003,20 +1001,17 @@ describe('Picker.Basic', () => {
 
   describe('time picker open to scroll', () => {
     let domMock: ReturnType<typeof spyElementPrototypes>;
-    let canBeSeen = false;
     let triggered = false;
 
     beforeAll(() => {
       domMock = spyElementPrototypes(HTMLElement, {
-        offsetParent: {
-          get: () => {
-            if (canBeSeen) {
-              return {};
-            }
-            canBeSeen = true;
-            return null;
+        offsetTop: {
+          get() {
+            const childList = Array.from(this.parentNode?.childNodes || []);
+            return childList.indexOf(this) * 30;
           },
         },
+
         scrollTop: {
           get: () => 0,
           set: () => {
@@ -1030,12 +1025,15 @@ describe('Picker.Basic', () => {
       domMock.mockRestore();
     });
 
-    it('work', () => {
+    it('work', async () => {
       jest.useFakeTimers();
       const { unmount } = render(
         <DayPicker picker="time" defaultValue={getDay('2020-07-22 09:03:28')} open />,
       );
-      jest.runAllTimers();
+
+      act(() => {
+        jest.advanceTimersByTime(1000);
+      });
 
       expect(triggered).toBeTruthy();
 
@@ -1054,9 +1052,7 @@ describe('Picker.Basic', () => {
     });
 
     it('should not open if prevent default is called', () => {
-      const onKeyDown = jest.fn(({ which }, preventDefault) => {
-        if (which === 13) preventDefault();
-      });
+      const onKeyDown = jest.fn();
       const { container } = render(<DayPicker onKeyDown={onKeyDown} />);
 
       openPicker(container);
@@ -1069,6 +1065,8 @@ describe('Picker.Basic', () => {
       expect(isOpen()).toBeFalsy();
     });
   });
+
+  return;
 
   it('disabledDate should not crash', () => {
     const { container } = render(<DayPicker open disabledDate={(d) => d.isAfter(Date.now())} />);

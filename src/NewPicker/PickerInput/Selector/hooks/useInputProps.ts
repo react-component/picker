@@ -26,6 +26,7 @@ export default function useInputProps<DateType extends object = any>(
     | 'activeHelp'
     | 'name'
     | 'autoComplete'
+    | 'open'
   > & {
     id?: string | string[];
     value?: DateType[];
@@ -54,6 +55,7 @@ export default function useInputProps<DateType extends object = any>(
     onBlur,
     onInputChange,
     onInvalid,
+    open,
     onOpenChange,
     onKeyDown,
     onChange,
@@ -164,7 +166,7 @@ export default function useInputProps<DateType extends object = any>(
       onSubmit,
 
       // Get validate text value
-      onChange: (text) => {
+      onChange: (text: string) => {
         onInputChange();
 
         const parsed = validateFormat(text);
@@ -184,12 +186,17 @@ export default function useInputProps<DateType extends object = any>(
           index,
         });
       },
-      onKeyDown: (event) => {
+      onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => {
         switch (event.key) {
           case 'Escape':
             onOpenChange(false, {
               index,
             });
+            break;
+          case 'Enter':
+            if (!open) {
+              onOpenChange(true);
+            }
             break;
         }
 

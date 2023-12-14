@@ -450,6 +450,7 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
   changeOnBlur?: boolean;
 
   // Open
+  open: boolean;
   /** Trigger when need open by selector */
   onOpenChange: OnOpenChange;
 

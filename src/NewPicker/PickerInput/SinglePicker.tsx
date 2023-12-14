@@ -654,6 +654,7 @@ function Picker<DateType extends object = any>(
           // Disabled
           disabled={disabled}
           // Open
+          open={mergedOpen}
           onOpenChange={triggerOpen}
           // Click
           onClick={onSelectorClick}

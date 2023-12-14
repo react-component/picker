@@ -117,7 +117,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   }, [maskFormat, focusCellIndex, helped]);
 
   // ======================== Modify ========================
-  // When input modify content, trigger `onText` if is not the format
+  // When input modify content, trigger `onHelp` if is not the format
   const onModify = (text: string) => {
     if (text && text !== format && text !== value) {
       onHelp();
