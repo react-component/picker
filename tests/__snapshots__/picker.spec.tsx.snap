@@ -48,10 +48,8 @@ exports[`Picker.Basic panelRender 1`] = `
     class="rc-picker-input"
   >
     <input
+      aria-invalid="false"
       autocomplete="off"
-      readonly=""
-      size="12"
-      title=""
       value=""
     />
   </div>

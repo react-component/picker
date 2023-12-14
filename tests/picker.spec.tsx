@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-loop-func */
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
-import type { Moment } from 'moment';
+import { Dayjs } from 'dayjs';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -859,8 +859,6 @@ describe('Picker.Basic', () => {
     expect(container.querySelector('input').id).toEqual('light');
   });
 
-  return;
-
   it('dateRender', () => {
     render(<DayPicker open dateRender={(date) => date.format('YYYY-MM-DD')} />);
     const tdList = document.querySelectorAll('tbody td');
@@ -884,7 +882,7 @@ describe('Picker.Basic', () => {
       <DayPicker
         allowClear
         defaultValue={getDay('2020-09-17')}
-        format={[(val: Moment) => `custom format:${val.format('YYYYMMDD')}`, 'YYYY-MM-DD']}
+        format={[(val: Dayjs) => `custom format:${val.format('YYYYMMDD')}`, 'YYYY-MM-DD']}
       />,
     );
     expect(document.querySelector('input')).toHaveAttribute('readOnly');
@@ -925,6 +923,8 @@ describe('Picker.Basic', () => {
     expect(document.querySelector('.rc-picker-week-panel')).toBeFalsy();
     expect(document.querySelector('.rc-picker-month-panel')).toBeTruthy();
   });
+
+  return;
 
   describe('hover value', () => {
     beforeEach(() => {
