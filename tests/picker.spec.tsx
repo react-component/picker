@@ -1052,8 +1052,10 @@ describe('Picker.Basic', () => {
     });
 
     it('should not open if prevent default is called', () => {
-      const onKeyDown = jest.fn(({ which }, preventDefault) => {
-        console.log('--->>>', which, preventDefault);
+      const onKeyDown = jest.fn((event: React.KeyboardEvent) => {
+        if (event.which === 13) {
+          event.preventDefault();
+        }
       });
       const { container } = render(<DayPicker onKeyDown={onKeyDown} />);
 
@@ -1063,9 +1065,8 @@ describe('Picker.Basic', () => {
       keyDown(KeyCode.ESC);
       expect(onKeyDown).toHaveBeenCalled();
       expect(isOpen()).toBeFalsy();
-      onKeyDown.mockReset();
+      onKeyDown.mockClear();
 
-      console.log('???');
       keyDown(KeyCode.ENTER);
       expect(onKeyDown).toHaveBeenCalled();
       expect(isOpen()).toBeFalsy();

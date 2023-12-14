@@ -187,20 +187,22 @@ export default function useInputProps<DateType extends object = any>(
         });
       },
       onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => {
-        switch (event.key) {
-          case 'Escape':
-            onOpenChange(false, {
-              index,
-            });
-            break;
-          case 'Enter':
-            if (!open) {
-              onOpenChange(true);
-            }
-            break;
-        }
-
         onKeyDown?.(event);
+
+        if (!event.defaultPrevented) {
+          switch (event.key) {
+            case 'Escape':
+              onOpenChange(false, {
+                index,
+              });
+              break;
+            case 'Enter':
+              if (!open) {
+                onOpenChange(true);
+              }
+              break;
+          }
+        }
       },
 
       // ============ Post Props ============
