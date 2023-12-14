@@ -387,6 +387,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
       <Component
         ref={inputRef}
         aria-invalid={invalid}
+        autoComplete="off"
         {...restProps}
         onKeyDown={onSharedKeyDown}
         onBlur={onSharedBlur}
@@ -395,7 +396,6 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
         // Value
         value={inputValue}
         onChange={onInternalChange}
-        autoComplete="off"
       />
       <Icon type="suffix" icon={suffixIcon} />
       {clearIcon}

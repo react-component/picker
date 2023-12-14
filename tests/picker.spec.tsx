@@ -723,13 +723,11 @@ describe('Picker.Basic', () => {
     expect(container).toMatchSnapshot();
   });
 
-  return;
-
   it('support name & autoComplete prop', () => {
-    const { container } = render(<DayPicker name="bamboo" autoComplete="off" />);
+    const { container } = render(<DayPicker name="bamboo" autoComplete="on" />);
 
     expect(container.querySelector('input')).toHaveAttribute('name', 'bamboo');
-    expect(container.querySelector('input')).toHaveAttribute('autoComplete', 'off');
+    expect(container.querySelector('input')).toHaveAttribute('autoComplete', 'on');
   });
 
   it('blur should reset invalidate text', () => {
@@ -743,6 +741,8 @@ describe('Picker.Basic', () => {
     closePicker(container);
     expect(document.querySelector('input').value).toEqual('');
   });
+
+  return;
 
   it('should render correctly in rtl', () => {
     const { container } = render(<DayPicker direction="rtl" allowClear />);

@@ -24,6 +24,8 @@ export default function useInputProps<DateType extends object = any>(
     | 'onKeyDown'
     | 'onChange'
     | 'activeHelp'
+    | 'name'
+    | 'autoComplete'
   > & {
     id?: string | string[];
     value?: DateType[];
@@ -56,6 +58,8 @@ export default function useInputProps<DateType extends object = any>(
     onKeyDown,
     onChange,
     activeHelp,
+    name,
+    autoComplete,
 
     id,
     value,
@@ -116,7 +120,7 @@ export default function useInputProps<DateType extends object = any>(
       data: true,
     });
 
-    return {
+    const inputProps = {
       ...pickedAttrs,
 
       // ============== Shared ==============
@@ -128,6 +132,10 @@ export default function useInputProps<DateType extends object = any>(
 
       required,
       'aria-required': ariaRequired,
+
+      name,
+
+      autoComplete,
 
       // ============= By Index =============
       id: getProp(id),
@@ -193,6 +201,17 @@ export default function useInputProps<DateType extends object = any>(
         valueTexts,
       }),
     };
+
+    // ============= CleanEmpty =============
+    const cleanProps = { ...inputProps };
+
+    Object.keys(cleanProps).forEach((key) => {
+      if (cleanProps[key] === undefined) {
+        delete cleanProps[key];
+      }
+    });
+
+    return cleanProps;
   };
 
   return getInputProps;
