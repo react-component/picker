@@ -67,13 +67,11 @@ exports[`Picker.Basic pass data- & aria- & role 1`] = `
       class="rc-picker-input"
     >
       <input
+        aria-invalid="false"
         aria-label="3334"
         autocomplete="off"
         data-test="233"
-        readonly=""
         role="search"
-        size="12"
-        title=""
         value=""
       />
     </div>
