@@ -2,8 +2,7 @@
 
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import type { Dayjs } from 'dayjs';
-import type { Moment } from 'moment';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
@@ -1025,7 +1024,7 @@ describe('Picker.Range', () => {
         cellRender={(date, info) => {
           range = info.range;
           if (typeof date !== 'number') {
-            return date.format('YYYY-MM-DD');
+            return (date as Dayjs).format('YYYY-MM-DD');
           }
         }}
       />,
@@ -1598,10 +1597,9 @@ describe('Picker.Range', () => {
     const { container } = render(
       <DayRangePicker onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />,
     );
-    // wrapper.simulate('mouseenter');
     fireEvent.mouseEnter(container.querySelector('.rc-picker'));
     expect(handleMouseEnter).toHaveBeenCalled();
-    // wrapper.simulate('mouseleave');
+
     fireEvent.mouseLeave(container.querySelector('.rc-picker'));
     expect(handleMouseLeave).toHaveBeenCalled();
   });
@@ -1609,8 +1607,8 @@ describe('Picker.Range', () => {
   // https://github.com/ant-design/ant-design/issues/31334
   it('keyboard should not trigger on disabledDate', () => {
     const onCalendarChange = jest.fn();
-    const now = moment();
-    const disabledDate = (current: Moment) => {
+    const now = dayjs();
+    const disabledDate = (current: Dayjs) => {
       return current.diff(now, 'days') > 1 || current.diff(now, 'days') < -1;
     };
     const { container } = render(

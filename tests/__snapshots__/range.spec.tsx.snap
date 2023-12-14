@@ -96,7 +96,6 @@ exports[`Picker.Range panelRender 1`] = `
   <div>
     <div
       class="rc-picker rc-picker-range"
-      open=""
     >
       <div
         class="rc-picker-input rc-picker-input-active"

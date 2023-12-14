@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
 import type { SelectorProps, SelectorRef } from '../../interface';
 import PickerContext from '../context';
 import useInputProps from './hooks/useInputProps';
+import useRootProps from './hooks/useRootProps';
 import { ClearIcon } from './Icon';
 import Input, { type InputRef } from './Input';
 
@@ -106,6 +106,9 @@ function SingleSelector<DateType extends object = any>(
     },
   }));
 
+  // ======================== Props =========================
+  const rootProps = useRootProps(restProps);
+
   // ======================== Inputs ========================
   const getInputProps = useInputProps<DateType>(props, ({ valueTexts }) => ({
     value: valueTexts[0] || '',
@@ -117,9 +120,7 @@ function SingleSelector<DateType extends object = any>(
   // ======================== Render ========================
   return (
     <div
-      // {...pickAttrs(restProps, {
-      //   attr: true,
-      // })}
+      {...rootProps}
       className={classNames(
         prefixCls,
         {

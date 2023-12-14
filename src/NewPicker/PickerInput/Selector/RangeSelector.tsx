@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import ResizeObserver from 'rc-resize-observer';
 import { useEvent } from 'rc-util';
-import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
 import type { SelectorProps, SelectorRef } from '../../interface';
 import PickerContext from '../context';
 import useInputProps from './hooks/useInputProps';
+import useRootProps from './hooks/useRootProps';
 import Icon, { ClearIcon } from './Icon';
 import Input, { type InputRef } from './Input';
 
@@ -144,6 +144,9 @@ function RangeSelector<DateType extends object = any>(
     },
   }));
 
+  // ======================== Props =========================
+  const rootProps = useRootProps(restProps);
+
   // ===================== Placeholder ======================
   const mergedPlaceholder = React.useMemo<[string, string]>(
     () => (Array.isArray(placeholder) ? placeholder : [placeholder, placeholder]),
@@ -205,9 +208,7 @@ function RangeSelector<DateType extends object = any>(
   return (
     <ResizeObserver onResize={syncActiveOffset}>
       <div
-        // {...pickAttrs(restProps, {
-        //   attr: true,
-        // })}
+        {...rootProps}
         className={classNames(
           prefixCls,
           `${prefixCls}-range`,
