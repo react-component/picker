@@ -88,10 +88,8 @@ exports[`Picker.Basic should render correctly in rtl 1`] = `
       class="rc-picker-input"
     >
       <input
+        aria-invalid="false"
         autocomplete="off"
-        readonly=""
-        size="12"
-        title=""
         value=""
       />
     </div>

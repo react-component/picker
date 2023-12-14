@@ -746,8 +746,6 @@ describe('Picker.Basic', () => {
     expect(document.querySelector('input').value).toEqual('');
   });
 
-  return;
-
   it('should render correctly in rtl', () => {
     const { container } = render(<DayPicker direction="rtl" allowClear />);
     expect(container).toMatchSnapshot();
@@ -771,6 +769,8 @@ describe('Picker.Basic', () => {
 
     expect(onClick).toHaveBeenCalled();
   });
+
+  return;
 
   it('not open when disabled', () => {
     const { rerender } = render(<DayPicker disabled />);
