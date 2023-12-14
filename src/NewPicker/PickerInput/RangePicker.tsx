@@ -149,6 +149,7 @@ function RangePicker<DateType extends object = any>(
     defaultValue,
     value,
     needConfirm,
+    onKeyDown,
 
     // Disabled
     disabled,
@@ -593,6 +594,8 @@ function RangePicker<DateType extends object = any>(
     if (event.key === 'Tab') {
       triggerPartConfirm(null, true);
     }
+
+    onKeyDown?.(event);
   };
 
   // ======================= Context ========================

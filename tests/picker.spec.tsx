@@ -1052,21 +1052,25 @@ describe('Picker.Basic', () => {
     });
 
     it('should not open if prevent default is called', () => {
-      const onKeyDown = jest.fn();
+      const onKeyDown = jest.fn(({ which }, preventDefault) => {
+        console.log('--->>>', which, preventDefault);
+      });
       const { container } = render(<DayPicker onKeyDown={onKeyDown} />);
 
       openPicker(container);
       expect(isOpen()).toBeTruthy();
 
       keyDown(KeyCode.ESC);
+      expect(onKeyDown).toHaveBeenCalled();
       expect(isOpen()).toBeFalsy();
+      onKeyDown.mockReset();
 
+      console.log('???');
       keyDown(KeyCode.ENTER);
+      expect(onKeyDown).toHaveBeenCalled();
       expect(isOpen()).toBeFalsy();
     });
   });
-
-  return;
 
   it('disabledDate should not crash', () => {
     const { container } = render(<DayPicker open disabledDate={(d) => d.isAfter(Date.now())} />);
@@ -1084,16 +1088,17 @@ describe('Picker.Basic', () => {
       <DayPicker
         onChange={onChange}
         open
-        presets={[{ label: 'Bamboo', value: moment('2000-09-03') }]}
+        presets={[{ label: 'Bamboo', value: getDay('2000-09-03') }]}
       />,
     );
 
     expect(document.querySelector('.rc-picker-presets li').textContent).toBe('Bamboo');
-    // document.querySelector('.rc-picker-presets li').simulate('click');
     fireEvent.click(document.querySelector('.rc-picker-presets li'));
 
     expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('2000-09-03');
   });
+
+  return;
 
   it('presets support callback', () => {
     const onChange = jest.fn();

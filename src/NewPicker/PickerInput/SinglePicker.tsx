@@ -117,6 +117,7 @@ function Picker<DateType extends object = any>(
     value,
     needConfirm,
     onChange,
+    onKeyDown,
 
     // Disabled
     disabled,
@@ -570,6 +571,8 @@ function Picker<DateType extends object = any>(
     if (event.key === 'Tab') {
       triggerConfirm();
     }
+
+    onKeyDown?.(event);
   };
 
   // ======================= Context ========================

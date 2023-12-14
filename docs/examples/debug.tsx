@@ -120,6 +120,9 @@ export default () => {
           console.log('🎼 Panel Change:', val, val?.format('YYYY-MM-DD'), info);
         }}
         style={{ width: 300 }}
+        onKeyDown={(e) => {
+          console.log('🎬 KeyDown:', e);
+        }}
       />
       <br />
       {/* <RangePicker
