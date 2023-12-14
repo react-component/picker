@@ -202,16 +202,14 @@ export default function useInputProps<DateType extends object = any>(
       }),
     };
 
-    // ============= CleanEmpty =============
-    const cleanProps = { ...inputProps };
-
-    Object.keys(cleanProps).forEach((key) => {
-      if (cleanProps[key] === undefined) {
-        delete cleanProps[key];
+    // ============== Clean Up ==============
+    Object.keys(inputProps).forEach((key) => {
+      if (inputProps[key] === undefined) {
+        delete inputProps[key];
       }
     });
 
-    return cleanProps;
+    return inputProps;
   };
 
   return getInputProps;

@@ -99,11 +99,8 @@ export default () => {
       <SinglePicker
         // Shared
         {...sharedLocale}
-        // multiple
-        // disabled
         role="good"
         picker="time"
-        minuteStep={7.5}
         ref={singleRef}
         suffixIcon="🧶"
         onChange={(val, text) => {
@@ -121,7 +118,7 @@ export default () => {
         style={{ width: 300 }}
       />
       <br />
-      {/* <RangePicker
+      <RangePicker
         {...sharedLocale}
         value={rangeValue}
         disabledDate={() => true}
@@ -160,7 +157,7 @@ export default () => {
           start: 'inputStart',
           end: 'inputEnd',
         }}
-      /> */}
+      />
       <br />
 
       <button

@@ -23,6 +23,7 @@ import {
   isSame,
   openPicker,
   selectCell,
+  waitFakeTimer,
 } from './util/commonUtil';
 
 const fakeTime = getDay('1990-09-03 00:00:00').valueOf();
@@ -730,7 +731,7 @@ describe('Picker.Basic', () => {
     expect(container.querySelector('input')).toHaveAttribute('autoComplete', 'on');
   });
 
-  it('blur should reset invalidate text', () => {
+  it('blur should reset invalidate text', async () => {
     const { container } = render(<DayPicker />);
     openPicker(container);
     fireEvent.change(container.querySelector('input'), {
@@ -739,6 +740,9 @@ describe('Picker.Basic', () => {
       },
     });
     closePicker(container);
+
+    await waitFakeTimer();
+
     expect(document.querySelector('input').value).toEqual('');
   });
 

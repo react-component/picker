@@ -112,6 +112,7 @@ function SingleSelector<DateType extends object = any>(
   // ======================== Inputs ========================
   const getInputProps = useInputProps<DateType>(props, ({ valueTexts }) => ({
     value: valueTexts[0] || '',
+    active: focused,
   }));
 
   // ======================== Clear =========================

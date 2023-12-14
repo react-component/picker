@@ -63,9 +63,9 @@ export default function useTimeInfo<DateType extends object = any>(
     use12Hours,
 
     // Steps
-    hourStep,
-    minuteStep,
-    secondStep,
+    hourStep = 1,
+    minuteStep = 1,
+    secondStep = 1,
     millisecondStep = 100,
 
     // Disabled
