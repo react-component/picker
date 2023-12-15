@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import type { GenerateConfig } from '../../../generate';
-import useTimeInfo from '../../hooks/useTimeInfo';
 import type {
   DisabledDate,
   InternalMode,
@@ -41,7 +40,6 @@ export default function Footer(props: FooterProps) {
     internalMode,
     renderExtraFooter,
     showNow,
-    showTime,
     onSubmit,
     onOk,
     onNow,
@@ -56,8 +54,6 @@ export default function Footer(props: FooterProps) {
   // >>> Now
   const now = generateConfig.getNow();
 
-  const [getValidTime] = useTimeInfo(now, generateConfig, showTime);
-
   // ======================== Extra =========================
   const extraNode = renderExtraFooter?.(mode);
 
@@ -68,8 +64,7 @@ export default function Footer(props: FooterProps) {
 
   const onInternalNow = () => {
     if (!nowDisabled) {
-      const validateNow = getValidTime(now);
-      onNow(validateNow);
+      onNow(now);
     }
   };
 

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import ResizeObserver, { type ResizeObserverProps } from 'rc-resize-observer';
 import * as React from 'react';
 import { toArray } from '../../../utils/miscUtil';
+import useTimeInfo from '../../hooks/useTimeInfo';
 import type { SharedPickerProps, ValueDate } from '../../interface';
 import PickerContext from '../context';
 import Footer, { type FooterProps } from './Footer';
@@ -33,10 +34,15 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
 
 export default function Popup<DateType extends object = any>(props: PopupProps<DateType>) {
   const {
+    generateConfig,
+
     panelRender,
     internalMode,
     picker,
     showNow,
+
+    // Time
+    showTime,
 
     // Range
     range,
@@ -58,6 +64,9 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     // Change
     value,
     isInvalid,
+
+    // Now
+    onNow,
   } = props;
 
   const { prefixCls } = React.useContext(PickerContext);
@@ -67,6 +76,14 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
 
   // ========================= Refs =========================
   const wrapperRef = React.useRef<HTMLDivElement>(null);
+
+  // ===================== TimeValidate =====================
+  const [getValidTime] = useTimeInfo(generateConfig, showTime, generateConfig.getNow());
+
+  // ========================= Now ==========================
+  const onInternalNow = (date: DateType) => {
+    onNow(getValidTime(date));
+  };
 
   // ======================== Offset ========================
   const [containerWidth, setContainerWidth] = React.useState<number>(0);
@@ -113,7 +130,12 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
       />
       <div>
         <PopupPanel {...props} />
-        <Footer {...props} showNow={multiple ? false : showNow} invalid={disableSubmit} />
+        <Footer
+          {...props}
+          showNow={multiple ? false : showNow}
+          invalid={disableSubmit}
+          onNow={onInternalNow}
+        />
       </div>
     </div>
   );

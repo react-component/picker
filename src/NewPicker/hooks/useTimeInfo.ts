@@ -47,9 +47,9 @@ function generateUnits(
  * Parse time props to get util info
  */
 export default function useTimeInfo<DateType extends object = any>(
-  date: DateType,
   generateConfig: GenerateConfig<DateType>,
   props: SharedTimeProps<DateType> = {},
+  date?: DateType,
 ) {
   const {
     // Fallback if `showTime` is empty
@@ -101,21 +101,26 @@ export default function useTimeInfo<DateType extends object = any>(
   const mergedShowMeridiem = checkShow(format, ['a', 'A', 'LT', 'LLL'], use12Hours);
 
   // ======================== Disabled ========================
+  const getDisabledTimes = React.useCallback(
+    (targetDate: DateType) => {
+      const disabledConfig = disabledTime?.(targetDate) || {};
+
+      return [
+        disabledConfig.disabledHours || disabledHours || emptyDisabled,
+        disabledConfig.disabledMinutes || disabledMinutes || emptyDisabled,
+        disabledConfig.disabledSeconds || disabledSeconds || emptyDisabled,
+        disabledConfig.disabledMilliSeconds || emptyDisabled,
+      ] as const;
+    },
+    [disabledTime, disabledHours, disabledMinutes, disabledSeconds],
+  );
+
   const [
     mergedDisabledHours,
     mergedDisabledMinutes,
     mergedDisabledSeconds,
     mergedDisabledMilliseconds,
-  ] = React.useMemo(() => {
-    const disabledConfig = disabledTime?.(date) || {};
-
-    return [
-      disabledConfig.disabledHours || disabledHours || emptyDisabled,
-      disabledConfig.disabledMinutes || disabledMinutes || emptyDisabled,
-      disabledConfig.disabledSeconds || disabledSeconds || emptyDisabled,
-      disabledConfig.disabledMilliSeconds || emptyDisabled,
-    ];
-  }, [date, disabledTime, disabledHours, disabledMinutes, disabledSeconds]);
+  ] = React.useMemo(() => getDisabledTimes(date), [date, getDisabledTimes]);
 
   // ========================= Column =========================
   const rowHourUnits = React.useMemo(() => {

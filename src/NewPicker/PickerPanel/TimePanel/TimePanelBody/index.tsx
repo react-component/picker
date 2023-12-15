@@ -40,7 +40,7 @@ export default function TimePanelBody<DateType extends object = any>(
     getMinuteUnits,
     getSecondUnits,
     getMillisecondUnits,
-  ] = useTimeInfo(value, generateConfig, props);
+  ] = useTimeInfo(generateConfig, props, value);
 
   // ========================= Value ==========================
   // PickerValue will tell which one to align on the top
