@@ -460,8 +460,6 @@ describe('Picker.Panel', () => {
     expect(container.querySelector('tbody')).toMatchSnapshot();
   });
 
-  return;
-
   describe('start weekday should be correct', () => {
     [
       { locale: zhCN, startDate: '30' },
@@ -489,26 +487,12 @@ describe('Picker.Panel', () => {
       });
     });
 
-    it('update firstDayOfWeek', () => {
-      const defaultFirstDay = dayjs(enUS.locale).localeData().firstDayOfWeek();
-      dayjs.updateLocale(enUS.locale, {
-        week: {
-          dow: 5,
-        } as any,
-      });
-      expect(defaultFirstDay).toEqual(0);
+    it('correct firstDayOfWeek', () => {
+      const { container, rerender } = render(<DayPickerPanel locale={enUS} />);
+      expect(container.querySelector('.rc-picker-cell-inner').textContent).toEqual('26');
 
-      const { container } = render(
-        <DayPickerPanel defaultValue={getDay('2020-04-02')} locale={enUS} />,
-      );
-
-      expect(container.querySelector('td').textContent).toEqual('27');
-
-      dayjs.updateLocale(enUS.locale, {
-        week: {
-          dow: defaultFirstDay,
-        } as any,
-      });
+      rerender(<DayPickerPanel locale={zhCN} />);
+      expect(container.querySelector('.rc-picker-cell-inner').textContent).toEqual('27');
     });
   });
 
@@ -553,6 +537,8 @@ describe('Picker.Panel', () => {
     expect(container.querySelector(`.rc-picker-time-panel`)).toBeTruthy();
     expect(container).toMatchSnapshot();
   });
+  return;
+
   supportCellRenderPicker.forEach((picker) => {
     it(`override cell with cellRender in ${picker}`, () => {
       const App = () => (
