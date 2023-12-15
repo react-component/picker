@@ -150,9 +150,9 @@ export default () => {
         // Shared
         {...sharedLocale}
         // changeOnBlur={false}
-        showTime={{
-          disabledHours: () => [0, 1, 2, 3, 4, 5],
-        }}
+        // showTime={{
+        //   disabledHours: () => [0, 1, 2, 3, 4, 5],
+        // }}
         presets={[
           {
             label: 'Good',
@@ -179,7 +179,7 @@ export default () => {
         }}
       />
       <br />
-      <RangePicker
+      {/* <RangePicker
         {...sharedLocale}
         value={rangeValue}
         disabledDate={() => true}
@@ -219,7 +219,7 @@ export default () => {
           start: 'inputStart',
           end: 'inputEnd',
         }}
-      />
+      /> */}
       <br />
 
       <button
@@ -231,7 +231,7 @@ export default () => {
       </button>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        <PickerPanel
+        {/* <PickerPanel
           generateConfig={dayjsGenerateConfig}
           locale={zhCN}
           value={value}
@@ -245,7 +245,7 @@ export default () => {
             console.error('1');
             console.log('🎲 PanelValue Change:', panelValue, mode);
           }}
-        />
+        /> */}
         {/* <CellPicker
           picker="time"
           locale={{

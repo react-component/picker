@@ -72,9 +72,6 @@ describe('Picker.DisabledTime', () => {
   it('disabledTime', () => {
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     const disabledTime = jest.fn((_: Dayjs | null, __: 'start' | 'end') => {
-      if (__ === 'start') {
-        console.trace('f');
-      }
       return {
         disabledHours: () => [11],
       };

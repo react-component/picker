@@ -552,8 +552,6 @@ describe('Picker.Panel', () => {
 
       const { container } = render(<App />);
 
-      console.log(container.innerHTML);
-
       expect(container.querySelector('.customWrapper')).toBeTruthy();
       expect(container.querySelector(`.rc-picker-${picker}-panel`)).toBeTruthy();
       expect(container).toMatchSnapshot();

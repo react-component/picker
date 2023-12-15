@@ -1331,6 +1331,8 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                                 3
                               </div>
                             </td>
+                          </tr>
+                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
                               title="1990-04"
@@ -1340,8 +1342,6 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                                 4
                               </div>
                             </td>
-                          </tr>
-                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
                               title="1990-05"
@@ -1360,6 +1360,8 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                                 6
                               </div>
                             </td>
+                          </tr>
+                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
                               title="1990-07"
@@ -1378,8 +1380,6 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                                 8
                               </div>
                             </td>
-                          </tr>
-                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
                               title="1990-09"
@@ -1389,6 +1389,8 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                                 9
                               </div>
                             </td>
+                          </tr>
+                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
                               title="1990-10"
@@ -1494,6 +1496,8 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                                 3
                               </div>
                             </td>
+                          </tr>
+                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
                               title="1991-04"
@@ -1503,8 +1507,6 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                                 4
                               </div>
                             </td>
-                          </tr>
-                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
                               title="1991-05"
@@ -1523,6 +1525,8 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                                 6
                               </div>
                             </td>
+                          </tr>
+                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
                               title="1991-07"
@@ -1541,8 +1545,6 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                                 8
                               </div>
                             </td>
-                          </tr>
-                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
                               title="1991-09"
@@ -1552,6 +1554,8 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                                 9
                               </div>
                             </td>
+                          </tr>
+                          <tr>
                             <td
                               class="rc-picker-cell rc-picker-cell-in-view"
                               title="1991-10"

@@ -206,7 +206,8 @@ function PickerPanel<DateType extends object = any>(
   });
 
   const mergedValue = React.useMemo(() => {
-    const values = toArray(innerValue);
+    // Clean up `[null]`
+    const values = toArray(innerValue).filter((val) => val);
     return multiple ? values : values.slice(0, 1);
   }, [innerValue, multiple]);
 
