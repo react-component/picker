@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useEvent, useMergedState } from 'rc-util';
+import { useEvent, useMergedState, warning } from 'rc-util';
 import * as React from 'react';
 import { isSame } from '../../utils/dateUtil';
 import useLocale from '../hooks/useLocale';
@@ -323,6 +323,14 @@ function PickerPanel<DateType extends object = any>(
   const PanelComponent = (components[internalMode] ||
     DefaultComponents[internalMode] ||
     DatePanel) as typeof DatePanel;
+
+  // ======================== Warnings ========================
+  if (process.env.NODE_ENV !== 'production') {
+    warning(
+      !mergedValue || mergedValue.every((val) => generateConfig.isValidate(val)),
+      'Invalidate date pass to `value` or `defaultValue`.',
+    );
+  }
 
   // ========================= Render =========================
   const panelCls = `${mergedPrefixCls}-panel`;

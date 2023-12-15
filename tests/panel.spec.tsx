@@ -408,10 +408,17 @@ describe('Picker.Panel', () => {
 
     const invalidateDate = dayjs('notValidate', 'YYYY', true);
     render(<DayPickerPanel value={invalidateDate} />);
-    expect(errSpy).toHaveBeenCalledWith('Warning: Invalidate date pass to `value`.');
+    expect(errSpy).toHaveBeenCalledWith(
+      'Warning: Invalidate date pass to `value` or `defaultValue`.',
+    );
+
+    errSpy.mockClear();
+    resetWarned();
 
     render(<DayPickerPanel defaultValue={invalidateDate} />);
-    expect(errSpy).toHaveBeenCalledWith('Warning: Invalidate date pass to `defaultValue`.');
+    expect(errSpy).toHaveBeenCalledWith(
+      'Warning: Invalidate date pass to `value` or `defaultValue`.',
+    );
 
     errSpy.mockRestore();
   });
