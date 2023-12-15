@@ -366,20 +366,21 @@ describe('Picker.Panel', () => {
     });
   });
 
-  return;
-
   describe('time disabled columns', () => {
     it('basic', () => {
       const { container } = render(
         <DayPickerPanel
-          mode="time"
+          picker="time"
           disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7]}
           disabledMinutes={() => [2, 4, 6, 8, 10]}
           disabledSeconds={() => [10, 20, 30, 40, 50]}
         />,
       );
 
-      expect(container).toMatchSnapshot();
+      const columns = container.querySelectorAll('.rc-picker-time-panel-column');
+      expect(columns[0].querySelectorAll('.rc-picker-time-panel-cell-disabled')).toHaveLength(8);
+      expect(columns[1].querySelectorAll('.rc-picker-time-panel-cell-disabled')).toHaveLength(5);
+      expect(columns[2].querySelectorAll('.rc-picker-time-panel-cell-disabled')).toHaveLength(5);
     });
 
     it('use12Hour', () => {
@@ -388,7 +389,7 @@ describe('Picker.Panel', () => {
 
       render(
         <DayPickerPanel
-          mode="time"
+          picker="time"
           use12Hours
           value={getDay('2000-01-01 13:07:04')}
           disabledMinutes={disabledMinutes}
@@ -400,6 +401,8 @@ describe('Picker.Panel', () => {
       expect(disabledSeconds).toHaveBeenCalledWith(13, 7);
     });
   });
+
+  return;
 
   it('warning with invalidate value', () => {
     resetWarned();

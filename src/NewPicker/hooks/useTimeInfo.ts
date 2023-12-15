@@ -96,11 +96,18 @@ export default function useTimeInfo<DateType extends object = any>(
   }
 
   // ========================== Show ==========================
-  const mergedShowHour = checkShow(format, ['H', 'LT', 'LLL'], showHour);
-  const mergedShowMinute = checkShow(format, ['m', 'LT', 'LLL'], showMinute);
-  const mergedShowSecond = checkShow(format, ['s', 'LTS'], showSecond);
+  let mergedShowHour = checkShow(format, ['H', 'LT', 'LLL'], showHour);
+  let mergedShowMinute = checkShow(format, ['m', 'LT', 'LLL'], showMinute);
+  let mergedShowSecond = checkShow(format, ['s', 'LTS'], showSecond);
   const mergedShowMillisecond = checkShow(format, ['SSS'], showMillisecond);
   const mergedShowMeridiem = checkShow(format, ['a', 'A', 'LT', 'LLL'], use12Hours);
+
+  // Fallback if all can not see
+  if (!mergedShowHour && !mergedShowMinute && !mergedShowSecond && !mergedShowMillisecond) {
+    mergedShowHour = true;
+    mergedShowMinute = true;
+    mergedShowSecond = true;
+  }
 
   // ======================== Disabled ========================
   const getDisabledTimes = React.useCallback(

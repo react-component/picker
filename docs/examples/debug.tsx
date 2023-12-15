@@ -236,7 +236,10 @@ export default () => {
           locale={zhCN}
           value={value}
           // multiple
-          mode="decade"
+          mode="time"
+          disabledMinutes={() => {
+            console.log('good!!!');
+          }}
           onChange={setSingleValue}
           // onPickerValueChange={(pickerValue) => {
           //   console.log('🎼 PickerValue Change:', pickerValue);

@@ -30,11 +30,11 @@ export default function TimePanelBody<DateType extends object = any>(
   const [
     getValidTime,
 
-    mergedShowHour,
-    mergedShowMinute,
-    mergedShowSecond,
-    mergedShowMillisecond,
-    mergedShowMeridiem,
+    showHour,
+    showMinute,
+    showSecond,
+    showMillisecond,
+    showMeridiem,
 
     rowHourUnits,
     getMinuteUnits,
@@ -62,14 +62,14 @@ export default function TimePanelBody<DateType extends object = any>(
   // ========================= Column =========================
   // Hours
   const hourUnits = React.useMemo(() => {
-    if (!mergedShowMeridiem) {
+    if (!showMeridiem) {
       return rowHourUnits;
     }
 
     return isAM(hour)
       ? rowHourUnits.filter((h) => isAM(h.value as number))
       : rowHourUnits.filter((h) => !isAM(h.value as number));
-  }, [hour, rowHourUnits, mergedShowMeridiem]);
+  }, [hour, rowHourUnits, showMeridiem]);
 
   // >>> Pick Fallback
   const getEnabled = (units: Unit<number>[], val: number) => {
@@ -104,7 +104,7 @@ export default function TimePanelBody<DateType extends object = any>(
 
   // Meridiem
   const meridiemUnits = React.useMemo(() => {
-    if (!mergedShowMeridiem) {
+    if (!showMeridiem) {
       return [];
     }
 
@@ -135,7 +135,7 @@ export default function TimePanelBody<DateType extends object = any>(
         disabled: rowHourUnits.every((h) => h.disabled || isAM(h.value as number)),
       },
     ];
-  }, [rowHourUnits, mergedShowMeridiem, generateConfig, locale]);
+  }, [rowHourUnits, showMeridiem, generateConfig, locale]);
 
   // ========================= Change =========================
   /**
@@ -221,7 +221,7 @@ export default function TimePanelBody<DateType extends object = any>(
 
   return (
     <div className={`${prefixCls}-content`}>
-      {mergedShowHour && (
+      {showHour && (
         <TimeColumn
           units={hourUnits}
           value={hour}
@@ -231,7 +231,7 @@ export default function TimePanelBody<DateType extends object = any>(
           {...sharedColumnProps}
         />
       )}
-      {mergedShowMinute && (
+      {showMinute && (
         <TimeColumn
           units={minuteUnits}
           value={minute}
@@ -241,7 +241,7 @@ export default function TimePanelBody<DateType extends object = any>(
           {...sharedColumnProps}
         />
       )}
-      {mergedShowSecond && (
+      {showSecond && (
         <TimeColumn
           units={secondUnits}
           value={second}
@@ -251,7 +251,7 @@ export default function TimePanelBody<DateType extends object = any>(
           {...sharedColumnProps}
         />
       )}
-      {mergedShowMillisecond && (
+      {showMillisecond && (
         <TimeColumn
           units={millisecondUnits}
           value={millisecond}
@@ -261,7 +261,7 @@ export default function TimePanelBody<DateType extends object = any>(
           {...sharedColumnProps}
         />
       )}
-      {mergedShowMeridiem && (
+      {showMeridiem && (
         <TimeColumn
           units={meridiemUnits}
           value={meridiem}
