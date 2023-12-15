@@ -1,6 +1,5 @@
 import { fireEvent, render } from '@testing-library/react';
 import type { Dayjs } from 'dayjs';
-import moment from 'moment';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import {
@@ -10,9 +9,22 @@ import {
   getDay,
   isSame,
   openPicker,
+  selectCell,
 } from './util/commonUtil';
 
+const fakeTime = getDay('1990-09-03 00:00:00').valueOf();
+
 describe('Picker.DisabledTime', () => {
+  beforeEach(() => {
+    resetWarned();
+    jest.useFakeTimers().setSystemTime(fakeTime);
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
+  });
+
   it('disabledTime on TimePicker', () => {
     render(
       <DayPicker
@@ -145,7 +157,7 @@ describe('Picker.DisabledTime', () => {
   });
 
   it('disabledTime should reset correctly when date changed by click', async () => {
-    const disabledTime = jest.fn((_: Dayjs | null, __: 'start' | 'end') => ({
+    const disabledTime = jest.fn(() => ({
       disabledHours: () => [0, 1, 2, 3, 4, 10],
     }));
 
@@ -165,37 +177,23 @@ describe('Picker.DisabledTime', () => {
     fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[2]);
 
     expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual(
-      '1989-10-31 05:00:00',
+      '1989-11-01 05:00:00',
     );
   });
 
   it('disabledTime should reset correctly when date changed by click for no default value', function () {
-    const now = moment();
-    const h = now.hours();
-    const m = now.minutes();
-    const s = now.seconds();
-
-    const disabledTime = jest.fn((_: Dayjs | null, __: 'start' | 'end') => ({
-      disabledHours: () => [h],
-      disabledMinutes: () => [m],
-      disabledSeconds: () => [s],
+    const disabledTime = jest.fn(() => ({
+      disabledHours: () => [0, 1, 2, 3, 4],
+      disabledMinutes: () => [0, 1, 2, 3, 4, 5],
+      disabledSeconds: () => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     }));
 
-    const firstDayInMonth = now.startOf('month');
-    const firstDayInCalendar = firstDayInMonth.clone().subtract(firstDayInMonth.days(), 'days');
-    const expected = firstDayInCalendar
-      .clone()
-      .hour(h + (1 % 24))
-      .minute(m + (1 % 60))
-      .second(s + (1 % 60));
+    const { container } = render(<DayRangePicker open showTime disabledTime={disabledTime} />);
 
-    render(<DayRangePicker open showTime disabledTime={disabledTime} />);
+    openPicker(container);
+    selectCell(3);
 
-    fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[0]);
-
-    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual(
-      expected.format('YYYY-MM-DD HH:mm:ss'),
-    );
+    expect(container.querySelector('input')).toHaveValue('1990-09-03 05:06:10');
   });
 
   describe('warning for legacy props', () => {
