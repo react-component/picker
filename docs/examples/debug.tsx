@@ -235,13 +235,14 @@ export default () => {
           generateConfig={dayjsGenerateConfig}
           locale={zhCN}
           value={value}
-          multiple
-          picker="year"
+          // multiple
+          mode="decade"
           onChange={setSingleValue}
           // onPickerValueChange={(pickerValue) => {
           //   console.log('🎼 PickerValue Change:', pickerValue);
           // }}
           onPanelChange={(panelValue, mode) => {
+            console.error('1');
             console.log('🎲 PanelValue Change:', panelValue, mode);
           }}
         />

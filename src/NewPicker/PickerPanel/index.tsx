@@ -42,13 +42,15 @@ export interface PickerPanelRef {
 
 export interface BasePickerPanelProps<DateType extends object = any>
   extends Pick<
-    SharedPanelProps<DateType>,
-    // MISC
-    | 'locale'
-    | 'generateConfig'
-    // Disabled
-    | 'disabledDate'
-  > {
+      SharedPanelProps<DateType>,
+      // MISC
+      | 'locale'
+      | 'generateConfig'
+      // Disabled
+      | 'disabledDate'
+    >,
+    SharedTimeProps<DateType>,
+    Pick<React.HTMLAttributes<HTMLDivElement>, 'tabIndex'> {
   // Style
   prefixCls?: string;
 
@@ -98,19 +100,6 @@ export interface SinglePickerPanelProps<DateType extends object = any>
   onChange?: (date: DateType) => void;
 }
 
-export interface MultiplePickerPanelProps<DateType extends object = any>
-  extends BasePickerPanelProps<DateType> {
-  /** multiple selection. Not support time or datetime picker */
-  multiple: true;
-
-  defaultValue?: DateType[] | null;
-  value?: DateType[] | null;
-  onChange?: (date: DateType[]) => void;
-}
-
-// export type PickerPanelProps<DateType extends object = any> =
-//   | SinglePickerPanelProps<DateType>
-//   | MultiplePickerPanelProps<DateType>;
 export type PickerPanelProps<DateType extends object = any> = BasePickerPanelProps<DateType> & {
   /** multiple selection. Not support time or datetime picker */
   multiple?: boolean;
@@ -119,13 +108,6 @@ export type PickerPanelProps<DateType extends object = any> = BasePickerPanelPro
   value?: DateType | DateType[] | null;
   onChange?: (date: DateType | DateType[]) => void;
 };
-
-// type InternalPickerPanelProps<DateType extends object = any> = Omit<
-//   PickerPanelProps<DateType>,
-//   'onChange'
-// > & {
-//   onChange?: (date: DateType | DateType[]) => void;
-// };
 
 function PickerPanel<DateType extends object = any>(
   props: PickerPanelProps<DateType>,
@@ -138,6 +120,7 @@ function PickerPanel<DateType extends object = any>(
 
     // Style
     prefixCls,
+    tabIndex = 0,
 
     // Value
     multiple,
@@ -260,9 +243,7 @@ function PickerPanel<DateType extends object = any>(
 
   // Both trigger when manually pickerValue or mode change
   const triggerPanelChange = (viewDate?: DateType, nextMode?: PanelMode) => {
-    if (onPanelChange) {
-      onPanelChange?.(viewDate || pickerValue, nextMode || mergedMode);
-    }
+    onPanelChange?.(viewDate || pickerValue, nextMode || mergedMode);
   };
 
   const setPickerValue = (nextPickerValue: DateType, triggerPanelEvent = false) => {
@@ -340,7 +321,7 @@ function PickerPanel<DateType extends object = any>(
 
   // ========================= Render =========================
   return (
-    <div ref={rootRef} className={`${mergedPrefixCls}-panel`}>
+    <div ref={rootRef} tabIndex={tabIndex} className={`${mergedPrefixCls}-panel`}>
       <PanelComponent
         // Time
         showTime={mergedShowTime}
