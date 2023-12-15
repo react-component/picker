@@ -218,6 +218,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
               >
                 <div
                   class="rc-picker-panel"
+                  tabindex="0"
                 >
                   <div
                     class="rc-picker-date-panel"
@@ -703,6 +704,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                 </div>
                 <div
                   class="rc-picker-panel"
+                  tabindex="0"
                 >
                   <div
                     class="rc-picker-date-panel"
@@ -1259,6 +1261,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
               >
                 <div
                   class="rc-picker-panel"
+                  tabindex="0"
                 >
                   <div
                     class="rc-picker-month-panel"
@@ -1421,6 +1424,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                 </div>
                 <div
                   class="rc-picker-panel"
+                  tabindex="0"
                 >
                   <div
                     class="rc-picker-month-panel"
