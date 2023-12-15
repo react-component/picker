@@ -520,6 +520,7 @@ describe('Picker.Panel', () => {
         return (current as Dayjs).get(picker as any);
     }
   };
+
   it(`override cell with cellRender when pass showTime`, () => {
     const App = () => (
       <DayPickerPanel
@@ -537,7 +538,6 @@ describe('Picker.Panel', () => {
     expect(container.querySelector(`.rc-picker-time-panel`)).toBeTruthy();
     expect(container).toMatchSnapshot();
   });
-  return;
 
   supportCellRenderPicker.forEach((picker) => {
     it(`override cell with cellRender in ${picker}`, () => {
@@ -622,6 +622,8 @@ describe('Picker.Panel', () => {
       expect(container).toMatchSnapshot();
     });
   });
+
+  return;
 
   it('week picker current should check year', () => {
     const { container } = render(<DayPickerPanel picker="week" value={getDay('1990-09-03')} />);
