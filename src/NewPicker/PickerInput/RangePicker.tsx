@@ -275,11 +275,13 @@ function RangePicker<DateType extends object = any>(
 
     const proxyDisabledTime = disabledTime
       ? (date: DateType) => {
-          return proxyDisabledTime(date, getActiveRange(activeIndex));
+          const range = getActiveRange(activeIndex);
+          console.log('?!', activeIndex, range);
+          return disabledTime(date, range);
         }
       : undefined;
 
-    return { ...showTime, disabledTime };
+    return { ...showTime, disabledTime: proxyDisabledTime };
   }, [showTime, activeIndex]);
 
   // ========================= Mode =========================

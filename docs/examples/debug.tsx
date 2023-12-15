@@ -88,7 +88,6 @@ function Origin7Range() {
 
 const MyInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   (props, ref) => {
-    console.log('>>>', props);
     const { 'data-range': range, value, style } = props as any;
 
     // return (
@@ -151,7 +150,9 @@ export default () => {
         // Shared
         {...sharedLocale}
         // changeOnBlur={false}
-        showTime
+        showTime={{
+          disabledHours: () => [0, 1, 2, 3, 4, 5],
+        }}
         presets={[
           {
             label: 'Good',

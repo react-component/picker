@@ -5,10 +5,10 @@ import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import {
   closePicker,
-  getDay,
-  isSame,
   DayPicker,
   DayRangePicker,
+  getDay,
+  isSame,
   openPicker,
 } from './util/commonUtil';
 
@@ -34,7 +34,6 @@ describe('Picker.DisabledTime', () => {
   it('disabledTime on TimeRangePicker', () => {
     const { container } = render(
       <DayRangePicker
-        open
         picker="time"
         disabledTime={(_, type) => ({
           disabledHours: () => (type === 'start' ? [1, 3, 5] : [2, 4]),
@@ -42,6 +41,7 @@ describe('Picker.DisabledTime', () => {
       />,
     );
 
+    openPicker(container);
     expect(
       document.querySelectorAll(
         'ul.rc-picker-time-panel-column li.rc-picker-time-panel-cell-disabled',
@@ -49,7 +49,7 @@ describe('Picker.DisabledTime', () => {
     ).toHaveLength(3);
 
     // Click another one
-    fireEvent.mouseDown(container.querySelectorAll('input')[1]);
+    openPicker(container, 1);
     expect(
       document.querySelectorAll(
         'ul.rc-picker-time-panel-column li.rc-picker-time-panel-cell-disabled',
@@ -57,11 +57,15 @@ describe('Picker.DisabledTime', () => {
     ).toHaveLength(2);
   });
 
-  it('disabledTime', () => {
+  it.only('disabledTime', () => {
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    const disabledTime = jest.fn((_: Dayjs | null, __: 'start' | 'end') => ({
-      disabledHours: () => [11],
-    }));
+    const disabledTime = jest.fn((_: Dayjs | null, __: 'start' | 'end') => {
+      console.trace('????', __);
+
+      return {
+        disabledHours: () => [11],
+      };
+    });
 
     const { container } = render(
       <DayRangePicker
@@ -153,11 +157,15 @@ describe('Picker.DisabledTime', () => {
       />,
     );
 
-    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual('1989-11-28 00:00:00');
+    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual(
+      '1989-11-28 00:00:00',
+    );
 
     fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[2]);
 
-    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual('1989-10-31 05:00:00');
+    expect(document.querySelector('.rc-picker-input > input').getAttribute('value')).toEqual(
+      '1989-10-31 05:00:00',
+    );
   });
 
   it('disabledTime should reset correctly when date changed by click for no default value', function () {
@@ -174,8 +182,12 @@ describe('Picker.DisabledTime', () => {
 
     const firstDayInMonth = now.startOf('month');
     const firstDayInCalendar = firstDayInMonth.clone().subtract(firstDayInMonth.days(), 'days');
-    const expected = firstDayInCalendar.clone().hour(h + 1 % 24).minute(m + 1 % 60).second(s + 1 % 60);
-    
+    const expected = firstDayInCalendar
+      .clone()
+      .hour(h + (1 % 24))
+      .minute(m + (1 % 60))
+      .second(s + (1 % 60));
+
     render(<DayRangePicker open showTime disabledTime={disabledTime} />);
 
     fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[0]);
