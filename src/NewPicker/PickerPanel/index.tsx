@@ -1,5 +1,6 @@
 import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
+import { isSame } from '../../utils/dateUtil';
 import useLocale from '../hooks/useLocale';
 import { getTimeConfig } from '../hooks/useTimeConfig';
 import useToggleDates from '../hooks/useToggleDates';
@@ -216,18 +217,20 @@ function PickerPanel<DateType extends object = any>(
   const triggerChange = useEvent((nextValue: DateType[] | null) => {
     setMergedValue(nextValue);
 
-    // TODO: compare values
-
     if (
-      onChange
-      // &&
-      // !isSame(
-      //   generateConfig,
-      //   locale,
-      //   mergedValue,
-      //   nextValue,
-      //   picker === 'date' && mergedShowTime ? 'datetime' : picker,
-      // )
+      onChange &&
+      (nextValue === null ||
+        mergedValue.length !== nextValue.length ||
+        mergedValue.some(
+          (ori, index) =>
+            !isSame(
+              generateConfig,
+              locale,
+              ori,
+              nextValue[index],
+              picker === 'date' && mergedShowTime ? 'datetime' : picker,
+            ),
+        ))
     ) {
       onChange?.(multiple ? nextValue : nextValue[0]);
     }
@@ -288,17 +291,21 @@ function PickerPanel<DateType extends object = any>(
 
     // Update mode if needed
     if (mergedMode !== picker) {
-      const queue: PanelMode[] = ['decade', 'year', 'month'];
+      const decadeYearQueue: PanelMode[] = ['decade', 'year'];
+      const decadeYearMonthQueue: PanelMode[] = [...decadeYearQueue, 'month'];
+
+      const pickerQueue: Partial<Record<PickerMode, PanelMode[]>> = {
+        quarter: [...decadeYearQueue, 'quarter'],
+        week: [...decadeYearMonthQueue, 'week'],
+        date: [...decadeYearMonthQueue, 'date'],
+      };
+
+      const queue = pickerQueue[picker] || decadeYearMonthQueue;
       const index = queue.indexOf(mergedMode);
       const nextMode = queue[index + 1];
-      if (index >= 0 && nextMode) {
+
+      if (nextMode) {
         triggerModeChange(nextMode, nextValue);
-      } else if (mergedMode === 'month') {
-        if (picker === 'date') {
-          triggerModeChange('date', nextValue);
-        } else if (picker === 'week') {
-          triggerModeChange('week', nextValue);
-        }
       }
     }
   };

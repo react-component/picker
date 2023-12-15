@@ -116,9 +116,9 @@ export type MomentPickerPanelProps =
   | InjectDefaultProps<PickerPanelDateProps<Moment>>
   | InjectDefaultProps<PickerPanelTimeProps<Moment>>;
 
-export const MomentPickerPanel = (props: MomentPickerPanelProps) => (
-  <PickerPanel<Moment> generateConfig={momentGenerateConfig} locale={enUS} {...props} />
-);
+// export const MomentPickerPanel = (props: MomentPickerPanelProps) => (
+//   <PickerPanel<Moment> generateConfig={momentGenerateConfig} locale={enUS} {...props} />
+// );
 
 // Moment Range Picker
 export type MomentRangePickerProps =
@@ -241,7 +241,7 @@ export const DayRangePicker = React.forwardRef<
   return <NewRangePicker generateConfig={dayGenerateConfig} locale={zh_CN} {...props} ref={ref} />;
 });
 
-export const DayPickerPanel = (props: NewPickerPanelProps<Dayjs>) => (
+export const DayPickerPanel = (props: Partial<NewPickerPanelProps<Dayjs>>) => (
   <NewPickerPanel<Dayjs> generateConfig={dayGenerateConfig} locale={enUS} {...props} />
 );
 

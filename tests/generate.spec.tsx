@@ -6,7 +6,7 @@ import luxonGenerateConfig from '../src/generate/luxon';
 import { getMoment } from './util/commonUtil';
 
 import 'dayjs/locale/zh-cn';
-import { GenerateConfig } from '../src/generate';
+import type { GenerateConfig } from '../src/generate';
 
 describe('Picker.Generate', () => {
   beforeAll(() => {
