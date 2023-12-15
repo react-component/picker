@@ -99,12 +99,12 @@ export default () => {
       <SinglePicker
         // Shared
         {...sharedLocale}
-        role="good"
-        picker="time"
-        // showTime={{
-        //   defaultValue: dayjs('2000-01-01 01:03:05.800'),
-        // }}
-        pickerValue={dayjs('2000-01-01 01:03:05.800')}
+        presets={[
+          {
+            label: 'Good',
+            value: () => dayjs('2000-03-02'),
+          },
+        ]}
         ref={singleRef}
         suffixIcon="🧶"
         onChange={(val, text) => {

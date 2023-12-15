@@ -1099,11 +1099,9 @@ describe('Picker.Basic', () => {
     expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('2000-09-03');
   });
 
-  return;
-
   it('presets support callback', () => {
     const onChange = jest.fn();
-    const mockPresetValue = jest.fn().mockImplementationOnce(() => moment('2000-09-03'));
+    const mockPresetValue = jest.fn().mockImplementationOnce(() => getDay('2000-09-03'));
 
     render(
       <DayPicker
@@ -1126,7 +1124,7 @@ describe('Picker.Basic', () => {
     expect(mockPresetValue).toHaveBeenCalled();
     expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('2000-09-03');
 
-    mockPresetValue.mockImplementationOnce(() => moment('2023-05-01 12:34:56'));
+    mockPresetValue.mockImplementationOnce(() => getDay('2023-05-01 12:34:56'));
 
     fireEvent.click(firstPreset);
 
@@ -1151,15 +1149,29 @@ describe('Picker.Basic', () => {
     moment.locale('en');
   });
 
-  it('select minutes and seconds directly in dateTime mode will apply the current time', () => {
-    jest.setSystemTime(getDay('2023-09-04 21:49:10').valueOf());
-    const ui = <DayPicker showTime />;
-    const { container } = render(ui);
+  it('select time directly in dateTime to find validate time', () => {
+    const rangeNum = (start: number, end: number) => {
+      const list: number[] = [];
+      for (let i = start; i <= end; i += 1) {
+        list.push(i);
+      }
+
+      return list;
+    };
+
+    const { container } = render(
+      <DayPicker
+        showTime
+        disabledHours={() => rangeNum(0, 6)}
+        disabledSeconds={() => rangeNum(0, 20)}
+      />,
+    );
 
     openPicker(container);
+
     // Select minute
     selectColumn(1, 5);
 
-    expect(container.querySelector('input')).toHaveValue('2023-09-04 21:05:10');
+    expect(container.querySelector('input')).toHaveValue('1990-09-03 07:05:21');
   });
 });
