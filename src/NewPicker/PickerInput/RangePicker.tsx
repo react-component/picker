@@ -276,7 +276,6 @@ function RangePicker<DateType extends object = any>(
     const proxyDisabledTime = disabledTime
       ? (date: DateType) => {
           const range = getActiveRange(activeIndex);
-          console.log('?!', activeIndex, range);
           return disabledTime(date, range);
         }
       : undefined;
@@ -516,6 +515,11 @@ function RangePicker<DateType extends object = any>(
   const panelValue = calendarValue[activeIndex] || null;
 
   // >>> invalid
+  const isPopupInvalidateDate = useEvent((date: DateType) => {
+    return isInvalidateDate(date, {
+      activeIndex,
+    });
+  });
 
   const panelProps = React.useMemo(() => {
     const domProps = pickAttrs(filledProps, false);
@@ -553,7 +557,7 @@ function RangePicker<DateType extends object = any>(
       onPanelChange={triggerModeChange}
       // Value
       value={panelValue}
-      isInvalid={isInvalidateDate}
+      isInvalid={isPopupInvalidateDate}
       onChange={null}
       onSelect={onPanelSelect}
       // PickerValue

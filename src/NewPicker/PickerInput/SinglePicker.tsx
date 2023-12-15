@@ -30,6 +30,8 @@ import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
 import SingleSelector from './Selector/SingleSelector';
 
+// TODO: isInvalidateDate with showTime.disabledTime should not provide `range` prop
+
 export interface PickerProps<DateType extends object = any>
   extends SharedPickerProps<DateType>,
     Omit<SharedTimeProps<DateType>, 'format' | 'defaultValue'> {

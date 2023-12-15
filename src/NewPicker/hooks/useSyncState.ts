@@ -7,7 +7,7 @@ import * as React from 'react';
  */
 export default function useSyncState<T>(
   defaultValue: T,
-  controlledValue: T,
+  controlledValue?: T,
 ): [getter: (useControlledValueFirst?: boolean) => T, setter: (nextValue: T) => void, value: T] {
   const valueRef = React.useRef(defaultValue);
   const [, forceUpdate] = React.useState({});

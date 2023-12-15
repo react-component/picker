@@ -57,11 +57,12 @@ describe('Picker.DisabledTime', () => {
     ).toHaveLength(2);
   });
 
-  it.only('disabledTime', () => {
+  it('disabledTime', () => {
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     const disabledTime = jest.fn((_: Dayjs | null, __: 'start' | 'end') => {
-      console.trace('????', __);
-
+      if (__ === 'start') {
+        console.trace('f');
+      }
       return {
         disabledHours: () => [11],
       };

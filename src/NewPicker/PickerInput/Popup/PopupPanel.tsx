@@ -10,7 +10,7 @@ export type MustProp<DateType extends object> = Required<
 >;
 
 export type PopupPanelProps<DateType extends object = any> = MustProp<DateType> &
-  Omit<PickerPanelProps<DateType>, 'onPickerValueChange'> &
+  Omit<PickerPanelProps<DateType>, 'onPickerValueChange' | 'showTime'> &
   FooterProps<DateType> & {
     multiplePanel?: boolean;
     minDate?: DateType;

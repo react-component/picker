@@ -17,56 +17,64 @@ export default function useInvalidate<DateType extends object = any>(
   showTime?: SharedTimeProps<DateType> | RangeTimeProps<DateType>,
 ) {
   // Check disabled date
-  const isInvalidate = useEvent((date: DateType, info: { from?: DateType } = {}) => {
-    if (
-      // Date object is invalid
-      !generateConfig.isValidate(date) ||
-      // Date is disabled by `disabledDate`
-      (disabledDate && disabledDate(date, { type: picker, ...info }))
-    ) {
-      return true;
-    }
-
-    if ((picker === 'date' || picker === 'time') && showTime) {
-      const { disabledHours, disabledMinutes, disabledSeconds, disabledMilliSeconds } =
-        showTime.disabledTime?.(date) || {};
-
-      const {
-        disabledHours: legacyDisabledHours,
-        disabledMinutes: legacyDisabledMinutes,
-        disabledSeconds: legacyDisabledSeconds,
-      } = showTime;
-
-      const mergedDisabledHours = disabledHours || legacyDisabledHours;
-      const mergedDisabledMinutes = disabledMinutes || legacyDisabledMinutes;
-      const mergedDisabledSeconds = disabledSeconds || legacyDisabledSeconds;
-
-      const hour = generateConfig.getHour(date);
-      const minute = generateConfig.getMinute(date);
-      const second = generateConfig.getSecond(date);
-      const millisecond = generateConfig.getMillisecond(date);
-
-      if (mergedDisabledHours && mergedDisabledHours().includes(hour)) {
-        return true;
-      }
-
-      if (mergedDisabledMinutes && mergedDisabledMinutes(hour).includes(minute)) {
-        return true;
-      }
-
-      if (mergedDisabledSeconds && mergedDisabledSeconds(hour, minute).includes(second)) {
-        return true;
-      }
+  const isInvalidate = useEvent(
+    (date: DateType, info: { from?: DateType; activeIndex: number }) => {
+      const outsideInfo = {
+        type: picker,
+        ...info,
+      };
+      delete outsideInfo.activeIndex;
 
       if (
-        disabledMilliSeconds &&
-        disabledMilliSeconds(hour, minute, second).includes(millisecond)
+        // Date object is invalid
+        !generateConfig.isValidate(date) ||
+        // Date is disabled by `disabledDate`
+        (disabledDate && disabledDate(date, outsideInfo))
       ) {
         return true;
       }
-    }
-    return false;
-  });
+
+      if ((picker === 'date' || picker === 'time') && showTime) {
+        const { disabledHours, disabledMinutes, disabledSeconds, disabledMilliSeconds } =
+          showTime.disabledTime?.(date, info.activeIndex === 1 ? 'end' : 'start') || {};
+
+        const {
+          disabledHours: legacyDisabledHours,
+          disabledMinutes: legacyDisabledMinutes,
+          disabledSeconds: legacyDisabledSeconds,
+        } = showTime;
+
+        const mergedDisabledHours = disabledHours || legacyDisabledHours;
+        const mergedDisabledMinutes = disabledMinutes || legacyDisabledMinutes;
+        const mergedDisabledSeconds = disabledSeconds || legacyDisabledSeconds;
+
+        const hour = generateConfig.getHour(date);
+        const minute = generateConfig.getMinute(date);
+        const second = generateConfig.getSecond(date);
+        const millisecond = generateConfig.getMillisecond(date);
+
+        if (mergedDisabledHours && mergedDisabledHours().includes(hour)) {
+          return true;
+        }
+
+        if (mergedDisabledMinutes && mergedDisabledMinutes(hour).includes(minute)) {
+          return true;
+        }
+
+        if (mergedDisabledSeconds && mergedDisabledSeconds(hour, minute).includes(second)) {
+          return true;
+        }
+
+        if (
+          disabledMilliSeconds &&
+          disabledMilliSeconds(hour, minute, second).includes(millisecond)
+        ) {
+          return true;
+        }
+      }
+      return false;
+    },
+  );
 
   return isInvalidate;
 }

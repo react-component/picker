@@ -158,7 +158,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   formatList: FormatType[],
   focused: boolean,
   open: boolean,
-  isInvalidateDate: (date: DateType, info?: { from?: DateType }) => boolean,
+  isInvalidateDate: (date: DateType, info?: { from?: DateType; activeIndex: number }) => boolean,
 ): [
   /** Trigger `onChange` by check `disabledDate` */
   flushSubmit: (index: number, needTriggerChange: boolean) => void,
@@ -248,9 +248,9 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     // >>> Invalid
     const validateDates =
       // Validate start
-      (!start || !isInvalidateDate(start)) &&
+      (!start || !isInvalidateDate(start, { activeIndex: 0 })) &&
       // Validate end
-      (!end || !isInvalidateDate(end, { from: start }));
+      (!end || !isInvalidateDate(end, { from: start, activeIndex: 1 }));
 
     // >>> Result
     const allPassed =

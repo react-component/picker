@@ -42,7 +42,7 @@ export default function useFieldsInvalidate<DateType extends object, ValueType e
       }
 
       // Invalidate
-      if (current && isInvalidateDate(current)) {
+      if (current && isInvalidateDate(current, { activeIndex: index })) {
         return true;
       }
 
