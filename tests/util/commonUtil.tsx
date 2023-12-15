@@ -15,13 +15,15 @@ import type {
   PickerProps as NewPickerProps,
   PickerRef,
   RangePickerProps,
+  PickerPanelProps as NewPickerPanelProps,
 } from '../../src/NewPicker';
-import { Picker as NewPicker, RangePicker as NewRangePicker } from '../../src/NewPicker';
+import { Picker as NewPicker, RangePicker as NewRangePicker, PickerPanel as NewPickerPanel } from '../../src/NewPicker';
 import type { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
 import type {
   PickerPanelBaseProps,
   PickerPanelDateProps,
   PickerPanelTimeProps,
+
 } from '../../src/PickerPanel';
 import RangePicker, {
   type RangePickerBaseProps,
@@ -93,20 +95,20 @@ export type MomentPickerProps =
   | InjectDefaultProps<PickerDateProps<Moment>>
   | InjectDefaultProps<PickerTimeProps<Moment>>;
 
-export class MomentPicker extends React.Component<MomentPickerProps> {
-  pickerRef = React.createRef<Picker<Moment>>();
+// export class MomentPicker extends React.Component<MomentPickerProps> {
+//   pickerRef = React.createRef<Picker<Moment>>();
 
-  render() {
-    return (
-      <Picker<Moment>
-        generateConfig={momentGenerateConfig}
-        locale={enUS}
-        ref={this.pickerRef}
-        {...this.props}
-      />
-    );
-  }
-}
+//   render() {
+//     return (
+//       <Picker<Moment>
+//         generateConfig={momentGenerateConfig}
+//         locale={enUS}
+//         ref={this.pickerRef}
+//         {...this.props}
+//       />
+//     );
+//   }
+// }
 
 // Moment Panel Picker
 export type MomentPickerPanelProps =
@@ -124,20 +126,20 @@ export type MomentRangePickerProps =
   | InjectDefaultProps<RangePickerDateProps<Moment>>
   | InjectDefaultProps<RangePickerTimeProps<Moment>>;
 
-export class MomentRangePicker extends React.Component<MomentRangePickerProps> {
-  rangePickerRef = React.createRef<RangePicker<Moment>>();
+// export class MomentRangePicker extends React.Component<MomentRangePickerProps> {
+//   rangePickerRef = React.createRef<RangePicker<Moment>>();
 
-  render() {
-    return (
-      <RangePicker<Moment>
-        generateConfig={momentGenerateConfig}
-        locale={enUS}
-        ref={this.rangePickerRef}
-        {...this.props}
-      />
-    );
-  }
-}
+//   render() {
+//     return (
+//       <RangePicker<Moment>
+//         generateConfig={momentGenerateConfig}
+//         locale={enUS}
+//         ref={this.rangePickerRef}
+//         {...this.props}
+//       />
+//     );
+//   }
+// }
 
 // ====================================== UTIL ======================================
 export async function waitFakeTimer() {
@@ -238,6 +240,10 @@ export const DayRangePicker = React.forwardRef<
 >((props, ref) => {
   return <NewRangePicker generateConfig={dayGenerateConfig} locale={zh_CN} {...props} ref={ref} />;
 });
+
+export const DayPickerPanel = (props: NewPickerPanelProps<Dayjs>) => (
+  <NewPickerPanel<Dayjs> generateConfig={dayGenerateConfig} locale={enUS} {...props} />
+);
 
 export function getDay(str: string): Dayjs {
   const formatList = [FULL_FORMAT, 'YYYY-MM-DD', 'HH:mm:ss', 'YYYY'];

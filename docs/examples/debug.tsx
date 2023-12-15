@@ -18,7 +18,7 @@ dayjs.locale('zh-cn');
 dayjs.extend(buddhistEra);
 dayjs.extend(LocalizedFormat);
 
-console.log('>>', RangePicker, SinglePicker, PickerPanel);
+console.log('>>', RangePicker, SinglePicker, PickerPanel, Origin7Range);
 console.clear();
 
 (window as any).dayjs = dayjs;
@@ -37,7 +37,7 @@ const sharedLocale = {
   generateConfig: dayjsGenerateConfig,
 };
 
-const Origin7Range: React.FC = () => {
+function Origin7Range() {
   const [dates, setDates] = React.useState<any>(null);
   const [value, setValue] = React.useState<any>(null);
 
@@ -84,7 +84,7 @@ const Origin7Range: React.FC = () => {
       changeOnBlur
     />
   );
-};
+}
 
 const MyInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   (props, ref) => {
@@ -141,8 +141,7 @@ export default () => {
 
   return (
     <div>
-      <Origin7Range />
-
+      {/* <Origin7Range /> */}
       <input defaultValue="2030-03-0" />
       <input defaultValue="2030-03-01 11:22:3" />
 

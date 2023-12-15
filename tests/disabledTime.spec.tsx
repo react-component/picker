@@ -1,21 +1,21 @@
 import { fireEvent, render } from '@testing-library/react';
-import type { Moment } from 'moment';
+import type { Dayjs } from 'dayjs';
 import moment from 'moment';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import {
   closePicker,
-  getMoment,
+  getDay,
   isSame,
-  MomentPicker,
-  MomentRangePicker,
+  DayPicker,
+  DayRangePicker,
   openPicker,
 } from './util/commonUtil';
 
 describe('Picker.DisabledTime', () => {
   it('disabledTime on TimePicker', () => {
     render(
-      <MomentPicker
+      <DayPicker
         open
         picker="time"
         disabledTime={() => ({
@@ -33,7 +33,7 @@ describe('Picker.DisabledTime', () => {
 
   it('disabledTime on TimeRangePicker', () => {
     const { container } = render(
-      <MomentRangePicker
+      <DayRangePicker
         open
         picker="time"
         disabledTime={(_, type) => ({
@@ -59,15 +59,15 @@ describe('Picker.DisabledTime', () => {
 
   it('disabledTime', () => {
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-    const disabledTime = jest.fn((_: Moment | null, __: 'start' | 'end') => ({
+    const disabledTime = jest.fn((_: Dayjs | null, __: 'start' | 'end') => ({
       disabledHours: () => [11],
     }));
 
     const { container } = render(
-      <MomentRangePicker
+      <DayRangePicker
         showTime
         disabledTime={disabledTime}
-        defaultValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
+        defaultValue={[getDay('1989-11-28'), getDay('1990-09-03')]}
       />,
     );
 
@@ -93,9 +93,9 @@ describe('Picker.DisabledTime', () => {
   });
 
   it('dynamic disabledTime should be correct', () => {
-    jest.useFakeTimers().setSystemTime(getMoment('2023-09-05 22:02:00').valueOf());
+    jest.useFakeTimers().setSystemTime(getDay('2023-09-05 22:02:00').valueOf());
     render(
-      <MomentPicker
+      <DayPicker
         open
         picker="time"
         disabledTime={() => ({
@@ -140,16 +140,16 @@ describe('Picker.DisabledTime', () => {
   });
 
   it('disabledTime should reset correctly when date changed by click', function () {
-    const disabledTime = jest.fn((_: Moment | null, __: 'start' | 'end') => ({
+    const disabledTime = jest.fn((_: Dayjs | null, __: 'start' | 'end') => ({
       disabledHours: () => [0, 1, 2, 3, 4, 10],
     }));
 
     render(
-      <MomentRangePicker
+      <DayRangePicker
         open
         showTime
         disabledTime={disabledTime}
-        defaultValue={[getMoment('1989-11-28'), getMoment('1990-09-03')]}
+        defaultValue={[getDay('1989-11-28'), getDay('1990-09-03')]}
       />,
     );
 
@@ -166,7 +166,7 @@ describe('Picker.DisabledTime', () => {
     const m = now.minutes();
     const s = now.seconds();
 
-    const disabledTime = jest.fn((_: Moment | null, __: 'start' | 'end') => ({
+    const disabledTime = jest.fn((_: Dayjs | null, __: 'start' | 'end') => ({
       disabledHours: () => [h],
       disabledMinutes: () => [m],
       disabledSeconds: () => [s],
@@ -176,7 +176,7 @@ describe('Picker.DisabledTime', () => {
     const firstDayInCalendar = firstDayInMonth.clone().subtract(firstDayInMonth.days(), 'days');
     const expected = firstDayInCalendar.clone().hour(h + 1 % 24).minute(m + 1 % 60).second(s + 1 % 60);
     
-    render(<MomentRangePicker open showTime disabledTime={disabledTime} />);
+    render(<DayRangePicker open showTime disabledTime={disabledTime} />);
 
     fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[0]);
 
@@ -190,7 +190,7 @@ describe('Picker.DisabledTime', () => {
       resetWarned();
       const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      render(<MomentPicker picker="time" disabledMinutes={() => []} />);
+      render(<DayPicker picker="time" disabledMinutes={() => []} />);
       expect(errSpy).toHaveBeenCalledWith(
         "Warning: 'disabledHours', 'disabledMinutes', 'disabledSeconds' will be removed in the next major version, please use 'disabledTime' instead.",
       );
@@ -202,7 +202,7 @@ describe('Picker.DisabledTime', () => {
       resetWarned();
       const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      render(<MomentRangePicker picker="time" disabledMinutes={() => []} />);
+      render(<DayRangePicker picker="time" disabledMinutes={() => []} />);
       expect(errSpy).toHaveBeenCalledWith(
         "Warning: 'disabledHours', 'disabledMinutes', 'disabledSeconds' will be removed in the next major version, please use 'disabledTime' instead.",
       );

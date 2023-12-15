@@ -171,7 +171,7 @@ export interface SharedTimeProps<DateType extends object = any> {
   disabledSeconds?: DisabledTimes['disabledSeconds'];
 
   /** Only work in picker is `time` */
-  disabledTime?: (date: DateType) => DisabledTimes;
+  disabledTime?: (date: DateType, range?: 'start' | 'end') => DisabledTimes;
 
   /** Only work in picker is `time` */
   changeOnScroll?: boolean;

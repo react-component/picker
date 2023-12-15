@@ -265,6 +265,23 @@ function RangePicker<DateType extends object = any>(
     });
   };
 
+  // ======================= ShowTime =======================
+  const mergedShowTime = React.useMemo(() => {
+    if (!showTime) {
+      return null;
+    }
+
+    const { disabledTime } = showTime;
+
+    const proxyDisabledTime = disabledTime
+      ? (date: DateType) => {
+          return proxyDisabledTime(date, getActiveRange(activeIndex));
+        }
+      : undefined;
+
+    return { ...showTime, disabledTime };
+  }, [showTime, activeIndex]);
+
   // ========================= Mode =========================
   const [modes, setModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
     value: mode,
@@ -273,7 +290,8 @@ function RangePicker<DateType extends object = any>(
   const mergedMode = modes[activeIndex] || picker;
 
   /** Extends from `mergedMode` to patch `datetime` mode */
-  const internalMode: InternalMode = mergedMode === 'date' && showTime ? 'datetime' : mergedMode;
+  const internalMode: InternalMode =
+    mergedMode === 'date' && mergedShowTime ? 'datetime' : mergedMode;
 
   // ====================== PanelCount ======================
   const multiplePanel = internalMode === picker && internalMode !== 'time';
@@ -329,7 +347,7 @@ function RangePicker<DateType extends object = any>(
     multiplePanel,
     defaultPickerValue,
     pickerValue,
-    showTime?.defaultValue,
+    mergedShowTime?.defaultValue,
     onPickerValueChange,
     minDate,
     maxDate,
@@ -516,7 +534,7 @@ function RangePicker<DateType extends object = any>(
       // MISC
       {...panelProps}
       showNow={mergedShowNow}
-      showTime={showTime}
+      showTime={mergedShowTime}
       // Range
       range
       multiplePanel={multiplePanel}
