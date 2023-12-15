@@ -1,6 +1,13 @@
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
-import { getMoment, isOpen, MomentPicker, MomentRangePicker, openPicker } from './util/commonUtil';
+import {
+  closePicker,
+  DayPicker,
+  DayRangePicker,
+  getMoment,
+  openPicker,
+  waitFakeTimer,
+} from './util/commonUtil';
 
 describe('Picker.ChangeOnBlur', () => {
   beforeEach(() => {
@@ -12,83 +19,49 @@ describe('Picker.ChangeOnBlur', () => {
     jest.useRealTimers();
   });
 
-  it('Picker', () => {
-    const onSelect = jest.fn();
-    const onChange = jest.fn();
-
-    const { container } = render(
-      <>
-        <MomentPicker changeOnBlur showTime onSelect={onSelect} onChange={onChange} />
-        <button className="outside" />
-      </>,
-    );
+  it('Picker', async () => {
+    const { container } = render(<DayPicker changeOnBlur={false} />);
 
     // Open
-    fireEvent.click(container.querySelector('input'));
-    fireEvent.focus(container.querySelector('input'));
-
-    fireEvent.click(document.querySelector('.rc-picker-cell-inner'));
-    expect(onSelect).toHaveBeenCalled();
-    expect(onChange).not.toHaveBeenCalled();
-
-    container.querySelector<HTMLButtonElement>('.outside').focus();
-    fireEvent.blur(container.querySelector('input'));
-    expect(onChange).toHaveBeenCalled();
-  });
-
-  it('RangePicker', () => {
-    const onChange = jest.fn();
-
-    const { container } = render(
-      <>
-        <MomentRangePicker changeOnBlur showTime onChange={onChange} />
-        <button className="outside" />
-      </>,
-    );
-
-    // Open
-    fireEvent.mouseDown(container.querySelectorAll('input')[0]);
-    fireEvent.click(container.querySelectorAll('input')[0]);
-    fireEvent.focus(container.querySelectorAll('input')[0]);
-
-    fireEvent.click(document.querySelectorAll('.rc-picker-cell-inner')[0]);
-    expect(onChange).not.toHaveBeenCalled();
-
-    // Second Input
-    fireEvent.mouseDown(container.querySelectorAll('input')[1]);
-    fireEvent.click(container.querySelectorAll('input')[1]);
-    fireEvent.focus(container.querySelectorAll('input')[1]);
-
-    const cells = document.querySelectorAll('.rc-picker-time-panel-cell-inner');
-    fireEvent.click(cells[cells.length - 1]);
-
-    // Blur
-    container.querySelector<HTMLButtonElement>('.outside').focus();
-    fireEvent.blur(container.querySelectorAll('input')[1]);
-    expect(onChange).toHaveBeenCalled();
-  });
-
-  it('blur & close should not trigger change', () => {
-    const onCalendarChange = jest.fn();
-
-    const { container } = render(
-      <>
-        <MomentRangePicker
-          changeOnBlur
-          defaultValue={[getMoment('2000-01-01'), getMoment('2000-01-05')]}
-          onCalendarChange={onCalendarChange}
-        />
-      </>,
-    );
-
-    expect(isOpen()).toBeFalsy();
-    fireEvent.blur(container.querySelector('input'));
-    expect(onCalendarChange).not.toHaveBeenCalled();
-
-    // Open to trigger
     openPicker(container);
-    expect(isOpen()).toBeTruthy();
-    fireEvent.blur(container.querySelector('input'));
-    expect(onCalendarChange).toHaveBeenCalled();
+
+    const inputEle = container.querySelector('input');
+    fireEvent.change(inputEle, {
+      target: {
+        value: 'no valid',
+      },
+    });
+
+    closePicker(container);
+    await waitFakeTimer();
+    expect(inputEle).toHaveValue('no valid');
+  });
+
+  it('RangePicker', async () => {
+    const { container } = render(<DayRangePicker changeOnBlur={false} />);
+
+    const startInputEle = container.querySelectorAll('input')[0];
+    const endInputEle = container.querySelectorAll('input')[1];
+
+    // Open
+    openPicker(container);
+    fireEvent.change(startInputEle, {
+      target: {
+        value: 'no valid 1',
+      },
+    });
+
+    openPicker(container, 1);
+    fireEvent.change(endInputEle, {
+      target: {
+        value: 'no valid 2',
+      },
+    });
+
+    // Close
+    closePicker(container, 1);
+    await waitFakeTimer();
+    expect(startInputEle).toHaveValue('no valid 1');
+    expect(endInputEle).toHaveValue('no valid 2');
   });
 });

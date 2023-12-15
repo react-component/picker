@@ -99,6 +99,7 @@ export default () => {
       <SinglePicker
         // Shared
         {...sharedLocale}
+        changeOnBlur={false}
         presets={[
           {
             label: 'Good',
@@ -125,12 +126,13 @@ export default () => {
         }}
       />
       <br />
-      {/* <RangePicker
+      <RangePicker
         {...sharedLocale}
         value={rangeValue}
         disabledDate={() => true}
         picker="time"
         showTime
+        changeOnBlur={false}
         showNow
         panelRender={(ori) => <>2333{ori}</>}
         placeholder={['Start', 'End']}
@@ -164,7 +166,7 @@ export default () => {
           start: 'inputStart',
           end: 'inputEnd',
         }}
-      /> */}
+      />
       <br />
 
       <button
