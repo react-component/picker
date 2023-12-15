@@ -236,10 +236,7 @@ export default () => {
           locale={zhCN}
           value={value}
           // multiple
-          mode="time"
-          disabledMinutes={() => {
-            console.log('good!!!');
-          }}
+          picker="month"
           onChange={setSingleValue}
           // onPickerValueChange={(pickerValue) => {
           //   console.log('🎼 PickerValue Change:', pickerValue);

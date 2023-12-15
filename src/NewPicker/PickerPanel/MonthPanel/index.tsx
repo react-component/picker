@@ -5,7 +5,9 @@ import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
 
-export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateType>) {
+export default function MonthPanel<DateType extends object = any>(
+  props: SharedPanelProps<DateType>,
+) {
   const { prefixCls, locale, generateConfig, pickerValue, onPickerValueChange, onModeChange } =
     props;
 
@@ -80,8 +82,8 @@ export default function MonthPanel<DateType = any>(props: SharedPanelProps<DateT
         <PanelBody
           {...props}
           titleFormat={locale.fieldMonthFormat}
-          colNum={4}
-          rowNum={3}
+          colNum={3}
+          rowNum={4}
           baseDate={baseDate}
           // Body
           getCellDate={getCellDate}

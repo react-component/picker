@@ -5,14 +5,7 @@ import React from 'react';
 import type { PanelMode } from '../src/interface';
 import enUS from '../src/locale/en_US';
 import zhCN from '../src/locale/zh_CN';
-import {
-  clickButton,
-  confirmOK,
-  DayPickerPanel,
-  getDay,
-  isSame,
-  selectCell,
-} from './util/commonUtil';
+import { clickButton, DayPickerPanel, getDay, isSame, selectCell } from './util/commonUtil';
 
 jest.mock('../src/utils/uiUtil', () => {
   const origin = jest.requireActual('../src/utils/uiUtil');
@@ -428,28 +421,28 @@ describe('Picker.Panel', () => {
     expect(container).toMatchSnapshot();
   });
 
-  return;
+  // No this prop now
+  // describe('hideHeader', () => {
+  //   ['decade', 'year', 'month', 'quarter', 'date', 'time'].forEach((mode) => {
+  //     it(mode, () => {
+  //       render(<DayPickerPanel mode={mode as any} hideHeader />);
+  //       expect(document.querySelector('.rc-picker-header')).toBeFalsy();
+  //     });
+  //   });
+  // });
 
-  describe('hideHeader', () => {
-    ['decade', 'year', 'month', 'quarter', 'date', 'time'].forEach((mode) => {
-      it(mode, () => {
-        render(<DayPickerPanel mode={mode as any} hideHeader />);
-        expect(document.querySelector('.rc-picker-header')).toBeFalsy();
-      });
-    });
-  });
+  // No this prop now
+  // it('onOk to trigger', () => {
+  //   const onOk = jest.fn();
+  //   const { container } = render(<DayPickerPanel picker="time" onOk={onOk} />);
+  //   fireEvent.click(
+  //     container.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[3],
+  //   );
 
-  it('onOk to trigger', () => {
-    const onOk = jest.fn();
-    const { container } = render(<DayPickerPanel picker="time" onOk={onOk} />);
-    fireEvent.click(
-      container.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[3],
-    );
-
-    expect(onOk).not.toHaveBeenCalled();
-    confirmOK();
-    expect(isSame(onOk.mock.calls[0][0], '1990-09-03 03:00:00')).toBeTruthy();
-  });
+  //   expect(onOk).not.toHaveBeenCalled();
+  //   confirmOK();
+  //   expect(isSame(onOk.mock.calls[0][0], '1990-09-03 03:00:00')).toBeTruthy();
+  // });
 
   it('monthCellRender', () => {
     const { container } = render(
@@ -466,6 +459,8 @@ describe('Picker.Panel', () => {
 
     expect(container.querySelector('tbody')).toMatchSnapshot();
   });
+
+  return;
 
   describe('start weekday should be correct', () => {
     [

@@ -9,6 +9,7 @@ import type {
   CellRender,
   Components,
   InternalMode,
+  Locale,
   OnPanelChange,
   PanelMode,
   PickerMode,
@@ -16,6 +17,7 @@ import type {
   SharedTimeProps,
 } from '../interface';
 import PickerContext from '../PickerInput/context';
+import useCellRender from '../PickerInput/hooks/useCellRender';
 import { toArray } from '../util';
 import DatePanel from './DatePanel';
 import DateTimePanel from './DateTimePanel';
@@ -86,6 +88,11 @@ export interface BasePickerPanelProps<DateType extends object = any>
   // Cell
   cellRender?: CellRender<DateType>;
 
+  /** @deprecated use cellRender instead of dateRender */
+  dateRender?: (currentDate: DateType, today: DateType) => React.ReactNode;
+  /** @deprecated use cellRender instead of monthCellRender */
+  monthCellRender?: (currentDate: DateType, locale: Locale) => React.ReactNode;
+
   // Hover
   hoverValue?: DateType | [start: DateType, end: DateType];
   onHover?: (date: DateType) => void;
@@ -153,6 +160,8 @@ function PickerPanel<DateType extends object = any>(
 
     // Cell
     cellRender,
+    dateRender,
+    monthCellRender,
 
     // Components
     components = {},
@@ -320,6 +329,10 @@ function PickerPanel<DateType extends object = any>(
   }, [hoverValue, generateConfig]);
 
   // ======================= Components =======================
+  // >>> cellRender
+  const onInternalCellRender = useCellRender(cellRender, dateRender, monthCellRender);
+
+  // ======================= Components =======================
   const PanelComponent = (components[internalMode] ||
     DefaultComponents[internalMode] ||
     DatePanel) as typeof DatePanel;
@@ -363,7 +376,7 @@ function PickerPanel<DateType extends object = any>(
         onSelect={onPanelValueSelect}
         values={mergedValue}
         // Render
-        cellRender={cellRender}
+        cellRender={onInternalCellRender}
         disabledDate={disabledDate}
         // Hover
         hoverValue={hoverRangeDate}
