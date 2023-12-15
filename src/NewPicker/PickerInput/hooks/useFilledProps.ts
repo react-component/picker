@@ -1,3 +1,4 @@
+import { warning } from 'rc-util';
 import * as React from 'react';
 import { toArray } from '../../../utils/miscUtil';
 import { fillLocale } from '../../hooks/useLocale';
@@ -114,6 +115,19 @@ export default function useFilledProps<
   const mergedLocale = fillLocale(locale);
   const mergedShowTime = getTimeConfig(props);
 
+  // ======================= Warning ========================
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    picker === 'time' &&
+    ['disabledHours', 'disabledMinutes', 'disabledSeconds'].some((key) => (props as any)[key])
+  ) {
+    warning(
+      false,
+      `'disabledHours', 'disabledMinutes', 'disabledSeconds' will be removed in the next major version, please use 'disabledTime' instead.`,
+    );
+  }
+
+  // ======================== Props =========================
   const filledProps = React.useMemo(
     () => ({
       ...props,
