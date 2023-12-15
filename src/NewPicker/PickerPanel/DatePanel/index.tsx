@@ -12,7 +12,7 @@ import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
 
-export interface DatePanelProps<DateType> extends SharedPanelProps<DateType> {
+export interface DatePanelProps<DateType extends object> extends SharedPanelProps<DateType> {
   panelName?: PanelMode;
   rowClassName?: (date: DateType) => string;
 
@@ -20,7 +20,7 @@ export interface DatePanelProps<DateType> extends SharedPanelProps<DateType> {
   mode?: PanelMode;
 }
 
-export default function DatePanel<DateType = any>(props: DatePanelProps<DateType>) {
+export default function DatePanel<DateType extends object = any>(props: DatePanelProps<DateType>) {
   const {
     prefixCls,
     panelName = 'date',

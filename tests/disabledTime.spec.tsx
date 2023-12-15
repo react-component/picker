@@ -144,7 +144,7 @@ describe('Picker.DisabledTime', () => {
     jest.useRealTimers();
   });
 
-  it('disabledTime should reset correctly when date changed by click', function () {
+  it('disabledTime should reset correctly when date changed by click', async () => {
     const disabledTime = jest.fn((_: Dayjs | null, __: 'start' | 'end') => ({
       disabledHours: () => [0, 1, 2, 3, 4, 10],
     }));
