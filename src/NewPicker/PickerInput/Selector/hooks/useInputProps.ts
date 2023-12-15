@@ -11,7 +11,7 @@ export default function useInputProps<DateType extends object = any>(
     | 'format'
     | 'generateConfig'
     | 'locale'
-    | 'changeOnBlur'
+    | 'preserveInvalidOnBlur'
     | 'inputReadOnly'
     | 'required'
     | 'aria-required'
@@ -46,7 +46,7 @@ export default function useInputProps<DateType extends object = any>(
     maskFormat,
     generateConfig,
     locale,
-    changeOnBlur,
+    preserveInvalidOnBlur,
     inputReadOnly,
     required,
     'aria-required': ariaRequired,
@@ -128,7 +128,7 @@ export default function useInputProps<DateType extends object = any>(
       // ============== Shared ==============
       format: maskFormat,
       validateFormat: (text) => !!validateFormat(text),
-      changeOnBlur,
+      preserveInvalidOnBlur,
 
       readOnly: inputReadOnly,
 

@@ -63,7 +63,7 @@ function SingleSelector<DateType extends object = any>(
     // Valid
     format,
     maskFormat,
-    changeOnBlur,
+    preserveInvalidOnBlur,
     onInvalid,
 
     // Disabled

@@ -20,7 +20,7 @@ describe('Picker.ChangeOnBlur', () => {
   });
 
   it('Picker', async () => {
-    const { container } = render(<DayPicker changeOnBlur={false} />);
+    const { container } = render(<DayPicker preserveInvalidOnBlur />);
 
     // Open
     openPicker(container);
@@ -38,7 +38,7 @@ describe('Picker.ChangeOnBlur', () => {
   });
 
   it('RangePicker', async () => {
-    const { container } = render(<DayRangePicker changeOnBlur={false} />);
+    const { container } = render(<DayRangePicker preserveInvalidOnBlur />);
 
     const startInputEle = container.querySelectorAll('input')[0];
     const endInputEle = container.querySelectorAll('input')[1];

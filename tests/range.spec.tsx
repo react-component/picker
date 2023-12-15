@@ -1872,13 +1872,12 @@ describe('Picker.Range', () => {
       expect(onCalendarChange).toHaveBeenCalled();
     });
 
-    it('should only trigger onCalendarChange when showTime and changeOnBlur exist', () => {
+    it('should only trigger onCalendarChange when showTime', () => {
       const onCalendarChange = jest.fn();
       const onChange = jest.fn();
       const { container, baseElement } = render(
         <DayRangePicker
           showTime
-          changeOnBlur
           onChange={onChange}
           onCalendarChange={onCalendarChange}
         />,

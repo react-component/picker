@@ -83,7 +83,7 @@ function RangeSelector<DateType extends object = any>(
     // Valid
     format,
     maskFormat,
-    changeOnBlur,
+    preserveInvalidOnBlur,
     onInvalid,
 
     // Disabled

@@ -313,11 +313,6 @@ export interface SharedPickerProps<DateType extends object = any> extends Shared
         format: string;
         align?: boolean;
       };
-  /**
-   * When user input invalidate date, keep it in the input field.
-   * This is only used for strong a11y requirement which do not want modify after blur.
-   */
-  changeOnBlur?: boolean;
 
   // Icons
   suffixIcon?: React.ReactNode;
@@ -360,6 +355,19 @@ export interface SharedPickerProps<DateType extends object = any> extends Shared
    * `false` to trigger change on every time panel closed by the mode = picker.
    */
   needConfirm?: boolean;
+
+  /**
+   * @deprecated. This is removed and not work anymore.
+   * Value will always be update if user type correct date type.
+   * You can use `needConfirm` for confirm requirement.
+   */
+  changeOnBlur?: boolean;
+
+  /**
+   * When user input invalidate date, keep it in the input field.
+   * This is only used for strong a11y requirement which do not want modify after blur.
+   */
+  preserveInvalidOnBlur?: boolean;
 
   // Motion
   transitionName?: string;
@@ -447,7 +455,7 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
    * By default value in input field will be reset with previous valid value when blur.
    * Set to `false` will keep invalid text in input field when blur.
    */
-  changeOnBlur?: boolean;
+  preserveInvalidOnBlur?: boolean;
 
   // Open
   open: boolean;

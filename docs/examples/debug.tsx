@@ -37,6 +37,55 @@ const sharedLocale = {
   generateConfig: dayjsGenerateConfig,
 };
 
+const Origin7Range: React.FC = () => {
+  const [dates, setDates] = React.useState<any>(null);
+  const [value, setValue] = React.useState<any>(null);
+
+  const disabledDate = (current: Dayjs) => {
+    if (!dates) {
+      return false;
+    }
+
+    const tooLate = dates[0] && current.diff(dates[0], 'days') >= 7;
+    const tooEarly = dates[1] && dates[1].diff(current, 'days') >= 7;
+
+    console.log(
+      '>>>',
+      current?.format('YYYY-MM-DD'),
+      dates[0]?.format('YYYY-MM-DD'),
+      dates[1]?.format('YYYY-MM-DD'),
+      tooEarly,
+      tooLate,
+    );
+
+    return !!tooEarly || !!tooLate;
+  };
+
+  const onOpenChange = (open: boolean) => {
+    if (open) {
+      setDates([null, null]);
+    } else {
+      setDates(null);
+    }
+  };
+
+  return (
+    <RangePicker
+      {...sharedLocale}
+      value={dates || value}
+      disabledDate={disabledDate}
+      onCalendarChange={(val) => {
+        setDates(val);
+      }}
+      onChange={(val) => {
+        setValue(val);
+      }}
+      onOpenChange={onOpenChange}
+      changeOnBlur
+    />
+  );
+};
+
 const MyInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   (props, ref) => {
     console.log('>>>', props);
@@ -92,14 +141,18 @@ export default () => {
 
   return (
     <div>
+      <Origin7Range />
+
       <input defaultValue="2030-03-0" />
+      <input defaultValue="2030-03-01 11:22:3" />
 
       <br />
 
       <SinglePicker
         // Shared
         {...sharedLocale}
-        changeOnBlur={false}
+        // changeOnBlur={false}
+        showTime
         presets={[
           {
             label: 'Good',

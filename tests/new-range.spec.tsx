@@ -204,8 +204,8 @@ describe('NewPicker.Range', () => {
       expect(isOpen()).toBeTruthy();
     });
 
-    it('changeOnBlur=true', () => {
-      const { container } = render(<DayRangePicker />);
+    it('preserveInvalidOnBlur=false', () => {
+      const { container } = render(<DayRangePicker preserveInvalidOnBlur={false} />);
       const firstInput = container.querySelector<HTMLInputElement>('input');
 
       openPicker(container);
@@ -222,8 +222,8 @@ describe('NewPicker.Range', () => {
       expect(firstInput).toHaveValue('');
     });
 
-    it('changeOnBlur=false', () => {
-      const { container } = render(<DayRangePicker changeOnBlur={false} />);
+    it('preserveInvalidOnBlur=true', () => {
+      const { container } = render(<DayRangePicker preserveInvalidOnBlur />);
       const firstInput = container.querySelector<HTMLInputElement>('input');
 
       openPicker(container);
