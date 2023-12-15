@@ -1163,6 +1163,7 @@ exports[`Picker.Panel append cell with cellRender in quarter 1`] = `
         >
           <button
             class="rc-picker-year-btn"
+            tabindex="-1"
             type="button"
           >
             1990
@@ -1213,7 +1214,7 @@ exports[`Picker.Panel append cell with cellRender in quarter 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
                 title="1990-Q3"
               >
                 <div
@@ -5302,6 +5303,7 @@ exports[`Picker.Panel override cell with cellRender in quarter 1`] = `
         >
           <button
             class="rc-picker-year-btn"
+            tabindex="-1"
             type="button"
           >
             1990
@@ -5344,7 +5346,7 @@ exports[`Picker.Panel override cell with cellRender in quarter 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
                 title="1990-Q3"
               >
                 <div

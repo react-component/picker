@@ -1,12 +1,20 @@
+import { warning } from 'rc-util';
 import * as React from 'react';
 import type { CellRender, CellRenderInfo, SharedPickerProps } from '../../interface';
 
 export default function useCellRender<DateType extends object = any>(
   cellRender: SharedPickerProps<DateType>['cellRender'],
-  dateRender: SharedPickerProps<DateType>['dateRender'],
-  monthCellRender: SharedPickerProps<DateType>['monthCellRender'],
+  dateRender?: SharedPickerProps<DateType>['dateRender'],
+  monthCellRender?: SharedPickerProps<DateType>['monthCellRender'],
   range?: CellRenderInfo<DateType>['range'],
 ) {
+  // ========================= Warn =========================
+  if (process.env.NODE_ENV !== 'production') {
+    warning(!dateRender, `'dateRender' is deprecated. Please use 'cellRender' instead.`);
+    warning(!monthCellRender, `'monthCellRender' is deprecated. Please use 'cellRender' instead.`);
+  }
+
+  // ======================== Render ========================
   // Merged render
   const mergedCellRender = React.useMemo(() => {
     if (cellRender) {

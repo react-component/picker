@@ -6,6 +6,7 @@ import 'dayjs/locale/zh-cn';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
+import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import moment, { isMoment, type Moment } from 'moment';
 import Picker, { PickerPanel, type PickerProps } from '../../src';
@@ -37,6 +38,7 @@ dayjs.locale('zh-cn');
 dayjs.extend(buddhistEra);
 dayjs.extend(localizedFormat);
 dayjs.extend(weekOfYear);
+dayjs.extend(quarterOfYear);
 dayjs.extend(updateLocale);
 
 const FULL_FORMAT = 'YYYY-MM-DD HH:mm:ss';

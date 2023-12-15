@@ -559,19 +559,6 @@ describe('Picker.Panel', () => {
       expect(container).toMatchSnapshot();
     });
 
-    it('warning with defaultPickerValue', () => {
-      resetWarned();
-      const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-      render(<DayPickerPanel picker={picker as any} defaultPickerValue={getDay('2023-07-25')} />);
-
-      expect(errSpy).toHaveBeenCalledWith(
-        "Warning: 'defaultPickerValue' is deprecated. Please use 'defaultValue' instead.",
-      );
-
-      errSpy.mockRestore();
-    });
-
     it('warning with dateRender and monthCellRender', () => {
       resetWarned();
       const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -622,8 +609,6 @@ describe('Picker.Panel', () => {
       expect(container).toMatchSnapshot();
     });
   });
-
-  return;
 
   it('week picker current should check year', () => {
     const { container } = render(<DayPickerPanel picker="week" value={getDay('1990-09-03')} />);
