@@ -402,8 +402,6 @@ describe('Picker.Panel', () => {
     });
   });
 
-  return;
-
   it('warning with invalidate value', () => {
     resetWarned();
     const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -417,10 +415,13 @@ describe('Picker.Panel', () => {
 
     errSpy.mockRestore();
   });
+
   it('should render correctly in rtl', () => {
     const { container } = render(<DayPickerPanel direction="rtl" />);
     expect(container).toMatchSnapshot();
   });
+
+  return;
 
   describe('hideHeader', () => {
     ['decade', 'year', 'month', 'quarter', 'date', 'time'].forEach((mode) => {

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useEvent, useMergedState } from 'rc-util';
 import * as React from 'react';
 import { isSame } from '../../utils/dateUtil';
@@ -53,6 +54,8 @@ export interface BasePickerPanelProps<DateType extends object = any>
     Pick<React.HTMLAttributes<HTMLDivElement>, 'tabIndex'> {
   // Style
   prefixCls?: string;
+
+  direction?: 'ltr' | 'rtl';
 
   // Value
   onSelect?: (date: DateType) => void;
@@ -117,6 +120,8 @@ function PickerPanel<DateType extends object = any>(
     locale,
     disabledDate,
     generateConfig,
+
+    direction,
 
     // Style
     prefixCls,
@@ -320,8 +325,16 @@ function PickerPanel<DateType extends object = any>(
     DatePanel) as typeof DatePanel;
 
   // ========================= Render =========================
+  const panelCls = `${mergedPrefixCls}-panel`;
+
   return (
-    <div ref={rootRef} tabIndex={tabIndex} className={`${mergedPrefixCls}-panel`}>
+    <div
+      ref={rootRef}
+      tabIndex={tabIndex}
+      className={classNames(panelCls, {
+        [`${panelCls}-rtl`]: direction === 'rtl',
+      })}
+    >
       <PanelComponent
         // Time
         showTime={mergedShowTime}
