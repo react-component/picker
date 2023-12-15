@@ -2,7 +2,7 @@ import { warning } from 'rc-util';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import { leftPad } from '../../utils/miscUtil';
-import type { SharedTimeProps } from '../interface';
+import type { DisabledTimes, SharedTimeProps } from '../interface';
 import { findValidateTime } from '../PickerPanel/TimePanel/TimePanelBody/util';
 
 export type Unit<ValueType = number | string> = {
@@ -76,6 +76,8 @@ export default function useTimeInfo<DateType extends object = any>(
     disabledSeconds,
   } = props || {};
 
+  const mergedDate = React.useMemo(() => date || generateConfig.getNow(), [date, generateConfig]);
+
   // ======================== Warnings ========================
   if (process.env.NODE_ENV !== 'production') {
     const isHourStepValid = 24 % hourStep === 0;
@@ -120,61 +122,115 @@ export default function useTimeInfo<DateType extends object = any>(
     mergedDisabledMinutes,
     mergedDisabledSeconds,
     mergedDisabledMilliseconds,
-  ] = React.useMemo(() => getDisabledTimes(date), [date, getDisabledTimes]);
+  ] = React.useMemo(() => getDisabledTimes(mergedDate), [mergedDate, getDisabledTimes]);
 
   // ========================= Column =========================
-  const rowHourUnits = React.useMemo(() => {
-    const hours = generateUnits(0, 23, hourStep, hideDisabledOptions, mergedDisabledHours());
+  const getAllUnits = React.useCallback(
+    (
+      getDisabledHours: DisabledTimes['disabledHours'],
+      getDisabledMinutes: DisabledTimes['disabledMinutes'],
+      getDisabledSeconds: DisabledTimes['disabledSeconds'],
+      getDisabledMilliseconds: DisabledTimes['disabledMilliSeconds'],
+    ) => {
+      const hours = generateUnits(0, 23, hourStep, hideDisabledOptions, getDisabledHours());
 
-    return mergedShowMeridiem
-      ? hours.map((unit) => ({
-          ...unit,
-          label: leftPad((unit.value as number) % 12 || 12, 2),
-        }))
-      : hours;
-  }, [hideDisabledOptions, hourStep, mergedDisabledHours, mergedShowMeridiem]);
+      // Hours
+      const rowHourUnits = mergedShowMeridiem
+        ? hours.map((unit) => ({
+            ...unit,
+            label: leftPad((unit.value as number) % 12 || 12, 2),
+          }))
+        : hours;
 
-  // Minutes
-  const getMinuteUnits = React.useCallback(
-    (nextHour: number) =>
-      generateUnits(0, 59, minuteStep, hideDisabledOptions, mergedDisabledMinutes(nextHour)),
-    [hideDisabledOptions, mergedDisabledMinutes, minuteStep],
+      // Minutes
+      const getMinuteUnits = (nextHour: number) =>
+        generateUnits(0, 59, minuteStep, hideDisabledOptions, getDisabledMinutes(nextHour));
+
+      // Seconds
+      const getSecondUnits = (nextHour: number, nextMinute: number) =>
+        generateUnits(
+          0,
+          59,
+          secondStep,
+          hideDisabledOptions,
+          getDisabledSeconds(nextHour, nextMinute),
+        );
+
+      // Milliseconds
+      const getMillisecondUnits = (nextHour: number, nextMinute: number, nextSecond: number) =>
+        generateUnits(
+          0,
+          999,
+          millisecondStep,
+          hideDisabledOptions,
+          getDisabledMilliseconds(nextHour, nextMinute, nextSecond),
+          3,
+        );
+
+      return [rowHourUnits, getMinuteUnits, getSecondUnits, getMillisecondUnits] as const;
+    },
+    [hideDisabledOptions, hourStep, mergedShowMeridiem, millisecondStep, minuteStep, secondStep],
   );
 
-  // Seconds
-  const getSecondUnits = React.useCallback(
-    (nextHour: number, nextMinute: number) =>
-      generateUnits(
-        0,
-        59,
-        secondStep,
-        hideDisabledOptions,
-        mergedDisabledSeconds(nextHour, nextMinute),
+  const [rowHourUnits, getMinuteUnits, getSecondUnits, getMillisecondUnits] = React.useMemo(
+    () =>
+      getAllUnits(
+        mergedDisabledHours,
+        mergedDisabledMinutes,
+        mergedDisabledSeconds,
+        mergedDisabledMilliseconds,
       ),
-    [hideDisabledOptions, mergedDisabledSeconds, secondStep],
+    [
+      getAllUnits,
+      mergedDisabledHours,
+      mergedDisabledMinutes,
+      mergedDisabledSeconds,
+      mergedDisabledMilliseconds,
+    ],
   );
 
-  // Milliseconds
-  const getMillisecondUnits = React.useCallback(
-    (nextHour: number, nextMinute: number, nextSecond: number) =>
-      generateUnits(
-        0,
-        999,
-        millisecondStep,
-        hideDisabledOptions,
-        mergedDisabledMilliseconds(nextHour, nextMinute, nextSecond),
-        3,
-      ),
-    [hideDisabledOptions, mergedDisabledMilliseconds, millisecondStep],
-  );
+  // ======================== Validate ========================
+  /**
+   * Get validate time with `disabledTime`, `certainDate` to specific the date need to check
+   */
+  const getValidTime = (nextTime: DateType, certainDate?: DateType) => {
+    let getCheckHourUnits = () => rowHourUnits;
+    let getCheckMinuteUnits = getMinuteUnits;
+    let getCheckSecondUnits = getSecondUnits;
+    let getCheckMillisecondUnits = getMillisecondUnits;
 
-  const getValidTime = (nextDate: DateType) => {
+    if (certainDate) {
+      const [
+        targetDisabledHours,
+        targetDisabledMinutes,
+        targetDisabledSeconds,
+        targetDisabledMilliseconds,
+      ] = getDisabledTimes(certainDate);
+
+      const [
+        targetRowHourUnits,
+        targetGetMinuteUnits,
+        targetGetSecondUnits,
+        targetGetMillisecondUnits,
+      ] = getAllUnits(
+        targetDisabledHours,
+        targetDisabledMinutes,
+        targetDisabledSeconds,
+        targetDisabledMilliseconds,
+      );
+
+      getCheckHourUnits = () => targetRowHourUnits;
+      getCheckMinuteUnits = targetGetMinuteUnits;
+      getCheckSecondUnits = targetGetSecondUnits;
+      getCheckMillisecondUnits = targetGetMillisecondUnits;
+    }
+
     const validateDate = findValidateTime(
-      nextDate,
-      () => rowHourUnits,
-      getMinuteUnits,
-      getSecondUnits,
-      getMillisecondUnits,
+      nextTime,
+      getCheckHourUnits,
+      getCheckMinuteUnits,
+      getCheckSecondUnits,
+      getCheckMillisecondUnits,
       generateConfig,
     );
 

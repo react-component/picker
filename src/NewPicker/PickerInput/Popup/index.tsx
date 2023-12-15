@@ -64,6 +64,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     // Change
     value,
     isInvalid,
+    onSelect,
 
     // Now
     onNow,
@@ -79,6 +80,10 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
 
   // ===================== TimeValidate =====================
   const [getValidTime] = useTimeInfo(generateConfig, showTime, generateConfig.getNow());
+
+  const onInternalSelect = (date: DateType) => {
+    onSelect(getValidTime(date, date));
+  };
 
   // ========================= Now ==========================
   const onInternalNow = (date: DateType) => {
@@ -129,7 +134,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
         onHover={onPresetHover}
       />
       <div>
-        <PopupPanel {...props} />
+        <PopupPanel {...props} onSelect={onInternalSelect} />
         <Footer
           {...props}
           showNow={multiple ? false : showNow}
