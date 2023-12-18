@@ -1,11 +1,5 @@
 import type { GenerateConfig } from '../generate';
-import type {
-  CustomFormat,
-  InternalMode,
-  Locale,
-  NullableDateType,
-  PickerMode,
-} from '../NewPicker/interface';
+import type { CustomFormat, InternalMode, Locale, NullableDateType } from '../NewPicker/interface';
 
 export const WEEK_DAY_COUNT = 7;
 
@@ -190,14 +184,6 @@ export function isSame<DateType = any>(
   }
 }
 
-export function isEqual<DateType>(
-  generateConfig: GenerateConfig<DateType>,
-  value1: NullableDateType<DateType>,
-  value2: NullableDateType<DateType>,
-) {
-  return isSameDate(generateConfig, value1, value2) && isSameTime(generateConfig, value1, value2);
-}
-
 /** Between in date but not equal of date */
 export function isInRange<DateType>(
   generateConfig: GenerateConfig<DateType>,
@@ -238,23 +224,6 @@ export function getWeekStartDate<DateType>(
   return alignStartDate;
 }
 
-export function getClosingViewDate<DateType>(
-  viewDate: DateType,
-  picker: PickerMode,
-  generateConfig: GenerateConfig<DateType>,
-  offset: number = 1,
-): DateType {
-  switch (picker) {
-    case 'year':
-      return generateConfig.addYear(viewDate, offset * 10);
-    case 'quarter':
-    case 'month':
-      return generateConfig.addYear(viewDate, offset);
-    default:
-      return generateConfig.addMonth(viewDate, offset);
-  }
-}
-
 export function formatValue<DateType>(
   value: DateType,
   {
@@ -274,23 +243,4 @@ export function formatValue<DateType>(
   return typeof format === 'function'
     ? format(value)
     : generateConfig.locale.format(locale.locale, value, format);
-}
-
-export function parseValue<DateType>(
-  value: string,
-  {
-    generateConfig,
-    locale,
-    formatList,
-  }: {
-    generateConfig: GenerateConfig<DateType>;
-    locale: Locale;
-    formatList: (string | CustomFormat<DateType>)[];
-  },
-) {
-  if (!value || typeof formatList[0] === 'function') {
-    return null;
-  }
-
-  return generateConfig.locale.parse(locale.locale, value, formatList as string[]);
 }

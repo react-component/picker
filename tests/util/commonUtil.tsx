@@ -5,30 +5,32 @@ import dayjs, { isDayjs, type Dayjs } from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-import weekOfYear from 'dayjs/plugin/weekOfYear';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import updateLocale from 'dayjs/plugin/updateLocale';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
 import moment, { isMoment, type Moment } from 'moment';
-import Picker, { PickerPanel, type PickerProps } from '../../src';
+import { type PickerProps } from '../../src';
 import dayGenerateConfig from '../../src/generate/dayjs';
-import momentGenerateConfig from '../../src/generate/moment';
 import enUS from '../../src/locale/en_US';
 import zh_CN from '../../src/locale/zh_CN';
 import type {
+  PickerPanelProps as NewPickerPanelProps,
   PickerProps as NewPickerProps,
   PickerRef,
   RangePickerProps,
-  PickerPanelProps as NewPickerPanelProps,
 } from '../../src/NewPicker';
-import { Picker as NewPicker, RangePicker as NewRangePicker, PickerPanel as NewPickerPanel } from '../../src/NewPicker';
+import {
+  Picker as NewPicker,
+  PickerPanel as NewPickerPanel,
+  RangePicker as NewRangePicker,
+} from '../../src/NewPicker';
 import type { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
 import type {
   PickerPanelBaseProps,
   PickerPanelDateProps,
   PickerPanelTimeProps,
-
 } from '../../src/PickerPanel';
-import RangePicker, {
+import {
   type RangePickerBaseProps,
   type RangePickerDateProps,
   type RangePickerTimeProps,
@@ -42,21 +44,6 @@ dayjs.extend(quarterOfYear);
 dayjs.extend(updateLocale);
 
 const FULL_FORMAT = 'YYYY-MM-DD HH:mm:ss';
-
-// export type Wrapper = ReactWrapper & {
-//   confirmOK: () => void;
-//   openPicker: (index?: number) => void;
-//   closePicker: (index?: number) => void;
-//   isOpen: () => boolean;
-//   findCell: (text: number | string, index?: number) => Wrapper;
-//   selectCell: (text: number | string, index?: number) => Wrapper;
-//   clearValue: (index?: number) => void;
-//   keyDown: (which: number, info?: object, index?: number) => void;
-//   clickButton: (type: 'prev' | 'next' | 'super-prev' | 'super-next') => Wrapper;
-//   inputValue: (text: string, index?: number) => Wrapper;
-// };
-
-// export const mount = originMount as (...args: Parameters<typeof originMount>) => Wrapper;
 
 export function getMoment(str: string): Moment {
   const formatList = [FULL_FORMAT, 'YYYY-MM-DD', 'HH:mm:ss', 'YYYY'];
@@ -101,51 +88,17 @@ export type MomentPickerProps =
   | InjectDefaultProps<PickerDateProps<Moment>>
   | InjectDefaultProps<PickerTimeProps<Moment>>;
 
-// export class MomentPicker extends React.Component<MomentPickerProps> {
-//   pickerRef = React.createRef<Picker<Moment>>();
-
-//   render() {
-//     return (
-//       <Picker<Moment>
-//         generateConfig={momentGenerateConfig}
-//         locale={enUS}
-//         ref={this.pickerRef}
-//         {...this.props}
-//       />
-//     );
-//   }
-// }
-
 // Moment Panel Picker
 export type MomentPickerPanelProps =
   | InjectDefaultProps<PickerPanelBaseProps<Moment>>
   | InjectDefaultProps<PickerPanelDateProps<Moment>>
   | InjectDefaultProps<PickerPanelTimeProps<Moment>>;
 
-// export const MomentPickerPanel = (props: MomentPickerPanelProps) => (
-//   <PickerPanel<Moment> generateConfig={momentGenerateConfig} locale={enUS} {...props} />
-// );
-
 // Moment Range Picker
 export type MomentRangePickerProps =
   | InjectDefaultProps<RangePickerBaseProps<Moment>>
   | InjectDefaultProps<RangePickerDateProps<Moment>>
   | InjectDefaultProps<RangePickerTimeProps<Moment>>;
-
-// export class MomentRangePicker extends React.Component<MomentRangePickerProps> {
-//   rangePickerRef = React.createRef<RangePicker<Moment>>();
-
-//   render() {
-//     return (
-//       <RangePicker<Moment>
-//         generateConfig={momentGenerateConfig}
-//         locale={enUS}
-//         ref={this.rangePickerRef}
-//         {...this.props}
-//       />
-//     );
-//   }
-// }
 
 // ====================================== UTIL ======================================
 export async function waitFakeTimer() {
