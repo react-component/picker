@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import type { GenerateConfig } from '../../../generate';
-import useTimeInfo from '../../hooks/useTimeInfo';
+import useTimeInfo from '../../../hooks/useTimeInfo';
 import type {
   DisabledDate,
   InternalMode,

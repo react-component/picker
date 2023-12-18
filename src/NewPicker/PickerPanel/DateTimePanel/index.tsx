@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useTimeInfo from '../../hooks/useTimeInfo';
+import useTimeInfo from '../../../hooks/useTimeInfo';
 import type { SharedPanelProps } from '../../../interface';
 import DatePanel from '../DatePanel';
 import TimePanel from '../TimePanel';

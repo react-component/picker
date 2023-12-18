@@ -1,4 +1,4 @@
-import type { PickerMode, SharedTimeProps } from '../../interface';
+import type { PickerMode, SharedTimeProps } from '../interface';
 
 const showTimeKeys = [
   'format',

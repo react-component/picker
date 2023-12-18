@@ -15,8 +15,8 @@ import type {
 import { isSame } from '../../utils/dateUtil';
 import { toArray } from '../../utils/miscUtil';
 import useLocale from '../../hooks/useLocale';
-import { getTimeConfig } from '../hooks/useTimeConfig';
-import useToggleDates from '../hooks/useToggleDates';
+import { getTimeConfig } from '../../hooks/useTimeConfig';
+import useToggleDates from '../../hooks/useToggleDates';
 import PickerContext from '../PickerInput/context';
 import useCellRender from '../PickerInput/hooks/useCellRender';
 import DatePanel from './DatePanel';
