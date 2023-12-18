@@ -392,7 +392,19 @@ function Picker<DateType extends object = any>(
       return internalHoverValue ? [internalHoverValue] : calendarValue;
     }
 
-    return [...calendarValue, internalHoverValue].filter((date) => date);
+    return calendarValue.filter((date) => date);
+
+    // const nextValues = [...calendarValue].filter((date) => date);
+    // if (
+    //   internalHoverValue &&
+    //   nextValues.every(
+    //     (date) => !isSame(generateConfig, locale, date, internalHoverValue, internalPicker),
+    //   )
+    // ) {
+    //   nextValues.push(internalHoverValue);
+    // }
+
+    // return nextValues;
   }, [calendarValue, internalHoverValue, multiple]);
 
   // Clean up `internalHoverValues` when closed
@@ -453,7 +465,9 @@ function Picker<DateType extends object = any>(
   const onPanelSelect = (date: DateType) => {
     lastOperation('panel');
 
+    console.log('1 =>', getCalendarValue());
     const nextValues = multiple ? toggleDates(getCalendarValue(), date) : [date];
+    console.log('2 =>', nextValues);
 
     //   const clone: DateType = fillIndex(calendarValue, activeIndex, date);
 

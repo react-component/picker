@@ -64,6 +64,7 @@ export default function MultipleDates<DateType extends object = any>(
   }
 
   // ======================== Render ========================
+
   return (
     <div className={selectorCls}>
       <Overflow

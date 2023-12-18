@@ -130,6 +130,7 @@ function SingleSelector<DateType extends object = any>(
       (oriDate) => oriDate && !isSame(generateConfig, locale, oriDate, date, internalPicker),
     );
     onChange(nextValues);
+    onSubmit();
   };
 
   // ======================== Inputs ========================
