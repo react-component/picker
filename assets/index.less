@@ -24,6 +24,7 @@
 }
 
 .@{prefix-cls} {
+  position: relative;
   display: inline-flex;
 
   &-rtl {
@@ -527,5 +528,25 @@
     display: flex;
     flex-wrap: nowrap;
     align-items: stretch;
+  }
+
+  // ========================================================
+  // =                       Overflow                       =
+  // ========================================================
+  &-selector {
+    width: 100%;
+  }
+
+  &-selection-overflow {
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid green;
+
+    &-item {
+      flex: none;
+      max-width: 100%;
+    }
   }
 }

@@ -127,7 +127,7 @@ export default function useInputProps<DateType extends object = any>(
 
       // ============== Shared ==============
       format: maskFormat,
-      validateFormat: (text) => !!validateFormat(text),
+      validateFormat: (text: string) => !!validateFormat(text),
       preserveInvalidOnBlur,
 
       readOnly: inputReadOnly,
@@ -221,5 +221,5 @@ export default function useInputProps<DateType extends object = any>(
     return inputProps;
   };
 
-  return getInputProps;
+  return [getInputProps, getText] as const;
 }

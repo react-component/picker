@@ -40,6 +40,8 @@ export interface PickerProps<DateType extends object = any>
 
   /** Not support `time` or `datetime` picker */
   multiple?: boolean;
+  /** Only work when `multiple` is in used */
+  maxTagCount?: number | 'responsive';
 
   // Value
   value?: DateType | DateType[];
@@ -390,7 +392,7 @@ function Picker<DateType extends object = any>(
       return internalHoverValue ? [internalHoverValue] : calendarValue;
     }
 
-    return [...calendarValue, internalHoverValue];
+    return [...calendarValue, internalHoverValue].filter((date) => date);
   }, [calendarValue, internalHoverValue, multiple]);
 
   // Clean up `internalHoverValues` when closed

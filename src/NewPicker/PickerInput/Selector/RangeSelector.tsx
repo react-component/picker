@@ -154,7 +154,7 @@ function RangeSelector<DateType extends object = any>(
   );
 
   // ======================== Inputs ========================
-  const getInputProps = useInputProps({
+  const [getInputProps] = useInputProps({
     ...props,
     id: ids,
     placeholder: mergedPlaceholder,

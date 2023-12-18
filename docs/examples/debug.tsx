@@ -153,6 +153,14 @@ export default () => {
         // showTime={{
         //   disabledHours: () => [0, 1, 2, 3, 4, 5],
         // }}
+        multiple
+        defaultValue={[
+          dayjs('2000-01-01'),
+          dayjs('2000-01-03'),
+          dayjs('2000-01-05'),
+          dayjs('2000-01-07'),
+          dayjs('2000-01-09'),
+        ]}
         presets={[
           {
             label: 'Good',

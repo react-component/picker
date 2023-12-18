@@ -1,14 +1,17 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import type { SelectorProps, SelectorRef } from '../../interface';
-import PickerContext from '../context';
-import useInputProps from './hooks/useInputProps';
-import useRootProps from './hooks/useRootProps';
-import { ClearIcon } from './Icon';
-import Input, { type InputRef } from './Input';
+import type { SelectorProps, SelectorRef } from '../../../interface';
+import PickerContext from '../../context';
+import type { PickerProps } from '../../SinglePicker';
+import useInputProps from '../hooks/useInputProps';
+import useRootProps from '../hooks/useRootProps';
+import Icon, { ClearIcon } from '../Icon';
+import Input, { type InputRef } from '../Input';
+import MultipleDates from './MultipleDates';
 
 export interface SingleSelectorProps<DateType extends object = any>
-  extends SelectorProps<DateType> {
+  extends SelectorProps<DateType>,
+    Pick<PickerProps, 'multiple' | 'maxTagCount'> {
   id?: string;
 
   value?: DateType[];
@@ -59,6 +62,8 @@ function SingleSelector<DateType extends object = any>(
     onChange,
     onSubmit,
     onInputChange,
+    multiple,
+    maxTagCount,
 
     // Valid
     format,
@@ -110,13 +115,39 @@ function SingleSelector<DateType extends object = any>(
   const rootProps = useRootProps(restProps);
 
   // ======================== Inputs ========================
-  const getInputProps = useInputProps<DateType>(props, ({ valueTexts }) => ({
+  const [getInputProps, getText] = useInputProps<DateType>(props, ({ valueTexts }) => ({
     value: valueTexts[0] || '',
     active: focused,
   }));
 
   // ======================== Clear =========================
   const showClear = !!(clearIcon && value.length && !disabled);
+
+  // ======================= Multiple =======================
+  const selectorNode = multiple ? (
+    <>
+      <MultipleDates
+        prefixCls={prefixCls}
+        value={value}
+        onRemove={(date) => {
+          console.log('Remove:', date);
+        }}
+        formatDate={getText}
+        maxTagCount={maxTagCount}
+        disabled={disabled}
+      />
+      <Icon type="suffix" icon={suffixIcon} />
+      {showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
+    </>
+  ) : (
+    <Input
+      ref={inputRef}
+      {...getInputProps()}
+      suffixIcon={suffixIcon}
+      clearIcon={showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
+      showActiveCls={false}
+    />
+  );
 
   // ======================== Render ========================
   return (
@@ -137,20 +168,14 @@ function SingleSelector<DateType extends object = any>(
       // Not lose current input focus
       onMouseDown={(e) => {
         const { target } = e;
-        if (target !== inputRef.current.inputElement) {
+        if (target !== inputRef.current?.inputElement) {
           e.preventDefault();
         }
 
         onMouseDown?.(e);
       }}
     >
-      <Input
-        ref={inputRef}
-        {...getInputProps()}
-        suffixIcon={suffixIcon}
-        clearIcon={showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
-        showActiveCls={false}
-      />
+      {selectorNode}
     </div>
   );
 }
