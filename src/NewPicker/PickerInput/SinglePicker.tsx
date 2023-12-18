@@ -393,18 +393,6 @@ function Picker<DateType extends object = any>(
     }
 
     return calendarValue.filter((date) => date);
-
-    // const nextValues = [...calendarValue].filter((date) => date);
-    // if (
-    //   internalHoverValue &&
-    //   nextValues.every(
-    //     (date) => !isSame(generateConfig, locale, date, internalHoverValue, internalPicker),
-    //   )
-    // ) {
-    //   nextValues.push(internalHoverValue);
-    // }
-
-    // return nextValues;
   }, [calendarValue, internalHoverValue, multiple]);
 
   // Clean up `internalHoverValues` when closed

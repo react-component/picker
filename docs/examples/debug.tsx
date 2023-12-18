@@ -157,7 +157,7 @@ export default () => {
         maxTagCount="responsive"
         defaultValue={
           [
-            // dayjs('2000-01-01'),
+            dayjs('2000-01-01'),
             // dayjs('2000-01-03'),
             // dayjs('2000-01-05'),
             // dayjs('2000-01-07'),
