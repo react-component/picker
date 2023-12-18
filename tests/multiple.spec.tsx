@@ -45,4 +45,56 @@ describe('Picker.Multiple', () => {
 
     expect(onChange.mock.calls[0][0]).toHaveLength(3);
   });
+
+  it('panel click to remove', () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayPicker multiple onChange={onChange} />);
+
+    openPicker(container);
+    selectCell(1);
+    selectCell(3);
+    selectCell(5);
+    selectCell(3);
+
+    // Confirm
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-01', '1990-09-05']);
+  });
+
+  it('selector remove', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayPicker
+        multiple
+        onChange={onChange}
+        defaultValue={[getDay('2000-09-03'), getDay('2000-01-28')]}
+      />,
+    );
+
+    // Click remove icon
+    fireEvent.click(container.querySelector('.rc-picker-selection-item-remove'));
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), ['2000-01-28']);
+  });
+
+  it('open to remove selector should not trigger onChange', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayPicker
+        multiple
+        onChange={onChange}
+        defaultValue={[getDay('2000-09-03'), getDay('2000-01-28')]}
+      />,
+    );
+
+    openPicker(container);
+    expect(container.querySelectorAll('.rc-picker-selection-item')).toHaveLength(2);
+
+    fireEvent.click(container.querySelector('.rc-picker-selection-item-remove'));
+    expect(onChange).not.toHaveBeenCalled();
+    expect(container.querySelectorAll('.rc-picker-selection-item')).toHaveLength(1);
+
+    // Confirm
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), ['2000-01-28']);
+  });
 });
