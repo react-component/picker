@@ -1,7 +1,7 @@
 import { warning } from 'rc-util';
 import * as React from 'react';
 import { toArray } from '../../../utils/miscUtil';
-import { fillLocale } from '../../hooks/useLocale';
+import { fillLocale } from '../../../hooks/useLocale';
 import { getTimeConfig } from '../../hooks/useTimeConfig';
 import type { FormatType, InternalMode } from '../../../interface';
 import type { RangePickerProps } from '../RangePicker';
