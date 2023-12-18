@@ -165,6 +165,12 @@ function SingleSelector<DateType extends object = any>(
         maxTagCount={maxTagCount}
         disabled={disabled}
       />
+      <input
+        className={`${prefixCls}-multiple-input`}
+        value={value.map(getText).join(',')}
+        ref={inputRef as any}
+        readOnly
+      />
       <Icon type="suffix" icon={suffixIcon} />
       {showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
     </>

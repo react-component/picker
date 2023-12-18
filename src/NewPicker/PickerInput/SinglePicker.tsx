@@ -453,11 +453,7 @@ function Picker<DateType extends object = any>(
   const onPanelSelect = (date: DateType) => {
     lastOperation('panel');
 
-    console.log('1 =>', getCalendarValue());
     const nextValues = multiple ? toggleDates(getCalendarValue(), date) : [date];
-    console.log('2 =>', nextValues);
-
-    //   const clone: DateType = fillIndex(calendarValue, activeIndex, date);
 
     // Only trigger calendar event but not update internal `calendarValue` state
     triggerCalendarChange(nextValues);
