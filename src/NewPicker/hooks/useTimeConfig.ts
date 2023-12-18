@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'not-exist-env') {
 /**
  * Get SharedTimeProps from props.
  */
-function pickTimeProps<DateType = any>(props: object): SharedTimeProps<DateType> {
+function pickTimeProps<DateType extends object = any>(props: object): SharedTimeProps<DateType> {
   const timeProps: any = {};
   showTimeKeys.forEach((key) => {
     if (key in props) {

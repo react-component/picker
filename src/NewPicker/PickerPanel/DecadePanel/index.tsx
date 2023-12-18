@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { formatValue, isSameDecade } from '../../../utils/dateUtil';
 import type { SharedPanelProps } from '../../../interface';
+import { formatValue, isSameDecade } from '../../../utils/dateUtil';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
 
-export default function DecadePanel<DateType = any>(props: SharedPanelProps<DateType>) {
+export default function DecadePanel<DateType extends object = any>(
+  props: SharedPanelProps<DateType>,
+) {
   const { prefixCls, locale, generateConfig, pickerValue, onPickerValueChange } = props;
 
   const panelPrefixCls = `${prefixCls}-decade-panel`;
