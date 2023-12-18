@@ -18,7 +18,7 @@ export default function useInvalidate<DateType extends object = any>(
 ) {
   // Check disabled date
   const isInvalidate = useEvent(
-    (date: DateType, info: { from?: DateType; activeIndex: number }) => {
+    (date: DateType, info?: { from?: DateType; activeIndex: number }) => {
       const outsideInfo = {
         type: picker,
         ...info,

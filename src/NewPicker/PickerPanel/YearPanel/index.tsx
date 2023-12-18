@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { formatValue, isSameYear } from '../../../utils/dateUtil';
 import type { SharedPanelProps } from '../../../interface';
+import { formatValue, isSameYear } from '../../../utils/dateUtil';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
 
-export default function YearPanel<DateType = any>(props: SharedPanelProps<DateType>) {
+export default function YearPanel<DateType extends object = any>(
+  props: SharedPanelProps<DateType>,
+) {
   const { prefixCls, locale, generateConfig, pickerValue, onPickerValueChange, onModeChange } =
     props;
 

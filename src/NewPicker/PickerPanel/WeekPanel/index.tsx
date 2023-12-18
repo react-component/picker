@@ -1,10 +1,12 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { isInRange, isSameWeek } from '../../../utils/dateUtil';
 import type { SharedPanelProps } from '../../../interface';
+import { isInRange, isSameWeek } from '../../../utils/dateUtil';
 import DatePanel from '../DatePanel';
 
-export default function WeekPanel<DateType = any>(props: SharedPanelProps<DateType>) {
+export default function WeekPanel<DateType extends object = any>(
+  props: SharedPanelProps<DateType>,
+) {
   const { prefixCls, generateConfig, locale, value, hoverValue } = props;
 
   // =============================== Row ================================
