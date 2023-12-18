@@ -6,8 +6,6 @@ export function leftPad(str: string | number, length: number, fill: string = '0'
   return current;
 }
 
-export const tuple = <T extends string[]>(...args: T) => args;
-
 /**
  * Convert `value` to array. Will provide `[]` if is null or undefined.
  */

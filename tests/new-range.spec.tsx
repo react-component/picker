@@ -1185,4 +1185,15 @@ describe('NewPicker.Range', () => {
       expect(document.querySelector('.rc-picker-header-view').textContent).toBe('1990年8月');
     });
   });
+
+  it('double click now button', () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showNow onChange={onChange} />);
+
+    openPicker(container);
+    fireEvent.click(document.querySelector('.rc-picker-now-btn'));
+    fireEvent.click(document.querySelector('.rc-picker-now-btn'));
+
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-03', '1990-09-03']);
+  });
 });
