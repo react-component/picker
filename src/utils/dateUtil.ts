@@ -1,7 +1,11 @@
 import type { GenerateConfig } from '../generate';
-import type { CustomFormat, Locale, NullableDateType, PanelMode, PickerMode } from '../interface';
-import type { InternalMode } from '../NewPicker/interface';
-import { DECADE_UNIT_DIFF } from '../panels/DecadePanel/constant';
+import type {
+  CustomFormat,
+  InternalMode,
+  Locale,
+  NullableDateType,
+  PickerMode,
+} from '../NewPicker/interface';
 
 export const WEEK_DAY_COUNT = 7;
 
@@ -289,94 +293,4 @@ export function parseValue<DateType>(
   }
 
   return generateConfig.locale.parse(locale.locale, value, formatList as string[]);
-}
-
-// eslint-disable-next-line consistent-return
-export function getCellDateDisabled<DateType>({
-  cellDate,
-  mode,
-  disabledDate,
-  generateConfig,
-}: {
-  cellDate: DateType;
-  mode: Omit<PanelMode, 'time'>;
-  generateConfig: GenerateConfig<DateType>;
-  disabledDate?: (date: DateType) => boolean;
-}): boolean {
-  if (!disabledDate) return false;
-  // Whether cellDate is disabled in range
-  const getDisabledFromRange = (
-    currentMode: 'date' | 'month' | 'year',
-    start: number,
-    end: number,
-  ) => {
-    let current = start;
-    while (current <= end) {
-      let date: DateType;
-      switch (currentMode) {
-        case 'date': {
-          date = generateConfig.setDate(cellDate, current);
-          if (!disabledDate(date)) {
-            return false;
-          }
-          break;
-        }
-        case 'month': {
-          date = generateConfig.setMonth(cellDate, current);
-          if (
-            !getCellDateDisabled({
-              cellDate: date,
-              mode: 'month',
-              generateConfig,
-              disabledDate,
-            })
-          ) {
-            return false;
-          }
-          break;
-        }
-        case 'year': {
-          date = generateConfig.setYear(cellDate, current);
-          if (
-            !getCellDateDisabled({
-              cellDate: date,
-              mode: 'year',
-              generateConfig,
-              disabledDate,
-            })
-          ) {
-            return false;
-          }
-          break;
-        }
-      }
-      current += 1;
-    }
-    return true;
-  };
-  switch (mode) {
-    case 'date':
-    case 'week': {
-      return disabledDate(cellDate);
-    }
-    case 'month': {
-      const startDate = 1;
-      const endDate = generateConfig.getDate(generateConfig.getEndDate(cellDate));
-      return getDisabledFromRange('date', startDate, endDate);
-    }
-    case 'quarter': {
-      const startMonth = Math.floor(generateConfig.getMonth(cellDate) / 3) * 3;
-      const endMonth = startMonth + 2;
-      return getDisabledFromRange('month', startMonth, endMonth);
-    }
-    case 'year': {
-      return getDisabledFromRange('month', 0, 11);
-    }
-    case 'decade': {
-      const year = generateConfig.getYear(cellDate);
-      const startYear = Math.floor(year / DECADE_UNIT_DIFF) * DECADE_UNIT_DIFF;
-      const endYear = startYear + DECADE_UNIT_DIFF - 1;
-      return getDisabledFromRange('year', startYear, endYear);
-    }
-  }
 }

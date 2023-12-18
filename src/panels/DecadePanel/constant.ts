@@ -1,2 +1,0 @@
-export const DECADE_UNIT_DIFF = 10;
-export const DECADE_DISTANCE_COUNT = DECADE_UNIT_DIFF * 10;
