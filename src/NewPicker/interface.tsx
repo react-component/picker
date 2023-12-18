@@ -447,7 +447,6 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
    * This will force align the input with template mask.
    */
   maskFormat?: string;
-  onChange: (date: DateType, index?: number) => void;
   onInputChange: VoidFunction;
   onInvalid: (valid: boolean, index?: number) => void;
   /** When user input invalidate date, keep it in the input field */

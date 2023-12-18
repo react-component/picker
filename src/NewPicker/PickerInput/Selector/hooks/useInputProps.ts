@@ -22,7 +22,6 @@ export default function useInputProps<DateType extends object = any>(
     | 'onInvalid'
     | 'onOpenChange'
     | 'onKeyDown'
-    | 'onChange'
     | 'activeHelp'
     | 'name'
     | 'autoComplete'
@@ -33,6 +32,7 @@ export default function useInputProps<DateType extends object = any>(
     invalid?: boolean | [boolean, boolean];
     placeholder?: string | [string, string];
     disabled?: boolean | [boolean, boolean];
+    onChange: (value: DateType | null, index?: number) => void;
 
     // RangePicker only
     allHelp: boolean;

@@ -24,6 +24,8 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
   separator?: React.ReactNode;
 
   value?: [DateType?, DateType?];
+  onChange: (date: DateType, index?: number) => void;
+
   disabled: [boolean, boolean];
 
   /** All the field show as `placeholder` */

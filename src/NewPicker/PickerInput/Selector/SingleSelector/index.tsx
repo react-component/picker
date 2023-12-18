@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import type { SelectorProps, SelectorRef } from '../../../interface';
+import { isSame } from '../../../../utils/dateUtil';
+import type { InternalMode, SelectorProps, SelectorRef } from '../../../interface';
 import PickerContext from '../../context';
 import type { PickerProps } from '../../SinglePicker';
 import useInputProps from '../hooks/useInputProps';
@@ -15,6 +16,10 @@ export interface SingleSelectorProps<DateType extends object = any>
   id?: string;
 
   value?: DateType[];
+  onChange: (date: DateType[]) => void;
+
+  internalPicker: InternalMode;
+
   disabled: boolean;
 
   /** All the field show as `placeholder` */
@@ -58,6 +63,7 @@ function SingleSelector<DateType extends object = any>(
     onClear,
 
     // Change
+    internalPicker,
     value,
     onChange,
     onSubmit,
@@ -114,11 +120,29 @@ function SingleSelector<DateType extends object = any>(
   // ======================== Props =========================
   const rootProps = useRootProps(restProps);
 
+  // ======================== Change ========================
+  const onSingleChange = (date: DateType) => {
+    onChange([date]);
+  };
+
+  const onMultipleRemove = (date: DateType) => {
+    const nextValues = value.filter(
+      (oriDate) => oriDate && !isSame(generateConfig, locale, oriDate, date, internalPicker),
+    );
+    onChange(nextValues);
+  };
+
   // ======================== Inputs ========================
-  const [getInputProps, getText] = useInputProps<DateType>(props, ({ valueTexts }) => ({
-    value: valueTexts[0] || '',
-    active: focused,
-  }));
+  const [getInputProps, getText] = useInputProps<DateType>(
+    {
+      ...props,
+      onChange: onSingleChange,
+    },
+    ({ valueTexts }) => ({
+      value: valueTexts[0] || '',
+      active: focused,
+    }),
+  );
 
   // ======================== Clear =========================
   const showClear = !!(clearIcon && value.length && !disabled);
@@ -129,9 +153,7 @@ function SingleSelector<DateType extends object = any>(
       <MultipleDates
         prefixCls={prefixCls}
         value={value}
-        onRemove={(date) => {
-          console.log('Remove:', date);
-        }}
+        onRemove={onMultipleRemove}
         formatDate={getText}
         maxTagCount={maxTagCount}
         disabled={disabled}

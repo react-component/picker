@@ -544,8 +544,8 @@ function Picker<DateType extends object = any>(
 
   // ======================== Change ========================
   // TODO: support multiple mode
-  const onSelectorChange = (date: DateType) => {
-    triggerCalendarChange([date]);
+  const onSelectorChange = (date: DateType[]) => {
+    triggerCalendarChange(date);
   };
 
   const onSelectorInputChange = () => {
@@ -655,6 +655,7 @@ function Picker<DateType extends object = any>(
           maskFormat={maskFormat}
           onChange={onSelectorChange}
           onInputChange={onSelectorInputChange}
+          internalPicker={internalPicker}
           // Format
           format={formatList}
           inputReadOnly={inputReadOnly}
