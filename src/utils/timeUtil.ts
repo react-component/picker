@@ -1,4 +1,3 @@
-import type { NullableDateType } from '../interface';
 import type { GenerateConfig } from '../generate';
 
 export function setTime<DateType>(
@@ -13,32 +12,6 @@ export function setTime<DateType>(
   nextTime = generateConfig.setSecond(nextTime, second);
   return nextTime;
 }
-
-export function setDateTime<DateType>(
-  generateConfig: GenerateConfig<DateType>,
-  date: DateType,
-  defaultDate: NullableDateType<DateType>,
-) {
-  if (!defaultDate) {
-    return date;
-  }
-
-  let newDate = date;
-  newDate = generateConfig.setHour(
-    newDate,
-    generateConfig.getHour(defaultDate),
-  );
-  newDate = generateConfig.setMinute(
-    newDate,
-    generateConfig.getMinute(defaultDate),
-  );
-  newDate = generateConfig.setSecond(
-    newDate,
-    generateConfig.getSecond(defaultDate),
-  );
-  return newDate;
-}
-
 
 export function getLowerBoundTime(
   hour: number,
