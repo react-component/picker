@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { PickerRef, SelectorRef } from '../../interface';
+import type { PickerRef, SelectorRef } from '../../../interface';
 
 export function usePickerRef(ref: React.Ref<PickerRef>) {
   const selectorRef = React.useRef<SelectorRef>();

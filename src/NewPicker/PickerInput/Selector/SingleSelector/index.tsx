@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { isSame } from '../../../../utils/dateUtil';
-import type { InternalMode, SelectorProps, SelectorRef } from '../../../interface';
+import type { InternalMode, SelectorProps, SelectorRef } from '../../../../interface';
 import PickerContext from '../../context';
 import type { PickerProps } from '../../SinglePicker';
 import useInputProps from '../hooks/useInputProps';

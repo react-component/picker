@@ -3,7 +3,7 @@ import * as React from 'react';
 import type { GenerateConfig } from '../../../generate';
 import { formatValue, isSame, isSameTimestamp } from '../../../utils/dateUtil';
 import useSyncState from '../../hooks/useSyncState';
-import type { BaseInfo, FormatType, Locale, ReplaceListType } from '../../interface';
+import type { BaseInfo, FormatType, Locale, ReplaceListType } from '../../../interface';
 import { fillIndex } from '../../util';
 import type { RangePickerProps } from '../RangePicker';
 import type { ReplacedPickerProps } from '../SinglePicker';

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Locale } from '../interface';
+import type { Locale } from '../../interface';
 
 /**
  * Used for `useFilledProps` since it already in the React.useMemo

@@ -5,7 +5,7 @@ import type {
   RangeTimeProps,
   SharedPickerProps,
   SharedTimeProps,
-} from '../../interface';
+} from '../../../interface';
 
 /**
  * Check if provided date is valid for the `disabledDate` & `showTime.disabledTime`.

@@ -1,6 +1,6 @@
 import type { GenerateConfig } from '../../../generate';
 import { isSame } from '../../../utils/dateUtil';
-import type { DisabledDate, Locale } from '../../interface';
+import type { DisabledDate, Locale } from '../../../interface';
 import type { RangeValueType } from '../RangePicker';
 
 /**

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import '../../assets/index.less';
-import type { Locale, PickerRef } from '../../src/NewPicker/interface';
+import type { Locale, PickerRef } from '../../src/interface';
 import RangePicker from '../../src/NewPicker/PickerInput/RangePicker';
 import SinglePicker from '../../src/NewPicker/PickerInput/SinglePicker';
 import PickerPanel from '../../src/NewPicker/PickerPanel';

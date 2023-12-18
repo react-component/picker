@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { formatValue } from '../../../../utils/dateUtil';
 import useTimeInfo from '../../../hooks/useTimeInfo';
-import type { SharedPanelProps, SharedTimeProps } from '../../../interface';
+import type { SharedPanelProps, SharedTimeProps } from '../../../../interface';
 import { PickerHackContext, usePanelContext } from '../../context';
 import TimeColumn, { type Unit } from './TimeColumn';
 

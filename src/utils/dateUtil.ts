@@ -1,5 +1,5 @@
 import type { GenerateConfig } from '../generate';
-import type { CustomFormat, InternalMode, Locale, NullableDateType } from '../NewPicker/interface';
+import type { CustomFormat, InternalMode, Locale, NullableDateType } from '../interface';
 
 export const WEEK_DAY_COUNT = 7;
 

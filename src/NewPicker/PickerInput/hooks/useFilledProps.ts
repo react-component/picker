@@ -3,7 +3,7 @@ import * as React from 'react';
 import { toArray } from '../../../utils/miscUtil';
 import { fillLocale } from '../../hooks/useLocale';
 import { getTimeConfig } from '../../hooks/useTimeConfig';
-import type { FormatType, InternalMode } from '../../interface';
+import type { FormatType, InternalMode } from '../../../interface';
 import type { RangePickerProps } from '../RangePicker';
 import { fillClearIcon } from '../Selector/hooks/useClearIcon';
 import useDisabledBoundary from './useDisabledBoundary';

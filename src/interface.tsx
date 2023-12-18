@@ -1,5 +1,5 @@
 import type { AlignType } from '@rc-component/trigger';
-import type { GenerateConfig } from '../generate';
+import type { GenerateConfig } from './generate';
 
 export type NullableDateType<DateType> = DateType | null | undefined;
 

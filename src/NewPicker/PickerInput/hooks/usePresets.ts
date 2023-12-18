@@ -1,6 +1,6 @@
 import * as React from 'react';
 import warning from 'rc-util/lib/warning';
-import type { ValueDate } from '../../interface';
+import type { ValueDate } from '../../../interface';
 
 export default function usePresets<DateType = any>(
   presets?: ValueDate<DateType>[],

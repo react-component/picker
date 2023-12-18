@@ -16,7 +16,7 @@ import type {
   SharedHTMLAttrs,
   SharedPickerProps,
   ValueDate,
-} from '../interface';
+} from '../../interface';
 import type { PickerPanelProps } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import { fillIndex } from '../util';

@@ -1,6 +1,6 @@
 import type { GenerateConfig } from '../../generate';
 import { isSame } from '../../utils/dateUtil';
-import type { InternalMode, Locale } from '../interface';
+import type { InternalMode, Locale } from '../../interface';
 
 /**
  * Toggles the presence of a value in an array.

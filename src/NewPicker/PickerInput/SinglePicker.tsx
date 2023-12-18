@@ -14,7 +14,7 @@ import type {
   SharedPickerProps,
   SharedTimeProps,
   ValueDate,
-} from '../interface';
+} from '../../interface';
 import PickerTrigger from '../PickerTrigger';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';

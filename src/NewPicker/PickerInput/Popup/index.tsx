@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import ResizeObserver, { type ResizeObserverProps } from 'rc-resize-observer';
 import * as React from 'react';
 import { toArray } from '../../../utils/miscUtil';
-import type { SharedPickerProps, ValueDate } from '../../interface';
+import type { SharedPickerProps, ValueDate } from '../../../interface';
 import PickerContext from '../context';
 import Footer, { type FooterProps } from './Footer';
 import PopupPanel, { type PopupPanelProps } from './PopupPanel';

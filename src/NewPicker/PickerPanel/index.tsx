@@ -15,7 +15,7 @@ import type {
   PickerMode,
   SharedPanelProps,
   SharedTimeProps,
-} from '../interface';
+} from '../../interface';
 import PickerContext from '../PickerInput/context';
 import useCellRender from '../PickerInput/hooks/useCellRender';
 import { toArray } from '../util';

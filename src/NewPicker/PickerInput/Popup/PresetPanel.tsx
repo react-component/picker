@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ValueDate } from '../../interface';
+import type { ValueDate } from '../../../interface';
 
 export interface PresetPanelProps<ValueType = any> {
   prefixCls: string;

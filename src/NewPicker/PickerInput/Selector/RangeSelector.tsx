@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import ResizeObserver from 'rc-resize-observer';
 import { useEvent } from 'rc-util';
 import * as React from 'react';
-import type { SelectorProps, SelectorRef } from '../../interface';
+import type { SelectorProps, SelectorRef } from '../../../interface';
 import PickerContext from '../context';
 import useInputProps from './hooks/useInputProps';
 import useRootProps from './hooks/useRootProps';

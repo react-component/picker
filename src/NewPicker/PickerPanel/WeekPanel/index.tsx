@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { isInRange, isSameWeek } from '../../../utils/dateUtil';
-import type { SharedPanelProps } from '../../interface';
+import type { SharedPanelProps } from '../../../interface';
 import DatePanel from '../DatePanel';
 
 export default function WeekPanel<DateType = any>(props: SharedPanelProps<DateType>) {

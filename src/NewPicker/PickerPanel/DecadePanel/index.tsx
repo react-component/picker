@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { formatValue, isSameDecade } from '../../../utils/dateUtil';
-import type { SharedPanelProps } from '../../interface';
+import type { SharedPanelProps } from '../../../interface';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';

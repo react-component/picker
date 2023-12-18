@@ -8,7 +8,7 @@ import type {
   PanelMode,
   RangeTimeProps,
   SharedPickerProps,
-} from '../../interface';
+} from '../../../interface';
 import PickerContext from '../context';
 
 export interface FooterProps<DateType extends object = any> {

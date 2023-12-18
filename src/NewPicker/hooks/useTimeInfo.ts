@@ -2,7 +2,7 @@ import { warning } from 'rc-util';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import { leftPad } from '../../utils/miscUtil';
-import type { DisabledTimes, SharedTimeProps } from '../interface';
+import type { DisabledTimes, SharedTimeProps } from '../../interface';
 import { findValidateTime } from '../PickerPanel/TimePanel/TimePanelBody/util';
 
 export type Unit<ValueType = number | string> = {

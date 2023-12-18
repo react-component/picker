@@ -27,7 +27,7 @@
  *  - [Break] RangePicker go to end field, `pickerValue` will follow the start field if not controlled.
  */
 
-import type { PickerRef } from './interface';
+import type { PickerRef } from '../interface';
 import RangePicker, { type RangePickerProps } from './PickerInput/RangePicker';
 import Picker, { type PickerProps } from './PickerInput/SinglePicker';
 import PickerPanel, { type PickerPanelProps } from './PickerPanel';

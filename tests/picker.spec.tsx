@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-loop-func */
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
-import { Dayjs } from 'dayjs';
+import type { Dayjs } from 'dayjs';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import KeyCode from 'rc-util/lib/KeyCode';
