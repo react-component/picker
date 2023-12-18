@@ -513,6 +513,7 @@ function Picker<DateType extends object = any>(
       internalMode={internalMode}
       onPanelChange={triggerModeChange}
       // Value
+      format={maskFormat}
       value={calendarValue}
       isInvalid={isInvalidateDate}
       onChange={null}

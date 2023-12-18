@@ -556,6 +556,7 @@ function RangePicker<DateType extends object = any>(
       internalMode={internalMode}
       onPanelChange={triggerModeChange}
       // Value
+      format={maskFormat}
       value={panelValue}
       isInvalid={isPopupInvalidateDate}
       onChange={null}
