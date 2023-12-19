@@ -32,7 +32,7 @@ import useRangeDisabledDate from './hooks/useRangeDisabledDate';
 import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
-import Popup from '../NewPicker/PickerInput/Popup';
+import Popup from './Popup';
 import RangeSelector, { type SelectorIdType } from '../NewPicker/PickerInput/Selector/RangeSelector';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {

@@ -27,7 +27,7 @@ import useRangeActive from './hooks/useRangeActive';
 import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
-import Popup from '../NewPicker/PickerInput/Popup';
+import Popup from './Popup';
 import SingleSelector from '../NewPicker/PickerInput/Selector/SingleSelector';
 
 // TODO: isInvalidateDate with showTime.disabledTime should not provide `range` prop

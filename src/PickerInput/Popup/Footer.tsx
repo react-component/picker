@@ -1,15 +1,15 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import type { GenerateConfig } from '../../../generate';
-import useTimeInfo from '../../../hooks/useTimeInfo';
+import type { GenerateConfig } from '../../generate';
+import useTimeInfo from '../../hooks/useTimeInfo';
 import type {
   DisabledDate,
   InternalMode,
   PanelMode,
   RangeTimeProps,
   SharedPickerProps,
-} from '../../../interface';
-import PickerContext from '../../../PickerInput/context';
+} from '../../interface';
+import PickerContext from '../context';
 
 export interface FooterProps<DateType extends object = any> {
   mode: PanelMode;
