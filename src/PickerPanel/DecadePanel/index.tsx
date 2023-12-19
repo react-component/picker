@@ -1,9 +1,9 @@
 import * as React from 'react';
-import type { SharedPanelProps } from '../../../interface';
-import { formatValue, isSameDecade } from '../../../utils/dateUtil';
-import { PanelContext, useInfo } from '../../../PickerPanel/context';
-import PanelBody from '../../../PickerPanel/PanelBody';
-import PanelHeader from '../../../PickerPanel/PanelHeader';
+import type { SharedPanelProps } from '../../interface';
+import { formatValue, isSameDecade } from '../../utils/dateUtil';
+import { PanelContext, useInfo } from '../../PickerPanel/context';
+import PanelBody from '../../PickerPanel/PanelBody';
+import PanelHeader from '../../PickerPanel/PanelHeader';
 
 export default function DecadePanel<DateType extends object = any>(
   props: SharedPanelProps<DateType>,

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { formatValue } from '../../../../utils/dateUtil';
-import useTimeInfo from '../../../../hooks/useTimeInfo';
-import type { SharedPanelProps, SharedTimeProps } from '../../../../interface';
-import { PickerHackContext, usePanelContext } from '../../../../PickerPanel/context';
+import { formatValue } from '../../../utils/dateUtil';
+import useTimeInfo from '../../../hooks/useTimeInfo';
+import type { SharedPanelProps, SharedTimeProps } from '../../../interface';
+import { PickerHackContext, usePanelContext } from '../../../PickerPanel/context';
 import TimeColumn, { type Unit } from './TimeColumn';
 
 function isAM(hour: number) {

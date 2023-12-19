@@ -1,6 +1,9 @@
 import classNames from 'classnames';
 import { useEvent, useMergedState, warning } from 'rc-util';
 import * as React from 'react';
+import useLocale from '../hooks/useLocale';
+import { getTimeConfig } from '../hooks/useTimeConfig';
+import useToggleDates from '../hooks/useToggleDates';
 import type {
   CellRender,
   Components,
@@ -12,21 +15,18 @@ import type {
   SharedPanelProps,
   SharedTimeProps,
 } from '../interface';
-import { isSame } from '../utils/dateUtil';
-import { toArray } from '../utils/miscUtil';
-import useLocale from '../hooks/useLocale';
-import { getTimeConfig } from '../hooks/useTimeConfig';
-import useToggleDates from '../hooks/useToggleDates';
 import PickerContext from '../NewPicker/PickerInput/context';
 import useCellRender from '../NewPicker/PickerInput/hooks/useCellRender';
-import DatePanel from '../NewPicker/PickerPanel/DatePanel';
-import DateTimePanel from '../NewPicker/PickerPanel/DateTimePanel';
-import DecadePanel from '../NewPicker/PickerPanel/DecadePanel';
-import MonthPanel from '../NewPicker/PickerPanel/MonthPanel';
-import QuarterPanel from '../NewPicker/PickerPanel/QuarterPanel';
-import TimePanel from '../NewPicker/PickerPanel/TimePanel';
-import WeekPanel from '../NewPicker/PickerPanel/WeekPanel';
-import YearPanel from '../NewPicker/PickerPanel/YearPanel';
+import { isSame } from '../utils/dateUtil';
+import { toArray } from '../utils/miscUtil';
+import DatePanel from './DatePanel';
+import DateTimePanel from './DateTimePanel';
+import DecadePanel from './DecadePanel';
+import MonthPanel from './MonthPanel';
+import QuarterPanel from './QuarterPanel';
+import TimePanel from './TimePanel';
+import WeekPanel from './WeekPanel';
+import YearPanel from './YearPanel';
 
 const DefaultComponents: Components = {
   date: DatePanel,

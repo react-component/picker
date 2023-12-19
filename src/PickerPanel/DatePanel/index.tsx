@@ -6,11 +6,11 @@ import {
   isSameDate,
   isSameMonth,
   WEEK_DAY_COUNT,
-} from '../../../utils/dateUtil';
-import type { PanelMode, SharedPanelProps } from '../../../interface';
-import { PanelContext, useInfo } from '../../../PickerPanel/context';
-import PanelBody from '../../../PickerPanel/PanelBody';
-import PanelHeader from '../../../PickerPanel/PanelHeader';
+} from '../../utils/dateUtil';
+import type { PanelMode, SharedPanelProps } from '../../interface';
+import { PanelContext, useInfo } from '../../PickerPanel/context';
+import PanelBody from '../../PickerPanel/PanelBody';
+import PanelHeader from '../../PickerPanel/PanelHeader';
 
 export interface DatePanelProps<DateType extends object> extends SharedPanelProps<DateType> {
   panelName?: PanelMode;

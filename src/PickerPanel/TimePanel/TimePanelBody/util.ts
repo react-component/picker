@@ -1,4 +1,4 @@
-import type { GenerateConfig } from '../../../../generate';
+import type { GenerateConfig } from '../../../generate';
 import type { Unit } from './TimeColumn';
 
 export function findValidateTime<DateType>(
