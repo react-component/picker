@@ -1,7 +1,7 @@
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
-import { formatValue } from '../../../../utils/dateUtil';
-import type { SelectorProps } from '../../../../interface';
+import { formatValue } from '../../../utils/dateUtil';
+import type { SelectorProps } from '../../../interface';
 import type { InputProps } from '../Input';
 
 export default function useInputProps<DateType extends object = any>(

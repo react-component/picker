@@ -4,10 +4,10 @@ import { isSame } from '../../../../utils/dateUtil';
 import type { InternalMode, SelectorProps, SelectorRef } from '../../../../interface';
 import PickerContext from '../../../../PickerInput/context';
 import type { PickerProps } from '../../../../PickerInput/SinglePicker';
-import useInputProps from '../hooks/useInputProps';
-import useRootProps from '../hooks/useRootProps';
-import Icon, { ClearIcon } from '../Icon';
-import Input, { type InputRef } from '../Input';
+import useInputProps from '../../../../PickerInput/Selector/hooks/useInputProps';
+import useRootProps from '../../../../PickerInput/Selector/hooks/useRootProps';
+import Icon, { ClearIcon } from '../../../../PickerInput/Selector/Icon';
+import Input, { type InputRef } from '../../../../PickerInput/Selector/Input';
 import MultipleDates from './MultipleDates';
 
 export interface SingleSelectorProps<DateType extends object = any>

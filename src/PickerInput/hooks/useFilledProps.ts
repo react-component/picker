@@ -5,7 +5,7 @@ import { fillLocale } from '../../hooks/useLocale';
 import { getTimeConfig } from '../../hooks/useTimeConfig';
 import type { FormatType, InternalMode } from '../../interface';
 import type { RangePickerProps } from '../RangePicker';
-import { fillClearIcon } from '../../NewPicker/PickerInput/Selector/hooks/useClearIcon';
+import { fillClearIcon } from '../Selector/hooks/useClearIcon';
 import useDisabledBoundary from './useDisabledBoundary';
 import { useFieldFormat } from './useFieldFormat';
 import useInputReadOnly from './useInputReadOnly';

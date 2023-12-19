@@ -1,5 +1,5 @@
 import * as React from 'react';
-import PickerContext from '../../../PickerInput/context';
+import PickerContext from '../context';
 
 export interface IconProps extends React.HtmlHTMLAttributes<HTMLElement> {
   icon?: React.ReactNode;
