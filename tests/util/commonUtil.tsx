@@ -18,12 +18,12 @@ import type {
   PickerProps as NewPickerProps,
   PickerRef,
   RangePickerProps,
-} from '../../src/NewPicker';
+} from '../../src';
 import {
   Picker as NewPicker,
   PickerPanel as NewPickerPanel,
   RangePicker as NewRangePicker,
-} from '../../src/NewPicker';
+} from '../../src';
 import type { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
 import type {
   PickerPanelBaseProps,

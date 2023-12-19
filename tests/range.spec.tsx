@@ -8,7 +8,7 @@ import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import type { PickerMode } from '../src/interface';
-import type { PickerRef, RangePickerProps } from '../src/NewPicker';
+import type { PickerRef, RangePickerProps } from '../src';
 import {
   clearValue,
   clickButton,

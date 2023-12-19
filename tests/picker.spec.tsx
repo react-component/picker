@@ -10,7 +10,7 @@ import React from 'react';
 import type { PanelMode, PickerMode } from '../src/interface';
 import enUS from '../src/locale/en_US';
 import zhCN from '../src/locale/zh_CN';
-import type { PickerRef } from '../src/NewPicker';
+import type { PickerRef } from '../src';
 import {
   clearValue,
   closePicker,

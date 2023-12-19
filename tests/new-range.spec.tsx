@@ -6,7 +6,7 @@ import { spyElementPrototype } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import zh_CN from '../src/locale/zh_CN';
-import type { RangePickerProps } from '../src/NewPicker';
+import type { RangePickerProps } from '../src';
 import {
   closePicker,
   DayRangePicker,
