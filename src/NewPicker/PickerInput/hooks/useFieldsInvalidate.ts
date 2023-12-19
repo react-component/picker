@@ -1,5 +1,5 @@
+import { fillIndex } from '../../../utils/miscUtil';
 import * as React from 'react';
-import { fillIndex } from '../../util';
 import type useInvalidate from './useInvalidate';
 
 /**

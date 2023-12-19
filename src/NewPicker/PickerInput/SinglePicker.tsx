@@ -330,47 +330,22 @@ function Picker<DateType extends object = any>(
     },
   );
 
-  // ======================== Change ========================
-  // const fillCalendarValue = (date: DateType, index: number) =>
-  //   // Trigger change only when date changed
-  //   fillIndex(calendarValue, index, date);
-
   // ======================== Submit ========================
   /**
    * Different with RangePicker, confirm should check `multiple` logic.
    * This will never provide `date` instead.
    */
   const triggerConfirm = () => {
-    // const triggerConfirm = (date?: DateType, skipFocus?: boolean) => {
-    // let nextValue = calendarValue;
-
-    // if (date) {
-    //   nextValue = fillCalendarValue(date, activeIndex);
-    // }
-
-    // Get next focus index
-    // const nextIndex = nextActiveIndex(nextValue);
-
-    // Change calendar value and tell flush it
-    // triggerCalendarChange(nextValue);
-    // flushSubmit(activeIndex, nextIndex === null);
     triggerSubmitChange(getCalendarValue());
 
-    // if (nextIndex === null) {
     triggerOpen(false, { force: true });
-    // } else if (!skipFocus) {
-    //   selectorRef.current.focus(nextIndex);
-    // }
   };
 
   // ======================== Click =========================
   const onSelectorClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
     if (!disabled && !selectorRef.current.nativeElement.contains(document.activeElement)) {
       // Click to focus the enabled input
-      // const enabledIndex = disabled.findIndex((d) => !d);
-      // if (enabledIndex >= 0) {
       selectorRef.current.focus();
-      // }
     }
 
     triggerOpen(true);
@@ -405,8 +380,6 @@ function Picker<DateType extends object = any>(
   // ========================================================
   // ==                       Panels                       ==
   // ========================================================
-  // const [activeOffset, setActiveOffset] = React.useState(0);
-
   // ======================= Presets ========================
   const presetList = usePresets(presets);
 
@@ -417,14 +390,6 @@ function Picker<DateType extends object = any>(
 
   // TODO: handle this
   const onPresetSubmit = (nextValue: DateType) => {
-    // const passed = triggerSubmitChange(nextValues);
-
-    // if (passed) {
-    //   triggerOpen(false, { force: true });
-    // }
-
-    // triggerConfirm(nextValue);
-
     const nextCalendarValues = multiple ? toggleDates(getCalendarValue(), nextValue) : [nextValue];
     const passed = triggerSubmitChange(nextCalendarValues);
 
@@ -473,9 +438,6 @@ function Picker<DateType extends object = any>(
 
   // >>> cellRender
   const onInternalCellRender = useCellRender(cellRender, dateRender, monthCellRender);
-
-  // >>> Value
-  // const panelValue = calendarValue[activeIndex] || null;
 
   // >>> invalid
 
@@ -641,7 +603,6 @@ function Picker<DateType extends object = any>(
           // Icon
           suffixIcon={suffixIcon}
           // Active
-          // activeIndex={focused || mergedOpen ? activeIndex : null}
           activeHelp={!!internalHoverValue}
           allHelp={!!internalHoverValue && hoverSource === 'preset'}
           focused={focused}
