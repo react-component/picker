@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
-import { usePanelContext } from '../../context';
+import { usePanelContext } from '../../../../PickerPanel/context';
 import useScrollTo from './useScrollTo';
 
 const SCROLL_DELAY = 300;

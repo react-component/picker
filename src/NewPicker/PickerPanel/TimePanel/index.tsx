@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { formatValue } from '../../../utils/dateUtil';
 import type { SharedPanelProps } from '../../../interface';
-import { PanelContext, useInfo } from '../context';
+import { PanelContext, useInfo } from '../../../PickerPanel/context';
 import PanelHeader from '../../../PickerPanel/PanelHeader';
 import TimePanelBody from './TimePanelBody';
 

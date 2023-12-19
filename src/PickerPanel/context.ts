@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { PanelMode, SharedPanelProps } from '../../interface';
+import type { PanelMode, SharedPanelProps } from '../interface';
 
 export interface PanelContextProps<DateType extends object = any>
   extends Pick<

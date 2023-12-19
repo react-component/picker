@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { formatValue, isInRange, isSame } from '../utils/dateUtil';
-import { PickerHackContext, usePanelContext } from '../NewPicker/PickerPanel/context';
+import { PickerHackContext, usePanelContext } from './context';
 
 export interface PanelBodyProps<DateType = any> {
   rowNum: number;

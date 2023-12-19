@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PickerPanel, { type PickerPanelProps } from '../../../PickerPanel';
-import { PickerHackContext, type PickerHackContextProps } from '../../PickerPanel/context';
+import { PickerHackContext, type PickerHackContextProps } from '../../../PickerPanel/context';
 import PickerContext from '../context';
 import { offsetPanelDate } from '../hooks/useRangePickerValue';
 import { type FooterProps } from './Footer';
