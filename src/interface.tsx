@@ -1,4 +1,4 @@
-import type { AlignType } from '@rc-component/trigger';
+import type { AlignType, BuildInPlacements } from '@rc-component/trigger';
 import type { GenerateConfig } from './generate';
 
 export type NullableDateType<DateType> = DateType | null | undefined;
@@ -350,6 +350,10 @@ export interface SharedPickerProps<DateType extends object = any> extends Shared
   onOpenChange?: (open: boolean) => void;
   popupAlign?: AlignType;
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
+
+  // Popup
+  placement?: string;
+  builtinPlacements?: BuildInPlacements;
 
   /**
    * By default. Only `time` or `datetime` show the confirm button in panel.

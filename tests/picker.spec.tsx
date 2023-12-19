@@ -7,10 +7,10 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
+import type { PickerRef } from '../src';
 import type { PanelMode, PickerMode } from '../src/interface';
 import enUS from '../src/locale/en_US';
 import zhCN from '../src/locale/zh_CN';
-import type { PickerRef } from '../src';
 import {
   clearValue,
   closePicker,
@@ -749,6 +749,9 @@ describe('Picker.Basic', () => {
   it('should render correctly in rtl', () => {
     const { container } = render(<DayPicker direction="rtl" allowClear />);
     expect(container).toMatchSnapshot();
+
+    openPicker(container);
+    expect(document.querySelector('.rc-picker-dropdown-rtl')).toBeTruthy();
   });
 
   it('week picker show correct year', () => {
@@ -1173,5 +1176,21 @@ describe('Picker.Basic', () => {
     selectColumn(1, 5);
 
     expect(container.querySelector('input')).toHaveValue('1990-09-03 07:05:21');
+  });
+
+  it('customize `popupPlacement`', () => {
+    render(
+      <DayPicker
+        open
+        placement="notExist"
+        builtinPlacements={{
+          notExist: {
+            points: ['tl', 'bl'],
+          },
+        }}
+      />,
+    );
+
+    expect(document.querySelector('.rc-picker-dropdown-placement-notExist')).toBeTruthy();
   });
 });

@@ -1,4 +1,3 @@
-import { fillIndex } from '../utils/miscUtil';
 import { useEvent, useMergedState } from 'rc-util';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import omit from 'rc-util/lib/omit';
@@ -20,6 +19,8 @@ import type {
 } from '../interface';
 import type { PickerPanelProps } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
+import { pickTriggerProps } from '../PickerTrigger/util';
+import { fillIndex } from '../utils/miscUtil';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';
@@ -162,8 +163,6 @@ function RangePicker<DateType extends object = any>(
     defaultOpen,
     open,
     onOpenChange,
-    popupAlign,
-    getPopupContainer,
 
     // Picker
     locale,
@@ -186,11 +185,7 @@ function RangePicker<DateType extends object = any>(
     // Format
     inputReadOnly,
 
-    // Motion
-    transitionName,
-
     suffixIcon,
-    direction,
 
     // Focus
     onFocus,
@@ -214,8 +209,6 @@ function RangePicker<DateType extends object = any>(
   const selectorRef = usePickerRef(ref);
 
   // ========================= Open =========================
-  const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
-
   const [mergedOpen, setMergeOpen] = useOpen(open, defaultOpen, disabled, onOpenChange);
 
   const triggerOpen: OnOpenChange = (nextOpen, config?: OpenConfig) => {
@@ -689,14 +682,10 @@ function RangePicker<DateType extends object = any>(
   return (
     <PickerContext.Provider value={context}>
       <PickerTrigger
+        {...pickTriggerProps(filledProps)}
         popupElement={panel}
         popupStyle={styles.popup}
         popupClassName={classNames.popup}
-        popupAlign={popupAlign}
-        getPopupContainer={getPopupContainer}
-        transitionName={transitionName}
-        popupPlacement={popupPlacement}
-        direction={direction}
         // Visible
         visible={mergedOpen}
         onClose={onPopupClose}

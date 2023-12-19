@@ -16,6 +16,7 @@ import type {
   ValueDate,
 } from '../interface';
 import PickerTrigger from '../PickerTrigger';
+import { pickTriggerProps } from '../PickerTrigger/util';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';
@@ -28,7 +29,7 @@ import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
-import SingleSelector from '../NewPicker/PickerInput/Selector/SingleSelector';
+import SingleSelector from './Selector/SingleSelector';
 
 // TODO: isInvalidateDate with showTime.disabledTime should not provide `range` prop
 
@@ -133,8 +134,6 @@ function Picker<DateType extends object = any>(
     defaultOpen,
     open,
     onOpenChange,
-    popupAlign,
-    getPopupContainer,
 
     // Picker
     locale,
@@ -158,11 +157,7 @@ function Picker<DateType extends object = any>(
     // Format
     inputReadOnly,
 
-    // Motion
-    transitionName,
-
     suffixIcon,
-    direction,
 
     // Focus
     onFocus,
@@ -197,8 +192,6 @@ function Picker<DateType extends object = any>(
   const toggleDates = useToggleDates(generateConfig, locale, internalPicker);
 
   // ========================= Open =========================
-  const popupPlacement = direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
-
   const [mergedOpen, triggerOpen] = useOpen(open, defaultOpen, [disabled], onOpenChange);
 
   // ======================= Calendar =======================
@@ -583,14 +576,10 @@ function Picker<DateType extends object = any>(
   return (
     <PickerContext.Provider value={context}>
       <PickerTrigger
+        {...pickTriggerProps(filledProps)}
         popupElement={panel}
         popupStyle={styles.popup}
         popupClassName={classNames.popup}
-        popupAlign={popupAlign}
-        getPopupContainer={getPopupContainer}
-        transitionName={transitionName}
-        popupPlacement={popupPlacement}
-        direction={direction}
         // Visible
         visible={mergedOpen}
         onClose={onPopupClose}

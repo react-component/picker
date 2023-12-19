@@ -1,5 +1,5 @@
 import Trigger from '@rc-component/trigger';
-import type { AlignType } from '@rc-component/trigger/lib/interface';
+import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import classNames from 'classnames';
 import * as React from 'react';
 import PickerContext from '../PickerInput/context';
@@ -45,12 +45,15 @@ export type PickerTriggerProps = {
   popupElement: React.ReactElement;
   popupStyle?: React.CSSProperties;
   children: React.ReactElement;
-  popupClassName?: string;
   transitionName?: string;
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
   popupAlign?: AlignType;
   range?: boolean;
-  popupPlacement?: Placement;
+
+  // Placement
+  popupClassName?: string;
+  placement?: Placement;
+  builtinPlacements?: BuildInPlacements;
   direction?: 'ltr' | 'rtl';
 
   // Visible
@@ -67,7 +70,8 @@ function PickerTrigger({
   getPopupContainer,
   children,
   range,
-  popupPlacement,
+  placement,
+  builtinPlacements = BUILT_IN_PLACEMENTS,
   direction,
 
   // Visible
@@ -77,19 +81,19 @@ function PickerTrigger({
   const { prefixCls } = React.useContext(PickerContext);
   const dropdownPrefixCls = `${prefixCls}-dropdown`;
 
-  const getPopupPlacement = () => {
-    if (popupPlacement !== undefined) {
-      return popupPlacement;
+  const mergedPlacement = React.useMemo(() => {
+    if (placement !== undefined) {
+      return placement;
     }
     return direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
-  };
+  }, [placement, direction]);
 
   return (
     <Trigger
       showAction={[]}
       hideAction={['click']}
-      popupPlacement={getPopupPlacement()}
-      builtinPlacements={BUILT_IN_PLACEMENTS}
+      popupPlacement={mergedPlacement}
+      builtinPlacements={builtinPlacements}
       prefixCls={dropdownPrefixCls}
       popupTransitionName={transitionName}
       popup={popupElement}

@@ -23,3 +23,12 @@ export function fillIndex<T extends any[]>(ori: T, index: number, value: T[numbe
 
   return clone;
 }
+
+export function pickProps<T extends object>(props: T, keys: (keyof T)[]) {
+  const clone = {} as T;
+  keys.forEach((key) => {
+    clone[key] = props[key];
+  });
+
+  return clone;
+}
