@@ -3,7 +3,7 @@ import * as React from 'react';
 import { formatValue } from '../../../utils/dateUtil';
 import type { SharedPanelProps } from '../../../interface';
 import { PanelContext, useInfo } from '../context';
-import PanelHeader from '../PanelHeader';
+import PanelHeader from '../../../PickerPanel/PanelHeader';
 import TimePanelBody from './TimePanelBody';
 
 export type TimePanelProps<DateType extends object> = SharedPanelProps<DateType>;

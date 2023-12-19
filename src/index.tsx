@@ -30,7 +30,7 @@
 import type { PickerRef } from './interface';
 import RangePicker, { type RangePickerProps } from './NewPicker/PickerInput/RangePicker';
 import Picker, { type PickerProps } from './NewPicker/PickerInput/SinglePicker';
-import PickerPanel, { type PickerPanelProps } from './NewPicker/PickerPanel';
+import PickerPanel, { type PickerPanelProps } from './PickerPanel';
 
 export { Picker, RangePicker, PickerPanel };
 export type { RangePickerProps, PickerProps, PickerPanelProps, PickerRef };

@@ -3,7 +3,7 @@ import '../../assets/index.less';
 import type { Locale, PickerRef } from '../../src/interface';
 import RangePicker from '../../src/NewPicker/PickerInput/RangePicker';
 import SinglePicker from '../../src/NewPicker/PickerInput/SinglePicker';
-import PickerPanel from '../../src/NewPicker/PickerPanel';
+import PickerPanel from '../../src/PickerPanel';
 
 import dayjs, { type Dayjs } from 'dayjs';
 import 'dayjs/locale/ar';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PickerHackContext, usePanelContext } from './context';
+import { PickerHackContext, usePanelContext } from '../NewPicker/PickerPanel/context';
 
 const HIDDEN_STYLE: React.CSSProperties = {
   visibility: 'hidden',
