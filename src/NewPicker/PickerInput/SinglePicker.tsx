@@ -15,7 +15,7 @@ import type {
   SharedTimeProps,
   ValueDate,
 } from '../../interface';
-import PickerTrigger from '../PickerTrigger';
+import PickerTrigger from '../../PickerTrigger';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';

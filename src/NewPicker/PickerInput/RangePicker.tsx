@@ -19,7 +19,7 @@ import type {
   ValueDate,
 } from '../../interface';
 import type { PickerPanelProps } from '../PickerPanel';
-import PickerTrigger from '../PickerTrigger';
+import PickerTrigger from '../../PickerTrigger';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';

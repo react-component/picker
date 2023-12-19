@@ -2,7 +2,7 @@ import Trigger from '@rc-component/trigger';
 import type { AlignType } from '@rc-component/trigger/lib/interface';
 import classNames from 'classnames';
 import * as React from 'react';
-import PickerContext from '../PickerInput/context';
+import PickerContext from '../NewPicker/PickerInput/context';
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {
