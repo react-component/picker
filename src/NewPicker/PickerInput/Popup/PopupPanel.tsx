@@ -2,7 +2,7 @@ import * as React from 'react';
 import PickerPanel, { type PickerPanelProps } from '../../../PickerPanel';
 import { PickerHackContext, type PickerHackContextProps } from '../../../PickerPanel/context';
 import PickerContext from '../../../PickerInput/context';
-import { offsetPanelDate } from '../hooks/useRangePickerValue';
+import { offsetPanelDate } from '../../../PickerInput/hooks/useRangePickerValue';
 import { type FooterProps } from './Footer';
 
 export type MustProp<DateType extends object> = Required<

@@ -1,4 +1,4 @@
-import type { FormatType } from '../../../interface';
+import type { FormatType } from '../../interface';
 
 export default function useInputReadOnly<DateType = any>(
   formatList: FormatType<DateType>[],

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import type { FormatType, InternalMode, Locale, SharedPickerProps } from '../../../interface';
-import { toArray } from '../../../utils/miscUtil';
+import type { FormatType, InternalMode, Locale, SharedPickerProps } from '../../interface';
+import { toArray } from '../../utils/miscUtil';
 
 function getRowFormat(picker: InternalMode, locale: Locale, format?: SharedPickerProps['format']) {
   if (format) {

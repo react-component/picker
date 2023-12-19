@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { RangeValueType } from '../../../PickerInput/RangePicker';
+import type { RangeValueType } from '../RangePicker';
 import useLockEffect from './useLockEffect';
 
 export type OperationType = 'input' | 'panel';

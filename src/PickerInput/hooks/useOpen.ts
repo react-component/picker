@@ -1,4 +1,4 @@
-import type { OpenConfig } from '../../../interface';
+import type { OpenConfig } from '../../interface';
 import useDelayState from './useDelayState';
 
 /**

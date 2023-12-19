@@ -1,7 +1,7 @@
-import type { GenerateConfig } from '../../../generate';
-import { isSame } from '../../../utils/dateUtil';
-import type { DisabledDate, Locale } from '../../../interface';
-import type { RangeValueType } from '../../../PickerInput/RangePicker';
+import type { GenerateConfig } from '../../generate';
+import { isSame } from '../../utils/dateUtil';
+import type { DisabledDate, Locale } from '../../interface';
+import type { RangeValueType } from '../RangePicker';
 
 /**
  * RangePicker need additional logic to handle the `disabled` case. e.g.

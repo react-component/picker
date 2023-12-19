@@ -1,4 +1,4 @@
-import type { InternalMode, PanelMode } from '../../../interface';
+import type { InternalMode, PanelMode } from '../../interface';
 
 export default function useShowNow(
   picker: InternalMode,

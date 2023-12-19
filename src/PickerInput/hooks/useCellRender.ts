@@ -1,6 +1,6 @@
 import { warning } from 'rc-util';
 import * as React from 'react';
-import type { CellRender, CellRenderInfo, SharedPickerProps } from '../../../interface';
+import type { CellRender, CellRenderInfo, SharedPickerProps } from '../../interface';
 
 export default function useCellRender<DateType extends object = any>(
   cellRender: SharedPickerProps<DateType>['cellRender'],
