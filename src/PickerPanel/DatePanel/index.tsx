@@ -8,9 +8,9 @@ import {
   WEEK_DAY_COUNT,
 } from '../../utils/dateUtil';
 import type { PanelMode, SharedPanelProps } from '../../interface';
-import { PanelContext, useInfo } from '../../PickerPanel/context';
-import PanelBody from '../../PickerPanel/PanelBody';
-import PanelHeader from '../../PickerPanel/PanelHeader';
+import { PanelContext, useInfo } from '../context';
+import PanelBody from '../PanelBody';
+import PanelHeader from '../PanelHeader';
 
 export interface DatePanelProps<DateType extends object> extends SharedPanelProps<DateType> {
   panelName?: PanelMode;

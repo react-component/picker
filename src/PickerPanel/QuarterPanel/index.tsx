@@ -1,9 +1,9 @@
 import * as React from 'react';
 import type { SharedPanelProps } from '../../interface';
 import { formatValue, isSameQuarter } from '../../utils/dateUtil';
-import { PanelContext, useInfo } from '../../PickerPanel/context';
-import PanelBody from '../../PickerPanel/PanelBody';
-import PanelHeader from '../../PickerPanel/PanelHeader';
+import { PanelContext, useInfo } from '../context';
+import PanelBody from '../PanelBody';
+import PanelHeader from '../PanelHeader';
 
 export default function QuarterPanel<DateType extends object = any>(
   props: SharedPanelProps<DateType>,
