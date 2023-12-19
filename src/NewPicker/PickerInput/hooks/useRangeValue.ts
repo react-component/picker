@@ -5,8 +5,8 @@ import useSyncState from '../../../hooks/useSyncState';
 import type { BaseInfo, FormatType, Locale, ReplaceListType } from '../../../interface';
 import { formatValue, isSame, isSameTimestamp } from '../../../utils/dateUtil';
 import { fillIndex } from '../../../utils/miscUtil';
-import type { RangePickerProps } from '../RangePicker';
-import type { ReplacedPickerProps } from '../SinglePicker';
+import type { RangePickerProps } from '../../../PickerInput/RangePicker';
+import type { ReplacedPickerProps } from '../../../PickerInput/SinglePicker';
 import useLockEffect from './useLockEffect';
 
 const EMPTY_VALUE: any[] = [];

@@ -15,7 +15,7 @@ import type {
   SharedPanelProps,
   SharedTimeProps,
 } from '../interface';
-import PickerContext from '../NewPicker/PickerInput/context';
+import PickerContext from '../PickerInput/context';
 import useCellRender from '../NewPicker/PickerInput/hooks/useCellRender';
 import { isSame } from '../utils/dateUtil';
 import { toArray } from '../utils/miscUtil';

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import Overflow from 'rc-overflow';
 import * as React from 'react';
-import type { PickerProps } from '../../SinglePicker';
+import type { PickerProps } from '../../../../PickerInput/SinglePicker';
 
 export interface MultipleDatesProps<DateType extends object = any>
   extends Pick<PickerProps, 'maxTagCount'> {

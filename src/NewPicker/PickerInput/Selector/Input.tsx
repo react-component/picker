@@ -4,7 +4,7 @@ import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import raf from 'rc-util/lib/raf';
 import * as React from 'react';
 import { leftPad } from '../../../utils/miscUtil';
-import PickerContext from '../context';
+import PickerContext from '../../../PickerInput/context';
 import useLockEffect from '../hooks/useLockEffect';
 import Icon from './Icon';
 import MaskFormat from './MaskFormat';

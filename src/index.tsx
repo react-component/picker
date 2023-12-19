@@ -28,8 +28,8 @@
  */
 
 import type { PickerRef } from './interface';
-import RangePicker, { type RangePickerProps } from './NewPicker/PickerInput/RangePicker';
-import Picker, { type PickerProps } from './NewPicker/PickerInput/SinglePicker';
+import RangePicker, { type RangePickerProps } from './PickerInput/RangePicker';
+import Picker, { type PickerProps } from './PickerInput/SinglePicker';
 import PickerPanel, { type PickerPanelProps } from './PickerPanel';
 
 export { Picker, RangePicker, PickerPanel };

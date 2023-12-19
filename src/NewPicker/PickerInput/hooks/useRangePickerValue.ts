@@ -4,7 +4,7 @@ import * as React from 'react';
 import type { GenerateConfig } from '../../../generate';
 import { isSame } from '../../../utils/dateUtil';
 import type { InternalMode, Locale, PanelMode } from '../../../interface';
-import type { RangePickerProps } from '../RangePicker';
+import type { RangePickerProps } from '../../../PickerInput/RangePicker';
 
 export function offsetPanelDate<DateType = any>(
   generateConfig: GenerateConfig<DateType>,

@@ -3,7 +3,7 @@ import ResizeObserver, { type ResizeObserverProps } from 'rc-resize-observer';
 import * as React from 'react';
 import type { SharedPickerProps, ValueDate } from '../../../interface';
 import { toArray } from '../../../utils/miscUtil';
-import PickerContext from '../context';
+import PickerContext from '../../../PickerInput/context';
 import Footer, { type FooterProps } from './Footer';
 import PopupPanel, { type PopupPanelProps } from './PopupPanel';
 import PresetPanel from './PresetPanel';

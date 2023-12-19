@@ -3,7 +3,7 @@ import ResizeObserver from 'rc-resize-observer';
 import { useEvent } from 'rc-util';
 import * as React from 'react';
 import type { SelectorProps, SelectorRef } from '../../../interface';
-import PickerContext from '../context';
+import PickerContext from '../../../PickerInput/context';
 import useInputProps from './hooks/useInputProps';
 import useRootProps from './hooks/useRootProps';
 import Icon, { ClearIcon } from './Icon';

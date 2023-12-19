@@ -3,7 +3,7 @@ import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import omit from 'rc-util/lib/omit';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
-import useToggleDates from '../../hooks/useToggleDates';
+import useToggleDates from '../hooks/useToggleDates';
 import type {
   BaseInfo,
   InternalMode,
@@ -14,21 +14,21 @@ import type {
   SharedPickerProps,
   SharedTimeProps,
   ValueDate,
-} from '../../interface';
-import PickerTrigger from '../../PickerTrigger';
+} from '../interface';
+import PickerTrigger from '../PickerTrigger';
 import PickerContext from './context';
-import useCellRender from './hooks/useCellRender';
-import useFieldsInvalidate from './hooks/useFieldsInvalidate';
-import useFilledProps from './hooks/useFilledProps';
-import useOpen from './hooks/useOpen';
-import { usePickerRef } from './hooks/usePickerRef';
-import usePresets from './hooks/usePresets';
-import useRangeActive from './hooks/useRangeActive';
-import useRangePickerValue from './hooks/useRangePickerValue';
-import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
-import useShowNow from './hooks/useShowNow';
-import Popup from './Popup';
-import SingleSelector from './Selector/SingleSelector';
+import useCellRender from '../NewPicker/PickerInput/hooks/useCellRender';
+import useFieldsInvalidate from '../NewPicker/PickerInput/hooks/useFieldsInvalidate';
+import useFilledProps from '../NewPicker/PickerInput/hooks/useFilledProps';
+import useOpen from '../NewPicker/PickerInput/hooks/useOpen';
+import { usePickerRef } from '../NewPicker/PickerInput/hooks/usePickerRef';
+import usePresets from '../NewPicker/PickerInput/hooks/usePresets';
+import useRangeActive from '../NewPicker/PickerInput/hooks/useRangeActive';
+import useRangePickerValue from '../NewPicker/PickerInput/hooks/useRangePickerValue';
+import useRangeValue, { useInnerValue } from '../NewPicker/PickerInput/hooks/useRangeValue';
+import useShowNow from '../NewPicker/PickerInput/hooks/useShowNow';
+import Popup from '../NewPicker/PickerInput/Popup';
+import SingleSelector from '../NewPicker/PickerInput/Selector/SingleSelector';
 
 // TODO: isInvalidateDate with showTime.disabledTime should not provide `range` prop
 

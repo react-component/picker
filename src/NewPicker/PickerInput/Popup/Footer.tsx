@@ -9,7 +9,7 @@ import type {
   RangeTimeProps,
   SharedPickerProps,
 } from '../../../interface';
-import PickerContext from '../context';
+import PickerContext from '../../../PickerInput/context';
 
 export interface FooterProps<DateType extends object = any> {
   mode: PanelMode;

@@ -1,4 +1,4 @@
-import { fillIndex } from '../../utils/miscUtil';
+import { fillIndex } from '../utils/miscUtil';
 import { useEvent, useMergedState } from 'rc-util';
 import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import omit from 'rc-util/lib/omit';
@@ -17,23 +17,23 @@ import type {
   SharedHTMLAttrs,
   SharedPickerProps,
   ValueDate,
-} from '../../interface';
-import type { PickerPanelProps } from '../../PickerPanel';
-import PickerTrigger from '../../PickerTrigger';
+} from '../interface';
+import type { PickerPanelProps } from '../PickerPanel';
+import PickerTrigger from '../PickerTrigger';
 import PickerContext from './context';
-import useCellRender from './hooks/useCellRender';
-import useFieldsInvalidate from './hooks/useFieldsInvalidate';
-import useFilledProps from './hooks/useFilledProps';
-import useOpen from './hooks/useOpen';
-import { usePickerRef } from './hooks/usePickerRef';
-import usePresets from './hooks/usePresets';
-import useRangeActive from './hooks/useRangeActive';
-import useRangeDisabledDate from './hooks/useRangeDisabledDate';
-import useRangePickerValue from './hooks/useRangePickerValue';
-import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
-import useShowNow from './hooks/useShowNow';
-import Popup from './Popup';
-import RangeSelector, { type SelectorIdType } from './Selector/RangeSelector';
+import useCellRender from '../NewPicker/PickerInput/hooks/useCellRender';
+import useFieldsInvalidate from '../NewPicker/PickerInput/hooks/useFieldsInvalidate';
+import useFilledProps from '../NewPicker/PickerInput/hooks/useFilledProps';
+import useOpen from '../NewPicker/PickerInput/hooks/useOpen';
+import { usePickerRef } from '../NewPicker/PickerInput/hooks/usePickerRef';
+import usePresets from '../NewPicker/PickerInput/hooks/usePresets';
+import useRangeActive from '../NewPicker/PickerInput/hooks/useRangeActive';
+import useRangeDisabledDate from '../NewPicker/PickerInput/hooks/useRangeDisabledDate';
+import useRangePickerValue from '../NewPicker/PickerInput/hooks/useRangePickerValue';
+import useRangeValue, { useInnerValue } from '../NewPicker/PickerInput/hooks/useRangeValue';
+import useShowNow from '../NewPicker/PickerInput/hooks/useShowNow';
+import Popup from '../NewPicker/PickerInput/Popup';
+import RangeSelector, { type SelectorIdType } from '../NewPicker/PickerInput/Selector/RangeSelector';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
   const singleConfig = config ?? defaultConfig;
