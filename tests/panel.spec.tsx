@@ -619,4 +619,73 @@ describe('Picker.Panel', () => {
     expect(container.querySelector('td[title="1991-09-03"]')).toBeTruthy();
     expect(container.querySelector('.rc-picker-week-panel-row-selected')).toBeFalsy();
   });
+
+  describe('TimePanel', () => {
+    it('not crash', () => {
+      const onChange = jest.fn();
+
+      const { container } = render(
+        <DayPickerPanel
+          picker="time"
+          value={null}
+          pickerValue={null}
+          onChange={onChange}
+          hideDisabledOptions
+          disabledTime={() => ({
+            disabledHours: () => [0],
+            disabledMinutes: () => [0, 1],
+            disabledSeconds: () => [0, 1, 2],
+          })}
+        />,
+      );
+
+      fireEvent.click(container.querySelector('.rc-picker-time-panel-column').querySelector('li'));
+      expect(isSame(onChange.mock.calls[0][0], '1990-09-03 01:02:03')).toBeTruthy();
+    });
+
+    it('support milliseconds', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayPickerPanel
+          picker="time"
+          format="HH:mm:ss.SSS"
+          onChange={onChange}
+          hideDisabledOptions
+          disabledTime={() => ({
+            disabledMilliseconds: () => [0],
+          })}
+        />,
+      );
+
+      fireEvent.click(
+        container.querySelectorAll('.rc-picker-time-panel-column')[3].querySelector('li'),
+      );
+      expect(onChange.mock.calls[0][0].format('SSS')).toEqual('100');
+    });
+
+    it('meridiem', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayPickerPanel
+          picker="time"
+          defaultValue={getDay('2000-01-01 03:03:03')}
+          format="HH:mm:ss a"
+          onChange={onChange}
+        />,
+      );
+
+      // PM
+      fireEvent.click(
+        container.querySelectorAll('.rc-picker-time-panel-column')[3].querySelectorAll('li')[1],
+      );
+      expect(onChange.mock.calls[0][0].format('HH:mm:ss')).toEqual('15:03:03');
+      onChange.mockClear();
+
+      // AM
+      fireEvent.click(
+        container.querySelectorAll('.rc-picker-time-panel-column')[3].querySelectorAll('li')[0],
+      );
+      expect(onChange.mock.calls[0][0].format('HH:mm:ss')).toEqual('03:03:03');
+    });
+  });
 });

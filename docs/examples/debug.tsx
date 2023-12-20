@@ -153,8 +153,9 @@ export default () => {
         // showTime={{
         //   disabledHours: () => [0, 1, 2, 3, 4, 5],
         // }}
-        multiple
-        maxTagCount="responsive"
+        // multiple
+        picker="time"
+        // maxTagCount="responsive"
         defaultValue={
           [
             dayjs('2000-01-01'),
