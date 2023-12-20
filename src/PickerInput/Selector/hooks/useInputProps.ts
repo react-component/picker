@@ -1,7 +1,8 @@
+import { warning } from 'rc-util';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 import * as React from 'react';
-import { formatValue } from '../../../utils/dateUtil';
 import type { SelectorProps } from '../../../interface';
+import { formatValue } from '../../../utils/dateUtil';
 import type { InputProps } from '../Input';
 
 export default function useInputProps<DateType extends object = any>(
@@ -187,9 +188,19 @@ export default function useInputProps<DateType extends object = any>(
         });
       },
       onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => {
-        onKeyDown?.(event);
+        let prevented = false;
 
-        if (!event.defaultPrevented) {
+        onKeyDown?.(event, () => {
+          if (process.env.NODE_ENV !== 'production') {
+            warning(
+              false,
+              '`preventDefault` callback is deprecated. Please call `event.preventDefault` directly.',
+            );
+          }
+          prevented = true;
+        });
+
+        if (!event.defaultPrevented && !prevented) {
           switch (event.key) {
             case 'Escape':
               onOpenChange(false, {

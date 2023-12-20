@@ -274,11 +274,18 @@ export type SharedHTMLAttrs = Omit<
   | 'disabled'
   | 'onFocus'
   | 'onBlur'
+  | 'onSelect'
   | 'min'
   | 'max'
+  | 'onKeyDown'
 >;
 
 export type PickerFocusEventHandler = (e: React.FocusEvent<HTMLElement>, info: BaseInfo) => void;
+
+export type LegacyOnKeyDown = (
+  event: React.KeyboardEvent<HTMLElement>,
+  preventDefault: VoidFunction,
+) => void;
 
 export interface SharedPickerProps<DateType extends object = any> extends SharedHTMLAttrs {
   // MISC
@@ -330,6 +337,8 @@ export interface SharedPickerProps<DateType extends object = any> extends Shared
   // Active
   onFocus?: PickerFocusEventHandler;
   onBlur?: PickerFocusEventHandler;
+  /** `preventDefault` is deprecated which will remove from future version. */
+  onKeyDown?: LegacyOnKeyDown;
 
   inputReadOnly?: boolean;
 
@@ -434,6 +443,8 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
   onBlur: (event: React.FocusEvent<HTMLInputElement>, index?: number) => void;
   /** Trigger by `enter` key */
   onSubmit: VoidFunction;
+  /** `preventDefault` is deprecated which will remove from future version. */
+  onKeyDown?: LegacyOnKeyDown;
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
 
