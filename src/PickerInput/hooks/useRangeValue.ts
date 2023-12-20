@@ -101,6 +101,7 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
     dateStrings: ReplaceListType<Required<ValueType>, string>,
     info: BaseInfo,
   ) => void,
+  onOk?: (dates: ValueType) => void,
 ) {
   // This is the root value which will sync with controlled or uncontrolled value
   const [innerValue, setInnerValue] = useMergedState(defaultValue, {
@@ -141,7 +142,13 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
     },
   );
 
-  return [mergedValue, setInnerValue, calendarValue, triggerCalendarChange] as const;
+  const triggerOk = ()=> {
+    if (onOk) {
+      onOk(calendarValue());
+    }
+  };
+
+  return [mergedValue, setInnerValue, calendarValue, triggerCalendarChange, triggerOk] as const;
 }
 
 export default function useRangeValue<ValueType extends DateType[], DateType extends object = any>(

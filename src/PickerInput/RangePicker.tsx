@@ -63,6 +63,7 @@ export interface RangePickerProps<DateType extends object>
     dateStrings: [string, string],
     info: BaseInfo,
   ) => void;
+  onOk?: (values: RangeValueType<DateType>) => void;
 
   // Placeholder
   placeholder?: [string, string];
@@ -176,6 +177,7 @@ function RangePicker<DateType extends object = any>(
     mode,
     onPanelChange,
     onCalendarChange,
+    onOk,
 
     // Picker Value
     defaultPickerValue,
@@ -219,15 +221,17 @@ function RangePicker<DateType extends object = any>(
   };
 
   // ======================== Values ========================
-  const [mergedValue, setInnerValue, getCalendarValue, triggerCalendarChange] = useInnerValue(
-    generateConfig,
-    locale,
-    formatList,
-    true,
-    defaultValue,
-    value,
-    onCalendarChange,
-  );
+  const [mergedValue, setInnerValue, getCalendarValue, triggerCalendarChange, triggerOk] =
+    useInnerValue(
+      generateConfig,
+      locale,
+      formatList,
+      true,
+      defaultValue,
+      value,
+      onCalendarChange,
+      onOk,
+    );
 
   const calendarValue = getCalendarValue();
 
@@ -563,6 +567,7 @@ function RangePicker<DateType extends object = any>(
       // Submit
       needConfirm={needConfirm}
       onSubmit={triggerPartConfirm}
+      onOk={triggerOk}
       // Preset
       presets={presetList}
       onPresetHover={onPresetHover}
@@ -608,12 +613,12 @@ function RangePicker<DateType extends object = any>(
     onSharedBlur(event, index);
   };
 
-  const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event) => {
+  const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event, preventDefault) => {
     if (event.key === 'Tab') {
       triggerPartConfirm(null, true);
     }
 
-    onKeyDown?.(event);
+    onKeyDown?.(event, preventDefault);
   };
 
   // ======================= Context ========================

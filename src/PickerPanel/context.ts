@@ -14,6 +14,12 @@ export interface PanelContextProps<DateType extends object = any>
     | 'onHover'
     | 'values'
     | 'pickerValue'
+
+    // Icon
+    | 'prevIcon'
+    | 'nextIcon'
+    | 'superPrevIcon'
+    | 'superNextIcon'
   > {
   /** Tell current panel type */
   panelType: PanelMode;
@@ -47,6 +53,12 @@ export function useInfo<DateType extends object = any>(
     values,
     pickerValue,
     onSelect,
+
+    // Icons
+    prevIcon,
+    nextIcon,
+    superPrevIcon,
+    superNextIcon,
   } = props;
 
   // ========================= MISC =========================
@@ -66,6 +78,12 @@ export function useInfo<DateType extends object = any>(
     generateConfig,
     onSelect,
     panelType,
+
+    // Icons
+    prevIcon,
+    nextIcon,
+    superPrevIcon,
+    superNextIcon,
   };
 
   return [info, now];

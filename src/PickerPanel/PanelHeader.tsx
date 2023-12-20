@@ -6,12 +6,6 @@ const HIDDEN_STYLE: React.CSSProperties = {
 };
 
 export interface HeaderProps {
-  // Icons
-  prevIcon?: React.ReactNode;
-  nextIcon?: React.ReactNode;
-  superPrevIcon?: React.ReactNode;
-  superNextIcon?: React.ReactNode;
-
   onOffset?: (offset: number) => void;
   onSuperOffset?: (offset: number) => void;
 
@@ -23,16 +17,18 @@ function PanelHeader<DateType extends object>(props: HeaderProps) {
     onOffset,
     onSuperOffset,
 
+    children,
+  } = props;
+
+  const {
+    prefixCls,
+
     // Icons
     prevIcon = '\u2039',
     nextIcon = '\u203A',
     superPrevIcon = '\u00AB',
     superNextIcon = '\u00BB',
-
-    children,
-  } = props;
-
-  const { prefixCls } = usePanelContext<DateType>();
+  } = usePanelContext<DateType>();
 
   const headerPrefixCls = `${prefixCls}-header`;
 

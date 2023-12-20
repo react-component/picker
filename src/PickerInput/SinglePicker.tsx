@@ -53,6 +53,8 @@ export interface PickerProps<DateType extends object = any>
     dateString: string | string[],
     info: BaseInfo,
   ) => void;
+  /**  */
+  onOk?: (value?: DateType | DateType[]) => void;
 
   // Placeholder
   placeholder?: string;
@@ -147,6 +149,7 @@ function Picker<DateType extends object = any>(
     mode,
     onPanelChange,
     onCalendarChange,
+    onOk,
     multiple,
 
     // Picker Value
@@ -199,16 +202,22 @@ function Picker<DateType extends object = any>(
     onCalendarChange?.(pickerParam(dates), pickerParam(dateStrings), info);
   };
 
+  const onInternalOk = (dates: DateType[]) => {
+    onOk?.(pickerParam(dates));
+  };
+
   // ======================== Values ========================
-  const [mergedValue, setInnerValue, getCalendarValue, triggerCalendarChange] = useInnerValue(
-    generateConfig,
-    locale,
-    formatList,
-    false,
-    defaultValue,
-    value,
-    onInternalCalendarChange,
-  );
+  const [mergedValue, setInnerValue, getCalendarValue, triggerCalendarChange, triggerOk] =
+    useInnerValue(
+      generateConfig,
+      locale,
+      formatList,
+      false,
+      defaultValue,
+      value,
+      onInternalCalendarChange,
+      onInternalOk,
+    );
 
   const calendarValue = getCalendarValue();
 
@@ -482,6 +491,7 @@ function Picker<DateType extends object = any>(
       // Submit
       needConfirm={needConfirm}
       onSubmit={triggerConfirm}
+      onOk={triggerOk}
       // Preset
       presets={presetList}
       onPresetHover={onPresetHover}
@@ -525,12 +535,12 @@ function Picker<DateType extends object = any>(
     onSharedBlur(event);
   };
 
-  const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event) => {
+  const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event, preventDefault) => {
     if (event.key === 'Tab') {
       triggerConfirm();
     }
 
-    onKeyDown?.(event);
+    onKeyDown?.(event, preventDefault);
   };
 
   // ======================= Context ========================

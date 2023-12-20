@@ -39,8 +39,6 @@ const BUILT_IN_PLACEMENTS = {
   },
 };
 
-type Placement = 'bottomLeft' | 'bottomRight' | 'topLeft' | 'topRight';
-
 export type PickerTriggerProps = {
   popupElement: React.ReactElement;
   popupStyle?: React.CSSProperties;
@@ -52,7 +50,7 @@ export type PickerTriggerProps = {
 
   // Placement
   popupClassName?: string;
-  placement?: Placement;
+  placement?: string;
   builtinPlacements?: BuildInPlacements;
   direction?: 'ltr' | 'rtl';
 

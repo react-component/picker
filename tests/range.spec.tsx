@@ -7,8 +7,8 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
-import type { PickerMode } from '../src/interface';
 import type { PickerRef, RangePickerProps } from '../src';
+import type { PickerMode } from '../src/interface';
 import {
   clearValue,
   clickButton,
@@ -797,7 +797,8 @@ describe('Picker.Range', () => {
       ['1990-09-11 00:00:00', ''],
       { range: 'start' },
     );
-    expect(onOk).toHaveBeenCalled();
+    expect(onOk).toHaveBeenCalledWith([expect.anything(), null]);
+    onOk.mockClear();
 
     // Trigger when end Ok'd
     onCalendarChange.mockReset();
@@ -808,7 +809,7 @@ describe('Picker.Range', () => {
       { range: 'end' },
     );
     fireEvent.click(document.querySelector('.rc-picker-ok button'));
-    expect(onOk).toHaveBeenCalled();
+    expect(onOk).toHaveBeenCalledWith([expect.anything(), expect.anything()]);
   });
 
   it('datetime will reset by blur', () => {
@@ -1876,11 +1877,7 @@ describe('Picker.Range', () => {
       const onCalendarChange = jest.fn();
       const onChange = jest.fn();
       const { container, baseElement } = render(
-        <DayRangePicker
-          showTime
-          onChange={onChange}
-          onCalendarChange={onCalendarChange}
-        />,
+        <DayRangePicker showTime onChange={onChange} onCalendarChange={onCalendarChange} />,
       );
 
       switchInput(container);

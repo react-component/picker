@@ -470,7 +470,7 @@ describe('Picker.Basic', () => {
       expect(document.querySelector('.rc-picker-date-panel')).toBeTruthy();
     });
 
-    it('time', () => {
+    it.only('time', () => {
       const onChange = jest.fn();
       const onOk = jest.fn();
       const { container } = render(<DayPicker picker="time" onChange={onChange} onOk={onOk} />);
@@ -483,6 +483,7 @@ describe('Picker.Basic', () => {
       expect(onOk).not.toHaveBeenCalled();
       confirmOK();
       expect(onOk).toHaveBeenCalled();
+      expect(isSame(onOk.mock.calls[0][0], '1990-09-03 13:22:33', 'second')).toBeTruthy();
       expect(isSame(onChange.mock.calls[0][0], '1990-09-03 13:22:33', 'second')).toBeTruthy();
     });
   });

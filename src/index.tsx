@@ -34,3 +34,4 @@ import PickerPanel, { type PickerPanelProps } from './PickerPanel';
 
 export { Picker, RangePicker, PickerPanel };
 export type { RangePickerProps, PickerProps, PickerPanelProps, PickerRef };
+export default Picker;

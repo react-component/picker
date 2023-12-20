@@ -247,6 +247,12 @@ export interface SharedPanelProps<DateType extends object = any> {
    * Only used for `date` mode.
    */
   showWeek?: boolean;
+
+  // Icons
+  prevIcon?: React.ReactNode;
+  nextIcon?: React.ReactNode;
+  superPrevIcon?: React.ReactNode;
+  superNextIcon?: React.ReactNode;
 }
 
 export type Components<DateType extends object = any> = Partial<
@@ -287,7 +293,13 @@ export type LegacyOnKeyDown = (
   preventDefault: VoidFunction,
 ) => void;
 
-export interface SharedPickerProps<DateType extends object = any> extends SharedHTMLAttrs {
+export interface SharedPickerProps<DateType extends object = any>
+  extends SharedHTMLAttrs,
+    Pick<
+      SharedPanelProps<DateType>,
+      // Icon
+      'prevIcon' | 'nextIcon' | 'superPrevIcon' | 'superNextIcon'
+    > {
   // MISC
   direction?: 'ltr' | 'rtl';
 
@@ -405,9 +417,6 @@ export interface SharedPickerProps<DateType extends object = any> extends Shared
   showToday?: boolean;
   panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
   renderExtraFooter?: (mode: PanelMode) => React.ReactNode;
-
-  // Events
-  onOk?: VoidFunction;
 }
 
 export interface PickerRef {

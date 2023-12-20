@@ -18,7 +18,7 @@ import type {
 import PickerContext from '../PickerInput/context';
 import useCellRender from '../PickerInput/hooks/useCellRender';
 import { isSame } from '../utils/dateUtil';
-import { toArray } from '../utils/miscUtil';
+import { pickProps, toArray } from '../utils/miscUtil';
 import DatePanel from './DatePanel';
 import DateTimePanel from './DateTimePanel';
 import DecadePanel from './DecadePanel';
@@ -49,8 +49,15 @@ export interface BasePickerPanelProps<DateType extends object = any>
       // MISC
       | 'locale'
       | 'generateConfig'
+
       // Disabled
       | 'disabledDate'
+
+      // Icon
+      | 'prevIcon'
+      | 'nextIcon'
+      | 'superPrevIcon'
+      | 'superNextIcon'
     >,
     SharedTimeProps<DateType>,
     Pick<React.HTMLAttributes<HTMLDivElement>, 'tabIndex'> {
@@ -125,7 +132,6 @@ function PickerPanel<DateType extends object = any>(
 ) {
   const {
     locale,
-    disabledDate,
     generateConfig,
 
     direction,
@@ -153,10 +159,6 @@ function PickerPanel<DateType extends object = any>(
 
     // Hover
     hoverValue,
-    onHover,
-
-    // Week
-    showWeek,
 
     // Cell
     cellRender,
@@ -349,6 +351,23 @@ function PickerPanel<DateType extends object = any>(
   // ========================= Render =========================
   const panelCls = `${mergedPrefixCls}-panel`;
 
+  const panelProps = pickProps(props, [
+    // Week
+    'showWeek',
+
+    // Icons
+    'prevIcon',
+    'nextIcon',
+    'superPrevIcon',
+    'superNextIcon',
+
+    // Disabled
+    'disabledDate',
+
+    // Hover
+    'onHover',
+  ]);
+
   return (
     <div
       ref={rootRef}
@@ -358,10 +377,9 @@ function PickerPanel<DateType extends object = any>(
       })}
     >
       <PanelComponent
+        {...panelProps}
         // Time
         showTime={mergedShowTime}
-        // Week
-        showWeek={showWeek}
         // MISC
         prefixCls={mergedPrefixCls}
         locale={filledLocale}
@@ -378,10 +396,8 @@ function PickerPanel<DateType extends object = any>(
         values={mergedValue}
         // Render
         cellRender={onInternalCellRender}
-        disabledDate={disabledDate}
         // Hover
         hoverValue={hoverRangeDate}
-        onHover={onHover}
       />
     </div>
   );

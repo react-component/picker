@@ -29,7 +29,7 @@ export interface FooterProps<DateType extends object = any> {
   needConfirm: boolean;
 
   // OK
-  onOk?: VoidFunction;
+  onOk: VoidFunction;
 
   // Now
   onNow: (now: DateType) => void;
@@ -94,7 +94,7 @@ export default function Footer(props: FooterProps) {
       <Button
         disabled={invalid}
         onClick={() => {
-          onOk?.();
+          onOk();
           onSubmit();
         }}
       >
