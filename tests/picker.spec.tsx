@@ -1193,4 +1193,48 @@ describe('Picker.Basic', () => {
 
     expect(document.querySelector('.rc-picker-dropdown-placement-notExist')).toBeTruthy();
   });
+
+  describe('disabledTime should block submit', () => {
+    const propsNames: string[] = [
+      'disabledHours',
+      'disabledMinutes',
+      'disabledSeconds',
+      'disabledMilliseconds',
+    ];
+
+    propsNames.forEach((proPname) => {
+      it(proPname, () => {
+        const onChange = jest.fn();
+
+        const { container } = render(
+          <DayPicker
+            onChange={onChange}
+            showTime={{
+              disabledTime: () => ({ [proPname]: () => [0] }),
+            }}
+            format="YYYY-MM-DD HH:mm:ss.SSS"
+          />,
+        );
+        const inputEle = container.querySelector('input');
+
+        // Invalid time
+        fireEvent.change(inputEle, {
+          target: { value: '2020-09-17 00:00:00.000' },
+        });
+        fireEvent.keyDown(inputEle, {
+          keyCode: KeyCode.ENTER,
+        });
+        expect(onChange).not.toHaveBeenCalled();
+
+        // Valid time
+        fireEvent.change(inputEle, {
+          target: { value: '2020-09-17 01:01:01.001' },
+        });
+        fireEvent.keyDown(inputEle, {
+          keyCode: KeyCode.ENTER,
+        });
+        expect(onChange).toHaveBeenCalled();
+      });
+    });
+  });
 });

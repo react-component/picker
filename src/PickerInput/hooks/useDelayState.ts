@@ -55,34 +55,3 @@ export default function useDelayState<T>(
 
   return [state, updateValue];
 }
-
-const EFFECT_DELAY_TIMES = 1;
-
-export function useDelayEffect(condition: boolean, callback: VoidFunction) {
-  const [times, setTimes] = React.useState<number | false>(false);
-  const prevConditionRef = React.useRef<boolean>(condition);
-
-  const triggerCallback = useEvent(() => {
-    if (prevConditionRef.current !== condition) {
-      prevConditionRef.current = condition;
-      callback();
-    }
-  });
-
-  React.useEffect(() => {
-    if (condition) {
-      triggerCallback();
-      setTimes(false);
-    } else {
-      setTimes(0);
-    }
-  }, [condition]);
-
-  React.useEffect(() => {
-    if (times === EFFECT_DELAY_TIMES) {
-      triggerCallback();
-    } else if (times !== false && times < EFFECT_DELAY_TIMES) {
-      setTimes(times + 1);
-    }
-  }, [times]);
-}

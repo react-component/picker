@@ -130,7 +130,7 @@ export interface DisabledTimes {
   disabledHours?: () => number[];
   disabledMinutes?: (hour: number) => number[];
   disabledSeconds?: (hour: number, minute: number) => number[];
-  disabledMilliSeconds?: (hour: number, minute: number, second: number) => number[];
+  disabledMilliseconds?: (hour: number, minute: number, second: number) => number[];
 }
 
 export interface SharedTimeProps<DateType extends object = any> {

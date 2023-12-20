@@ -1,4 +1,5 @@
 import type { PickerMode, SharedTimeProps } from '../interface';
+import { pickProps } from '../utils/miscUtil';
 
 const showTimeKeys = [
   'format',
@@ -17,29 +18,16 @@ const showTimeKeys = [
   'disabledHours',
   'disabledMinutes',
   'disabledSeconds',
+  'disabledMilliseconds',
   'disabledTime',
   'changeOnScroll',
 ] as const;
 
-// Used for typescript check the props not missing.
-// This will be removed by terser or uglify.
-if (process.env.NODE_ENV === 'not-exist-env') {
-  type KeyRecord = Record<(typeof showTimeKeys)[number], boolean>;
-
-  // eslint-disable-next-line
-  const checker: Record<keyof SharedTimeProps<any>, boolean> = {} as KeyRecord;
-}
-
 /**
  * Get SharedTimeProps from props.
  */
-function pickTimeProps<DateType extends object = any>(props: object): SharedTimeProps<DateType> {
-  const timeProps: any = {};
-  showTimeKeys.forEach((key) => {
-    if (key in props) {
-      timeProps[key] = props[key];
-    }
-  });
+function pickTimeProps<DateType extends object = any>(props: any): SharedTimeProps<DateType> {
+  const timeProps: any = pickProps(props, showTimeKeys);
 
   if (timeProps.format) {
     let format = timeProps.format;

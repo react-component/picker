@@ -35,7 +35,7 @@ export default function useInvalidate<DateType extends object = any>(
       }
 
       if ((picker === 'date' || picker === 'time') && showTime) {
-        const { disabledHours, disabledMinutes, disabledSeconds, disabledMilliSeconds } =
+        const { disabledHours, disabledMinutes, disabledSeconds, disabledMilliseconds } =
           showTime.disabledTime?.(date, info && info.activeIndex === 1 ? 'end' : 'start') || {};
 
         const {
@@ -66,8 +66,8 @@ export default function useInvalidate<DateType extends object = any>(
         }
 
         if (
-          disabledMilliSeconds &&
-          disabledMilliSeconds(hour, minute, second).includes(millisecond)
+          disabledMilliseconds &&
+          disabledMilliseconds(hour, minute, second).includes(millisecond)
         ) {
           return true;
         }

@@ -336,7 +336,7 @@ export default () => {
             disabledMinutes: (hour) => (hour === 6 ? [0, 1, 2, 4, 5, 6] : []),
             disabledSeconds: (_, minute) => (minute === 3 ? [6, 7, 8, 9] : []),
             disabledTime: () => ({
-              disabledMilliSeconds: () => [0, 100],
+              disabledMilliseconds: () => [0, 100],
             }),
             showTitle: true,
             millisecondStep: 20,

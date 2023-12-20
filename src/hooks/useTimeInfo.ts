@@ -118,7 +118,7 @@ export default function useTimeInfo<DateType extends object = any>(
         disabledConfig.disabledHours || disabledHours || emptyDisabled,
         disabledConfig.disabledMinutes || disabledMinutes || emptyDisabled,
         disabledConfig.disabledSeconds || disabledSeconds || emptyDisabled,
-        disabledConfig.disabledMilliSeconds || emptyDisabled,
+        disabledConfig.disabledMilliseconds || emptyDisabled,
       ] as const;
     },
     [disabledTime, disabledHours, disabledMinutes, disabledSeconds],
@@ -137,7 +137,7 @@ export default function useTimeInfo<DateType extends object = any>(
       getDisabledHours: DisabledTimes['disabledHours'],
       getDisabledMinutes: DisabledTimes['disabledMinutes'],
       getDisabledSeconds: DisabledTimes['disabledSeconds'],
-      getDisabledMilliseconds: DisabledTimes['disabledMilliSeconds'],
+      getDisabledMilliseconds: DisabledTimes['disabledMilliseconds'],
     ) => {
       const hours = generateUnits(0, 23, hourStep, hideDisabledOptions, getDisabledHours());
 
