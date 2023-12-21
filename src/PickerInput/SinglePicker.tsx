@@ -17,6 +17,7 @@ import type {
 } from '../interface';
 import PickerTrigger from '../PickerTrigger';
 import { pickTriggerProps } from '../PickerTrigger/util';
+import { toArray } from '../utils/miscUtil';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';
@@ -287,8 +288,6 @@ function Picker<DateType extends object = any>(
   );
 
   // ===================== Picker Value =====================
-  const timeDefaultValue = showTime?.defaultValue;
-
   // Proxy to single pickerValue
   const onInternalPickerValueChange = (
     dates: DateType[],
@@ -312,7 +311,7 @@ function Picker<DateType extends object = any>(
     false, // multiplePanel,
     defaultPickerValue,
     pickerValue,
-    timeDefaultValue ? [timeDefaultValue] : undefined,
+    toArray(showTime?.defaultValue),
     onInternalPickerValueChange,
     minDate,
     maxDate,
