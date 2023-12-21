@@ -153,10 +153,10 @@ export default () => {
         // showTime={{
         //   disabledHours: () => [0, 1, 2, 3, 4, 5],
         // }}
-        // multiple
-        picker="time"
+        multiple
+        // picker="time"
         // picker="month"
-        open
+        // open
         // maxTagCount="responsive"
         defaultValue={[
           dayjs('2000-01-01'),

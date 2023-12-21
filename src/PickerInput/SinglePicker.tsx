@@ -506,7 +506,6 @@ function Picker<DateType extends object = any>(
   // ========================================================
 
   // ======================== Change ========================
-  // TODO: support multiple mode
   const onSelectorChange = (date: DateType[]) => {
     triggerCalendarChange(date);
   };
