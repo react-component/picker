@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { formatValue } from '../../utils/dateUtil';
 import type { SharedPanelProps } from '../../interface';
+import { formatValue } from '../../utils/dateUtil';
 import { PanelContext, useInfo } from '../context';
 import PanelHeader from '../PanelHeader';
 import TimePanelBody from './TimePanelBody';
