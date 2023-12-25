@@ -7,7 +7,7 @@ import DatePanel from '../DatePanel';
 export default function WeekPanel<DateType extends object = any>(
   props: SharedPanelProps<DateType>,
 ) {
-  const { prefixCls, generateConfig, locale, value, hoverValue } = props;
+  const { prefixCls, generateConfig, locale, value, hoverValue, hoverRangeValue } = props;
 
   // =============================== Row ================================
   const rowPrefixCls = `${prefixCls}-week-panel-row`;
@@ -15,8 +15,8 @@ export default function WeekPanel<DateType extends object = any>(
   const rowClassName = (date: DateType) => {
     let rangeCls = {};
 
-    if (hoverValue) {
-      const [rangeStart, rangeEnd] = hoverValue;
+    if (hoverRangeValue) {
+      const [rangeStart, rangeEnd] = hoverRangeValue;
 
       const isRangeStart = isSameWeek(generateConfig, locale.locale, rangeStart, date);
       const isRangeEnd = isSameWeek(generateConfig, locale.locale, rangeEnd, date);
@@ -33,7 +33,7 @@ export default function WeekPanel<DateType extends object = any>(
       rowPrefixCls,
       {
         [`${rowPrefixCls}-selected`]:
-          !hoverValue && isSameWeek(generateConfig, locale.locale, value, date),
+          !hoverRangeValue && isSameWeek(generateConfig, locale.locale, value, date),
       },
 
       // Patch for hover range

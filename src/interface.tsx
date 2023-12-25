@@ -233,7 +233,9 @@ export interface SharedPanelProps<DateType extends object = any> {
 
   // Hover
   /** @private Only used for RangePicker passing. */
-  hoverValue: [start: DateType, end: DateType] | null;
+  hoverRangeValue: [start: DateType, end: DateType] | null;
+  /** @private Only used for SinglePicker passing. */
+  hoverValue: DateType[] | null;
   onHover?: (value: DateType | null) => void;
 
   // Time

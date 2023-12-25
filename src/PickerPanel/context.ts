@@ -11,6 +11,7 @@ export interface PanelContextProps<DateType extends object = any>
     | 'locale'
     | 'onSelect'
     | 'hoverValue'
+    | 'hoverRangeValue'
     | 'onHover'
     | 'values'
     | 'pickerValue'
@@ -49,6 +50,7 @@ export function useInfo<DateType extends object = any>(
     disabledDate,
     cellRender,
     hoverValue,
+    hoverRangeValue,
     onHover,
     values,
     pickerValue,
@@ -73,6 +75,7 @@ export function useInfo<DateType extends object = any>(
     disabledDate,
     cellRender,
     hoverValue,
+    hoverRangeValue,
     onHover,
     locale,
     generateConfig,

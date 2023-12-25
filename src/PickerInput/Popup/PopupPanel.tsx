@@ -15,6 +15,7 @@ export type PopupPanelProps<DateType extends object = any> = MustProp<DateType> 
     multiplePanel?: boolean;
     minDate?: DateType;
     maxDate?: DateType;
+    range?: boolean;
 
     onPickerValueChange: (date: DateType) => void;
   };
@@ -22,8 +23,17 @@ export type PopupPanelProps<DateType extends object = any> = MustProp<DateType> 
 export default function PopupPanel<DateType extends object = any>(
   props: PopupPanelProps<DateType>,
 ) {
-  const { picker, multiplePanel, pickerValue, onPickerValueChange, onSubmit, minDate, maxDate } =
-    props;
+  const {
+    picker,
+    multiplePanel,
+    pickerValue,
+    onPickerValueChange,
+    onSubmit,
+    minDate,
+    maxDate,
+    range,
+    hoverValue,
+  } = props;
   const { prefixCls, generateConfig } = React.useContext(PickerContext);
 
   // ======================== Offset ========================
@@ -81,6 +91,19 @@ export default function PopupPanel<DateType extends object = any>(
     [nextPickerValue, needLimit],
   );
 
+  // ======================== Props =========================
+  const pickerProps = {
+    ...props,
+    hoverValue: null,
+    hoverRangeValue: null,
+  };
+
+  if (range) {
+    pickerProps.hoverRangeValue = hoverValue;
+  } else {
+    pickerProps.hoverValue = hoverValue;
+  }
+
   // ======================== Render ========================
   // Multiple
   if (multiplePanel) {
@@ -89,13 +112,13 @@ export default function PopupPanel<DateType extends object = any>(
         <PickerHackContext.Provider
           value={{ ...sharedContext, hideNext: true, hidePrev: firstPanelNeedLimit.hidePrev }}
         >
-          <PickerPanel<DateType> {...props} />
+          <PickerPanel<DateType> {...pickerProps} />
         </PickerHackContext.Provider>
         <PickerHackContext.Provider
           value={{ ...sharedContext, hidePrev: true, hideNext: secondPanelNeedLimit.hideNext }}
         >
           <PickerPanel<DateType>
-            {...props}
+            {...pickerProps}
             pickerValue={nextPickerValue}
             onPickerValueChange={onSecondPickerValueChange}
           />
@@ -112,7 +135,7 @@ export default function PopupPanel<DateType extends object = any>(
         ...firstPanelNeedLimit,
       }}
     >
-      <PickerPanel {...props} />
+      <PickerPanel {...pickerProps} />
     </PickerHackContext.Provider>
   );
 }

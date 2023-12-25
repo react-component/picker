@@ -20,7 +20,6 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   onPresetSubmit: (presetValue: PresetValue) => void;
 
   // Range
-  range?: boolean;
   activeOffset?: number;
 
   // Direction

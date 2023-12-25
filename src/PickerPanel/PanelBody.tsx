@@ -45,6 +45,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
     cellRender,
     onHover,
     hoverValue,
+    hoverRangeValue,
     generateConfig,
     values,
     locale,
@@ -91,8 +92,8 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
       let rangeStart = false;
       let rangeEnd = false;
 
-      if (hoverValue) {
-        const [hoverStart, hoverEnd] = hoverValue;
+      if (hoverRangeValue) {
+        const [hoverStart, hoverEnd] = hoverRangeValue;
         inRange = isInRange(generateConfig, hoverStart, hoverEnd, currentDate);
         rangeStart = isSame(generateConfig, locale, currentDate, hoverStart, type);
         rangeEnd = isSame(generateConfig, locale, currentDate, hoverEnd, type);
@@ -120,7 +121,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
             [`${cellPrefixCls}-range-start`]: rangeStart,
             [`${cellPrefixCls}-range-end`]: rangeEnd,
             [`${prefixCls}-cell-selected`]:
-              !hoverValue &&
+              !hoverRangeValue &&
               // WeekPicker use row instead
               type !== 'week' &&
               matchValues(currentDate),

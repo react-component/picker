@@ -101,7 +101,11 @@ export interface BasePickerPanelProps<DateType extends object = any>
   monthCellRender?: (currentDate: DateType, locale: Locale) => React.ReactNode;
 
   // Hover
-  hoverValue?: DateType | [start: DateType, end: DateType];
+  /** @private Used for Picker passing */
+  hoverValue?: DateType[];
+  /** @private Used for Picker passing */
+  hoverRangeValue?: [start: DateType, end: DateType];
+  /** @private Used for Picker passing */
   onHover?: (date: DateType) => void;
 
   // Components
@@ -159,6 +163,7 @@ function PickerPanel<DateType extends object = any>(
 
     // Hover
     hoverValue,
+    hoverRangeValue,
 
     // Cell
     cellRender,
@@ -313,10 +318,10 @@ function PickerPanel<DateType extends object = any>(
     let start: DateType;
     let end: DateType;
 
-    if (Array.isArray(hoverValue)) {
-      [start, end] = hoverValue;
+    if (Array.isArray(hoverRangeValue)) {
+      [start, end] = hoverRangeValue;
     } else {
-      start = hoverValue;
+      start = hoverRangeValue;
     }
 
     // Return for not exist
@@ -329,7 +334,7 @@ function PickerPanel<DateType extends object = any>(
     end = end || start;
 
     return generateConfig.isAfter(start, end) ? [end, start] : [start, end];
-  }, [hoverValue, generateConfig]);
+  }, [hoverRangeValue, generateConfig]);
 
   // ======================= Components =======================
   // >>> cellRender
@@ -397,7 +402,8 @@ function PickerPanel<DateType extends object = any>(
         // Render
         cellRender={onInternalCellRender}
         // Hover
-        hoverValue={hoverRangeDate}
+        hoverRangeValue={hoverRangeDate}
+        hoverValue={hoverValue}
       />
     </div>
   );
