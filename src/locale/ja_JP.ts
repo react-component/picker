@@ -18,7 +18,7 @@ const locale: Locale = {
   yearSelect: '年を選択',
   decadeSelect: '年代を選択',
   yearFormat: 'YYYY年',
-  dayFormat: 'D日',
+  dayFormat: 'D',
   dateFormat: 'YYYY年M月D日',
   dateTimeFormat: 'YYYY年M月D日 HH時mm分ss秒',
   previousYear: '前年 (Controlを押しながら左キー)',
