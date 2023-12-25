@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-loop-func */
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -1093,18 +1094,20 @@ describe('Picker.Basic', () => {
       <DayPicker
         onChange={onChange}
         open
-        presets={[{ label: 'Bamboo', value: getDay('2000-09-03') }]}
+        presets={[{ label: 'Bamboo', value: dayjs().add(1, 'day') }]}
       />,
     );
 
     const presetEle = document.querySelector('.rc-picker-presets li');
     expect(document.querySelector('.rc-picker-presets li').textContent).toBe('Bamboo');
 
+    // Hover
     fireEvent.mouseEnter(presetEle);
+    expect(findCell(4)).toHaveClass('rc-picker-cell-hover');
 
+    // Click
     fireEvent.click(document.querySelector('.rc-picker-presets li'));
-
-    expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('2000-09-03');
+    expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('1990-09-04');
   });
 
   it('presets support callback', () => {

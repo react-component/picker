@@ -117,6 +117,9 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
           title={title}
           className={classNames(cellPrefixCls, {
             [`${cellPrefixCls}-disabled`]: disabled,
+            [`${cellPrefixCls}-hover`]: (hoverValue || []).some((date) =>
+              isSame(generateConfig, locale, currentDate, date, type),
+            ),
             [`${cellPrefixCls}-in-range`]: inRange && !rangeStart && !rangeEnd,
             [`${cellPrefixCls}-range-start`]: rangeStart,
             [`${cellPrefixCls}-range-end`]: rangeEnd,

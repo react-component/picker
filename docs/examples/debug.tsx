@@ -149,10 +149,7 @@ export default () => {
       <SinglePicker
         // Shared
         {...sharedLocale}
-        // changeOnBlur={false}
-        // showTime={{
-        //   disabledHours: () => [0, 1, 2, 3, 4, 5],
-        // }}
+        picker="week"
         multiple
         defaultValue={[
           dayjs(),
@@ -175,7 +172,6 @@ export default () => {
           console.log('🔥 Change:', ...args);
         }}
         onCalendarChange={(...args) => {
-          console.error('err!');
           console.log('🎉 Calendar Change:', ...args);
         }}
         onPickerValueChange={(val, info) => {

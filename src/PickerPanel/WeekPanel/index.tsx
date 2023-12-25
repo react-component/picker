@@ -10,30 +10,38 @@ export default function WeekPanel<DateType extends object = any>(
   const { prefixCls, generateConfig, locale, value, hoverValue, hoverRangeValue } = props;
 
   // =============================== Row ================================
+  const localeName = locale.locale;
+
   const rowPrefixCls = `${prefixCls}-week-panel-row`;
 
-  const rowClassName = (date: DateType) => {
-    let rangeCls = {};
+  const rowClassName = (currentDate: DateType) => {
+    const rangeCls = {};
 
     if (hoverRangeValue) {
       const [rangeStart, rangeEnd] = hoverRangeValue;
 
-      const isRangeStart = isSameWeek(generateConfig, locale.locale, rangeStart, date);
-      const isRangeEnd = isSameWeek(generateConfig, locale.locale, rangeEnd, date);
+      const isRangeStart = isSameWeek(generateConfig, localeName, rangeStart, currentDate);
+      const isRangeEnd = isSameWeek(generateConfig, localeName, rangeEnd, currentDate);
 
-      rangeCls = {
-        [`${rowPrefixCls}-range-start`]: isRangeStart,
-        [`${rowPrefixCls}-range-end`]: isRangeEnd,
-        [`${rowPrefixCls}-range-hover`]:
-          !isRangeStart && !isRangeEnd && isInRange(generateConfig, rangeStart, rangeEnd, date),
-      };
+      rangeCls[`${rowPrefixCls}-range-start`] = isRangeStart;
+      rangeCls[`${rowPrefixCls}-range-end`] = isRangeEnd;
+      rangeCls[`${rowPrefixCls}-range-hover`] =
+        !isRangeStart &&
+        !isRangeEnd &&
+        isInRange(generateConfig, rangeStart, rangeEnd, currentDate);
+    }
+
+    if (hoverValue) {
+      rangeCls[`${rowPrefixCls}-hover`] = (hoverValue || []).some((date) =>
+        isSameWeek(generateConfig, localeName, currentDate, date),
+      );
     }
 
     return classNames(
       rowPrefixCls,
       {
         [`${rowPrefixCls}-selected`]:
-          !hoverRangeValue && isSameWeek(generateConfig, locale.locale, value, date),
+          !hoverRangeValue && isSameWeek(generateConfig, localeName, value, currentDate),
       },
 
       // Patch for hover range
