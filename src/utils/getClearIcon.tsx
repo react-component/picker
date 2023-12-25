@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import React from "react";
 
 export function getClearIcon(
-    prefixCls,
+    prefixCls: string,
     allowClear?: boolean | { clearIcon?: ReactNode },
     clearIcon?: ReactNode,
 ) {
