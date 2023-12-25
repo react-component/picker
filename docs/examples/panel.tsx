@@ -1,11 +1,11 @@
+import moment, { type Moment } from 'moment';
 import React from 'react';
-import moment, { Moment } from 'moment';
-import PickerPanel from '../../src/PickerPanel';
+import '../../assets/index.less';
+import { PickerPanel } from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
-import zhCN from '../../src/locale/zh_CN';
 import enUS from '../../src/locale/en_US';
 import jaJP from '../../src/locale/ja_JP';
-import '../../assets/index.less';
+import zhCN from '../../src/locale/zh_CN';
 
 // const defaultValue = moment('2019-09-03 05:02:03');
 const defaultValue = moment('2019-11-28 01:02:03');

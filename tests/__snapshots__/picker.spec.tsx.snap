@@ -5,10 +5,8 @@ exports[`Picker.Basic icon 1`] = `
   class="rc-picker-input"
 >
   <input
+    aria-invalid="false"
     autocomplete="off"
-    readonly=""
-    size="12"
-    title="1990-09-03"
     value="1990-09-03"
   />
   <span
@@ -34,10 +32,9 @@ exports[`Picker.Basic inputRender 1`] = `
   class="rc-picker-input"
 >
   <input
+    aria-invalid="false"
     autocomplete="off"
-    readonly=""
-    size="12"
-    title=""
+    data-customize="yes"
     value=""
   />
 </div>
@@ -51,10 +48,8 @@ exports[`Picker.Basic panelRender 1`] = `
     class="rc-picker-input"
   >
     <input
+      aria-invalid="false"
       autocomplete="off"
-      readonly=""
-      size="12"
-      title=""
       value=""
     />
   </div>
@@ -70,13 +65,11 @@ exports[`Picker.Basic pass data- & aria- & role 1`] = `
       class="rc-picker-input"
     >
       <input
+        aria-invalid="false"
         aria-label="3334"
         autocomplete="off"
         data-test="233"
-        readonly=""
         role="search"
-        size="12"
-        title=""
         value=""
       />
     </div>
@@ -93,10 +86,8 @@ exports[`Picker.Basic should render correctly in rtl 1`] = `
       class="rc-picker-input"
     >
       <input
+        aria-invalid="false"
         autocomplete="off"
-        readonly=""
-        size="12"
-        title=""
         value=""
       />
     </div>

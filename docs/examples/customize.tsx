@@ -1,10 +1,9 @@
+import moment, { type Moment } from 'moment';
 import * as React from 'react';
-import moment, { Moment } from 'moment';
-import Picker from '../../src';
-import PickerPanel from '../../src/PickerPanel';
+import '../../assets/index.less';
+import Picker, { PickerPanel } from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
 import zhCN from '../../src/locale/zh_CN';
-import '../../assets/index.less';
 import './slide.less';
 
 interface DateRangeState {
@@ -13,26 +12,13 @@ interface DateRangeState {
   endOpen: boolean;
   initValue: Moment;
 }
-type PanelMode =
-  | 'time'
-  | 'datetime'
-  | 'date'
-  | 'week'
-  | 'month'
-  | 'year'
-  | 'decade';
+type PanelMode = 'time' | 'datetime' | 'date' | 'week' | 'month' | 'year' | 'decade';
 
 const now = moment();
 
 function disabledDate(current: Moment) {
   // Can not select days before today
-  return (
-    current &&
-    current <
-      moment()
-        .subtract(1, 'days')
-        .endOf('day')
-  );
+  return current && current < moment().subtract(1, 'days').endOf('day');
 }
 function changePanelCallBack(value: Moment, mode: PanelMode) {
   console.log(value, mode);
@@ -165,9 +151,7 @@ class Customize extends React.Component<{}, DateRangeState> {
               onSelect={this.handleSelect}
               value={initValue}
               onPanelChange={changePanelCallBack}
-              renderExtraFooter={(mode: PanelMode) => (
-                <div>{mode} extra footer</div>
-              )}
+              renderExtraFooter={(mode: PanelMode) => <div>{mode} extra footer</div>}
             />
           </div>
           <div>
