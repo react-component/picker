@@ -1,4 +1,4 @@
 module.exports = {
   setupFiles: ['./tests/setup.js'],
-  coveragePathIgnorePatterns: ['src/locale/'],
+  coveragePathIgnorePatterns: ['src/locale/', 'tests/'],
 };

@@ -1,9 +1,9 @@
+import moment, { type Moment } from 'moment';
 import React from 'react';
-import moment, { Moment } from 'moment';
-import RangePicker from '../../src/RangePicker';
+import '../../assets/index.less';
+import { RangePicker } from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
 import zhCN from '../../src/locale/zh_CN';
-import '../../assets/index.less';
 import './common.less';
 
 const defaultStartValue = moment('2019-09-03 05:02:03');
@@ -14,14 +14,12 @@ function formatDate(date: Moment | null) {
 }
 
 export default () => {
-  const [value, setValue] = React.useState<
-    [Moment | null, Moment | null] | null
-  >([defaultStartValue, defaultEndValue]);
+  const [value, setValue] = React.useState<[Moment | null, Moment | null] | null>([
+    defaultStartValue,
+    defaultEndValue,
+  ]);
 
-  const onChange = (
-    newValue: [Moment | null, Moment | null] | null,
-    formatStrings?: string[],
-  ) => {
+  const onChange = (newValue: [Moment | null, Moment | null] | null, formatStrings?: string[]) => {
     console.log('Change:', newValue, formatStrings);
     setValue(newValue);
   };
@@ -39,10 +37,7 @@ export default () => {
 
   return (
     <div>
-      <h2>
-        Value:{' '}
-        {value ? `${formatDate(value[0])} ~ ${formatDate(value[1])}` : 'null'}
-      </h2>
+      <h2>Value: {value ? `${formatDate(value[0])} ~ ${formatDate(value[1])}` : 'null'}</h2>
 
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
