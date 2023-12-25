@@ -1097,7 +1097,11 @@ describe('Picker.Basic', () => {
       />,
     );
 
+    const presetEle = document.querySelector('.rc-picker-presets li');
     expect(document.querySelector('.rc-picker-presets li').textContent).toBe('Bamboo');
+
+    fireEvent.mouseEnter(presetEle);
+
     fireEvent.click(document.querySelector('.rc-picker-presets li'));
 
     expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('2000-09-03');
@@ -1237,5 +1241,22 @@ describe('Picker.Basic', () => {
         expect(onChange).toHaveBeenCalled();
       });
     });
+  });
+
+  it('pickerValue change', () => {
+    const onPickerValueChange = jest.fn();
+    const { container } = render(<DayPicker onPickerValueChange={onPickerValueChange} />);
+
+    fireEvent.change(container.querySelector('input'), {
+      target: {
+        value: '1888-11-11',
+      },
+    });
+    expect(onPickerValueChange).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        mode: 'date',
+      }),
+    );
   });
 });

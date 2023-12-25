@@ -82,6 +82,7 @@ export interface PickerProps<DateType extends object = any>
     date: DateType,
     info: {
       source: 'reset' | 'panel';
+      mode: PanelMode;
     },
   ) => void;
 
@@ -297,10 +298,10 @@ function Picker<DateType extends object = any>(
   // Proxy to single pickerValue
   const onInternalPickerValueChange = (
     dates: DateType[],
-    info: BaseInfo & { source: 'reset' | 'panel' },
+    info: BaseInfo & { source: 'reset' | 'panel'; mode: [PanelMode, PanelMode] },
   ) => {
     if (onPickerValueChange) {
-      const cleanInfo = { ...info };
+      const cleanInfo = { ...info, mode: info.mode[0] };
       delete cleanInfo.range;
       onPickerValueChange(dates[0], cleanInfo);
     }
@@ -370,8 +371,16 @@ function Picker<DateType extends object = any>(
   const [internalHoverValue, setInternalHoverValue] = React.useState<DateType>(null);
 
   const hoverValues = React.useMemo(() => {
-    if (!multiple) {
-      return internalHoverValue ? [internalHoverValue] : calendarValue;
+    const values = [internalHoverValue, ...calendarValue].filter((date) => date);
+
+    return multiple ? values : values.slice(0, 1);
+  }, [calendarValue, internalHoverValue, multiple]);
+
+  // Selector values is different with RangePicker
+  // which can not use `hoverValue` directly
+  const selectorValues = React.useMemo(() => {
+    if (!multiple && internalHoverValue) {
+      return [internalHoverValue];
     }
 
     return calendarValue.filter((date) => date);
@@ -491,7 +500,7 @@ function Picker<DateType extends object = any>(
       pickerValue={currentPickerValue}
       onPickerValueChange={setCurrentPickerValue}
       // Hover
-      // hoverValue={hoverValues}
+      hoverValue={hoverValues}
       onHover={onPanelHover}
       // Submit
       needConfirm={needConfirm}
@@ -614,7 +623,7 @@ function Picker<DateType extends object = any>(
           onKeyDown={onSelectorKeyDown}
           onSubmit={triggerConfirm}
           // Change
-          value={hoverValues}
+          value={selectorValues}
           maskFormat={maskFormat}
           onChange={onSelectorChange}
           onInputChange={onSelectorInputChange}

@@ -153,23 +153,20 @@ export default () => {
         // showTime={{
         //   disabledHours: () => [0, 1, 2, 3, 4, 5],
         // }}
-        // multiple
-        // picker="time"
-        // picker="month"
-        // open
-        // maxTagCount="responsive"
+        multiple
         defaultValue={[
-          dayjs('2000-01-01'),
+          dayjs(),
+          // dayjs('2000-01-01'),
           // dayjs('2000-01-03'),
           // dayjs('2000-01-05'),
           // dayjs('2000-01-07'),
           // dayjs('2000-01-09'),
         ]}
-        disabledDate={(date) => date.date() >= 5}
+        // disabledDate={(date) => date.date() >= 5}
         presets={[
           {
             label: 'Good',
-            value: () => dayjs('2000-03-02'),
+            value: () => dayjs().add(3, 'day'),
           },
         ]}
         ref={singleRef}
