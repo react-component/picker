@@ -32,7 +32,7 @@ export default function WeekPanel<DateType extends object = any>(
     }
 
     if (hoverValue) {
-      rangeCls[`${rowPrefixCls}-hover`] = (hoverValue || []).some((date) =>
+      rangeCls[`${rowPrefixCls}-hover`] = hoverValue.some((date) =>
         isSameWeek(generateConfig, localeName, currentDate, date),
       );
     }
