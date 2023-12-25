@@ -200,7 +200,13 @@ function Picker<DateType extends object = any>(
 
   // ======================= Calendar =======================
   const onInternalCalendarChange = (dates: DateType[], dateStrings: string[], info: BaseInfo) => {
-    onCalendarChange?.(pickerParam(dates), pickerParam(dateStrings), info);
+    if (onCalendarChange) {
+      const filteredInfo = {
+        ...info,
+      };
+      delete filteredInfo.range;
+      onCalendarChange(pickerParam(dates), pickerParam(dateStrings), filteredInfo);
+    }
   };
 
   const onInternalOk = (dates: DateType[]) => {
@@ -627,7 +633,6 @@ function Picker<DateType extends object = any>(
           // Invalid
           invalid={submitInvalidate}
           onInvalid={(invalid) => {
-            // TODO: check this
             // Only `single` mode support type date.
             // `multiple` mode can not typing.
             onSelectorInvalid(invalid, 0);

@@ -174,11 +174,12 @@ export default () => {
         ]}
         ref={singleRef}
         suffixIcon="🧶"
-        onChange={(val, text) => {
-          console.log('🔥 Change:', val, text);
+        onChange={(...args) => {
+          console.log('🔥 Change:', ...args);
         }}
-        onCalendarChange={(val, text, info) => {
-          console.log('🎉 Calendar Change:', val, text, info);
+        onCalendarChange={(...args) => {
+          console.error('err!');
+          console.log('🎉 Calendar Change:', ...args);
         }}
         onPickerValueChange={(val, info) => {
           console.log('👻 Picker Value Change:', val, val?.format('YYYY-MM-DD'), info);

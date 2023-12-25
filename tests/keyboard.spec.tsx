@@ -1,19 +1,20 @@
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import KeyCode from 'rc-util/lib/KeyCode';
+import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import {
   closePicker,
-  getMoment,
-  isOpen,
-  isSame,
   DayPicker,
   DayPickerPanel,
   DayRangePicker,
+  getMoment,
+  isOpen,
+  isSame,
   openPicker,
 } from './util/commonUtil';
 
 // TODO: New keyboard interactive
-describe.skip('Picker.Keyboard', () => {
+describe('Picker.Keyboard', () => {
   function keyDown(keyCode: number, info?: object, index = 0) {
     const input = document.querySelectorAll('input')[index];
     const event = createEvent.keyDown(input, {
@@ -39,6 +40,7 @@ describe.skip('Picker.Keyboard', () => {
   }
 
   beforeEach(() => {
+    resetWarned();
     document.body.innerHTML = '';
     jest.useFakeTimers().setSystemTime(getMoment('1990-09-03 00:00:00').valueOf());
   });
@@ -48,6 +50,82 @@ describe.skip('Picker.Keyboard', () => {
     jest.useRealTimers();
   });
 
+  it('type confirm', () => {
+    const onChange = jest.fn();
+    const onCalendarChange = jest.fn();
+    const { container } = render(
+      <DayPicker onCalendarChange={onCalendarChange} onChange={onChange} />,
+    );
+
+    const inputEle = container.querySelector('input');
+
+    // Focus
+    fireEvent.focus(inputEle);
+    expect(isOpen()).toBeFalsy();
+
+    // Key to open
+    fireEvent.keyDown(inputEle, {
+      key: 'Enter',
+    });
+    expect(isOpen()).toBeTruthy();
+
+    // type date
+    fireEvent.change(inputEle, {
+      target: {
+        value: '2000-03-03',
+      },
+    });
+    expect(onCalendarChange).toHaveBeenCalledWith(expect.anything(), '2000-03-03', {});
+
+    // Submit
+    fireEvent.keyDown(inputEle, {
+      key: 'Enter',
+    });
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), '2000-03-03');
+  });
+
+  it('warning for legacy preventDefault', () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const { container } = render(
+      <DayPicker
+        onKeyDown={(e, preventDefault) => {
+          preventDefault();
+        }}
+      />,
+    );
+
+    fireEvent.keyDown(container.querySelector('input'), {
+      key: 'Escape',
+    });
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Warning: `preventDefault` callback is deprecated. Please call `event.preventDefault` directly.',
+    );
+  });
+
+  describe('esc to close popup', () => {
+    it('should work', () => {
+      const { container } = render(<DayPicker />);
+
+      openPicker(container);
+      fireEvent.keyDown(container.querySelector('input'), {
+        key: 'Escape',
+      });
+      expect(isOpen()).toBeFalsy();
+    });
+
+    it('preventDefault should work', () => {
+      const { container } = render(<DayPicker onKeyDown={(e) => e.preventDefault()} />);
+
+      openPicker(container);
+      fireEvent.keyDown(container.querySelector('input'), {
+        key: 'Escape',
+      });
+      expect(isOpen()).toBeTruthy();
+    });
+  });
+
+  return;
   it('open to select', () => {
     const onChange = jest.fn();
     const onSelect = jest.fn();
@@ -346,11 +424,7 @@ describe.skip('Picker.Keyboard', () => {
     it('year', () => {
       const onSelect = jest.fn();
       render(
-        <DayPickerPanel
-          picker="year"
-          defaultValue={getMoment('1990-09-03')}
-          onSelect={onSelect}
-        />,
+        <DayPickerPanel picker="year" defaultValue={getMoment('1990-09-03')} onSelect={onSelect} />,
       );
 
       // Left

@@ -470,7 +470,7 @@ describe('Picker.Basic', () => {
       expect(document.querySelector('.rc-picker-date-panel')).toBeTruthy();
     });
 
-    it.only('time', () => {
+    it('time', () => {
       const onChange = jest.fn();
       const onOk = jest.fn();
       const { container } = render(<DayPicker picker="time" onChange={onChange} onOk={onOk} />);
