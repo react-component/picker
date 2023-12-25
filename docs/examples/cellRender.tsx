@@ -2,10 +2,9 @@ import type { Moment } from 'moment';
 import moment from 'moment';
 import React from 'react';
 import '../../assets/index.less';
+import { Picker, RangePicker } from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
 import zhCN from '../../src/locale/zh_CN';
-import Picker from '../../src/Picker';
-import RangePicker from '../../src/RangePicker';
 
 const defaultValue = moment('2019-11-28 01:02:03');
 
@@ -22,7 +21,6 @@ export default () => {
     defaultStartValue,
     defaultEndValue,
   ]);
-
 
   const onSelect = (newValue: Moment) => {
     console.log('Select:', newValue);
@@ -46,7 +44,10 @@ export default () => {
     ],
   };
 
-  const onRangeChange = (newValue: [Moment | null, Moment | null] | null, formatStrings?: string[]) => {
+  const onRangeChange = (
+    newValue: [Moment | null, Moment | null] | null,
+    formatStrings?: string[],
+  ) => {
     console.log('Change:', newValue, formatStrings);
     setRangeValue(newValue);
   };
@@ -66,7 +67,7 @@ export default () => {
           <Picker<Moment>
             {...sharedProps}
             locale={zhCN}
-            cellRender={(current, info) =>
+            cellRender={(current: Moment, info) =>
               React.cloneElement(
                 info.originNode,
                 {
@@ -79,7 +80,7 @@ export default () => {
           <Picker<Moment>
             {...sharedProps}
             locale={zhCN}
-            cellRender={(current, info) =>
+            cellRender={(current: Moment, info) =>
               React.cloneElement(
                 info.originNode,
                 {
@@ -93,7 +94,7 @@ export default () => {
             {...sharedProps}
             locale={zhCN}
             picker="week"
-            cellRender={(current, info) =>
+            cellRender={(current: Moment, info) =>
               React.cloneElement(
                 info.originNode,
                 {
@@ -107,7 +108,7 @@ export default () => {
             {...sharedProps}
             locale={zhCN}
             picker="year"
-            cellRender={(current, info) =>
+            cellRender={(current: Moment, info) =>
               React.cloneElement(
                 info.originNode,
                 {
@@ -121,7 +122,7 @@ export default () => {
             {...sharedProps}
             locale={zhCN}
             picker="month"
-            cellRender={(current, info) =>
+            cellRender={(current: Moment, info) =>
               React.cloneElement(
                 info.originNode,
                 {
@@ -135,7 +136,7 @@ export default () => {
             {...sharedProps}
             locale={zhCN}
             picker="quarter"
-            cellRender={(current, info) =>
+            cellRender={(current: Moment, info) =>
               React.cloneElement(
                 info.originNode,
                 {
@@ -162,17 +163,23 @@ export default () => {
         </div>
         <div style={{ margin: '0 8px' }}>
           <h3>Range</h3>
-          <h4>RangeValue: {rangeValue ? `${formatDate(rangeValue[0])} ~ ${formatDate(rangeValue[1])}` : 'null'}</h4>
+          <h4>
+            RangeValue:{' '}
+            {rangeValue ? `${formatDate(rangeValue[0])} ~ ${formatDate(rangeValue[1])}` : 'null'}
+          </h4>
           <RangePicker<Moment>
             {...rangeSharedProps}
             locale={zhCN}
             allowClear
             showTime
             style={{ width: 580 }}
-            cellRender={(current, info) => {
+            cellRender={(current: Moment, info) => {
               return (
-                <div title={info.type} style={{ background: info.type === 'time' ? 'green' : 'yellow' }}>
-                  {info.type === "time" ? current : current.get('date')}
+                <div
+                  title={info.type}
+                  style={{ background: info.type === 'time' ? 'green' : 'yellow' }}
+                >
+                  {info.type === 'time' ? current : current.get('date')}
                 </div>
               );
             }}

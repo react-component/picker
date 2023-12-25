@@ -1,41 +1,52 @@
 import React from 'react';
 // import { mount as originMount, ReactWrapper } from 'enzyme';
-import { fireEvent } from '@testing-library/react';
-import moment, { Moment, unitOfTime } from 'moment';
-import Picker, { PickerPanel, PickerProps } from '../../src';
-import momentGenerateConfig from '../../src/generate/moment';
-import enUS from '../../src/locale/en_US';
-import { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
+import { act, fireEvent } from '@testing-library/react';
+import dayjs, { isDayjs, type Dayjs } from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import buddhistEra from 'dayjs/plugin/buddhistEra';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+import updateLocale from 'dayjs/plugin/updateLocale';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
+import moment, { isMoment, type Moment } from 'moment';
+import type {
+  PickerPanelProps as NewPickerPanelProps,
+  PickerProps as NewPickerProps,
+  PickerRef,
+  RangePickerProps,
+} from '../../src';
 import {
+  Picker as NewPicker,
+  PickerPanel as NewPickerPanel,
+  RangePicker as NewRangePicker,
+  type PickerProps,
+} from '../../src';
+import dayGenerateConfig from '../../src/generate/dayjs';
+import enUS from '../../src/locale/en_US';
+import zh_CN from '../../src/locale/zh_CN';
+import type { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
+import type {
   PickerPanelBaseProps,
   PickerPanelDateProps,
   PickerPanelTimeProps,
 } from '../../src/PickerPanel';
-import RangePicker, {
-  RangePickerBaseProps,
-  RangePickerDateProps,
-  RangePickerTimeProps,
+import {
+  type RangePickerBaseProps,
+  type RangePickerDateProps,
+  type RangePickerTimeProps,
 } from '../../src/RangePicker';
+
+dayjs.locale('zh-cn');
+dayjs.extend(buddhistEra);
+dayjs.extend(localizedFormat);
+dayjs.extend(weekOfYear);
+dayjs.extend(quarterOfYear);
+dayjs.extend(updateLocale);
 
 const FULL_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
-// export type Wrapper = ReactWrapper & {
-//   confirmOK: () => void;
-//   openPicker: (index?: number) => void;
-//   closePicker: (index?: number) => void;
-//   isOpen: () => boolean;
-//   findCell: (text: number | string, index?: number) => Wrapper;
-//   selectCell: (text: number | string, index?: number) => Wrapper;
-//   clearValue: (index?: number) => void;
-//   keyDown: (which: number, info?: object, index?: number) => void;
-//   clickButton: (type: 'prev' | 'next' | 'super-prev' | 'super-next') => Wrapper;
-//   inputValue: (text: string, index?: number) => Wrapper;
-// };
-
-// export const mount = originMount as (...args: Parameters<typeof originMount>) => Wrapper;
-
 export function getMoment(str: string): Moment {
-  const formatList = [FULL_FORMAT, 'YYYY-MM-DD', 'HH:mm:ss', 'YYYY'];
+  const formatList = [FULL_FORMAT, 'YYYY-MM-DD HH:mm:ss.SSS', 'YYYY-MM-DD', 'HH:mm:ss', 'YYYY'];
   for (let i = 0; i < formatList.length; i += 1) {
     const date = moment(str, formatList[i], true);
     if (date.isValid()) {
@@ -45,13 +56,20 @@ export function getMoment(str: string): Moment {
   throw new Error(`Format not match with: ${str}`);
 }
 
-export function isSame(date: Moment | null, dateStr: string, type: unitOfTime.StartOf = 'date') {
+export function isSame(date: Moment | Dayjs | null, dateStr: string, type: any = 'date') {
   if (!date) {
     return false;
   }
 
-  if (date.isSame(getMoment(dateStr), type)) {
-    return true;
+  if (isMoment(date)) {
+    if (date.isSame(getMoment(dateStr), type)) {
+      return true;
+    }
+  }
+  if (isDayjs(date)) {
+    if (date.isSame(getDay(dateStr), type)) {
+      return true;
+    }
   }
 
   throw new Error(`${date.format(FULL_FORMAT)} is not same as expected: ${dateStr}`);
@@ -70,30 +88,11 @@ export type MomentPickerProps =
   | InjectDefaultProps<PickerDateProps<Moment>>
   | InjectDefaultProps<PickerTimeProps<Moment>>;
 
-export class MomentPicker extends React.Component<MomentPickerProps> {
-  pickerRef = React.createRef<Picker<Moment>>();
-
-  render() {
-    return (
-      <Picker<Moment>
-        generateConfig={momentGenerateConfig}
-        locale={enUS}
-        ref={this.pickerRef}
-        {...this.props}
-      />
-    );
-  }
-}
-
 // Moment Panel Picker
 export type MomentPickerPanelProps =
   | InjectDefaultProps<PickerPanelBaseProps<Moment>>
   | InjectDefaultProps<PickerPanelDateProps<Moment>>
   | InjectDefaultProps<PickerPanelTimeProps<Moment>>;
-
-export const MomentPickerPanel = (props: MomentPickerPanelProps) => (
-  <PickerPanel<Moment> generateConfig={momentGenerateConfig} locale={enUS} {...props} />
-);
 
 // Moment Range Picker
 export type MomentRangePickerProps =
@@ -101,31 +100,32 @@ export type MomentRangePickerProps =
   | InjectDefaultProps<RangePickerDateProps<Moment>>
   | InjectDefaultProps<RangePickerTimeProps<Moment>>;
 
-export class MomentRangePicker extends React.Component<MomentRangePickerProps> {
-  rangePickerRef = React.createRef<RangePicker<Moment>>();
-
-  render() {
-    return (
-      <RangePicker<Moment>
-        generateConfig={momentGenerateConfig}
-        locale={enUS}
-        ref={this.rangePickerRef}
-        {...this.props}
-      />
-    );
-  }
+// ====================================== UTIL ======================================
+export async function waitFakeTimer() {
+  await act(async () => {
+    jest.runAllTimers();
+    await Promise.resolve();
+  });
 }
 
-// ====================================== UTIL ======================================
 export function openPicker(container: HTMLElement, index = 0) {
   const input = container.querySelectorAll('input')[index];
   fireEvent.mouseDown(input);
-  fireEvent.focus(input);
+
+  // Testing lib not trigger real focus
+  act(() => {
+    input.focus();
+  });
+  fireEvent.click(input);
 }
 
 export function closePicker(container: HTMLElement, index = 0) {
   const input = container.querySelectorAll('input')[index];
   fireEvent.blur(input);
+
+  act(() => {
+    jest.runAllTimers();
+  });
 }
 
 export function isOpen() {
@@ -178,8 +178,39 @@ export function clearValue() {
   const clearBtn = document.querySelector('.rc-picker-clear');
   fireEvent.mouseDown(clearBtn);
   fireEvent.mouseUp(clearBtn);
+  fireEvent.click(clearBtn);
 }
 
 export function inputValue(text: string, index = 0) {
   fireEvent.change(document.querySelectorAll('input')[index], { target: { value: text } });
+}
+
+// ===================================== Day JS =====================================
+export const DayPicker = React.forwardRef<
+  PickerRef,
+  Partial<Omit<NewPickerProps<Dayjs>, 'generateConfig'>>
+>((props, ref) => {
+  return <NewPicker generateConfig={dayGenerateConfig} locale={enUS} {...props} ref={ref} />;
+});
+
+export const DayRangePicker = React.forwardRef<
+  PickerRef,
+  Partial<Omit<RangePickerProps<Dayjs>, 'generateConfig'>>
+>((props, ref) => {
+  return <NewRangePicker generateConfig={dayGenerateConfig} locale={zh_CN} {...props} ref={ref} />;
+});
+
+export const DayPickerPanel = (props: Partial<NewPickerPanelProps<Dayjs>>) => (
+  <NewPickerPanel<Dayjs> generateConfig={dayGenerateConfig} locale={enUS} {...props} />
+);
+
+export function getDay(str: string): Dayjs {
+  const formatList = [FULL_FORMAT, 'YYYY-MM-DD', 'HH:mm:ss', 'YYYY'];
+  for (let i = 0; i < formatList.length; i += 1) {
+    const date = dayjs(str, formatList[i], true);
+    if (date.isValid()) {
+      return date;
+    }
+  }
+  throw new Error(`Format not match with: ${str}`);
 }

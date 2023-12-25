@@ -1,17 +1,34 @@
-import type { PanelMode, NullableDateType, PickerMode, Locale, CustomFormat } from '../interface';
 import type { GenerateConfig } from '../generate';
-import { DECADE_UNIT_DIFF } from '../panels/DecadePanel/constant';
+import type { CustomFormat, InternalMode, Locale, NullableDateType } from '../interface';
 
 export const WEEK_DAY_COUNT = 7;
 
-export function isNullEqual<T>(value1: T, value2: T): boolean | undefined {
-  if (!value1 && !value2) {
+// export function isNullEqual<T>(value1: T, value2: T): boolean | undefined {
+//   if (!value1 && !value2) {
+//     return true;
+//   }
+//   if (!value1 || !value2) {
+//     return false;
+//   }
+//   return undefined;
+// }
+
+/**
+ * Wrap the compare logic.
+ * This will compare the each of value is empty first.
+ * 1. All is empty, return true.
+ * 2. One is empty, return false.
+ * 3. return customize compare logic.
+ */
+function nullableCompare<T>(value1: T, value2: T, oriCompareFn: () => boolean): boolean {
+  if ((!value1 && !value2) || value1 === value2) {
     return true;
   }
   if (!value1 || !value2) {
     return false;
   }
-  return undefined;
+
+  return oriCompareFn();
 }
 
 export function isSameDecade<DateType>(
@@ -19,14 +36,11 @@ export function isSameDecade<DateType>(
   decade1: NullableDateType<DateType>,
   decade2: NullableDateType<DateType>,
 ) {
-  const equal = isNullEqual(decade1, decade2);
-  if (typeof equal === 'boolean') {
-    return equal;
-  }
-
-  const num1 = Math.floor(generateConfig.getYear(decade1!) / 10);
-  const num2 = Math.floor(generateConfig.getYear(decade2!) / 10);
-  return num1 === num2;
+  return nullableCompare(decade1, decade2, () => {
+    const num1 = Math.floor(generateConfig.getYear(decade1!) / 10);
+    const num2 = Math.floor(generateConfig.getYear(decade2!) / 10);
+    return num1 === num2;
+  });
 }
 
 export function isSameYear<DateType>(
@@ -34,12 +48,11 @@ export function isSameYear<DateType>(
   year1: NullableDateType<DateType>,
   year2: NullableDateType<DateType>,
 ) {
-  const equal = isNullEqual(year1, year2);
-  if (typeof equal === 'boolean') {
-    return equal;
-  }
-
-  return generateConfig.getYear(year1!) === generateConfig.getYear(year2!);
+  return nullableCompare(
+    year1,
+    year2,
+    () => generateConfig.getYear(year1!) === generateConfig.getYear(year2!),
+  );
 }
 
 export function getQuarter<DateType>(generateConfig: GenerateConfig<DateType>, date: DateType) {
@@ -52,14 +65,12 @@ export function isSameQuarter<DateType>(
   quarter1: NullableDateType<DateType>,
   quarter2: NullableDateType<DateType>,
 ) {
-  const equal = isNullEqual(quarter1, quarter2);
-  if (typeof equal === 'boolean') {
-    return equal;
-  }
-
-  return (
-    isSameYear(generateConfig, quarter1, quarter2) &&
-    getQuarter(generateConfig, quarter1!) === getQuarter(generateConfig, quarter2!)
+  return nullableCompare(
+    quarter1,
+    quarter2,
+    () =>
+      isSameYear(generateConfig, quarter1, quarter2) &&
+      getQuarter(generateConfig, quarter1!) === getQuarter(generateConfig, quarter2!),
   );
 }
 
@@ -68,14 +79,22 @@ export function isSameMonth<DateType>(
   month1: NullableDateType<DateType>,
   month2: NullableDateType<DateType>,
 ) {
-  const equal = isNullEqual(month1, month2);
-  if (typeof equal === 'boolean') {
-    return equal;
-  }
+  // const equal = isNullEqual(month1, month2);
+  // if (typeof equal === 'boolean') {
+  //   return equal;
+  // }
 
-  return (
-    isSameYear(generateConfig, month1, month2) &&
-    generateConfig.getMonth(month1!) === generateConfig.getMonth(month2!)
+  // return (
+  //   isSameYear(generateConfig, month1, month2) &&
+  //   generateConfig.getMonth(month1!) === generateConfig.getMonth(month2!)
+  // );
+
+  return nullableCompare(
+    month1,
+    month2,
+    () =>
+      isSameYear(generateConfig, month1, month2) &&
+      generateConfig.getMonth(month1!) === generateConfig.getMonth(month2!),
   );
 }
 
@@ -84,15 +103,24 @@ export function isSameDate<DateType>(
   date1: NullableDateType<DateType>,
   date2: NullableDateType<DateType>,
 ) {
-  const equal = isNullEqual(date1, date2);
-  if (typeof equal === 'boolean') {
-    return equal;
-  }
+  // const equal = isNullEqual(date1, date2);
+  // if (typeof equal === 'boolean') {
+  //   return equal;
+  // }
 
-  return (
-    generateConfig.getYear(date1!) === generateConfig.getYear(date2!) &&
-    generateConfig.getMonth(date1!) === generateConfig.getMonth(date2!) &&
-    generateConfig.getDate(date1!) === generateConfig.getDate(date2!)
+  // return (
+  //   generateConfig.getYear(date1!) === generateConfig.getYear(date2!) &&
+  //   generateConfig.getMonth(date1!) === generateConfig.getMonth(date2!) &&
+  //   generateConfig.getDate(date1!) === generateConfig.getDate(date2!)
+  // );
+
+  return nullableCompare(
+    date1,
+    date2,
+    () =>
+      isSameYear(generateConfig, date1, date2) &&
+      isSameMonth(generateConfig, date1, date2) &&
+      generateConfig.getDate(date1!) === generateConfig.getDate(date2!),
   );
 }
 
@@ -101,15 +129,51 @@ export function isSameTime<DateType>(
   time1: NullableDateType<DateType>,
   time2: NullableDateType<DateType>,
 ) {
-  const equal = isNullEqual(time1, time2);
-  if (typeof equal === 'boolean') {
-    return equal;
-  }
+  // const equal = isNullEqual(time1, time2);
+  // if (typeof equal === 'boolean') {
+  //   return equal;
+  // }
 
-  return (
-    generateConfig.getHour(time1!) === generateConfig.getHour(time2!) &&
-    generateConfig.getMinute(time1!) === generateConfig.getMinute(time2!) &&
-    generateConfig.getSecond(time1!) === generateConfig.getSecond(time2!)
+  // return (
+  //   generateConfig.getHour(time1!) === generateConfig.getHour(time2!) &&
+  //   generateConfig.getMinute(time1!) === generateConfig.getMinute(time2!) &&
+  //   generateConfig.getSecond(time1!) === generateConfig.getSecond(time2!)
+  // );
+
+  return nullableCompare(
+    time1,
+    time2,
+    () =>
+      generateConfig.getHour(time1!) === generateConfig.getHour(time2!) &&
+      generateConfig.getMinute(time1!) === generateConfig.getMinute(time2!) &&
+      generateConfig.getSecond(time1!) === generateConfig.getSecond(time2!),
+  );
+}
+
+/**
+ * Check if the Date is all the same of timestamp
+ */
+export function isSameTimestamp<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  time1: NullableDateType<DateType>,
+  time2: NullableDateType<DateType>,
+) {
+  // return (
+  //   // Same object
+  //   time1 === time2 ||
+  //   // Date
+  //   (isSameDate(generateConfig, time1, time2) &&
+  //     isSameTime(generateConfig, time1, time2) &&
+  //     generateConfig.getMillisecond(time1) === generateConfig.getMillisecond(time2))
+  // );
+
+  return nullableCompare(
+    time1,
+    time2,
+    () =>
+      isSameDate(generateConfig, time1, time2) &&
+      isSameTime(generateConfig, time1, time2) &&
+      generateConfig.getMillisecond(time1) === generateConfig.getMillisecond(time2),
   );
 }
 
@@ -119,23 +183,61 @@ export function isSameWeek<DateType>(
   date1: NullableDateType<DateType>,
   date2: NullableDateType<DateType>,
 ) {
-  const equal = isNullEqual(date1, date2);
-  if (typeof equal === 'boolean') {
-    return equal;
-  }
+  // const equal = isNullEqual(date1, date2);
+  // if (typeof equal === 'boolean') {
+  //   return equal;
+  // }
 
-  return (
-    isSameYear(generateConfig, date1!, date2!) &&
-    generateConfig.locale.getWeek(locale, date1!) === generateConfig.locale.getWeek(locale, date2!)
-  );
+  // const weekStartDate1 = getWeekStartDate(locale, generateConfig, date1);
+  // const weekStartDate2 = getWeekStartDate(locale, generateConfig, date2);
+
+  // return (
+  //   isSameYear(generateConfig, weekStartDate1, weekStartDate2) &&
+  //   generateConfig.locale.getWeek(locale, date1) === generateConfig.locale.getWeek(locale, date2)
+  // );
+  return nullableCompare(date1, date2, () => {
+    const weekStartDate1 = getWeekStartDate(locale, generateConfig, date1);
+    const weekStartDate2 = getWeekStartDate(locale, generateConfig, date2);
+
+    return (
+      isSameYear(generateConfig, weekStartDate1, weekStartDate2) &&
+      generateConfig.locale.getWeek(locale, date1) === generateConfig.locale.getWeek(locale, date2)
+    );
+  });
 }
 
-export function isEqual<DateType>(
+export function isSame<DateType = any>(
   generateConfig: GenerateConfig<DateType>,
-  value1: NullableDateType<DateType>,
-  value2: NullableDateType<DateType>,
+  locale: Locale,
+  source: NullableDateType<DateType>,
+  target: NullableDateType<DateType>,
+  type: InternalMode,
 ) {
-  return isSameDate(generateConfig, value1, value2) && isSameTime(generateConfig, value1, value2);
+  switch (type) {
+    case 'date':
+      return isSameDate(generateConfig, source, target);
+
+    case 'week':
+      return isSameWeek(generateConfig, locale.locale, source, target);
+
+    case 'month':
+      return isSameMonth(generateConfig, source, target);
+
+    case 'quarter':
+      return isSameQuarter(generateConfig, source, target);
+
+    case 'year':
+      return isSameYear(generateConfig, source, target);
+
+    case 'decade':
+      return isSameDecade(generateConfig, source, target);
+
+    case 'time':
+      return isSameTime(generateConfig, source, target);
+
+    default:
+      return isSameTimestamp(generateConfig, source, target);
+  }
 }
 
 /** Between in date but not equal of date */
@@ -178,23 +280,6 @@ export function getWeekStartDate<DateType>(
   return alignStartDate;
 }
 
-export function getClosingViewDate<DateType>(
-  viewDate: DateType,
-  picker: PickerMode,
-  generateConfig: GenerateConfig<DateType>,
-  offset: number = 1,
-): DateType {
-  switch (picker) {
-    case 'year':
-      return generateConfig.addYear(viewDate, offset * 10);
-    case 'quarter':
-    case 'month':
-      return generateConfig.addYear(viewDate, offset);
-    default:
-      return generateConfig.addMonth(viewDate, offset);
-  }
-}
-
 export function formatValue<DateType>(
   value: DateType,
   {
@@ -207,116 +292,11 @@ export function formatValue<DateType>(
     format: string | CustomFormat<DateType>;
   },
 ) {
+  if (!value) {
+    return '';
+  }
+
   return typeof format === 'function'
     ? format(value)
     : generateConfig.locale.format(locale.locale, value, format);
-}
-
-export function parseValue<DateType>(
-  value: string,
-  {
-    generateConfig,
-    locale,
-    formatList,
-  }: {
-    generateConfig: GenerateConfig<DateType>;
-    locale: Locale;
-    formatList: (string | CustomFormat<DateType>)[];
-  },
-) {
-  if (!value || typeof formatList[0] === 'function') {
-    return null;
-  }
-
-  return generateConfig.locale.parse(locale.locale, value, formatList as string[]);
-}
-
-// eslint-disable-next-line consistent-return
-export function getCellDateDisabled<DateType>({
-  cellDate,
-  mode,
-  disabledDate,
-  generateConfig,
-}: {
-  cellDate: DateType;
-  mode: Omit<PanelMode, 'time'>;
-  generateConfig: GenerateConfig<DateType>;
-  disabledDate?: (date: DateType) => boolean;
-}): boolean {
-  if (!disabledDate) return false;
-  // Whether cellDate is disabled in range
-  const getDisabledFromRange = (
-    currentMode: 'date' | 'month' | 'year',
-    start: number,
-    end: number,
-  ) => {
-    let current = start;
-    while (current <= end) {
-      let date: DateType;
-      switch (currentMode) {
-        case 'date': {
-          date = generateConfig.setDate(cellDate, current);
-          if (!disabledDate(date)) {
-            return false;
-          }
-          break;
-        }
-        case 'month': {
-          date = generateConfig.setMonth(cellDate, current);
-          if (
-            !getCellDateDisabled({
-              cellDate: date,
-              mode: 'month',
-              generateConfig,
-              disabledDate,
-            })
-          ) {
-            return false;
-          }
-          break;
-        }
-        case 'year': {
-          date = generateConfig.setYear(cellDate, current);
-          if (
-            !getCellDateDisabled({
-              cellDate: date,
-              mode: 'year',
-              generateConfig,
-              disabledDate,
-            })
-          ) {
-            return false;
-          }
-          break;
-        }
-      }
-      current += 1;
-    }
-    return true;
-  };
-  switch (mode) {
-    case 'date':
-    case 'week': {
-      return disabledDate(cellDate);
-    }
-    case 'month': {
-      const startDate = 1;
-      const endDate = generateConfig.getDate(generateConfig.getEndDate(cellDate));
-      return getDisabledFromRange('date', startDate, endDate);
-    }
-    case 'quarter': {
-      const startMonth = Math.floor(generateConfig.getMonth(cellDate) / 3) * 3;
-      const endMonth = startMonth + 2;
-      return getDisabledFromRange('month', startMonth, endMonth);
-    }
-    case 'year': {
-      return getDisabledFromRange('month', 0, 11);
-    }
-    case 'decade': {
-      const year = generateConfig.getYear(cellDate);
-      const startYear = Math.floor(year / DECADE_UNIT_DIFF) * DECADE_UNIT_DIFF;
-      const endYear = startYear + DECADE_UNIT_DIFF - 1;
-      return getDisabledFromRange('year', startYear, endYear);
-    }
-  }
 }

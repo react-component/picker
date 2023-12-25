@@ -2,9 +2,9 @@ import type { Moment } from 'moment';
 import moment from 'moment';
 import React from 'react';
 import '../../assets/index.less';
+import { RangePicker, type PickerRef } from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
 import zhCN from '../../src/locale/zh_CN';
-import RangePicker from '../../src/RangePicker';
 import './common.less';
 
 const defaultStartValue = moment('2019-09-03 05:02:03');
@@ -39,7 +39,7 @@ export default () => {
     onCalendarChange,
   };
 
-  const rangePickerRef = React.useRef<RangePicker<Moment>>(null);
+  const rangePickerRef = React.useRef<PickerRef>(null);
 
   const now = momentGenerateConfig.getNow();
   const disabledDate = (current: Moment) => {
@@ -80,7 +80,7 @@ export default () => {
             ref={rangePickerRef}
             showTime
             style={{ width: 580 }}
-            cellRender={(current, info) => (
+            cellRender={(current: Moment, info) => (
               <div title={info.type} style={{ background: 'green' }}>
                 {typeof current === 'number' ? current : current.get('date')}
               </div>

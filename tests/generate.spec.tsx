@@ -1,16 +1,16 @@
 import MockDate from 'mockdate';
-import momentGenerateConfig from '../src/generate/moment';
-import dayjsGenerateConfig from '../src/generate/dayjs';
 import dateFnsGenerateConfig from '../src/generate/dateFns';
+import dayjsGenerateConfig from '../src/generate/dayjs';
 import luxonGenerateConfig from '../src/generate/luxon';
+import momentGenerateConfig from '../src/generate/moment';
 import { getMoment } from './util/commonUtil';
 
 import 'dayjs/locale/zh-cn';
-import { GenerateConfig } from '../src/generate';
+import type { GenerateConfig } from '../src/generate';
 
 describe('Picker.Generate', () => {
   beforeAll(() => {
-    MockDate.set(getMoment('1990-09-03 01:02:03').toDate());
+    MockDate.set(getMoment('1990-09-03 01:02:03.005').toDate());
   });
 
   afterAll(() => {
@@ -32,6 +32,7 @@ describe('Picker.Generate', () => {
         const endDate = generateConfig.getEndDate(fixedDate);
         expect(generateConfig.getWeekDay(now)).toEqual(1);
         expect(generateConfig.getSecond(now)).toEqual(3);
+        expect(generateConfig.getMillisecond(now)).toEqual(5);
         expect(generateConfig.getMinute(now)).toEqual(2);
         expect(generateConfig.getHour(now)).toEqual(1);
         expect(generateConfig.getDate(now)).toEqual(3);
@@ -53,9 +54,10 @@ describe('Picker.Generate', () => {
         date = generateConfig.setHour(date, 2);
         date = generateConfig.setMinute(date, 3);
         date = generateConfig.setSecond(date, 5);
+        date = generateConfig.setMillisecond(date, 7);
 
-        expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD HH:mm:ss')).toEqual(
-          '2020-10-23 02:03:05',
+        expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD HH:mm:ss.SSS')).toEqual(
+          '2020-10-23 02:03:05.007',
         );
       });
 
@@ -82,7 +84,7 @@ describe('Picker.Generate', () => {
       describe('locale', () => {
         describe('parse', () => {
           it('basic', () => {
-            ['2000-01-02', '02/01/2000'].forEach(str => {
+            ['2000-01-02', '02/01/2000'].forEach((str) => {
               const date = generateConfig.locale.parse('en_US', str, ['YYYY-MM-DD', 'DD/MM/YYYY']);
 
               expect(generateConfig.locale.format('en_US', date!, 'YYYY-MM-DD')).toEqual(
@@ -278,11 +280,15 @@ describe('Generate:dayjs', () => {
   });
 
   it('parse', () => {
-    const timea = dayjsGenerateConfig.locale.parse('en_US', '2022-11-23 13:5' ,['YYYY-MM-DD HH:mm']);
+    const timea = dayjsGenerateConfig.locale.parse('en_US', '2022-11-23 13:5', [
+      'YYYY-MM-DD HH:mm',
+    ]);
     expect(timea).toEqual(null);
 
-    const timeb = dayjsGenerateConfig.locale.parse('en_US', '2022-11-23 13:05' ,['YYYY-MM-DD HH:mm']);
+    const timeb = dayjsGenerateConfig.locale.parse('en_US', '2022-11-23 13:05', [
+      'YYYY-MM-DD HH:mm',
+    ]);
     const dateb = dayjsGenerateConfig.locale.format('en_US', timeb, 'YYYY-MM-DD HH:mm');
     expect(dateb).toEqual('2022-11-23 13:05');
-  })
+  });
 });

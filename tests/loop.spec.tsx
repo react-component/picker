@@ -2,10 +2,8 @@ import { render } from '@testing-library/react';
 import dayjs from 'dayjs';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
-import dayJsGenerate from '../src/generate/dayjs';
 import zhCN from '../src/locale/zh_CN';
-import RangePicker from '../src/RangePicker';
-import { getMoment } from './util/commonUtil';
+import { DayRangePicker, getMoment } from './util/commonUtil';
 
 describe('Picker.Loop', () => {
   let errorSpy;
@@ -27,9 +25,7 @@ describe('Picker.Loop', () => {
   });
 
   it('no loop warning', () => {
-    render(
-      <RangePicker locale={zhCN} generateConfig={dayJsGenerate} value={[dayjs(''), dayjs('')]} />,
-    );
+    render(<DayRangePicker locale={zhCN} value={[dayjs(''), dayjs('')]} />);
 
     expect(errorSpy).not.toHaveBeenCalled();
   });
