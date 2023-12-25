@@ -1,18 +1,18 @@
-import React from 'react';
 import type { Moment } from 'moment';
 import moment from 'moment';
-import Picker from '../../src/Picker';
-import momentGenerateConfig from '../../src/generate/moment';
-import zhCN from '../../src/locale/zh_CN';
-import enUS from '../../src/locale/en_US';
+import React from 'react';
 import '../../assets/index.less';
+import { Picker, type PickerRef } from '../../src';
+import momentGenerateConfig from '../../src/generate/moment';
+import enUS from '../../src/locale/en_US';
+import zhCN from '../../src/locale/zh_CN';
 
 // const defaultValue = moment('2019-09-03 05:02:03');
 const defaultValue = moment('2019-11-28 01:02:03');
 
 export default () => {
   const [value, setValue] = React.useState<Moment | null>(defaultValue);
-  const weekRef = React.useRef<Picker<Moment>>(null);
+  const weekRef = React.useRef<PickerRef>(null);
 
   const onSelect = (newValue: Moment) => {
     console.log('Select:', newValue);
@@ -33,6 +33,10 @@ export default () => {
         label: 'Hello World!',
         value: moment(),
       },
+      {
+        label: 'Now',
+        value: () => moment(),
+      },
     ],
   };
 
@@ -47,7 +51,7 @@ export default () => {
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
-          <Picker<Moment> {...sharedProps} locale={zhCN} />
+          <Picker<Moment> {...sharedProps} locale={zhCN} suffixIcon="SUFFIX" />
           <Picker<Moment> {...sharedProps} locale={enUS} />
         </div>
         <div style={{ margin: '0 8px' }}>
@@ -79,6 +83,7 @@ export default () => {
               }
               return {};
             }}
+            changeOnBlur
           />
         </div>
         <div style={{ margin: '0 8px' }}>
