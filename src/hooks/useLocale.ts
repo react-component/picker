@@ -4,7 +4,7 @@ import type { Locale } from '../interface';
 /**
  * Used for `useFilledProps` since it already in the React.useMemo
  */
-export function fillLocale(locale: Locale) {
+export function fillLocale(locale: Locale): Locale {
   // Not fill `monthFormat` since `locale.shortMonths` handle this
   // Not fill `cellMeridiemFormat` since AM & PM by default
   const {
@@ -53,5 +53,5 @@ export function fillLocale(locale: Locale) {
  * Fill locale format as start up
  */
 export default function useLocale(locale: Locale) {
-  return React.useMemo(() => fillLocale(locale), [locale]);
+  return React.useMemo<Locale>(() => fillLocale(locale), [locale]);
 }
