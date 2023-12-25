@@ -153,7 +153,7 @@ export default () => {
         // showTime={{
         //   disabledHours: () => [0, 1, 2, 3, 4, 5],
         // }}
-        multiple
+        // multiple
         // picker="time"
         // picker="month"
         // open
@@ -165,6 +165,7 @@ export default () => {
           // dayjs('2000-01-07'),
           // dayjs('2000-01-09'),
         ]}
+        disabledDate={(date) => date.date() >= 5}
         presets={[
           {
             label: 'Good',

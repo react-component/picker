@@ -628,6 +628,8 @@ function Picker<DateType extends object = any>(
           invalid={submitInvalidate}
           onInvalid={(invalid) => {
             // TODO: check this
+            // Only `single` mode support type date.
+            // `multiple` mode can not typing.
             onSelectorInvalid(invalid, 0);
           }}
         />

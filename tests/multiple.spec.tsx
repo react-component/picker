@@ -97,4 +97,16 @@ describe('Picker.Multiple', () => {
     fireEvent.click(document.querySelector('.rc-picker-ok button'));
     expect(onChange).toHaveBeenCalledWith(expect.anything(), ['2000-01-28']);
   });
+
+  it('hide clearIcon', () => {
+    const renderDemo = (allowClear: boolean) => (
+      <DayPicker multiple defaultValue={[getDay('2000-01-01')]} allowClear={allowClear} />
+    );
+
+    const { container, rerender } = render(renderDemo(true));
+    expect(container.querySelector('.rc-picker-clear')).toBeTruthy();
+
+    rerender(renderDemo(false));
+    expect(container.querySelector('.rc-picker-clear')).toBeFalsy();
+  });
 });
