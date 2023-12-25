@@ -72,7 +72,9 @@ describe('Picker.Multiple', () => {
     );
 
     // Click remove icon
-    fireEvent.click(container.querySelector('.rc-picker-selection-item-remove'));
+    const removeEle = container.querySelector('.rc-picker-selection-item-remove');
+    fireEvent.mouseDown(removeEle);
+    fireEvent.click(removeEle);
     expect(onChange).toHaveBeenCalledWith(expect.anything(), ['2000-01-28']);
   });
 

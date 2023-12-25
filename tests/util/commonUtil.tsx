@@ -9,10 +9,6 @@ import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 import moment, { isMoment, type Moment } from 'moment';
-import { type PickerProps } from '../../src';
-import dayGenerateConfig from '../../src/generate/dayjs';
-import enUS from '../../src/locale/en_US';
-import zh_CN from '../../src/locale/zh_CN';
 import type {
   PickerPanelProps as NewPickerPanelProps,
   PickerProps as NewPickerProps,
@@ -23,7 +19,11 @@ import {
   Picker as NewPicker,
   PickerPanel as NewPickerPanel,
   RangePicker as NewRangePicker,
+  type PickerProps,
 } from '../../src';
+import dayGenerateConfig from '../../src/generate/dayjs';
+import enUS from '../../src/locale/en_US';
+import zh_CN from '../../src/locale/zh_CN';
 import type { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
 import type {
   PickerPanelBaseProps,
@@ -46,7 +46,7 @@ dayjs.extend(updateLocale);
 const FULL_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
 export function getMoment(str: string): Moment {
-  const formatList = [FULL_FORMAT, 'YYYY-MM-DD', 'HH:mm:ss', 'YYYY'];
+  const formatList = [FULL_FORMAT, 'YYYY-MM-DD HH:mm:ss.SSS', 'YYYY-MM-DD', 'HH:mm:ss', 'YYYY'];
   for (let i = 0; i < formatList.length; i += 1) {
     const date = moment(str, formatList[i], true);
     if (date.isValid()) {
