@@ -89,44 +89,42 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
   const columnPrefixCls = `${panelPrefixCls}-column`;
 
   return (
-    <div className={`${columnPrefixCls}-holder`} data-type={type}>
-      <ul className={columnPrefixCls} ref={ulRef} onScroll={onInternalScroll}>
-        {units.map(({ label, value: unitValue, disabled }) => {
-          const inner = <div className={`${cellPrefixCls}-inner`}>{label}</div>;
+    <ul className={columnPrefixCls} ref={ulRef} data-type={type} onScroll={onInternalScroll}>
+      {units.map(({ label, value: unitValue, disabled }) => {
+        const inner = <div className={`${cellPrefixCls}-inner`}>{label}</div>;
 
-          return (
-            <li
-              key={unitValue}
-              className={classNames(cellPrefixCls, {
-                [`${cellPrefixCls}-selected`]: value === unitValue,
-                [`${cellPrefixCls}-disabled`]: disabled,
-              })}
-              onClick={() => {
-                if (!disabled) {
-                  onChange(unitValue);
-                }
-              }}
-              onDoubleClick={() => {
-                if (!disabled && onDblClick) {
-                  onDblClick();
-                }
-              }}
-              data-value={unitValue}
-            >
-              {cellRender
-                ? cellRender(unitValue, {
-                    prefixCls,
-                    originNode: inner,
-                    today: now,
-                    type: 'time',
-                    subType: type,
-                    locale,
-                  })
-                : inner}
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+        return (
+          <li
+            key={unitValue}
+            className={classNames(cellPrefixCls, {
+              [`${cellPrefixCls}-selected`]: value === unitValue,
+              [`${cellPrefixCls}-disabled`]: disabled,
+            })}
+            onClick={() => {
+              if (!disabled) {
+                onChange(unitValue);
+              }
+            }}
+            onDoubleClick={() => {
+              if (!disabled && onDblClick) {
+                onDblClick();
+              }
+            }}
+            data-value={unitValue}
+          >
+            {cellRender
+              ? cellRender(unitValue, {
+                  prefixCls,
+                  originNode: inner,
+                  today: now,
+                  type: 'time',
+                  subType: type,
+                  locale,
+                })
+              : inner}
+          </li>
+        );
+      })}
+    </ul>
   );
 }
