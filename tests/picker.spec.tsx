@@ -1275,4 +1275,22 @@ describe('Picker.Basic', () => {
 
     expect(document.querySelector('.rc-picker-dropdown')).toHaveClass('bamboo');
   });
+
+  it('showTime config should have format', () => {
+    render(
+      <DayPicker
+        showTime={{
+          format: undefined,
+        }}
+        open
+        defaultValue={getDay('2000-01-01 03:05:07')}
+      />,
+    );
+
+    // console.log(document.body.innerHTML);
+
+    expect(document.querySelector('.rc-picker-time-panel .rc-picker-header').textContent).toBe(
+      '03:05:07',
+    );
+  });
 });
