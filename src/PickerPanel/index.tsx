@@ -417,5 +417,5 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Make support generic
 export default RefPanelPicker as <DateType extends object = any>(
-  props: PickerPanelProps<DateType> & { ref?: React.Ref<PickerPanelRef> },
+  props: PickerPanelProps<DateType> & React.RefAttributes<PickerRef>,
 ) => React.ReactElement;
