@@ -56,7 +56,7 @@ export function getTimeConfig<Config extends object>(
 
     return {
       format: 'HH:mm:ss',
-      ...timeConfig,
+      ...pickProps(timeConfig),
     };
   }
 
