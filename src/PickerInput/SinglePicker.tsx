@@ -653,7 +653,7 @@ function Picker<DateType extends object = any>(
 }
 
 const RefPicker = React.forwardRef(Picker) as <DateType extends object = any>(
-  props: PickerProps<DateType> & { ref?: React.Ref<PickerRef> },
+  props: PickerProps<DateType> & React.RefAttributes<PickerRef>,
 ) => React.ReactElement;
 
 if (process.env.NODE_ENV !== 'production') {

@@ -741,7 +741,7 @@ function RangePicker<DateType extends object = any>(
 }
 
 const RefRangePicker = React.forwardRef(RangePicker) as <DateType extends object = any>(
-  props: RangePickerProps<DateType> & { ref?: React.Ref<PickerRef> },
+  props: RangePickerProps<DateType> & React.RefAttributes<PickerRef>,
 ) => React.ReactElement;
 
 if (process.env.NODE_ENV !== 'production') {

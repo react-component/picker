@@ -1262,4 +1262,17 @@ describe('Picker.Basic', () => {
       }),
     );
   });
+
+  it('classNames.popup', () => {
+    render(
+      <DayPicker
+        classNames={{
+          popup: 'bamboo',
+        }}
+        open
+      />,
+    );
+
+    expect(document.querySelector('.rc-picker-dropdown')).toHaveClass('bamboo');
+  });
 });
