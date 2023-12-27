@@ -24,9 +24,13 @@ export function fillIndex<T extends any[]>(ori: T, index: number, value: T[numbe
   return clone;
 }
 
-export function pickProps<T extends object>(props: T, keys: (keyof T)[] | readonly (keyof T)[]) {
+/** Pick props from the key list. Will filter empty value */
+export function pickProps<T extends object>(props: T, keys?: (keyof T)[] | readonly (keyof T)[]) {
   const clone = {} as T;
-  keys.forEach((key) => {
+
+  const mergedKeys = (keys || Object.keys(props)) as typeof keys;
+
+  mergedKeys.forEach((key) => {
     if (props[key] !== undefined) {
       clone[key] = props[key];
     }
