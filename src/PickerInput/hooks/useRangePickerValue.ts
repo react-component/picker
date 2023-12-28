@@ -3,7 +3,7 @@ import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import type { InternalMode, Locale, PanelMode } from '../../interface';
-import { isSame } from '../../utils/dateUtil';
+import { fillTime, isSame } from '../../utils/dateUtil';
 import type { RangePickerProps } from '../RangePicker';
 
 export function offsetPanelDate<DateType = any>(
@@ -33,28 +33,6 @@ export function offsetPanelDate<DateType = any>(
 }
 
 const EMPTY_LIST = [];
-
-/** Merge the `showTime.defaultValue` into `pickerValue` */
-function fillTimePickerValue<DateType>(
-  generateConfig: GenerateConfig<DateType>,
-  date: DateType,
-  timePickerValue?: DateType,
-) {
-  let tmpDate = date;
-
-  const getFn = ['getHour', 'getMinute', 'getSecond', 'getMillisecond'] as const;
-  const setFn = ['setHour', 'setMinute', 'setSecond', 'setMillisecond'] as const;
-
-  setFn.forEach((fn, index) => {
-    if (timePickerValue) {
-      tmpDate = generateConfig[fn](tmpDate, generateConfig[getFn[index]](timePickerValue));
-    } else {
-      tmpDate = generateConfig[fn](tmpDate, 0);
-    }
-  });
-
-  return tmpDate;
-}
 
 export default function useRangePickerValue<DateType extends object, ValueType extends DateType[]>(
   generateConfig: GenerateConfig<DateType>,
@@ -100,7 +78,8 @@ export default function useRangePickerValue<DateType extends object, ValueType e
   // Current PickerValue
   const currentPickerValue = React.useMemo(
     () =>
-      fillTimePickerValue(
+      // Merge the `showTime.defaultValue` into `pickerValue`
+      fillTime(
         generateConfig,
         [mergedStartPickerValue, mergedEndPickerValue][mergedActiveIndex],
         timeDefaultValue[mergedActiveIndex],

@@ -149,16 +149,17 @@ export default () => {
       <SinglePicker
         // Shared
         {...sharedLocale}
-        picker="week"
-        multiple
-        defaultValue={[
-          dayjs(),
-          // dayjs('2000-01-01'),
-          // dayjs('2000-01-03'),
-          // dayjs('2000-01-05'),
-          // dayjs('2000-01-07'),
-          // dayjs('2000-01-09'),
-        ]}
+        // picker="week"
+        // multiple
+        showTime
+        // defaultValue={[
+        //   dayjs(),
+        //   // dayjs('2000-01-01'),
+        //   // dayjs('2000-01-03'),
+        //   // dayjs('2000-01-05'),
+        //   // dayjs('2000-01-07'),
+        //   // dayjs('2000-01-09'),
+        // ]}
         // disabledDate={(date) => date.date() >= 5}
         presets={[
           {
