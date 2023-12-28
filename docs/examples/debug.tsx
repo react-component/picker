@@ -149,8 +149,9 @@ export default () => {
       <SinglePicker
         // Shared
         {...sharedLocale}
-        picker="week"
-        multiple
+        // picker="week"
+        // multiple
+        showTime
         defaultValue={[
           dayjs(),
           // dayjs('2000-01-01'),
@@ -186,12 +187,12 @@ export default () => {
         }}
       />
       <br />
-      {/* <RangePicker
+      <RangePicker
         {...sharedLocale}
         value={rangeValue}
-        disabledDate={() => true}
-        picker="time"
-        showTime
+        showTime={{
+          defaultValue: [dayjs('2000-01-01 01:02:03'), dayjs('2000-01-01 05:06:07')],
+        }}
         changeOnBlur={false}
         showNow
         panelRender={(ori) => <>2333{ori}</>}
@@ -226,7 +227,7 @@ export default () => {
           start: 'inputStart',
           end: 'inputEnd',
         }}
-      /> */}
+      />
       <br />
 
       <button
