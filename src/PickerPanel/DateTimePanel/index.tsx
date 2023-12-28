@@ -8,13 +8,19 @@ import TimePanel from '../TimePanel';
 export default function DateTimePanel<DateType extends object = any>(
   props: SharedPanelProps<DateType>,
 ) {
-  const { prefixCls, generateConfig, showTime, onSelect, value } = props;
+  const { prefixCls, generateConfig, showTime, onSelect, value, onHover } = props;
 
   const panelPrefixCls = `${prefixCls}-datetime-panel`;
 
-  // ============================== Select ==============================
+  // =============================== Time ===============================
   const [getValidTime] = useTimeInfo(generateConfig, showTime);
 
+  // ============================== Hover ===============================
+  const onDateHover = (date: DateType) => {
+    onHover(date ? fillTime(generateConfig, date, value) : date);
+  };
+
+  // ============================== Select ==============================
   const onDateSelect = (date: DateType) => {
     // Merge with current time
     const cloneDate = fillTime(generateConfig, date, value);
@@ -25,7 +31,7 @@ export default function DateTimePanel<DateType extends object = any>(
   // ============================== Render ==============================
   return (
     <div className={panelPrefixCls}>
-      <DatePanel {...props} onSelect={onDateSelect} />
+      <DatePanel {...props} onSelect={onDateSelect} onHover={onDateHover} />
       <TimePanel {...props} />
     </div>
   );
