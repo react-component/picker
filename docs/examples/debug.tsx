@@ -152,14 +152,14 @@ export default () => {
         // picker="week"
         // multiple
         showTime
-        // defaultValue={[
-        //   dayjs(),
-        //   // dayjs('2000-01-01'),
-        //   // dayjs('2000-01-03'),
-        //   // dayjs('2000-01-05'),
-        //   // dayjs('2000-01-07'),
-        //   // dayjs('2000-01-09'),
-        // ]}
+        defaultValue={[
+          dayjs(),
+          // dayjs('2000-01-01'),
+          // dayjs('2000-01-03'),
+          // dayjs('2000-01-05'),
+          // dayjs('2000-01-07'),
+          // dayjs('2000-01-09'),
+        ]}
         // disabledDate={(date) => date.date() >= 5}
         presets={[
           {
@@ -187,12 +187,12 @@ export default () => {
         }}
       />
       <br />
-      {/* <RangePicker
+      <RangePicker
         {...sharedLocale}
         value={rangeValue}
-        disabledDate={() => true}
-        picker="time"
-        showTime
+        showTime={{
+          defaultValue: [dayjs('2000-01-01 01:02:03'), dayjs('2000-01-01 05:06:07')],
+        }}
         changeOnBlur={false}
         showNow
         panelRender={(ori) => <>2333{ori}</>}
@@ -227,7 +227,7 @@ export default () => {
           start: 'inputStart',
           end: 'inputEnd',
         }}
-      /> */}
+      />
       <br />
 
       <button
