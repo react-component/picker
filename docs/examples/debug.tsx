@@ -163,6 +163,10 @@ export default () => {
           // dayjs('2000-01-09'),
         ]}
         // disabledDate={(date) => date.date() >= 5}
+        getPopupContainer={(node) => {
+          console.log('Popup!', node);
+          return node.parentElement!;
+        }}
         presets={[
           {
             label: 'Good',
@@ -192,6 +196,7 @@ export default () => {
       <RangePicker
         {...sharedLocale}
         value={rangeValue}
+        separator="~~~~~"
         showTime={{
           defaultValue: [dayjs('2000-01-01 01:02:03'), dayjs('2000-01-01 05:06:07')],
         }}
