@@ -1287,10 +1287,36 @@ describe('Picker.Basic', () => {
       />,
     );
 
-    // console.log(document.body.innerHTML);
-
     expect(document.querySelector('.rc-picker-time-panel .rc-picker-header').textContent).toBe(
       '03:05:07',
+    );
+  });
+
+  it('select date should keep time with showTime', () => {
+    const onCalendarChange = jest.fn();
+    const { container } = render(<DayPicker showTime onCalendarChange={onCalendarChange} />);
+
+    openPicker(container);
+
+    // Select time column
+    selectColumn(0, 13);
+    expect(onCalendarChange).toHaveBeenCalledWith(
+      expect.anything(),
+      '1990-09-03 13:00:00',
+      expect.anything(),
+    );
+
+    // Hover date
+    const cell = findCell(18);
+    fireEvent.mouseEnter(cell);
+    expect(container.querySelector('input')).toHaveValue('1990-09-18 13:00:00');
+
+    // Click to trigger onChange
+    fireEvent.click(cell);
+    expect(onCalendarChange).toHaveBeenCalledWith(
+      expect.anything(),
+      '1990-09-18 13:00:00',
+      expect.anything(),
     );
   });
 });
