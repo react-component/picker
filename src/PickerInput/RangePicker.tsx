@@ -46,12 +46,14 @@ function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig:
   return [singleConfig, singleConfig];
 }
 
-export type RangeValueType<DateType> = [start?: DateType, end?: DateType];
+export type RangeValueType<DateType> = [start?: DateType | null, end?: DateType | null];
 
 export interface BaseRangePickerProps<DateType extends object>
   extends Omit<SharedPickerProps<DateType>, 'showTime' | 'id'> {
   // Structure
   id?: SelectorIdType;
+
+  separator?: React.ReactNode;
 
   // Value
   value?: RangeValueType<DateType>;
