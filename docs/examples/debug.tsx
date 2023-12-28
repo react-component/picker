@@ -153,6 +153,7 @@ export default () => {
         // multiple
         format="YYYY-MM-DD"
         showTime
+        // autoFocus
         defaultValue={[
           dayjs(),
           // dayjs('2000-01-01'),
@@ -196,6 +197,7 @@ export default () => {
         }}
         changeOnBlur={false}
         showNow
+        autoFocus
         panelRender={(ori) => <>2333{ori}</>}
         placeholder={['Start', 'End']}
         suffixIcon="🧶"

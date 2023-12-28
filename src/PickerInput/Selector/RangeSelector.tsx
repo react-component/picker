@@ -108,6 +108,7 @@ function RangeSelector<DateType extends object = any>(
     // Input
     required,
     'aria-required': ariaRequired,
+    autoFocus,
 
     ...restProps
   } = props;
@@ -206,6 +207,10 @@ function RangeSelector<DateType extends object = any>(
   // ======================== Clear =========================
   const showClear = clearIcon && ((value[0] && !disabled[0]) || (value[1] && !disabled[1]));
 
+  // ======================= Disabled =======================
+  const startAutoFocus = autoFocus && !disabled[0];
+  const endAutoFocus = autoFocus && !startAutoFocus && !disabled[1];
+
   // ======================== Render ========================
   return (
     <ResizeObserver onResize={syncActiveOffset}>
@@ -237,9 +242,14 @@ function RangeSelector<DateType extends object = any>(
           onMouseDown?.(e);
         }}
       >
-        <Input ref={inputStartRef} {...getInputProps(0)} date-range="start" />
+        <Input
+          ref={inputStartRef}
+          {...getInputProps(0)}
+          autoFocus={startAutoFocus}
+          date-range="start"
+        />
         <div className={`${prefixCls}-range-separator`}>{separator}</div>
-        <Input ref={inputEndRef} {...getInputProps(1)} date-range="end" />
+        <Input ref={inputEndRef} {...getInputProps(1)} autoFocus={endAutoFocus} date-range="end" />
         <div className={`${prefixCls}-active-bar`} style={activeBarStyle} />
         <Icon type="suffix" icon={suffixIcon} />
         {showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}

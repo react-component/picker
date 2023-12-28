@@ -5,8 +5,8 @@ import 'dayjs/locale/ar';
 import { spyElementPrototype } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
-import zh_CN from '../src/locale/zh_CN';
 import type { RangePickerProps } from '../src';
+import zh_CN from '../src/locale/zh_CN';
 import {
   closePicker,
   DayRangePicker,
@@ -1195,5 +1195,10 @@ describe('NewPicker.Range', () => {
     fireEvent.click(document.querySelector('.rc-picker-now-btn'));
 
     expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-03', '1990-09-03']);
+  });
+
+  it('autoFocus', () => {
+    const { container } = render(<DayRangePicker disabled={[true, false]} autoFocus />);
+    expect(document.activeElement).toBe(container.querySelectorAll('input')[1]);
   });
 });

@@ -1328,4 +1328,9 @@ describe('Picker.Basic', () => {
 
     expect(document.querySelectorAll('.rc-picker-time-panel-column')).toHaveLength(2);
   });
+
+  it('autoFocus', () => {
+    const { container } = render(<DayPicker autoFocus />);
+    expect(document.activeElement).toBe(container.querySelector('input'));
+  });
 });
