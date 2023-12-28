@@ -1,9 +1,9 @@
 import { warning } from 'rc-util';
 import * as React from 'react';
 import type { GenerateConfig } from '../generate';
-import { leftPad } from '../utils/miscUtil';
 import type { DisabledTimes, SharedTimeProps } from '../interface';
 import { findValidateTime } from '../PickerPanel/TimePanel/TimePanelBody/util';
+import { leftPad } from '../utils/miscUtil';
 
 export type Unit<ValueType = number | string> = {
   label: React.ReactText;
@@ -96,7 +96,7 @@ export default function useTimeInfo<DateType extends object = any>(
   }
 
   // ========================== Show ==========================
-  let mergedShowHour = checkShow(format, ['H', 'LT', 'LLL'], showHour);
+  let mergedShowHour = checkShow(format, ['H', 'h', 'k', 'LT', 'LLL'], showHour);
   let mergedShowMinute = checkShow(format, ['m', 'LT', 'LLL'], showMinute);
   let mergedShowSecond = checkShow(format, ['s', 'LTS'], showSecond);
   const mergedShowMillisecond = checkShow(format, ['SSS'], showMillisecond);
