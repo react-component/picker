@@ -200,6 +200,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
+  const isMouseDownRef = React.useRef(false);
+
   const needConfirmButton: boolean = (picker === 'date' && !!showTime) || picker === 'time';
 
   const presetList = usePresets(presets);
@@ -499,14 +501,18 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
   const clearNode: React.ReactNode = (
     <span
       onMouseDown={(e) => {
+        isMouseDownRef.current = true;
         e.preventDefault();
         e.stopPropagation();
       }}
       onMouseUp={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        triggerChange(null);
-        triggerOpen(false);
+        if (isMouseDownRef.current) {
+          isMouseDownRef.current = false;
+          e.preventDefault();
+          e.stopPropagation();
+          triggerChange(null);
+          triggerOpen(false);
+        }
       }}
       className={`${prefixCls}-clear`}
       role="button"

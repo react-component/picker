@@ -885,6 +885,19 @@ describe('Picker.Basic', () => {
     expect(document.querySelector('input').value).toEqual('');
   });
 
+  it('trigger clear', () => {
+    render(
+      <MomentPicker
+        allowClear
+        defaultValue={getMoment('2023-12-28')}
+      />,
+    );
+
+    expect(document.querySelector('input').value).toBe('2023-12-28');
+    clearValue();
+    expect(document.querySelector('input').value).toEqual('');
+  });
+
   it('custom clear icon', () => {
     render(
       <MomentPicker
