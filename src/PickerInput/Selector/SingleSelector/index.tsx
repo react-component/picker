@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import { isSame } from '../../../utils/dateUtil';
 import type { InternalMode, SelectorProps, SelectorRef } from '../../../interface';
+import { isSame } from '../../../utils/dateUtil';
 import PickerContext from '../../context';
 import type { PickerProps } from '../../SinglePicker';
 import useInputProps from '../hooks/useInputProps';
@@ -96,6 +96,7 @@ function SingleSelector<DateType extends object = any>(
     // Input
     required,
     'aria-required': ariaRequired,
+    autoFocus,
 
     ...restProps
   } = props;
@@ -170,6 +171,7 @@ function SingleSelector<DateType extends object = any>(
         value={value.map(getText).join(',')}
         ref={inputRef as any}
         readOnly
+        autoFocus={autoFocus}
       />
       <Icon type="suffix" icon={suffixIcon} />
       {showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
@@ -178,6 +180,7 @@ function SingleSelector<DateType extends object = any>(
     <Input
       ref={inputRef}
       {...getInputProps()}
+      autoFocus={autoFocus}
       suffixIcon={suffixIcon}
       clearIcon={showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
       showActiveCls={false}
