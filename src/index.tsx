@@ -29,9 +29,16 @@
 
 import type { PickerRef } from './interface';
 import RangePicker, { type RangePickerProps } from './PickerInput/RangePicker';
-import Picker, { type PickerProps } from './PickerInput/SinglePicker';
-import PickerPanel, { type PickerPanelProps } from './PickerPanel';
+import Picker, { type BasePickerProps, type PickerProps } from './PickerInput/SinglePicker';
+import PickerPanel, { type BasePickerPanelProps, type PickerPanelProps } from './PickerPanel';
 
 export { Picker, RangePicker, PickerPanel };
-export type { RangePickerProps, PickerProps, PickerPanelProps, PickerRef };
+export type {
+  RangePickerProps,
+  PickerProps,
+  PickerPanelProps,
+  PickerRef,
+  BasePickerProps,
+  BasePickerPanelProps,
+};
 export default Picker;

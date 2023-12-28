@@ -48,9 +48,8 @@ function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig:
 
 export type RangeValueType<DateType> = [start?: DateType, end?: DateType];
 
-export interface RangePickerProps<DateType extends object>
-  extends Omit<SharedPickerProps<DateType>, 'showTime' | 'id'>,
-    Omit<RangeTimeProps<DateType>, 'format' | 'defaultValue'> {
+export interface BaseRangePickerProps<DateType extends object>
+  extends Omit<SharedPickerProps<DateType>, 'showTime' | 'id'> {
   // Structure
   id?: SelectorIdType;
 
@@ -118,6 +117,10 @@ export interface RangePickerProps<DateType extends object>
     modes: [startMode: PanelMode, endMode: PanelMode],
   ) => void;
 }
+
+export interface RangePickerProps<DateType extends object>
+  extends BaseRangePickerProps<DateType>,
+    Omit<RangeTimeProps<DateType>, 'format' | 'defaultValue'> {}
 
 function getActiveRange(activeIndex: number) {
   return activeIndex === 1 ? 'end' : 'start';
