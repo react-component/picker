@@ -151,6 +151,7 @@ export default () => {
         {...sharedLocale}
         // picker="week"
         // multiple
+        format="YYYY-MM-DD"
         showTime
         defaultValue={[
           dayjs(),

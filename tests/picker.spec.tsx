@@ -1319,4 +1319,13 @@ describe('Picker.Basic', () => {
       expect.anything(),
     );
   });
+
+  it('showTime kk format', () => {
+    const { container } = render(
+      <DayPicker picker="time" defaultValue={getDay('2000-01-01 00:23:00')} format="kk:mm" open />,
+    );
+    expect(container.querySelector('input')).toHaveValue('24:23');
+
+    expect(document.querySelectorAll('.rc-picker-time-panel-column')).toHaveLength(2);
+  });
 });
