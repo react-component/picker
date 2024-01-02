@@ -28,6 +28,7 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   // Change
   needConfirm: boolean;
   isInvalid: (date: DateType | DateType[]) => boolean;
+  onOk: VoidFunction;
 }
 
 export default function Popup<DateType extends object = any>(props: PopupProps<DateType>) {
@@ -56,7 +57,11 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
 
     // Change
     value,
+    onSelect,
     isInvalid,
+    pickerValue,
+    onOk,
+    onSubmit,
   } = props;
 
   const { prefixCls } = React.useContext(PickerContext);
@@ -90,16 +95,40 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   }, [containerWidth, activeOffset, range]);
 
   // ======================== Custom ========================
-  const disableSubmit = React.useMemo(() => {
-    const valueList = toArray(value).filter((val) => val);
+  function filterEmpty<T>(list: T[]) {
+    return list.filter((item) => item);
+  }
 
+  const valueList = React.useMemo(() => filterEmpty(toArray(value)), [value]);
+
+  const isTimePicker = picker === 'time';
+  const isEmptyValue = !valueList.length;
+
+  const footerSubmitValue = React.useMemo(() => {
+    if (isTimePicker && isEmptyValue) {
+      return filterEmpty([pickerValue]);
+    }
+    return valueList;
+  }, [isTimePicker, valueList, isEmptyValue, pickerValue]);
+
+  const disableSubmit = React.useMemo(() => {
     // Empty is invalid
-    if (!valueList.length) {
+    if (!footerSubmitValue.length) {
       return true;
     }
 
-    return valueList.some((val) => isInvalid(val));
-  }, [value, isInvalid]);
+    return footerSubmitValue.some((val) => isInvalid(val));
+  }, [footerSubmitValue, isInvalid]);
+
+  const onFooterSubmit = () => {
+    // For TimePicker, we will additional trigger the value update
+    if (isTimePicker && isEmptyValue) {
+      onSelect(pickerValue);
+    }
+
+    onOk();
+    onSubmit();
+  };
 
   let mergedNodes: React.ReactNode = (
     <div className={`${prefixCls}-panel-layout`}>
@@ -112,7 +141,12 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
       />
       <div>
         <PopupPanel {...props} />
-        <Footer {...props} showNow={multiple ? false : showNow} invalid={disableSubmit} />
+        <Footer
+          {...props}
+          showNow={multiple ? false : showNow}
+          invalid={disableSubmit}
+          onSubmit={onFooterSubmit}
+        />
       </div>
     </div>
   );

@@ -76,22 +76,21 @@ export default function useRangePickerValue<DateType extends object, ValueType e
   });
 
   // Current PickerValue
-  const currentPickerValue = React.useMemo(
-    () =>
-      // Merge the `showTime.defaultValue` into `pickerValue`
-      fillTime(
-        generateConfig,
-        [mergedStartPickerValue, mergedEndPickerValue][mergedActiveIndex],
-        timeDefaultValue[mergedActiveIndex],
-      ),
-    [
-      mergedStartPickerValue,
-      mergedEndPickerValue,
-      mergedActiveIndex,
-      generateConfig,
-      timeDefaultValue,
-    ],
-  );
+  const currentPickerValue = React.useMemo(() => {
+    const current = [mergedStartPickerValue, mergedEndPickerValue][mergedActiveIndex];
+
+    // Merge the `showTime.defaultValue` into `pickerValue`
+    return pickerMode === 'time'
+      ? current
+      : fillTime(generateConfig, current, timeDefaultValue[mergedActiveIndex]);
+  }, [
+    pickerMode,
+    mergedStartPickerValue,
+    mergedEndPickerValue,
+    mergedActiveIndex,
+    generateConfig,
+    timeDefaultValue,
+  ]);
 
   const setCurrentPickerValue = (
     nextPickerValue: DateType,

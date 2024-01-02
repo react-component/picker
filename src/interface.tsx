@@ -368,6 +368,8 @@ export interface SharedPickerProps<DateType extends object = any>
   maxDate?: DateType;
 
   // Open
+  /** @deprecated Please use `defaultPickerValue` instead */
+  defaultOpenValue?: DateType;
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;

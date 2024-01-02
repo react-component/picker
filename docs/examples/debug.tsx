@@ -128,7 +128,7 @@ export default () => {
   const singleRef = React.useRef<PickerRef>(null);
 
   const [value, setValue] = React.useState<Dayjs>(null);
-  const [rangeValue, setRangeValue] = React.useState<[Dayjs?, Dayjs?]>(
+  const [rangeValue, setRangeValue] = React.useState<[Dayjs, Dayjs]>(
     // [dayjs('2000-12-15'), dayjs('2020-12-22')],
     // null,
     undefined,
@@ -149,24 +149,27 @@ export default () => {
       <SinglePicker
         // Shared
         {...sharedLocale}
-        // picker="week"
         // multiple
-        format="YYYY-MM-DD"
-        showTime
+        // format="YYYY-MM-DD"
+        // showTime={{
+        //   defaultValue: dayjs('2000-01-01 03:05:08'),
+        // }}
         // autoFocus
-        defaultValue={[
-          dayjs(),
-          // dayjs('2000-01-01'),
-          // dayjs('2000-01-03'),
-          // dayjs('2000-01-05'),
-          // dayjs('2000-01-07'),
-          // dayjs('2000-01-09'),
-        ]}
+        // defaultValue={[
+        //   dayjs(),
+        //   // dayjs('2000-01-01'),
+        //   // dayjs('2000-01-03'),
+        //   // dayjs('2000-01-05'),
+        //   // dayjs('2000-01-07'),
+        //   // dayjs('2000-01-09'),
+        // ]}
         // disabledDate={(date) => date.date() >= 5}
-        getPopupContainer={(node) => {
-          console.log('Popup!', node);
-          return node.parentElement!;
-        }}
+        // getPopupContainer={(node) => {
+        //   console.log('Popup!', node);
+        //   return node.parentElement!;
+        // }}
+        picker="time"
+        defaultPickerValue={dayjs('2000-01-01 03:05:08')}
         presets={[
           {
             label: 'Good',
@@ -193,7 +196,7 @@ export default () => {
         }}
       />
       <br />
-      <RangePicker
+      {/* <RangePicker
         {...sharedLocale}
         value={rangeValue}
         separator="~~~~~"
@@ -235,7 +238,7 @@ export default () => {
           start: 'inputStart',
           end: 'inputEnd',
         }}
-      />
+      /> */}
       <br />
 
       <button
