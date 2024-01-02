@@ -19,6 +19,7 @@ import PickerContext from '../PickerInput/context';
 import useCellRender from '../PickerInput/hooks/useCellRender';
 import { isSame } from '../utils/dateUtil';
 import { pickProps, toArray } from '../utils/miscUtil';
+import { PickerHackContext } from './context';
 import DatePanel from './DatePanel';
 import DateTimePanel from './DateTimePanel';
 import DecadePanel from './DecadePanel';
@@ -110,6 +111,9 @@ export interface BasePickerPanelProps<DateType extends object = any>
 
   // Components
   components?: Components;
+
+  /** @private This is internal usage. Do not use in your production env */
+  hideHeader?: boolean;
 }
 
 export interface SinglePickerPanelProps<DateType extends object = any>
@@ -172,6 +176,8 @@ function PickerPanel<DateType extends object = any>(
 
     // Components
     components = {},
+
+    hideHeader,
   } = props;
 
   const mergedPrefixCls = React.useContext(PickerContext)?.prefixCls || prefixCls || 'rc-picker';
@@ -345,6 +351,13 @@ function PickerPanel<DateType extends object = any>(
     DefaultComponents[internalMode] ||
     DatePanel) as typeof DatePanel;
 
+  // ======================== Context =========================
+  const parentHackContext = React.useContext(PickerHackContext);
+  const pickerPanelContext = React.useMemo(
+    () => ({ ...parentHackContext, hideHeader }),
+    [parentHackContext, hideHeader],
+  );
+
   // ======================== Warnings ========================
   if (process.env.NODE_ENV !== 'production') {
     warning(
@@ -374,38 +387,40 @@ function PickerPanel<DateType extends object = any>(
   ]);
 
   return (
-    <div
-      ref={rootRef}
-      tabIndex={tabIndex}
-      className={classNames(panelCls, {
-        [`${panelCls}-rtl`]: direction === 'rtl',
-      })}
-    >
-      <PanelComponent
-        {...panelProps}
-        // Time
-        showTime={mergedShowTime}
-        // MISC
-        prefixCls={mergedPrefixCls}
-        locale={filledLocale}
-        generateConfig={generateConfig}
-        // Mode
-        onModeChange={triggerModeChange}
-        // Value
-        pickerValue={mergedPickerValue}
-        onPickerValueChange={(nextPickerValue) => {
-          setPickerValue(nextPickerValue, true);
-        }}
-        value={mergedValue[0]}
-        onSelect={onPanelValueSelect}
-        values={mergedValue}
-        // Render
-        cellRender={onInternalCellRender}
-        // Hover
-        hoverRangeValue={hoverRangeDate}
-        hoverValue={hoverValue}
-      />
-    </div>
+    <PickerHackContext.Provider value={pickerPanelContext}>
+      <div
+        ref={rootRef}
+        tabIndex={tabIndex}
+        className={classNames(panelCls, {
+          [`${panelCls}-rtl`]: direction === 'rtl',
+        })}
+      >
+        <PanelComponent
+          {...panelProps}
+          // Time
+          showTime={mergedShowTime}
+          // MISC
+          prefixCls={mergedPrefixCls}
+          locale={filledLocale}
+          generateConfig={generateConfig}
+          // Mode
+          onModeChange={triggerModeChange}
+          // Value
+          pickerValue={mergedPickerValue}
+          onPickerValueChange={(nextPickerValue) => {
+            setPickerValue(nextPickerValue, true);
+          }}
+          value={mergedValue[0]}
+          onSelect={onPanelValueSelect}
+          values={mergedValue}
+          // Render
+          cellRender={onInternalCellRender}
+          // Hover
+          hoverRangeValue={hoverRangeDate}
+          hoverValue={hoverValue}
+        />
+      </div>
+    </PickerHackContext.Provider>
   );
 }
 
