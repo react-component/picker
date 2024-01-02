@@ -56,7 +56,7 @@ export interface BaseRangePickerProps<DateType extends object>
   separator?: React.ReactNode;
 
   // Value
-  value?: RangeValueType<DateType>;
+  value?: RangeValueType<DateType> | null;
   defaultValue?: RangeValueType<DateType>;
   onChange?: (dates: RangeValueType<DateType>, dateStrings: [string, string]) => void;
   onCalendarChange?: (
