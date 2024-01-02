@@ -57,6 +57,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
 
     // Change
     value,
+    onSelect,
     isInvalid,
     pickerValue,
     onOk,
@@ -94,27 +95,37 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   }, [containerWidth, activeOffset, range]);
 
   // ======================== Custom ========================
-  const submitValue = React.useMemo(() => {
-    function filterEmpty<T>(list: T[]) {
-      return list.filter((item) => item);
+  function filterEmpty<T>(list: T[]) {
+    return list.filter((item) => item);
+  }
+
+  const valueList = React.useMemo(() => filterEmpty(toArray(value)), [value]);
+
+  const isTimePicker = picker === 'time';
+  const isEmptyValue = !valueList.length;
+
+  const footerSubmitValue = React.useMemo(() => {
+    if (isTimePicker && isEmptyValue) {
+      return filterEmpty([pickerValue]);
     }
-
-    const valueList = filterEmpty(toArray(value));
-
-    // return valueList.length ? valueList : filterEmpty([pickerValue]);
     return valueList;
-  }, [value, pickerValue]);
+  }, [isTimePicker, valueList, isEmptyValue, pickerValue]);
 
   const disableSubmit = React.useMemo(() => {
     // Empty is invalid
-    if (!submitValue.length) {
+    if (!footerSubmitValue.length) {
       return true;
     }
 
-    return submitValue.some((val) => isInvalid(val));
-  }, [submitValue, isInvalid]);
+    return footerSubmitValue.some((val) => isInvalid(val));
+  }, [footerSubmitValue, isInvalid]);
 
   const onFooterSubmit = () => {
+    // For TimePicker, we will additional trigger the value update
+    if (isTimePicker && isEmptyValue) {
+      onSelect(pickerValue);
+    }
+
     onOk();
     onSubmit();
   };

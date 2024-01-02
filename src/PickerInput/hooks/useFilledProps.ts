@@ -53,7 +53,7 @@ function useList<T>(value: T | T[], fillMode = false) {
   const values = React.useMemo(() => {
     const list = value ? toArray(value) : value;
 
-    if (fillMode && list && !Array.isArray(value)) {
+    if (fillMode && list) {
       list[1] = list[1] || list[0];
     }
 
@@ -119,9 +119,9 @@ export default function useFilledProps<
 
   const values = useList(value);
   const defaultValues = useList(defaultValue);
-  const defaultOpenValues = useList(defaultOpenValue);
-  const pickerValues = useList(pickerValue, true);
-  const defaultPickerValues = useList(defaultPickerValue, true) || defaultOpenValues;
+  const defaultOpenValues = useList(defaultOpenValue, true);
+  const pickerValues = useList(pickerValue);
+  const defaultPickerValues = useList(defaultPickerValue) || defaultOpenValues;
 
   const mergedLocale = fillLocale(locale);
   const mergedShowTime = getTimeConfig(props);
