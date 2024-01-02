@@ -32,8 +32,13 @@ function PanelHeader<DateType extends object>(props: HeaderProps) {
 
   const headerPrefixCls = `${prefixCls}-header`;
 
-  const { hidePrev, hideNext } = React.useContext(PickerHackContext);
+  const { hidePrev, hideNext, hideHeader } = React.useContext(PickerHackContext);
 
+  if (hideHeader) {
+    return null;
+  }
+
+  // ========================= Render =========================
   return (
     <div className={headerPrefixCls}>
       {onSuperOffset && (
