@@ -79,12 +79,12 @@ export interface BaseRangePickerProps<DateType extends object>
    *
    * Note: `defaultPickerValue` priority is higher than `value` for the first open.
    */
-  defaultPickerValue?: [DateType, DateType] | null;
+  defaultPickerValue?: [DateType, DateType] | DateType | null;
   /**
    * Config each start & end field popup panel date.
    * When config `pickerValue`, you must also provide `onPickerValueChange` to handle changes.
    */
-  pickerValue?: [DateType, DateType] | null;
+  pickerValue?: [DateType, DateType] | DateType | null;
   /**
    * Each popup panel `pickerValue` includes `mode` change will trigger the callback.
    * @param date The changed picker value

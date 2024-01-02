@@ -1,9 +1,9 @@
 import { warning } from 'rc-util';
 import * as React from 'react';
-import { toArray } from '../../utils/miscUtil';
 import { fillLocale } from '../../hooks/useLocale';
 import { getTimeConfig } from '../../hooks/useTimeConfig';
 import type { FormatType, InternalMode } from '../../interface';
+import { toArray } from '../../utils/miscUtil';
 import type { RangePickerProps } from '../RangePicker';
 import { fillClearIcon } from '../Selector/hooks/useClearIcon';
 import useDisabledBoundary from './useDisabledBoundary';
@@ -32,6 +32,7 @@ type PickedProps<DateType extends object = any> = Pick<
   | 'disabledDate'
   | 'minDate'
   | 'maxDate'
+  | 'defaultOpenValue'
 > & {
   multiple?: boolean;
   // RangePicker showTime definition is different with Picker
@@ -48,8 +49,16 @@ type GetGeneric<T> = T extends PickedProps<infer U> ? U : never;
 
 type ToArrayType<T, DateType> = T extends any[] ? T : DateType[];
 
-function useList<T>(value: T | T[]) {
-  const values = React.useMemo(() => (value ? toArray(value) : value), [value]);
+function useList<T>(value: T | T[], fill = false) {
+  const values = React.useMemo(() => {
+    const list = value ? toArray(value) : value;
+
+    if (fill && list) {
+      list[1] = list[1] || list[0];
+    }
+
+    return list;
+  }, [value, fill]);
   return values;
 }
 
@@ -105,25 +114,32 @@ export default function useFilledProps<
     defaultValue,
     pickerValue,
     defaultPickerValue,
+    defaultOpenValue,
   } = props;
 
   const values = useList(value);
   const defaultValues = useList(defaultValue);
-  const pickerValues = useList(pickerValue);
-  const defaultPickerValues = useList(defaultPickerValue);
+  const defaultOpenValues = useList(defaultOpenValue);
+  const pickerValues = useList(pickerValue, true);
+  const defaultPickerValues = useList(defaultPickerValue, true) || defaultOpenValues;
 
   const mergedLocale = fillLocale(locale);
   const mergedShowTime = getTimeConfig(props);
 
   // ======================= Warning ========================
-  if (
-    process.env.NODE_ENV !== 'production' &&
-    picker === 'time' &&
-    ['disabledHours', 'disabledMinutes', 'disabledSeconds'].some((key) => (props as any)[key])
-  ) {
+  if (process.env.NODE_ENV !== 'production' && picker === 'time') {
+    if (
+      ['disabledHours', 'disabledMinutes', 'disabledSeconds'].some((key) => (props as any)[key])
+    ) {
+      warning(
+        false,
+        `'disabledHours', 'disabledMinutes', 'disabledSeconds' will be removed in the next major version, please use 'disabledTime' instead.`,
+      );
+    }
+
     warning(
-      false,
-      `'disabledHours', 'disabledMinutes', 'disabledSeconds' will be removed in the next major version, please use 'disabledTime' instead.`,
+      !defaultOpenValue,
+      `'defaultOpenValue' is deprecated which merged into 'defaultPickerValue' instead.`,
     );
   }
 
