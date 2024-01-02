@@ -28,6 +28,7 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   // Change
   needConfirm: boolean;
   isInvalid: (date: DateType | DateType[]) => boolean;
+  onOk: VoidFunction;
 }
 
 export default function Popup<DateType extends object = any>(props: PopupProps<DateType>) {
@@ -57,6 +58,9 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     // Change
     value,
     isInvalid,
+    pickerValue,
+    onOk,
+    onSubmit,
   } = props;
 
   const { prefixCls } = React.useContext(PickerContext);
@@ -90,16 +94,30 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   }, [containerWidth, activeOffset, range]);
 
   // ======================== Custom ========================
-  const disableSubmit = React.useMemo(() => {
-    const valueList = toArray(value).filter((val) => val);
+  const submitValue = React.useMemo(() => {
+    function filterEmpty<T>(list: T[]) {
+      return list.filter((item) => item);
+    }
 
+    const valueList = filterEmpty(toArray(value));
+
+    // return valueList.length ? valueList : filterEmpty([pickerValue]);
+    return valueList;
+  }, [value, pickerValue]);
+
+  const disableSubmit = React.useMemo(() => {
     // Empty is invalid
-    if (!valueList.length) {
+    if (!submitValue.length) {
       return true;
     }
 
-    return valueList.some((val) => isInvalid(val));
-  }, [value, isInvalid]);
+    return submitValue.some((val) => isInvalid(val));
+  }, [submitValue, isInvalid]);
+
+  const onFooterSubmit = () => {
+    onOk();
+    onSubmit();
+  };
 
   let mergedNodes: React.ReactNode = (
     <div className={`${prefixCls}-panel-layout`}>
@@ -112,7 +130,12 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
       />
       <div>
         <PopupPanel {...props} />
-        <Footer {...props} showNow={multiple ? false : showNow} invalid={disableSubmit} />
+        <Footer
+          {...props}
+          showNow={multiple ? false : showNow}
+          invalid={disableSubmit}
+          onSubmit={onFooterSubmit}
+        />
       </div>
     </div>
   );

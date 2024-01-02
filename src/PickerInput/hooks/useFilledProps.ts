@@ -49,16 +49,16 @@ type GetGeneric<T> = T extends PickedProps<infer U> ? U : never;
 
 type ToArrayType<T, DateType> = T extends any[] ? T : DateType[];
 
-function useList<T>(value: T | T[], fill = false) {
+function useList<T>(value: T | T[], fillMode = false) {
   const values = React.useMemo(() => {
     const list = value ? toArray(value) : value;
 
-    if (fill && list) {
+    if (fillMode && list && !Array.isArray(value)) {
       list[1] = list[1] || list[0];
     }
 
     return list;
-  }, [value, fill]);
+  }, [value, fillMode]);
   return values;
 }
 

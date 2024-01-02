@@ -28,9 +28,6 @@ export interface FooterProps<DateType extends object = any> {
   onSubmit: (date?: DateType) => void;
   needConfirm: boolean;
 
-  // OK
-  onOk: VoidFunction;
-
   // Now
   onNow: (now: DateType) => void;
 }
@@ -43,7 +40,6 @@ export default function Footer(props: FooterProps) {
     showNow,
     showTime,
     onSubmit,
-    onOk,
     onNow,
     invalid,
     needConfirm,
@@ -91,13 +87,7 @@ export default function Footer(props: FooterProps) {
   // >>> OK
   const okNode = needConfirm && (
     <li className={`${prefixCls}-ok`}>
-      <Button
-        disabled={invalid}
-        onClick={() => {
-          onOk();
-          onSubmit();
-        }}
-      >
+      <Button disabled={invalid} onClick={onSubmit}>
         {locale.ok}
       </Button>
     </li>

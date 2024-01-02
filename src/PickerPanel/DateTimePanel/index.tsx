@@ -36,7 +36,6 @@ export default function DateTimePanel<DateType extends object = any>(
 
     onSelect(getValidTime(cloneDate, cloneDate));
   };
-  console.log('-->', props.pickerValue);
 
   // ============================== Render ==============================
   return (
