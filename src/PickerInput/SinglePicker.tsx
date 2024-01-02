@@ -45,7 +45,7 @@ export interface BasePickerProps<DateType extends object = any>
   maxTagCount?: number | 'responsive';
 
   // Value
-  value?: DateType | DateType[];
+  value?: DateType | DateType[] | null;
   defaultValue?: DateType | DateType[];
   onChange?: (date: DateType | DateType[], dateString: string | string[]) => void;
   onCalendarChange?: (
