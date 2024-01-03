@@ -286,6 +286,7 @@ export type SharedHTMLAttrs = Omit<
   | 'min'
   | 'max'
   | 'onKeyDown'
+  | 'size'
 >;
 
 export type PickerFocusEventHandler = (e: React.FocusEvent<HTMLElement>, info: BaseInfo) => void;
