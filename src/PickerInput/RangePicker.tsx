@@ -51,6 +51,9 @@ export type RangeValueType<DateType> = [
   end: DateType | null | undefined,
 ];
 
+/** Used for change event, it should always be not undefined */
+export type NoUndefinedRangeValueType<DateType> = [start: DateType | null, end: DateType | null];
+
 export interface BaseRangePickerProps<DateType extends object>
   extends Omit<SharedPickerProps<DateType>, 'showTime' | 'id'> {
   // Structure
@@ -61,13 +64,13 @@ export interface BaseRangePickerProps<DateType extends object>
   // Value
   value?: RangeValueType<DateType> | null;
   defaultValue?: RangeValueType<DateType>;
-  onChange?: (dates: RangeValueType<DateType>, dateStrings: [string, string]) => void;
+  onChange?: (dates: NoUndefinedRangeValueType<DateType>, dateStrings: [string, string]) => void;
   onCalendarChange?: (
-    dates: RangeValueType<DateType>,
+    dates: NoUndefinedRangeValueType<DateType>,
     dateStrings: [string, string],
     info: BaseInfo,
   ) => void;
-  onOk?: (values: RangeValueType<DateType>) => void;
+  onOk?: (values: NoUndefinedRangeValueType<DateType>) => void;
 
   // Placeholder
   placeholder?: [string, string];
@@ -118,7 +121,7 @@ export interface BaseRangePickerProps<DateType extends object>
   mode?: [startMode: PanelMode, endMode: PanelMode];
   /** Trigger on each `mode` or `pickerValue` changed. */
   onPanelChange?: (
-    values: RangeValueType<DateType>,
+    values: NoUndefinedRangeValueType<DateType>,
     modes: [startMode: PanelMode, endMode: PanelMode],
   ) => void;
 }
