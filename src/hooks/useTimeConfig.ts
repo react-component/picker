@@ -40,24 +40,22 @@ function pickTimeProps<DateType extends object = any>(props: any): SharedTimePro
   return timeProps;
 }
 
-export function getTimeConfig<Config extends object>(
+export function getTimeConfig<DateType extends object>(
   componentProps: {
     picker?: PickerMode;
-    showTime?: boolean | Config;
+    showTime?: boolean | Partial<SharedTimeProps<DateType>>;
   } = {},
-): Config {
+): SharedTimeProps<DateType> {
   const { showTime, picker } = componentProps;
 
   if (showTime || picker === 'time') {
     const timeConfig =
-      showTime && typeof showTime === 'object'
-        ? showTime
-        : (pickTimeProps(componentProps) as Config);
+      showTime && typeof showTime === 'object' ? showTime : pickTimeProps(componentProps);
 
     const pickedProps = pickProps(timeConfig);
 
     return {
-      format: (pickedProps as any).use12Hours ? 'HH:mm:ss A' : 'HH:mm:ss',
+      format: pickedProps.use12Hours ? 'HH:mm:ss A' : 'HH:mm:ss',
       ...pickedProps,
     };
   }
