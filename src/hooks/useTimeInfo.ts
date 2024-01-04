@@ -15,17 +15,17 @@ function emptyDisabled<T>(): T[] {
   return [];
 }
 
-function checkShow(
-  format: string,
-  keywords: string[],
-  hasOtherShowConfig: boolean,
-  show?: boolean,
-) {
-  if (show !== undefined) {
-    return show;
-  }
-  return !hasOtherShowConfig && keywords.some((keyword) => format.includes(keyword));
-}
+// function checkShow(
+//   format: string,
+//   keywords: string[],
+//   hasOtherShowConfig: boolean,
+//   show?: boolean,
+// ) {
+//   if (show !== undefined) {
+//     return show;
+//   }
+//   return !hasOtherShowConfig && keywords.some((keyword) => format.includes(keyword));
+// }
 
 function generateUnits(
   start: number,
@@ -60,8 +60,8 @@ export default function useTimeInfo<DateType extends object = any>(
   date?: DateType,
 ) {
   const {
-    // Fallback if `showTime` is empty
-    format = '',
+    // // Fallback if `showTime` is empty
+    // format = '',
 
     // Show
     showHour,
@@ -103,23 +103,23 @@ export default function useTimeInfo<DateType extends object = any>(
     );
   }
 
-  // ========================== Show ==========================
-  const hasShowConfig = [showHour, showMinute, showSecond, showMillisecond].some(
-    (show) => show !== undefined,
-  );
+  // // ========================== Show ==========================
+  // const hasShowConfig = [showHour, showMinute, showSecond, showMillisecond].some(
+  //   (show) => show !== undefined,
+  // );
 
-  let mergedShowHour = checkShow(format, ['H', 'h', 'k', 'LT', 'LLL'], hasShowConfig, showHour);
-  let mergedShowMinute = checkShow(format, ['m', 'LT', 'LLL'], hasShowConfig, showMinute);
-  let mergedShowSecond = checkShow(format, ['s', 'LTS'], hasShowConfig, showSecond);
-  const mergedShowMillisecond = checkShow(format, ['SSS'], hasShowConfig, showMillisecond);
-  const mergedShowMeridiem = checkShow(format, ['a', 'A', 'LT', 'LLL'], hasShowConfig, use12Hours);
+  // let mergedShowHour = checkShow(format, ['H', 'h', 'k', 'LT', 'LLL'], hasShowConfig, showHour);
+  // let mergedShowMinute = checkShow(format, ['m', 'LT', 'LLL'], hasShowConfig, showMinute);
+  // let mergedShowSecond = checkShow(format, ['s', 'LTS'], hasShowConfig, showSecond);
+  // const mergedShowMillisecond = checkShow(format, ['SSS'], hasShowConfig, showMillisecond);
+  // const mergedShowMeridiem = checkShow(format, ['a', 'A', 'LT', 'LLL'], hasShowConfig, use12Hours);
 
-  // Fallback if all can not see
-  if (!mergedShowHour && !mergedShowMinute && !mergedShowSecond && !mergedShowMillisecond) {
-    mergedShowHour = true;
-    mergedShowMinute = true;
-    mergedShowSecond = true;
-  }
+  // // Fallback if all can not see
+  // if (!mergedShowHour && !mergedShowMinute && !mergedShowSecond && !mergedShowMillisecond) {
+  //   mergedShowHour = true;
+  //   mergedShowMinute = true;
+  //   mergedShowSecond = true;
+  // }
 
   // ======================== Disabled ========================
   const getDisabledTimes = React.useCallback(
@@ -154,7 +154,7 @@ export default function useTimeInfo<DateType extends object = any>(
       const hours = generateUnits(0, 23, hourStep, hideDisabledOptions, getDisabledHours());
 
       // Hours
-      const rowHourUnits = mergedShowMeridiem
+      const rowHourUnits = use12Hours
         ? hours.map((unit) => ({
             ...unit,
             label: leftPad((unit.value as number) % 12 || 12, 2),
@@ -188,7 +188,7 @@ export default function useTimeInfo<DateType extends object = any>(
 
       return [rowHourUnits, getMinuteUnits, getSecondUnits, getMillisecondUnits] as const;
     },
-    [hideDisabledOptions, hourStep, mergedShowMeridiem, millisecondStep, minuteStep, secondStep],
+    [hideDisabledOptions, hourStep, use12Hours, millisecondStep, minuteStep, secondStep],
   );
 
   const [rowHourUnits, getMinuteUnits, getSecondUnits, getMillisecondUnits] = React.useMemo(
@@ -261,11 +261,11 @@ export default function useTimeInfo<DateType extends object = any>(
     getValidTime,
 
     // Show columns
-    mergedShowHour,
-    mergedShowMinute,
-    mergedShowSecond,
-    mergedShowMillisecond,
-    mergedShowMeridiem,
+    showHour,
+    showMinute,
+    showSecond,
+    showMillisecond,
+    use12Hours,
 
     // Units
     rowHourUnits,

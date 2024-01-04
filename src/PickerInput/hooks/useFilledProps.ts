@@ -124,7 +124,10 @@ export default function useFilledProps<
   const defaultPickerValues = useList(defaultPickerValue) || defaultOpenValues;
 
   const mergedLocale = fillLocale(locale);
-  const mergedShowTime = getTimeConfig(props);
+  const mergedShowTime = getTimeConfig({
+    ...props,
+    locale,
+  });
 
   // ======================= Warning ========================
   if (process.env.NODE_ENV !== 'production' && picker === 'time') {

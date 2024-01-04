@@ -1,5 +1,21 @@
-import type { PickerMode, SharedTimeProps } from '../interface';
+import type { Locale, PickerMode, SharedTimeProps } from '../interface';
 import { pickProps } from '../utils/miscUtil';
+
+function checkShow(
+  format: string,
+  keywords: string[],
+  hasOtherShowConfig: boolean,
+  show?: boolean,
+) {
+  if (show !== undefined) {
+    return show;
+  }
+  return (
+    !hasOtherShowConfig &&
+    typeof format === 'string' &&
+    keywords.some((keyword) => format.includes(keyword))
+  );
+}
 
 const showTimeKeys = [
   'format',
@@ -40,12 +56,11 @@ function pickTimeProps<DateType extends object = any>(props: any): SharedTimePro
   return timeProps;
 }
 
-export function getTimeConfig<DateType extends object>(
-  componentProps: {
-    picker?: PickerMode;
-    showTime?: boolean | Partial<SharedTimeProps<DateType>>;
-  } = {},
-): SharedTimeProps<DateType> {
+export function getTimeConfig<DateType extends object>(componentProps: {
+  picker?: PickerMode;
+  showTime?: boolean | Partial<SharedTimeProps<DateType>>;
+  locale: Locale;
+}): SharedTimeProps<DateType> {
   const { showTime, picker } = componentProps;
 
   const isTimePicker = picker === 'time';
@@ -57,6 +72,7 @@ export function getTimeConfig<DateType extends object>(
 
     const pickedProps = pickProps(timeConfig);
 
+    // ======================== Format ========================
     let timeFormat: string;
     if (isTimePicker) {
       timeFormat = pickedProps.format;
@@ -64,6 +80,37 @@ export function getTimeConfig<DateType extends object>(
       timeFormat = isShowTimeConfig && showTime.format;
     }
 
+    // ========================= Show =========================
+    const { showHour, showMinute, showSecond, showMillisecond, use12Hours } = pickedProps;
+
+    const hasShowConfig = [showHour, showMinute, showSecond, showMillisecond].some(
+      (show) => show !== undefined,
+    );
+
+    let mergedShowHour = checkShow(
+      timeFormat,
+      ['H', 'h', 'k', 'LT', 'LLL'],
+      hasShowConfig,
+      showHour,
+    );
+    let mergedShowMinute = checkShow(timeFormat, ['m', 'LT', 'LLL'], hasShowConfig, showMinute);
+    let mergedShowSecond = checkShow(timeFormat, ['s', 'LTS'], hasShowConfig, showSecond);
+    const mergedShowMillisecond = checkShow(timeFormat, ['SSS'], hasShowConfig, showMillisecond);
+    const mergedUse12Hours = checkShow(
+      timeFormat,
+      ['a', 'A', 'LT', 'LLL'],
+      hasShowConfig,
+      use12Hours,
+    );
+
+    // Fallback if all can not see
+    if (!mergedShowHour && !mergedShowMinute && !mergedShowSecond && !mergedShowMillisecond) {
+      mergedShowHour = true;
+      mergedShowMinute = true;
+      mergedShowSecond = true;
+    }
+
+    // ======================== Props =========================
     return {
       ...pickedProps,
       format:
@@ -73,6 +120,13 @@ export function getTimeConfig<DateType extends object>(
           pickedProps.use12Hours
           ? 'HH:mm:ss A'
           : 'HH:mm:ss',
+
+      // Show Config
+      showHour: mergedShowHour,
+      showMinute: mergedShowMinute,
+      showSecond: mergedShowSecond,
+      showMillisecond: mergedShowMillisecond,
+      use12Hours: mergedUse12Hours,
     };
   }
 

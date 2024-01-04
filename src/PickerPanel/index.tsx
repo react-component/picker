@@ -193,7 +193,10 @@ function PickerPanel<DateType extends object = any>(
   const filledLocale = useLocale(locale);
 
   // ======================== ShowTime ========================
-  const mergedShowTime = getTimeConfig(props);
+  const mergedShowTime = getTimeConfig({
+    ...props,
+    locale: filledLocale,
+  });
 
   // ========================== Now ===========================
   const now = generateConfig.getNow();
