@@ -87,8 +87,12 @@ export function getTimeConfig<DateType extends object>(componentProps: {
 
     const showMeridiem = checkShow(baselineFormat, ['a', 'A', 'LT', 'LLL'], use12Hours);
 
+    const hasShowConfig = [showHour, showMinute, showSecond, showMillisecond].some(
+      (show) => show !== undefined,
+    );
+
     // Fill with format, if needed
-    if ([showHour, showMinute, showSecond, showMillisecond].every((show) => show === undefined)) {
+    if (!hasShowConfig) {
       showHour = checkShow(baselineFormat, ['H', 'h', 'k', 'LT', 'LLL']);
       showMinute = checkShow(baselineFormat, ['m', 'LT', 'LLL']);
       showSecond = checkShow(baselineFormat, ['s', 'LTS']);
@@ -96,7 +100,7 @@ export function getTimeConfig<DateType extends object>(componentProps: {
     }
 
     // Fallback if all can not see
-    if (!showHour && !showMinute && !showSecond && !showMillisecond) {
+    if (!hasShowConfig && !showHour && !showMinute && !showSecond && !showMillisecond) {
       showHour = true;
       showMinute = true;
       showSecond = true;

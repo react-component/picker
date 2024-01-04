@@ -1328,4 +1328,19 @@ describe('Picker.Basic', () => {
     const { container } = render(<DayPicker autoFocus />);
     expect(document.activeElement).toBe(container.querySelector('input'));
   });
+
+  it('all not showXXX should be fallback to show', () => {
+    render(
+      <DayPicker
+        showTime
+        open
+        format={['YYYY-MM-DD']}
+        defaultValue={getDay('2000-01-01 01:02:03')}
+      />,
+    );
+
+    expect(document.querySelectorAll('.rc-picker-header-view')[1].textContent).toEqual(
+      '01:02:03',
+    );
+  });
 });
