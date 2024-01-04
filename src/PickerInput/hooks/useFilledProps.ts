@@ -109,6 +109,7 @@ export default function useFilledProps<
     disabledDate,
     minDate,
     maxDate,
+    showTime,
 
     value,
     defaultValue,
@@ -123,11 +124,25 @@ export default function useFilledProps<
   const pickerValues = useList(pickerValue);
   const defaultPickerValues = useList(defaultPickerValue) || defaultOpenValues;
 
+  // ======================== Picker ========================
+  /** Almost same as `picker`, but add `datetime` for `date` with `showTime` */
+  const internalPicker: InternalMode = picker === 'date' && showTime ? 'datetime' : picker;
+
+  /** The picker is `datetime` or `time` */
+  const complexPicker = internalPicker === 'time' || internalPicker === 'datetime' || multiple;
+  const mergedNeedConfirm = needConfirm ?? complexPicker;
+
+  // ======================= Locales ========================
   const mergedLocale = fillLocale(locale);
-  const mergedShowTime = getTimeConfig({
-    ...props,
-    locale,
-  });
+  const mergedShowTime = React.useMemo(
+    () =>
+      getTimeConfig({
+        ...props,
+        picker: internalPicker,
+        locale: mergedLocale,
+      }),
+    [props, internalPicker, mergedLocale],
+  );
 
   // ======================= Warning ========================
   if (process.env.NODE_ENV !== 'production' && picker === 'time') {
@@ -170,15 +185,6 @@ export default function useFilledProps<
     }),
     [props],
   );
-
-  // ======================== Picker ========================
-  /** Almost same as `picker`, but add `datetime` for `date` with `showTime` */
-  const internalPicker: InternalMode =
-    picker === 'date' && filledProps.showTime ? 'datetime' : picker;
-
-  /** The picker is `datetime` or `time` */
-  const complexPicker = internalPicker === 'time' || internalPicker === 'datetime' || multiple;
-  const mergedNeedConfirm = needConfirm ?? complexPicker;
 
   // ======================== Format ========================
   const [formatList, maskFormat] = useFieldFormat<DateType>(internalPicker, mergedLocale, format);

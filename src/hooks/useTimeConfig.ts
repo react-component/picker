@@ -1,20 +1,8 @@
-import type { Locale, PickerMode, SharedTimeProps } from '../interface';
-import { pickProps } from '../utils/miscUtil';
+import type { InternalMode, Locale, SharedPickerProps, SharedTimeProps } from '../interface';
+import { getRowFormat, pickProps, toArray } from '../utils/miscUtil';
 
-function checkShow(
-  format: string,
-  keywords: string[],
-  hasOtherShowConfig: boolean,
-  show?: boolean,
-) {
-  if (show !== undefined) {
-    return show;
-  }
-  return (
-    !hasOtherShowConfig &&
-    typeof format === 'string' &&
-    keywords.some((keyword) => format.includes(keyword))
-  );
+function checkShow(format: string, keywords: string[], show?: boolean) {
+  return show ?? keywords.some((keyword) => format.includes(keyword));
 }
 
 const showTimeKeys = [
@@ -57,11 +45,12 @@ function pickTimeProps<DateType extends object = any>(props: any): SharedTimePro
 }
 
 export function getTimeConfig<DateType extends object>(componentProps: {
-  picker?: PickerMode;
+  picker?: InternalMode;
   showTime?: boolean | Partial<SharedTimeProps<DateType>>;
   locale: Locale;
+  format?: SharedPickerProps['format'];
 }): SharedTimeProps<DateType> {
-  const { showTime, picker } = componentProps;
+  const { showTime, picker, locale, format: propFormat } = componentProps;
 
   const isTimePicker = picker === 'time';
 
@@ -72,61 +61,100 @@ export function getTimeConfig<DateType extends object>(componentProps: {
 
     const pickedProps = pickProps(timeConfig);
 
-    // ======================== Format ========================
-    let timeFormat: string;
-    if (isTimePicker) {
-      timeFormat = pickedProps.format;
-    } else {
-      timeFormat = isShowTimeConfig && showTime.format;
+    // ====================== BaseFormat ======================
+    const showTimeFormat = isShowTimeConfig ? showTime.format : isTimePicker && propFormat;
+    const defaultFormat = getRowFormat(picker, locale, null) as string;
+
+    let baselineFormat = defaultFormat;
+
+    const formatList = [showTimeFormat, propFormat];
+    for (let i = 0; i < formatList.length; i += 1) {
+      const format = toArray(formatList[i])[0];
+
+      if (format && typeof format === 'string') {
+        baselineFormat = format;
+        break;
+      }
     }
 
     // ========================= Show =========================
-    const { showHour, showMinute, showSecond, showMillisecond, use12Hours } = pickedProps;
+    let { showHour, showMinute, showSecond, showMillisecond } = pickedProps;
+    const { use12Hours } = pickedProps;
 
-    const hasShowConfig = [showHour, showMinute, showSecond, showMillisecond].some(
-      (show) => show !== undefined,
-    );
+    const showMeridiem = checkShow(baselineFormat, ['a', 'A', 'LT', 'LLL'], use12Hours);
 
-    let mergedShowHour = checkShow(
-      timeFormat,
-      ['H', 'h', 'k', 'LT', 'LLL'],
-      hasShowConfig,
-      showHour,
-    );
-    let mergedShowMinute = checkShow(timeFormat, ['m', 'LT', 'LLL'], hasShowConfig, showMinute);
-    let mergedShowSecond = checkShow(timeFormat, ['s', 'LTS'], hasShowConfig, showSecond);
-    const mergedShowMillisecond = checkShow(timeFormat, ['SSS'], hasShowConfig, showMillisecond);
-    const mergedUse12Hours = checkShow(
-      timeFormat,
-      ['a', 'A', 'LT', 'LLL'],
-      hasShowConfig,
-      use12Hours,
-    );
+    // Fill with format, if needed
+    if ([showHour, showMinute, showSecond, showMillisecond].every((show) => show === undefined)) {
+      showHour = checkShow(baselineFormat, ['H', 'h', 'k', 'LT', 'LLL']);
+      showMinute = checkShow(baselineFormat, ['m', 'LT', 'LLL']);
+      showSecond = checkShow(baselineFormat, ['s', 'LTS']);
+      showMillisecond = checkShow(baselineFormat, ['SSS']);
+    }
 
     // Fallback if all can not see
-    if (!mergedShowHour && !mergedShowMinute && !mergedShowSecond && !mergedShowMillisecond) {
-      mergedShowHour = true;
-      mergedShowMinute = true;
-      mergedShowSecond = true;
+    if (!showHour && !showMinute && !showSecond && !showMillisecond) {
+      showHour = true;
+      showMinute = true;
+      showSecond = true;
     }
+
+    // let timeFormat: string;
+    // if (isTimePicker) {
+    //   timeFormat = pickedProps.format;
+    // } else {
+    //   timeFormat = isShowTimeConfig && showTime.format;
+    // }
+
+    // let rootFormat = getRowFormat(picker, locale, null);
+    // if (timeFormat) {}
+
+    // ========================= Show =========================
+    // const { showHour, showMinute, showSecond, showMillisecond, use12Hours } = pickedProps;
+
+    // const hasShowConfig = [showHour, showMinute, showSecond, showMillisecond].some(
+    //   (show) => show !== undefined,
+    // );
+
+    // let mergedShowHour = checkShow(
+    //   timeFormat,
+    //   ['H', 'h', 'k', 'LT', 'LLL'],
+    //   hasShowConfig,
+    //   showHour,
+    // );
+    // let mergedShowMinute = checkShow(timeFormat, ['m', 'LT', 'LLL'], hasShowConfig, showMinute);
+    // let mergedShowSecond = checkShow(timeFormat, ['s', 'LTS'], hasShowConfig, showSecond);
+    // const mergedShowMillisecond = checkShow(timeFormat, ['SSS'], hasShowConfig, showMillisecond);
+    // const mergedUse12Hours = checkShow(
+    //   timeFormat,
+    //   ['a', 'A', 'LT', 'LLL'],
+    //   hasShowConfig,
+    //   use12Hours,
+    // );
+
+    // // Fallback if all can not see
+    // if (!mergedShowHour && !mergedShowMinute && !mergedShowSecond && !mergedShowMillisecond) {
+    //   mergedShowHour = true;
+    //   mergedShowMinute = true;
+    //   mergedShowSecond = true;
+    // }
 
     // ======================== Props =========================
     return {
       ...pickedProps,
       format:
-        typeof timeFormat === 'string'
-          ? timeFormat
+        typeof baselineFormat === 'string'
+          ? baselineFormat
           : // Fallback to default time format instead
           pickedProps.use12Hours
           ? 'HH:mm:ss A'
           : 'HH:mm:ss',
 
       // Show Config
-      showHour: mergedShowHour,
-      showMinute: mergedShowMinute,
-      showSecond: mergedShowSecond,
-      showMillisecond: mergedShowMillisecond,
-      use12Hours: mergedUse12Hours,
+      showHour,
+      showMinute,
+      showSecond,
+      showMillisecond,
+      use12Hours: showMeridiem,
     };
   }
 
