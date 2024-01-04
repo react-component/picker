@@ -54,9 +54,11 @@ export function getTimeConfig<Config extends object>(
         ? showTime
         : (pickTimeProps(componentProps) as Config);
 
+    const pickedProps = pickProps(timeConfig);
+
     return {
-      format: 'HH:mm:ss',
-      ...pickProps(timeConfig),
+      format: (pickedProps as any).use12Hours ? 'HH:mm:ss A' : 'HH:mm:ss',
+      ...pickedProps,
     };
   }
 

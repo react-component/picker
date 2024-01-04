@@ -251,12 +251,13 @@ export default () => {
       </button>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        {/* <PickerPanel
+        <PickerPanel
           generateConfig={dayjsGenerateConfig}
           locale={zhCN}
           value={value}
           // multiple
-          picker="month"
+          picker="time"
+          use12Hours
           onChange={setSingleValue}
           // onPickerValueChange={(pickerValue) => {
           //   console.log('🎼 PickerValue Change:', pickerValue);
@@ -265,7 +266,7 @@ export default () => {
             console.error('1');
             console.log('🎲 PanelValue Change:', panelValue, mode);
           }}
-        /> */}
+        />
         {/* <CellPicker
           picker="time"
           locale={{
