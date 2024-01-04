@@ -1,31 +1,6 @@
 import * as React from 'react';
 import type { FormatType, InternalMode, Locale, SharedPickerProps } from '../../interface';
-import { toArray } from '../../utils/miscUtil';
-
-function getRowFormat(picker: InternalMode, locale: Locale, format?: SharedPickerProps['format']) {
-  if (format) {
-    return format;
-  }
-
-  switch (picker) {
-    // All from the `locale.fieldXXXFormat` first
-    case 'time':
-      return locale.fieldTimeFormat;
-    case 'datetime':
-      return locale.fieldDateTimeFormat;
-    case 'month':
-      return locale.fieldMonthFormat;
-    case 'year':
-      return locale.fieldYearFormat;
-    case 'quarter':
-      return locale.fieldQuarterFormat;
-    case 'week':
-      return locale.fieldWeekFormat;
-
-    default:
-      return locale.fieldDateFormat;
-  }
-}
+import { getRowFormat, toArray } from '../../utils/miscUtil';
 
 export function useFieldFormat<DateType = any>(
   picker: InternalMode,

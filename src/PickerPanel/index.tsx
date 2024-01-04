@@ -164,6 +164,7 @@ function PickerPanel<DateType extends object = any>(
     mode,
     onPanelChange,
     picker = 'date',
+    showTime,
 
     // Hover
     hoverValue,
@@ -192,8 +193,19 @@ function PickerPanel<DateType extends object = any>(
   // ========================= Locale =========================
   const filledLocale = useLocale(locale);
 
+  // ========================= Picker =========================
+  const internalPicker: InternalMode = picker === 'date' && showTime ? 'datetime' : picker;
+
   // ======================== ShowTime ========================
-  const mergedShowTime = getTimeConfig(props);
+  const mergedShowTime = React.useMemo(
+    () =>
+      getTimeConfig({
+        ...props,
+        picker: internalPicker,
+        locale: filledLocale,
+      }),
+    [props, internalPicker, filledLocale],
+  );
 
   // ========================== Now ===========================
   const now = generateConfig.getNow();
@@ -206,7 +218,6 @@ function PickerPanel<DateType extends object = any>(
 
   const internalMode: InternalMode =
     mergedMode === 'date' && mergedShowTime ? 'datetime' : mergedMode;
-  const internalPicker: InternalMode = picker === 'date' && mergedShowTime ? 'datetime' : picker;
 
   // ========================= Toggle =========================
   const toggleDates = useToggleDates(generateConfig, locale, internalPicker);

@@ -15,6 +15,13 @@ export default function TimePanelBody<DateType extends object = any>(
   props: SharedTimeProps<DateType>,
 ) {
   const {
+    // Show Config
+    showHour,
+    showMinute,
+    showSecond,
+    showMillisecond,
+    use12Hours: showMeridiem,
+
     // MISC
     changeOnScroll,
   } = props;
@@ -27,20 +34,8 @@ export default function TimePanelBody<DateType extends object = any>(
   const { onCellDblClick } = React.useContext(PickerHackContext);
 
   // ========================== Info ==========================
-  const [
-    getValidTime,
-
-    showHour,
-    showMinute,
-    showSecond,
-    showMillisecond,
-    showMeridiem,
-
-    rowHourUnits,
-    getMinuteUnits,
-    getSecondUnits,
-    getMillisecondUnits,
-  ] = useTimeInfo(generateConfig, props, value);
+  const [getValidTime, rowHourUnits, getMinuteUnits, getSecondUnits, getMillisecondUnits] =
+    useTimeInfo(generateConfig, props, value);
 
   // ========================= Value ==========================
   // PickerValue will tell which one to align on the top
