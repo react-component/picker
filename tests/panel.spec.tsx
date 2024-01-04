@@ -688,4 +688,17 @@ describe('Picker.Panel', () => {
       expect(onChange.mock.calls[0][0].format('HH:mm:ss')).toEqual('03:03:03');
     });
   });
+
+  it('showHour, showMinute, !showSecond', () => {
+    const { container } = render(
+      <DayPickerPanel
+        showTime={{
+          showHour: true,
+          showMinute: true,
+        }}
+      />,
+    );
+
+    expect(container.querySelectorAll('.rc-picker-time-panel-column')).toHaveLength(2);
+  });
 });

@@ -168,7 +168,8 @@ export default () => {
         //   console.log('Popup!', node);
         //   return node.parentElement!;
         // }}
-        picker="time"
+        // picker="time"
+        showTime={{ showHour: true, showMinute: true }}
         defaultPickerValue={dayjs('2000-01-01 03:05:08')}
         presets={[
           {
