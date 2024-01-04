@@ -48,15 +48,31 @@ export function getTimeConfig<DateType extends object>(
 ): SharedTimeProps<DateType> {
   const { showTime, picker } = componentProps;
 
-  if (showTime || picker === 'time') {
-    const timeConfig =
-      showTime && typeof showTime === 'object' ? showTime : pickTimeProps(componentProps);
+  const isTimePicker = picker === 'time';
+
+  if (showTime || isTimePicker) {
+    const isShowTimeConfig = showTime && typeof showTime === 'object';
+
+    const timeConfig = isShowTimeConfig ? showTime : pickTimeProps(componentProps);
 
     const pickedProps = pickProps(timeConfig);
 
+    let timeFormat: string;
+    if (isTimePicker) {
+      timeFormat = pickedProps.format;
+    } else {
+      timeFormat = isShowTimeConfig && showTime.format;
+    }
+
     return {
-      format: pickedProps.use12Hours ? 'HH:mm:ss A' : 'HH:mm:ss',
       ...pickedProps,
+      format:
+        typeof timeFormat === 'string'
+          ? timeFormat
+          : // Fallback to default time format instead
+          pickedProps.use12Hours
+          ? 'HH:mm:ss A'
+          : 'HH:mm:ss',
     };
   }
 

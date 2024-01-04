@@ -149,28 +149,8 @@ export default () => {
       <SinglePicker
         // Shared
         {...sharedLocale}
-        // multiple
-        // format="YYYY-MM-DD"
-        // showTime={{
-        //   defaultValue: dayjs('2000-01-01 03:05:08'),
-        // }}
-        // autoFocus
-        // defaultValue={[
-        //   dayjs(),
-        //   // dayjs('2000-01-01'),
-        //   // dayjs('2000-01-03'),
-        //   // dayjs('2000-01-05'),
-        //   // dayjs('2000-01-07'),
-        //   // dayjs('2000-01-09'),
-        // ]}
-        // disabledDate={(date) => date.date() >= 5}
-        // getPopupContainer={(node) => {
-        //   console.log('Popup!', node);
-        //   return node.parentElement!;
-        // }}
-        // picker="time"
-        showTime={{ showHour: true, showMinute: true }}
-        defaultPickerValue={dayjs('2000-01-01 03:05:08')}
+        showTime
+        format={(val) => val.format('YYYY-MM-DD')}
         presets={[
           {
             label: 'Good',
@@ -251,22 +231,16 @@ export default () => {
       </button>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        <PickerPanel
+        {/* <PickerPanel
           generateConfig={dayjsGenerateConfig}
           locale={zhCN}
           value={value}
-          // multiple
-          picker="time"
-          use12Hours
           onChange={setSingleValue}
-          // onPickerValueChange={(pickerValue) => {
-          //   console.log('🎼 PickerValue Change:', pickerValue);
-          // }}
           onPanelChange={(panelValue, mode) => {
             console.error('1');
             console.log('🎲 PanelValue Change:', panelValue, mode);
           }}
-        />
+        /> */}
         {/* <CellPicker
           picker="time"
           locale={{
