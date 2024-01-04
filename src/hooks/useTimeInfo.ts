@@ -15,8 +15,16 @@ function emptyDisabled<T>(): T[] {
   return [];
 }
 
-function checkShow(format: string, keywords: string[], hasShowConfig: boolean, show?: boolean) {
-  return hasShowConfig ? show : keywords.some((keyword) => format.includes(keyword));
+function checkShow(
+  format: string,
+  keywords: string[],
+  hasOtherShowConfig: boolean,
+  show?: boolean,
+) {
+  if (show !== undefined) {
+    return show;
+  }
+  return !hasOtherShowConfig && keywords.some((keyword) => format.includes(keyword));
 }
 
 function generateUnits(
