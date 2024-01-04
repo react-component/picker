@@ -688,4 +688,25 @@ describe('Picker.Panel', () => {
       expect(onChange.mock.calls[0][0].format('HH:mm:ss')).toEqual('03:03:03');
     });
   });
+
+  it('showHour, showMinute, !showSecond', () => {
+    const { container } = render(
+      <DayPickerPanel
+        showTime={{
+          showHour: true,
+          showMinute: true,
+        }}
+      />,
+    );
+
+    expect(container.querySelectorAll('.rc-picker-time-panel-column')).toHaveLength(2);
+  });
+
+  it('use12Hours with format', () => {
+    const { container } = render(
+      <DayPickerPanel picker="time" use12Hours defaultValue={getDay('2000-01-01 01:02:03')} />,
+    );
+
+    expect(container.querySelector('.rc-picker-header-view').textContent).toEqual('01:02:03 AM');
+  });
 });

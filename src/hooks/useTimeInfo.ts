@@ -15,8 +15,16 @@ function emptyDisabled<T>(): T[] {
   return [];
 }
 
-function checkShow(format: string, keywords: string[], propShow?: boolean) {
-  return propShow ?? keywords.some((keyword) => format.includes(keyword));
+function checkShow(
+  format: string,
+  keywords: string[],
+  hasOtherShowConfig: boolean,
+  show?: boolean,
+) {
+  if (show !== undefined) {
+    return show;
+  }
+  return !hasOtherShowConfig && keywords.some((keyword) => format.includes(keyword));
 }
 
 function generateUnits(
@@ -96,11 +104,15 @@ export default function useTimeInfo<DateType extends object = any>(
   }
 
   // ========================== Show ==========================
-  let mergedShowHour = checkShow(format, ['H', 'h', 'k', 'LT', 'LLL'], showHour);
-  let mergedShowMinute = checkShow(format, ['m', 'LT', 'LLL'], showMinute);
-  let mergedShowSecond = checkShow(format, ['s', 'LTS'], showSecond);
-  const mergedShowMillisecond = checkShow(format, ['SSS'], showMillisecond);
-  const mergedShowMeridiem = checkShow(format, ['a', 'A', 'LT', 'LLL'], use12Hours);
+  const hasShowConfig = [showHour, showMinute, showSecond, showMillisecond].some(
+    (show) => show !== undefined,
+  );
+
+  let mergedShowHour = checkShow(format, ['H', 'h', 'k', 'LT', 'LLL'], hasShowConfig, showHour);
+  let mergedShowMinute = checkShow(format, ['m', 'LT', 'LLL'], hasShowConfig, showMinute);
+  let mergedShowSecond = checkShow(format, ['s', 'LTS'], hasShowConfig, showSecond);
+  const mergedShowMillisecond = checkShow(format, ['SSS'], hasShowConfig, showMillisecond);
+  const mergedShowMeridiem = checkShow(format, ['a', 'A', 'LT', 'LLL'], hasShowConfig, use12Hours);
 
   // Fallback if all can not see
   if (!mergedShowHour && !mergedShowMinute && !mergedShowSecond && !mergedShowMillisecond) {
