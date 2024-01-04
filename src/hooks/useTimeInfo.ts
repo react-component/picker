@@ -15,18 +15,6 @@ function emptyDisabled<T>(): T[] {
   return [];
 }
 
-// function checkShow(
-//   format: string,
-//   keywords: string[],
-//   hasOtherShowConfig: boolean,
-//   show?: boolean,
-// ) {
-//   if (show !== undefined) {
-//     return show;
-//   }
-//   return !hasOtherShowConfig && keywords.some((keyword) => format.includes(keyword));
-// }
-
 function generateUnits(
   start: number,
   end: number,
@@ -60,14 +48,7 @@ export default function useTimeInfo<DateType extends object = any>(
   date?: DateType,
 ) {
   const {
-    // // Fallback if `showTime` is empty
-    // format = '',
-
     // Show
-    showHour,
-    showMinute,
-    showSecond,
-    showMillisecond,
     use12Hours,
 
     // Steps
@@ -102,24 +83,6 @@ export default function useTimeInfo<DateType extends object = any>(
       `\`secondStep\` ${secondStep} is invalid. It should be a factor of 60.`,
     );
   }
-
-  // // ========================== Show ==========================
-  // const hasShowConfig = [showHour, showMinute, showSecond, showMillisecond].some(
-  //   (show) => show !== undefined,
-  // );
-
-  // let mergedShowHour = checkShow(format, ['H', 'h', 'k', 'LT', 'LLL'], hasShowConfig, showHour);
-  // let mergedShowMinute = checkShow(format, ['m', 'LT', 'LLL'], hasShowConfig, showMinute);
-  // let mergedShowSecond = checkShow(format, ['s', 'LTS'], hasShowConfig, showSecond);
-  // const mergedShowMillisecond = checkShow(format, ['SSS'], hasShowConfig, showMillisecond);
-  // const mergedShowMeridiem = checkShow(format, ['a', 'A', 'LT', 'LLL'], hasShowConfig, use12Hours);
-
-  // // Fallback if all can not see
-  // if (!mergedShowHour && !mergedShowMinute && !mergedShowSecond && !mergedShowMillisecond) {
-  //   mergedShowHour = true;
-  //   mergedShowMinute = true;
-  //   mergedShowSecond = true;
-  // }
 
   // ======================== Disabled ========================
   const getDisabledTimes = React.useCallback(
@@ -259,13 +222,6 @@ export default function useTimeInfo<DateType extends object = any>(
   return [
     // getValidTime
     getValidTime,
-
-    // Show columns
-    showHour,
-    showMinute,
-    showSecond,
-    showMillisecond,
-    use12Hours,
 
     // Units
     rowHourUnits,
