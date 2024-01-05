@@ -195,6 +195,7 @@ function SingleSelector<DateType extends object = any>(
         prefixCls,
         {
           [`${prefixCls}-focused`]: focused,
+          [`${prefixCls}-disabled`]: disabled,
           [`${prefixCls}-invalid`]: invalid,
           [`${prefixCls}-rtl`]: rtl,
         },
