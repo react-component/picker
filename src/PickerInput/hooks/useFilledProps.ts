@@ -2,7 +2,7 @@ import { warning } from 'rc-util';
 import * as React from 'react';
 import { fillLocale } from '../../hooks/useLocale';
 import { getTimeConfig } from '../../hooks/useTimeConfig';
-import type { FormatType, InternalMode } from '../../interface';
+import type { FormatType, InternalMode, PickerMode } from '../../interface';
 import { toArray } from '../../utils/miscUtil';
 import type { RangePickerProps } from '../RangePicker';
 import { fillClearIcon } from '../Selector/hooks/useClearIcon';
@@ -78,6 +78,7 @@ export default function useFilledProps<
 ): [
   filledProps: Omit<InProps, keyof UpdaterProps | 'showTime' | 'value' | 'defaultValue'> &
     UpdaterProps & {
+      picker: PickerMode;
       showTime?: ExcludeBooleanType<InProps['showTime']>;
       value?: ToArrayType<InProps['value'], DateType>;
       defaultValue?: ToArrayType<InProps['value'], DateType>;
