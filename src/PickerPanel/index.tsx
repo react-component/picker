@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useEvent, useMergedState, warning } from 'rc-util';
 import * as React from 'react';
 import useLocale from '../hooks/useLocale';
-import { getTimeConfig } from '../hooks/useTimeConfig';
+import { getTimeConfig, getTimeProps } from '../hooks/useTimeConfig';
 import useToggleDates from '../hooks/useToggleDates';
 import type {
   CellRender,
@@ -190,8 +190,11 @@ function PickerPanel<DateType extends object = any>(
     nativeElement: rootRef.current,
   }));
 
+  // ========================== Time ==========================
+  const [timeProps, isShowTimeObj] = getTimeProps(props);
+
   // ========================= Locale =========================
-  const filledLocale = useLocale(locale);
+  const filledLocale = useLocale(locale, timeProps);
 
   // ========================= Picker =========================
   const internalPicker: InternalMode = picker === 'date' && showTime ? 'datetime' : picker;

@@ -48,12 +48,47 @@ function isStringFormat(format: any): format is string {
   return format && typeof format === 'string';
 }
 
-export function getTimeConfig<DateType extends object>(componentProps: {
+export interface ComponentProps<DateType extends object> {
   picker?: InternalMode;
   showTime?: boolean | Partial<SharedTimeProps<DateType>>;
   locale: Locale;
   format?: SharedPickerProps['format'];
-}): SharedTimeProps<DateType> {
+}
+
+/**
+ * Get `showHour`, `showMinute`, `showSecond` or other from the props.
+ * This is pure function, will not get `showXXX` from the `format` prop.
+ */
+export function getTimeProps<DateType extends object>(componentProps: ComponentProps<DateType>) {
+  const { showTime } = componentProps;
+
+  const isShowTimeConfig = showTime && typeof showTime === 'object';
+  const timeConfig = isShowTimeConfig ? showTime : pickTimeProps(componentProps);
+
+  const { showMillisecond } = timeConfig;
+  let { showHour, showMinute, showSecond } = timeConfig;
+
+  if (!showHour && !showMinute && !showSecond && !showMillisecond) {
+    showHour = true;
+    showMinute = true;
+    showSecond = true;
+  }
+
+  return [
+    {
+      ...timeConfig,
+      showHour,
+      showMinute,
+      showSecond,
+      showMillisecond,
+    },
+    isShowTimeConfig,
+  ] as const;
+}
+
+export function getTimeConfig<DateType extends object>(
+  componentProps: ComponentProps<DateType>,
+): SharedTimeProps<DateType> {
   const { showTime, picker, locale, format: propFormat } = componentProps;
 
   const isTimePicker = picker === 'time';

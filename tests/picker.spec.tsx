@@ -1345,8 +1345,12 @@ describe('Picker.Basic', () => {
   });
 
   it('use12Hours has longer size', () => {
-    const { container } = render(<DayPicker use12Hours picker="time" />);
+    const { container } = render(
+      <DayPicker use12Hours picker="time" defaultValue={getDay('18:03:04')} />,
+    );
 
-    expect(container.querySelector('input').size).toBe(12);
+    const inputEle = container.querySelector('input');
+    expect(inputEle.size).toBe(12);
+    expect(inputEle).toHaveValue('06:03:04 PM');
   });
 });

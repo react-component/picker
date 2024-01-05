@@ -1,10 +1,54 @@
 import React from 'react';
-import type { Locale } from '../interface';
+import type { Locale, SharedTimeProps } from '../interface';
+
+function fillTimeFormat(
+  showHour: boolean,
+  showMinute: boolean,
+  showSecond: boolean,
+  showMillisecond: boolean,
+  showMeridiem: boolean,
+) {
+  let timeFormat = '';
+
+  // Base HH:mm:ss
+  const cells = [];
+
+  if (showHour) {
+    cells.push(showMeridiem ? 'hh' : 'HH');
+  }
+  if (showMinute) {
+    cells.push('mm');
+  }
+  if (showSecond) {
+    cells.push('ss');
+  }
+
+  timeFormat = cells.join(':');
+
+  // Millisecond
+  if (showMillisecond) {
+    timeFormat += '.SSS';
+  }
+
+  // Meridiem
+  if (showMeridiem) {
+    timeFormat += ' A';
+  }
+
+  return timeFormat;
+}
 
 /**
  * Used for `useFilledProps` since it already in the React.useMemo
  */
-export function fillLocale(locale: Locale): Locale {
+function fillLocale(
+  locale: Locale,
+  showHour: boolean,
+  showMinute: boolean,
+  showSecond: boolean,
+  showMillisecond: boolean,
+  use12Hours: boolean,
+): Locale {
   // Not fill `monthFormat` since `locale.shortMonths` handle this
   // Not fill `cellMeridiemFormat` since AM & PM by default
   const {
@@ -30,12 +74,14 @@ export function fillLocale(locale: Locale): Locale {
     // cellMeridiemFormat,
   } = locale;
 
+  const timeFormat = fillTimeFormat(showHour, showMinute, showSecond, showMillisecond, use12Hours);
+
   return {
     ...locale,
 
-    fieldDateTimeFormat: fieldDateTimeFormat || 'YYYY-MM-DD HH:mm:ss',
+    fieldDateTimeFormat: fieldDateTimeFormat || `YYYY-MM-DD ${timeFormat}`,
     fieldDateFormat: fieldDateFormat || 'YYYY-MM-DD',
-    fieldTimeFormat: fieldTimeFormat || 'HH:mm:ss',
+    fieldTimeFormat: fieldTimeFormat || timeFormat,
     fieldMonthFormat: fieldMonthFormat || 'YYYY-MM',
     fieldYearFormat: fieldYearFormat || 'YYYY',
     fieldWeekFormat: fieldWeekFormat || 'gggg-wo',
@@ -52,6 +98,16 @@ export function fillLocale(locale: Locale): Locale {
 /**
  * Fill locale format as start up
  */
-export default function useLocale(locale: Locale) {
-  return React.useMemo<Locale>(() => fillLocale(locale), [locale]);
+export default function useLocale<DateType extends object>(
+  locale: Locale,
+  showProps: Pick<
+    SharedTimeProps<DateType>,
+    'showHour' | 'showMinute' | 'showSecond' | 'showMillisecond' | 'use12Hours'
+  >,
+) {
+  const { showHour, showMinute, showSecond, showMillisecond, use12Hours } = showProps;
+  return React.useMemo<Locale>(
+    () => fillLocale(locale, showHour, showMinute, showSecond, showMillisecond, use12Hours),
+    [locale, showHour, showMinute, showSecond, showMillisecond, use12Hours],
+  );
 }
