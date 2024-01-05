@@ -178,8 +178,10 @@ describe('Picker.Basic', () => {
     });
 
     it('disabled should not open', () => {
-      render(<DayPicker open disabled />);
+      const { container } = render(<DayPicker open disabled />);
       expect(isOpen()).toBeFalsy();
+
+      console.log(container.innerHTML);
     });
   });
 
@@ -1339,8 +1341,6 @@ describe('Picker.Basic', () => {
       />,
     );
 
-    expect(document.querySelectorAll('.rc-picker-header-view')[1].textContent).toEqual(
-      '01:02:03',
-    );
+    expect(document.querySelectorAll('.rc-picker-header-view')[1].textContent).toEqual('01:02:03');
   });
 });
