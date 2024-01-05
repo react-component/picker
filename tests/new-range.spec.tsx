@@ -565,6 +565,14 @@ describe('NewPicker.Range', () => {
         }),
       );
     });
+
+    it('disabled should patch className', () => {
+      const { container, rerender } = render(<DayRangePicker disabled />);
+      expect(container.querySelector('.rc-picker-disabled')).toBeTruthy();
+
+      rerender(<DayRangePicker disabled={[true, false]} />);
+      expect(container.querySelector('.rc-picker-disabled')).toBeFalsy();
+    });
   });
 
   it('showTime.defaultValue', () => {

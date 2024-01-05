@@ -181,7 +181,7 @@ describe('Picker.Basic', () => {
       const { container } = render(<DayPicker open disabled />);
       expect(isOpen()).toBeFalsy();
 
-      console.log(container.innerHTML);
+      expect(container.querySelector('.rc-picker-disabled')).toBeTruthy();
     });
   });
 

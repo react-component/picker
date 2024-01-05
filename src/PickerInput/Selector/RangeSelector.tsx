@@ -221,6 +221,7 @@ function RangeSelector<DateType extends object = any>(
           `${prefixCls}-range`,
           {
             [`${prefixCls}-focused`]: focused,
+            [`${prefixCls}-disabled`]: disabled.every((i) => i),
             [`${prefixCls}-invalid`]: invalid.some((i) => i),
             [`${prefixCls}-rtl`]: rtl,
           },
