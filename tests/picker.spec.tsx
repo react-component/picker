@@ -1343,4 +1343,10 @@ describe('Picker.Basic', () => {
 
     expect(document.querySelectorAll('.rc-picker-header-view')[1].textContent).toEqual('01:02:03');
   });
+
+  it('use12Hours has longer size', () => {
+    const { container } = render(<DayPicker use12Hours picker="time" />);
+
+    expect(container.querySelector('input').size).toBe(12);
+  });
 });
