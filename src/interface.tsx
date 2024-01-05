@@ -446,6 +446,8 @@ export interface OpenConfig {
 
 export type OnOpenChange = (open: boolean, config?: OpenConfig) => void;
 export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
+  picker: PickerMode;
+
   clearIcon?: React.ReactNode;
   suffixIcon?: React.ReactNode;
   className?: string;

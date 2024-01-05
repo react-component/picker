@@ -1,7 +1,6 @@
+import isVisible from 'rc-util/lib/Dom/isVisible';
 import KeyCode from 'rc-util/lib/KeyCode';
 import raf from 'rc-util/lib/raf';
-import isVisible from 'rc-util/lib/Dom/isVisible';
-import type { GenerateConfig } from '../generate';
 import type { CustomFormat, PanelMode, PickerMode } from '../interface';
 
 const scrollIds = new Map<HTMLElement, number>();
@@ -179,17 +178,6 @@ export function getDefaultFormat<DateType>(
   }
 
   return mergedFormat;
-}
-
-export function getInputSize<DateType>(
-  picker: PickerMode | undefined,
-  format: string | CustomFormat<DateType>,
-  generateConfig: GenerateConfig<DateType>,
-) {
-  const defaultSize = picker === 'time' ? 8 : 10;
-  const length =
-    typeof format === 'function' ? format(generateConfig.getNow()).length : format.length;
-  return Math.max(defaultSize, length) + 2;
 }
 
 // ===================== Window =====================

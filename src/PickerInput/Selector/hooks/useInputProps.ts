@@ -27,6 +27,7 @@ export default function useInputProps<DateType extends object = any>(
     | 'name'
     | 'autoComplete'
     | 'open'
+    | 'picker'
   > & {
     id?: string | string[];
     value?: DateType[];
@@ -71,6 +72,8 @@ export default function useInputProps<DateType extends object = any>(
     disabled,
     activeIndex,
     allHelp,
+
+    picker,
   } = props;
 
   // ======================== Parser ========================
@@ -93,6 +96,16 @@ export default function useInputProps<DateType extends object = any>(
   );
 
   const valueTexts = React.useMemo(() => value.map(getText), [value, getText]);
+
+  // ========================= Size =========================
+  const size = React.useMemo(() => {
+    const defaultSize = picker === 'time' ? 8 : 10;
+    const length =
+      typeof firstFormat === 'function'
+        ? firstFormat(generateConfig.getNow()).length
+        : firstFormat.length;
+    return Math.max(defaultSize, length) + 2;
+  }, [firstFormat, picker, generateConfig]);
 
   // ======================= Validate =======================
   const validateFormat = (text: string) => {
@@ -139,6 +152,8 @@ export default function useInputProps<DateType extends object = any>(
       name,
 
       autoComplete,
+
+      size,
 
       // ============= By Index =============
       id: getProp(id),

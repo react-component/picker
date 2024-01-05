@@ -150,7 +150,11 @@ export default () => {
         // Shared
         {...sharedLocale}
         showTime
-        // format={(val) => val.format('YYYY-MM-DD')}
+        format={(val) => val.format('YYYY-MM-DD')}
+        // format={{
+        //   format: 'YYYY-MM-DD',
+        //   align: true,
+        // }}
         presets={[
           {
             label: 'Good',
