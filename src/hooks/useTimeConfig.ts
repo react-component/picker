@@ -59,11 +59,19 @@ export interface ComponentProps<DateType extends object> {
  * Get `showHour`, `showMinute`, `showSecond` or other from the props.
  * This is pure function, will not get `showXXX` from the `format` prop.
  */
-export function getTimeProps<DateType extends object>(componentProps: ComponentProps<DateType>) {
-  const { showTime } = componentProps;
+export function getTimeProps<DateType extends object>(
+  componentProps: ComponentProps<DateType>,
+): [
+  showTimeProps: SharedTimeProps<DateType>,
+  showTimePropsForLocale: SharedTimeProps<DateType>,
+  showTimeFormat: string,
+  propFormat: string,
+] {
+  const { showTime, picker } = componentProps;
 
+  const pickedProps = pickTimeProps(componentProps);
   const isShowTimeConfig = showTime && typeof showTime === 'object';
-  const timeConfig = isShowTimeConfig ? showTime : pickTimeProps(componentProps);
+  const timeConfig = isShowTimeConfig ? showTime : pickedProps;
 
   const { showMillisecond } = timeConfig;
   let { showHour, showMinute, showSecond } = timeConfig;
@@ -74,7 +82,14 @@ export function getTimeProps<DateType extends object>(componentProps: ComponentP
     showSecond = true;
   }
 
+  const mergedFormat = isShowTimeConfig
+    ? showTime.format
+    : picker === 'time'
+    ? pickedProps.format
+    : null;
+
   return [
+    timeConfig,
     {
       ...timeConfig,
       showHour,
@@ -82,29 +97,27 @@ export function getTimeProps<DateType extends object>(componentProps: ComponentP
       showSecond,
       showMillisecond,
     },
-    isShowTimeConfig,
-  ] as const;
+    mergedFormat,
+    pickedProps.format,
+  ];
 }
 
-export function getTimeConfig<DateType extends object>(
-  componentProps: ComponentProps<DateType>,
+export function fillShowTimeConfig<DateType extends object>(
+  picker: InternalMode,
+  showTimeFormat: string,
+  propFormat: string,
+  timeConfig: SharedTimeProps<DateType>,
+  locale: Locale,
 ): SharedTimeProps<DateType> {
-  const { showTime, picker, locale, format: propFormat } = componentProps;
-
   const isTimePicker = picker === 'time';
 
-  if (showTime || isTimePicker) {
-    const isShowTimeConfig = showTime && typeof showTime === 'object';
-
-    const timeConfig = isShowTimeConfig ? showTime : pickTimeProps(componentProps);
-
-    const pickedProps = pickProps(timeConfig);
+  if (picker === 'datetime' || isTimePicker) {
+    const pickedProps = timeConfig;
 
     // ====================== BaseFormat ======================
-    const showTimeFormat = isShowTimeConfig ? showTime.format : isTimePicker && propFormat;
-    const defaultFormat = getRowFormat(picker, locale, null) as string;
+    const defaultLocaleFormat = getRowFormat(picker, locale, null) as string;
 
-    let baselineFormat = defaultFormat;
+    let baselineFormat = defaultLocaleFormat;
 
     const formatList = [showTimeFormat, propFormat];
     for (let i = 0; i < formatList.length; i += 1) {
@@ -120,7 +133,7 @@ export function getTimeConfig<DateType extends object>(
     let { showHour, showMinute, showSecond, showMillisecond } = pickedProps;
     const { use12Hours } = pickedProps;
 
-    const showMeridiem = checkShow(baselineFormat, ['a', 'A', 'LT', 'LLL'], use12Hours);
+    const showMeridiem = checkShow(baselineFormat, ['a', 'A', 'LT', 'LLL', 'LTS'], use12Hours);
 
     const hasShowConfig = [showHour, showMinute, showSecond, showMillisecond].some(
       (show) => show !== undefined,

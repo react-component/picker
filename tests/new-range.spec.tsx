@@ -277,6 +277,7 @@ describe('NewPicker.Range', () => {
       const { rerender } = render(<DayRangePicker picker="time" format="LT" open />);
       expect(document.querySelectorAll('.rc-picker-time-panel-column')).toHaveLength(3);
 
+      console.log('~~~~~~~~~~~~~~~~');
       // With second
       rerender(<DayRangePicker picker="time" format="LTS" open />);
       expect(document.querySelectorAll('.rc-picker-time-panel-column')).toHaveLength(4);
