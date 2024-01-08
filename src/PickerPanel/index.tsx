@@ -191,6 +191,8 @@ function PickerPanel<DateType extends object = any>(
   }));
 
   // ========================== Time ==========================
+  // Auto `format` need to check `showTime.showXXX` first.
+  // And then merge the `locale` into `mergedShowTime`.
   const [timeProps, localeTimeProps, showTimeFormat, propFormat] = getTimeProps(props);
 
   // ========================= Locale =========================
