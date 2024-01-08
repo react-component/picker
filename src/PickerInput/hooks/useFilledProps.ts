@@ -1,7 +1,7 @@
 import { warning } from 'rc-util';
 import * as React from 'react';
-import { fillLocale } from '../../hooks/useLocale';
-import { getTimeConfig } from '../../hooks/useTimeConfig';
+import useLocale from '../../hooks/useLocale';
+import { fillShowTimeConfig, getTimeProps } from '../../hooks/useTimeConfig';
 import type { FormatType, InternalMode, PickerMode } from '../../interface';
 import { toArray } from '../../utils/miscUtil';
 import type { RangePickerProps } from '../RangePicker';
@@ -133,16 +133,17 @@ export default function useFilledProps<
   const complexPicker = internalPicker === 'time' || internalPicker === 'datetime' || multiple;
   const mergedNeedConfirm = needConfirm ?? complexPicker;
 
+  // ========================== Time ==========================
+  // Auto `format` need to check `showTime.showXXX` first.
+  // And then merge the `locale` into `mergedShowTime`.
+  const [timeProps, localeTimeProps, showTimeFormat, propFormat] = getTimeProps(props);
+
   // ======================= Locales ========================
-  const mergedLocale = fillLocale(locale);
+  const mergedLocale = useLocale(locale, localeTimeProps);
+
   const mergedShowTime = React.useMemo(
-    () =>
-      getTimeConfig({
-        ...props,
-        picker: internalPicker,
-        locale: mergedLocale,
-      }),
-    [props, internalPicker, mergedLocale],
+    () => fillShowTimeConfig(internalPicker, showTimeFormat, propFormat, timeProps, mergedLocale),
+    [internalPicker, showTimeFormat, propFormat, timeProps, mergedLocale],
   );
 
   // ======================= Warning ========================

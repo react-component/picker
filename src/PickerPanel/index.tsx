@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { useEvent, useMergedState, warning } from 'rc-util';
 import * as React from 'react';
 import useLocale from '../hooks/useLocale';
-import { getTimeConfig } from '../hooks/useTimeConfig';
+import { fillShowTimeConfig, getTimeProps } from '../hooks/useTimeConfig';
 import useToggleDates from '../hooks/useToggleDates';
 import type {
   CellRender,
@@ -190,21 +190,21 @@ function PickerPanel<DateType extends object = any>(
     nativeElement: rootRef.current,
   }));
 
+  // ========================== Time ==========================
+  // Auto `format` need to check `showTime.showXXX` first.
+  // And then merge the `locale` into `mergedShowTime`.
+  const [timeProps, localeTimeProps, showTimeFormat, propFormat] = getTimeProps(props);
+
   // ========================= Locale =========================
-  const filledLocale = useLocale(locale);
+  const filledLocale = useLocale(locale, localeTimeProps);
 
   // ========================= Picker =========================
   const internalPicker: InternalMode = picker === 'date' && showTime ? 'datetime' : picker;
 
   // ======================== ShowTime ========================
   const mergedShowTime = React.useMemo(
-    () =>
-      getTimeConfig({
-        ...props,
-        picker: internalPicker,
-        locale: filledLocale,
-      }),
-    [props, internalPicker, filledLocale],
+    () => fillShowTimeConfig(internalPicker, showTimeFormat, propFormat, timeProps, filledLocale),
+    [internalPicker, showTimeFormat, propFormat, timeProps, filledLocale],
   );
 
   // ========================== Now ===========================
@@ -244,14 +244,7 @@ function PickerPanel<DateType extends object = any>(
       (nextValue === null ||
         mergedValue.length !== nextValue.length ||
         mergedValue.some(
-          (ori, index) =>
-            !isSame(
-              generateConfig,
-              locale,
-              ori,
-              nextValue[index],
-              picker === 'date' && mergedShowTime ? 'datetime' : picker,
-            ),
+          (ori, index) => !isSame(generateConfig, locale, ori, nextValue[index], internalPicker),
         ))
     ) {
       onChange?.(multiple ? nextValue : nextValue[0]);
