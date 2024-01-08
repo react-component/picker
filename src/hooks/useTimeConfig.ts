@@ -156,11 +156,9 @@ export function fillShowTimeConfig<DateType extends object>(
     }
 
     // ======================== Format ========================
-    let timeFormat = isStringFormat(showTimeFormat) ? showTimeFormat : null;
-
-    if (!timeFormat) {
-      timeFormat = fillTimeFormat(showHour, showMinute, showSecond, showMillisecond, showMeridiem);
-    }
+    const timeFormat =
+      showTimeFormat ||
+      fillTimeFormat(showHour, showMinute, showSecond, showMillisecond, showMeridiem);
 
     // ======================== Props =========================
     return {
