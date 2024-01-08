@@ -1,5 +1,6 @@
 import type { InternalMode, Locale, SharedPickerProps, SharedTimeProps } from '../interface';
 import { getRowFormat, pickProps, toArray } from '../utils/miscUtil';
+import { fillTimeFormat } from './useLocale';
 
 function checkShow(format: string, keywords: string[], show?: boolean) {
   return show ?? keywords.some((keyword) => format.includes(keyword));
@@ -158,32 +159,7 @@ export function fillShowTimeConfig<DateType extends object>(
     let timeFormat = isStringFormat(showTimeFormat) ? showTimeFormat : null;
 
     if (!timeFormat) {
-      timeFormat = '';
-
-      // Base HH:mm:ss
-      const cells = [];
-
-      if (showHour) {
-        cells.push('HH');
-      }
-      if (showMinute) {
-        cells.push('mm');
-      }
-      if (showSecond) {
-        cells.push('ss');
-      }
-
-      timeFormat = cells.join(':');
-
-      // Millisecond
-      if (showMillisecond) {
-        timeFormat += '.SSS';
-      }
-
-      // Meridiem
-      if (showMeridiem) {
-        timeFormat += ' A';
-      }
+      timeFormat = fillTimeFormat(showHour, showMinute, showSecond, showMillisecond, showMeridiem);
     }
 
     // ======================== Props =========================

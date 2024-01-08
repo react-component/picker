@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Locale, SharedTimeProps } from '../interface';
 
-function fillTimeFormat(
+export function fillTimeFormat(
   showHour: boolean,
   showMinute: boolean,
   showSecond: boolean,
