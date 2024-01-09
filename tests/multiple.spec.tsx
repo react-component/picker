@@ -25,15 +25,26 @@ describe('Picker.Multiple', () => {
 
   it('onChange', () => {
     const onChange = jest.fn();
-    const { container } = render(<DayPicker multiple onChange={onChange} />);
+    const onCalendarChange = jest.fn();
+    const { container } = render(
+      <DayPicker multiple onChange={onChange} onCalendarChange={onCalendarChange} />,
+    );
 
     expect(container.querySelector('.rc-picker-multiple')).toBeTruthy();
 
     openPicker(container);
-    selectCell(1);
-    selectCell(3);
-    selectCell(5);
 
+    // Select 3, 1
+    selectCell(3);
+    selectCell(1);
+    expect(onCalendarChange).toHaveBeenCalledWith(
+      expect.anything(),
+      ['1990-09-01', '1990-09-03'],
+      expect.anything(),
+    );
+
+    // Select 5
+    selectCell(5);
     expect(onChange).not.toHaveBeenCalled();
     expect(isOpen()).toBeTruthy();
 

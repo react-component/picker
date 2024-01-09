@@ -238,6 +238,7 @@ function RangePicker<DateType extends object = any>(
       locale,
       formatList,
       true,
+      false,
       defaultValue,
       value,
       onCalendarChange,
