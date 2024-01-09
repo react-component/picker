@@ -65,6 +65,13 @@ function useUtil<MergedValueType extends object[], DateType extends MergedValueT
   return [getDateTexts, isSameDates] as const;
 }
 
+function orderDates<DateType extends object, DatesType extends DateType[]>(
+  dates: DatesType,
+  generateConfig: GenerateConfig<DateType>,
+) {
+  return [...dates].sort((a, b) => (generateConfig.isAfter(a, b) ? 1 : -1)) as DatesType;
+}
+
 /**
  * Used for internal value management.
  * It should always use `mergedValue` in render logic
@@ -94,6 +101,12 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
   formatList: FormatType[],
   /** Used for RangePicker. `true` means [DateType, DateType] or will be DateType[] */
   rangeValue: boolean,
+  /**
+   * Trigger order when trigger calendar value change.
+   * This should only used in SinglePicker with `multiple` mode.
+   * So when `rangeValue` is `true`, order will be ignored.
+   */
+  order: boolean,
   defaultValue?: ValueType,
   value?: ValueType,
   onCalendarChange?: (
@@ -117,12 +130,14 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
 
   const triggerCalendarChange: TriggerCalendarChange<ValueType> = useEvent(
     (nextCalendarValues: ValueType) => {
-      const clone = [...nextCalendarValues] as ValueType;
+      let clone = [...nextCalendarValues] as ValueType;
 
       if (rangeValue) {
         for (let i = 0; i < 2; i += 1) {
           clone[i] = clone[i] || null;
         }
+      } else if (order) {
+        clone = orderDates(clone, generateConfig);
       }
 
       // Update merged value
@@ -142,7 +157,7 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
     },
   );
 
-  const triggerOk = ()=> {
+  const triggerOk = () => {
     if (onOk) {
       onOk(calendarValue());
     }
@@ -209,7 +224,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   const triggerSubmit = useEvent((nextValue?: ValueType) => {
     const isNullValue = nextValue === null;
 
-    const clone = [...(nextValue || submitValue())] as ValueType;
+    let clone = [...(nextValue || submitValue())] as ValueType;
 
     // Fill null value
     if (isNullValue) {
@@ -224,7 +239,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
 
     // Only when exist value to sort
     if (orderOnChange && clone[0] && clone[1]) {
-      clone.sort((a, b) => (generateConfig.isAfter(a, b) ? 1 : -1));
+      clone = orderDates(clone, generateConfig);
     }
 
     // Sync `calendarValue`

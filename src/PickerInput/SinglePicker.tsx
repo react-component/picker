@@ -125,6 +125,7 @@ function Picker<DateType extends object = any>(
     classNames,
 
     // Value
+    order,
     defaultValue,
     value,
     needConfirm,
@@ -224,6 +225,7 @@ function Picker<DateType extends object = any>(
       locale,
       formatList,
       false,
+      order,
       defaultValue,
       value,
       onInternalCalendarChange,
