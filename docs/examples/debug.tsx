@@ -146,7 +146,7 @@ export default () => {
 
       <br />
 
-      <SinglePicker
+      {/* <SinglePicker
         // Shared
         {...sharedLocale}
         showTime
@@ -179,14 +179,17 @@ export default () => {
         onKeyDown={(e) => {
           console.log('🎬 KeyDown:', e);
         }}
-      />
+      /> */}
       <br />
-      {/* <RangePicker
+      <RangePicker
         {...sharedLocale}
         value={rangeValue}
-        separator="~~~~~"
-        showTime={{
-          defaultValue: [dayjs('2000-01-01 01:02:03'), dayjs('2000-01-01 05:06:07')],
+        disabledDate={(current, { from }) => {
+          if (from) {
+            return Math.abs(current.diff(from, 'days')) > 7;
+          }
+
+          return false;
         }}
         changeOnBlur={false}
         showNow
@@ -223,7 +226,7 @@ export default () => {
           start: 'inputStart',
           end: 'inputEnd',
         }}
-      /> */}
+      />
       <br />
 
       <button

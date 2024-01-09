@@ -194,6 +194,7 @@ function SingleSelector<DateType extends object = any>(
       className={classNames(
         prefixCls,
         {
+          [`${prefixCls}-multiple`]: multiple,
           [`${prefixCls}-focused`]: focused,
           [`${prefixCls}-disabled`]: disabled,
           [`${prefixCls}-invalid`]: invalid,

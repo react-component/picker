@@ -27,6 +27,8 @@ describe('Picker.Multiple', () => {
     const onChange = jest.fn();
     const { container } = render(<DayPicker multiple onChange={onChange} />);
 
+    expect(container.querySelector('.rc-picker-multiple')).toBeTruthy();
+
     openPicker(container);
     selectCell(1);
     selectCell(3);
