@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
+import type { PanelMode, SharedPanelProps } from '../../interface';
 import {
   formatValue,
   getWeekStartDate,
@@ -7,7 +8,6 @@ import {
   isSameMonth,
   WEEK_DAY_COUNT,
 } from '../../utils/dateUtil';
-import type { PanelMode, SharedPanelProps } from '../../interface';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
@@ -171,7 +171,7 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   // ========================= Render =========================
   return (
     <PanelContext.Provider value={info}>
-      <div className={panelPrefixCls}>
+      <div className={classNames(panelPrefixCls, showWeek && `${panelPrefixCls}-show-week`)}>
         {/* Header */}
         <PanelHeader
           onOffset={(offset) => {
