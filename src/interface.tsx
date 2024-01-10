@@ -405,7 +405,7 @@ export interface SharedPickerProps<DateType extends object = any>
   transitionName?: string;
 
   // Render
-  components?: Components;
+  components?: Components<DateType>;
   /** @deprecated Please use `components.input` instead. */
   inputRender?: (props: React.InputHTMLAttributes<HTMLInputElement>) => React.ReactNode;
   cellRender?: CellRender<DateType>;
