@@ -1033,6 +1033,9 @@ describe('NewPicker.Range', () => {
     openPicker(container);
 
     expect(document.querySelector('.rc-picker-cell-week')).toBeTruthy();
+    expect(
+      document.querySelector('.rc-picker-date-panel.rc-picker-date-panel-show-week'),
+    ).toBeTruthy();
   });
 
   it('focus event', () => {
