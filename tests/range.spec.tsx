@@ -144,7 +144,7 @@ describe('Picker.Range', () => {
         <DayRangePicker renderExtraFooter={() => <p>footer</p>} picker="year" />,
       );
       openPicker(container);
-      expect(document.querySelector('.rc-picker-footer').textContent).toEqual('footer');
+      expect(document.querySelector('.rc-picker-footer-extra').textContent).toEqual('footer');
       expect(document.querySelectorAll('.rc-picker-header-view')[0].textContent).toEqual(
         '1990年-1999年',
       );

@@ -498,7 +498,7 @@ describe('Picker.Basic', () => {
     );
 
     function matchFooter(mode: string) {
-      expect(document.querySelector('.rc-picker-footer').textContent).toEqual(mode);
+      expect(document.querySelector('.rc-picker-footer-extra').textContent).toEqual(mode);
       expect(renderExtraFooter.mock.calls[renderExtraFooter.mock.calls.length - 1][0]).toEqual(
         mode,
       );

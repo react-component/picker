@@ -107,7 +107,7 @@ export default function Footer(props: FooterProps) {
 
   return (
     <div className={`${prefixCls}-footer`}>
-      {extraNode}
+      {extraNode && <div className={`${prefixCls}-footer-extra`}>{extraNode}</div>}
       {rangeNode}
     </div>
   );
