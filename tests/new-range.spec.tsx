@@ -1213,4 +1213,14 @@ describe('NewPicker.Range', () => {
     const { container } = render(<DayRangePicker disabled={[true, false]} autoFocus />);
     expect(document.activeElement).toBe(container.querySelectorAll('input')[1]);
   });
+
+  it('week panel not have date cell className', () => {
+    const { unmount } = render(<DayRangePicker value={[dayjs(), dayjs().add(21, 'days')]} open />);
+    expect(document.querySelector('.rc-picker-cell-range-start')).toBeTruthy();
+    unmount();
+
+    // Render with week panel
+    render(<DayRangePicker picker="week" value={[dayjs(), dayjs().add(21, 'days')]} open />);
+    expect(document.querySelector('.rc-picker-cell-range-start')).toBeFalsy();
+  });
 });

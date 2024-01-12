@@ -18,6 +18,7 @@ export interface DatePanelProps<DateType extends object> extends SharedPanelProp
 
   /** Used for `WeekPanel` */
   mode?: PanelMode;
+  cellSelection?: boolean;
 }
 
 export default function DatePanel<DateType extends object = any>(props: DatePanelProps<DateType>) {
@@ -40,6 +41,8 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
 
   const cellPrefixCls = `${prefixCls}-cell`;
 
+  const isWeek = mode === 'week';
+
   // ========================== Base ==========================
   const [info, now] = useInfo(props, mode);
   const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale.locale);
@@ -48,7 +51,7 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
 
   // =========================== PrefixColumn ===========================
   const prefixColumn =
-    mode === 'week' || showWeek
+    isWeek || showWeek
       ? (date: DateType) => {
           // >>> Additional check for disabled
           const disabled = disabledDate?.(date, { type: 'week' });
@@ -198,6 +201,7 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
           getCellText={getCellText}
           getCellClassName={getCellClassName}
           prefixColumn={prefixColumn}
+          cellSelection={!isWeek}
         />
       </div>
     </PanelContext.Provider>
