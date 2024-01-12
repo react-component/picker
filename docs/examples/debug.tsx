@@ -129,9 +129,9 @@ export default () => {
 
   const [value, setValue] = React.useState<Dayjs>(null);
   const [rangeValue, setRangeValue] = React.useState<[Dayjs, Dayjs]>(
-    // [dayjs('2000-12-15'), dayjs('2020-12-22')],
+    [dayjs('2024-01-15'), dayjs('2024-02-01')],
     // null,
-    undefined,
+    // undefined,
   );
 
   const setSingleValue = (nextVal: Dayjs) => {
@@ -146,21 +146,11 @@ export default () => {
 
       <br />
 
-      {/* <SinglePicker
+      <SinglePicker
         // Shared
         {...sharedLocale}
-        showTime
-        format={(val) => val.format('YYYY-MM-DD')}
-        // format={{
-        //   format: 'YYYY-MM-DD',
-        //   align: true,
-        // }}
-        presets={[
-          {
-            label: 'Good',
-            value: () => dayjs().add(3, 'day'),
-          },
-        ]}
+        disabledDate={(date) => date.isBefore(dayjs())}
+        open
         ref={singleRef}
         suffixIcon="🧶"
         onChange={(...args) => {
@@ -179,30 +169,14 @@ export default () => {
         onKeyDown={(e) => {
           console.log('🎬 KeyDown:', e);
         }}
-      /> */}
+      />
       <br />
-      <RangePicker
+      {/* <RangePicker
         {...sharedLocale}
         value={rangeValue}
-        disabledDate={(current, { from }) => {
-          if (from) {
-            return Math.abs(current.diff(from, 'days')) > 7;
-          }
-
-          return false;
-        }}
-        changeOnBlur={false}
-        showNow
-        autoFocus
+        open
+        picker="week"
         panelRender={(ori) => <>2333{ori}</>}
-        placeholder={['Start', 'End']}
-        suffixIcon="🧶"
-        onFocus={(_, info) => {
-          console.log('👁️ Focus', info);
-        }}
-        onBlur={(_, info) => {
-          console.log('👁️ Blur', info);
-        }}
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
           setRangeValue(val);
@@ -222,11 +196,7 @@ export default () => {
             info,
           );
         }}
-        id={{
-          start: 'inputStart',
-          end: 'inputEnd',
-        }}
-      />
+      /> */}
       <br />
 
       <button

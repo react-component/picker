@@ -1,6 +1,6 @@
 import * as React from 'react';
+import type { DisabledDate, SharedPanelProps } from '../../interface';
 import { formatValue, isSameMonth } from '../../utils/dateUtil';
-import type { SharedPanelProps } from '../../interface';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
@@ -8,8 +8,15 @@ import PanelHeader from '../PanelHeader';
 export default function MonthPanel<DateType extends object = any>(
   props: SharedPanelProps<DateType>,
 ) {
-  const { prefixCls, locale, generateConfig, pickerValue, onPickerValueChange, onModeChange } =
-    props;
+  const {
+    prefixCls,
+    locale,
+    generateConfig,
+    pickerValue,
+    disabledDate,
+    onPickerValueChange,
+    onModeChange,
+  } = props;
 
   const panelPrefixCls = `${prefixCls}-month-panel`;
 
@@ -46,6 +53,20 @@ export default function MonthPanel<DateType extends object = any>(
     [`${prefixCls}-cell-today`]: isSameMonth(generateConfig, date, now),
   });
 
+  // ======================== Disabled ========================
+  const mergedDisabledDate: DisabledDate<DateType> = disabledDate
+    ? (currentDate, disabledInfo) => {
+        const startDate = generateConfig.setDate(currentDate, 1);
+        const nextMonthStartDate = generateConfig.setMonth(
+          startDate,
+          generateConfig.getMonth(startDate) + 1,
+        );
+        const endDate = generateConfig.addDate(nextMonthStartDate, -1);
+
+        return disabledDate(startDate, disabledInfo) && disabledDate(endDate, disabledInfo);
+      }
+    : null;
+
   // ========================= Header =========================
   const yearNode: React.ReactNode = (
     <button
@@ -81,6 +102,7 @@ export default function MonthPanel<DateType extends object = any>(
         {/* Body */}
         <PanelBody
           {...props}
+          disabledDate={mergedDisabledDate}
           titleFormat={locale.fieldMonthFormat}
           colNum={3}
           rowNum={4}

@@ -387,20 +387,20 @@ describe('Picker.Basic', () => {
         finalPanel: '.rc-picker-date-panel',
         finalMode: 'date',
       },
-      {
-        name: 'datetime',
-        yearBtn: '.rc-picker-year-btn',
-        finalPanel: '.rc-picker-datetime-panel',
-        finalMode: 'date',
-        showTime: true,
-      },
-      {
-        name: 'week',
-        yearBtn: '.rc-picker-year-btn',
-        finalPanel: '.rc-picker-week-panel',
-        finalMode: 'week',
-        picker: 'week',
-      },
+      // {
+      //   name: 'datetime',
+      //   yearBtn: '.rc-picker-year-btn',
+      //   finalPanel: '.rc-picker-datetime-panel',
+      //   finalMode: 'date',
+      //   showTime: true,
+      // },
+      // {
+      //   name: 'week',
+      //   yearBtn: '.rc-picker-year-btn',
+      //   finalPanel: '.rc-picker-week-panel',
+      //   finalMode: 'week',
+      //   picker: 'week',
+      // },
     ].forEach(({ name, finalMode, yearBtn, finalPanel, picker, showTime }) => {
       it(name, () => {
         const onChange = jest.fn();

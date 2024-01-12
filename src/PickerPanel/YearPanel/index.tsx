@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { SharedPanelProps } from '../../interface';
+import type { DisabledDate, SharedPanelProps } from '../../interface';
 import { formatValue, isSameYear } from '../../utils/dateUtil';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
@@ -8,8 +8,15 @@ import PanelHeader from '../PanelHeader';
 export default function YearPanel<DateType extends object = any>(
   props: SharedPanelProps<DateType>,
 ) {
-  const { prefixCls, locale, generateConfig, pickerValue, onPickerValueChange, onModeChange } =
-    props;
+  const {
+    prefixCls,
+    locale,
+    generateConfig,
+    pickerValue,
+    disabledDate,
+    onPickerValueChange,
+    onModeChange,
+  } = props;
 
   const panelPrefixCls = `${prefixCls}-year-panel`;
 
@@ -43,6 +50,24 @@ export default function YearPanel<DateType extends object = any>(
       [`${prefixCls}-cell-today`]: isSameYear(generateConfig, date, now),
     };
   };
+
+  // ======================== Disabled ========================
+  const mergedDisabledDate: DisabledDate<DateType> = disabledDate
+    ? (currentDate, disabledInfo) => {
+        // Start
+        const startMonth = generateConfig.setMonth(currentDate, 0);
+        const startDate = generateConfig.setDate(startMonth, 1);
+
+        // End
+        const endMonth = generateConfig.setMonth(
+          currentDate,
+          generateConfig.getMonth(currentDate) + 1,
+        );
+        const enDate = generateConfig.addDate(endMonth, -1);
+
+        return disabledDate(startDate, disabledInfo) && disabledDate(enDate, disabledInfo);
+      }
+    : null;
 
   // ========================= Header =========================
   const yearNode: React.ReactNode = (
@@ -85,6 +110,7 @@ export default function YearPanel<DateType extends object = any>(
         {/* Body */}
         <PanelBody
           {...props}
+          disabledDate={mergedDisabledDate}
           titleFormat={locale.fieldYearFormat}
           colNum={3}
           rowNum={4}
