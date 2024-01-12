@@ -21,6 +21,7 @@ export interface PanelBodyProps<DateType = any> {
   // Used for week panel
   prefixColumn?: (date: DateType) => React.ReactNode;
   rowClassName?: (date: DateType) => string;
+  cellSelection?: boolean;
 }
 
 export default function PanelBody<DateType extends object = any>(props: PanelBodyProps<DateType>) {
@@ -35,6 +36,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
     getCellText,
     getCellClassName,
     headerCells,
+    cellSelection = true,
   } = props;
 
   const {
@@ -92,7 +94,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
       let rangeStart = false;
       let rangeEnd = false;
 
-      if (hoverRangeValue) {
+      if (cellSelection && hoverRangeValue) {
         const [hoverStart, hoverEnd] = hoverRangeValue;
         inRange = isInRange(generateConfig, hoverStart, hoverEnd, currentDate);
         rangeStart = isSame(generateConfig, locale, currentDate, hoverStart, type);
