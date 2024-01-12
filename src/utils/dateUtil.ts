@@ -133,8 +133,8 @@ export function isSameWeek<DateType>(
   date2: NullableDateType<DateType>,
 ) {
   return nullableCompare(date1, date2, () => {
-    const weekStartDate1 = getWeekStartDate(locale, generateConfig, date1);
-    const weekStartDate2 = getWeekStartDate(locale, generateConfig, date2);
+    const weekStartDate1 = generateConfig.locale.getWeekFirstDate(locale, date1);
+    const weekStartDate2 = generateConfig.locale.getWeekFirstDate(locale, date2);
 
     return (
       isSameYear(generateConfig, weekStartDate1, weekStartDate2) &&

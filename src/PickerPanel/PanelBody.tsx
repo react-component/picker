@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
+import type { DisabledDate } from '../interface';
 import { formatValue, isInRange, isSame } from '../utils/dateUtil';
 import { PickerHackContext, usePanelContext } from './context';
 
@@ -14,6 +15,8 @@ export interface PanelBodyProps<DateType = any> {
   getCellDate: (date: DateType, offset: number) => DateType;
   getCellText: (date: DateType) => React.ReactNode;
   getCellClassName: (date: DateType) => Record<string, any>;
+
+  disabledDate?: DisabledDate<DateType>;
 
   // Used for date panel
   headerCells?: React.ReactNode[];
@@ -37,13 +40,14 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
     getCellClassName,
     headerCells,
     cellSelection = true,
+    disabledDate,
   } = props;
 
   const {
     prefixCls,
     panelType: type,
     now,
-    disabledDate,
+    disabledDate: contextDisabledDate,
     cellRender,
     onHover,
     hoverValue,
@@ -53,6 +57,8 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
     locale,
     onSelect,
   } = usePanelContext<DateType>();
+
+  const mergedDisabledDate = disabledDate || contextDisabledDate;
 
   const cellPrefixCls = `${prefixCls}-cell`;
 
@@ -76,7 +82,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
       const offset = row * colNum + col;
       const currentDate = getCellDate(baseDate, offset);
 
-      const disabled = disabledDate?.(currentDate, {
+      const disabled = mergedDisabledDate?.(currentDate, {
         type: type,
       });
 

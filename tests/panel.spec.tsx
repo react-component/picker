@@ -264,7 +264,7 @@ describe('Picker.Panel', () => {
           <DayPickerPanel
             mode="decade"
             onPanelChange={onPanelChange}
-            disabledDate={(date) => date.year() === 1900}
+            disabledDate={(date) => 1900 <= date.year() && date.year() <= 1909}
           />,
         );
 
