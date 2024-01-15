@@ -150,9 +150,22 @@ export default () => {
         // Shared
         {...sharedLocale}
         disabledDate={(date) => date.isBefore(dayjs())}
+        // disabledTime={() => ({
+        //   disabledHours: () => [0, 1, 2, 3, 4, 5],
+        //   disabledMinutes: () => [0, 1, 2, 3, 4, 5],
+        //   disabledSeconds: () => [0, 1, 2, 3, 4, 5],
+        // })}
         open
         ref={singleRef}
         suffixIcon="🧶"
+        // showTime={{
+        //   disabledTime: () => ({
+        //     disabledHours: () => [0, 1, 2, 3, 4, 5],
+        //     disabledMinutes: () => [0, 1, 2, 3, 4, 5],
+        //     disabledSeconds: () => [0, 1, 2, 3, 4, 5],
+        //   }),
+        // }}
+        showTime={{}}
         onChange={(...args) => {
           console.log('🔥 Change:', ...args);
         }}

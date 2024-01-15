@@ -7,7 +7,7 @@ function checkShow(format: string, keywords: string[], show?: boolean) {
 }
 
 const showTimeKeys = [
-  'format',
+  // 'format',
   'showNow',
   'showHour',
   'showMinute',
@@ -31,18 +31,21 @@ const showTimeKeys = [
 /**
  * Get SharedTimeProps from props.
  */
-function pickTimeProps<DateType extends object = any>(props: any): SharedTimeProps<DateType> {
+function pickTimeProps<DateType extends object = any>(
+  props: any,
+): [timeProps: SharedTimeProps<DateType>, propFormat: string] {
   const timeProps: any = pickProps(props, showTimeKeys);
+  const { format } = props;
 
-  if (timeProps.format) {
-    let format = timeProps.format;
+  let propFormat: string;
+  if (format) {
     if (Array.isArray(format)) {
-      format = format[0];
+      propFormat = format[0];
     }
-    timeProps.format = typeof format === 'object' ? format.format : format;
+    propFormat = typeof format === 'object' ? format.format : format;
   }
 
-  return timeProps;
+  return [timeProps, propFormat];
 }
 
 function isStringFormat(format: any): format is string {
@@ -68,11 +71,15 @@ export function getTimeProps<DateType extends object>(
   showTimeFormat: string,
   propFormat: string,
 ] {
-  const { showTime, picker } = componentProps;
+  const { showTime } = componentProps;
 
-  const pickedProps = pickTimeProps(componentProps);
-  const isShowTimeConfig = showTime && typeof showTime === 'object';
-  const timeConfig = isShowTimeConfig ? showTime : pickedProps;
+  const [pickedProps, propFormat] = pickTimeProps(componentProps);
+
+  const showTimeConfig = showTime && typeof showTime === 'object' ? showTime : {};
+  const timeConfig = {
+    ...pickedProps,
+    ...showTimeConfig,
+  };
 
   const { showMillisecond } = timeConfig;
   let { showHour, showMinute, showSecond } = timeConfig;
@@ -83,11 +90,7 @@ export function getTimeProps<DateType extends object>(
     showSecond = true;
   }
 
-  const mergedFormat = isShowTimeConfig
-    ? showTime.format
-    : picker === 'time'
-    ? pickedProps.format
-    : null;
+  const mergedFormat = showTimeConfig.format || propFormat;
 
   return [
     timeConfig,
