@@ -605,7 +605,7 @@ describe('Picker.Basic', () => {
     it('time should display now', () => {
       const onCalendarChange = jest.fn();
       const { container } = render(<DayPicker onCalendarChange={onCalendarChange} picker="time" />);
-      
+
       openPicker(container);
       expect(document.querySelector('.rc-picker-header')).toBeFalsy();
 
@@ -1355,5 +1355,25 @@ describe('Picker.Basic', () => {
     const inputEle = container.querySelector('input');
     expect(inputEle.size).toBe(12);
     expect(inputEle).toHaveValue('06:03:04 PM');
+  });
+
+  it('compatible with disabledTime on prop directly', () => {
+    render(
+      <DayPicker
+        disabledTime={() => ({
+          disabledHours: () => [0],
+        })}
+        hideDisabledOptions
+        showTime
+        open
+      />,
+    );
+
+    expect(document.querySelectorAll('.rc-picker-time-panel-column:first-child li')).toHaveLength(
+      23,
+    );
+    expect(
+      document.querySelector('.rc-picker-time-panel-column:first-child li').textContent,
+    ).toEqual('01');
   });
 });
