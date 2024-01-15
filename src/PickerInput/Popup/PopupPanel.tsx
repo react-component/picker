@@ -61,6 +61,8 @@ export default function PopupPanel<DateType extends object = any>(
     },
   };
 
+  const hideHeader = picker === 'time';
+
   // ====================== Limitation ======================
   const needLimit = React.useCallback(
     (currentPickerValue: DateType) => {
@@ -96,6 +98,7 @@ export default function PopupPanel<DateType extends object = any>(
     ...props,
     hoverValue: null,
     hoverRangeValue: null,
+    hideHeader,
   };
 
   if (range) {
