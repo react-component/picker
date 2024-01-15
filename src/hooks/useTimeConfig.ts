@@ -35,14 +35,20 @@ function pickTimeProps<DateType extends object = any>(
   props: any,
 ): [timeProps: SharedTimeProps<DateType>, propFormat: string] {
   const timeProps: any = pickProps(props, showTimeKeys);
-  const { format } = props;
+  const { format, picker } = props;
 
-  let propFormat: string;
+  let propFormat: typeof format = null;
   if (format) {
-    if (Array.isArray(format)) {
-      propFormat = format[0];
+    propFormat = format;
+
+    if (Array.isArray(propFormat)) {
+      propFormat = propFormat[0];
     }
-    propFormat = typeof format === 'object' ? format.format : format;
+    propFormat = typeof propFormat === 'object' ? propFormat.format : propFormat;
+  }
+
+  if (picker === 'time') {
+    timeProps.format = propFormat;
   }
 
   return [timeProps, propFormat];
@@ -90,8 +96,6 @@ export function getTimeProps<DateType extends object>(
     showSecond = true;
   }
 
-  const mergedFormat = showTimeConfig.format || propFormat;
-
   return [
     timeConfig,
     {
@@ -101,8 +105,8 @@ export function getTimeProps<DateType extends object>(
       showSecond,
       showMillisecond,
     },
-    mergedFormat,
-    pickedProps.format,
+    timeConfig.format,
+    propFormat,
   ];
 }
 
