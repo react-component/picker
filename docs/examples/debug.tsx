@@ -151,7 +151,6 @@ export default () => {
         {...sharedLocale}
         disabledDate={(date) => date.isBefore(dayjs())}
         open
-        picker="time"
         ref={singleRef}
         suffixIcon="🧶"
         onChange={(...args) => {

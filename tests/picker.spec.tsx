@@ -605,7 +605,10 @@ describe('Picker.Basic', () => {
     it('time should display now', () => {
       const onCalendarChange = jest.fn();
       const { container } = render(<DayPicker onCalendarChange={onCalendarChange} picker="time" />);
+      
       openPicker(container);
+      expect(document.querySelector('.rc-picker-header')).toBeFalsy();
+
       fireEvent.click(document.querySelector('.rc-picker-now > a'));
 
       expect(
