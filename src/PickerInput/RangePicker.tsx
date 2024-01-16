@@ -357,7 +357,7 @@ function RangePicker<DateType extends object = any>(
     multiplePanel,
     defaultPickerValue,
     pickerValue,
-    mergedShowTime?.defaultValue,
+    mergedShowTime?.defaultOpenValue,
     onPickerValueChange,
     minDate,
     maxDate,

@@ -4,7 +4,6 @@ import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import type { InternalMode, Locale, PanelMode } from '../../interface';
 import { fillTime, isSame } from '../../utils/dateUtil';
-import { toArray } from '../../utils/miscUtil';
 import type { RangePickerProps } from '../RangePicker';
 
 export function offsetPanelDate<DateType = any>(
@@ -91,7 +90,7 @@ export default function useRangePickerValue<DateType extends object, ValueType e
     // Merge the `showTime.defaultValue` into `pickerValue`
     return isTimePicker
       ? current
-      : fillTime(generateConfig, current, toArray(timeDefaultValue)[mergedActiveIndex]);
+      : fillTime(generateConfig, current, timeDefaultValue[mergedActiveIndex]);
   }, [
     isTimePicker,
     mergedStartPickerValue,
