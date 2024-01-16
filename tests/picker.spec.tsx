@@ -1377,22 +1377,55 @@ describe('Picker.Basic', () => {
     ).toEqual('01');
   });
 
-  it('time picker should align to 0', () => {
-    jest.useFakeTimers().setSystemTime(getDay('1990-09-03 01:03:05').valueOf());
+  describe('time with defaultPickerValue', () => {
+    beforeEach(() => {
+      jest.useFakeTimers().setSystemTime(getDay('1990-09-03 01:03:05').valueOf());
+    });
 
-    const onCalendarChange = jest.fn();
-    render(<DayPicker picker="time" open showNow onCalendarChange={onCalendarChange} />);
+    it('time picker should align to 0', () => {
+      const onCalendarChange = jest.fn();
+      render(<DayPicker picker="time" open showNow onCalendarChange={onCalendarChange} />);
 
-    const submitBtn = document.querySelector('.rc-picker-ok button');
-    expect(submitBtn).toHaveAttribute('disabled');
+      const submitBtn = document.querySelector('.rc-picker-ok button');
+      expect(submitBtn).toHaveAttribute('disabled');
 
-    selectCell('00');
-    expect(submitBtn).not.toHaveAttribute('disabled');
-    expect(onCalendarChange).toHaveBeenCalledWith(expect.anything(), '00:00:00', expect.anything());
-    onCalendarChange.mockReset();
+      selectCell('00');
+      expect(submitBtn).not.toHaveAttribute('disabled');
+      expect(onCalendarChange).toHaveBeenCalledWith(
+        expect.anything(),
+        '00:00:00',
+        expect.anything(),
+      );
+      onCalendarChange.mockReset();
 
-    fireEvent.click(document.querySelector('.rc-picker-now-btn'));
-    expect(submitBtn).not.toHaveAttribute('disabled');
-    expect(onCalendarChange).toHaveBeenCalledWith(expect.anything(), '01:03:05', expect.anything());
+      fireEvent.click(document.querySelector('.rc-picker-now-btn'));
+      expect(submitBtn).not.toHaveAttribute('disabled');
+      expect(onCalendarChange).toHaveBeenCalledWith(
+        expect.anything(),
+        '01:03:05',
+        expect.anything(),
+      );
+    });
+
+    it('defaultOpenValue with showTime', () => {
+      const onCalendarChange = jest.fn();
+      render(
+        <DayPicker
+          showTime={{
+            defaultValue: dayjs(),
+          }}
+          open
+          onCalendarChange={onCalendarChange}
+          defaultPickerValue={dayjs()}
+        />,
+      );
+
+      selectCell(15);
+      expect(onCalendarChange).toHaveBeenCalledWith(
+        expect.anything(),
+        '1990-09-15 01:03:05',
+        expect.anything(),
+      );
+    });
   });
 });
