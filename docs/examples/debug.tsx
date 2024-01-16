@@ -149,13 +149,14 @@ export default () => {
       <SinglePicker
         // Shared
         {...sharedLocale}
-        disabledDate={(date) => date.isBefore(dayjs())}
+        // disabledDate={(date) => date.isBefore(dayjs())}
         // disabledTime={() => ({
         //   disabledHours: () => [0, 1, 2, 3, 4, 5],
         //   disabledMinutes: () => [0, 1, 2, 3, 4, 5],
         //   disabledSeconds: () => [0, 1, 2, 3, 4, 5],
         // })}
         open
+        picker="time"
         ref={singleRef}
         suffixIcon="🧶"
         // showTime={{
@@ -165,7 +166,7 @@ export default () => {
         //     disabledSeconds: () => [0, 1, 2, 3, 4, 5],
         //   }),
         // }}
-        showTime={{}}
+        // showTime={{}}
         onChange={(...args) => {
           console.log('🔥 Change:', ...args);
         }}

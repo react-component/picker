@@ -138,11 +138,20 @@ export function findCell(text: string | number, index = 0) {
 
   const table = document.querySelectorAll('table')[index];
 
-  Array.from(table.querySelectorAll('td')).forEach((td) => {
-    if (td.textContent === String(text) && td.className.includes('-in-view')) {
-      matchCell = td;
-    }
-  });
+  if (table) {
+    Array.from(table.querySelectorAll('td')).forEach((td) => {
+      if (td.textContent === String(text) && td.className.includes('-in-view')) {
+        matchCell = td;
+      }
+    });
+  } else {
+    const column = document.querySelectorAll('.rc-picker-time-panel-column')[index];
+    Array.from(column.querySelectorAll('li')).forEach((li) => {
+      if (li.textContent === String(text)) {
+        matchCell = li;
+      }
+    });
+  }
   if (!matchCell) {
     throw new Error('Cell not match in picker panel.');
   }
