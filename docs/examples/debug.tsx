@@ -155,8 +155,10 @@ export default () => {
         //   disabledMinutes: () => [0, 1, 2, 3, 4, 5],
         //   disabledSeconds: () => [0, 1, 2, 3, 4, 5],
         // })}
+        defaultOpenValue={dayjs()}
         open
-        picker="time"
+        // picker="time"
+        showTime
         ref={singleRef}
         suffixIcon="🧶"
         // showTime={{

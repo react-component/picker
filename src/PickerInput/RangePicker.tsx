@@ -572,6 +572,7 @@ function RangePicker<DateType extends object = any>(
       onSelect={onPanelSelect}
       // PickerValue
       pickerValue={currentPickerValue}
+      pickerAsValue={!!defaultPickerValue?.[activeIndex]}
       onPickerValueChange={setCurrentPickerValue}
       // Hover
       hoverValue={hoverValues}

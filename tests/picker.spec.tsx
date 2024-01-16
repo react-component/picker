@@ -1383,11 +1383,16 @@ describe('Picker.Basic', () => {
     const onCalendarChange = jest.fn();
     render(<DayPicker picker="time" open showNow onCalendarChange={onCalendarChange} />);
 
+    const submitBtn = document.querySelector('.rc-picker-ok button');
+    expect(submitBtn).toHaveAttribute('disabled');
+
     selectCell('00');
+    expect(submitBtn).not.toHaveAttribute('disabled');
     expect(onCalendarChange).toHaveBeenCalledWith(expect.anything(), '00:00:00', expect.anything());
     onCalendarChange.mockReset();
 
     fireEvent.click(document.querySelector('.rc-picker-now-btn'));
+    expect(submitBtn).not.toHaveAttribute('disabled');
     expect(onCalendarChange).toHaveBeenCalledWith(expect.anything(), '01:03:05', expect.anything());
   });
 });

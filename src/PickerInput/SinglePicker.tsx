@@ -503,6 +503,7 @@ function Picker<DateType extends object = any>(
       onSelect={onPanelSelect}
       // PickerValue
       pickerValue={currentPickerValue}
+      pickerAsValue={!!defaultPickerValue}
       onPickerValueChange={setCurrentPickerValue}
       // Hover
       hoverValue={hoverValues}

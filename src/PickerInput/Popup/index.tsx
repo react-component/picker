@@ -25,6 +25,9 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   // Direction
   direction?: 'ltr' | 'rtl';
 
+  // Fill
+  pickerAsValue: boolean;
+
   // Change
   needConfirm: boolean;
   isInvalid: (date: DateType | DateType[]) => boolean;
@@ -60,6 +63,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     onSelect,
     isInvalid,
     pickerValue,
+    pickerAsValue,
     onOk,
     onSubmit,
   } = props;
@@ -101,15 +105,16 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
 
   const valueList = React.useMemo(() => filterEmpty(toArray(value)), [value]);
 
-  const isTimePicker = picker === 'time';
-  const isEmptyValue = !valueList.length;
+  const isTimePickerEmptyValue = picker === 'time' && !valueList.length && pickerAsValue;
 
   const footerSubmitValue = React.useMemo(() => {
-    if (isTimePicker && isEmptyValue) {
+    if (isTimePickerEmptyValue) {
       return filterEmpty([pickerValue]);
     }
     return valueList;
-  }, [isTimePicker, valueList, isEmptyValue, pickerValue]);
+  }, [isTimePickerEmptyValue, valueList, pickerValue]);
+
+  const popupPanelValue = isTimePickerEmptyValue ? pickerValue : valueList;
 
   const disableSubmit = React.useMemo(() => {
     // Empty is invalid
@@ -122,7 +127,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
 
   const onFooterSubmit = () => {
     // For TimePicker, we will additional trigger the value update
-    if (isTimePicker && isEmptyValue) {
+    if (isTimePickerEmptyValue) {
       onSelect(pickerValue);
     }
 
@@ -140,7 +145,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
         onHover={onPresetHover}
       />
       <div>
-        <PopupPanel {...props} />
+        <PopupPanel {...props} value={popupPanelValue} />
         <Footer
           {...props}
           showNow={multiple ? false : showNow}
