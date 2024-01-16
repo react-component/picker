@@ -1376,4 +1376,18 @@ describe('Picker.Basic', () => {
       document.querySelector('.rc-picker-time-panel-column:first-child li').textContent,
     ).toEqual('01');
   });
+
+  it('time picker should align to 0', () => {
+    jest.useFakeTimers().setSystemTime(getDay('1990-09-03 01:03:05').valueOf());
+
+    const onCalendarChange = jest.fn();
+    render(<DayPicker picker="time" open showNow onCalendarChange={onCalendarChange} />);
+
+    selectCell('00');
+    expect(onCalendarChange).toHaveBeenCalledWith(expect.anything(), '00:00:00', expect.anything());
+    onCalendarChange.mockReset();
+
+    fireEvent.click(document.querySelector('.rc-picker-now-btn'));
+    expect(onCalendarChange).toHaveBeenCalledWith(expect.anything(), '01:03:05', expect.anything());
+  });
 });

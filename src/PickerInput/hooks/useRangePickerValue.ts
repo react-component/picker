@@ -52,13 +52,21 @@ export default function useRangePickerValue<DateType extends object, ValueType e
   minDate?: DateType,
   maxDate?: DateType,
 ): [currentIndexPickerValue: DateType, setCurrentIndexPickerValue: (value: DateType) => void] {
+  const isTimePicker = pickerMode === 'time';
+
   // ======================== Active ========================
   // `activeIndex` must be valid to avoid getting empty `pickerValue`
   const mergedActiveIndex = activeIndex || 0;
 
   // ===================== Picker Value =====================
-  const getDefaultPickerValue = (index: number) =>
-    defaultPickerValue[index] || calendarValue[index] || generateConfig.getNow();
+  const getDefaultPickerValue = (index: number) => {
+    let now = generateConfig.getNow();
+    if (isTimePicker) {
+      now = fillTime(generateConfig, now);
+    }
+
+    return defaultPickerValue[index] || calendarValue[index] || now;
+  };
 
   // Align `pickerValue` with `showTime.defaultValue`
   const [startPickerValue, endPickerValue] = pickerValue;
@@ -80,11 +88,11 @@ export default function useRangePickerValue<DateType extends object, ValueType e
     const current = [mergedStartPickerValue, mergedEndPickerValue][mergedActiveIndex];
 
     // Merge the `showTime.defaultValue` into `pickerValue`
-    return pickerMode === 'time'
+    return isTimePicker
       ? current
       : fillTime(generateConfig, current, timeDefaultValue[mergedActiveIndex]);
   }, [
-    pickerMode,
+    isTimePicker,
     mergedStartPickerValue,
     mergedEndPickerValue,
     mergedActiveIndex,
@@ -155,7 +163,7 @@ export default function useRangePickerValue<DateType extends object, ValueType e
   useLayoutEffect(() => {
     if (open) {
       if (!defaultPickerValue[mergedActiveIndex]) {
-        let nextPickerValue: DateType = generateConfig.getNow();
+        let nextPickerValue: DateType = isTimePicker ? null : generateConfig.getNow();
 
         /**
          * 1. If has prevActiveIndex, use it to avoid panel jump
