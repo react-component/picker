@@ -812,10 +812,6 @@ describe('Picker.Basic', () => {
       />,
     );
 
-    expect(errSpy).toHaveBeenCalledWith(
-      "Warning: 'defaultOpenValue' is deprecated which merged into 'defaultPickerValue' instead.",
-    );
-
     openPicker(container);
     fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
@@ -1407,25 +1403,30 @@ describe('Picker.Basic', () => {
       );
     });
 
-    it('defaultOpenValue with showTime', () => {
-      const onCalendarChange = jest.fn();
-      render(
-        <DayPicker
-          showTime={{
-            defaultValue: dayjs(),
-          }}
-          open
-          onCalendarChange={onCalendarChange}
-          defaultPickerValue={dayjs()}
-        />,
-      );
+    function testPropsName(propName: string) {
+      it(`${propName} with showTime`, () => {
+        const onCalendarChange = jest.fn();
+        render(
+          <DayPicker
+            showTime={{
+              [propName]: dayjs(),
+            }}
+            open
+            onCalendarChange={onCalendarChange}
+            defaultPickerValue={dayjs()}
+          />,
+        );
 
-      selectCell(15);
-      expect(onCalendarChange).toHaveBeenCalledWith(
-        expect.anything(),
-        '1990-09-15 01:03:05',
-        expect.anything(),
-      );
-    });
+        selectCell(15);
+        expect(onCalendarChange).toHaveBeenCalledWith(
+          expect.anything(),
+          '1990-09-15 01:03:05',
+          expect.anything(),
+        );
+      });
+    }
+
+    testPropsName('defaultValue');
+    testPropsName('defaultOpenValue');
   });
 });

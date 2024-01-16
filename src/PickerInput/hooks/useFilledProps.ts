@@ -155,11 +155,6 @@ export default function useFilledProps<
         `'disabledHours', 'disabledMinutes', 'disabledSeconds' will be removed in the next major version, please use 'disabledTime' instead.`,
       );
     }
-
-    warning(
-      !defaultOpenValue,
-      `'defaultOpenValue' is deprecated which merged into 'defaultPickerValue' instead.`,
-    );
   }
 
   // ======================== Props =========================
