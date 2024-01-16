@@ -116,7 +116,6 @@ export default function useFilledProps<
     defaultValue,
     pickerValue,
     defaultPickerValue,
-    defaultOpenValue,
   } = props;
 
   const values = useList(value);
