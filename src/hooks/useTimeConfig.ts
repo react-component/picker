@@ -52,8 +52,6 @@ function pickTimeProps<DateType extends object = any>(
     timeProps.format = propFormat;
   }
 
-  timeProps.defaultOpenValue = timeProps.defaultOpenValue || timeProps.defaultValue;
-
   return [timeProps, propFormat];
 }
 
@@ -86,6 +84,7 @@ export function getTimeProps<DateType extends object>(
 
   const showTimeConfig = showTime && typeof showTime === 'object' ? showTime : {};
   const timeConfig = {
+    defaultOpenValue: showTimeConfig.defaultOpenValue || showTimeConfig.defaultValue,
     ...pickedProps,
     ...showTimeConfig,
   };
