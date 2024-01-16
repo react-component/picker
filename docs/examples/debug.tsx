@@ -155,12 +155,12 @@ export default () => {
         //   disabledMinutes: () => [0, 1, 2, 3, 4, 5],
         //   disabledSeconds: () => [0, 1, 2, 3, 4, 5],
         // })}
-        // defaultOpenValue={dayjs()}
-        open
-        // picker="time"
-        showTime={{
-          defaultValue: dayjs(),
-        }}
+        defaultOpenValue={dayjs()}
+        // open
+        picker="time"
+        // showTime={{
+        //   defaultValue: dayjs(),
+        // }}
         ref={singleRef}
         suffixIcon="🧶"
         // showTime={{
@@ -189,11 +189,13 @@ export default () => {
         }}
       />
       <br />
-      {/* <RangePicker
+      <RangePicker
         {...sharedLocale}
-        value={rangeValue}
-        open
-        picker="week"
+        // value={rangeValue}
+        // open
+        showTime={{
+          defaultOpenValue: [dayjs()],
+        }}
         panelRender={(ori) => <>2333{ori}</>}
         onChange={(val, text) => {
           console.log('🔥 Change:', val, text);
@@ -214,7 +216,7 @@ export default () => {
             info,
           );
         }}
-      /> */}
+      />
       <br />
 
       <button

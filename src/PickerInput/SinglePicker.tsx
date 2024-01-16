@@ -323,7 +323,7 @@ function Picker<DateType extends object = any>(
     false, // multiplePanel,
     defaultPickerValue,
     pickerValue,
-    toArray(showTime?.defaultValue),
+    toArray(showTime?.defaultOpenValue),
     onInternalPickerValueChange,
     minDate,
     maxDate,
@@ -503,7 +503,7 @@ function Picker<DateType extends object = any>(
       onSelect={onPanelSelect}
       // PickerValue
       pickerValue={currentPickerValue}
-      pickerAsValue={!!defaultPickerValue}
+      defaultOpenValue={showTime?.defaultOpenValue}
       onPickerValueChange={setCurrentPickerValue}
       // Hover
       hoverValue={hoverValues}

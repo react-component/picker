@@ -165,6 +165,9 @@ export interface SharedTimeProps<DateType extends object = any> {
   /** Set default value template when empty selection */
   defaultValue?: DateType;
 
+  /** Set default value template when empty selection */
+  defaultOpenValue?: DateType;
+
   /** @deprecated Please use `disabledTime` instead. */
   disabledHours?: DisabledTimes['disabledHours'];
   /** @deprecated Please use `disabledTime` instead. */
@@ -181,9 +184,10 @@ export interface SharedTimeProps<DateType extends object = any> {
 
 export type RangeTimeProps<DateType extends object = any> = Omit<
   SharedTimeProps<DateType>,
-  'defaultValue'
+  'defaultValue' | 'defaultOpenValue'
 > & {
-  defaultValue?: [DateType, DateType];
+  defaultValue?: DateType[];
+  defaultOpenValue?: DateType[];
 };
 
 // ======================= Components =======================
@@ -369,7 +373,6 @@ export interface SharedPickerProps<DateType extends object = any>
   maxDate?: DateType;
 
   // Open
-  /** @deprecated Please use `defaultPickerValue` instead */
   defaultOpenValue?: DateType;
   defaultOpen?: boolean;
   open?: boolean;

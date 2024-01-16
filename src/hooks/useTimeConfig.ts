@@ -26,6 +26,7 @@ const showTimeKeys = [
   'disabledMilliseconds',
   'disabledTime',
   'changeOnScroll',
+  'defaultOpenValue',
 ] as const;
 
 /**
@@ -50,6 +51,8 @@ function pickTimeProps<DateType extends object = any>(
   if (picker === 'time') {
     timeProps.format = propFormat;
   }
+
+  timeProps.defaultOpenValue = timeProps.defaultOpenValue || timeProps.defaultValue;
 
   return [timeProps, propFormat];
 }
