@@ -18,7 +18,7 @@ export interface FooterProps<DateType extends object = any> {
   showNow: boolean;
   generateConfig: GenerateConfig<DateType>;
   disabledDate: DisabledDate<DateType>;
-  showTime?: Omit<RangeTimeProps<DateType>, 'defaultValue'>;
+  showTime?: Omit<RangeTimeProps<DateType>, 'defaultValue' | 'defaultOpenValue'>;
 
   // Invalid
   /** From Footer component used only. Check if can OK button click */

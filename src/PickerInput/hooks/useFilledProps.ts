@@ -116,14 +116,12 @@ export default function useFilledProps<
     defaultValue,
     pickerValue,
     defaultPickerValue,
-    defaultOpenValue,
   } = props;
 
   const values = useList(value);
   const defaultValues = useList(defaultValue);
-  const defaultOpenValues = useList(defaultOpenValue, true);
   const pickerValues = useList(pickerValue);
-  const defaultPickerValues = useList(defaultPickerValue) || defaultOpenValues;
+  const defaultPickerValues = useList(defaultPickerValue);
 
   // ======================== Picker ========================
   /** Almost same as `picker`, but add `datetime` for `date` with `showTime` */
@@ -156,11 +154,6 @@ export default function useFilledProps<
         `'disabledHours', 'disabledMinutes', 'disabledSeconds' will be removed in the next major version, please use 'disabledTime' instead.`,
       );
     }
-
-    warning(
-      !defaultOpenValue,
-      `'defaultOpenValue' is deprecated which merged into 'defaultPickerValue' instead.`,
-    );
   }
 
   // ======================== Props =========================

@@ -812,10 +812,6 @@ describe('Picker.Basic', () => {
       />,
     );
 
-    expect(errSpy).toHaveBeenCalledWith(
-      "Warning: 'defaultOpenValue' is deprecated which merged into 'defaultPickerValue' instead.",
-    );
-
     openPicker(container);
     fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
@@ -1377,17 +1373,60 @@ describe('Picker.Basic', () => {
     ).toEqual('01');
   });
 
-  it('time picker should align to 0', () => {
-    jest.useFakeTimers().setSystemTime(getDay('1990-09-03 01:03:05').valueOf());
+  describe('time with defaultPickerValue', () => {
+    beforeEach(() => {
+      jest.useFakeTimers().setSystemTime(getDay('1990-09-03 01:03:05').valueOf());
+    });
 
-    const onCalendarChange = jest.fn();
-    render(<DayPicker picker="time" open showNow onCalendarChange={onCalendarChange} />);
+    it('time picker should align to 0', () => {
+      const onCalendarChange = jest.fn();
+      render(<DayPicker picker="time" open showNow onCalendarChange={onCalendarChange} />);
 
-    selectCell('00');
-    expect(onCalendarChange).toHaveBeenCalledWith(expect.anything(), '00:00:00', expect.anything());
-    onCalendarChange.mockReset();
+      const submitBtn = document.querySelector('.rc-picker-ok button');
+      expect(submitBtn).toHaveAttribute('disabled');
 
-    fireEvent.click(document.querySelector('.rc-picker-now-btn'));
-    expect(onCalendarChange).toHaveBeenCalledWith(expect.anything(), '01:03:05', expect.anything());
+      selectCell('00');
+      expect(submitBtn).not.toHaveAttribute('disabled');
+      expect(onCalendarChange).toHaveBeenCalledWith(
+        expect.anything(),
+        '00:00:00',
+        expect.anything(),
+      );
+      onCalendarChange.mockReset();
+
+      fireEvent.click(document.querySelector('.rc-picker-now-btn'));
+      expect(submitBtn).not.toHaveAttribute('disabled');
+      expect(onCalendarChange).toHaveBeenCalledWith(
+        expect.anything(),
+        '01:03:05',
+        expect.anything(),
+      );
+    });
+
+    function testPropsName(propName: string) {
+      it(`${propName} with showTime`, () => {
+        const onCalendarChange = jest.fn();
+        render(
+          <DayPicker
+            showTime={{
+              [propName]: dayjs(),
+            }}
+            open
+            onCalendarChange={onCalendarChange}
+            defaultPickerValue={dayjs()}
+          />,
+        );
+
+        selectCell(15);
+        expect(onCalendarChange).toHaveBeenCalledWith(
+          expect.anything(),
+          '1990-09-15 01:03:05',
+          expect.anything(),
+        );
+      });
+    }
+
+    testPropsName('defaultValue');
+    testPropsName('defaultOpenValue');
   });
 });

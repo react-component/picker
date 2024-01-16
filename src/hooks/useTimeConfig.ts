@@ -26,6 +26,7 @@ const showTimeKeys = [
   'disabledMilliseconds',
   'disabledTime',
   'changeOnScroll',
+  'defaultOpenValue',
 ] as const;
 
 /**
@@ -83,6 +84,7 @@ export function getTimeProps<DateType extends object>(
 
   const showTimeConfig = showTime && typeof showTime === 'object' ? showTime : {};
   const timeConfig = {
+    defaultOpenValue: showTimeConfig.defaultOpenValue || showTimeConfig.defaultValue,
     ...pickedProps,
     ...showTimeConfig,
   };

@@ -25,6 +25,10 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   // Direction
   direction?: 'ltr' | 'rtl';
 
+  // Fill
+  /** TimePicker or showTime only */
+  defaultOpenValue: DateType;
+
   // Change
   needConfirm: boolean;
   isInvalid: (date: DateType | DateType[]) => boolean;
@@ -59,7 +63,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     value,
     onSelect,
     isInvalid,
-    pickerValue,
+    defaultOpenValue,
     onOk,
     onSubmit,
   } = props;
@@ -101,15 +105,16 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
 
   const valueList = React.useMemo(() => filterEmpty(toArray(value)), [value]);
 
-  const isTimePicker = picker === 'time';
-  const isEmptyValue = !valueList.length;
+  const isTimePickerEmptyValue = picker === 'time' && !valueList.length;
 
   const footerSubmitValue = React.useMemo(() => {
-    if (isTimePicker && isEmptyValue) {
-      return filterEmpty([pickerValue]);
+    if (isTimePickerEmptyValue) {
+      return filterEmpty([defaultOpenValue]);
     }
     return valueList;
-  }, [isTimePicker, valueList, isEmptyValue, pickerValue]);
+  }, [isTimePickerEmptyValue, valueList, defaultOpenValue]);
+
+  const popupPanelValue = isTimePickerEmptyValue ? defaultOpenValue : valueList;
 
   const disableSubmit = React.useMemo(() => {
     // Empty is invalid
@@ -122,8 +127,8 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
 
   const onFooterSubmit = () => {
     // For TimePicker, we will additional trigger the value update
-    if (isTimePicker && isEmptyValue) {
-      onSelect(pickerValue);
+    if (isTimePickerEmptyValue) {
+      onSelect(defaultOpenValue);
     }
 
     onOk();
@@ -140,7 +145,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
         onHover={onPresetHover}
       />
       <div>
-        <PopupPanel {...props} />
+        <PopupPanel {...props} value={popupPanelValue} />
         <Footer
           {...props}
           showNow={multiple ? false : showNow}

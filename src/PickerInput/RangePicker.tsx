@@ -20,7 +20,7 @@ import type {
 import type { PickerPanelProps } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import { pickTriggerProps } from '../PickerTrigger/util';
-import { fillIndex } from '../utils/miscUtil';
+import { fillIndex, toArray } from '../utils/miscUtil';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';
@@ -128,7 +128,7 @@ export interface BaseRangePickerProps<DateType extends object>
 
 export interface RangePickerProps<DateType extends object>
   extends BaseRangePickerProps<DateType>,
-    Omit<RangeTimeProps<DateType>, 'format' | 'defaultValue'> {}
+    Omit<RangeTimeProps<DateType>, 'format' | 'defaultValue' | 'defaultOpenValue'> {}
 
 function getActiveRange(activeIndex: number) {
   return activeIndex === 1 ? 'end' : 'start';
@@ -357,7 +357,7 @@ function RangePicker<DateType extends object = any>(
     multiplePanel,
     defaultPickerValue,
     pickerValue,
-    mergedShowTime?.defaultValue,
+    mergedShowTime?.defaultOpenValue,
     onPickerValueChange,
     minDate,
     maxDate,
@@ -572,6 +572,7 @@ function RangePicker<DateType extends object = any>(
       onSelect={onPanelSelect}
       // PickerValue
       pickerValue={currentPickerValue}
+      defaultOpenValue={toArray(showTime?.defaultOpenValue)[activeIndex]}
       onPickerValueChange={setCurrentPickerValue}
       // Hover
       hoverValue={hoverValues}
