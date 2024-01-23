@@ -683,6 +683,10 @@ describe('NewPicker.Range', () => {
 
       // Close panel to auto focus next end field
       fireEvent.click(document.body);
+      act(() => {
+        jest.runAllTimers();
+      });
+
       expect(container.querySelectorAll('input')[1]).toHaveFocus();
 
       expect(isOpen()).toBeTruthy();

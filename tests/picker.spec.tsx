@@ -168,6 +168,7 @@ describe('Picker.Basic', () => {
       for (let i = 0; i < 10; i += 1) {
         act(() => {
           fireEvent.click(document.body);
+          jest.runAllTimers();
         });
         expect(onOpenChange).toHaveBeenCalledTimes(i + 1);
       }
@@ -1064,6 +1065,10 @@ describe('Picker.Basic', () => {
       expect(isOpen()).toBeTruthy();
 
       keyDown(KeyCode.ESC);
+      act(() => {
+        jest.runAllTimers();
+      });
+
       expect(onKeyDown).toHaveBeenCalled();
       expect(isOpen()).toBeFalsy();
       onKeyDown.mockClear();
