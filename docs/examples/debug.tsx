@@ -171,6 +171,8 @@ export default () => {
         //   }),
         // }}
         // showTime={{}}
+        disabled
+        open
         onChange={(...args) => {
           console.log('🔥 Change:', ...args);
         }}

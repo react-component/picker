@@ -1082,6 +1082,7 @@ describe('Picker.Range', () => {
             defaultValue={[getDay(defaultValue[0]), getDay(defaultValue[1] || defaultValue[0])]}
           />,
         );
+
         openPicker(container, 1);
         selectCell(targetCell);
         closePicker(container, 1);
