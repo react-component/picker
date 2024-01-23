@@ -14,7 +14,7 @@ export function useFieldFormat<DateType = any>(
 
     const firstFormat = formatList[0];
     const maskFormat =
-      typeof firstFormat === 'object' && firstFormat.align ? firstFormat.format : null;
+      typeof firstFormat === 'object' && firstFormat.type === 'mask' ? firstFormat.format : null;
 
     return [
       // Format list
