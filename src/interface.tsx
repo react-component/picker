@@ -331,7 +331,7 @@ export interface SharedPickerProps<DateType extends object = any>
   showWeek?: boolean;
   /**
    * Config the input field parse and format.
-   * When set `format.align`, it will force user input align with your input,
+   * When set `format.type`, it will force user input type with your input,
    * it's only support basic format mask: YYYY, MM, DD, HH, mm, ss, SSS.
    * Once use config mode, it must be fill with format your config.
    */
@@ -340,7 +340,7 @@ export interface SharedPickerProps<DateType extends object = any>
     | FormatType<DateType>[]
     | {
         format: string;
-        align?: boolean;
+        type?: 'mask';
       };
 
   // Icons

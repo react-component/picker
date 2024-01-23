@@ -123,9 +123,12 @@ export function closePicker(container: HTMLElement, index = 0) {
   const input = container.querySelectorAll('input')[index];
   fireEvent.blur(input);
 
-  act(() => {
-    jest.runAllTimers();
-  });
+  // Loop to pass all the timer (includes raf)
+  for (let i = 0; i < 5; i += 1) {
+    act(() => {
+      jest.runAllTimers();
+    });
+  }
 }
 
 export function isOpen() {

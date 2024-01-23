@@ -1,12 +1,6 @@
 import { useEvent, useMergedState } from 'rc-util';
+import raf from 'rc-util/lib/raf';
 import React from 'react';
-
-// We need wait for outside state updated.
-// Which means need 2 effect:
-// 1. Outside sync state
-// 2. Still may be old state
-// 3. Safe to sync state
-const DELAY_TIMES = 2;
 
 /**
  * Will be `true` immediately for next effect.
@@ -21,10 +15,14 @@ export default function useDelayState<T>(
     value,
   });
 
-  const [times, setTimes] = React.useState<number | false>(false);
   const nextValueRef = React.useRef<T>(value);
 
   // ============================= Update =============================
+  const rafRef = React.useRef<number>();
+  const cancelRaf = () => {
+    raf.cancel(rafRef.current);
+  };
+
   const doUpdate = useEvent(() => {
     setState(nextValueRef.current);
 
@@ -34,24 +32,18 @@ export default function useDelayState<T>(
   });
 
   const updateValue = useEvent((next: T, immediately?: boolean) => {
+    cancelRaf();
+
     nextValueRef.current = next;
 
     if (next || immediately) {
       doUpdate();
-      setTimes(false);
     } else {
-      setTimes(0);
+      rafRef.current = raf(doUpdate);
     }
   });
 
-  // ============================= Effect =============================
-  React.useEffect(() => {
-    if (times === DELAY_TIMES) {
-      doUpdate();
-    } else if (times !== false && times < DELAY_TIMES) {
-      setTimes(times + 1);
-    }
-  }, [times, doUpdate]);
+  React.useEffect(() => cancelRaf, []);
 
   return [state, updateValue];
 }

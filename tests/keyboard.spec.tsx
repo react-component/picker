@@ -111,6 +111,11 @@ describe('Picker.Keyboard', () => {
       fireEvent.keyDown(container.querySelector('input'), {
         key: 'Escape',
       });
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
       expect(isOpen()).toBeFalsy();
     });
 
