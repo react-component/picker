@@ -850,7 +850,7 @@ describe('NewPicker.Range', () => {
       <DayRangePicker
         format={{
           format: 'YYYYMMDD',
-          align: true,
+          type: 'mask',
         }}
         {...props}
       />

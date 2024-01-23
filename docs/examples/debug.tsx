@@ -158,6 +158,10 @@ export default () => {
         defaultOpenValue={dayjs()}
         // open
         picker="time"
+        format={{
+          format: 'HH:mm:ss.SSS A',
+          type: 'mask',
+        }}
         // showTime={{
         //   defaultValue: dayjs(),
         // }}
@@ -171,7 +175,7 @@ export default () => {
         //   }),
         // }}
         // showTime={{}}
-        disabled
+        // disabled
         open
         onChange={(...args) => {
           console.log('🔥 Change:', ...args);
