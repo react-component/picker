@@ -1391,7 +1391,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
-                              class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
+                              class="rc-picker-cell rc-picker-cell-in-view"
                               title="1990-09"
                             >
                               <div>

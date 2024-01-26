@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { SharedPanelProps } from '../../interface';
-import { formatValue, isSameQuarter } from '../../utils/dateUtil';
+import { formatValue } from '../../utils/dateUtil';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
@@ -14,7 +14,7 @@ export default function QuarterPanel<DateType extends object = any>(
   const panelPrefixCls = `${prefixCls}-quarter-panel`;
 
   // ========================== Base ==========================
-  const [info, now] = useInfo(props, 'quarter');
+  const [info] = useInfo(props, 'quarter');
   const baseDate = generateConfig.setMonth(pickerValue, 0);
 
   // ========================= Cells ==========================
@@ -30,9 +30,8 @@ export default function QuarterPanel<DateType extends object = any>(
     });
   };
 
-  const getCellClassName = (date: DateType) => ({
+  const getCellClassName = () => ({
     [`${prefixCls}-cell-in-view`]: true,
-    [`${prefixCls}-cell-today`]: isSameQuarter(generateConfig, date, now),
   });
 
   // ========================= Header =========================

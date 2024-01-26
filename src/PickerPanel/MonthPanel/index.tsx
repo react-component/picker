@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { DisabledDate, SharedPanelProps } from '../../interface';
-import { formatValue, isSameMonth } from '../../utils/dateUtil';
+import { formatValue } from '../../utils/dateUtil';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
@@ -21,7 +21,7 @@ export default function MonthPanel<DateType extends object = any>(
   const panelPrefixCls = `${prefixCls}-month-panel`;
 
   // ========================== Base ==========================
-  const [info, now] = useInfo(props, 'month');
+  const [info] = useInfo(props, 'month');
   const baseDate = generateConfig.setMonth(pickerValue, 0);
 
   // ========================= Month ==========================
@@ -48,9 +48,8 @@ export default function MonthPanel<DateType extends object = any>(
       : monthsLocale[month];
   };
 
-  const getCellClassName = (date: DateType) => ({
+  const getCellClassName = () => ({
     [`${prefixCls}-cell-in-view`]: true,
-    [`${prefixCls}-cell-today`]: isSameMonth(generateConfig, date, now),
   });
 
   // ======================== Disabled ========================

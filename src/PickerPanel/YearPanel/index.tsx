@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { DisabledDate, SharedPanelProps } from '../../interface';
-import { formatValue, isSameYear } from '../../utils/dateUtil';
+import { formatValue } from '../../utils/dateUtil';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
@@ -21,7 +21,7 @@ export default function YearPanel<DateType extends object = any>(
   const panelPrefixCls = `${prefixCls}-year-panel`;
 
   // ========================== Base ==========================
-  const [info, now] = useInfo(props, 'year');
+  const [info] = useInfo(props, 'year');
   const startYear = Math.floor(generateConfig.getYear(pickerValue) / 10) * 10;
   const endYear = startYear + 9;
 
@@ -47,7 +47,6 @@ export default function YearPanel<DateType extends object = any>(
     const dateYear = generateConfig.getYear(date);
     return {
       [`${prefixCls}-cell-in-view`]: startYear <= dateYear && dateYear <= endYear,
-      [`${prefixCls}-cell-today`]: isSameYear(generateConfig, date, now),
     };
   };
 
