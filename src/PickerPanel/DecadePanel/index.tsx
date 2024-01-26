@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { DisabledDate, SharedPanelProps } from '../../interface';
-import { formatValue, isSameDecade } from '../../utils/dateUtil';
+import { formatValue } from '../../utils/dateUtil';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
@@ -14,7 +14,7 @@ export default function DecadePanel<DateType extends object = any>(
   const panelPrefixCls = `${prefixCls}-decade-panel`;
 
   // ========================== Base ==========================
-  const [info, now] = useInfo(props, 'decade');
+  const [info] = useInfo(props, 'decade');
   const startYear = Math.floor(generateConfig.getYear(pickerValue) / 100) * 100;
   const endYear = startYear + 99;
 
@@ -49,7 +49,6 @@ export default function DecadePanel<DateType extends object = any>(
     const dateYear = generateConfig.getYear(date);
     return {
       [`${prefixCls}-cell-in-view`]: startYear <= dateYear && dateYear <= endYear,
-      [`${prefixCls}-cell-today`]: isSameDecade(generateConfig, date, now),
     };
   };
 
