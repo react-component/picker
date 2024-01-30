@@ -141,7 +141,7 @@ describe('Picker.Range', () => {
 
     it('year with footer', () => {
       const { container } = render(
-        <DayRangePicker renderExtraFooter={() => <p>footer</p>} picker="year" />,
+        <DayRangePicker extraFooterRender={() => <p>footer</p>} picker="year" />,
       );
       openPicker(container);
       expect(document.querySelector('.rc-picker-footer-extra').textContent).toEqual('footer');

@@ -142,7 +142,7 @@ class Customize extends React.Component<{}, DateRangeState> {
             <div ref={this.poupContainerRef} />
           </div>
           <div>
-            <h3>renderExtraFooter</h3>
+            <h3>extraFooterRender</h3>
             <PickerPanel
               generateConfig={momentGenerateConfig}
               locale={zhCN}
@@ -151,7 +151,7 @@ class Customize extends React.Component<{}, DateRangeState> {
               onSelect={this.handleSelect}
               value={initValue}
               onPanelChange={changePanelCallBack}
-              renderExtraFooter={(mode: PanelMode) => <div>{mode} extra footer</div>}
+              extraFooterRender={(mode: PanelMode) => <div>{mode} extra footer</div>}
             />
           </div>
           <div>
@@ -162,7 +162,7 @@ class Customize extends React.Component<{}, DateRangeState> {
               picker="month"
               defaultValue={now}
               onSelect={this.handleSelectMonth}
-              renderExtraFooter={() => <div>extra footer</div>}
+              extraFooterRender={() => <div>extra footer</div>}
             />
           </div>
           <div>

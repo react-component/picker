@@ -15,6 +15,7 @@ export interface FooterProps<DateType extends object = any> {
   mode: PanelMode;
   internalMode: InternalMode;
   renderExtraFooter?: SharedPickerProps['renderExtraFooter'];
+  extraFooterRender?: SharedPickerProps['extraFooterRender'];
   showNow: boolean;
   generateConfig: GenerateConfig<DateType>;
   disabledDate: DisabledDate<DateType>;
@@ -37,6 +38,7 @@ export default function Footer(props: FooterProps) {
     mode,
     internalMode,
     renderExtraFooter,
+    extraFooterRender: customizeExtraFooterRender,
     showNow,
     showTime,
     onSubmit,
@@ -55,7 +57,8 @@ export default function Footer(props: FooterProps) {
   const [getValidTime] = useTimeInfo(generateConfig, showTime, now);
 
   // ======================== Extra =========================
-  const extraNode = renderExtraFooter?.(mode);
+  const extraFooterRender = customizeExtraFooterRender ?? renderExtraFooter
+  const extraNode = extraFooterRender?.(mode);
 
   // ======================== Ranges ========================
   const nowDisabled = disabledDate(now, {

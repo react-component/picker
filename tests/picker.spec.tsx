@@ -492,15 +492,15 @@ describe('Picker.Basic', () => {
     });
   });
 
-  it('renderExtraFooter', () => {
-    const renderExtraFooter = jest.fn((mode) => <div>{mode}</div>);
+  it('extraFooterRender', () => {
+    const extraFooterRender = jest.fn((mode) => <div>{mode}</div>);
     const { container } = render(
-      <DayPicker showNow={false} renderExtraFooter={renderExtraFooter} />,
+      <DayPicker showNow={false} extraFooterRender={extraFooterRender} />,
     );
 
     function matchFooter(mode: string) {
       expect(document.querySelector('.rc-picker-footer-extra').textContent).toEqual(mode);
-      expect(renderExtraFooter.mock.calls[renderExtraFooter.mock.calls.length - 1][0]).toEqual(
+      expect(extraFooterRender.mock.calls[extraFooterRender.mock.calls.length - 1][0]).toEqual(
         mode,
       );
     }
