@@ -10,11 +10,11 @@ const HIDDEN_STYLE: React.CSSProperties = {
 export interface HeaderProps<DateType extends object> {
   offset?: (distance: number, date: DateType) => DateType;
   superOffset?: (distance: number, date: DateType) => DateType;
-  onChange: (date: DateType) => void;
+  onChange?: (date: DateType) => void;
 
   // Limitation
-  getStart: (date: DateType) => DateType;
-  getEnd: (date: DateType) => DateType;
+  getStart?: (date: DateType) => DateType;
+  getEnd?: (date: DateType) => DateType;
 
   children?: React.ReactNode;
 }
@@ -55,7 +55,7 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
 
   // ======================= Limitation =======================
   const disabledOffsetPrev = React.useMemo(() => {
-    if (!minDate || !offset) {
+    if (!minDate || !offset || !getEnd) {
       return false;
     }
 
@@ -65,7 +65,7 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
   }, [minDate, offset, pickerValue, getEnd, generateConfig, locale, type]);
 
   const disabledSuperOffsetPrev = React.useMemo(() => {
-    if (!minDate || !superOffset) {
+    if (!minDate || !superOffset || !getEnd) {
       return false;
     }
 
@@ -75,7 +75,7 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
   }, [minDate, superOffset, pickerValue, getEnd, generateConfig, locale, type]);
 
   const disabledOffsetNext = React.useMemo(() => {
-    if (!maxDate || !offset) {
+    if (!maxDate || !offset || !getStart) {
       return false;
     }
 
@@ -85,7 +85,7 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
   }, [maxDate, offset, pickerValue, getStart, generateConfig, locale, type]);
 
   const disabledSuperOffsetNext = React.useMemo(() => {
-    if (!maxDate || !superOffset) {
+    if (!maxDate || !superOffset || !getStart) {
       return false;
     }
 
