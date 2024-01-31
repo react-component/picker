@@ -39,7 +39,6 @@ export default () => {
         minDate={dayjs('2019-08-01')}
         maxDate={dayjs('2020-10-31')}
         picker="month"
-        open
       />
       <SinglePicker
         {...sharedLocale}
