@@ -3,7 +3,7 @@ import '../../assets/index.less';
 import type { PickerRef } from '../../src/interface';
 import SinglePicker from '../../src/PickerInput/SinglePicker';
 
-import dayjs, { type Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import 'dayjs/locale/ar';
 import 'dayjs/locale/zh-cn';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
@@ -25,8 +25,6 @@ const sharedLocale = {
 
 export default () => {
   const singleRef = React.useRef<PickerRef>(null);
-
-  const [value, setValue] = React.useState<Dayjs>(null);
 
   return (
     <div>
