@@ -27,7 +27,8 @@ export default () => {
     <div>
       <SinglePicker
         {...sharedLocale}
-        defaultValue={dayjs('2019-09-03')}
+        // defaultPickerValue={dayjs('2019-09-15')}
+        defaultValue={dayjs('2020-09-03')}
         minDate={dayjs('2019-08-01')}
         maxDate={dayjs('2020-10-31')}
         open

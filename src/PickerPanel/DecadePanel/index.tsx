@@ -88,9 +88,8 @@ export default function DecadePanel<DateType extends object = any>(
       <div className={panelPrefixCls}>
         {/* Header */}
         <PanelHeader
-          onSuperOffset={(offset) => {
-            onPickerValueChange(generateConfig.addYear(pickerValue, offset * 100));
-          }}
+          superOffset={(distance) => generateConfig.addYear(pickerValue, distance * 100)}
+          onChange={onPickerValueChange}
         >
           {yearNode}
         </PanelHeader>

@@ -50,12 +50,5 @@ export default function WeekPanel<DateType extends object = any>(
   };
 
   // ============================== Render ==============================
-  return (
-    <DatePanel
-      {...props}
-      mode="week"
-      panelName="week"
-      rowClassName={rowClassName}
-    />
-  );
+  return <DatePanel {...props} mode="week" panelName="week" rowClassName={rowClassName} />;
 }

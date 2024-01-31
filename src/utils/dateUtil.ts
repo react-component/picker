@@ -188,12 +188,21 @@ export function isInRange<DateType>(
     return false;
   }
 
-  return (
-    !isSameDate(generateConfig, startDate, current) &&
-    !isSameDate(generateConfig, endDate, current) &&
-    generateConfig.isAfter(current, startDate) &&
-    generateConfig.isAfter(endDate, current)
-  );
+  return generateConfig.isAfter(current, startDate) && generateConfig.isAfter(endDate, current);
+}
+
+export function isSameOrAfter<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  locale: Locale,
+  date1: NullableDateType<DateType>,
+  date2: NullableDateType<DateType>,
+  type: InternalMode,
+) {
+  if (isSame(generateConfig, locale, date1, date2, type)) {
+    return true;
+  }
+
+  return generateConfig.isAfter(date1, date2);
 }
 
 export function getWeekStartDate<DateType>(
