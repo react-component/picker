@@ -27,7 +27,7 @@ describe('Picker.Multiple', () => {
     const onChange = jest.fn();
     const onCalendarChange = jest.fn();
     const { container } = render(
-      <DayPicker multiple onChange={onChange} onCalendarChange={onCalendarChange} />,
+      <DayPicker multiple onChange={onChange} onCalendarChange={onCalendarChange} needConfirm />,
     );
 
     expect(container.querySelector('.rc-picker-multiple')).toBeTruthy();
@@ -61,7 +61,7 @@ describe('Picker.Multiple', () => {
 
   it('panel click to remove', () => {
     const onChange = jest.fn();
-    const { container } = render(<DayPicker multiple onChange={onChange} />);
+    const { container } = render(<DayPicker multiple onChange={onChange} needConfirm />);
 
     openPicker(container);
     selectCell(1);
@@ -96,6 +96,7 @@ describe('Picker.Multiple', () => {
     const { container } = render(
       <DayPicker
         multiple
+        needConfirm
         onChange={onChange}
         defaultValue={[getDay('2000-09-03'), getDay('2000-01-28')]}
       />,
