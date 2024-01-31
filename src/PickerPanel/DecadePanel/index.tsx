@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { DisabledDate, SharedPanelProps } from '../../interface';
-import { formatValue } from '../../utils/dateUtil';
+import { formatValue, isInRange, isSameDecade } from '../../utils/dateUtil';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
@@ -15,13 +15,20 @@ export default function DecadePanel<DateType extends object = any>(
 
   // ========================== Base ==========================
   const [info] = useInfo(props, 'decade');
-  const startYear = Math.floor(generateConfig.getYear(pickerValue) / 100) * 100;
-  const endYear = startYear + 99;
 
-  const baseDate = generateConfig.setYear(pickerValue, startYear - 10);
+  const getStartYear = (date: DateType) => {
+    const startYear = Math.floor(generateConfig.getYear(pickerValue) / 100) * 100;
+    return generateConfig.setYear(date, startYear);
+  };
+  const getEndYear = (date: DateType) => {
+    const startYear = getStartYear(date);
+    return generateConfig.addYear(startYear, 99);
+  };
 
-  const startYearDate = generateConfig.setYear(baseDate, startYear);
-  const endYearDate = generateConfig.setYear(startYearDate, endYear);
+  const startYearDate = getStartYear(pickerValue);
+  const endYearDate = getEndYear(pickerValue);
+
+  const baseDate = generateConfig.addYear(startYearDate, -10);
 
   // ========================= Cells ==========================
   const getCellDate = (date: DateType, offset: number) => {
@@ -46,9 +53,11 @@ export default function DecadePanel<DateType extends object = any>(
   };
 
   const getCellClassName = (date: DateType) => {
-    const dateYear = generateConfig.getYear(date);
     return {
-      [`${prefixCls}-cell-in-view`]: startYear <= dateYear && dateYear <= endYear,
+      [`${prefixCls}-cell-in-view`]:
+        isSameDecade(generateConfig, date, startYearDate) ||
+        isSameDecade(generateConfig, date, endYearDate) ||
+        isInRange(generateConfig, startYearDate, endYearDate, date),
     };
   };
 
@@ -90,6 +99,9 @@ export default function DecadePanel<DateType extends object = any>(
         <PanelHeader
           superOffset={(distance) => generateConfig.addYear(pickerValue, distance * 100)}
           onChange={onPickerValueChange}
+          // Limitation
+          getStart={getStartYear}
+          getEnd={getEndYear}
         >
           {yearNode}
         </PanelHeader>

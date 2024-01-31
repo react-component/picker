@@ -59,40 +59,40 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
       return false;
     }
 
-    const prevPanelStartDate = getStart(offset(-1, pickerValue));
+    const prevPanelLimitDate = getEnd(offset(-1, pickerValue));
 
-    return !isSameOrAfter(generateConfig, locale, prevPanelStartDate, minDate, type);
-  }, [minDate, offset, pickerValue, getStart, generateConfig, locale, type]);
+    return !isSameOrAfter(generateConfig, locale, prevPanelLimitDate, minDate, type);
+  }, [minDate, offset, pickerValue, getEnd, generateConfig, locale, type]);
 
   const disabledSuperOffsetPrev = React.useMemo(() => {
     if (!minDate || !superOffset) {
       return false;
     }
 
-    const prevPanelStartDate = getStart(superOffset(-1, pickerValue));
+    const prevPanelLimitDate = getEnd(superOffset(-1, pickerValue));
 
-    return !isSameOrAfter(generateConfig, locale, prevPanelStartDate, minDate, type);
-  }, [minDate, superOffset, pickerValue, getStart, generateConfig, locale, type]);
+    return !isSameOrAfter(generateConfig, locale, prevPanelLimitDate, minDate, type);
+  }, [minDate, superOffset, pickerValue, getEnd, generateConfig, locale, type]);
 
   const disabledOffsetNext = React.useMemo(() => {
     if (!maxDate || !offset) {
       return false;
     }
 
-    const nextPanelEndDate = getEnd(offset(1, pickerValue));
+    const nextPanelLimitDate = getStart(offset(1, pickerValue));
 
-    return !isSameOrAfter(generateConfig, locale, maxDate, nextPanelEndDate, type);
-  }, [maxDate, offset, pickerValue, getEnd, generateConfig, locale, type]);
+    return !isSameOrAfter(generateConfig, locale, maxDate, nextPanelLimitDate, type);
+  }, [maxDate, offset, pickerValue, getStart, generateConfig, locale, type]);
 
   const disabledSuperOffsetNext = React.useMemo(() => {
     if (!maxDate || !superOffset) {
       return false;
     }
 
-    const nextPanelEndDate = getEnd(superOffset(1, pickerValue));
+    const nextPanelLimitDate = getStart(superOffset(1, pickerValue));
 
-    return !isSameOrAfter(generateConfig, locale, maxDate, nextPanelEndDate, type);
-  }, [maxDate, superOffset, pickerValue, getEnd, generateConfig, locale, type]);
+    return !isSameOrAfter(generateConfig, locale, maxDate, nextPanelLimitDate, type);
+  }, [maxDate, superOffset, pickerValue, getStart, generateConfig, locale, type]);
 
   // ========================= Offset =========================
   const onOffset = (distance: number) => {

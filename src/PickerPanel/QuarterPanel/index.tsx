@@ -61,6 +61,9 @@ export default function QuarterPanel<DateType extends object = any>(
         <PanelHeader
           superOffset={(distance) => generateConfig.addYear(pickerValue, distance)}
           onChange={onPickerValueChange}
+          // Limitation
+          getStart={(date) => generateConfig.setMonth(date, 0)}
+          getEnd={(date) => generateConfig.setMonth(date, 11)}
         >
           {yearNode}
         </PanelHeader>
