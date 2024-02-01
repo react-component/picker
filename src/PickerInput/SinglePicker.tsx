@@ -41,6 +41,7 @@ export interface BasePickerProps<DateType extends object = any>
 
   /** Not support `time` or `datetime` picker */
   multiple?: boolean;
+  removeIcon?: React.ReactNode;
   /** Only work when `multiple` is in used */
   maxTagCount?: number | 'responsive';
 
@@ -167,6 +168,7 @@ function Picker<DateType extends object = any>(
     inputReadOnly,
 
     suffixIcon,
+    removeIcon,
 
     // Focus
     onFocus,
@@ -620,6 +622,7 @@ function Picker<DateType extends object = any>(
           ref={selectorRef}
           // Icon
           suffixIcon={suffixIcon}
+          removeIcon={removeIcon}
           // Active
           activeHelp={!!internalHoverValue}
           allHelp={!!internalHoverValue && hoverSource === 'preset'}
