@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { DisabledDate, SharedPanelProps } from '../../interface';
-import { formatValue } from '../../utils/dateUtil';
+import { formatValue, isInRange, isSameYear } from '../../utils/dateUtil';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
@@ -22,13 +22,19 @@ export default function YearPanel<DateType extends object = any>(
 
   // ========================== Base ==========================
   const [info] = useInfo(props, 'year');
-  const startYear = Math.floor(generateConfig.getYear(pickerValue) / 10) * 10;
-  const endYear = startYear + 9;
+  const getStartYear = (date: DateType) => {
+    const startYear = Math.floor(generateConfig.getYear(pickerValue) / 10) * 10;
+    return generateConfig.setYear(date, startYear);
+  };
+  const getEndYear = (date: DateType) => {
+    const startYear = getStartYear(date);
+    return generateConfig.addYear(startYear, 9);
+  };
 
-  const baseDate = generateConfig.setYear(pickerValue, startYear - 1);
+  const startYearDate = getStartYear(pickerValue);
+  const endYearDate = getEndYear(pickerValue);
 
-  const startYearDate = generateConfig.setYear(baseDate, startYear);
-  const endYearDate = generateConfig.setYear(startYearDate, endYear);
+  const baseDate = generateConfig.addYear(startYearDate, -1);
 
   // ========================= Cells ==========================
   const getCellDate = (date: DateType, offset: number) => {
@@ -44,9 +50,11 @@ export default function YearPanel<DateType extends object = any>(
   };
 
   const getCellClassName = (date: DateType) => {
-    const dateYear = generateConfig.getYear(date);
     return {
-      [`${prefixCls}-cell-in-view`]: startYear <= dateYear && dateYear <= endYear,
+      [`${prefixCls}-cell-in-view`]:
+        isSameYear(generateConfig, date, startYearDate) ||
+        isSameYear(generateConfig, date, endYearDate) ||
+        isInRange(generateConfig, startYearDate, endYearDate, date),
     };
   };
 
@@ -99,9 +107,11 @@ export default function YearPanel<DateType extends object = any>(
       <div className={panelPrefixCls}>
         {/* Header */}
         <PanelHeader
-          onSuperOffset={(offset) => {
-            onPickerValueChange(generateConfig.addYear(pickerValue, offset * 10));
-          }}
+          superOffset={(distance) => generateConfig.addYear(pickerValue, distance * 10)}
+          onChange={onPickerValueChange}
+          // Limitation
+          getStart={getStartYear}
+          getEnd={getEndYear}
         >
           {yearNode}
         </PanelHeader>

@@ -137,7 +137,7 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
           clone[i] = clone[i] || null;
         }
       } else if (order) {
-        clone = orderDates(clone, generateConfig);
+        clone = orderDates(clone.filter((date) => date) as ValueType, generateConfig);
       }
 
       // Update merged value

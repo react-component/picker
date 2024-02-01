@@ -46,7 +46,8 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   // ========================== Base ==========================
   const [info, now] = useInfo(props, mode);
   const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale.locale);
-  const baseDate = getWeekStartDate(locale.locale, generateConfig, pickerValue);
+  const monthStartDate = generateConfig.setDate(pickerValue, 1);
+  const baseDate = getWeekStartDate(locale.locale, generateConfig, monthStartDate);
   const month = generateConfig.getMonth(pickerValue);
 
   // =========================== PrefixColumn ===========================
@@ -176,12 +177,16 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
     <PanelContext.Provider value={info}>
       <div className={classNames(panelPrefixCls, showWeek && `${panelPrefixCls}-show-week`)}>
         {/* Header */}
-        <PanelHeader
-          onOffset={(offset) => {
-            onPickerValueChange(generateConfig.addMonth(pickerValue, offset));
-          }}
-          onSuperOffset={(offset) => {
-            onPickerValueChange(generateConfig.addYear(pickerValue, offset));
+        <PanelHeader<DateType>
+          offset={(distance) => generateConfig.addMonth(pickerValue, distance)}
+          superOffset={(distance) => generateConfig.addYear(pickerValue, distance)}
+          onChange={onPickerValueChange}
+          // Limitation
+          getStart={(date) => generateConfig.setDate(date, 1)}
+          getEnd={(date) => {
+            let clone = generateConfig.setDate(date, 1);
+            clone = generateConfig.addMonth(clone, 1);
+            return generateConfig.addDate(clone, -1);
           }}
         >
           {monthYearNodes}

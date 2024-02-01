@@ -232,8 +232,12 @@ export interface SharedPanelProps<DateType extends object = any> {
   // Mode
   onModeChange: (mode: PanelMode, date?: DateType) => void;
 
-  // Render
+  // Limitation
   disabledDate?: DisabledDate<DateType>;
+  minDate?: DateType;
+  maxDate?: DateType;
+
+  // Render
   cellRender?: CellRender<DateType>;
 
   // Hover

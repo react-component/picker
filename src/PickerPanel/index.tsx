@@ -53,6 +53,8 @@ export interface BasePickerPanelProps<DateType extends object = any>
 
       // Disabled
       | 'disabledDate'
+      | 'minDate'
+      | 'maxDate'
 
       // Icon
       | 'prevIcon'
@@ -385,6 +387,8 @@ function PickerPanel<DateType extends object = any>(
 
     // Disabled
     'disabledDate',
+    'minDate',
+    'maxDate',
 
     // Hover
     'onHover',

@@ -5,7 +5,6 @@ export interface PanelContextProps<DateType extends object = any>
   extends Pick<
     SharedPanelProps<DateType>,
     | 'prefixCls'
-    | 'disabledDate'
     | 'cellRender'
     | 'generateConfig'
     | 'locale'
@@ -15,6 +14,11 @@ export interface PanelContextProps<DateType extends object = any>
     | 'onHover'
     | 'values'
     | 'pickerValue'
+
+    // Limitation
+    | 'disabledDate'
+    | 'minDate'
+    | 'maxDate'
 
     // Icon
     | 'prevIcon'
@@ -48,6 +52,8 @@ export function useInfo<DateType extends object = any>(
     generateConfig,
     locale,
     disabledDate,
+    minDate,
+    maxDate,
     cellRender,
     hoverValue,
     hoverRangeValue,
@@ -73,6 +79,8 @@ export function useInfo<DateType extends object = any>(
     pickerValue,
     prefixCls,
     disabledDate,
+    minDate,
+    maxDate,
     cellRender,
     hoverValue,
     hoverRangeValue,

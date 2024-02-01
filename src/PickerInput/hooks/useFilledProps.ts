@@ -128,8 +128,9 @@ export default function useFilledProps<
   const internalPicker: InternalMode = picker === 'date' && showTime ? 'datetime' : picker;
 
   /** The picker is `datetime` or `time` */
-  const complexPicker = internalPicker === 'time' || internalPicker === 'datetime' || multiple;
-  const mergedNeedConfirm = needConfirm ?? complexPicker;
+  const multipleInteractivePicker = internalPicker === 'time' || internalPicker === 'datetime';
+  const complexPicker = multipleInteractivePicker || multiple;
+  const mergedNeedConfirm = needConfirm ?? multipleInteractivePicker;
 
   // ========================== Time ==========================
   // Auto `format` need to check `showTime.showXXX` first.
