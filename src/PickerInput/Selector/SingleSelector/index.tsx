@@ -30,6 +30,8 @@ export interface SingleSelectorProps<DateType extends object = any>
   // Invalid
   invalid: boolean;
   onInvalid: (valid: boolean) => void;
+
+  removeIcon?: React.ReactNode;
 }
 
 function SingleSelector<DateType extends object = any>(
@@ -98,6 +100,8 @@ function SingleSelector<DateType extends object = any>(
     'aria-required': ariaRequired,
     autoFocus,
 
+    removeIcon,
+
     ...restProps
   } = props;
 
@@ -165,6 +169,7 @@ function SingleSelector<DateType extends object = any>(
         formatDate={getText}
         maxTagCount={maxTagCount}
         disabled={disabled}
+        removeIcon={removeIcon}
       />
       <input
         className={`${prefixCls}-multiple-input`}

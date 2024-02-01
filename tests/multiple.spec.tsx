@@ -125,4 +125,16 @@ describe('Picker.Multiple', () => {
     rerender(renderDemo(false));
     expect(container.querySelector('.rc-picker-clear')).toBeFalsy();
   });
+
+  it('removeIcon', () => {
+    const { container } = render(
+      <DayPicker
+        multiple
+        defaultValue={[getDay('2000-01-01')]}
+        removeIcon={<span className="custom-remove">Remove</span>}
+      />,
+    );
+
+    expect(container.querySelector('.custom-remove')).toBeTruthy();
+  });
 });
