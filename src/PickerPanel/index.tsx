@@ -275,6 +275,12 @@ function PickerPanel<DateType extends object = any>(
     },
   );
 
+  React.useEffect(() => {
+    if (mergedValue[0] && !pickerValue) {
+      setInternalPickerValue(mergedValue[0]);
+    }
+  }, [mergedValue[0]]);
+
   // Both trigger when manually pickerValue or mode change
   const triggerPanelChange = (viewDate?: DateType, nextMode?: PanelMode) => {
     onPanelChange?.(viewDate || pickerValue, nextMode || mergedMode);

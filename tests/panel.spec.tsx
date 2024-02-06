@@ -517,7 +517,7 @@ describe('Picker.Panel', () => {
       case 'month':
       case 'quarter':
       case 'week':
-        return (current as Dayjs).get(picker as any);
+        return (current as Dayjs).get(picker as any) as any;
     }
   };
 
@@ -709,4 +709,5 @@ describe('Picker.Panel', () => {
 
     expect(container.querySelector('.rc-picker-header-view').textContent).toEqual('01:02:03 AM');
   });
+
 });
