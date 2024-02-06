@@ -123,9 +123,10 @@ export function isSameWeek<DateType>(
   if (typeof equal === 'boolean') {
     return equal;
   }
-
+  const weekStartDate1 = generateConfig.locale.getWeekFirstDate(locale, date1!);
+  const weekStartDate2 = generateConfig.locale.getWeekFirstDate(locale, date2!);
   return (
-    isSameYear(generateConfig, date1!, date2!) &&
+    isSameYear(generateConfig, weekStartDate1, weekStartDate2) &&
     generateConfig.locale.getWeek(locale, date1!) === generateConfig.locale.getWeek(locale, date2!)
   );
 }
