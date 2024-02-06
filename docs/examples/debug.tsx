@@ -127,9 +127,9 @@ MyInput.displayName = 'MyInput';
 export default () => {
   const singleRef = React.useRef<PickerRef>(null);
 
-  const [value, setValue] = React.useState<Dayjs>(null);
+  const [value, setValue] = React.useState<Dayjs>(dayjs('2024-01-15'));
   const [rangeValue, setRangeValue] = React.useState<[Dayjs, Dayjs]>(
-    [dayjs('2024-01-15'), dayjs('2024-02-01')],
+    [dayjs('2024-01-15'), dayjs('2024-03-01')],
     // null,
     // undefined,
   );
@@ -138,103 +138,16 @@ export default () => {
     setValue(nextVal);
   };
 
+  React.useEffect(() => {
+    setTimeout(() => {
+      setValue(dayjs('2024-03-03'));
+    }, 2000);
+  }, []);
+
   return (
     <div>
-      {/* <Origin7Range /> */}
-      <input defaultValue="2030-03-0" />
-      <input defaultValue="2030-03-01 11:22:3" />
-
-      <br />
-
-      <SinglePicker
-        // Shared
-        {...sharedLocale}
-        // disabledDate={(date) => date.isBefore(dayjs())}
-        // disabledTime={() => ({
-        //   disabledHours: () => [0, 1, 2, 3, 4, 5],
-        //   disabledMinutes: () => [0, 1, 2, 3, 4, 5],
-        //   disabledSeconds: () => [0, 1, 2, 3, 4, 5],
-        // })}
-        defaultOpenValue={dayjs()}
-        // open
-        picker="time"
-        format={{
-          format: 'HH:mm:ss.SSS A',
-          type: 'mask',
-        }}
-        // showTime={{
-        //   defaultValue: dayjs(),
-        // }}
-        ref={singleRef}
-        suffixIcon="🧶"
-        // showTime={{
-        //   disabledTime: () => ({
-        //     disabledHours: () => [0, 1, 2, 3, 4, 5],
-        //     disabledMinutes: () => [0, 1, 2, 3, 4, 5],
-        //     disabledSeconds: () => [0, 1, 2, 3, 4, 5],
-        //   }),
-        // }}
-        // showTime={{}}
-        // disabled
-        open
-        onChange={(...args) => {
-          console.log('🔥 Change:', ...args);
-        }}
-        onCalendarChange={(...args) => {
-          console.log('🎉 Calendar Change:', ...args);
-        }}
-        onPickerValueChange={(val, info) => {
-          console.log('👻 Picker Value Change:', val, val?.format('YYYY-MM-DD'), info);
-        }}
-        onPanelChange={(val, info) => {
-          console.log('🎼 Panel Change:', val, val?.format('YYYY-MM-DD'), info);
-        }}
-        style={{ width: 300 }}
-        onKeyDown={(e) => {
-          console.log('🎬 KeyDown:', e);
-        }}
-      />
-      <br />
-      <RangePicker
-        {...sharedLocale}
-        // value={rangeValue}
-        // open
-        showTime={{
-          defaultOpenValue: [dayjs()],
-        }}
-        panelRender={(ori) => <>2333{ori}</>}
-        onChange={(val, text) => {
-          console.log('🔥 Change:', val, text);
-          setRangeValue(val);
-        }}
-        onCalendarChange={(val, text, info) => {
-          console.log('🎉 Calendar Change:', val, text, info);
-        }}
-        onOpenChange={(nextOpen) => {
-          console.log('🏆 Next Open:', nextOpen);
-        }}
-        onPickerValueChange={(val, info) => {
-          console.log(
-            '👻 Picker Value Change:',
-            val,
-            val?.[0]?.format('YYYY-MM-DD'),
-            val?.[1]?.format('YYYY-MM-DD'),
-            info,
-          );
-        }}
-      />
-      <br />
-
-      <button
-        onClick={() => {
-          singleRef.current?.focus();
-        }}
-      >
-        Focus
-      </button>
-
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        {/* <PickerPanel
+        <PickerPanel
           generateConfig={dayjsGenerateConfig}
           locale={zhCN}
           value={value}
@@ -243,97 +156,7 @@ export default () => {
             console.error('1');
             console.log('🎲 PanelValue Change:', panelValue, mode);
           }}
-        /> */}
-        {/* <CellPicker
-          picker="time"
-          locale={{
-            ...zhCN,
-            cellMeridiemFormat: 'A',
-          }}
-          components={{
-            time: MyTime,
-          }}
-          showTime={{
-            format: 'HH:mm:ss',
-            use12Hours: true,
-            // showTitle: true,
-            // defaultValue: dayjs('2000-01-01 01:03:05.800'),
-          }}
-          pickerValue={dayjs('2000-01-01 01:03:05.800')}
-        /> */}
-        {/* <CellPicker
-          picker="date"
-          // showTime={{
-          //   format: 'HH:mm:ss.SSS A',
-          //   showTitle: true,
-          // }}
-        /> */}
-        {/* <CellPicker
-          picker="week"
-        /> */}
-
-        {/* <CellPicker
-          defaultValue={dayjs().add(1, 'day')}
-          disabledDate={(date) => date.date() === 11}
-          // cellRender={(date: Dayjs, info) => {
-          //   if (info.type === 'date') {
-          //     return date.format('Do');
-          //   }
-          // }}
-          value={value}
-          onChange={setValue}
         />
-
-        <CellPicker
-          picker="week"
-          defaultValue={dayjs('2000-01-01')}
-          disabledDate={(date) => date.week() === 3}
-        />
-
-        <CellPicker
-          picker="month"
-          defaultValue={dayjs('2000-01-01')}
-          disabledDate={(date) => date.week() === 3}
-          value={value}
-          onChange={setValue}
-        />
-
-        <CellPicker
-          picker="year"
-          defaultValue={dayjs('2023-04-05')}
-          disabledDate={(date) => date.week() === 3}
-        />
-
-        <CellPicker
-          picker="decade"
-          defaultValue={dayjs('2023-04-05')}
-          disabledDate={(date) => date.week() === 3}
-        />
-
-        <CellPicker
-          picker="time"
-          defaultValue={dayjs('1990-10-23 13:05:08.200')}
-          disabledDate={(date) => date.week() === 3}
-          showTime={{
-            format: 'HH:mm:ss.SSS',
-            // format: 'LTS',
-            use12Hours: true,
-            changeOnScroll: true,
-            disabledHours: () => [0, 1, 2, 3, 4, 5],
-            disabledMinutes: (hour) => (hour === 6 ? [0, 1, 2, 4, 5, 6] : []),
-            disabledSeconds: (_, minute) => (minute === 3 ? [6, 7, 8, 9] : []),
-            disabledTime: () => ({
-              disabledMilliseconds: () => [0, 100],
-            }),
-            showTitle: true,
-            millisecondStep: 20,
-          }}
-          // cellRender={(val: number, info) => {
-          //   if (info.type === 'time') {
-          //     return `${val}!!!`;
-          //   }
-          // }}
-        /> */}
       </div>
     </div>
   );
