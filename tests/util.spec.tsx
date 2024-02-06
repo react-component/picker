@@ -1,7 +1,7 @@
 import momentGenerateConfig from '../src/generate/moment';
 import { getLowerBoundTime, setTime, getLastDay } from '../src/utils/timeUtil';
 import { toArray } from '../src/utils/miscUtil';
-import { isSameTime, isSameDecade } from '../src/utils/dateUtil';
+import { isSameTime, isSameDecade, isSameWeek } from '../src/utils/dateUtil';
 import { getMoment } from './util/commonUtil';
 
 describe('Picker.Util', () => {
@@ -66,11 +66,35 @@ describe('Picker.Util', () => {
   });
 
   describe('getLastDay', () => {
+    expect(getLastDay(momentGenerateConfig, getMoment('2020-10-01'))).toEqual('2020-10-31');
+  });
+
+  it('isSameWeek', () => {
+    // 2024 CN first date === 2024-01-01 monday
     expect(
-      getLastDay(
-        momentGenerateConfig,
-        getMoment('2020-10-01'),
-      ),
-    ).toEqual('2020-10-31');
+      isSameWeek(momentGenerateConfig, 'zh_CN', getMoment('2023-12-31'), getMoment('2024-01-01')),
+    ).toBeFalsy();
+    expect(
+      isSameWeek(momentGenerateConfig, 'zh_CN', getMoment('2023-12-31'), getMoment('2024-12-31')),
+    ).toBeFalsy();
+    expect(
+      isSameWeek(momentGenerateConfig, 'zh_CN', getMoment('2024-01-02'), getMoment('2024-01-01')),
+    ).toBeTruthy();
+    expect(
+      isSameWeek(momentGenerateConfig, 'zh_CN', getMoment('2024-01-02'), getMoment('2024-03-01')),
+    ).toBeFalsy();
+    // 2024 US first date === 2023-12-31 sunday
+    expect(
+      isSameWeek(momentGenerateConfig, 'en_US', getMoment('2023-12-31'), getMoment('2024-01-01')),
+    ).toBeTruthy();
+    expect(
+      isSameWeek(momentGenerateConfig, 'en_US', getMoment('2023-12-31'), getMoment('2024-12-31')),
+    ).toBeFalsy();
+    expect(
+      isSameWeek(momentGenerateConfig, 'en_US', getMoment('2024-01-02'), getMoment('2024-01-01')),
+    ).toBeTruthy();
+    expect(
+      isSameWeek(momentGenerateConfig, 'en_US', getMoment('2024-01-02'), getMoment('2024-03-01')),
+    ).toBeFalsy();
   });
 });
