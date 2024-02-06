@@ -57,6 +57,11 @@ describe('Picker.Panel', () => {
       rerender(<DayPickerPanel value={getDay('2000-01-23')} onChange={onChange} />);
       selectCell(23);
       expect(onChange).not.toHaveBeenCalled();
+
+      // Should switch pickerValue of panel
+      rerender(<DayPickerPanel value={getDay('2020-03-03')} onChange={onChange} />);
+      selectCell(13);
+      expect(isSame(onChange.mock.calls[0][0], '2020-03-13')).toBeTruthy();
     });
 
     it('uncontrolled', () => {
