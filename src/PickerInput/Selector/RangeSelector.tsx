@@ -174,7 +174,9 @@ function RangeSelector<DateType extends object = any>(
 
   const syncActiveOffset = useEvent(() => {
     const input = getInput(activeIndex);
-    if (input) {
+    if (activeIndex === 0) {
+      onActiveOffset(0);
+    } else if (input) {
       const { offsetWidth, offsetLeft, offsetParent } = input.nativeElement;
 
       let offset = offsetLeft;

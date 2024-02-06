@@ -74,6 +74,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   const rtl = direction === 'rtl';
 
   // ========================= Refs =========================
+  const arrowRef = React.useRef<HTMLDivElement>(null);
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
   // ======================== Offset ========================
@@ -90,10 +91,15 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     // `activeOffset` is always align with the active input element
     // So we need only check container contains the `activeOffset`
     if (range) {
-      if (activeOffset + containerWidth < wrapperRef.current?.offsetWidth) {
-        setContainerOffset(activeOffset);
-      } else {
+      // Offset in case container has border radius
+      const PRESET_OFFSET = 15;
+      const arrowWidth = arrowRef.current?.offsetWidth || 0;
+
+      const maxOffset = containerWidth - PRESET_OFFSET - arrowWidth;
+      if (activeOffset <= maxOffset) {
         setContainerOffset(0);
+      } else {
+        setContainerOffset(activeOffset + arrowWidth + PRESET_OFFSET - containerWidth);
       }
     }
   }, [containerWidth, activeOffset, range]);
@@ -197,6 +203,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
         className={classNames(`${prefixCls}-range-wrapper`, `${prefixCls}-${picker}-range-wrapper`)}
       >
         <div
+          ref={arrowRef}
           className={`${prefixCls}-range-arrow`}
           style={{ [rtl ? 'right' : 'left']: activeOffset }}
         />
