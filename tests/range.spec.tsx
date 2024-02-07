@@ -1659,7 +1659,7 @@ describe('Picker.Range', () => {
       offsetWidth: {
         get() {
           if (this.className.includes('range-arrow')) {
-            return 14;
+            return 0;
           } else if (this.className.includes('panel-container')) {
             return 312;
           } else if (this.className.includes('input')) {
@@ -1695,7 +1695,7 @@ describe('Picker.Range', () => {
       offsetWidth: {
         get() {
           if (this.className.includes('range-arrow')) {
-            return 14;
+            return 0;
           } else if (this.className.includes('panel-container')) {
             return 312;
           } else if (this.className.includes('input')) {
@@ -1722,6 +1722,7 @@ describe('Picker.Range', () => {
       />,
     );
     openPicker(container, 1);
+    console.log(document.querySelector<HTMLElement>('.rc-picker-panel-container').style.cssText);
     expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({ marginLeft: 0 });
     mock.mockRestore();
   });

@@ -92,14 +92,13 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     // So we need only check container contains the `activeOffset`
     if (range) {
       // Offset in case container has border radius
-      const PRESET_OFFSET = 15;
       const arrowWidth = arrowRef.current?.offsetWidth || 0;
 
-      const maxOffset = containerWidth - PRESET_OFFSET - arrowWidth;
+      const maxOffset = containerWidth - arrowWidth;
       if (activeOffset <= maxOffset) {
         setContainerOffset(0);
       } else {
-        setContainerOffset(activeOffset + arrowWidth + PRESET_OFFSET - containerWidth);
+        setContainerOffset(activeOffset + arrowWidth - containerWidth);
       }
     }
   }, [containerWidth, activeOffset, range]);
