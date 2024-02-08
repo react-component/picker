@@ -130,7 +130,6 @@ describe('Picker.Keyboard', () => {
     });
   });
 
-  return;
   it('open to select', () => {
     const onChange = jest.fn();
     const onSelect = jest.fn();

@@ -125,15 +125,7 @@ const MyInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTM
 MyInput.displayName = 'MyInput';
 
 export default () => {
-  const singleRef = React.useRef<PickerRef>(null);
-
   const [value, setValue] = React.useState<Dayjs>(dayjs('2024-01-15'));
-  const [rangeValue, setRangeValue] = React.useState<[Dayjs, Dayjs]>(
-    [dayjs('2024-01-15'), dayjs('2024-03-01')],
-    // null,
-    // undefined,
-  );
-
   const setSingleValue = (nextVal: Dayjs) => {
     setValue(nextVal);
   };
@@ -149,7 +141,7 @@ export default () => {
       <RangePicker {...sharedLocale} open picker="time" style={{ width: 400 }} />
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        {/* <PickerPanel
+        <PickerPanel
           generateConfig={dayjsGenerateConfig}
           locale={zhCN}
           value={value}
@@ -158,7 +150,7 @@ export default () => {
             console.error('1');
             console.log('🎲 PanelValue Change:', panelValue, mode);
           }}
-        /> */}
+        />
       </div>
     </div>
   );
