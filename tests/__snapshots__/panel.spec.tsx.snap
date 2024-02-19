@@ -163,7 +163,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-end"
+                class="rc-picker-cell"
                 title="1990-08-31"
               >
                 <div
@@ -177,7 +177,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-start rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view"
                 title="1990-09-01"
               >
                 <div
@@ -593,7 +593,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
             </tr>
             <tr>
               <td
-                class="rc-picker-cell rc-picker-cell-end rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view"
                 title="1990-09-30"
               >
                 <div
@@ -607,7 +607,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-start"
+                class="rc-picker-cell"
                 title="1990-10-01"
               >
                 <div
@@ -721,9 +721,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
         <div
           class="rc-picker-header-view"
         >
-          1900
-          -
-          1999
+          1900-1999
         </div>
         <button
           class="rc-picker-header-super-next-btn"
@@ -878,7 +876,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-selected"
+                class="rc-picker-cell rc-picker-cell-in-view"
               >
                 <div
                   class="rc-picker-cell-inner customInner"
@@ -936,6 +934,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
         >
           <button
             class="rc-picker-year-btn"
+            tabindex="-1"
             type="button"
           >
             1990
@@ -1164,6 +1163,7 @@ exports[`Picker.Panel append cell with cellRender in quarter 1`] = `
         >
           <button
             class="rc-picker-year-btn"
+            tabindex="-1"
             type="button"
           >
             1990
@@ -1273,10 +1273,11 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
       >
         <ul
           class="rc-picker-time-panel-column"
-          style="position: relative;"
+          data-type="hour"
         >
           <li
             class="rc-picker-time-panel-cell"
+            data-value="0"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1290,6 +1291,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="1"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1303,6 +1305,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="2"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1316,6 +1319,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="3"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1329,6 +1333,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="4"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1342,6 +1347,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="5"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1355,6 +1361,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="6"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1368,6 +1375,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="7"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1381,6 +1389,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="8"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1394,6 +1403,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="9"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1407,6 +1417,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="10"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1420,6 +1431,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="11"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1433,6 +1445,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="12"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1446,6 +1459,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="13"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1459,6 +1473,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="14"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1472,6 +1487,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="15"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1485,6 +1501,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="16"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1498,6 +1515,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="17"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1511,6 +1529,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="18"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1524,6 +1543,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="19"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1537,6 +1557,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="20"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1550,6 +1571,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="21"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1563,6 +1585,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="22"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1576,6 +1599,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="23"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1590,10 +1614,11 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
         </ul>
         <ul
           class="rc-picker-time-panel-column"
-          style="position: relative;"
+          data-type="minute"
         >
           <li
             class="rc-picker-time-panel-cell"
+            data-value="0"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1607,6 +1632,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="1"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1620,6 +1646,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="2"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1633,6 +1660,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="3"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1646,6 +1674,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="4"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1659,6 +1688,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="5"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1672,6 +1702,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="6"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1685,6 +1716,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="7"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1698,6 +1730,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="8"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1711,6 +1744,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="9"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1724,6 +1758,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="10"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1737,6 +1772,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="11"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1750,6 +1786,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="12"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1763,6 +1800,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="13"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1776,6 +1814,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="14"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1789,6 +1828,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="15"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1802,6 +1842,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="16"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1815,6 +1856,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="17"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1828,6 +1870,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="18"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1841,6 +1884,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="19"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1854,6 +1898,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="20"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1867,6 +1912,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="21"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1880,6 +1926,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="22"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1893,6 +1940,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="23"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1906,6 +1954,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="24"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1919,6 +1968,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="25"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1932,6 +1982,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="26"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1945,6 +1996,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="27"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1958,6 +2010,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="28"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1971,6 +2024,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="29"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1984,6 +2038,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="30"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1997,6 +2052,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="31"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2010,6 +2066,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="32"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2023,6 +2080,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="33"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2036,6 +2094,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="34"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2049,6 +2108,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="35"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2062,6 +2122,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="36"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2075,6 +2136,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="37"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2088,6 +2150,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="38"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2101,6 +2164,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="39"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2114,6 +2178,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="40"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2127,6 +2192,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="41"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2140,6 +2206,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="42"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2153,6 +2220,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="43"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2166,6 +2234,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="44"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2179,6 +2248,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="45"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2192,6 +2262,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="46"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2205,6 +2276,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="47"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2218,6 +2290,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="48"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2231,6 +2304,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="49"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2244,6 +2318,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="50"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2257,6 +2332,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="51"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2270,6 +2346,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="52"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2283,6 +2360,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="53"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2296,6 +2374,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="54"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2309,6 +2388,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="55"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2322,6 +2402,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="56"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2335,6 +2416,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="57"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2348,6 +2430,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="58"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2361,6 +2444,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="59"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2375,10 +2459,11 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
         </ul>
         <ul
           class="rc-picker-time-panel-column"
-          style="position: relative;"
+          data-type="second"
         >
           <li
             class="rc-picker-time-panel-cell"
+            data-value="0"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2392,6 +2477,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="1"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2405,6 +2491,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="2"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2418,6 +2505,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="3"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2431,6 +2519,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="4"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2444,6 +2533,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="5"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2457,6 +2547,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="6"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2470,6 +2561,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="7"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2483,6 +2575,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="8"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2496,6 +2589,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="9"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2509,6 +2603,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="10"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2522,6 +2617,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="11"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2535,6 +2631,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="12"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2548,6 +2645,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="13"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2561,6 +2659,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="14"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2574,6 +2673,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="15"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2587,6 +2687,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="16"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2600,6 +2701,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="17"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2613,6 +2715,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="18"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2626,6 +2729,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="19"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2639,6 +2743,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="20"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2652,6 +2757,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="21"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2665,6 +2771,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="22"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2678,6 +2785,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="23"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2691,6 +2799,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="24"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2704,6 +2813,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="25"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2717,6 +2827,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="26"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2730,6 +2841,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="27"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2743,6 +2855,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="28"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2756,6 +2869,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="29"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2769,6 +2883,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="30"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2782,6 +2897,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="31"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2795,6 +2911,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="32"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2808,6 +2925,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="33"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2821,6 +2939,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="34"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2834,6 +2953,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="35"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2847,6 +2967,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="36"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2860,6 +2981,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="37"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2873,6 +2995,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="38"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2886,6 +3009,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="39"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2899,6 +3023,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="40"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2912,6 +3037,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="41"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2925,6 +3051,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="42"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2938,6 +3065,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="43"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2951,6 +3079,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="44"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2964,6 +3093,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="45"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2977,6 +3107,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="46"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2990,6 +3121,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="47"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3003,6 +3135,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="48"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3016,6 +3149,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="49"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3029,6 +3163,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="50"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3042,6 +3177,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="51"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3055,6 +3191,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="52"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3068,6 +3205,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="53"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3081,6 +3219,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="54"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3094,6 +3233,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="55"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3107,6 +3247,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="56"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3120,6 +3261,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="57"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3133,6 +3275,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="58"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3146,6 +3289,7 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="59"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3159,32 +3303,6 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
         </ul>
       </div>
-    </div>
-    <div
-      class="rc-picker-footer"
-    >
-      <ul
-        class="rc-picker-ranges"
-      >
-        <li
-          class="rc-picker-now"
-        >
-          <a
-            class="rc-picker-now-btn"
-          >
-            Now
-          </a>
-        </li>
-        <li
-          class="rc-picker-ok"
-        >
-          <button
-            disabled=""
-          >
-            OK
-          </button>
-        </li>
-      </ul>
     </div>
   </div>
 </div>
@@ -3306,7 +3424,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                   <div
                     class="customWrapper"
                   >
-                    35
+                    34
                   </div>
                 </div>
               </td>
@@ -3367,7 +3485,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-end"
+                class="rc-picker-cell"
                 title="1990-08-31"
               >
                 <div
@@ -3381,7 +3499,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-start rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view"
                 title="1990-09-01"
               >
                 <div
@@ -3417,12 +3535,12 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                   <div
                     class="customWrapper"
                   >
-                    36
+                    35
                   </div>
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
                 title="1990-09-03"
               >
                 <div
@@ -3528,7 +3646,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                   <div
                     class="customWrapper"
                   >
-                    37
+                    36
                   </div>
                 </div>
               </td>
@@ -3639,7 +3757,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                   <div
                     class="customWrapper"
                   >
-                    38
+                    37
                   </div>
                 </div>
               </td>
@@ -3750,7 +3868,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                   <div
                     class="customWrapper"
                   >
-                    39
+                    38
                   </div>
                 </div>
               </td>
@@ -3852,7 +3970,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-end rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view"
                 title="1990-09-30"
               >
                 <div
@@ -3861,12 +3979,12 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                   <div
                     class="customWrapper"
                   >
-                    40
+                    39
                   </div>
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-start"
+                class="rc-picker-cell"
                 title="1990-10-01"
               >
                 <div
@@ -3982,6 +4100,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
         >
           <button
             class="rc-picker-decade-btn"
+            tabindex="-1"
             type="button"
           >
             1990
@@ -4006,7 +4125,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
           <tbody>
             <tr>
               <td
-                class="rc-picker-cell rc-picker-cell-end"
+                class="rc-picker-cell"
                 title="1989"
               >
                 <div
@@ -4020,7 +4139,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-start rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view"
                 title="1990"
               >
                 <div
@@ -4152,7 +4271,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-end rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view"
                 title="1999"
               >
                 <div
@@ -4166,7 +4285,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-start"
+                class="rc-picker-cell"
                 title="2000"
               >
                 <div
@@ -4416,7 +4535,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-end"
+                class="rc-picker-cell"
                 title="1990-08-31"
               >
                 <div
@@ -4426,7 +4545,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-start rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view"
                 title="1990-09-01"
               >
                 <div
@@ -4726,7 +4845,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
             </tr>
             <tr>
               <td
-                class="rc-picker-cell rc-picker-cell-end rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view"
                 title="1990-09-30"
               >
                 <div
@@ -4736,7 +4855,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-start"
+                class="rc-picker-cell"
                 title="1990-10-01"
               >
                 <div
@@ -4826,9 +4945,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
         <div
           class="rc-picker-header-view"
         >
-          1900
-          -
-          1999
+          1900-1999
         </div>
         <button
           class="rc-picker-header-super-next-btn"
@@ -4943,7 +5060,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-selected"
+                class="rc-picker-cell rc-picker-cell-in-view"
               >
                 <div
                   class="customWrapper"
@@ -4993,6 +5110,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
         >
           <button
             class="rc-picker-year-btn"
+            tabindex="-1"
             type="button"
           >
             1990
@@ -5173,6 +5291,7 @@ exports[`Picker.Panel override cell with cellRender in quarter 1`] = `
         >
           <button
             class="rc-picker-year-btn"
+            tabindex="-1"
             type="button"
           >
             1990
@@ -5266,10 +5385,11 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
       >
         <ul
           class="rc-picker-time-panel-column"
-          style="position: relative;"
+          data-type="hour"
         >
           <li
             class="rc-picker-time-panel-cell"
+            data-value="0"
           >
             <div
               class="customWrapper"
@@ -5279,6 +5399,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="1"
           >
             <div
               class="customWrapper"
@@ -5288,6 +5409,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="2"
           >
             <div
               class="customWrapper"
@@ -5297,6 +5419,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="3"
           >
             <div
               class="customWrapper"
@@ -5306,6 +5429,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="4"
           >
             <div
               class="customWrapper"
@@ -5315,6 +5439,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="5"
           >
             <div
               class="customWrapper"
@@ -5324,6 +5449,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="6"
           >
             <div
               class="customWrapper"
@@ -5333,6 +5459,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="7"
           >
             <div
               class="customWrapper"
@@ -5342,6 +5469,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="8"
           >
             <div
               class="customWrapper"
@@ -5351,6 +5479,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="9"
           >
             <div
               class="customWrapper"
@@ -5360,6 +5489,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="10"
           >
             <div
               class="customWrapper"
@@ -5369,6 +5499,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="11"
           >
             <div
               class="customWrapper"
@@ -5378,6 +5509,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="12"
           >
             <div
               class="customWrapper"
@@ -5387,6 +5519,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="13"
           >
             <div
               class="customWrapper"
@@ -5396,6 +5529,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="14"
           >
             <div
               class="customWrapper"
@@ -5405,6 +5539,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="15"
           >
             <div
               class="customWrapper"
@@ -5414,6 +5549,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="16"
           >
             <div
               class="customWrapper"
@@ -5423,6 +5559,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="17"
           >
             <div
               class="customWrapper"
@@ -5432,6 +5569,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="18"
           >
             <div
               class="customWrapper"
@@ -5441,6 +5579,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="19"
           >
             <div
               class="customWrapper"
@@ -5450,6 +5589,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="20"
           >
             <div
               class="customWrapper"
@@ -5459,6 +5599,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="21"
           >
             <div
               class="customWrapper"
@@ -5468,6 +5609,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="22"
           >
             <div
               class="customWrapper"
@@ -5477,6 +5619,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="23"
           >
             <div
               class="customWrapper"
@@ -5487,10 +5630,11 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
         </ul>
         <ul
           class="rc-picker-time-panel-column"
-          style="position: relative;"
+          data-type="minute"
         >
           <li
             class="rc-picker-time-panel-cell"
+            data-value="0"
           >
             <div
               class="customWrapper"
@@ -5500,6 +5644,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="1"
           >
             <div
               class="customWrapper"
@@ -5509,6 +5654,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="2"
           >
             <div
               class="customWrapper"
@@ -5518,6 +5664,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="3"
           >
             <div
               class="customWrapper"
@@ -5527,6 +5674,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="4"
           >
             <div
               class="customWrapper"
@@ -5536,6 +5684,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="5"
           >
             <div
               class="customWrapper"
@@ -5545,6 +5694,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="6"
           >
             <div
               class="customWrapper"
@@ -5554,6 +5704,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="7"
           >
             <div
               class="customWrapper"
@@ -5563,6 +5714,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="8"
           >
             <div
               class="customWrapper"
@@ -5572,6 +5724,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="9"
           >
             <div
               class="customWrapper"
@@ -5581,6 +5734,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="10"
           >
             <div
               class="customWrapper"
@@ -5590,6 +5744,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="11"
           >
             <div
               class="customWrapper"
@@ -5599,6 +5754,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="12"
           >
             <div
               class="customWrapper"
@@ -5608,6 +5764,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="13"
           >
             <div
               class="customWrapper"
@@ -5617,6 +5774,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="14"
           >
             <div
               class="customWrapper"
@@ -5626,6 +5784,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="15"
           >
             <div
               class="customWrapper"
@@ -5635,6 +5794,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="16"
           >
             <div
               class="customWrapper"
@@ -5644,6 +5804,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="17"
           >
             <div
               class="customWrapper"
@@ -5653,6 +5814,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="18"
           >
             <div
               class="customWrapper"
@@ -5662,6 +5824,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="19"
           >
             <div
               class="customWrapper"
@@ -5671,6 +5834,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="20"
           >
             <div
               class="customWrapper"
@@ -5680,6 +5844,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="21"
           >
             <div
               class="customWrapper"
@@ -5689,6 +5854,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="22"
           >
             <div
               class="customWrapper"
@@ -5698,6 +5864,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="23"
           >
             <div
               class="customWrapper"
@@ -5707,6 +5874,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="24"
           >
             <div
               class="customWrapper"
@@ -5716,6 +5884,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="25"
           >
             <div
               class="customWrapper"
@@ -5725,6 +5894,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="26"
           >
             <div
               class="customWrapper"
@@ -5734,6 +5904,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="27"
           >
             <div
               class="customWrapper"
@@ -5743,6 +5914,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="28"
           >
             <div
               class="customWrapper"
@@ -5752,6 +5924,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="29"
           >
             <div
               class="customWrapper"
@@ -5761,6 +5934,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="30"
           >
             <div
               class="customWrapper"
@@ -5770,6 +5944,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="31"
           >
             <div
               class="customWrapper"
@@ -5779,6 +5954,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="32"
           >
             <div
               class="customWrapper"
@@ -5788,6 +5964,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="33"
           >
             <div
               class="customWrapper"
@@ -5797,6 +5974,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="34"
           >
             <div
               class="customWrapper"
@@ -5806,6 +5984,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="35"
           >
             <div
               class="customWrapper"
@@ -5815,6 +5994,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="36"
           >
             <div
               class="customWrapper"
@@ -5824,6 +6004,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="37"
           >
             <div
               class="customWrapper"
@@ -5833,6 +6014,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="38"
           >
             <div
               class="customWrapper"
@@ -5842,6 +6024,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="39"
           >
             <div
               class="customWrapper"
@@ -5851,6 +6034,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="40"
           >
             <div
               class="customWrapper"
@@ -5860,6 +6044,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="41"
           >
             <div
               class="customWrapper"
@@ -5869,6 +6054,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="42"
           >
             <div
               class="customWrapper"
@@ -5878,6 +6064,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="43"
           >
             <div
               class="customWrapper"
@@ -5887,6 +6074,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="44"
           >
             <div
               class="customWrapper"
@@ -5896,6 +6084,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="45"
           >
             <div
               class="customWrapper"
@@ -5905,6 +6094,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="46"
           >
             <div
               class="customWrapper"
@@ -5914,6 +6104,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="47"
           >
             <div
               class="customWrapper"
@@ -5923,6 +6114,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="48"
           >
             <div
               class="customWrapper"
@@ -5932,6 +6124,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="49"
           >
             <div
               class="customWrapper"
@@ -5941,6 +6134,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="50"
           >
             <div
               class="customWrapper"
@@ -5950,6 +6144,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="51"
           >
             <div
               class="customWrapper"
@@ -5959,6 +6154,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="52"
           >
             <div
               class="customWrapper"
@@ -5968,6 +6164,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="53"
           >
             <div
               class="customWrapper"
@@ -5977,6 +6174,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="54"
           >
             <div
               class="customWrapper"
@@ -5986,6 +6184,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="55"
           >
             <div
               class="customWrapper"
@@ -5995,6 +6194,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="56"
           >
             <div
               class="customWrapper"
@@ -6004,6 +6204,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="57"
           >
             <div
               class="customWrapper"
@@ -6013,6 +6214,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="58"
           >
             <div
               class="customWrapper"
@@ -6022,6 +6224,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="59"
           >
             <div
               class="customWrapper"
@@ -6032,10 +6235,11 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
         </ul>
         <ul
           class="rc-picker-time-panel-column"
-          style="position: relative;"
+          data-type="second"
         >
           <li
             class="rc-picker-time-panel-cell"
+            data-value="0"
           >
             <div
               class="customWrapper"
@@ -6045,6 +6249,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="1"
           >
             <div
               class="customWrapper"
@@ -6054,6 +6259,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="2"
           >
             <div
               class="customWrapper"
@@ -6063,6 +6269,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="3"
           >
             <div
               class="customWrapper"
@@ -6072,6 +6279,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="4"
           >
             <div
               class="customWrapper"
@@ -6081,6 +6289,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="5"
           >
             <div
               class="customWrapper"
@@ -6090,6 +6299,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="6"
           >
             <div
               class="customWrapper"
@@ -6099,6 +6309,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="7"
           >
             <div
               class="customWrapper"
@@ -6108,6 +6319,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="8"
           >
             <div
               class="customWrapper"
@@ -6117,6 +6329,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="9"
           >
             <div
               class="customWrapper"
@@ -6126,6 +6339,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="10"
           >
             <div
               class="customWrapper"
@@ -6135,6 +6349,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="11"
           >
             <div
               class="customWrapper"
@@ -6144,6 +6359,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="12"
           >
             <div
               class="customWrapper"
@@ -6153,6 +6369,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="13"
           >
             <div
               class="customWrapper"
@@ -6162,6 +6379,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="14"
           >
             <div
               class="customWrapper"
@@ -6171,6 +6389,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="15"
           >
             <div
               class="customWrapper"
@@ -6180,6 +6399,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="16"
           >
             <div
               class="customWrapper"
@@ -6189,6 +6409,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="17"
           >
             <div
               class="customWrapper"
@@ -6198,6 +6419,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="18"
           >
             <div
               class="customWrapper"
@@ -6207,6 +6429,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="19"
           >
             <div
               class="customWrapper"
@@ -6216,6 +6439,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="20"
           >
             <div
               class="customWrapper"
@@ -6225,6 +6449,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="21"
           >
             <div
               class="customWrapper"
@@ -6234,6 +6459,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="22"
           >
             <div
               class="customWrapper"
@@ -6243,6 +6469,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="23"
           >
             <div
               class="customWrapper"
@@ -6252,6 +6479,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="24"
           >
             <div
               class="customWrapper"
@@ -6261,6 +6489,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="25"
           >
             <div
               class="customWrapper"
@@ -6270,6 +6499,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="26"
           >
             <div
               class="customWrapper"
@@ -6279,6 +6509,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="27"
           >
             <div
               class="customWrapper"
@@ -6288,6 +6519,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="28"
           >
             <div
               class="customWrapper"
@@ -6297,6 +6529,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="29"
           >
             <div
               class="customWrapper"
@@ -6306,6 +6539,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="30"
           >
             <div
               class="customWrapper"
@@ -6315,6 +6549,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="31"
           >
             <div
               class="customWrapper"
@@ -6324,6 +6559,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="32"
           >
             <div
               class="customWrapper"
@@ -6333,6 +6569,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="33"
           >
             <div
               class="customWrapper"
@@ -6342,6 +6579,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="34"
           >
             <div
               class="customWrapper"
@@ -6351,6 +6589,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="35"
           >
             <div
               class="customWrapper"
@@ -6360,6 +6599,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="36"
           >
             <div
               class="customWrapper"
@@ -6369,6 +6609,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="37"
           >
             <div
               class="customWrapper"
@@ -6378,6 +6619,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="38"
           >
             <div
               class="customWrapper"
@@ -6387,6 +6629,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="39"
           >
             <div
               class="customWrapper"
@@ -6396,6 +6639,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="40"
           >
             <div
               class="customWrapper"
@@ -6405,6 +6649,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="41"
           >
             <div
               class="customWrapper"
@@ -6414,6 +6659,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="42"
           >
             <div
               class="customWrapper"
@@ -6423,6 +6669,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="43"
           >
             <div
               class="customWrapper"
@@ -6432,6 +6679,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="44"
           >
             <div
               class="customWrapper"
@@ -6441,6 +6689,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="45"
           >
             <div
               class="customWrapper"
@@ -6450,6 +6699,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="46"
           >
             <div
               class="customWrapper"
@@ -6459,6 +6709,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="47"
           >
             <div
               class="customWrapper"
@@ -6468,6 +6719,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="48"
           >
             <div
               class="customWrapper"
@@ -6477,6 +6729,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="49"
           >
             <div
               class="customWrapper"
@@ -6486,6 +6739,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="50"
           >
             <div
               class="customWrapper"
@@ -6495,6 +6749,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="51"
           >
             <div
               class="customWrapper"
@@ -6504,6 +6759,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="52"
           >
             <div
               class="customWrapper"
@@ -6513,6 +6769,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="53"
           >
             <div
               class="customWrapper"
@@ -6522,6 +6779,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="54"
           >
             <div
               class="customWrapper"
@@ -6531,6 +6789,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="55"
           >
             <div
               class="customWrapper"
@@ -6540,6 +6799,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="56"
           >
             <div
               class="customWrapper"
@@ -6549,6 +6809,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="57"
           >
             <div
               class="customWrapper"
@@ -6558,6 +6819,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="58"
           >
             <div
               class="customWrapper"
@@ -6567,6 +6829,7 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
           <li
             class="rc-picker-time-panel-cell"
+            data-value="59"
           >
             <div
               class="customWrapper"
@@ -6576,32 +6839,6 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
         </ul>
       </div>
-    </div>
-    <div
-      class="rc-picker-footer"
-    >
-      <ul
-        class="rc-picker-ranges"
-      >
-        <li
-          class="rc-picker-now"
-        >
-          <a
-            class="rc-picker-now-btn"
-          >
-            Now
-          </a>
-        </li>
-        <li
-          class="rc-picker-ok"
-        >
-          <button
-            disabled=""
-          >
-            OK
-          </button>
-        </li>
-      </ul>
     </div>
   </div>
 </div>
@@ -6720,7 +6957,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 <div
                   class="customWrapper"
                 >
-                  35
+                  34
                 </div>
               </td>
               <td
@@ -6764,7 +7001,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-end"
+                class="rc-picker-cell"
                 title="1990-08-31"
               >
                 <div
@@ -6774,7 +7011,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-start rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view"
                 title="1990-09-01"
               >
                 <div
@@ -6803,11 +7040,11 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 <div
                   class="customWrapper"
                 >
-                  36
+                  35
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
                 title="1990-09-03"
               >
                 <div
@@ -6886,7 +7123,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 <div
                   class="customWrapper"
                 >
-                  37
+                  36
                 </div>
               </td>
               <td
@@ -6969,7 +7206,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 <div
                   class="customWrapper"
                 >
-                  38
+                  37
                 </div>
               </td>
               <td
@@ -7052,7 +7289,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 <div
                   class="customWrapper"
                 >
-                  39
+                  38
                 </div>
               </td>
               <td
@@ -7129,17 +7366,17 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-end rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view"
                 title="1990-09-30"
               >
                 <div
                   class="customWrapper"
                 >
-                  40
+                  39
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-start"
+                class="rc-picker-cell"
                 title="1990-10-01"
               >
                 <div
@@ -7231,6 +7468,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
         >
           <button
             class="rc-picker-decade-btn"
+            tabindex="-1"
             type="button"
           >
             1990
@@ -7255,7 +7493,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
           <tbody>
             <tr>
               <td
-                class="rc-picker-cell rc-picker-cell-end"
+                class="rc-picker-cell"
                 title="1989"
               >
                 <div
@@ -7265,7 +7503,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-start rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view"
                 title="1990"
               >
                 <div
@@ -7361,7 +7599,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-end rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view"
                 title="1999"
               >
                 <div
@@ -7371,7 +7609,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-start"
+                class="rc-picker-cell"
                 title="2000"
               >
                 <div
@@ -7535,7 +7773,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   </div>
                 </td>
                 <td
-                  class="rc-picker-cell rc-picker-cell-end"
+                  class="rc-picker-cell"
                   title="1990-08-31"
                 >
                   <div
@@ -7545,7 +7783,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   </div>
                 </td>
                 <td
-                  class="rc-picker-cell rc-picker-cell-start rc-picker-cell-in-view"
+                  class="rc-picker-cell rc-picker-cell-in-view"
                   title="1990-09-01"
                 >
                   <div
@@ -7845,7 +8083,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </tr>
               <tr>
                 <td
-                  class="rc-picker-cell rc-picker-cell-end rc-picker-cell-in-view"
+                  class="rc-picker-cell rc-picker-cell-in-view"
                   title="1990-09-30"
                 >
                   <div
@@ -7855,7 +8093,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   </div>
                 </td>
                 <td
-                  class="rc-picker-cell rc-picker-cell-start"
+                  class="rc-picker-cell"
                   title="1990-10-01"
                 >
                   <div
@@ -7936,10 +8174,11 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
         >
           <ul
             class="rc-picker-time-panel-column"
-            style="position: relative;"
+            data-type="hour"
           >
             <li
               class="rc-picker-time-panel-cell"
+              data-value="0"
             >
               <div
                 class="customWrapper"
@@ -7949,6 +8188,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="1"
             >
               <div
                 class="customWrapper"
@@ -7958,6 +8198,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="2"
             >
               <div
                 class="customWrapper"
@@ -7967,6 +8208,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="3"
             >
               <div
                 class="customWrapper"
@@ -7976,6 +8218,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="4"
             >
               <div
                 class="customWrapper"
@@ -7985,6 +8228,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="5"
             >
               <div
                 class="customWrapper"
@@ -7994,6 +8238,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="6"
             >
               <div
                 class="customWrapper"
@@ -8003,6 +8248,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="7"
             >
               <div
                 class="customWrapper"
@@ -8012,6 +8258,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="8"
             >
               <div
                 class="customWrapper"
@@ -8021,6 +8268,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="9"
             >
               <div
                 class="customWrapper"
@@ -8030,6 +8278,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="10"
             >
               <div
                 class="customWrapper"
@@ -8039,6 +8288,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="11"
             >
               <div
                 class="customWrapper"
@@ -8048,6 +8298,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="12"
             >
               <div
                 class="customWrapper"
@@ -8057,6 +8308,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="13"
             >
               <div
                 class="customWrapper"
@@ -8066,6 +8318,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="14"
             >
               <div
                 class="customWrapper"
@@ -8075,6 +8328,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="15"
             >
               <div
                 class="customWrapper"
@@ -8084,6 +8338,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="16"
             >
               <div
                 class="customWrapper"
@@ -8093,6 +8348,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="17"
             >
               <div
                 class="customWrapper"
@@ -8102,6 +8358,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="18"
             >
               <div
                 class="customWrapper"
@@ -8111,6 +8368,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="19"
             >
               <div
                 class="customWrapper"
@@ -8120,6 +8378,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="20"
             >
               <div
                 class="customWrapper"
@@ -8129,6 +8388,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="21"
             >
               <div
                 class="customWrapper"
@@ -8138,6 +8398,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="22"
             >
               <div
                 class="customWrapper"
@@ -8147,6 +8408,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="23"
             >
               <div
                 class="customWrapper"
@@ -8157,10 +8419,11 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
           </ul>
           <ul
             class="rc-picker-time-panel-column"
-            style="position: relative;"
+            data-type="minute"
           >
             <li
               class="rc-picker-time-panel-cell"
+              data-value="0"
             >
               <div
                 class="customWrapper"
@@ -8170,6 +8433,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="1"
             >
               <div
                 class="customWrapper"
@@ -8179,6 +8443,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="2"
             >
               <div
                 class="customWrapper"
@@ -8188,6 +8453,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="3"
             >
               <div
                 class="customWrapper"
@@ -8197,6 +8463,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="4"
             >
               <div
                 class="customWrapper"
@@ -8206,6 +8473,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="5"
             >
               <div
                 class="customWrapper"
@@ -8215,6 +8483,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="6"
             >
               <div
                 class="customWrapper"
@@ -8224,6 +8493,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="7"
             >
               <div
                 class="customWrapper"
@@ -8233,6 +8503,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="8"
             >
               <div
                 class="customWrapper"
@@ -8242,6 +8513,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="9"
             >
               <div
                 class="customWrapper"
@@ -8251,6 +8523,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="10"
             >
               <div
                 class="customWrapper"
@@ -8260,6 +8533,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="11"
             >
               <div
                 class="customWrapper"
@@ -8269,6 +8543,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="12"
             >
               <div
                 class="customWrapper"
@@ -8278,6 +8553,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="13"
             >
               <div
                 class="customWrapper"
@@ -8287,6 +8563,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="14"
             >
               <div
                 class="customWrapper"
@@ -8296,6 +8573,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="15"
             >
               <div
                 class="customWrapper"
@@ -8305,6 +8583,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="16"
             >
               <div
                 class="customWrapper"
@@ -8314,6 +8593,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="17"
             >
               <div
                 class="customWrapper"
@@ -8323,6 +8603,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="18"
             >
               <div
                 class="customWrapper"
@@ -8332,6 +8613,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="19"
             >
               <div
                 class="customWrapper"
@@ -8341,6 +8623,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="20"
             >
               <div
                 class="customWrapper"
@@ -8350,6 +8633,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="21"
             >
               <div
                 class="customWrapper"
@@ -8359,6 +8643,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="22"
             >
               <div
                 class="customWrapper"
@@ -8368,6 +8653,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="23"
             >
               <div
                 class="customWrapper"
@@ -8377,6 +8663,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="24"
             >
               <div
                 class="customWrapper"
@@ -8386,6 +8673,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="25"
             >
               <div
                 class="customWrapper"
@@ -8395,6 +8683,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="26"
             >
               <div
                 class="customWrapper"
@@ -8404,6 +8693,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="27"
             >
               <div
                 class="customWrapper"
@@ -8413,6 +8703,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="28"
             >
               <div
                 class="customWrapper"
@@ -8422,6 +8713,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="29"
             >
               <div
                 class="customWrapper"
@@ -8431,6 +8723,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="30"
             >
               <div
                 class="customWrapper"
@@ -8440,6 +8733,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="31"
             >
               <div
                 class="customWrapper"
@@ -8449,6 +8743,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="32"
             >
               <div
                 class="customWrapper"
@@ -8458,6 +8753,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="33"
             >
               <div
                 class="customWrapper"
@@ -8467,6 +8763,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="34"
             >
               <div
                 class="customWrapper"
@@ -8476,6 +8773,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="35"
             >
               <div
                 class="customWrapper"
@@ -8485,6 +8783,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="36"
             >
               <div
                 class="customWrapper"
@@ -8494,6 +8793,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="37"
             >
               <div
                 class="customWrapper"
@@ -8503,6 +8803,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="38"
             >
               <div
                 class="customWrapper"
@@ -8512,6 +8813,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="39"
             >
               <div
                 class="customWrapper"
@@ -8521,6 +8823,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="40"
             >
               <div
                 class="customWrapper"
@@ -8530,6 +8833,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="41"
             >
               <div
                 class="customWrapper"
@@ -8539,6 +8843,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="42"
             >
               <div
                 class="customWrapper"
@@ -8548,6 +8853,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="43"
             >
               <div
                 class="customWrapper"
@@ -8557,6 +8863,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="44"
             >
               <div
                 class="customWrapper"
@@ -8566,6 +8873,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="45"
             >
               <div
                 class="customWrapper"
@@ -8575,6 +8883,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="46"
             >
               <div
                 class="customWrapper"
@@ -8584,6 +8893,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="47"
             >
               <div
                 class="customWrapper"
@@ -8593,6 +8903,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="48"
             >
               <div
                 class="customWrapper"
@@ -8602,6 +8913,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="49"
             >
               <div
                 class="customWrapper"
@@ -8611,6 +8923,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="50"
             >
               <div
                 class="customWrapper"
@@ -8620,6 +8933,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="51"
             >
               <div
                 class="customWrapper"
@@ -8629,6 +8943,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="52"
             >
               <div
                 class="customWrapper"
@@ -8638,6 +8953,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="53"
             >
               <div
                 class="customWrapper"
@@ -8647,6 +8963,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="54"
             >
               <div
                 class="customWrapper"
@@ -8656,6 +8973,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="55"
             >
               <div
                 class="customWrapper"
@@ -8665,6 +8983,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="56"
             >
               <div
                 class="customWrapper"
@@ -8674,6 +8993,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="57"
             >
               <div
                 class="customWrapper"
@@ -8683,6 +9003,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="58"
             >
               <div
                 class="customWrapper"
@@ -8692,6 +9013,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="59"
             >
               <div
                 class="customWrapper"
@@ -8702,10 +9024,11 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
           </ul>
           <ul
             class="rc-picker-time-panel-column"
-            style="position: relative;"
+            data-type="second"
           >
             <li
               class="rc-picker-time-panel-cell"
+              data-value="0"
             >
               <div
                 class="customWrapper"
@@ -8715,6 +9038,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="1"
             >
               <div
                 class="customWrapper"
@@ -8724,6 +9048,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="2"
             >
               <div
                 class="customWrapper"
@@ -8733,6 +9058,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="3"
             >
               <div
                 class="customWrapper"
@@ -8742,6 +9068,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="4"
             >
               <div
                 class="customWrapper"
@@ -8751,6 +9078,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="5"
             >
               <div
                 class="customWrapper"
@@ -8760,6 +9088,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="6"
             >
               <div
                 class="customWrapper"
@@ -8769,6 +9098,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="7"
             >
               <div
                 class="customWrapper"
@@ -8778,6 +9108,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="8"
             >
               <div
                 class="customWrapper"
@@ -8787,6 +9118,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="9"
             >
               <div
                 class="customWrapper"
@@ -8796,6 +9128,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="10"
             >
               <div
                 class="customWrapper"
@@ -8805,6 +9138,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="11"
             >
               <div
                 class="customWrapper"
@@ -8814,6 +9148,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="12"
             >
               <div
                 class="customWrapper"
@@ -8823,6 +9158,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="13"
             >
               <div
                 class="customWrapper"
@@ -8832,6 +9168,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="14"
             >
               <div
                 class="customWrapper"
@@ -8841,6 +9178,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="15"
             >
               <div
                 class="customWrapper"
@@ -8850,6 +9188,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="16"
             >
               <div
                 class="customWrapper"
@@ -8859,6 +9198,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="17"
             >
               <div
                 class="customWrapper"
@@ -8868,6 +9208,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="18"
             >
               <div
                 class="customWrapper"
@@ -8877,6 +9218,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="19"
             >
               <div
                 class="customWrapper"
@@ -8886,6 +9228,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="20"
             >
               <div
                 class="customWrapper"
@@ -8895,6 +9238,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="21"
             >
               <div
                 class="customWrapper"
@@ -8904,6 +9248,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="22"
             >
               <div
                 class="customWrapper"
@@ -8913,6 +9258,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="23"
             >
               <div
                 class="customWrapper"
@@ -8922,6 +9268,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="24"
             >
               <div
                 class="customWrapper"
@@ -8931,6 +9278,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="25"
             >
               <div
                 class="customWrapper"
@@ -8940,6 +9288,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="26"
             >
               <div
                 class="customWrapper"
@@ -8949,6 +9298,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="27"
             >
               <div
                 class="customWrapper"
@@ -8958,6 +9308,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="28"
             >
               <div
                 class="customWrapper"
@@ -8967,6 +9318,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="29"
             >
               <div
                 class="customWrapper"
@@ -8976,6 +9328,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="30"
             >
               <div
                 class="customWrapper"
@@ -8985,6 +9338,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="31"
             >
               <div
                 class="customWrapper"
@@ -8994,6 +9348,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="32"
             >
               <div
                 class="customWrapper"
@@ -9003,6 +9358,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="33"
             >
               <div
                 class="customWrapper"
@@ -9012,6 +9368,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="34"
             >
               <div
                 class="customWrapper"
@@ -9021,6 +9378,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="35"
             >
               <div
                 class="customWrapper"
@@ -9030,6 +9388,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="36"
             >
               <div
                 class="customWrapper"
@@ -9039,6 +9398,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="37"
             >
               <div
                 class="customWrapper"
@@ -9048,6 +9408,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="38"
             >
               <div
                 class="customWrapper"
@@ -9057,6 +9418,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="39"
             >
               <div
                 class="customWrapper"
@@ -9066,6 +9428,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="40"
             >
               <div
                 class="customWrapper"
@@ -9075,6 +9438,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="41"
             >
               <div
                 class="customWrapper"
@@ -9084,6 +9448,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="42"
             >
               <div
                 class="customWrapper"
@@ -9093,6 +9458,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="43"
             >
               <div
                 class="customWrapper"
@@ -9102,6 +9468,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="44"
             >
               <div
                 class="customWrapper"
@@ -9111,6 +9478,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="45"
             >
               <div
                 class="customWrapper"
@@ -9120,6 +9488,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="46"
             >
               <div
                 class="customWrapper"
@@ -9129,6 +9498,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="47"
             >
               <div
                 class="customWrapper"
@@ -9138,6 +9508,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="48"
             >
               <div
                 class="customWrapper"
@@ -9147,6 +9518,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="49"
             >
               <div
                 class="customWrapper"
@@ -9156,6 +9528,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="50"
             >
               <div
                 class="customWrapper"
@@ -9165,6 +9538,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="51"
             >
               <div
                 class="customWrapper"
@@ -9174,6 +9548,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="52"
             >
               <div
                 class="customWrapper"
@@ -9183,6 +9558,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="53"
             >
               <div
                 class="customWrapper"
@@ -9192,6 +9568,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="54"
             >
               <div
                 class="customWrapper"
@@ -9201,6 +9578,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="55"
             >
               <div
                 class="customWrapper"
@@ -9210,6 +9588,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="56"
             >
               <div
                 class="customWrapper"
@@ -9219,6 +9598,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="57"
             >
               <div
                 class="customWrapper"
@@ -9228,6 +9608,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="58"
             >
               <div
                 class="customWrapper"
@@ -9237,6 +9618,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
             <li
               class="rc-picker-time-panel-cell"
+              data-value="59"
             >
               <div
                 class="customWrapper"
@@ -9247,32 +9629,6 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
           </ul>
         </div>
       </div>
-    </div>
-    <div
-      class="rc-picker-footer"
-    >
-      <ul
-        class="rc-picker-ranges"
-      >
-        <li
-          class="rc-picker-now"
-        >
-          <a
-            class="rc-picker-now-btn"
-          >
-            Now
-          </a>
-        </li>
-        <li
-          class="rc-picker-ok"
-        >
-          <button
-            disabled=""
-          >
-            OK
-          </button>
-        </li>
-      </ul>
     </div>
   </div>
 </div>
@@ -9554,7 +9910,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-end"
+                class="rc-picker-cell"
                 title="1990-08-31"
               >
                 <div
@@ -9564,7 +9920,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-start rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view"
                 title="1990-09-01"
               >
                 <div
@@ -9864,7 +10220,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
             </tr>
             <tr>
               <td
-                class="rc-picker-cell rc-picker-cell-end rc-picker-cell-in-view"
+                class="rc-picker-cell rc-picker-cell-in-view"
                 title="1990-09-30"
               >
                 <div
@@ -9874,7 +10230,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 </div>
               </td>
               <td
-                class="rc-picker-cell rc-picker-cell-start"
+                class="rc-picker-cell"
                 title="1990-10-01"
               >
                 <div
@@ -9936,1344 +10292,6 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
             </tr>
           </tbody>
         </table>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`Picker.Panel time disabled columns basic 1`] = `
-<div>
-  <div
-    class="rc-picker-panel"
-    tabindex="0"
-  >
-    <div
-      class="rc-picker-time-panel"
-    >
-      <div
-        class="rc-picker-header"
-      >
-        <div
-          class="rc-picker-header-view"
-        >
-           
-        </div>
-      </div>
-      <div
-        class="rc-picker-content"
-      >
-        <ul
-          class="rc-picker-time-panel-column"
-          style="position: relative;"
-        >
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              00
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              01
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              02
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              03
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              04
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              05
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              06
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              07
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              08
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              09
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              10
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              11
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              12
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              13
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              14
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              15
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              16
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              17
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              18
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              19
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              20
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              21
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              22
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              23
-            </div>
-          </li>
-        </ul>
-        <ul
-          class="rc-picker-time-panel-column"
-          style="position: relative;"
-        >
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              00
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              01
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              02
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              03
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              04
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              05
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              06
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              07
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              08
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              09
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              10
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              11
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              12
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              13
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              14
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              15
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              16
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              17
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              18
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              19
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              20
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              21
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              22
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              23
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              24
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              25
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              26
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              27
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              28
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              29
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              30
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              31
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              32
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              33
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              34
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              35
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              36
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              37
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              38
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              39
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              40
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              41
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              42
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              43
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              44
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              45
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              46
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              47
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              48
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              49
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              50
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              51
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              52
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              53
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              54
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              55
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              56
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              57
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              58
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              59
-            </div>
-          </li>
-        </ul>
-        <ul
-          class="rc-picker-time-panel-column"
-          style="position: relative;"
-        >
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              00
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              01
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              02
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              03
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              04
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              05
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              06
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              07
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              08
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              09
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              10
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              11
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              12
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              13
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              14
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              15
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              16
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              17
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              18
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              19
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              20
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              21
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              22
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              23
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              24
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              25
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              26
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              27
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              28
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              29
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              30
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              31
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              32
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              33
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              34
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              35
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              36
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              37
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              38
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              39
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              40
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              41
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              42
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              43
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              44
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              45
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              46
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              47
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              48
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              49
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell rc-picker-time-panel-cell-disabled"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              50
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              51
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              52
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              53
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              54
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              55
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              56
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              57
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              58
-            </div>
-          </li>
-          <li
-            class="rc-picker-time-panel-cell"
-          >
-            <div
-              class="rc-picker-time-panel-cell-inner"
-            >
-              59
-            </div>
-          </li>
-        </ul>
       </div>
     </div>
   </div>

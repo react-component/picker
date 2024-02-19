@@ -1,20 +1,11 @@
 import { fireEvent, render } from '@testing-library/react';
-import type { Moment } from 'moment';
-import moment from 'moment';
-import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
+import dayjs, { type Dayjs } from 'dayjs';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import type { PanelMode } from '../src/interface';
 import enUS from '../src/locale/en_US';
 import zhCN from '../src/locale/zh_CN';
-import {
-  clickButton,
-  confirmOK,
-  getMoment,
-  isSame,
-  MomentPickerPanel,
-  selectCell,
-} from './util/commonUtil';
+import { clickButton, DayPickerPanel, getDay, isSame, selectCell } from './util/commonUtil';
 
 jest.mock('../src/utils/uiUtil', () => {
   const origin = jest.requireActual('../src/utils/uiUtil');
@@ -31,7 +22,7 @@ jest.mock('../src/utils/uiUtil', () => {
 describe('Picker.Panel', () => {
   beforeEach(() => {
     global.scrollCalled = false;
-    jest.useFakeTimers().setSystemTime(getMoment('1990-09-03 00:00:00').valueOf());
+    jest.useFakeTimers().setSystemTime(getDay('1990-09-03 00:00:00').valueOf());
     document.body.innerHTML = '';
   });
 
@@ -42,7 +33,7 @@ describe('Picker.Panel', () => {
 
   describe('value', () => {
     it('defaultValue', () => {
-      render(<MomentPickerPanel defaultValue={getMoment('2000-01-01')} />);
+      render(<DayPickerPanel defaultValue={getDay('2000-01-01')} />);
 
       expect(document.querySelector('.rc-picker-cell-selected').textContent).toEqual('1');
     });
@@ -50,27 +41,32 @@ describe('Picker.Panel', () => {
     it('controlled', () => {
       const onChange = jest.fn();
       const { rerender } = render(
-        <MomentPickerPanel value={getMoment('2000-01-01')} onChange={onChange} />,
+        <DayPickerPanel value={getDay('2000-01-01')} onChange={onChange} />,
       );
 
       selectCell(23);
       expect(isSame(onChange.mock.calls[0][0], '2000-01-23')).toBeTruthy();
-      onChange.mockReset();
+      onChange.mockClear();
 
       // Trigger again since value is controlled
       selectCell(23);
       expect(isSame(onChange.mock.calls[0][0], '2000-01-23')).toBeTruthy();
-      onChange.mockReset();
+      onChange.mockClear();
 
       // Not trigger
-      rerender(<MomentPickerPanel value={getMoment('2000-01-23')} onChange={onChange} />);
+      rerender(<DayPickerPanel value={getDay('2000-01-23')} onChange={onChange} />);
       selectCell(23);
       expect(onChange).not.toHaveBeenCalled();
+
+      // Should switch pickerValue of panel
+      rerender(<DayPickerPanel value={getDay('2020-03-03')} onChange={onChange} />);
+      selectCell(13);
+      expect(isSame(onChange.mock.calls[0][0], '2020-03-13')).toBeTruthy();
     });
 
     it('uncontrolled', () => {
       const onChange = jest.fn();
-      render(<MomentPickerPanel onChange={onChange} />);
+      render(<DayPickerPanel onChange={onChange} />);
 
       selectCell(23);
       expect(isSame(onChange.mock.calls[0][0], '1990-09-23')).toBeTruthy();
@@ -84,7 +80,7 @@ describe('Picker.Panel', () => {
 
   describe('Panel switch by picker', () => {
     it('year', () => {
-      render(<MomentPickerPanel picker="year" />);
+      render(<DayPickerPanel picker="year" />);
       fireEvent.click(document.querySelector('.rc-picker-decade-btn'));
       expect(document.querySelector('.rc-picker-decade-panel')).toBeTruthy();
 
@@ -100,7 +96,7 @@ describe('Picker.Panel', () => {
       ['quarter', 'Q3'],
     ].forEach(([picker, cell]) => {
       it(picker, () => {
-        const { container } = render(<MomentPickerPanel picker={picker as any} />);
+        const { container } = render(<DayPickerPanel picker={picker as any} />);
         fireEvent.click(container.querySelector('.rc-picker-year-btn'));
         fireEvent.click(container.querySelector('.rc-picker-decade-btn'));
         expect(document.querySelector('.rc-picker-decade-panel')).toBeTruthy();
@@ -117,36 +113,9 @@ describe('Picker.Panel', () => {
     });
   });
 
-  it('time click to scroll', () => {
-    let scrollTop = 90;
-
-    const domSpy = spyElementPrototypes(HTMLElement, {
-      scrollTop: {
-        get: () => scrollTop,
-        set: ((_: Function, value: number) => {
-          scrollTop = value;
-        }) as any,
-      },
-    });
-
-    jest.useFakeTimers();
-    const { container } = render(<MomentPickerPanel picker="time" />);
-
-    // Multiple times should only one work
-    fireEvent.click(container.querySelector('ul').querySelectorAll('li')[3]);
-
-    fireEvent.click(container.querySelector('ul').querySelectorAll('li')[11]);
-    jest.runAllTimers();
-    expect(global.scrollCalled).toBeTruthy();
-
-    jest.useRealTimers();
-
-    domSpy.mockRestore();
-  });
-
   describe('click button to switch', () => {
     it('date', () => {
-      render(<MomentPickerPanel defaultValue={getMoment('1990-09-03')} />);
+      render(<DayPickerPanel defaultValue={getDay('1990-09-03')} />);
 
       clickButton('prev');
       expect(document.querySelector('.rc-picker-header-view').textContent).toEqual('Aug1990');
@@ -163,7 +132,7 @@ describe('Picker.Panel', () => {
 
     ['month', 'quarter'].forEach((picker) => {
       it(picker, () => {
-        render(<MomentPickerPanel defaultValue={getMoment('1990-09-03')} picker={picker as any} />);
+        render(<DayPickerPanel defaultValue={getDay('1990-09-03')} picker={picker as any} />);
 
         clickButton('super-prev');
         expect(document.querySelector('.rc-picker-header-view').textContent).toEqual('1989');
@@ -174,7 +143,7 @@ describe('Picker.Panel', () => {
     });
 
     it('year', () => {
-      render(<MomentPickerPanel defaultValue={getMoment('1990-09-03')} picker="year" />);
+      render(<DayPickerPanel defaultValue={getDay('1990-09-03')} picker="year" />);
 
       clickButton('super-prev');
       expect(document.querySelector('.rc-picker-header-view').textContent).toEqual('1980-1989');
@@ -184,7 +153,7 @@ describe('Picker.Panel', () => {
     });
 
     it('decade', () => {
-      render(<MomentPickerPanel defaultValue={getMoment('1990-09-03')} mode="decade" />);
+      render(<DayPickerPanel defaultValue={getDay('1990-09-03')} mode="decade" />);
 
       clickButton('super-prev');
       expect(document.querySelector('.rc-picker-header-view').textContent).toEqual('1800-1899');
@@ -194,44 +163,12 @@ describe('Picker.Panel', () => {
     });
   });
 
-  // This test is safe to remove
-  it('showtime', () => {
-    const onSelect = jest.fn();
-    render(
-      <MomentPickerPanel
-        showTime={{
-          hideDisabledOptions: true,
-          showSecond: false,
-          defaultValue: getMoment('2001-01-02 01:03:07'),
-          disabledHours: () => [0, 1, 2, 3],
-        }}
-        defaultValue={getMoment('2001-01-02 01:03:07')}
-        value={null}
-        onSelect={onSelect}
-      />,
-    );
-
-    expect(document.querySelectorAll('.rc-picker-time-panel-column')).toHaveLength(2);
-    expect(
-      document.querySelector('.rc-picker-time-panel-column').querySelector('li').textContent,
-    ).toEqual('04');
-
-    // Click on date
-    selectCell(5);
-    expect(isSame(onSelect.mock.calls[0][0], '1990-09-05 01:03:07')).toBeTruthy();
-
-    // Click on time
-    onSelect.mockReset();
-    fireEvent.click(document.querySelector('ul').querySelectorAll('li')[11]);
-    expect(isSame(onSelect.mock.calls[0][0], '2001-01-02 11:00:00')).toBeTruthy();
-  });
-
   it('showTime.defaultValue only works at first render', () => {
     const onSelect = jest.fn();
     render(
-      <MomentPickerPanel
+      <DayPickerPanel
         showTime={{
-          defaultValue: getMoment('2001-01-02 01:03:07'),
+          defaultValue: getDay('2001-01-02 01:03:07'),
         }}
         onSelect={onSelect}
       />,
@@ -253,7 +190,7 @@ describe('Picker.Panel', () => {
   });
 
   it('should hide bottom button when switch date interval in the head', () => {
-    render(<MomentPickerPanel showTime />);
+    render(<DayPickerPanel showTime />);
     fireEvent.click(document.querySelector('.rc-picker-year-btn'));
     expect(document.querySelector('.rc-picker-ranges')).toBeFalsy();
   });
@@ -261,10 +198,10 @@ describe('Picker.Panel', () => {
   it('DatePicker has defaultValue and showTime.defaultValue ', () => {
     const onSelect = jest.fn();
     render(
-      <MomentPickerPanel
-        value={getMoment('2001-01-02 10:10:10')}
+      <DayPickerPanel
+        value={getDay('2001-01-02 10:10:10')}
         showTime={{
-          defaultValue: getMoment('2001-01-02 09:09:09'),
+          defaultValue: getDay('2001-01-02 09:09:09'),
         }}
         onSelect={onSelect}
       />,
@@ -279,7 +216,7 @@ describe('Picker.Panel', () => {
     it('time', () => {
       const onSelect = jest.fn();
       const { container } = render(
-        <MomentPickerPanel picker="time" onSelect={onSelect} disabledHours={() => [0]} />,
+        <DayPickerPanel picker="time" onSelect={onSelect} disabledHours={() => [0]} />,
       );
 
       // Disabled
@@ -294,7 +231,7 @@ describe('Picker.Panel', () => {
     it('month', () => {
       const onSelect = jest.fn();
       render(
-        <MomentPickerPanel
+        <DayPickerPanel
           picker="month"
           onSelect={onSelect}
           disabledDate={(date) => date.month() === 0}
@@ -311,7 +248,7 @@ describe('Picker.Panel', () => {
     it('year', () => {
       const onSelect = jest.fn();
       render(
-        <MomentPickerPanel
+        <DayPickerPanel
           picker="year"
           onSelect={onSelect}
           disabledDate={(date) => date.year() === 1990}
@@ -329,25 +266,25 @@ describe('Picker.Panel', () => {
       it('mode', () => {
         const onPanelChange = jest.fn();
         render(
-          <MomentPickerPanel
+          <DayPickerPanel
             mode="decade"
             onPanelChange={onPanelChange}
-            disabledDate={(date) => date.year() === 1900}
+            disabledDate={(date) => 1900 <= date.year() && date.year() <= 1909}
           />,
         );
 
         // no picker is decade, it means alway can click
         selectCell('1900-1909');
-        expect(onPanelChange).toHaveBeenCalled();
+        expect(onPanelChange).not.toHaveBeenCalled();
+        onPanelChange.mockClear();
 
-        onPanelChange.mockReset();
         selectCell('1910-1919');
         expect(onPanelChange).toHaveBeenCalled();
       });
 
       it('not trigger when same panel', () => {
         const onPanelChange = jest.fn();
-        render(<MomentPickerPanel onPanelChange={onPanelChange} />);
+        render(<DayPickerPanel onPanelChange={onPanelChange} />);
 
         selectCell('23');
         expect(onPanelChange).not.toHaveBeenCalled();
@@ -359,9 +296,9 @@ describe('Picker.Panel', () => {
     it('should work', () => {
       const onChange = jest.fn();
       render(
-        <MomentPickerPanel
+        <DayPickerPanel
           picker="time"
-          defaultValue={getMoment('2000-01-01 00:01:02')}
+          defaultValue={getDay('2000-01-01 00:01:02')}
           use12Hours
           onChange={onChange}
         />,
@@ -375,11 +312,7 @@ describe('Picker.Panel', () => {
 
     it('should display hour from 12 at AM', () => {
       render(
-        <MomentPickerPanel
-          picker="time"
-          defaultValue={getMoment('2000-01-01 00:00:00')}
-          use12Hours
-        />,
+        <DayPickerPanel picker="time" defaultValue={getDay('2000-01-01 00:00:00')} use12Hours />,
       );
 
       const startHour = document
@@ -390,11 +323,7 @@ describe('Picker.Panel', () => {
 
     it('should display hour from 12 at AM', () => {
       render(
-        <MomentPickerPanel
-          picker="time"
-          defaultValue={getMoment('2000-01-01 12:00:00')}
-          use12Hours
-        />,
+        <DayPickerPanel picker="time" defaultValue={getDay('2000-01-01 12:00:00')} use12Hours />,
       );
 
       const startHour = document
@@ -406,9 +335,9 @@ describe('Picker.Panel', () => {
 
     it('should disable AM when 00 ~ 11 is disabled', () => {
       render(
-        <MomentPickerPanel
+        <DayPickerPanel
           picker="time"
-          defaultValue={getMoment('2000-01-01 12:00:00')}
+          defaultValue={getDay('2000-01-01 12:00:00')}
           use12Hours
           disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
         />,
@@ -421,9 +350,9 @@ describe('Picker.Panel', () => {
 
     it('should disable PM when 12 ~ 23 is disabled', () => {
       render(
-        <MomentPickerPanel
+        <DayPickerPanel
           picker="time"
-          defaultValue={getMoment('2000-01-01 12:00:00')}
+          defaultValue={getDay('2000-01-01 12:00:00')}
           use12Hours
           disabledHours={() => [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]}
         />,
@@ -438,15 +367,18 @@ describe('Picker.Panel', () => {
   describe('time disabled columns', () => {
     it('basic', () => {
       const { container } = render(
-        <MomentPickerPanel
-          mode="time"
+        <DayPickerPanel
+          picker="time"
           disabledHours={() => [0, 1, 2, 3, 4, 5, 6, 7]}
           disabledMinutes={() => [2, 4, 6, 8, 10]}
           disabledSeconds={() => [10, 20, 30, 40, 50]}
         />,
       );
 
-      expect(container).toMatchSnapshot();
+      const columns = container.querySelectorAll('.rc-picker-time-panel-column');
+      expect(columns[0].querySelectorAll('.rc-picker-time-panel-cell-disabled')).toHaveLength(8);
+      expect(columns[1].querySelectorAll('.rc-picker-time-panel-cell-disabled')).toHaveLength(5);
+      expect(columns[2].querySelectorAll('.rc-picker-time-panel-cell-disabled')).toHaveLength(5);
     });
 
     it('use12Hour', () => {
@@ -454,10 +386,10 @@ describe('Picker.Panel', () => {
       const disabledSeconds = jest.fn(() => []);
 
       render(
-        <MomentPickerPanel
-          mode="time"
+        <DayPickerPanel
+          picker="time"
           use12Hours
-          value={getMoment('2000-01-01 13:07:04')}
+          value={getDay('2000-01-01 13:07:04')}
           disabledMinutes={disabledMinutes}
           disabledSeconds={disabledSeconds}
         />,
@@ -472,44 +404,54 @@ describe('Picker.Panel', () => {
     resetWarned();
     const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-    const invalidateDate = moment('notValidate', 'YYYY', true);
-    render(<MomentPickerPanel value={invalidateDate} />);
-    expect(errSpy).toHaveBeenCalledWith('Warning: Invalidate date pass to `value`.');
+    const invalidateDate = dayjs('notValidate', 'YYYY', true);
+    render(<DayPickerPanel value={invalidateDate} />);
+    expect(errSpy).toHaveBeenCalledWith(
+      'Warning: Invalidate date pass to `value` or `defaultValue`.',
+    );
 
-    render(<MomentPickerPanel defaultValue={invalidateDate} />);
-    expect(errSpy).toHaveBeenCalledWith('Warning: Invalidate date pass to `defaultValue`.');
+    errSpy.mockClear();
+    resetWarned();
+
+    render(<DayPickerPanel defaultValue={invalidateDate} />);
+    expect(errSpy).toHaveBeenCalledWith(
+      'Warning: Invalidate date pass to `value` or `defaultValue`.',
+    );
 
     errSpy.mockRestore();
   });
+
   it('should render correctly in rtl', () => {
-    const { container } = render(<MomentPickerPanel direction="rtl" />);
+    const { container } = render(<DayPickerPanel direction="rtl" />);
     expect(container).toMatchSnapshot();
   });
 
-  describe('hideHeader', () => {
-    ['decade', 'year', 'month', 'quarter', 'date', 'time'].forEach((mode) => {
-      it(mode, () => {
-        render(<MomentPickerPanel mode={mode as any} hideHeader />);
-        expect(document.querySelector('.rc-picker-header')).toBeFalsy();
-      });
-    });
-  });
+  // No this prop now
+  // describe('hideHeader', () => {
+  //   ['decade', 'year', 'month', 'quarter', 'date', 'time'].forEach((mode) => {
+  //     it(mode, () => {
+  //       render(<DayPickerPanel mode={mode as any} hideHeader />);
+  //       expect(document.querySelector('.rc-picker-header')).toBeFalsy();
+  //     });
+  //   });
+  // });
 
-  it('onOk to trigger', () => {
-    const onOk = jest.fn();
-    const { container } = render(<MomentPickerPanel picker="time" onOk={onOk} />);
-    fireEvent.click(
-      container.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[3],
-    );
+  // No this prop now
+  // it('onOk to trigger', () => {
+  //   const onOk = jest.fn();
+  //   const { container } = render(<DayPickerPanel picker="time" onOk={onOk} />);
+  //   fireEvent.click(
+  //     container.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[3],
+  //   );
 
-    expect(onOk).not.toHaveBeenCalled();
-    confirmOK();
-    expect(isSame(onOk.mock.calls[0][0], '1990-09-03 03:00:00')).toBeTruthy();
-  });
+  //   expect(onOk).not.toHaveBeenCalled();
+  //   confirmOK();
+  //   expect(isSame(onOk.mock.calls[0][0], '1990-09-03 03:00:00')).toBeTruthy();
+  // });
 
   it('monthCellRender', () => {
     const { container } = render(
-      <MomentPickerPanel picker="month" monthCellRender={(date) => date.format('YYYY-MM')} />,
+      <DayPickerPanel picker="month" monthCellRender={(date) => date.format('YYYY-MM')} />,
     );
 
     expect(container.querySelector('tbody')).toMatchSnapshot();
@@ -517,7 +459,7 @@ describe('Picker.Panel', () => {
 
   it('pass dateRender when picker is month', () => {
     const { container } = render(
-      <MomentPickerPanel picker="month" dateRender={(date) => date.format('YYYY-MM')} />,
+      <DayPickerPanel picker="month" dateRender={(date) => date.format('YYYY-MM')} />,
     );
 
     expect(container.querySelector('tbody')).toMatchSnapshot();
@@ -530,7 +472,7 @@ describe('Picker.Panel', () => {
     ].forEach(({ locale, startDate }) => {
       it(locale.locale, () => {
         const { container } = render(
-          <MomentPickerPanel defaultValue={getMoment('2020-04-02')} locale={locale} />,
+          <DayPickerPanel defaultValue={getDay('2020-04-02')} locale={locale} />,
         );
 
         expect(container.querySelector('td').textContent).toEqual(startDate);
@@ -543,33 +485,19 @@ describe('Picker.Panel', () => {
     ].forEach(({ locale, startDate }) => {
       it(`another align test of ${locale.locale}`, () => {
         const { container } = render(
-          <MomentPickerPanel defaultValue={getMoment('2020-03-01')} locale={locale} />,
+          <DayPickerPanel defaultValue={getDay('2020-03-01')} locale={locale} />,
         );
 
         expect(container.querySelector('td').textContent).toEqual(startDate);
       });
     });
 
-    it('update firstDayOfWeek', () => {
-      const defaultFirstDay = moment(enUS.locale).localeData().firstDayOfWeek();
-      moment.updateLocale(enUS.locale, {
-        week: {
-          dow: 5,
-        } as any,
-      });
-      expect(defaultFirstDay).toEqual(0);
+    it('correct firstDayOfWeek', () => {
+      const { container, rerender } = render(<DayPickerPanel locale={enUS} />);
+      expect(container.querySelector('.rc-picker-cell-inner').textContent).toEqual('26');
 
-      const { container } = render(
-        <MomentPickerPanel defaultValue={getMoment('2020-04-02')} locale={enUS} />,
-      );
-
-      expect(container.querySelector('td').textContent).toEqual('27');
-
-      moment.updateLocale(enUS.locale, {
-        week: {
-          dow: defaultFirstDay,
-        } as any,
-      });
+      rerender(<DayPickerPanel locale={zhCN} />);
+      expect(container.querySelector('.rc-picker-cell-inner').textContent).toEqual('27');
     });
   });
 
@@ -583,23 +511,24 @@ describe('Picker.Panel', () => {
     'decade',
   ];
 
-  const getCurText = (picker: PanelMode, current: Moment | number) => {
+  const getCurText = (picker: PanelMode, current: Dayjs | number | string) => {
     switch (picker) {
       case 'time':
         return current;
       case 'decade':
-        return (current as Moment).get('year');
+        return (current as Dayjs).get('year');
       case 'date':
       case 'year':
       case 'month':
       case 'quarter':
       case 'week':
-        return (current as Moment).get(picker);
+        return (current as Dayjs).get(picker as any) as any;
     }
   };
+
   it(`override cell with cellRender when pass showTime`, () => {
     const App = () => (
-      <MomentPickerPanel
+      <DayPickerPanel
         showTime
         cellRender={(current, info) => (
           <div className="customWrapper">{getCurText(info.type, current)}</div>
@@ -614,10 +543,11 @@ describe('Picker.Panel', () => {
     expect(container.querySelector(`.rc-picker-time-panel`)).toBeTruthy();
     expect(container).toMatchSnapshot();
   });
+
   supportCellRenderPicker.forEach((picker) => {
     it(`override cell with cellRender in ${picker}`, () => {
       const App = () => (
-        <MomentPickerPanel
+        <DayPickerPanel
           picker={picker as any}
           cellRender={(current) => (
             <div className="customWrapper">{getCurText(picker, current)}</div>
@@ -632,30 +562,12 @@ describe('Picker.Panel', () => {
       expect(container).toMatchSnapshot();
     });
 
-    it('warning with defaultPickerValue', () => {
-      resetWarned();
-      const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-      render(
-        <MomentPickerPanel
-          picker={picker as any}
-          defaultPickerValue={getMoment('2023-07-25')}
-        />,
-      );
-
-      expect(errSpy).toHaveBeenCalledWith(
-        "Warning: 'defaultPickerValue' is deprecated. Please use 'defaultValue' instead.",
-      );
-
-      errSpy.mockRestore();
-    });
-
     it('warning with dateRender and monthCellRender', () => {
       resetWarned();
       const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
       render(
-        <MomentPickerPanel
+        <DayPickerPanel
           picker={picker as any}
           dateRender={(current) => (
             <div className="customWrapper">{getCurText(picker, current)}</div>
@@ -677,7 +589,7 @@ describe('Picker.Panel', () => {
 
     it(`append cell with cellRender in ${picker}`, () => {
       const App = () => (
-        <MomentPickerPanel
+        <DayPickerPanel
           picker={picker as any}
           cellRender={(current, info) =>
             React.cloneElement(
@@ -702,9 +614,7 @@ describe('Picker.Panel', () => {
   });
 
   it('week picker current should check year', () => {
-    const { container } = render(
-      <MomentPickerPanel picker="week" value={getMoment('1990-09-03')} />,
-    );
+    const { container } = render(<DayPickerPanel picker="week" value={getDay('1990-09-03')} />);
     expect(
       container.querySelector('.rc-picker-week-panel-row-selected td[title="1990-09-03"]'),
     ).toBeTruthy();
@@ -714,4 +624,95 @@ describe('Picker.Panel', () => {
     expect(container.querySelector('td[title="1991-09-03"]')).toBeTruthy();
     expect(container.querySelector('.rc-picker-week-panel-row-selected')).toBeFalsy();
   });
+
+  describe('TimePanel', () => {
+    it('not crash', () => {
+      const onChange = jest.fn();
+
+      const { container } = render(
+        <DayPickerPanel
+          picker="time"
+          value={null}
+          pickerValue={null}
+          onChange={onChange}
+          hideDisabledOptions
+          disabledTime={() => ({
+            disabledHours: () => [0],
+            disabledMinutes: () => [0, 1],
+            disabledSeconds: () => [0, 1, 2],
+          })}
+        />,
+      );
+
+      fireEvent.click(container.querySelector('.rc-picker-time-panel-column').querySelector('li'));
+      expect(isSame(onChange.mock.calls[0][0], '1990-09-03 01:02:03')).toBeTruthy();
+    });
+
+    it('support milliseconds', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayPickerPanel
+          picker="time"
+          format="HH:mm:ss.SSS"
+          onChange={onChange}
+          hideDisabledOptions
+          disabledTime={() => ({
+            disabledMilliseconds: () => [0],
+          })}
+        />,
+      );
+
+      fireEvent.click(
+        container.querySelectorAll('.rc-picker-time-panel-column')[3].querySelector('li'),
+      );
+      expect(onChange.mock.calls[0][0].format('SSS')).toEqual('100');
+    });
+
+    it('meridiem', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayPickerPanel
+          picker="time"
+          defaultValue={getDay('2000-01-01 03:03:03')}
+          format="HH:mm:ss a"
+          onChange={onChange}
+        />,
+      );
+
+      // PM
+      fireEvent.click(
+        container.querySelectorAll('.rc-picker-time-panel-column')[3].querySelectorAll('li')[1],
+      );
+      expect(onChange.mock.calls[0][0].format('HH:mm:ss')).toEqual('15:03:03');
+      onChange.mockClear();
+
+      // AM
+      fireEvent.click(
+        container.querySelectorAll('.rc-picker-time-panel-column')[3].querySelectorAll('li')[0],
+      );
+      expect(onChange.mock.calls[0][0].format('HH:mm:ss')).toEqual('03:03:03');
+    });
+  });
+
+  it('showHour, showMinute, !showSecond', () => {
+    const { container } = render(
+      <DayPickerPanel
+        showTime={{
+          showHour: true,
+          showMinute: true,
+        }}
+      />,
+    );
+
+    expect(container.querySelectorAll('.rc-picker-time-panel-column')).toHaveLength(2);
+  });
+
+  it('use12Hours with format', () => {
+    const { container } = render(
+      <DayPickerPanel picker="time" use12Hours defaultValue={getDay('2000-01-01 01:02:03')} />,
+    );
+
+    expect(container.querySelector('.rc-picker-header-view').textContent).toEqual('01:02:03 AM');
+  });
+
 });

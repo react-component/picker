@@ -4,6 +4,10 @@
 
 @input-placeholder-color: hsv(0, 0, 75%);
 
+@time-panel-padding-total: 180px;
+// @time-panel-padding-top: 90px;
+@time-panel-padding-top: 0;
+
 .placeholder(@color: @input-placeholder-color) {
   // Firefox
   &::-moz-placeholder {
@@ -20,6 +24,7 @@
 }
 
 .@{prefix-cls} {
+  position: relative;
   display: inline-flex;
 
   &-rtl {
@@ -28,6 +33,9 @@
 
   &-focused {
     border: 1px solid blue;
+  }
+  &-invalid {
+    box-shadow: 0 0 2px red;
   }
   &-panel {
     display: inline-block;
@@ -115,6 +123,11 @@
     &-in-range > &-inner {
       background: fade(blue, 5%);
     }
+
+    &-hover > &-inner {
+      background: orange;
+    }
+
     &-range-hover-start,
     &-range-hover-end,
     &-range-hover {
@@ -249,15 +262,39 @@
     width: auto;
 
     .@{prefix-cls}-content {
+      position: relative;
       display: flex;
       max-height: 200px;
+
+      // &::after {
+      //   position: absolute;
+      //   top: @time-panel-padding-top;
+      //   right: -5px;
+      //   left: -5px;
+      //   height: 20px;
+      //   background: rgba(255, 0, 0, 0.05);
+      //   content: '';
+      //   pointer-events: none;
+      // }
+    }
+
+    // &-column-holder {
+    //   display: flex;
+    //   flex-direction: column;
+    //   text-align: center;
+    // }
+
+    &-column-title {
+      font-size: 14px;
+      line-height: 20px;
     }
 
     &-column {
-      flex: none;
+      flex: auto;
       width: 50px;
       margin: 0;
-      padding: 0 0 180px 0;
+      // padding: 0 0 180px 0;
+      padding: @time-panel-padding-top 0 (@time-panel-padding-total - @time-panel-padding-top);
       overflow-x: hidden;
       overflow-y: hidden;
       font-size: 12px;
@@ -274,6 +311,7 @@
       }
 
       > li {
+        width: 50px;
         margin: 0;
         padding: 0;
         cursor: pointer;
@@ -282,6 +320,10 @@
           &-disabled {
             opacity: 0.5;
           }
+
+          &-selected {
+            background: rgba(0, 0, 255, 0.5);
+          }
         }
 
         .@{prefix-cls}-time-panel-cell-inner {
@@ -289,10 +331,10 @@
           width: 100%;
           height: 20px;
           margin: 0;
-          padding: 0 0 0 12px;
+          // padding: 0 0 0 12px;
           color: #333;
           line-height: 20px;
-          text-align: left;
+          text-align: center;
 
           .@{prefix-cls}-panel-rtl & {
             padding: 0 12px 0 0;
@@ -339,6 +381,12 @@
       text-align: right;
     }
 
+    &-active {
+      > input {
+        background: rgba(0, 0, 255, 0.05);
+      }
+    }
+
     > input {
       width: 100%;
       .placeholder();
@@ -371,6 +419,7 @@
   &-dropdown {
     position: absolute;
     box-shadow: 0 0 1px red;
+    pointer-events: none;
 
     &-range {
       padding: 10px 0;
@@ -393,7 +442,7 @@
     &-placement-bottomLeft,
     &-placement-bottomright {
       .@{prefix-cls}-range-arrow {
-        top: @arrow-size / 2 + 1px;
+        top: (@arrow-size / 2 + 1px);
         transform: rotate(-45deg);
       }
     }
@@ -433,7 +482,7 @@
       &::before {
         width: @arrow-size;
         height: @arrow-size;
-        border: @arrow-size / 2 solid blue;
+        border: (@arrow-size / 2) solid blue;
         border-color: blue blue transparent transparent;
       }
       &::after {
@@ -476,11 +525,41 @@
     display: inline-block;
     vertical-align: top;
     transition: margin 0.3s;
+    pointer-events: all;
   }
 
   &-panel-layout {
     display: flex;
     flex-wrap: nowrap;
     align-items: stretch;
+  }
+
+  // ========================================================
+  // =                       Overflow                       =
+  // ========================================================
+  &-selector {
+    width: 100%;
+  }
+
+  &-selection-overflow {
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid green;
+
+    &-item {
+      flex: none;
+      max-width: 100%;
+    }
+  }
+
+  &-selection-item {
+    border: 1px solid blue;
+  }
+
+  &-multiple-input {
+    width: 10px;
+    opacity: 0.1;
   }
 }

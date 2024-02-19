@@ -1,17 +1,16 @@
-export function leftPad(
-  str: string | number,
-  length: number,
-  fill: string = '0',
-) {
+import type { InternalMode, Locale, SharedPickerProps } from '../interface';
+
+export function leftPad(str: string | number, length: number, fill: string = '0') {
   let current = String(str);
   while (current.length < length) {
-    current = `${fill}${str}`;
+    current = `${fill}${current}`;
   }
   return current;
 }
 
-export const tuple = <T extends string[]>(...args: T) => args;
-
+/**
+ * Convert `value` to array. Will provide `[]` if is null or undefined.
+ */
 export function toArray<T>(val: T | T[]): T[] {
   if (val === null || val === undefined) {
     return [];
@@ -20,37 +19,53 @@ export function toArray<T>(val: T | T[]): T[] {
   return Array.isArray(val) ? val : [val];
 }
 
-export function getValue<T>(
-  values: null | undefined | (T | null)[],
-  index: number,
-): T | null {
-  return values ? values[index] : null;
+export function fillIndex<T extends any[]>(ori: T, index: number, value: T[number]): T {
+  const clone = [...ori] as T;
+  clone[index] = value;
+
+  return clone;
 }
 
-type UpdateValue<T> = (prev: T) => T;
+/** Pick props from the key list. Will filter empty value */
+export function pickProps<T extends object>(props: T, keys?: (keyof T)[] | readonly (keyof T)[]) {
+  const clone = {} as T;
 
-export function updateValues<T, R = [T | null, T | null] | null>(
-  values: [T | null, T | null] | null,
-  value: T | UpdateValue<T>,
-  index: number,
-): R {
-  const newValues: [T | null, T | null] = [
-    getValue(values, 0),
-    getValue(values, 1),
-  ];
+  const mergedKeys = (keys || Object.keys(props)) as typeof keys;
 
-  newValues[index] =
-    typeof value === 'function'
-      ? (value as UpdateValue<T | null>)(newValues[index])
-      : value;
+  mergedKeys.forEach((key) => {
+    if (props[key] !== undefined) {
+      clone[key] = props[key];
+    }
+  });
 
-  if (!newValues[0] && !newValues[1]) {
-    return (null as unknown) as R;
+  return clone;
+}
+
+export function getRowFormat(
+  picker: InternalMode,
+  locale: Locale,
+  format?: SharedPickerProps['format'],
+) {
+  if (format) {
+    return format;
   }
 
-  return (newValues as unknown) as R;
-}
+  switch (picker) {
+    // All from the `locale.fieldXXXFormat` first
+    case 'time':
+      return locale.fieldTimeFormat;
+    case 'datetime':
+      return locale.fieldDateTimeFormat;
+    case 'month':
+      return locale.fieldMonthFormat;
+    case 'year':
+      return locale.fieldYearFormat;
+    case 'quarter':
+      return locale.fieldQuarterFormat;
+    case 'week':
+      return locale.fieldWeekFormat;
 
-export function executeValue<T>(value: T | (() => T)): T {
-  return typeof value === 'function' ? (value as () => T)() : value;
+    default:
+      return locale.fieldDateFormat;
+  }
 }
