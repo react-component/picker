@@ -732,6 +732,19 @@ describe('NewPicker.Range', () => {
         '1990-09-05 11:00:00',
       ]);
     });
+
+    it('double click should not take action if !needConfirm', () => {
+      const { container } = render(<DayRangePicker />);
+
+      openPicker(container);
+
+      fireEvent.click(findCell(5));
+      fireEvent.click(findCell(5));
+      fireEvent.doubleClick(findCell(5));
+
+      expect(container.querySelectorAll('input')[0]).toHaveValue('1990-09-05');
+      expect(container.querySelectorAll('input')[1]).toHaveValue('1990-09-05');
+    });
   });
 
   describe('open', () => {
