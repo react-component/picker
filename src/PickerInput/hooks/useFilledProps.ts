@@ -90,6 +90,7 @@ export default function useFilledProps<
   formatList: FormatType<DateType>[],
   maskFormat: string,
   isInvalidateDate: ReturnType<UseInvalidate<DateType>>,
+  multipleInteractivePicker: boolean,
 ] {
   const {
     generateConfig,
@@ -211,5 +212,13 @@ export default function useFilledProps<
     [filledProps, mergedNeedConfirm, mergedInputReadOnly, disabledBoundaryDate],
   );
 
-  return [mergedProps, internalPicker, complexPicker, formatList, maskFormat, isInvalidateDate];
+  return [
+    mergedProps,
+    internalPicker,
+    complexPicker,
+    formatList,
+    maskFormat,
+    isInvalidateDate,
+    multipleInteractivePicker,
+  ];
 }
