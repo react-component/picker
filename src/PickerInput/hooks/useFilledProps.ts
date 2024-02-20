@@ -90,7 +90,6 @@ export default function useFilledProps<
   formatList: FormatType<DateType>[],
   maskFormat: string,
   isInvalidateDate: ReturnType<UseInvalidate<DateType>>,
-  multipleInteractivePicker: boolean,
 ] {
   const {
     generateConfig,
@@ -219,6 +218,5 @@ export default function useFilledProps<
     formatList,
     maskFormat,
     isInvalidateDate,
-    multipleInteractivePicker,
   ];
 }

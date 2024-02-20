@@ -12,8 +12,6 @@ export type MustProp<DateType extends object> = Required<
 export type PopupPanelProps<DateType extends object = any> = MustProp<DateType> &
   Omit<PickerPanelProps<DateType>, 'onPickerValueChange' | 'showTime'> &
   FooterProps<DateType> & {
-    /** Is TimePicker or DateTimePicker */
-    complexInteractive?: boolean;
     multiplePanel?: boolean;
     range?: boolean;
 
@@ -28,7 +26,7 @@ export default function PopupPanel<DateType extends object = any>(
     multiplePanel,
     pickerValue,
     onPickerValueChange,
-    complexInteractive,
+    needConfirm,
     onSubmit,
     range,
     hoverValue,
@@ -56,7 +54,7 @@ export default function PopupPanel<DateType extends object = any>(
   // ======================= Context ========================
   const sharedContext: PickerHackContextProps = {
     onCellDblClick: () => {
-      if (complexInteractive) {
+      if (needConfirm) {
         onSubmit();
       }
     },

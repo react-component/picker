@@ -557,7 +557,6 @@ function RangePicker<DateType extends object = any>(
       {...panelProps}
       showNow={mergedShowNow}
       showTime={mergedShowTime}
-      complexInteractive={multipleInteractivePicker}
       // Range
       range
       multiplePanel={multiplePanel}
