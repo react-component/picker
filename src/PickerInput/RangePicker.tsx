@@ -139,25 +139,18 @@ function RangePicker<DateType extends object = any>(
   ref: React.Ref<PickerRef>,
 ) {
   // ========================= Prop =========================
-  const [
-    filledProps,
-    internalPicker,
-    complexPicker,
-    formatList,
-    maskFormat,
-    isInvalidateDate,
-    multipleInteractivePicker,
-  ] = useFilledProps(props, () => {
-    const { disabled, allowEmpty } = props;
+  const [filledProps, internalPicker, complexPicker, formatList, maskFormat, isInvalidateDate] =
+    useFilledProps(props, () => {
+      const { disabled, allowEmpty } = props;
 
-    const mergedDisabled = separateConfig(disabled, false);
-    const mergedAllowEmpty = separateConfig(allowEmpty, false);
+      const mergedDisabled = separateConfig(disabled, false);
+      const mergedAllowEmpty = separateConfig(allowEmpty, false);
 
-    return {
-      disabled: mergedDisabled,
-      allowEmpty: mergedAllowEmpty,
-    };
-  });
+      return {
+        disabled: mergedDisabled,
+        allowEmpty: mergedAllowEmpty,
+      };
+    });
 
   const {
     // Style
