@@ -1,6 +1,4 @@
-import type {
-  Locale
-} from 'date-fns';
+import type { Locale } from 'date-fns';
 import {
   addDays,
   addMonths,
@@ -40,6 +38,7 @@ import {
   enUS,
   es,
   et,
+  eu,
   faIR,
   fi,
   fr,
@@ -54,8 +53,10 @@ import {
   is,
   it,
   ja,
-  kn,
+  ka,
   kk,
+  km,
+  kn,
   ko,
   lt,
   lv,
@@ -63,16 +64,16 @@ import {
   mn,
   ms,
   nb,
-  nlBE,
   nl,
+  nlBE,
   pl,
-  ptBR,
   pt,
+  ptBR,
   ro,
   ru,
   sk,
-  sr,
   sl,
+  sr,
   sv,
   ta,
   th,
@@ -84,10 +85,16 @@ import {
 } from 'date-fns/locale';
 import type { GenerateConfig } from '.';
 
+/**
+ * Maps from supported languages in https://ant.design/docs/react/i18n#supported-languages to date-fns locales.
+ *
+ * Commented out entries are missing from date-fns.
+ */
 const LocaleMap: Record<string, Locale> = {
   ar_EG: ar,
   az_AZ: az,
   bg_BG: bg,
+  // bn_BD: bd,
   // by_BY: by,
   ca_ES: ca,
   cs_CZ: cs,
@@ -97,6 +104,7 @@ const LocaleMap: Record<string, Locale> = {
   en_GB: enGB,
   en_US: enUS,
   es_ES: es,
+  eu_ES: eu,
   et_EE: et,
   fa_IR: faIR,
   fi_FI: fi,
@@ -114,15 +122,19 @@ const LocaleMap: Record<string, Locale> = {
   it_IT: it,
   is_IS: is,
   ja_JP: ja,
+  ka_GE: ka,
   // kmr_IQ: kmr,
   kn_IN: kn,
   kk_KZ: kk,
+  km_KH: km,
   ko_KR: ko,
   lt_LT: lt,
   lv_LV: lv,
   mk_MK: mk,
+  // ml_IN: ml,
   mn_MN: mn,
   ms_MY: ms,
+  // my_MM: my,
   nb_NO: nb,
   // ne_NP: ne,
   nl_BE: nlBE,
@@ -132,6 +144,7 @@ const LocaleMap: Record<string, Locale> = {
   pt_PT: pt,
   ro_RO: ro,
   ru_RU: ru,
+  // si_LK: si,
   sk_SK: sk,
   sr_RS: sr,
   sl_SI: sl,
@@ -139,6 +152,8 @@ const LocaleMap: Record<string, Locale> = {
   ta_IN: ta,
   th_TH: th,
   tr_TR: tr,
+  // tk_TK: tk,
+  // ur_PK: ur,
   uk_UA: uk,
   vi_VN: vi,
   zh_CN: zhCN,
