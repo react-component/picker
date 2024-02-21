@@ -1434,4 +1434,11 @@ describe('Picker.Basic', () => {
     testPropsName('defaultValue');
     testPropsName('defaultOpenValue');
   });
+
+  it('auto switch pickerValue - maxDate', () => {
+    const { container } = render(<DayPicker maxDate={dayjs('1989-01-01')} />);
+
+    openPicker(container);
+    expect(document.querySelector('.rc-picker-header-view').textContent).toBe('Jan1989');
+  });
 });
