@@ -19,6 +19,10 @@ import {
   waitFakeTimer,
 } from './util/commonUtil';
 
+jest.mock('rc-util/lib/Dom/isVisible', () => {
+  return () => true;
+});
+
 describe('NewPicker.Range', () => {
   beforeEach(() => {
     resetWarned();
