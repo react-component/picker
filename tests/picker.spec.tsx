@@ -29,6 +29,10 @@ import {
 
 const fakeTime = getDay('1990-09-03 00:00:00').valueOf();
 
+jest.mock('rc-util/lib/Dom/isVisible', () => {
+  return () => true;
+});
+
 describe('Picker.Basic', () => {
   let errorSpy;
   beforeEach(() => {
