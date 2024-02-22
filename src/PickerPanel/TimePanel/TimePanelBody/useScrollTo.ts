@@ -1,5 +1,6 @@
 import { useEvent } from 'rc-util';
 import raf from 'rc-util/lib/raf';
+import isVisible from 'rc-util/lib/Dom/isVisible';
 import * as React from 'react';
 
 const SPEED_PTG = 1 / 3;
@@ -20,9 +21,12 @@ export default function useScrollTo(
     scrollingRef.current = false;
   };
 
+  const scrollRafTimesRef = React.useRef<number>();
+
   const startScroll = () => {
     const ul = ulRef.current;
     scrollDistRef.current = null;
+    scrollRafTimesRef.current = 0;
 
     if (ul) {
       const targetLi = ul.querySelector<HTMLLIElement>(`[data-value="${value}"]`);
@@ -31,6 +35,7 @@ export default function useScrollTo(
       const doScroll = () => {
         stopScroll();
         scrollingRef.current = true;
+        scrollRafTimesRef.current += 1;
 
         const { scrollTop: currentTop } = ul;
 
@@ -38,9 +43,11 @@ export default function useScrollTo(
         const targetLiTop = targetLi.offsetTop;
         const targetTop = targetLiTop - firstLiTop;
 
-        // Wait for element exist
-        if (targetLiTop === 0 && targetLi !== firstLi) {
-          scrollRafRef.current = raf(doScroll);
+        // Wait for element exist. 5 frames is enough
+        if ((targetLiTop === 0 && targetLi !== firstLi) || !isVisible(ul)) {
+          if (scrollRafTimesRef.current <= 5) {
+            scrollRafRef.current = raf(doScroll);
+          }
           return;
         }
 
