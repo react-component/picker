@@ -309,3 +309,13 @@ describe('Generate:dayjs', () => {
     expect(dateb).toEqual('2022-11-23 13:05');
   });
 });
+
+describe('Generate:date-fns', () => {
+  it('getWeekFirstDay', () => {
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('en_US')).toEqual(0);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('zh_CN')).toEqual(1);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('ar_EG')).toEqual(0);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('ar_MA')).toEqual(1);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('ar')).toEqual(6);
+  });
+});
