@@ -317,5 +317,9 @@ describe('Generate:date-fns', () => {
     expect(dateFnsGenerateConfig.locale.getWeekFirstDay('ar_EG')).toEqual(0);
     expect(dateFnsGenerateConfig.locale.getWeekFirstDay('ar_MA')).toEqual(1);
     expect(dateFnsGenerateConfig.locale.getWeekFirstDay('ar')).toEqual(6);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('ar')).toEqual(6);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('ko_KR')).toEqual(0);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('it_IT')).toEqual(1);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('fr_FR')).toEqual(1);
   });
 });
