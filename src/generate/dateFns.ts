@@ -23,16 +23,15 @@ import {
   setSeconds,
   setYear,
   startOfWeek,
+  type Locale,
 } from 'date-fns';
-import * as Locale from 'date-fns/locale';
+import * as locales from 'date-fns/locale';
 import type { GenerateConfig } from '.';
 
-const localeMap: Record<string, string> = {
-  ko_KR: 'ko'
-};
-
-const dealLocal = (str: string) => {
-  return localeMap[str] || str.replace(/_/g, '');
+const getLocale = (locale: string): Locale => {
+  return (
+    locales[locale] || locales[locale.replace(/_/g, '')] || locales[locale.replace(/_.*$/g, '')]
+  );
 };
 
 const localeParse = (format: string) => {
@@ -76,21 +75,21 @@ const generateConfig: GenerateConfig<Date> = {
 
   locale: {
     getWeekFirstDay: (locale) => {
-      const clone = Locale[dealLocal(locale)];
+      const clone = getLocale(locale);
       return clone.options.weekStartsOn;
     },
     getWeekFirstDate: (locale, date) => {
-      return startOfWeek(date, { locale: Locale[dealLocal(locale)] });
+      return startOfWeek(date, { locale: getLocale(locale) });
     },
     getWeek: (locale, date) => {
-      return getWeek(date, { locale: Locale[dealLocal(locale)] });
+      return getWeek(date, { locale: getLocale(locale) });
     },
     getShortWeekDays: (locale) => {
-      const clone = Locale[dealLocal(locale)];
+      const clone = getLocale(locale);
       return Array.from({ length: 7 }).map((_, i) => clone.localize.day(i, { width: 'short' }));
     },
     getShortMonths: (locale) => {
-      const clone = Locale[dealLocal(locale)];
+      const clone = getLocale(locale);
       return Array.from({ length: 12 }).map((_, i) =>
         clone.localize.month(i, { width: 'abbreviated' }),
       );
@@ -100,7 +99,7 @@ const generateConfig: GenerateConfig<Date> = {
         return null;
       }
       return formatDate(date, localeParse(format), {
-        locale: Locale[dealLocal(locale)],
+        locale: getLocale(locale),
       });
     },
     parse: (locale, text, formats) => {
@@ -108,7 +107,7 @@ const generateConfig: GenerateConfig<Date> = {
         const format = localeParse(formats[i]);
         const formatText = text;
         const date = parseDate(formatText, format, new Date(), {
-          locale: Locale[dealLocal(locale)],
+          locale: getLocale(locale),
         });
         if (isValid(date)) {
           return date;
