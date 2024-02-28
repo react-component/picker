@@ -432,9 +432,11 @@ export interface SharedPickerProps<DateType extends object = any>
   renderExtraFooter?: (mode: PanelMode) => React.ReactNode;
 }
 
+export type Focus = (index?: number | (FocusOptions & { index?: number })) => void;
+
 export interface PickerRef {
   nativeElement: HTMLDivElement;
-  focus: (options?: FocusOptions, index?: number) => void;
+  focus: Focus;
   blur: VoidFunction;
 }
 
@@ -508,7 +510,7 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
 
 export interface SelectorRef {
   nativeElement: HTMLDivElement;
-  focus: (options?: FocusOptions, index?: number) => void;
+  focus: Focus;
   blur: VoidFunction;
 }
 

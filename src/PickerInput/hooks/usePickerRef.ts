@@ -6,8 +6,8 @@ export function usePickerRef(ref: React.Ref<PickerRef>) {
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: selectorRef.current?.nativeElement,
-    focus: (options, index) => {
-      selectorRef.current?.focus(options, index);
+    focus: (options) => {
+      selectorRef.current?.focus(options);
     },
     blur: () => {
       selectorRef.current?.blur();

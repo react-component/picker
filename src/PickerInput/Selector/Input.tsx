@@ -9,6 +9,7 @@ import useLockEffect from '../hooks/useLockEffect';
 import Icon from './Icon';
 import MaskFormat from './MaskFormat';
 import { getMaskRange } from './util';
+import type { Focus } from '../../interface';
 
 // Format logic
 //
@@ -25,7 +26,7 @@ import { getMaskRange } from './util';
 export interface InputRef {
   nativeElement: HTMLDivElement;
   inputElement: HTMLInputElement;
-  focus: (options?: FocusOptions, index?: number) => void;
+  focus: Focus;
   blur: VoidFunction;
 }
 
@@ -98,7 +99,10 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     nativeElement: holderRef.current,
     inputElement: inputRef.current,
     focus: (options) => {
-      inputRef.current.focus(options);
+      if (typeof options === 'object') {
+        const { index, ...rest } = options;
+        inputRef.current.focus(rest);
+      }
     },
     blur: () => {
       inputRef.current.blur();
