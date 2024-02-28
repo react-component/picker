@@ -434,7 +434,7 @@ export interface SharedPickerProps<DateType extends object = any>
 
 export interface PickerRef {
   nativeElement: HTMLDivElement;
-  focus: (options?: FocusOptions) => void;
+  focus: (options?: FocusOptions, index?: number) => void;
   blur: VoidFunction;
 }
 
@@ -508,7 +508,7 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
 
 export interface SelectorRef {
   nativeElement: HTMLDivElement;
-  focus: (index?: number) => void;
+  focus: (options?: FocusOptions, index?: number) => void;
   blur: VoidFunction;
 }
 

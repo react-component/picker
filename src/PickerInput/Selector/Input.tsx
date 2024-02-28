@@ -25,7 +25,7 @@ import { getMaskRange } from './util';
 export interface InputRef {
   nativeElement: HTMLDivElement;
   inputElement: HTMLInputElement;
-  focus: (options?: FocusOptions) => void;
+  focus: (options?: FocusOptions, index?: number) => void;
   blur: VoidFunction;
 }
 

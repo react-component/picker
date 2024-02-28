@@ -138,8 +138,8 @@ function RangeSelector<DateType extends object = any>(
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: rootRef.current,
-    focus: (index = 0) => {
-      getInput(index)?.focus();
+    focus: (options, index = 0) => {
+      getInput(index)?.focus(options);
     },
     blur: () => {
       getInput(0)?.blur();

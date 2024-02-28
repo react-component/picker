@@ -412,7 +412,7 @@ function RangePicker<DateType extends object = any>(
     if (nextIndex === null) {
       triggerOpen(false, { force: true });
     } else if (!skipFocus) {
-      selectorRef.current.focus(nextIndex);
+      selectorRef.current.focus({}, nextIndex);
     }
   };
 
@@ -422,7 +422,7 @@ function RangePicker<DateType extends object = any>(
       // Click to focus the enabled input
       const enabledIndex = disabled.findIndex((d) => !d);
       if (enabledIndex >= 0) {
-        selectorRef.current.focus(enabledIndex);
+        selectorRef.current.focus({}, enabledIndex);
       }
     }
 
