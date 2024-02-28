@@ -116,8 +116,8 @@ function SingleSelector<DateType extends object = any>(
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: rootRef.current,
-    focus: () => {
-      inputRef.current?.focus();
+    focus: (options) => {
+      inputRef.current?.focus(options as any);
     },
     blur: () => {
       inputRef.current?.blur();
