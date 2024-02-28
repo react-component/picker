@@ -143,7 +143,7 @@ function RangeSelector<DateType extends object = any>(
         const { index = 0, ...rest } = options;
         getInput(index)?.focus(rest);
       } else {
-        getInput(options)?.focus();
+        getInput(options ?? 0)?.focus();
       }
     },
     blur: () => {
