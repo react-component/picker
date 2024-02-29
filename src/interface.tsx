@@ -432,6 +432,20 @@ export interface SharedPickerProps<DateType extends object = any>
   renderExtraFooter?: (mode: PanelMode) => React.ReactNode;
 }
 
+// picker
+export interface PickerRef {
+  nativeElement: HTMLDivElement;
+  focus: (options?: FocusOptions) => void;
+  blur: VoidFunction;
+}
+
+// rangePicker
+export interface RangePickerRef {
+  nativeElement: HTMLDivElement;
+  focus: (index?: number | (FocusOptions & { index?: number })) => void;
+  blur: VoidFunction;
+}
+
 // ======================== Selector ========================
 export interface OpenConfig {
   index?: number;
@@ -503,13 +517,6 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
 export interface PickerRef {
   nativeElement: HTMLDivElement;
   focus: (options?: FocusOptions) => void;
-  blur: VoidFunction;
-}
-
-// rangePicker
-export interface RangePickerRef {
-  nativeElement: HTMLDivElement;
-  focus: (index?: number | (FocusOptions & { index?: number })) => void;
   blur: VoidFunction;
 }
 
