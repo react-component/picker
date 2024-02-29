@@ -513,12 +513,6 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
   // Invalidate
   inputReadOnly?: boolean;
 }
-// picker
-export interface PickerRef {
-  nativeElement: HTMLDivElement;
-  focus: (options?: FocusOptions) => void;
-  blur: VoidFunction;
-}
 
 // ========================== MISC ==========================
 // https://stackoverflow.com/a/39495173; need TypeScript >= 4.5
