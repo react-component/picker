@@ -3,6 +3,7 @@ import '../../assets/index.less';
 import { Picker, RangePicker, type PickerRef } from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
 import zhCN from '../../src/locale/zh_CN';
+import type { RangePickerRef } from '../../src/interface';
 
 const MyPicker = () => {
   const ref = useRef<PickerRef>(null);
@@ -20,7 +21,7 @@ const MyPicker = () => {
 };
 
 const MyRangePicker = () => {
-  const ref = useRef<PickerRef>(null);
+  const ref = useRef<RangePickerRef>(null);
   useLayoutEffect(() => {
     if (ref.current) {
       ref.current.focus({ preventScroll: true, index: 1 });

@@ -10,7 +10,6 @@ import type {
   OnOpenChange,
   OpenConfig,
   PanelMode,
-  PickerRef,
   RangePickerRef,
   RangeTimeProps,
   SelectorProps,
@@ -755,7 +754,7 @@ function RangePicker<DateType extends object = any>(
 }
 
 const RefRangePicker = React.forwardRef(RangePicker) as <DateType extends object = any>(
-  props: RangePickerProps<DateType> & React.RefAttributes<PickerRef>,
+  props: RangePickerProps<DateType> & React.RefAttributes<RangePickerRef>,
 ) => React.ReactElement;
 
 if (process.env.NODE_ENV !== 'production') {
