@@ -515,8 +515,6 @@ export interface RangePickerRef {
   blur: VoidFunction;
 }
 
-export type SelectorRef = PickerRef;
-
 // ========================== MISC ==========================
 // https://stackoverflow.com/a/39495173; need TypeScript >= 4.5
 type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] extends N
