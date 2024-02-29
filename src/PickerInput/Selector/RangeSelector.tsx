@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import ResizeObserver from 'rc-resize-observer';
 import { useEvent } from 'rc-util';
 import * as React from 'react';
-import type { SelectorProps, SelectorRef } from '../../interface';
+import type { RangePickerRef, SelectorProps } from '../../interface';
 import PickerContext from '../context';
 import useInputProps from './hooks/useInputProps';
 import useRootProps from './hooks/useRootProps';
@@ -46,7 +46,7 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
 
 function RangeSelector<DateType extends object = any>(
   props: RangeSelectorProps<DateType>,
-  ref: React.Ref<SelectorRef>,
+  ref: React.Ref<RangePickerRef>,
 ) {
   const {
     id,

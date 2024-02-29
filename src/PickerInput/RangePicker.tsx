@@ -11,6 +11,7 @@ import type {
   OpenConfig,
   PanelMode,
   PickerRef,
+  RangePickerRef,
   RangeTimeProps,
   SelectorProps,
   SharedHTMLAttrs,
@@ -26,7 +27,7 @@ import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';
 import useFilledProps from './hooks/useFilledProps';
 import useOpen from './hooks/useOpen';
-import { usePickerRef } from './hooks/usePickerRef';
+import { useRangePickerRef } from './hooks/usePickerRef';
 import usePresets from './hooks/usePresets';
 import useRangeActive from './hooks/useRangeActive';
 import useRangeDisabledDate from './hooks/useRangeDisabledDate';
@@ -136,7 +137,7 @@ function getActiveRange(activeIndex: number) {
 
 function RangePicker<DateType extends object = any>(
   props: RangePickerProps<DateType>,
-  ref: React.Ref<PickerRef>,
+  ref: React.Ref<RangePickerRef>,
 ) {
   // ========================= Prop =========================
   const [filledProps, internalPicker, complexPicker, formatList, maskFormat, isInvalidateDate] =
@@ -219,7 +220,7 @@ function RangePicker<DateType extends object = any>(
   } = filledProps;
 
   // ========================= Refs =========================
-  const selectorRef = usePickerRef(ref);
+  const selectorRef = useRangePickerRef(ref);
 
   // ========================= Open =========================
   const [mergedOpen, setMergeOpen] = useOpen(open, defaultOpen, disabled, onOpenChange);
@@ -412,7 +413,7 @@ function RangePicker<DateType extends object = any>(
     if (nextIndex === null) {
       triggerOpen(false, { force: true });
     } else if (!skipFocus) {
-      selectorRef.current.focus({}, nextIndex);
+      selectorRef.current.focus({ index: nextIndex });
     }
   };
 
@@ -422,7 +423,7 @@ function RangePicker<DateType extends object = any>(
       // Click to focus the enabled input
       const enabledIndex = disabled.findIndex((d) => !d);
       if (enabledIndex >= 0) {
-        selectorRef.current.focus({}, enabledIndex);
+        selectorRef.current.focus({ index: enabledIndex });
       }
     }
 

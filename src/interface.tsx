@@ -434,12 +434,6 @@ export interface SharedPickerProps<DateType extends object = any>
 
 export type Focus = (index?: number | (FocusOptions & { index?: number })) => void;
 
-export interface PickerRef {
-  nativeElement: HTMLDivElement;
-  focus: Focus;
-  blur: VoidFunction;
-}
-
 // ======================== Selector ========================
 export interface OpenConfig {
   index?: number;
@@ -507,12 +501,21 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
   // Invalidate
   inputReadOnly?: boolean;
 }
-
-export interface SelectorRef {
+// picker
+export interface PickerRef {
   nativeElement: HTMLDivElement;
-  focus: Focus;
+  focus: (options?: FocusOptions) => void;
   blur: VoidFunction;
 }
+
+// rangePicker
+export interface RangePickerRef {
+  nativeElement: HTMLDivElement;
+  focus: (index?: number | (FocusOptions & { index?: number })) => void;
+  blur: VoidFunction;
+}
+
+export type SelectorRef = PickerRef;
 
 // ========================== MISC ==========================
 // https://stackoverflow.com/a/39495173; need TypeScript >= 4.5
