@@ -23,7 +23,7 @@ const MyRangePicker = () => {
   const ref = useRef<PickerRef>(null);
   useLayoutEffect(() => {
     if (ref.current) {
-      ref.current.focus({ preventScroll: true }, 1);
+      ref.current.focus({ preventScroll: true, index: 1 });
     }
   }, []);
 

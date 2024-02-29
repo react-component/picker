@@ -102,6 +102,8 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
       if (typeof options === 'object') {
         const { index, ...rest } = options;
         inputRef.current.focus(rest);
+      } else {
+        inputRef.current.focus();
       }
     },
     blur: () => {

@@ -120,6 +120,8 @@ function SingleSelector<DateType extends object = any>(
       if (typeof options === 'object') {
         const { index, ...rest } = options;
         inputRef.current.focus(rest);
+      } else {
+        inputRef.current.focus();
       }
     },
     blur: () => {
