@@ -440,10 +440,8 @@ export interface PickerRef {
 }
 
 // rangePicker
-export interface RangePickerRef {
-  nativeElement: HTMLDivElement;
+export interface RangePickerRef extends Omit<PickerRef, 'focus'> {
   focus: (index?: number | (FocusOptions & { index?: number })) => void;
-  blur: VoidFunction;
 }
 
 // ======================== Selector ========================
