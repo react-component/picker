@@ -432,8 +432,6 @@ export interface SharedPickerProps<DateType extends object = any>
   renderExtraFooter?: (mode: PanelMode) => React.ReactNode;
 }
 
-export type Focus = (index?: number | (FocusOptions & { index?: number })) => void;
-
 // ======================== Selector ========================
 export interface OpenConfig {
   index?: number;
