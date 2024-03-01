@@ -1,10 +1,8 @@
 import * as React from 'react';
 import type { PickerRef } from '../../interface';
 
-type BaseRefType = Omit<PickerRef, 'focus'>;
-type Focus<OptionType> = (options?: OptionType) => void;
-type PickerRefType<OptionType> = BaseRefType & {
-  focus: Focus<OptionType>;
+type PickerRefType<OptionType> = Omit<PickerRef, 'focus'> & {
+  focus: (options?: OptionType) => void;
 };
 
 export default function usePickerRef<OptionType>(ref: React.Ref<PickerRefType<OptionType>>) {
