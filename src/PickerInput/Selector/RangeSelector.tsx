@@ -140,7 +140,7 @@ function RangeSelector<DateType extends object = any>(
     nativeElement: rootRef.current,
     focus: (options) => {
       if (typeof options === 'object') {
-        const { index = 0, ...rest } = options;
+        const { index = 0, ...rest } = options || {};
         getInput(index)?.focus(rest);
       } else {
         getInput(options ?? 0)?.focus();
