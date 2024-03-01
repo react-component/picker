@@ -26,7 +26,7 @@ import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';
 import useFilledProps from './hooks/useFilledProps';
 import useOpen from './hooks/useOpen';
-import { useRangePickerRef } from './hooks/usePickerRef';
+import usePickerRef from './hooks/usePickerRef';
 import usePresets from './hooks/usePresets';
 import useRangeActive from './hooks/useRangeActive';
 import useRangeDisabledDate from './hooks/useRangeDisabledDate';
@@ -219,7 +219,7 @@ function RangePicker<DateType extends object = any>(
   } = filledProps;
 
   // ========================= Refs =========================
-  const selectorRef = useRangePickerRef(ref);
+  const selectorRef = usePickerRef(ref);
 
   // ========================= Open =========================
   const [mergedOpen, setMergeOpen] = useOpen(open, defaultOpen, disabled, onOpenChange);

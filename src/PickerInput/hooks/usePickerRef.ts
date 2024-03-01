@@ -1,24 +1,14 @@
 import * as React from 'react';
-import type { PickerRef, RangePickerRef } from '../../interface';
+import type { PickerRef } from '../../interface';
 
-export function usePickerRef(ref: React.Ref<PickerRef>) {
-  const selectorRef = React.useRef<PickerRef>();
+type BaseRefType = Omit<PickerRef, 'focus'>;
+type Focus<OptionType> = (options?: OptionType) => void;
+type PickerRefType<OptionType> = BaseRefType & {
+  focus: Focus<OptionType>;
+};
 
-  React.useImperativeHandle(ref, () => ({
-    nativeElement: selectorRef.current?.nativeElement,
-    focus: (options) => {
-      selectorRef.current?.focus(options);
-    },
-    blur: () => {
-      selectorRef.current?.blur();
-    },
-  }));
-
-  return selectorRef;
-}
-
-export function useRangePickerRef(ref: React.Ref<RangePickerRef>) {
-  const selectorRef = React.useRef<RangePickerRef>();
+export default function usePickerRef<OptionType>(ref: React.Ref<PickerRefType<OptionType>>) {
+  const selectorRef = React.useRef<PickerRefType<OptionType>>();
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: selectorRef.current?.nativeElement,
