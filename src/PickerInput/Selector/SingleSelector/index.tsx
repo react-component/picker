@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
-import type { InternalMode, SelectorProps, SelectorRef } from '../../../interface';
+import type { InternalMode, PickerRef, SelectorProps } from '../../../interface';
 import { isSame } from '../../../utils/dateUtil';
 import PickerContext from '../../context';
 import type { PickerProps } from '../../SinglePicker';
@@ -36,7 +36,7 @@ export interface SingleSelectorProps<DateType extends object = any>
 
 function SingleSelector<DateType extends object = any>(
   props: SingleSelectorProps<DateType>,
-  ref: React.Ref<SelectorRef>,
+  ref: React.Ref<PickerRef>,
 ) {
   const {
     id,
@@ -116,8 +116,8 @@ function SingleSelector<DateType extends object = any>(
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: rootRef.current,
-    focus: () => {
-      inputRef.current?.focus();
+    focus: (options) => {
+      inputRef.current?.focus(options);
     },
     blur: () => {
       inputRef.current?.blur();

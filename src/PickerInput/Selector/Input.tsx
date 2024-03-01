@@ -9,6 +9,7 @@ import useLockEffect from '../hooks/useLockEffect';
 import Icon from './Icon';
 import MaskFormat from './MaskFormat';
 import { getMaskRange } from './util';
+import type { PickerRef } from '../../interface';
 
 // Format logic
 //
@@ -22,11 +23,8 @@ import { getMaskRange } from './util';
 //    2. Re-selection the mask cell
 //  3. If `cacheValue` match the limit length or cell format (like 1 ~ 12 month), go to next cell
 
-export interface InputRef {
-  nativeElement: HTMLDivElement;
+export interface InputRef extends PickerRef {
   inputElement: HTMLInputElement;
-  focus: VoidFunction;
-  blur: VoidFunction;
 }
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
@@ -97,8 +95,8 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   React.useImperativeHandle(ref, () => ({
     nativeElement: holderRef.current,
     inputElement: inputRef.current,
-    focus: () => {
-      inputRef.current.focus();
+    focus: (options) => {
+      inputRef.current.focus(options);
     },
     blur: () => {
       inputRef.current.blur();

@@ -432,10 +432,16 @@ export interface SharedPickerProps<DateType extends object = any>
   renderExtraFooter?: (mode: PanelMode) => React.ReactNode;
 }
 
+// picker
 export interface PickerRef {
   nativeElement: HTMLDivElement;
-  focus: VoidFunction;
+  focus: (options?: FocusOptions) => void;
   blur: VoidFunction;
+}
+
+// rangePicker
+export interface RangePickerRef extends Omit<PickerRef, 'focus'> {
+  focus: (index?: number | (FocusOptions & { index?: number })) => void;
 }
 
 // ======================== Selector ========================
@@ -504,12 +510,6 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
 
   // Invalidate
   inputReadOnly?: boolean;
-}
-
-export interface SelectorRef {
-  nativeElement: HTMLDivElement;
-  focus: (index?: number) => void;
-  blur: VoidFunction;
 }
 
 // ========================== MISC ==========================
