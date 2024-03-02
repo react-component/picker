@@ -170,6 +170,7 @@ function SingleSelector<DateType extends object = any>(
         maxTagCount={maxTagCount}
         disabled={disabled}
         removeIcon={removeIcon}
+        placeholder={placeholder}
       />
       <input
         className={`${prefixCls}-multiple-input`}

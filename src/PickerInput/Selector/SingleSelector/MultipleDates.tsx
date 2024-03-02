@@ -11,12 +11,22 @@ export interface MultipleDatesProps<DateType extends object = any>
   removeIcon?: React.ReactNode;
   formatDate: (date: DateType) => string;
   disabled?: boolean;
+  placeholder?: string;
 }
 
 export default function MultipleDates<DateType extends object = any>(
   props: MultipleDatesProps<DateType>,
 ) {
-  const { prefixCls, value, onRemove, removeIcon = '×', formatDate, disabled, maxTagCount } = props;
+  const {
+    prefixCls,
+    value,
+    onRemove,
+    removeIcon = '×',
+    formatDate,
+    disabled,
+    maxTagCount,
+    placeholder,
+  } = props;
 
   const selectorCls = `${prefixCls}-selector`;
   const selectionCls = `${prefixCls}-selection`;
@@ -76,6 +86,7 @@ export default function MultipleDates<DateType extends object = any>(
         itemKey={(date) => formatDate(date)}
         maxCount={maxTagCount}
       />
+      {!value.length && <span className={`${selectionCls}-placeholder`}>{placeholder}</span>}
     </div>
   );
 }

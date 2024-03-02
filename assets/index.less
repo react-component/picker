@@ -109,7 +109,9 @@
       border: none;
       outline: none;
       cursor: pointer;
-      transition: background 0.3s, border 0.3s;
+      transition:
+        background 0.3s,
+        border 0.3s;
 
       &:hover {
         background: fade(blue, 30%);
@@ -561,5 +563,9 @@
   &-multiple-input {
     width: 10px;
     opacity: 0.1;
+  }
+  // ==============  placeholder ===============
+  &-selection-placeholder {
+    color: @input-placeholder-color;
   }
 }
