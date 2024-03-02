@@ -31,7 +31,7 @@ export default () => {
       <SinglePicker
         {...sharedLocale}
         multiple
-        placeholder="sssss"
+        placeholder="Please input"
         ref={singleRef}
         onOpenChange={console.error}
       />
