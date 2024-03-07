@@ -1240,4 +1240,28 @@ describe('NewPicker.Range', () => {
     render(<DayRangePicker picker="week" value={[dayjs(), dayjs().add(21, 'days')]} open />);
     expect(document.querySelector('.rc-picker-cell-range-start')).toBeFalsy();
   });
+
+  it('click time should not modify date', async () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker showTime value={[dayjs(), dayjs().add(21, 'days')]} onChange={onChange} />,
+    );
+
+    openPicker(container);
+
+    // Start
+    fireEvent.click(document.querySelectorAll('li.rc-picker-time-panel-cell')[2]);
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    await waitFakeTimer();
+
+    // End
+    fireEvent.click(document.querySelectorAll('li.rc-picker-time-panel-cell')[2]);
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    await waitFakeTimer();
+
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), [
+      '1990-09-03 02:00:00',
+      '1990-09-24 02:00:00',
+    ]);
+  });
 });
