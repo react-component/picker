@@ -145,7 +145,7 @@ export default function TimePanelBody<DateType extends object = any>(
   // ========================= Column =========================
   // Create a template date for the trigger change event
   const triggerDateTmpl = React.useMemo(() => {
-    let tmpl = pickerValue || generateConfig.getNow();
+    let tmpl = value || pickerValue || generateConfig.getNow();
 
     const isNotNull = (num: number) => num !== null && num !== undefined;
 
@@ -168,6 +168,7 @@ export default function TimePanelBody<DateType extends object = any>(
 
     return tmpl;
   }, [
+    value,
     pickerValue,
     hour,
     minute,

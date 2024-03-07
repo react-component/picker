@@ -124,34 +124,46 @@ const MyInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTM
 );
 MyInput.displayName = 'MyInput';
 
-export default () => {
-  const [value, setValue] = React.useState<Dayjs>(dayjs('2024-01-15'));
-  const setSingleValue = (nextVal: Dayjs) => {
-    setValue(nextVal);
-  };
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      setValue(dayjs('2024-03-03'));
-    }, 2000);
-  }, []);
-
+const App: React.FC = () => {
+  const [value, setValue] = React.useState<[Dayjs | null, Dayjs | null]>([
+    dayjs().subtract(60, 'days').startOf('day'),
+    dayjs().endOf('day'),
+  ]);
   return (
-    <div>
-      <RangePicker {...sharedLocale} open picker="time" style={{ width: 400 }} />
-
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
-        <PickerPanel
-          generateConfig={dayjsGenerateConfig}
-          locale={zhCN}
-          value={value}
-          onChange={setSingleValue}
-          onPanelChange={(panelValue, mode) => {
-            console.error('1');
-            console.log('🎲 PanelValue Change:', panelValue, mode);
-          }}
-        />
-      </div>
-    </div>
+    <RangePicker {...sharedLocale} showTime value={value} onChange={setValue} onOk={setValue} />
   );
 };
+
+export default App;
+
+// export default () => {
+//   const [value, setValue] = React.useState<Dayjs>(dayjs('2024-01-15'));
+//   const setSingleValue = (nextVal: Dayjs) => {
+//     setValue(nextVal);
+//   };
+
+//   React.useEffect(() => {
+//     setTimeout(() => {
+//       setValue(dayjs('2024-03-03'));
+//     }, 2000);
+//   }, []);
+
+//   return (
+//     <div>
+//       <RangePicker {...sharedLocale} open picker="time" style={{ width: 400 }} />
+
+//       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+//         <PickerPanel
+//           generateConfig={dayjsGenerateConfig}
+//           locale={zhCN}
+//           value={value}
+//           onChange={setSingleValue}
+//           onPanelChange={(panelValue, mode) => {
+//             console.error('1');
+//             console.log('🎲 PanelValue Change:', panelValue, mode);
+//           }}
+//         />
+//       </div>
+//     </div>
+//   );
+// };
