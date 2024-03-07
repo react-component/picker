@@ -1,7 +1,7 @@
 import isVisible from 'rc-util/lib/Dom/isVisible';
 import KeyCode from 'rc-util/lib/KeyCode';
 import raf from 'rc-util/lib/raf';
-import type { CustomFormat, PanelMode, PickerMode } from '../interface';
+import type { CustomFormat, PickerMode } from '../interface';
 
 const scrollIds = new Map<HTMLElement, number>();
 
