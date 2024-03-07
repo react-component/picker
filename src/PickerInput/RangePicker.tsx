@@ -157,6 +157,7 @@ function RangePicker<DateType extends object = any>(
     prefixCls,
     styles,
     classNames,
+    placement,
 
     // Value
     defaultValue,
@@ -554,6 +555,7 @@ function RangePicker<DateType extends object = any>(
       range
       multiplePanel={multiplePanel}
       activeOffset={activeOffset}
+      placement={placement}
       // Disabled
       disabledDate={mergedDisabledDate}
       // Focus

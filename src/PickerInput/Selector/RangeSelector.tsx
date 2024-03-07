@@ -35,7 +35,7 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
 
   // Invalid
   invalid: [boolean, boolean];
-
+  placement?: string;
   // Offset
   /**
    * Trigger when the active bar offset position changed.
@@ -101,6 +101,7 @@ function RangeSelector<DateType extends object = any>(
 
     // Offset
     onActiveOffset,
+    placement,
 
     // Native
     onMouseDown,
@@ -181,10 +182,9 @@ function RangeSelector<DateType extends object = any>(
     const input = getInput(activeIndex);
     if (input) {
       const { offsetWidth, offsetLeft, offsetParent } = input.nativeElement;
-
       let offset = offsetLeft;
+      const parentElement = offsetParent as HTMLElement;
       if (rtl) {
-        const parentElement = offsetParent as HTMLElement;
         const parentStyle = getComputedStyle(parentElement);
 
         offset =
@@ -200,8 +200,16 @@ function RangeSelector<DateType extends object = any>(
         width: offsetWidth,
         [offsetUnit]: offset,
       }));
-
-      onActiveOffset(activeIndex === 0 ? 0 : offset);
+      const rightMode = placement?.toLowerCase()?.includes('right');
+      onActiveOffset(
+        activeIndex === 0
+          ? rightMode
+            ? parentElement.offsetWidth - 20
+            : 0
+          : rightMode
+            ? offsetWidth - 20
+            : offset,
+      );
     }
   });
 
