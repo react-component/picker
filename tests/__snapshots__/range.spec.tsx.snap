@@ -55,6 +55,46 @@ exports[`Picker.Range icon 1`] = `
 </div>
 `;
 
+exports[`Picker.Range onPanelChange is array args should render correctly in placement right 1`] = `
+<div>
+  <div
+    class="rc-picker rc-picker-range rc-picker-focused"
+  >
+    <div
+      class="rc-picker-input rc-picker-input-active"
+    >
+      <input
+        aria-invalid="false"
+        autocomplete="off"
+        date-range="start"
+        size="12"
+        value=""
+      />
+    </div>
+    <div
+      class="rc-picker-range-separator"
+    >
+      ~
+    </div>
+    <div
+      class="rc-picker-input"
+    >
+      <input
+        aria-invalid="false"
+        autocomplete="off"
+        date-range="end"
+        size="12"
+        value=""
+      />
+    </div>
+    <div
+      class="rc-picker-active-bar"
+      style="position: absolute; width: 0px; left: 0px;"
+    />
+  </div>
+</div>
+`;
+
 exports[`Picker.Range onPanelChange is array args should render correctly in rtl 1`] = `
 <div>
   <div
@@ -137,7 +177,7 @@ exports[`Picker.Range panelRender 1`] = `
   <div>
     <div
       class="rc-picker-dropdown rc-picker-dropdown-range rc-picker-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+      style="left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div
         class="rc-picker-range-wrapper rc-picker-date-range-wrapper"
@@ -203,7 +243,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
   <div>
     <div
       class="rc-picker-dropdown rc-picker-dropdown-range rc-picker-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+      style="left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div
         class="rc-picker-range-wrapper rc-picker-date-range-wrapper"
@@ -1248,7 +1288,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
   <div>
     <div
       class="rc-picker-dropdown rc-picker-dropdown-range rc-picker-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+      style="left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div
         class="rc-picker-range-wrapper rc-picker-month-range-wrapper"

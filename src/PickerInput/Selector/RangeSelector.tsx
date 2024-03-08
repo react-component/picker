@@ -204,7 +204,7 @@ function RangeSelector<DateType extends object = any>(
       onActiveOffset(
         activeIndex === 0
           ? rightMode
-            ? parentElement.offsetWidth - 20
+            ? parentElement?.offsetWidth - 20
             : 0
           : rightMode
             ? offsetWidth - 20

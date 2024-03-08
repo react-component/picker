@@ -603,6 +603,14 @@ describe('Picker.Range', () => {
       const { container } = render(<DayRangePicker direction="rtl" />);
       expect(container).toMatchSnapshot();
     });
+
+    it('should render correctly in placement right', () => {
+      const { container } = render(<DayRangePicker placement="bottomRight" />);
+      openPicker(container);
+
+      expect(container).toMatchSnapshot();
+      expect(document.querySelector('.rc-picker-dropdown-placement-bottomRight')).toBeTruthy();
+    });
   });
 
   it('type can not change before start time', () => {
