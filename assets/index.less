@@ -109,7 +109,9 @@
       border: none;
       outline: none;
       cursor: pointer;
-      transition: background 0.3s, border 0.3s;
+      transition:
+        background 0.3s,
+        border 0.3s;
 
       &:hover {
         background: fade(blue, 30%);
@@ -440,7 +442,7 @@
       }
     }
     &-placement-bottomLeft,
-    &-placement-bottomright {
+    &-placement-bottomRight {
       .@{prefix-cls}-range-arrow {
         top: (@arrow-size / 2 + 1px);
         transform: rotate(-45deg);
@@ -449,11 +451,9 @@
 
     .@{prefix-cls}-range-arrow {
       position: absolute;
-      left: @arrow-size;
       z-index: 1;
       width: @arrow-size;
       height: @arrow-size;
-      margin-left: 10px;
       transition: all 0.3s;
 
       .@{prefix-cls}-dropdown-rtl& {
