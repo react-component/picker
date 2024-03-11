@@ -64,7 +64,10 @@ export interface BaseRangePickerProps<DateType extends object>
   // Value
   value?: RangeValueType<DateType> | null;
   defaultValue?: RangeValueType<DateType>;
-  onChange?: (dates: NoUndefinedRangeValueType<DateType>, dateStrings: [string, string]) => void;
+  onChange?: (
+    dates: NoUndefinedRangeValueType<DateType> | null,
+    dateStrings: [string, string],
+  ) => void;
   onCalendarChange?: (
     dates: NoUndefinedRangeValueType<DateType>,
     dateStrings: [string, string],
