@@ -28,7 +28,13 @@ export default () => {
 
   return (
     <div>
-      <SinglePicker {...sharedLocale} multiple ref={singleRef} onOpenChange={console.error} />
+      <SinglePicker
+        {...sharedLocale}
+        multiple
+        placeholder="Please input"
+        ref={singleRef}
+        onOpenChange={console.error}
+      />
       <SinglePicker {...sharedLocale} multiple ref={singleRef} needConfirm />
     </div>
   );

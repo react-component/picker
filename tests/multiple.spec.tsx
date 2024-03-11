@@ -137,4 +137,21 @@ describe('Picker.Multiple', () => {
 
     expect(container.querySelector('.custom-remove')).toBeTruthy();
   });
+
+  it('placeholder', () => {
+    const { container } = render(
+      <DayPicker
+        multiple
+        placeholder="Please input"
+        defaultValue={[getDay('2000-09-03'), getDay('2000-01-28')]}
+      />,
+    );
+
+    expect(container.querySelector('.rc-picker-selection-placeholder')).toBeFalsy();
+    const removeEle = container.querySelector('.rc-picker-clear') as Element;
+    fireEvent.click(removeEle);
+    expect(container.querySelector('.rc-picker-selection-placeholder')?.textContent).toBe(
+      'Please input',
+    );
+  });
 });
