@@ -15,9 +15,9 @@ const locale: Locale = {
   yearSelect: 'Yıl Seç',
   decadeSelect: 'On Yıl Seç',
   yearFormat: 'YYYY',
-  dateFormat: 'M/D/YYYY',
+  dateFormat: 'DD/MM/YYYY',
   dayFormat: 'D',
-  dateTimeFormat: 'M/D/YYYY HH:mm:ss',
+  dateTimeFormat: 'DD/MM/YYYY HH:mm:ss',
   monthBeforeYear: true,
   previousMonth: 'Önceki Ay (PageUp)',
   nextMonth: 'Sonraki Ay (PageDown)',
@@ -27,6 +27,8 @@ const locale: Locale = {
   nextDecade: 'Sonraki On Yıl',
   previousCentury: 'Önceki Yüzyıl',
   nextCentury: 'Sonraki Yüzyıl',
+  shortWeekDays: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
+  shortMonths: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
 };
 
 export default locale;
