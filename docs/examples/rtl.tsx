@@ -147,7 +147,7 @@ export default () => {
             format="gggg-Wo"
             allowClear
             picker="week"
-            renderExtraFooter={() => 'I am footer!!!'}
+            extraFooterRender={() => 'I am footer!!!'}
             ref={weekRef}
           />
 

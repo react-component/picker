@@ -180,7 +180,7 @@ export default () => {
             placeholder={['start...', 'end...']}
             disabled={[false, true]}
             allowEmpty={[false, true]}
-            renderExtraFooter={() => <div>extra footer</div>}
+            extraFooterRender={() => <div>extra footer</div>}
           />
         </div>
         <div style={{ margin: '0 8px' }}>
