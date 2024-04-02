@@ -146,9 +146,10 @@ function RangeSelector<DateType extends object = any>(
         getInput(options ?? 0)?.focus();
       }
     },
-    blur: () => {
+    blur: (event) => {
       getInput(0)?.blur();
       getInput(1)?.blur();
+      onBlur?.(event);
     },
   }));
 
