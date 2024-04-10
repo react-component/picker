@@ -171,7 +171,7 @@ describe('Picker.Basic', () => {
 
       for (let i = 0; i < 10; i += 1) {
         act(() => {
-          fireEvent.click(document.body);
+          fireEvent.mouseDown(document.body);
           jest.runAllTimers();
         });
         expect(onOpenChange).toHaveBeenCalledTimes(i + 1);

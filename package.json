@@ -1,6 +1,6 @@
 {
   "name": "rc-picker",
-  "version": "4.2.0",
+  "version": "4.3.1",
   "description": "React date & time picker",
   "keywords": [
     "react",
@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.10.1",
-    "@rc-component/trigger": "^1.5.0",
+    "@rc-component/trigger": "^2.0.0",
     "classnames": "^2.2.1",
     "rc-overflow": "^1.3.2",
     "rc-resize-observer": "^1.4.0",
@@ -63,7 +63,7 @@
     "dumi": "^2.1.15",
     "eslint": "^8.56.0",
     "eslint-plugin-jest": "^27.6.0",
-    "eslint-plugin-unicorn": "^50.0.1",
+    "eslint-plugin-unicorn": "^52.0.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "father": "^4.0.0",
@@ -72,7 +72,7 @@
     "luxon": "3.x",
     "mockdate": "^3.0.2",
     "moment": "^2.24.0",
-    "np": "^9.2.0",
+    "np": "^10.0.2",
     "prettier": "^3.1.0",
     "rc-test": "^7.0.9",
     "react": "^18.2.0",
