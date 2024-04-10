@@ -5,7 +5,7 @@ const locale: Locale = {
   today: '今日',
   now: '現在時刻',
   backToToday: '今日に戻る',
-  ok: '決定',
+  ok: '確定',
   timeSelect: '時間を選択',
   dateSelect: '日時を選択',
   weekSelect: '週を選択',
