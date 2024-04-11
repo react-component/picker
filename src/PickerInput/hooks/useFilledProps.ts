@@ -211,12 +211,5 @@ export default function useFilledProps<
     [filledProps, mergedNeedConfirm, mergedInputReadOnly, disabledBoundaryDate],
   );
 
-  return [
-    mergedProps,
-    internalPicker,
-    complexPicker,
-    formatList,
-    maskFormat,
-    isInvalidateDate,
-  ];
+  return [mergedProps, internalPicker, complexPicker, formatList, maskFormat, isInvalidateDate];
 }

@@ -155,6 +155,11 @@ export function fillShowTimeConfig<DateType extends object>(
       showMinute = checkShow(baselineFormat, ['m', 'LT', 'LLL']);
       showSecond = checkShow(baselineFormat, ['s', 'LTS']);
       showMillisecond = checkShow(baselineFormat, ['SSS']);
+    } else {
+      // Auto fill to true if part is false
+      showHour = showHour ?? true;
+      showMinute = showMinute ?? true;
+      showSecond = showSecond ?? true;
     }
 
     // Fallback if all can not see
