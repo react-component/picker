@@ -30,6 +30,10 @@ export default () => {
     <div>
       <SinglePicker {...sharedLocale} multiple ref={singleRef} onOpenChange={console.error} />
       <SinglePicker {...sharedLocale} multiple ref={singleRef} needConfirm />
+      <SinglePicker {...sharedLocale} multiple picker="week" defaultValue={[
+        dayjs('2021-01-01'),
+        dayjs('2021-01-08'),
+      ]} />
     </div>
   );
 };

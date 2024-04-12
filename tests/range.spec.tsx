@@ -1722,7 +1722,6 @@ describe('Picker.Range', () => {
       />,
     );
     openPicker(container, 1);
-    console.log(document.querySelector<HTMLElement>('.rc-picker-panel-container').style.cssText);
     expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({ marginLeft: 0 });
     mock.mockRestore();
   });
