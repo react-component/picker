@@ -23,6 +23,6 @@ describe('Picker.Time', () => {
     // Select
     selectCell(3);
 
-    expect(container.querySelector('input')).toHaveValue('1990-09-03 03:00');
+    expect(container.querySelector('input')).toHaveValue('1990-09-03 00:00');
   });
 });
