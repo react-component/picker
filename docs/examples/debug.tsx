@@ -41,7 +41,14 @@ export default () => {
     <div>
       {/* <RangePicker {...sharedLocale} style={{ width: 400 }} showTime />
       <RangePicker {...sharedLocale} style={{ width: 400 }} showTime showMinute={false} /> */}
-      <SinglePicker {...sharedLocale} style={{ width: 400 }} showTime showMinute={false} />
+      <SinglePicker
+        {...sharedLocale}
+        style={{ width: 400 }}
+        showTime
+        showHour
+        showMinute
+        // showSecond={false}
+      />
     </div>
   );
 };

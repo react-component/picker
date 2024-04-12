@@ -99,9 +99,17 @@ function fillShowConfig(
     parsedShowMinute = true;
     parsedShowSecond = true;
   } else if (hasShowConfig) {
-    parsedShowHour = showHour ?? true;
-    parsedShowMinute = showMinute ?? true;
-    parsedShowSecond = showSecond ?? true;
+    const existFalse = [parsedShowHour, parsedShowMinute, parsedShowSecond].some(
+      (show) => show === false,
+    );
+    const existTrue = [parsedShowHour, parsedShowMinute, parsedShowSecond].some(
+      (show) => show === true,
+    );
+    const defaultShow = existFalse ? true : !existTrue;
+
+    parsedShowHour = parsedShowHour ?? defaultShow;
+    parsedShowMinute = parsedShowMinute ?? defaultShow;
+    parsedShowSecond = parsedShowSecond ?? defaultShow;
   }
 
   return [parsedShowHour, parsedShowMinute, parsedShowSecond, showMillisecond];
@@ -197,11 +205,6 @@ export function fillShowTimeConfig<DateType extends object>(
       showMinute = checkShow(baselineFormat, ['m', 'LT', 'LLL']);
       showSecond = checkShow(baselineFormat, ['s', 'LTS']);
       showMillisecond = checkShow(baselineFormat, ['SSS']);
-    } else {
-      // Auto fill to true if part is false
-      showHour = showHour ?? true;
-      showMinute = showMinute ?? true;
-      showSecond = showSecond ?? true;
     }
 
     // Fallback if all can not see
