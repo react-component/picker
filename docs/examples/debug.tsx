@@ -39,8 +39,9 @@ const sharedLocale = {
 export default () => {
   return (
     <div>
-      <RangePicker {...sharedLocale} style={{ width: 400 }} showTime />
-      <RangePicker {...sharedLocale} style={{ width: 400 }} showTime showMinute={false} />
+      {/* <RangePicker {...sharedLocale} style={{ width: 400 }} showTime />
+      <RangePicker {...sharedLocale} style={{ width: 400 }} showTime showMinute={false} /> */}
+      <SinglePicker {...sharedLocale} style={{ width: 400 }} showTime showMinute={false} />
     </div>
   );
 };

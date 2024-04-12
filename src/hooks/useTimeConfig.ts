@@ -66,6 +66,47 @@ export interface ComponentProps<DateType extends object> {
   format?: SharedPickerProps['format'];
 }
 
+/** Check if all the showXXX is `undefined` */
+function existShowConfig(
+  showHour: boolean,
+  showMinute: boolean,
+  showSecond: boolean,
+  showMillisecond: boolean,
+) {
+  return [showHour, showMinute, showSecond, showMillisecond].some((show) => show !== undefined);
+}
+
+/** Fill the showXXX if needed */
+function fillShowConfig(
+  hasShowConfig: boolean,
+  showHour: boolean,
+  showMinute: boolean,
+  showSecond: boolean,
+  showMillisecond: boolean,
+): [showHour: boolean, showMinute: boolean, showSecond: boolean, showMillisecond: boolean] {
+  let parsedShowHour = showHour;
+  let parsedShowMinute = showMinute;
+  let parsedShowSecond = showSecond;
+
+  if (
+    !hasShowConfig &&
+    !parsedShowHour &&
+    !parsedShowMinute &&
+    !parsedShowSecond &&
+    !showMillisecond
+  ) {
+    parsedShowHour = true;
+    parsedShowMinute = true;
+    parsedShowSecond = true;
+  } else if (hasShowConfig) {
+    parsedShowHour = showHour ?? true;
+    parsedShowMinute = showMinute ?? true;
+    parsedShowSecond = showSecond ?? true;
+  }
+
+  return [parsedShowHour, parsedShowMinute, parsedShowSecond, showMillisecond];
+}
+
 /**
  * Get `showHour`, `showMinute`, `showSecond` or other from the props.
  * This is pure function, will not get `showXXX` from the `format` prop.
@@ -91,12 +132,15 @@ export function getTimeProps<DateType extends object>(
 
   const { showMillisecond } = timeConfig;
   let { showHour, showMinute, showSecond } = timeConfig;
+  const hasShowConfig = existShowConfig(showHour, showMinute, showSecond, showMillisecond);
 
-  if (!showHour && !showMinute && !showSecond && !showMillisecond) {
-    showHour = true;
-    showMinute = true;
-    showSecond = true;
-  }
+  [showHour, showMinute, showSecond] = fillShowConfig(
+    hasShowConfig,
+    showHour,
+    showMinute,
+    showSecond,
+    showMillisecond,
+  );
 
   return [
     timeConfig,
@@ -145,9 +189,7 @@ export function fillShowTimeConfig<DateType extends object>(
 
     const showMeridiem = checkShow(baselineFormat, ['a', 'A', 'LT', 'LLL', 'LTS'], use12Hours);
 
-    const hasShowConfig = [showHour, showMinute, showSecond, showMillisecond].some(
-      (show) => show !== undefined,
-    );
+    const hasShowConfig = existShowConfig(showHour, showMinute, showSecond, showMillisecond);
 
     // Fill with format, if needed
     if (!hasShowConfig) {
@@ -163,11 +205,13 @@ export function fillShowTimeConfig<DateType extends object>(
     }
 
     // Fallback if all can not see
-    if (!hasShowConfig && !showHour && !showMinute && !showSecond && !showMillisecond) {
-      showHour = true;
-      showMinute = true;
-      showSecond = true;
-    }
+    [showHour, showMinute, showSecond] = fillShowConfig(
+      hasShowConfig,
+      showHour,
+      showMinute,
+      showSecond,
+      showMillisecond,
+    );
 
     // ======================== Format ========================
     const timeFormat =
