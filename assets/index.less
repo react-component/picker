@@ -109,7 +109,9 @@
       border: none;
       outline: none;
       cursor: pointer;
-      transition: background 0.3s, border 0.3s;
+      transition:
+        background 0.3s,
+        border 0.3s;
 
       &:hover {
         background: fade(blue, 30%);
@@ -547,6 +549,7 @@
     box-sizing: border-box;
     width: 100%;
     border: 1px solid green;
+    min-height: 1em;
 
     &-item {
       flex: none;
@@ -556,6 +559,13 @@
 
   &-selection-item {
     border: 1px solid blue;
+  }
+
+  &-selection-placeholder {
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 
   &-multiple-input {

@@ -11,6 +11,7 @@ import 'dayjs/locale/zh-cn';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import dayjsGenerateConfig from '../../src/generate/dayjs';
+import dateFnsGenerateConfig from '../../src/generate/dateFns';
 import zhCN from '../../src/locale/zh_CN';
 
 dayjs.locale('zh-cn');
@@ -36,19 +37,18 @@ const sharedLocale = {
   generateConfig: dayjsGenerateConfig,
 };
 
+const dateFnsSharedLocale = {
+  locale: myLocale,
+  generateConfig: dateFnsGenerateConfig,
+};
+
 export default () => {
   return (
     <div>
       {/* <RangePicker {...sharedLocale} style={{ width: 400 }} showTime />
       <RangePicker {...sharedLocale} style={{ width: 400 }} showTime showMinute={false} /> */}
-      <SinglePicker
-        {...sharedLocale}
-        style={{ width: 400 }}
-        showTime
-        showHour
-        showMinute
-        // showSecond={false}
-      />
+      <SinglePicker {...dateFnsSharedLocale} style={{ width: 400 }} multiple placeholder="good" />
+      <SinglePicker {...dateFnsSharedLocale} style={{ width: 400 }} placeholder="good" />
     </div>
   );
 };

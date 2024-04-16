@@ -137,4 +137,22 @@ describe('Picker.Multiple', () => {
 
     expect(container.querySelector('.custom-remove')).toBeTruthy();
   });
+
+  describe('placeholder', () => {
+    it('show placeholder', () => {
+      const { container } = render(<DayPicker multiple placeholder="bamboo" />);
+      expect(
+        container.querySelector<HTMLSpanElement>('.rc-picker-selection-placeholder').textContent,
+      ).toBe('bamboo');
+    });
+
+    it('hide if has value', () => {
+      const { container } = render(
+        <DayPicker multiple defaultValue={[getDay('2000-01-01')]} placeholder="bamboo" />,
+      );
+      expect(
+        container.querySelector<HTMLSpanElement>('.rc-picker-selection-placeholder'),
+      ).toBeFalsy();
+    });
+  });
 });
