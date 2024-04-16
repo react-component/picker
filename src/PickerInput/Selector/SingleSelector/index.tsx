@@ -171,6 +171,7 @@ function SingleSelector<DateType extends object = any>(
         disabled={disabled}
         removeIcon={removeIcon}
       />
+      {!value.length && <span className={`${prefixCls}-selection-placeholder`}>{placeholder}</span>}
       <input
         className={`${prefixCls}-multiple-input`}
         value={value.map(getText).join(',')}
