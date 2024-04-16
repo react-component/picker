@@ -170,8 +170,8 @@ function SingleSelector<DateType extends object = any>(
         maxTagCount={maxTagCount}
         disabled={disabled}
         removeIcon={removeIcon}
+        placeholder={placeholder}
       />
-      {!value.length && <span className={`${prefixCls}-selection-placeholder`}>{placeholder}</span>}
       <input
         className={`${prefixCls}-multiple-input`}
         value={value.map(getText).join(',')}
