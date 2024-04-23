@@ -9,6 +9,7 @@ import type { RangePickerProps } from '../src';
 import zh_CN from '../src/locale/zh_CN';
 import {
   closePicker,
+  DayPicker,
   DayRangePicker,
   findCell,
   getDay,
@@ -1211,6 +1212,36 @@ describe('NewPicker.Range', () => {
 
       openPicker(container);
       expect(document.querySelector('.rc-picker-header-view').textContent).toBe('1990年8月');
+    });
+
+    it('typing should not exceed boundary', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayPicker minDate={getDay('2024-01-01')} onChange={onChange} />,
+      );
+      const inputEle = container.querySelector('input');
+
+      // Out of range
+      fireEvent.change(inputEle, {
+        target: {
+          value: '2000-01-01',
+        },
+      });
+      fireEvent.keyDown(inputEle, {
+        key: 'Enter',
+      });
+      expect(onChange).not.toHaveBeenCalled();
+
+      // In range
+      fireEvent.change(inputEle, {
+        target: {
+          value: '2024-03-03',
+        },
+      });
+      fireEvent.keyDown(inputEle, {
+        key: 'Enter',
+      });
+      expect(onChange).toHaveBeenCalled();
     });
   });
 
