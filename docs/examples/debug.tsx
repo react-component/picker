@@ -45,10 +45,20 @@ const dateFnsSharedLocale = {
 export default () => {
   return (
     <div>
-      {/* <RangePicker {...sharedLocale} style={{ width: 400 }} showTime />
-      <RangePicker {...sharedLocale} style={{ width: 400 }} showTime showMinute={false} /> */}
-      <SinglePicker {...dateFnsSharedLocale} style={{ width: 400 }} multiple placeholder="good" />
-      <SinglePicker {...dateFnsSharedLocale} style={{ width: 400 }} placeholder="good" />
+      <input defaultValue="2000-01-01" />
+      <RangePicker
+        {...sharedLocale}
+        style={{ width: 400 }}
+        onChange={(val) => console.error('>>>>>>>', val)}
+      />
+      {/* <RangePicker {...sharedLocale} style={{ width: 400 }} showTime showMinute={false} /> */}
+      {/* <SinglePicker {...dateFnsSharedLocale} style={{ width: 400 }} multiple placeholder="good" /> */}
+      <SinglePicker
+        {...sharedLocale}
+        style={{ width: 400 }}
+        minDate={dayjs()}
+        onChange={(val) => console.error('>>>>>>>', val)}
+      />
     </div>
   );
 };

@@ -198,7 +198,12 @@ export default function useFilledProps<
   );
 
   // ====================== Invalidate ======================
-  const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, mergedShowTime);
+  const isInvalidateDate = useInvalidate(
+    generateConfig,
+    picker,
+    disabledBoundaryDate,
+    mergedShowTime,
+  );
 
   // ======================== Merged ========================
   const mergedProps = React.useMemo(
