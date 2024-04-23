@@ -43,35 +43,5 @@ export default function useDisabledBoundary<DateType extends object = any>(
     return false;
   });
 
-  // const isInValidBoundary: IsInvalidBoundary<DateType> = (date, type, from) => {
-  //   const toBoundaryDate = (boundary?: LimitDate<DateType>) =>
-  //     typeof boundary === 'function'
-  //       ? boundary({
-  //           from,
-  //         })
-  //       : boundary;
-
-  //   const mergedMinDate = toBoundaryDate(minDate);
-  //   const mergedMaxDate = toBoundaryDate(maxDate);
-
-  //   if (
-  //     mergedMinDate &&
-  //     generateConfig.isAfter(mergedMinDate, date) &&
-  //     !isSame(generateConfig, locale, mergedMinDate, date, type)
-  //   ) {
-  //     return true;
-  //   }
-
-  //   if (
-  //     mergedMaxDate &&
-  //     generateConfig.isAfter(date, mergedMaxDate) &&
-  //     !isSame(generateConfig, locale, mergedMaxDate, date, type)
-  //   ) {
-  //     return true;
-  //   }
-
-  //   return false;
-  // };
-
   return mergedDisabledDate;
 }
