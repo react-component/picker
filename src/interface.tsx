@@ -176,7 +176,7 @@ export interface SharedTimeProps<DateType extends object = any> {
   disabledSeconds?: DisabledTimes['disabledSeconds'];
 
   /** Only work in picker is `time` */
-  disabledTime?: (date: DateType, range?: 'start' | 'end') => DisabledTimes;
+  disabledTime?: (date: DateType) => DisabledTimes;
 
   /** Only work in picker is `time` */
   changeOnScroll?: boolean;
@@ -189,6 +189,12 @@ export type RangeTimeProps<DateType extends object = any> = Omit<
   /** @deprecated Use `defaultOpenValue` instead. */
   defaultValue?: DateType[];
   defaultOpenValue?: DateType[];
+
+  disabledTime?: (
+    date: DateType,
+    range: 'start' | 'end',
+    info: { from?: DateType },
+  ) => DisabledTimes;
 };
 
 // ======================= Components =======================

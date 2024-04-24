@@ -2,6 +2,7 @@ import type { GenerateConfig } from '../../generate';
 import { isSame } from '../../utils/dateUtil';
 import type { DisabledDate, Locale } from '../../interface';
 import type { RangeValueType } from '../RangePicker';
+import { getFromDate } from '../../utils/miscUtil';
 
 /**
  * RangePicker need additional logic to handle the `disabled` case. e.g.
@@ -16,14 +17,13 @@ export default function useRangeDisabledDate<DateType extends object = any>(
   disabledDate?: DisabledDate<DateType>,
 ) {
   const activeIndex = activeIndexList[activeIndexList.length - 1];
-  const firstValuedIndex = activeIndexList.find((index) => values[index]);
 
   const rangeDisabledDate: DisabledDate<DateType> = (date, info) => {
     const [start, end] = values;
 
     const mergedInfo = {
       ...info,
-      from: activeIndex !== firstValuedIndex ? values[firstValuedIndex] : undefined,
+      from: getFromDate(values, activeIndexList),
     };
 
     // ============================ Disabled ============================
