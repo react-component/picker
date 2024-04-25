@@ -1294,4 +1294,36 @@ describe('NewPicker.Range', () => {
       '1990-09-24 02:00:00',
     ]);
   });
+
+  it('disabledTime support `from` info', () => {
+    const disabledTime = jest.fn(() => ({}));
+
+    const { container } = render(
+      <DayRangePicker
+        showTime={{
+          disabledTime,
+        }}
+      />,
+    );
+
+    openPicker(container);
+    expect(disabledTime).toHaveBeenCalledWith(expect.anything(), 'start', {});
+    disabledTime.mockReset();
+
+    // Select
+    selectCell(5);
+    fireEvent.doubleClick(findCell(5));
+
+    let existed = false;
+    for (let i = 0; i < disabledTime.mock.calls.length; i += 1) {
+      const args: any[] = disabledTime.mock.calls[i];
+      if (
+        args[1] === 'end' &&
+        args[2]?.from?.format('YYYY-MM-DD HH:mm:ss') === '1990-09-05 00:00:00'
+      ) {
+        existed = true;
+      }
+    }
+    expect(existed).toBeTruthy();
+  });
 });

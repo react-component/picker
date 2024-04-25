@@ -2,14 +2,9 @@ import classNames from 'classnames';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import useTimeInfo from '../../hooks/useTimeInfo';
-import type {
-  DisabledDate,
-  InternalMode,
-  PanelMode,
-  RangeTimeProps,
-  SharedPickerProps,
-} from '../../interface';
+import type { DisabledDate, InternalMode, PanelMode, SharedPickerProps } from '../../interface';
 import PickerContext from '../context';
+import type { PopupShowTimeConfig } from '.';
 
 export interface FooterProps<DateType extends object = any> {
   mode: PanelMode;
@@ -18,7 +13,7 @@ export interface FooterProps<DateType extends object = any> {
   showNow: boolean;
   generateConfig: GenerateConfig<DateType>;
   disabledDate: DisabledDate<DateType>;
-  showTime?: Omit<RangeTimeProps<DateType>, 'defaultValue' | 'defaultOpenValue'>;
+  showTime?: PopupShowTimeConfig<DateType>;
 
   // Invalid
   /** From Footer component used only. Check if can OK button click */

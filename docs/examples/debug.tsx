@@ -46,19 +46,56 @@ export default () => {
   return (
     <div>
       <input defaultValue="2000-01-01" />
-      <RangePicker
+      {/* <RangePicker
         {...sharedLocale}
         style={{ width: 400 }}
         onChange={(val) => console.error('>>>>>>>', val)}
+      /> */}
+      <RangePicker
+        {...sharedLocale}
+        style={{ width: 400 }}
+        showTime
+        // disabledDate={(_, info) => {
+        //   console.log('Date:', info);
+        //   return false;
+        // }}
+        disabledTime={(date, range, info) => {
+          // console.log(`Time-${range}`, range, info);
+          const { from } = info;
+
+          if (from) {
+            console.log(
+              `Time-${range}`,
+              from.format('YYYY-MM-DD HH:mm:ss'),
+              date.format('YYYY-MM-DD HH:mm:ss'),
+            );
+          }
+
+          if (from && from.isSame(date, 'day')) {
+            return {
+              disabledHours: () => [from.hour()],
+              disabledMinutes: () => [0, 1, 2, 3],
+              disabledSeconds: () => [0, 1, 2, 3],
+            };
+          }
+          return {};
+        }}
       />
-      {/* <RangePicker {...sharedLocale} style={{ width: 400 }} showTime showMinute={false} /> */}
-      {/* <SinglePicker {...dateFnsSharedLocale} style={{ width: 400 }} multiple placeholder="good" /> */}
-      <SinglePicker
+      {/* <SinglePicker
+        {...dateFnsSharedLocale}
+        style={{ width: 400 }}
+        showTime
+        disabledTime={(...args) => {
+          console.log('Time Single:', ...args);
+          return {};
+        }}
+      /> */}
+      {/* <SinglePicker
         {...sharedLocale}
         style={{ width: 400 }}
         minDate={dayjs()}
         onChange={(val) => console.error('>>>>>>>', val)}
-      />
+      /> */}
     </div>
   );
 };

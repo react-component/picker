@@ -20,7 +20,7 @@ import type {
 import type { PickerPanelProps } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import { pickTriggerProps } from '../PickerTrigger/util';
-import { fillIndex, toArray } from '../utils/miscUtil';
+import { fillIndex, getFromDate, toArray } from '../utils/miscUtil';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';
@@ -33,7 +33,7 @@ import useRangeDisabledDate from './hooks/useRangeDisabledDate';
 import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
-import Popup from './Popup';
+import Popup, { PopupShowTimeConfig } from './Popup';
 import RangeSelector, { type SelectorIdType } from './Selector/RangeSelector';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
@@ -278,7 +278,10 @@ function RangePicker<DateType extends object = any>(
   };
 
   // ======================= ShowTime =======================
-  const mergedShowTime = React.useMemo(() => {
+  /** Used for Popup panel */
+  const mergedShowTime = React.useMemo<
+    PopupShowTimeConfig<DateType> & Pick<RangeTimeProps<DateType>, 'defaultOpenValue'>
+  >(() => {
     if (!showTime) {
       return null;
     }
@@ -288,12 +291,15 @@ function RangePicker<DateType extends object = any>(
     const proxyDisabledTime = disabledTime
       ? (date: DateType) => {
           const range = getActiveRange(activeIndex);
-          return disabledTime(date, range);
+          const fromDate = getFromDate(calendarValue, activeIndexList, activeIndex);
+          return disabledTime(date, range, {
+            from: fromDate,
+          });
         }
       : undefined;
 
     return { ...showTime, disabledTime: proxyDisabledTime };
-  }, [showTime, activeIndex]);
+  }, [showTime, activeIndex, calendarValue, activeIndexList]);
 
   // ========================= Mode =========================
   const [modes, setModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
@@ -542,6 +548,7 @@ function RangePicker<DateType extends object = any>(
       'style',
       'className',
       'onPanelChange',
+      'disabledTime',
     ]);
     return restProps;
   }, [filledProps]);
