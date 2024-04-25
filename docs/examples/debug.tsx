@@ -59,12 +59,37 @@ export default () => {
         //   console.log('Date:', info);
         //   return false;
         // }}
-        disabledTime={(_, range) => {
-          console.log('Time:', range);
+        disabledTime={(date, range, info) => {
+          // console.log(`Time-${range}`, range, info);
+          const { from } = info;
+
+          if (from) {
+            console.log(
+              `Time-${range}`,
+              from.format('YYYY-MM-DD HH:mm:ss'),
+              date.format('YYYY-MM-DD HH:mm:ss'),
+            );
+          }
+
+          if (from && from.isSame(date, 'day')) {
+            return {
+              disabledHours: () => [from.hour()],
+              disabledMinutes: () => [0, 1, 2, 3],
+              disabledSeconds: () => [0, 1, 2, 3],
+            };
+          }
           return {};
         }}
       />
-      {/* <SinglePicker {...dateFnsSharedLocale} style={{ width: 400 }} multiple placeholder="good" /> */}
+      {/* <SinglePicker
+        {...dateFnsSharedLocale}
+        style={{ width: 400 }}
+        showTime
+        disabledTime={(...args) => {
+          console.log('Time Single:', ...args);
+          return {};
+        }}
+      /> */}
       {/* <SinglePicker
         {...sharedLocale}
         style={{ width: 400 }}

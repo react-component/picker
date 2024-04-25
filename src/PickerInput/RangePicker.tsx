@@ -20,7 +20,7 @@ import type {
 import type { PickerPanelProps } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import { pickTriggerProps } from '../PickerTrigger/util';
-import { fillIndex, toArray } from '../utils/miscUtil';
+import { fillIndex, getFromDate, toArray } from '../utils/miscUtil';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';
@@ -278,6 +278,7 @@ function RangePicker<DateType extends object = any>(
   };
 
   // ======================= ShowTime =======================
+  /** Used for Popup panel */
   const mergedShowTime = React.useMemo(() => {
     if (!showTime) {
       return null;
@@ -288,12 +289,15 @@ function RangePicker<DateType extends object = any>(
     const proxyDisabledTime = disabledTime
       ? (date: DateType) => {
           const range = getActiveRange(activeIndex);
-          return disabledTime(date, range);
+          const fromDate = getFromDate(calendarValue, activeIndexList, activeIndex);
+          return disabledTime(date, range, {
+            from: fromDate,
+          });
         }
       : undefined;
 
     return { ...showTime, disabledTime: proxyDisabledTime };
-  }, [showTime, activeIndex]);
+  }, [showTime, activeIndex, calendarValue, activeIndexList]);
 
   // ========================= Mode =========================
   const [modes, setModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
