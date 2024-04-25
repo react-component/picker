@@ -55,10 +55,10 @@ export default () => {
         {...sharedLocale}
         style={{ width: 400 }}
         showTime
-        disabledDate={(_, info) => {
-          console.log('Date:', info);
-          return false;
-        }}
+        // disabledDate={(_, info) => {
+        //   console.log('Date:', info);
+        //   return false;
+        // }}
         disabledTime={(_, range) => {
           console.log('Time:', range);
           return {};

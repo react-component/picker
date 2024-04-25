@@ -184,7 +184,7 @@ export interface SharedTimeProps<DateType extends object = any> {
 
 export type RangeTimeProps<DateType extends object = any> = Omit<
   SharedTimeProps<DateType>,
-  'defaultValue' | 'defaultOpenValue'
+  'defaultValue' | 'defaultOpenValue' | 'disabledTime'
 > & {
   /** @deprecated Use `defaultOpenValue` instead. */
   defaultValue?: DateType[];
