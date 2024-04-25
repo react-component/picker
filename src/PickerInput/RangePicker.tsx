@@ -33,7 +33,7 @@ import useRangeDisabledDate from './hooks/useRangeDisabledDate';
 import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
-import Popup from './Popup';
+import Popup, { PopupShowTimeConfig } from './Popup';
 import RangeSelector, { type SelectorIdType } from './Selector/RangeSelector';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
@@ -279,7 +279,9 @@ function RangePicker<DateType extends object = any>(
 
   // ======================= ShowTime =======================
   /** Used for Popup panel */
-  const mergedShowTime = React.useMemo(() => {
+  const mergedShowTime = React.useMemo<
+    PopupShowTimeConfig<DateType> & Pick<RangeTimeProps<DateType>, 'defaultOpenValue'>
+  >(() => {
     if (!showTime) {
       return null;
     }
@@ -546,6 +548,7 @@ function RangePicker<DateType extends object = any>(
       'style',
       'className',
       'onPanelChange',
+      'disabledTime',
     ]);
     return restProps;
   }, [filledProps]);

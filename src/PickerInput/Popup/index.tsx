@@ -1,12 +1,23 @@
 import classNames from 'classnames';
 import ResizeObserver, { type ResizeObserverProps } from 'rc-resize-observer';
 import * as React from 'react';
-import type { SharedPickerProps, ValueDate } from '../../interface';
+import type {
+  RangeTimeProps,
+  SharedPickerProps,
+  SharedTimeProps,
+  ValueDate,
+} from '../../interface';
 import { toArray } from '../../utils/miscUtil';
 import PickerContext from '../context';
 import Footer, { type FooterProps } from './Footer';
 import PopupPanel, { type PopupPanelProps } from './PopupPanel';
 import PresetPanel from './PresetPanel';
+
+export type PopupShowTimeConfig<DateType extends object = any> = Omit<
+  RangeTimeProps<DateType>,
+  'defaultValue' | 'defaultOpenValue' | 'disabledTime'
+> &
+  Pick<SharedTimeProps<DateType>, 'disabledTime'>;
 
 export interface PopupProps<DateType extends object = any, PresetValue = DateType>
   extends Pick<React.InputHTMLAttributes<HTMLDivElement>, 'onFocus' | 'onBlur'>,
