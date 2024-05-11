@@ -440,8 +440,9 @@ export interface PickerRef {
 }
 
 // rangePicker
-export interface RangePickerRef extends Omit<PickerRef, 'focus'> {
+export interface RangePickerRef extends Omit<PickerRef, 'focus' | 'blur'> {
   focus: (index?: number | (FocusOptions & { index?: number })) => void;
+  blur: (event: React.FocusEvent<HTMLInputElement>) => void
 }
 
 // ======================== Selector ========================
