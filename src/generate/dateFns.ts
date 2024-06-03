@@ -43,6 +43,30 @@ const localeParse = (format: string) => {
     .replace(/([Ww])o/g, 'wo');
 };
 
+const parse = (text: string, format: string, locale: string) => {
+  return parseDate(text, localeParse(format), new Date(), { locale: getLocale(locale) });
+}
+
+/**
+ * Check if the text is a valid date considering the format and locale
+ *
+ * This is a strict check, the date string must match the format exactly.
+ * Date-fns allows some flexibility in parsing dates, for example, it will parse "30/01/2" as "30/01/002".
+ * This behavior is not desirable in our case, so we need to check if the date string matches the format exactly.
+ *
+ * @param text the date string
+ * @param format the date format to use
+ * @param locale the locale to use
+ */
+const isStrictValidDate = (text: string, format: string, locale: string) => {
+  const date = parse(text, format, locale);
+  if (!isValid(date)) {
+    return false;
+  }
+  const formattedDate = formatDate(date, format, { locale: getLocale(locale) });
+  return text === formattedDate;
+}
+
 const generateConfig: GenerateConfig<Date> = {
   // get
   getNow: () => new Date(),
@@ -105,12 +129,9 @@ const generateConfig: GenerateConfig<Date> = {
     parse: (locale, text, formats) => {
       for (let i = 0; i < formats.length; i += 1) {
         const format = localeParse(formats[i]);
-        const formatText = text;
-        const date = parseDate(formatText, format, new Date(), {
-          locale: getLocale(locale),
-        });
-        if (isValid(date)) {
-          return date;
+
+        if (isStrictValidDate(text, format, locale)) {
+          return parse(text, format, locale);
         }
       }
       return null;
