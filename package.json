@@ -61,7 +61,7 @@
     "date-fns": "2.x",
     "dayjs": "1.x",
     "dumi": "^2.1.15",
-    "eslint": "^8.56.0",
+    "eslint": "^9.4.0",
     "eslint-plugin-jest": "^27.6.0",
     "eslint-plugin-unicorn": "^53.0.0",
     "eslint-plugin-react-hooks": "^4.6.0",
