@@ -197,7 +197,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   );
 
   if (range) {
-    const placementRight = placement?.toLowerCase().includes('right');
+    const placementRight = placement?.toLowerCase().endsWith('right');
     renderNode = (
       <div
         ref={wrapperRef}
