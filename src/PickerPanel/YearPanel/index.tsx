@@ -80,7 +80,8 @@ export default function YearPanel<DateType extends object = any>(
   const yearNode: React.ReactNode = (
     <button
       type="button"
-      key="year"
+      key="decade"
+      aria-label="decade panel"
       onClick={() => {
         onModeChange('decade');
       }}

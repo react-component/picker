@@ -136,6 +136,7 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   const yearNode: React.ReactNode = (
     <button
       type="button"
+      aria-label="year panel"
       key="year"
       onClick={() => {
         onModeChange('year', pickerValue);
@@ -153,6 +154,7 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   const monthNode: React.ReactNode = (
     <button
       type="button"
+      aria-label="month panel"
       key="month"
       onClick={() => {
         onModeChange('month', pickerValue);
