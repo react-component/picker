@@ -122,6 +122,7 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
       {superOffset && (
         <button
           type="button"
+          aria-label="super-prev-year"
           onClick={() => onSuperOffset(-1)}
           tabIndex={-1}
           className={classNames(
@@ -137,6 +138,7 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
       {offset && (
         <button
           type="button"
+          aria-label="prev-year"
           onClick={() => onOffset(-1)}
           tabIndex={-1}
           className={classNames(prevBtnCls, disabledOffsetPrev && `${prevBtnCls}-disabled`)}
@@ -150,6 +152,7 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
       {offset && (
         <button
           type="button"
+          aria-label="next-year"
           onClick={() => onOffset(1)}
           tabIndex={-1}
           className={classNames(nextBtnCls, disabledOffsetNext && `${nextBtnCls}-disabled`)}
@@ -162,6 +165,7 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
       {superOffset && (
         <button
           type="button"
+          aria-label="super-next-year"
           onClick={() => onSuperOffset(1)}
           tabIndex={-1}
           className={classNames(

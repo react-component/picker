@@ -39,6 +39,7 @@ export default function QuarterPanel<DateType extends object = any>(
     <button
       type="button"
       key="year"
+      aria-label="year panel"
       onClick={() => {
         onModeChange('year');
       }}
