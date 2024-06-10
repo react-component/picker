@@ -200,11 +200,11 @@ function RangeSelector<DateType extends object = any>(
         width: offsetWidth,
         [offsetUnit]: offset,
       }));
-      const rightMode = placement?.toLowerCase()?.includes('right');
-      const startOffset = rightMode
+      const placementRight = placement?.toLowerCase().endsWith('right');
+      const startOffset = placementRight
             ? parentElement?.offsetWidth - 20
             : 0;
-      const endOffset = rightMode
+      const endOffset = placementRight
             ? offsetWidth - 20
             : offset;
       onActiveOffset(activeIndex === 0 ? startOffset : endOffset);
