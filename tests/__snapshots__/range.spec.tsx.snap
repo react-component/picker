@@ -55,6 +55,46 @@ exports[`Picker.Range icon 1`] = `
 </div>
 `;
 
+exports[`Picker.Range onPanelChange is array args should render correctly in placement right 1`] = `
+<div>
+  <div
+    class="rc-picker rc-picker-range rc-picker-focused"
+  >
+    <div
+      class="rc-picker-input rc-picker-input-active"
+    >
+      <input
+        aria-invalid="false"
+        autocomplete="off"
+        date-range="start"
+        size="12"
+        value=""
+      />
+    </div>
+    <div
+      class="rc-picker-range-separator"
+    >
+      ~
+    </div>
+    <div
+      class="rc-picker-input"
+    >
+      <input
+        aria-invalid="false"
+        autocomplete="off"
+        date-range="end"
+        size="12"
+        value=""
+      />
+    </div>
+    <div
+      class="rc-picker-active-bar"
+      style="position: absolute; width: 0px; left: 0px;"
+    />
+  </div>
+</div>
+`;
+
 exports[`Picker.Range onPanelChange is array args should render correctly in rtl 1`] = `
 <div>
   <div

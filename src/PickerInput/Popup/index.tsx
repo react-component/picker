@@ -32,7 +32,7 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
 
   // Range
   activeOffset?: number;
-
+  placement?: string;
   // Direction
   direction?: 'ltr' | 'rtl';
 
@@ -57,6 +57,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     range,
     multiple,
     activeOffset = 0,
+    placement,
 
     // Presets
     presets,
@@ -207,6 +208,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   );
 
   if (range) {
+    const placementRight = placement?.toLowerCase().endsWith('right');
     renderNode = (
       <div
         ref={wrapperRef}
@@ -215,7 +217,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
         <div
           ref={arrowRef}
           className={`${prefixCls}-range-arrow`}
-          style={{ [rtl ? 'right' : 'left']: activeOffset }}
+          style={{ [rtl || placementRight ? 'right' : 'left']: activeOffset }}
         />
 
         {/* Watch for container size */}
