@@ -26,7 +26,7 @@ export default function DateTimePanel<DateType extends object = any>(
 
   // ============================== Hover ===============================
   const onDateHover = (date: DateType) => {
-    onHover(date ? mergeTime(date) : date);
+    onHover?.(date ? mergeTime(date) : date);
   };
 
   // ============================== Select ==============================
