@@ -89,7 +89,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in pla
     </div>
     <div
       class="rc-picker-active-bar"
-      style="position: absolute; width: 0px; inset-inline-start: 0;"
+      style="position: absolute; width: 0px; inset-inline-end: 0;"
     />
   </div>
 </div>
@@ -184,7 +184,7 @@ exports[`Picker.Range panelRender 1`] = `
       >
         <div
           class="rc-picker-range-arrow"
-          style="left: 0px;"
+          style="inset-inline-start: 0;"
         />
         <div
           class="rc-picker-panel-container rc-picker-date-panel-container"
@@ -250,7 +250,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
       >
         <div
           class="rc-picker-range-arrow"
-          style="left: 0px;"
+          style="inset-inline-start: 0;"
         />
         <div
           class="rc-picker-panel-container rc-picker-date-panel-container"
@@ -1307,7 +1307,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
       >
         <div
           class="rc-picker-range-arrow"
-          style="left: 0px;"
+          style="inset-inline-start: 0;"
         />
         <div
           class="rc-picker-panel-container rc-picker-month-panel-container"
