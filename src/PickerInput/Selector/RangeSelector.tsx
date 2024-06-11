@@ -170,7 +170,7 @@ function RangeSelector<DateType extends object = any>(
   });
 
   // ====================== ActiveBar =======================
-  const offsetUnit = rtl ? 'right' : 'left';
+  const offsetUnit = rtl ? 'insetInlineEnd' : 'insetInlineStart';
 
   const [activeBarStyle, setActiveBarStyle] = React.useState<React.CSSProperties>({
     position: 'absolute',
@@ -182,27 +182,14 @@ function RangeSelector<DateType extends object = any>(
     const input = getInput(activeIndex);
     if (input) {
       const { offsetWidth, offsetLeft, offsetParent } = input.nativeElement;
-      let offset = offsetLeft;
-      const parentElement = offsetParent as HTMLElement;
-      if (rtl) {
-        const parentStyle = getComputedStyle(parentElement);
-
-        offset =
-          parentElement.offsetWidth -
-          parseFloat(parentStyle.borderRightWidth) -
-          parseFloat(parentStyle.borderLeftWidth) -
-          offsetLeft -
-          offsetWidth;
-      }
-
+      const parentWidth = (offsetParent as HTMLElement)?.offsetWidth || 0;
       setActiveBarStyle((ori) => ({
         ...ori,
         width: offsetWidth,
-        [offsetUnit]: offset,
+        [offsetUnit]: offsetLeft,
       }));
       const placementRight = placement?.toLowerCase().endsWith('right');
-      const startOffset = placementRight ? parentElement?.offsetWidth : 0;
-      onActiveOffset(activeIndex === 0 ? startOffset : offset);
+      onActiveOffset(placementRight ? (parentWidth - offsetWidth - offsetLeft) : offsetLeft);
     }
   });
 
