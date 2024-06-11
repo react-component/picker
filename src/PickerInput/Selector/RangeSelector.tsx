@@ -201,13 +201,8 @@ function RangeSelector<DateType extends object = any>(
         [offsetUnit]: offset,
       }));
       const placementRight = placement?.toLowerCase().endsWith('right');
-      const startOffset = placementRight
-            ? parentElement?.offsetWidth - 20
-            : 0;
-      const endOffset = placementRight
-            ? offsetWidth - 20
-            : offset;
-      onActiveOffset(activeIndex === 0 ? startOffset : endOffset);
+      const startOffset = placementRight ? parentElement?.offsetWidth : 0;
+      onActiveOffset(activeIndex === 0 ? startOffset : offset);
     }
   });
 
