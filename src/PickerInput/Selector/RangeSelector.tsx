@@ -170,8 +170,8 @@ function RangeSelector<DateType extends object = any>(
   });
 
   // ====================== ActiveBar =======================
-  const placementRight = placement?.toLowerCase().endsWith('right') || rtl;
-  const offsetUnit = placementRight ? 'insetInlineEnd' : 'insetInlineStart';
+  const placementRight = placement?.toLowerCase().endsWith('right');
+  const offsetUnit = rtl ? 'insetInlineEnd' : 'insetInlineStart';
 
   const [activeBarStyle, setActiveBarStyle] = React.useState<React.CSSProperties>({
     position: 'absolute',

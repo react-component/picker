@@ -208,7 +208,8 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   );
 
   if (range) {
-    const placementRight = placement?.toLowerCase().endsWith('right') || rtl;
+    const placementRight = placement?.toLowerCase().endsWith('right');
+    const offsetUnit = placementRight ? 'insetInlineEnd' : 'insetInlineStart';
     renderNode = (
       <div
         ref={wrapperRef}
@@ -217,7 +218,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
         <div
           ref={arrowRef}
           className={`${prefixCls}-range-arrow`}
-          style={{ [placementRight ? 'insetInlineEnd' : 'insetInlineStart']: activeOffset }}
+          style={{ [offsetUnit]: activeOffset }}
         />
 
         {/* Watch for container size */}

@@ -37,7 +37,6 @@ export default () => {
     value,
     onChange,
     onCalendarChange,
-    placement: 'topRight',
   };
 
   const rangePickerRef = React.useRef<PickerRef>(null);
