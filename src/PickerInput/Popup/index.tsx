@@ -8,6 +8,7 @@ import type {
   ValueDate,
 } from '../../interface';
 import { toArray } from '../../utils/miscUtil';
+import { getRealPlacement, getoffsetUnit } from '../../utils/uiUtil';
 import PickerContext from '../context';
 import Footer, { type FooterProps } from './Footer';
 import PopupPanel, { type PopupPanelProps } from './PopupPanel';
@@ -208,8 +209,8 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   );
 
   if (range) {
-    const placementRight = placement?.toLowerCase().endsWith('right');
-    const offsetUnit = placementRight ? 'insetInlineEnd' : 'insetInlineStart';
+    const realPlacement = getRealPlacement(placement, rtl);
+    const offsetUnit = getoffsetUnit(realPlacement, rtl);
     renderNode = (
       <div
         ref={wrapperRef}

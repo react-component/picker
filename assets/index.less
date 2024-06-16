@@ -404,13 +404,8 @@
   &-clear {
     position: absolute;
     top: 0;
-    right: 4px;
+    inset-inline-end: 4px;
     cursor: pointer;
-
-    .@{prefix-cls}-rtl & {
-      right: auto;
-      left: 4px;
-    }
 
     &-btn::after {
       content: '×';
@@ -429,6 +424,10 @@
 
     &-hidden {
       display: none;
+    }
+
+    &-rtl {
+      direction: rtl;
     }
 
     // Panel
@@ -456,25 +455,16 @@
       height: @arrow-size;
       transition: all 0.3s;
 
-      .@{prefix-cls}-dropdown-rtl& {
-        right: @arrow-size;
-        left: auto;
-        margin-right: 10px;
-        margin-left: 0;
-      }
-
       &::before,
       &::after {
         position: absolute;
         top: 50%;
-        left: 50%;
+        inset-inline-start: 50%;
         box-sizing: border-box;
         transform: translate(-50%, -50%);
         content: '';
 
         .@{prefix-cls}-dropdown-rtl& {
-          right: 50%;
-          left: auto;
           transform: translate(50%, -50%);
         }
       }

@@ -187,3 +187,20 @@ export function elementsContains(
 ) {
   return elements.some((ele) => ele && ele.contains(target));
 }
+
+export function getRealPlacement(placement: string, rtl: boolean) {
+  if (placement !== undefined) {
+    return placement;
+  }
+  return rtl ? 'bottomRight' : 'bottomLeft';
+}
+
+export function getoffsetUnit(placement: string, rtl: boolean) {
+  const realPlacement = getRealPlacement(placement, rtl);
+  const placementRight = realPlacement?.toLowerCase().endsWith('right');
+  let offsetUnit = placementRight ? 'insetInlineEnd' : 'insetInlineStart';
+  if (rtl) {
+    offsetUnit = ['insetInlineStart', 'insetInlineEnd'].find(unit => unit !== offsetUnit);
+  }
+  return offsetUnit;
+}
