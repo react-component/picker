@@ -34,7 +34,7 @@ exports[`Picker.Range icon 1`] = `
     </div>
     <div
       class="rc-picker-active-bar"
-      style="position: absolute; width: 0px; inset-inline-start: 0;"
+      style="position: absolute; width: 0px;"
     />
     <span
       class="rc-picker-suffix"
@@ -89,7 +89,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in pla
     </div>
     <div
       class="rc-picker-active-bar"
-      style="position: absolute; width: 0px; inset-inline-start: 0;"
+      style="position: absolute; width: 0px; inset-inline-end: 0;"
     />
   </div>
 </div>
@@ -129,7 +129,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in rtl
     </div>
     <div
       class="rc-picker-active-bar"
-      style="position: absolute; width: 0px; inset-inline-end: 0;"
+      style="position: absolute; width: 0px;"
     />
   </div>
 </div>
