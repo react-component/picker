@@ -177,7 +177,6 @@ function RangeSelector<DateType extends object = any>(
   const [activeBarStyle, setActiveBarStyle] = React.useState<React.CSSProperties>({
     position: 'absolute',
     width: 0,
-    insetInline: 'auto',
   });
 
   const syncActiveOffset = useEvent(() => {
