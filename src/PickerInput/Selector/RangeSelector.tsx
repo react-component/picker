@@ -111,6 +111,7 @@ function RangeSelector<DateType extends object = any>(
     required,
     'aria-required': ariaRequired,
     autoFocus,
+    tabIndex,
 
     ...restProps
   } = props;
@@ -241,10 +242,17 @@ function RangeSelector<DateType extends object = any>(
           ref={inputStartRef}
           {...getInputProps(0)}
           autoFocus={startAutoFocus}
+          tabIndex={tabIndex}
           date-range="start"
         />
         <div className={`${prefixCls}-range-separator`}>{separator}</div>
-        <Input ref={inputEndRef} {...getInputProps(1)} autoFocus={endAutoFocus} date-range="end" />
+        <Input
+          ref={inputEndRef}
+          {...getInputProps(1)}
+          autoFocus={endAutoFocus}
+          tabIndex={tabIndex}
+          date-range="end"
+        />
         <div className={`${prefixCls}-active-bar`} style={activeBarStyle} />
         <Icon type="suffix" icon={suffixIcon} />
         {showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
