@@ -36,7 +36,7 @@ describe('Picker.Keyboard', () => {
       charCode: keyCode,
       ...info,
     });
-    // document.querySelector('.rc-picker-panel').simulate('keyDown', { which: keyCode, ...info });
+    document.querySelector('.rc-picker-panel').simulate('keyDown', { which: keyCode, ...info });
   }
 
   beforeEach(() => {

@@ -18,6 +18,7 @@ import {
   confirmOK,
   // MomentPicker,
   DayPicker,
+  DayRangePicker,
   findCell,
   getDay,
   isOpen,
@@ -287,6 +288,22 @@ describe('Picker.Basic', () => {
         openPicker(container);
         expect(document.querySelector(selected)).toBeFalsy();
       });
+    });
+
+    // https://github.com/ant-design/ant-design/issues/49400
+    it('should not throw errow when input end year first', () => {
+      const { container } = render(
+        <DayRangePicker picker="year" />,
+      );
+      openPicker(container);
+      fireEvent.focus(container.querySelectorAll('input')[1]);
+      expect(() => {
+        fireEvent.change(container.querySelectorAll('input')[1], {
+          target: {
+            value: '2024',
+          },
+        });
+      }).not.toThrow();
     });
   });
 

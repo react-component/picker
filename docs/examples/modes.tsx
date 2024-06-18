@@ -10,7 +10,7 @@ const defaultStartValue = moment('2019-09-03 05:02:03');
 const defaultEndValue = moment('2019-11-28 01:02:03');
 
 function formatDate(date: Moment | null) {
-  return date ? date.format('YYYY-MM-DD HH:mm:ss') : 'null';
+  return date ? date.format('YYYY-MM-DD HH:mm:ss') : null;
 }
 
 export default () => {

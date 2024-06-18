@@ -146,7 +146,7 @@ export default function useRangePickerValue<DateType extends object, ValueType e
       }
 
       // Year offset
-      if (pickerMode === 'year') {
+      if (pickerMode === 'year' && startDate) {
         const srcYear = Math.floor(generateConfig.getYear(startDate) / 10);
         const tgtYear = Math.floor(generateConfig.getYear(endDate) / 10);
         if (srcYear !== tgtYear) {
