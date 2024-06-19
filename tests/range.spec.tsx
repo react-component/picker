@@ -1914,4 +1914,34 @@ describe('Picker.Range', () => {
 
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
+
+  it('should save both dates, but not only the last that was changed without submit, enter, tab, etc.', async () => {
+    const { container } = render(<DayRangePicker />);
+
+    act(() => {
+      fireEvent.focus(container.querySelectorAll('input')[0]);
+      fireEvent.change(container.querySelectorAll('input')[0], {
+        target: {
+          value: '2024-06-13',
+        },
+      });
+      fireEvent.blur(container.querySelectorAll('input')[0]);
+
+      fireEvent.focus(container.querySelectorAll('input')[1]);
+      fireEvent.change(container.querySelectorAll('input')[1], {
+        target: {
+          value: '2024-06-15',
+        },
+      });
+      
+      fireEvent.keyDown(container.querySelectorAll('input')[1], {
+        key: 'Enter',
+        code: 'Enter',
+      });
+
+    });
+    
+    expect(container.querySelectorAll('input')[1].value).toBe('2024-06-15');
+    expect(container.querySelectorAll('input')[0].value).toBe('2024-06-13');
+  });
 });

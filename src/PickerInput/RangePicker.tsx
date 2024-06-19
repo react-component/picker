@@ -634,6 +634,10 @@ function RangePicker<DateType extends object = any>(
 
   const onSelectorBlur: SelectorProps['onBlur'] = (event, index) => {
     triggerOpen(false);
+    if (!needConfirm) {
+      const nextIndex = nextActiveIndex(calendarValue);
+      flushSubmit(activeIndex, nextIndex === null);
+    }
 
     onSharedBlur(event, index);
   };
