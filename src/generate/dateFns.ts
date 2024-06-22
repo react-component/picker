@@ -23,6 +23,7 @@ import {
   setSeconds,
   setYear,
   startOfWeek,
+  getMilliseconds,
   type Locale,
 } from 'date-fns';
 import * as locales from 'date-fns/locale';
@@ -55,7 +56,7 @@ const generateConfig: GenerateConfig<Date> = {
   getHour: (date) => getHours(date),
   getMinute: (date) => getMinutes(date),
   getSecond: (date) => getSeconds(date),
-  getMillisecond: (date) => date.getMilliseconds(),
+  getMillisecond: (date) => getMilliseconds(date),
 
   // set
   addYear: (date, diff) => addYears(date, diff),
