@@ -711,6 +711,9 @@ describe('NewPicker.Range', () => {
         jest.runAllTimers();
       });
 
+      // selection is completed, panel should closed
+      expect(isOpen()).toBeFalsy();
+
       expect(onChange).toHaveBeenCalledWith(expect.anything(), ['06:00:00', '11:00:00']);
     });
 

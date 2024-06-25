@@ -33,7 +33,8 @@ import useRangeDisabledDate from './hooks/useRangeDisabledDate';
 import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
-import Popup, { PopupShowTimeConfig } from './Popup';
+import type { PopupShowTimeConfig } from './Popup';
+import Popup from './Popup';
 import RangeSelector, { type SelectorIdType } from './Selector/RangeSelector';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
@@ -684,8 +685,11 @@ function RangePicker<DateType extends object = any>(
 
     // Submit with complex picker
     if (!mergedOpen && complexPicker && !needConfirm && lastOp === 'panel') {
-      triggerOpen(true);
       triggerPartConfirm();
+      
+      if (!hoverValues[0] || !hoverValues[1]) {
+        triggerOpen(true);
+      }
     }
   }, [mergedOpen]);
 
