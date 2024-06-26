@@ -3,7 +3,7 @@ import KeyCode from 'rc-util/lib/KeyCode';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import {
-  closePicker,
+  closePicker, DateFnsSinglePicker,
   DayPicker,
   DayPickerPanel,
   DayRangePicker,
@@ -129,6 +129,22 @@ describe('Picker.Keyboard', () => {
       expect(isOpen()).toBeTruthy();
     });
   });
+
+  describe('typing date with date-fns', () => {
+    it('should not parse date if not matching format', () => {
+      const { container } = render(<DateFnsSinglePicker format="dd/MM/YYYY" />);
+      const input = container.querySelector('input');
+
+      fireEvent.change(input, {
+        target: {
+          // Typing date partially. Picker should not try to parse it as a valid date
+          value: "01/01/20",
+        },
+      });
+
+      expect(input.value).toEqual("01/01/20");
+    });
+  })
 
   return;
   it('open to select', () => {
