@@ -14,6 +14,7 @@ export type NextActive<DateType> = (nextValue: RangeValueType<DateType>) => numb
 export default function useRangeActive<DateType>(
   disabled: boolean[],
   empty: boolean[] = [],
+  mergedOpen: boolean = false,
 ): [
   focused: boolean,
   triggerFocus: (focused: boolean) => void,
@@ -49,6 +50,8 @@ export default function useRangeActive<DateType>(
     const filledActiveSet = new Set(list.filter((index) => nextValue[index] || empty[index]));
     const nextIndex = list[list.length - 1] === 0 ? 1 : 0;
 
+    console.log('nextActiveIndex FN:', nextIndex, list, filledActiveSet);
+
     if (filledActiveSet.size >= 2 || disabled[nextIndex]) {
       return null;
     }
@@ -57,7 +60,7 @@ export default function useRangeActive<DateType>(
   };
 
   // ============================= Effect =============================
-  useLockEffect(focused, () => {
+  useLockEffect(focused || mergedOpen, () => {
     if (!focused) {
       activeListRef.current = [];
     }

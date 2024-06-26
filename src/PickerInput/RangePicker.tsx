@@ -260,7 +260,7 @@ function RangePicker<DateType extends object = any>(
     setActiveIndex,
     nextActiveIndex,
     activeIndexList,
-  ] = useRangeActive(disabled, allowEmpty);
+  ] = useRangeActive(disabled, allowEmpty, mergedOpen);
 
   const onSharedFocus = (event: React.FocusEvent<HTMLElement>, index?: number) => {
     triggerFocus(true);
@@ -418,6 +418,8 @@ function RangePicker<DateType extends object = any>(
     // Change calendar value and tell flush it
     triggerCalendarChange(nextValue);
     flushSubmit(activeIndex, nextIndex === null);
+
+    console.log('PartConfirm > NextIndex:', nextValue, nextIndex);
 
     if (nextIndex === null) {
       triggerOpen(false, { force: true });
