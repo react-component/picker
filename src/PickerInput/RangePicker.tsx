@@ -627,7 +627,9 @@ function RangePicker<DateType extends object = any>(
       inherit: true,
     });
 
-    // Trigger part confirm when switch active field
+    // When click input to switch the field, it will not trigger close.
+    // Which means it will lose the part confirm and we need fill back.
+    // ref: https://github.com/ant-design/ant-design/issues/49512
     if (activeIndex !== index && mergedOpen && !needConfirm && complexPicker) {
       triggerPartConfirm(null, true);
     }
