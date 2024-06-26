@@ -628,7 +628,7 @@ function RangePicker<DateType extends object = any>(
     });
 
     // Trigger part confirm when switch active field
-    if (activeIndex !== index && mergedOpen) {
+    if (activeIndex !== index && mergedOpen && !needConfirm && complexPicker) {
       triggerPartConfirm(null, true);
     }
 

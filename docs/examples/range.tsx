@@ -34,9 +34,9 @@ export default () => {
 
   const sharedProps = {
     generateConfig: momentGenerateConfig,
-    // value,
-    // onChange,
-    // onCalendarChange,
+    value,
+    onChange,
+    onCalendarChange,
   };
 
   const rangePickerRef = React.useRef<PickerRef>(null);
@@ -53,7 +53,7 @@ export default () => {
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
-          {/* <RangePicker<Moment>
+          <RangePicker<Moment>
             {...sharedProps}
             value={undefined}
             locale={zhCN}
@@ -72,14 +72,13 @@ export default () => {
                 value: () => [moment().subtract(3, 'days'), moment().add(3, 'days')],
               },
             ]}
-          /> */}
+          />
           <RangePicker<Moment>
             {...sharedProps}
             locale={zhCN}
             allowClear
             ref={rangePickerRef}
             showTime
-            needConfirm={false}
             style={{ width: 580 }}
             cellRender={(current: Moment, info) => (
               <div title={info.type} style={{ background: 'green' }}>
@@ -94,7 +93,7 @@ export default () => {
             }}
             changeOnBlur
           />
-          {/* <RangePicker<Moment>
+          <RangePicker<Moment>
             {...sharedProps}
             value={undefined}
             locale={zhCN}
@@ -111,10 +110,10 @@ export default () => {
             allowClear
             picker="time"
             style={{ width: 280 }}
-          /> */}
+          />
         </div>
 
-        {/* <div style={{ margin: '0 8px' }}>
+        <div style={{ margin: '0 8px' }}>
           <h3>Focus</h3>
           <RangePicker<Moment>
             {...sharedProps}
@@ -202,7 +201,7 @@ export default () => {
             placeholder={['start...', 'end...']}
             disabledDate={disabledDate}
           />
-        </div> */}
+        </div>
       </div>
     </div>
   );
