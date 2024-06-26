@@ -50,8 +50,6 @@ export default function useRangeActive<DateType>(
     const filledActiveSet = new Set(list.filter((index) => nextValue[index] || empty[index]));
     const nextIndex = list[list.length - 1] === 0 ? 1 : 0;
 
-    console.log('nextActiveIndex FN:', nextIndex, list, filledActiveSet);
-
     if (filledActiveSet.size >= 2 || disabled[nextIndex]) {
       return null;
     }
@@ -60,6 +58,7 @@ export default function useRangeActive<DateType>(
   };
 
   // ============================= Effect =============================
+  // Wait in case it's from the click outside to blur
   useLockEffect(focused || mergedOpen, () => {
     if (!focused) {
       activeListRef.current = [];

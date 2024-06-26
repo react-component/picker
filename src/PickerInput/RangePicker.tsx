@@ -419,8 +419,6 @@ function RangePicker<DateType extends object = any>(
     triggerCalendarChange(nextValue);
     flushSubmit(activeIndex, nextIndex === null);
 
-    console.log('PartConfirm > NextIndex:', nextValue, nextIndex);
-
     if (nextIndex === null) {
       triggerOpen(false, { force: true });
     } else if (!skipFocus) {
@@ -628,6 +626,11 @@ function RangePicker<DateType extends object = any>(
     triggerOpen(true, {
       inherit: true,
     });
+
+    // Trigger part confirm when switch active field
+    if (activeIndex !== index && mergedOpen) {
+      triggerPartConfirm(null, true);
+    }
 
     setActiveIndex(index);
 
