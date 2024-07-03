@@ -500,10 +500,13 @@ function RangePicker<DateType extends object = any>(
     onSharedFocus(event);
   };
 
+  // >>> MouseDown
+  const onPanelMouseDown: React.MouseEventHandler<HTMLDivElement> = () => {
+    lastOperation('panel');
+  };
+
   // >>> Calendar
   const onPanelSelect: PickerPanelProps<DateType>['onChange'] = (date: DateType) => {
-    lastOperation('panel');
-
     const clone: RangeValueType<DateType> = fillIndex(calendarValue, activeIndex, date);
 
     // Only trigger calendar event but not update internal `calendarValue` state
@@ -571,6 +574,7 @@ function RangePicker<DateType extends object = any>(
       // Focus
       onFocus={onPanelFocus}
       onBlur={onSharedBlur}
+      onPanelMouseDown={onPanelMouseDown}
       // Mode
       picker={picker}
       mode={mergedMode}
@@ -641,7 +645,7 @@ function RangePicker<DateType extends object = any>(
 
   const onSelectorBlur: SelectorProps['onBlur'] = (event, index) => {
     triggerOpen(false);
-    if (!needConfirm) {
+    if (!needConfirm && lastOperation() === 'input') {
       const nextIndex = nextActiveIndex(calendarValue);
       flushSubmit(activeIndex, nextIndex === null);
     }
