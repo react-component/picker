@@ -45,6 +45,8 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   needConfirm: boolean;
   isInvalid: (date: DateType | DateType[]) => boolean;
   onOk: VoidFunction;
+
+  onPanelMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 export default function Popup<DateType extends object = any>(props: PopupProps<DateType>) {
@@ -68,6 +70,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     // Focus
     onFocus,
     onBlur,
+    onPanelMouseDown,
 
     // Direction
     direction,
@@ -187,6 +190,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   // Container
   let renderNode = (
     <div
+      onMouseDown={onPanelMouseDown}
       tabIndex={-1}
       className={classNames(
         containerPrefixCls,
@@ -213,6 +217,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     const offsetUnit = getoffsetUnit(realPlacement, rtl);
     renderNode = (
       <div
+        onMouseDown={onPanelMouseDown}
         ref={wrapperRef}
         className={classNames(`${prefixCls}-range-wrapper`, `${prefixCls}-${picker}-range-wrapper`)}
       >
