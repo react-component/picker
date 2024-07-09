@@ -24,6 +24,8 @@ import {
 import dayGenerateConfig from '../../src/generate/dayjs';
 import enUS from '../../src/locale/en_US';
 import zh_CN from '../../src/locale/zh_CN';
+import enGB from '../../src/locale/en_GB';
+
 import type { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
 import type {
   PickerPanelBaseProps,
@@ -35,6 +37,8 @@ import {
   type RangePickerDateProps,
   type RangePickerTimeProps,
 } from '../../src/RangePicker';
+import dateFnsGenerateConfig from '../../src/generate/dateFns';
+import SinglePicker from '../../src/PickerInput/SinglePicker';
 
 dayjs.locale('zh-cn');
 dayjs.extend(buddhistEra);
@@ -225,4 +229,18 @@ export function getDay(str: string): Dayjs {
     }
   }
   throw new Error(`Format not match with: ${str}`);
+}
+// ===================================== Date fns =====================================
+const dateFnsLocale = {
+  locale: enGB,
+  generateConfig: dateFnsGenerateConfig,
+};
+
+type DateFnsSinglePickerProps = Omit<PickerProps<Date>, 'locale' | 'generateConfig'> & React.RefAttributes<PickerRef>;
+
+export const DateFnsSinglePicker = (props: DateFnsSinglePickerProps) => {
+  return <SinglePicker
+    {...dateFnsLocale}
+    {...props}
+  />
 }
