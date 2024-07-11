@@ -16,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'თვის არჩევა',
   yearSelect: 'წლის არჩევა',
   decadeSelect: 'ათწლეულის არჩევა',
-  
+
   dateFormat: 'M/D/YYYY',
-  
+
   dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  
+
   previousMonth: 'წინა თვე (PageUp)',
   nextMonth: 'მომდევნო თვე (PageDown)',
   previousYear: 'წინა წელი (Control + left)',

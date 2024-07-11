@@ -16,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Επιλογή μήνα',
   yearSelect: 'Επιλογή έτους',
   decadeSelect: 'Επιλογή δεκαετίας',
-  
+
   dateFormat: 'D/M/YYYY',
-  
+
   dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-  
+
   previousMonth: 'Προηγούμενος μήνας (PageUp)',
   nextMonth: 'Επόμενος μήνας (PageDown)',
   previousYear: 'Προηγούμενο έτος (Control + αριστερά)',

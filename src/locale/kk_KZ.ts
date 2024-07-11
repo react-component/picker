@@ -16,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Айды таңдаңыз',
   yearSelect: 'Жылды таңдаңыз',
   decadeSelect: 'Онжылды таңдаңыз',
-  
+
   dateFormat: 'D-M-YYYY',
-  
+
   dateTimeFormat: 'D-M-YYYY HH:mm:ss',
-  
+
   previousMonth: 'Алдыңғы ай (PageUp)',
   nextMonth: 'Келесі ай (PageDown)',
   previousYear: 'Алдыңғы жыл (Control + left)',

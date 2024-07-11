@@ -17,11 +17,11 @@ const locale: Locale = {
   monthSelect: 'Pilih satu bulan',
   yearSelect: 'Pilih satu tahun',
   decadeSelect: 'Pilih satu dekade',
-  
+
   dateFormat: 'D/M/YYYY',
-  
+
   dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-  
+
   previousMonth: 'Bulan sebelumnya (PageUp)',
   nextMonth: 'Bulan selanjutnya (PageDown)',
   previousYear: 'Tahun lalu (Control + kiri)',

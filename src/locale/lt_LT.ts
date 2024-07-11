@@ -17,11 +17,11 @@ const locale: Locale = {
   monthSelect: 'Pasirinkti mėnesį',
   yearSelect: 'Pasirinkti metus',
   decadeSelect: 'Pasirinkti dešimtmetį',
-  
+
   dateFormat: 'YYYY-MM-DD',
   dayFormat: 'DD',
   dateTimeFormat: 'YYYY-MM-DD HH:MM:SS',
-  
+
   previousMonth: 'Buvęs mėnesis (PageUp)',
   nextMonth: 'Kitas mėnesis (PageDown)',
   previousYear: 'Buvę metai (Control + left)',

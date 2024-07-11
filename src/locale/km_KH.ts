@@ -19,8 +19,7 @@ const locale: Locale = {
   monthSelect: 'ជ្រើសរើសខែ',
   yearSelect: 'ជ្រើសរើសឆ្នាំ',
   decadeSelect: 'ជ្រើសរើសអាយុ',
-  
-  
+
   dateFormat: 'YYYY-M-D',
   dateTimeFormat: 'YYYY-M-D HH:mm:ss',
   previousYear: 'ឆ្នាំមុន (Controlគ្រាប់ចុចបូកព្រួញខាងឆ្វេង)',

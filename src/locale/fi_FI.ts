@@ -16,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Valitse kuukausi',
   yearSelect: 'Valitse vuosi',
   decadeSelect: 'Valitse vuosikymmen',
-  
+
   dateFormat: 'D.M.YYYY',
-  
+
   dateTimeFormat: 'D.M.YYYY HH:mm:ss',
-  
+
   previousMonth: 'Edellinen kuukausi (PageUp)',
   nextMonth: 'Seuraava kuukausi (PageDown)',
   previousYear: 'Edellinen vuosi (Control + left)',

@@ -17,11 +17,11 @@ const locale: Locale = {
   monthSelect: 'മാസം തിരഞ്ഞെടുക്കുക',
   yearSelect: 'വർഷം തിരഞ്ഞെടുക്കുക',
   decadeSelect: 'ദശാബ്ദം തിരഞ്ഞെടുക്കുക',
-  
+
   dateFormat: 'M/D/YYYY',
-  
+
   dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  
+
   previousMonth: 'കഴിഞ്ഞ മാസം (PageUp)',
   nextMonth: 'അടുത്ത മാസം (PageDown)',
   previousYear: 'കഴിഞ്ഞ വർഷം (Control + left)',

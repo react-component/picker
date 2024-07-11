@@ -17,11 +17,11 @@ const locale: Locale = {
   monthSelect: 'एक महीना चुनें',
   yearSelect: 'एक वर्ष चुनें',
   decadeSelect: 'एक दशक चुनें',
-  
+
   dateFormat: 'M/D/YYYY',
-  
+
   dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  
+
   previousMonth: 'पिछला महीना (पेजअप)',
   nextMonth: 'अगले महीने (पेजडाउन)',
   previousYear: 'पिछले साल (Ctrl + बाएं)',

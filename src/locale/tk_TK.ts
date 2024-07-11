@@ -16,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Aý saýla',
   yearSelect: 'Ýyl saýla',
   decadeSelect: 'On ýyllygy saýla',
-  
+
   dateFormat: 'D/M/YYYY',
-  
+
   dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-  
+
   previousMonth: 'Öňki aý (PageUp)',
   nextMonth: 'Soňky aý (PageDown)',
   previousYear: 'Öňki ýyl (Control + çep)',

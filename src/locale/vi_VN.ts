@@ -17,11 +17,11 @@ const locale: Locale = {
   monthSelect: 'Chọn tháng',
   yearSelect: 'Chọn năm',
   decadeSelect: 'Chọn thập kỷ',
-  
+
   dateFormat: 'D/M/YYYY',
-  
+
   dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-  
+
   previousMonth: 'Tháng trước (PageUp)',
   nextMonth: 'Tháng sau (PageDown)',
   previousYear: 'Năm trước (Control + left)',

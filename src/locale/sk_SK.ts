@@ -16,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Vybrať mesiac',
   yearSelect: 'Vybrať rok',
   decadeSelect: 'Vybrať dekádu',
-  
+
   dateFormat: 'D.M.YYYY',
-  
+
   dateTimeFormat: 'D.M.YYYY HH:mm:ss',
-  
+
   previousMonth: 'Predchádzajúci mesiac (PageUp)',
   nextMonth: 'Nasledujúci mesiac (PageDown)',
   previousYear: 'Predchádzajúci rok (Control + left)',

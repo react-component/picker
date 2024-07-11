@@ -16,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Ay Seç',
   yearSelect: 'Yıl Seç',
   decadeSelect: 'On Yıl Seç',
-  
+
   dateFormat: 'DD/MM/YYYY',
-  
+
   dateTimeFormat: 'DD/MM/YYYY HH:mm:ss',
-  
+
   previousMonth: 'Önceki Ay (PageUp)',
   nextMonth: 'Sonraki Ay (PageDown)',
   previousYear: 'Önceki Yıl (Control + Sol)',

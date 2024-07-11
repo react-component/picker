@@ -16,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'یک ماه را انتخاب کنید',
   yearSelect: 'یک سال را انتخاب کنید',
   decadeSelect: 'یک دهه را انتخاب کنید',
-  
+
   dateFormat: 'M/D/YYYY',
-  
+
   dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  
+
   previousMonth: 'ماه قبل (PageUp)',
   nextMonth: 'ماه بعد (PageDown)',
   previousYear: 'سال قبل (Control + left)',

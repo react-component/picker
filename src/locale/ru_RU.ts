@@ -16,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Выбрать месяц',
   yearSelect: 'Выбрать год',
   decadeSelect: 'Выбрать десятилетие',
-  
+
   dateFormat: 'D-M-YYYY',
-  
+
   dateTimeFormat: 'D-M-YYYY HH:mm:ss',
-  
+
   previousMonth: 'Предыдущий месяц (PageUp)',
   nextMonth: 'Следующий месяц (PageDown)',
   previousYear: 'Предыдущий год (Control + left)',

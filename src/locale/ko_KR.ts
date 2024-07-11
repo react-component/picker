@@ -18,7 +18,7 @@ const locale: Locale = {
   decadeSelect: '연대 선택',
   yearFormat: 'YYYY년',
   dateFormat: 'YYYY-MM-DD',
-  
+
   dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
   monthBeforeYear: false,
   previousMonth: '이전 달 (PageUp)',
