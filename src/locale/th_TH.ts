@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'th_TH',
   today: 'วันนี้',
   now: 'ตอนนี้',
@@ -14,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'เลือกเดือน',
   yearSelect: 'เลือกปี',
   decadeSelect: 'เลือกทศวรรษ',
-  yearFormat: 'YYYY',
+  
   dateFormat: 'D/M/YYYY',
-  dayFormat: 'D',
+  
   dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+  
   previousMonth: 'เดือนก่อนหน้า (PageUp)',
   nextMonth: 'เดือนถัดไป (PageDown)',
   previousYear: 'ปีก่อนหน้า (Control + left)',

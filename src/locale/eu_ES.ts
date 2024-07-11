@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'eu_ES',
   today: 'Gaur',
   now: 'Orain',
@@ -15,9 +17,9 @@ const locale: Locale = {
   monthSelect: 'Hilabetea aukeratu',
   yearSelect: 'Urtea aukeratu',
   decadeSelect: 'Hamarkada aukeratu',
-  yearFormat: 'YYYY',
+  
   dateFormat: 'YYYY/M/D',
-  dayFormat: 'D',
+  
   dateTimeFormat: 'YYYY/M/D HH:mm:ss',
   monthBeforeYear: false,
   previousMonth: 'Aurreko hilabetea (RePag)',

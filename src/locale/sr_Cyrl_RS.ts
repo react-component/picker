@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'sr_Cyrl_RS',
   today: 'Данас',
   now: 'Сада',
@@ -14,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Изабери месец',
   yearSelect: 'Изабери годину',
   decadeSelect: 'Изабери деценију',
-  yearFormat: 'YYYY',
+  
   dateFormat: 'DD.MM.YYYY',
-  dayFormat: 'D',
+  
   dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
-  monthBeforeYear: true,
+  
   previousMonth: 'Претходни месец (PageUp)',
   nextMonth: 'Следећи месец (PageDown)',
   previousYear: 'Претходна година (Control + left)',

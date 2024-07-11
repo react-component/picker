@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ug_CN',
   today: 'بۈگۈن',
   now: 'ھازىر',

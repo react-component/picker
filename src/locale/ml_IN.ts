@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ml_IN',
   today: 'ഇന്ന്',
   now: 'ഇപ്പോൾ',
@@ -15,11 +17,11 @@ const locale: Locale = {
   monthSelect: 'മാസം തിരഞ്ഞെടുക്കുക',
   yearSelect: 'വർഷം തിരഞ്ഞെടുക്കുക',
   decadeSelect: 'ദശാബ്ദം തിരഞ്ഞെടുക്കുക',
-  yearFormat: 'YYYY',
+  
   dateFormat: 'M/D/YYYY',
-  dayFormat: 'D',
+  
   dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+  
   previousMonth: 'കഴിഞ്ഞ മാസം (PageUp)',
   nextMonth: 'അടുത്ത മാസം (PageDown)',
   previousYear: 'കഴിഞ്ഞ വർഷം (Control + left)',

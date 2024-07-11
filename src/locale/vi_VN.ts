@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'vi_VN',
   today: 'Hôm nay',
   now: 'Bây giờ',
@@ -15,11 +17,11 @@ const locale: Locale = {
   monthSelect: 'Chọn tháng',
   yearSelect: 'Chọn năm',
   decadeSelect: 'Chọn thập kỷ',
-  yearFormat: 'YYYY',
+  
   dateFormat: 'D/M/YYYY',
-  dayFormat: 'D',
+  
   dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+  
   previousMonth: 'Tháng trước (PageUp)',
   nextMonth: 'Tháng sau (PageDown)',
   previousYear: 'Năm trước (Control + left)',

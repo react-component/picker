@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'kk_KZ',
   today: 'Бүгін',
   now: 'Қазір',
@@ -14,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Айды таңдаңыз',
   yearSelect: 'Жылды таңдаңыз',
   decadeSelect: 'Онжылды таңдаңыз',
-  yearFormat: 'YYYY',
+  
   dateFormat: 'D-M-YYYY',
-  dayFormat: 'D',
+  
   dateTimeFormat: 'D-M-YYYY HH:mm:ss',
-  monthBeforeYear: true,
+  
   previousMonth: 'Алдыңғы ай (PageUp)',
   nextMonth: 'Келесі ай (PageDown)',
   previousYear: 'Алдыңғы жыл (Control + left)',

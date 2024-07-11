@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'kn_IN',
   today: 'ಇಂದು',
   now: 'ಈಗ',
@@ -15,11 +17,11 @@ const locale: Locale = {
   monthSelect: 'ಒಂದು ತಿಂಗಳು ಆಯ್ಕೆಮಾಡಿ',
   yearSelect: 'ಒಂದು ವರ್ಷ ಆರಿಸಿ',
   decadeSelect: 'ಒಂದು ದಶಕದ ಆಯ್ಕೆಮಾಡಿ',
-  yearFormat: 'YYYY',
+  
   dateFormat: 'M/D/YYYY',
-  dayFormat: 'D',
+  
   dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+  
   previousMonth: 'ಹಿಂದಿನ ತಿಂಗಳು (ಪೇಜ್ಅಪ್)',
   nextMonth: 'ಮುಂದಿನ ತಿಂಗಳು (ಪೇಜ್ಡೌನ್)',
   previousYear: 'ಕಳೆದ ವರ್ಷ (Ctrl + ಎಡ)',

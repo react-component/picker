@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'nl_NL',
   today: 'Vandaag',
   now: 'Nu',
@@ -14,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Kies een maand',
   yearSelect: 'Kies een jaar',
   decadeSelect: 'Kies een decennium',
-  yearFormat: 'YYYY',
+  
   dateFormat: 'D-M-YYYY',
-  dayFormat: 'D',
+  
   dateTimeFormat: 'D-M-YYYY HH:mm:ss',
-  monthBeforeYear: true,
+  
   previousMonth: 'Vorige maand (PageUp)',
   nextMonth: 'Volgende maand (PageDown)',
   previousYear: 'Vorig jaar (Control + left)',

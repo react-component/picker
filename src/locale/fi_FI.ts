@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'fi_FI',
   today: 'Tänään',
   now: 'Nyt',
@@ -14,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Valitse kuukausi',
   yearSelect: 'Valitse vuosi',
   decadeSelect: 'Valitse vuosikymmen',
-  yearFormat: 'YYYY',
+  
   dateFormat: 'D.M.YYYY',
-  dayFormat: 'D',
+  
   dateTimeFormat: 'D.M.YYYY HH:mm:ss',
-  monthBeforeYear: true,
+  
   previousMonth: 'Edellinen kuukausi (PageUp)',
   nextMonth: 'Seuraava kuukausi (PageDown)',
   previousYear: 'Edellinen vuosi (Control + left)',

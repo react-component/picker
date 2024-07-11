@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'pt_BR',
   today: 'Hoje',
   now: 'Agora',
@@ -14,9 +16,9 @@ const locale: Locale = {
   monthSelect: 'Escolher mês',
   yearSelect: 'Escolher ano',
   decadeSelect: 'Escolher década',
-  yearFormat: 'YYYY',
+  
   dateFormat: 'D/M/YYYY',
-  dayFormat: 'D',
+  
   dateTimeFormat: 'D/M/YYYY HH:mm:ss',
   monthBeforeYear: false,
   previousMonth: 'Mês anterior (PageUp)',

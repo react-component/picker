@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ja_JP',
   today: '今日',
   now: '現在時刻',
@@ -18,7 +20,7 @@ const locale: Locale = {
   yearSelect: '年を選択',
   decadeSelect: '年代を選択',
   yearFormat: 'YYYY年',
-  dayFormat: 'D',
+  
   dateFormat: 'YYYY年M月D日',
   dateTimeFormat: 'YYYY年M月D日 HH時mm分ss秒',
   previousYear: '前年 (Controlを押しながら左キー)',

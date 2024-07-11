@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ko_KR',
   today: '오늘',
   now: '현재 시각',
@@ -16,7 +18,7 @@ const locale: Locale = {
   decadeSelect: '연대 선택',
   yearFormat: 'YYYY년',
   dateFormat: 'YYYY-MM-DD',
-  dayFormat: 'D',
+  
   dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
   monthBeforeYear: false,
   previousMonth: '이전 달 (PageUp)',

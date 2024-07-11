@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'sr_RS',
   today: 'Danas',
   now: 'Sada',
@@ -14,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Izaberi mesec',
   yearSelect: 'Izaberi godinu',
   decadeSelect: 'Izaberi deceniju',
-  yearFormat: 'YYYY',
+  
   dateFormat: 'DD.MM.YYYY',
-  dayFormat: 'D',
+  
   dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
-  monthBeforeYear: true,
+  
   previousMonth: 'Prethodni mesec (PageUp)',
   nextMonth: 'Sledeći mesec (PageDown)',
   previousYear: 'Prethodna godina (Control + left)',

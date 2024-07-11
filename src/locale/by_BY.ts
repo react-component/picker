@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
 locale: 'by_BY',
 today: 'Сёння',
 now: 'Зараз',
@@ -15,11 +17,11 @@ weekSelect: 'Выбраць тыдзень',
 monthSelect: 'Выбраць месяц',
 yearSelect: 'Выбраць год',
 decadeSelect: 'Выбраць дзесяцігоддзе',
-yearFormat: 'YYYY',
+
 dateFormat: 'D-M-YYYY',
-dayFormat: 'D',
+
 dateTimeFormat: 'D-M-YYYY HH:mm:ss',
-monthBeforeYear: true,
+
 previousMonth: 'Папярэдні месяц (PageUp)',
 nextMonth: 'Наступны месяц (PageDown)',
 previousYear: 'Папярэдні год (Control + left)',

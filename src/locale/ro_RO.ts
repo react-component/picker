@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ro_RO',
   today: 'Azi',
   now: 'Acum',
@@ -15,11 +17,11 @@ const locale: Locale = {
   monthSelect: 'Alege o lună',
   yearSelect: 'Alege un an',
   decadeSelect: 'Alege un deceniu',
-  yearFormat: 'YYYY',
+  
   dateFormat: 'D/M/YYYY',
-  dayFormat: 'D',
+  
   dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+  
   previousMonth: 'Luna anterioară (PageUp)',
   nextMonth: 'Luna următoare (PageDown)',
   previousYear: 'Anul anterior (Control + stânga)',

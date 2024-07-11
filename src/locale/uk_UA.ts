@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'uk_UA',
   today: 'Сьогодні',
   now: 'Зараз',
@@ -14,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Обрати місяць',
   yearSelect: 'Обрати рік',
   decadeSelect: 'Обрати десятиріччя',
-  yearFormat: 'YYYY',
+  
   dateFormat: 'D-M-YYYY',
-  dayFormat: 'D',
+  
   dateTimeFormat: 'D-M-YYYY HH:mm:ss',
-  monthBeforeYear: true,
+  
   previousMonth: 'Попередній місяць (PageUp)',
   nextMonth: 'Наступний місяць (PageDown)',
   previousYear: 'Попередній рік (Control + left)',
