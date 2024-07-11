@@ -36,7 +36,7 @@
     "test": "rc-test",
     "coverage": "father test --coverage",
     "now-build": "npm run build",
-    "prepare": "husky"
+    "prepare": "npx husky"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.7",
