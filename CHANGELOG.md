@@ -27,6 +27,7 @@
 > It has not been updated for a long time and will be maintained from now on. More in [releases](https://github.com/react-component/picker/releases).
 
 ---
+
 ## 0.6.0
 
 - support `maxColumnsPerRow`.

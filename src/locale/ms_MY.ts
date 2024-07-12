@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ms_MY',
   today: 'Hari ini',
   now: 'Sekarang',
@@ -17,8 +19,7 @@ const locale: Locale = {
   monthSelect: 'Pilih bulan',
   yearSelect: 'Pilih tahun',
   decadeSelect: 'Pilih dekad',
-  yearFormat: 'YYYY',
-  dayFormat: 'D',
+
   dateFormat: 'M/D/YYYY',
   dateTimeFormat: 'M/D/YYYY HH:mm:ss',
   previousYear: 'Tahun lepas (Ctrl+left)',
@@ -27,6 +28,8 @@ const locale: Locale = {
   nextDecade: 'Dekad depan',
   previousCentury: 'Abad lepas',
   nextCentury: 'Abad depan',
+
+  monthBeforeYear: false,
 };
 
 export default locale;

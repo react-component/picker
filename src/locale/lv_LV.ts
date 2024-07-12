@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'lv_LV',
   today: 'Šodien',
   now: 'Tagad',
@@ -14,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Izvēlieties mēnesi',
   yearSelect: 'Izvēlieties gadu',
   decadeSelect: 'Izvēlieties desmit gadus',
-  yearFormat: 'YYYY',
+
   dateFormat: 'D.M.YYYY',
-  dayFormat: 'D',
+
   dateTimeFormat: 'D.M.YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'Iepriekšējais mēnesis (PageUp)',
   nextMonth: 'Nākammēnes (PageDown)',
   previousYear: 'Pagājušais gads (Control + left)',

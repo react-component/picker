@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'tr_TR',
   today: 'Bugün',
   now: 'Şimdi',
@@ -14,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Ay Seç',
   yearSelect: 'Yıl Seç',
   decadeSelect: 'On Yıl Seç',
-  yearFormat: 'YYYY',
+
   dateFormat: 'DD/MM/YYYY',
-  dayFormat: 'D',
+
   dateTimeFormat: 'DD/MM/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'Önceki Ay (PageUp)',
   nextMonth: 'Sonraki Ay (PageDown)',
   previousYear: 'Önceki Yıl (Control + Sol)',

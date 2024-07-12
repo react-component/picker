@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'mn_MN',
   today: 'Өнөөдөр',
   now: 'Одоо',
@@ -15,11 +17,11 @@ const locale: Locale = {
   monthSelect: 'Сар сонгох',
   yearSelect: 'Жил сонгох',
   decadeSelect: 'Арван сонгох',
-  yearFormat: 'YYYY',
+
   dateFormat: 'YYYY/MM/DD',
   dayFormat: 'DD',
   dateTimeFormat: 'YYYY/MM/DD HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'Өмнөх сар (PageUp)',
   nextMonth: 'Дараа сар (PageDown)',
   previousYear: 'Өмнөх жил (Control + left)',

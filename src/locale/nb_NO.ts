@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'nb_NO',
   today: 'I dag',
   now: 'Nå',
@@ -15,11 +17,11 @@ const locale: Locale = {
   monthSelect: 'Velg måned',
   yearSelect: 'Velg år',
   decadeSelect: 'Velg tiår',
-  yearFormat: 'YYYY',
+
   dateFormat: 'DD.MM.YYYY',
   dayFormat: 'DD',
   dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'Forrige måned (PageUp)',
   nextMonth: 'Neste måned (PageDown)',
   previousYear: 'Forrige år (Control + venstre)',
