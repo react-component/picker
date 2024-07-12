@@ -28,6 +28,8 @@ const locale: Locale = {
   nextDecade: 'Dekad depan',
   previousCentury: 'Abad lepas',
   nextCentury: 'Abad depan',
+
+  monthBeforeYear: false,
 };
 
 export default locale;

@@ -28,6 +28,7 @@ const locale: Locale = {
   nextDecade: 'ជំនាន់​ក្រោយ',
   previousCentury: 'សតវត្សចុងក្រោយ',
   nextCentury: 'សតវត្សរ៍បន្ទាប់',
+  monthBeforeYear: false,
 };
 
 export default locale;

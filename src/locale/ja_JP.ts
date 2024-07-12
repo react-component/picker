@@ -20,7 +20,6 @@ const locale: Locale = {
   yearSelect: '年を選択',
   decadeSelect: '年代を選択',
   yearFormat: 'YYYY年',
-
   dateFormat: 'YYYY年M月D日',
   dateTimeFormat: 'YYYY年M月D日 HH時mm分ss秒',
   previousYear: '前年 (Controlを押しながら左キー)',
@@ -29,6 +28,7 @@ const locale: Locale = {
   nextDecade: '次の年代',
   previousCentury: '前の世紀',
   nextCentury: '次の世紀',
+  monthBeforeYear: false,
 };
 
 export default locale;

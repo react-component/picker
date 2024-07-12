@@ -28,6 +28,7 @@ const locale: Locale = {
   nextDecade: 'كېيىنكى يىللار',
   previousCentury: 'ئالدىنقى ئەسىر',
   nextCentury: 'كېيىنكى ئەسىر',
+  monthBeforeYear: false,
 };
 
 export default locale;

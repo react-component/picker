@@ -30,6 +30,8 @@ const locale: Locale = {
   nextDecade: '下一年代',
   previousCentury: '上一世紀',
   nextCentury: '下一世紀',
+
+  cellDateFormat: 'D',
   monthBeforeYear: false,
 };
 
