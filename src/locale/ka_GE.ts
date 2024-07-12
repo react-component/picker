@@ -1,3 +1,4 @@
+import { commonLocale } from './common';
 import { Locale } from '../interface';
 
 const locale: Locale = {
