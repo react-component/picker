@@ -29,6 +29,7 @@ const locale: Locale = {
 
   yearFormat: 'YYYY年',
   cellDateFormat: 'D',
+  monthBeforeYear: false,
 };
 
 export default locale;
