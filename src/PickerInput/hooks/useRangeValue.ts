@@ -270,9 +270,9 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     // >>> Invalid
     const validateDates =
       // Validate start
-      (!start || !isInvalidateDate(start, { activeIndex: 0 })) &&
+      (!start || !isInvalidateDate(start, { activeIndex: 0 }) || disabled[0]) &&
       // Validate end
-      (!end || !isInvalidateDate(end, { from: start, activeIndex: 1 }));
+      (!end || !isInvalidateDate(end, { from: start, activeIndex: 1 }) || disabled[1]);
 
     // >>> Result
     const allPassed =
