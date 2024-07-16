@@ -14,6 +14,7 @@ export type NextActive<DateType> = (nextValue: RangeValueType<DateType>) => numb
 export default function useRangeActive<DateType>(
   disabled: boolean[],
   empty: boolean[] = [],
+  mergedOpen: boolean = false,
 ): [
   focused: boolean,
   triggerFocus: (focused: boolean) => void,
@@ -57,7 +58,8 @@ export default function useRangeActive<DateType>(
   };
 
   // ============================= Effect =============================
-  useLockEffect(focused, () => {
+  // Wait in case it's from the click outside to blur
+  useLockEffect(focused || mergedOpen, () => {
     if (!focused) {
       activeListRef.current = [];
     }

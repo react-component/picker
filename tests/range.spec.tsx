@@ -1914,4 +1914,63 @@ describe('Picker.Range', () => {
 
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
+
+  it('should save both dates, but not only the last that was changed without submit, enter, tab, etc.', async () => {
+    const { container } = render(<DayRangePicker />);
+
+    act(() => {
+      fireEvent.focus(container.querySelectorAll('input')[0]);
+      fireEvent.change(container.querySelectorAll('input')[0], {
+        target: {
+          value: '2024-06-13',
+        },
+      });
+      fireEvent.blur(container.querySelectorAll('input')[0]);
+
+      fireEvent.focus(container.querySelectorAll('input')[1]);
+      fireEvent.change(container.querySelectorAll('input')[1], {
+        target: {
+          value: '2024-06-15',
+        },
+      });
+
+      fireEvent.keyDown(container.querySelectorAll('input')[1], {
+        key: 'Enter',
+        code: 'Enter',
+      });
+    });
+
+    expect(container.querySelectorAll('input')[1].value).toBe('2024-06-15');
+    expect(container.querySelectorAll('input')[0].value).toBe('2024-06-13');
+  });
+
+  it('click on the input should trigger success when with !needConfirm', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker showTime needConfirm={false} onChange={onChange} />,
+    );
+
+    // Select first field
+    openPicker(container, 0);
+    selectCell(1, 0);
+
+    // Select second field
+    openPicker(container, 1);
+    selectCell(2, 0);
+
+    // Click outside to blur
+    fireEvent.mouseDown(document.body);
+    fireEvent.mouseUp(document.body);
+    fireEvent.click(document.body);
+
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), [
+      '1990-09-01 00:00:00',
+      '1990-09-02 00:00:00',
+    ]);
+    expect(isOpen()).toBeFalsy();
+  });
 });

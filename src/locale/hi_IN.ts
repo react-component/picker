@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'hi_IN',
   today: 'आज',
   now: 'अभी',
@@ -15,11 +17,11 @@ const locale: Locale = {
   monthSelect: 'एक महीना चुनें',
   yearSelect: 'एक वर्ष चुनें',
   decadeSelect: 'एक दशक चुनें',
-  yearFormat: 'YYYY',
+
   dateFormat: 'M/D/YYYY',
-  dayFormat: 'D',
+
   dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'पिछला महीना (पेजअप)',
   nextMonth: 'अगले महीने (पेजडाउन)',
   previousYear: 'पिछले साल (Ctrl + बाएं)',

@@ -260,7 +260,7 @@ function RangePicker<DateType extends object = any>(
     setActiveIndex,
     nextActiveIndex,
     activeIndexList,
-  ] = useRangeActive(disabled, allowEmpty);
+  ] = useRangeActive(disabled, allowEmpty, mergedOpen);
 
   const onSharedFocus = (event: React.FocusEvent<HTMLElement>, index?: number) => {
     triggerFocus(true);
@@ -500,10 +500,13 @@ function RangePicker<DateType extends object = any>(
     onSharedFocus(event);
   };
 
+  // >>> MouseDown
+  const onPanelMouseDown: React.MouseEventHandler<HTMLDivElement> = () => {
+    lastOperation('panel');
+  };
+
   // >>> Calendar
   const onPanelSelect: PickerPanelProps<DateType>['onChange'] = (date: DateType) => {
-    lastOperation('panel');
-
     const clone: RangeValueType<DateType> = fillIndex(calendarValue, activeIndex, date);
 
     // Only trigger calendar event but not update internal `calendarValue` state
@@ -571,6 +574,7 @@ function RangePicker<DateType extends object = any>(
       // Focus
       onFocus={onPanelFocus}
       onBlur={onSharedBlur}
+      onPanelMouseDown={onPanelMouseDown}
       // Mode
       picker={picker}
       mode={mergedMode}
@@ -627,6 +631,13 @@ function RangePicker<DateType extends object = any>(
       inherit: true,
     });
 
+    // When click input to switch the field, it will not trigger close.
+    // Which means it will lose the part confirm and we need fill back.
+    // ref: https://github.com/ant-design/ant-design/issues/49512
+    if (activeIndex !== index && mergedOpen && !needConfirm && complexPicker) {
+      triggerPartConfirm(null, true);
+    }
+
     setActiveIndex(index);
 
     onSharedFocus(event, index);
@@ -634,6 +645,10 @@ function RangePicker<DateType extends object = any>(
 
   const onSelectorBlur: SelectorProps['onBlur'] = (event, index) => {
     triggerOpen(false);
+    if (!needConfirm && lastOperation() === 'input') {
+      const nextIndex = nextActiveIndex(calendarValue);
+      flushSubmit(activeIndex, nextIndex === null);
+    }
 
     onSharedBlur(event, index);
   };

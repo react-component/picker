@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ug_CN',
   today: 'بۈگۈن',
   now: 'ھازىر',
@@ -26,6 +28,7 @@ const locale: Locale = {
   nextDecade: 'كېيىنكى يىللار',
   previousCentury: 'ئالدىنقى ئەسىر',
   nextCentury: 'كېيىنكى ئەسىر',
+  monthBeforeYear: false,
 };
 
 export default locale;

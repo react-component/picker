@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'km',
   today: 'ថ្ងៃនេះ',
   now: 'ឥឡូវ​នេះ',
@@ -17,8 +19,7 @@ const locale: Locale = {
   monthSelect: 'ជ្រើសរើសខែ',
   yearSelect: 'ជ្រើសរើសឆ្នាំ',
   decadeSelect: 'ជ្រើសរើសអាយុ',
-  yearFormat: 'YYYY',
-  dayFormat: 'D',
+
   dateFormat: 'YYYY-M-D',
   dateTimeFormat: 'YYYY-M-D HH:mm:ss',
   previousYear: 'ឆ្នាំមុន (Controlគ្រាប់ចុចបូកព្រួញខាងឆ្វេង)',
@@ -27,6 +28,7 @@ const locale: Locale = {
   nextDecade: 'ជំនាន់​ក្រោយ',
   previousCentury: 'សតវត្សចុងក្រោយ',
   nextCentury: 'សតវត្សរ៍បន្ទាប់',
+  monthBeforeYear: false,
 };
 
 export default locale;

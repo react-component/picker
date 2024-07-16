@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'cs_CZ',
   today: 'Dnes',
   now: 'Nyní',
@@ -14,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Vyberte měsíc',
   yearSelect: 'Vyberte rok',
   decadeSelect: 'Vyberte dekádu',
-  yearFormat: 'YYYY',
+
   dateFormat: 'D.M.YYYY',
-  dayFormat: 'D',
+
   dateTimeFormat: 'D.M.YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'Předchozí měsíc (PageUp)',
   nextMonth: 'Následující (PageDown)',
   previousYear: 'Předchozí rok (Control + left)',

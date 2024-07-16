@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'my_MM',
   today: 'ယနေ့',
   now: 'ယခု',
@@ -15,11 +17,11 @@ const locale: Locale = {
   monthSelect: 'လကိုရွေး',
   yearSelect: 'နှစ်ကိုရွေး',
   decadeSelect: 'ဆယ်စုနှစ်ကိုရွေး',
-  yearFormat: 'YYYY',
+
   dateFormat: 'M/D/YYYY',
-  dayFormat: 'D',
+
   dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'ယခင်လ (PageUp)',
   nextMonth: 'နောက်လ (PageDown)',
   previousYear: 'ယခင်နှစ် (Control + left)',

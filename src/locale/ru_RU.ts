@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ru_RU',
   today: 'Сегодня',
   now: 'Сейчас',
@@ -14,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Выбрать месяц',
   yearSelect: 'Выбрать год',
   decadeSelect: 'Выбрать десятилетие',
-  yearFormat: 'YYYY',
+
   dateFormat: 'D-M-YYYY',
-  dayFormat: 'D',
+
   dateTimeFormat: 'D-M-YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'Предыдущий месяц (PageUp)',
   nextMonth: 'Следующий месяц (PageDown)',
   previousYear: 'Предыдущий год (Control + left)',

@@ -676,9 +676,9 @@ describe('NewPicker.Range', () => {
 
       // Change start time (manually focus since fireEvent.focus not change activeElement)
       openPicker(container);
-      fireEvent.click(
-        document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[6],
-      );
+      const li6 = document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[6];
+      fireEvent.mouseDown(li6);
+      fireEvent.click(li6);
       document.querySelector<HTMLDivElement>('.rc-picker-panel-container').focus();
 
       act(() => {
@@ -696,9 +696,11 @@ describe('NewPicker.Range', () => {
       expect(isOpen()).toBeTruthy();
 
       // Select end time
-      fireEvent.click(
-        document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[11],
-      );
+      const li11 = document
+        .querySelector('.rc-picker-time-panel-column')
+        .querySelectorAll('li')[11];
+      fireEvent.mouseDown(li11);
+      fireEvent.click(li11);
 
       act(() => {
         jest.runAllTimers();
