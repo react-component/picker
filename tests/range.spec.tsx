@@ -295,6 +295,7 @@ describe('Picker.Range', () => {
     });
 
     it('endDate is selectable when startDate is disabled and validation fails', () => {
+      jest.useRealTimers();
       const onChange = jest.fn();
       const now = dayjs();
       const disabledDate = (current: Dayjs) => {
@@ -308,9 +309,9 @@ describe('Picker.Range', () => {
           disabledDate={disabledDate}
         />,
       );
-      const today = new Date().getDate();
-      openPicker(container, 1);
-      selectCell(today, 1);
+      const day = new Date().getDate()
+      openPicker(container,1);
+      selectCell(day,1);
       expect(onChange.mock.calls[0][1]).toEqual(['2023-09-03', dayjs().format('YYYY-MM-DD')]);
     });
 
