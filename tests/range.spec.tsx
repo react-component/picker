@@ -294,6 +294,26 @@ describe('Picker.Range', () => {
       );
     });
 
+    it('endDate is selectable when startDate is disabled and validation fails', () => {
+      const onChange = jest.fn();
+      const now = dayjs();
+      const disabledDate = (current: Dayjs) => {
+        return current.diff(now, 'days') < 0;
+      };
+      const { container } = render(
+        <DayRangePicker
+          disabled={[true, false]}
+          defaultValue={[getDay('2023-09-03'), getDay('2024-07-30')]}
+          onChange={onChange}
+          disabledDate={disabledDate}
+        />,
+      );
+      const today = new Date().getDate();
+      openPicker(container, 1);
+      selectCell(today, 1);
+      expect(onChange.mock.calls[0][1]).toEqual(['2023-09-03', dayjs().format('YYYY-MM-DD')]);
+    });
+
     it('null value with disabled', () => {
       // Should not warning with allowEmpty
       render(<DayRangePicker disabled={[false, true]} allowEmpty value={[null, null]} />);
