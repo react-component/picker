@@ -17,7 +17,7 @@
 [bundlephobia-url]: https://bundlephobia.com/result?p=rc-picker
 [bundlephobia-image]: https://badgen.net/bundlephobia/minzip/rc-picker
 
-## Live Demo
+## Live Demos
 
 https://react-component.github.io/picker/
 
