@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import type { Dayjs } from 'dayjs';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
@@ -217,5 +217,31 @@ describe('Picker.DisabledTime', () => {
 
       errSpy.mockRestore();
     });
+  });
+  it('limit', async () => {
+    const wrapper = render(
+      <DayRangePicker
+        defaultValue={[getDay('2021-06-01'), getDay('2021-06-02')]}
+        defaultPickerValue={[getDay('2021-06-01'), getDay('2021-06-02')]}
+        disabledDate={(current, { from }) => {
+          if (from) {
+            return Math.abs(current.diff(from, 'days')) >= 2;
+          }
+          return false;
+        }}
+      />,
+    );
+
+    openPicker(wrapper.container);
+    await act(async () => {
+      wrapper.getByTitle('2021-06-21').click();
+    });
+    await act(async () => {
+      wrapper.getByTitle('2021-06-26').click();
+    });
+    closePicker(wrapper.container);
+    expect(wrapper.getByPlaceholderText('Start date').getAttribute('value')).toBe('2021-06-01');
+    // disabled 后不可选中
+    expect(wrapper.getByPlaceholderText('End date').getAttribute('value')).toBe('2021-06-02');
   });
 });
