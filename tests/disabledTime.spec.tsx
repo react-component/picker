@@ -234,14 +234,13 @@ describe('Picker.DisabledTime', () => {
 
     openPicker(wrapper.container);
     await act(async () => {
-      wrapper.getByTitle('2021-06-21').click();
+      fireEvent.click(wrapper.getByTitle('2021-06-21'));
     });
     await act(async () => {
-      wrapper.getByTitle('2021-06-26').click();
+      fireEvent.click(wrapper.getByTitle('2021-06-26'));
     });
     closePicker(wrapper.container);
-    expect(wrapper.getByPlaceholderText('Start date').getAttribute('value')).toBe('2021-06-01');
-    // disabled 后不可选中
-    expect(wrapper.getByPlaceholderText('End date').getAttribute('value')).toBe('2021-06-02');
+    expect(wrapper.container.querySelectorAll('input')?.[0]?.value).toBe('2021-06-01');
+    expect(wrapper.container.querySelectorAll('input')?.[1]?.value).toBe('2021-06-02');
   });
 });
