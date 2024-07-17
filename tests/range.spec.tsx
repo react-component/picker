@@ -309,9 +309,9 @@ describe('Picker.Range', () => {
           disabledDate={disabledDate}
         />,
       );
-      const day = new Date().getDate()
-      openPicker(container,1);
-      selectCell(day,1);
+      const day = new Date().getDate();
+      openPicker(container, 1);
+      selectCell(day, 1);
       expect(onChange.mock.calls[0][1]).toEqual(['2023-09-03', dayjs().format('YYYY-MM-DD')]);
     });
 
