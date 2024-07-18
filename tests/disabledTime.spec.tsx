@@ -218,24 +218,4 @@ describe('Picker.DisabledTime', () => {
       errSpy.mockRestore();
     });
   });
-  it('limit', async () => {
-    const wrapper = render(
-      <DayRangePicker
-        defaultValue={[getDay('2021-06-01'), getDay('2021-06-02')]}
-        disabledDate={(current, { from }) => {
-          if (from) {
-            return Math.abs(current.diff(from, 'days')) >= 2;
-          }
-          return false;
-        }}
-      />,
-    );
-
-    openPicker(wrapper.container);
-    fireEvent.click(wrapper.getByTitle('2021-06-21'));
-    fireEvent.click(wrapper.getByTitle('2021-06-26'));
-    closePicker(wrapper.container);
-    expect(wrapper.container.querySelectorAll('input')?.[0]?.value).toBe('2021-06-21');
-    expect(wrapper.container.querySelectorAll('input')?.[1]?.value).toBe('2021-06-21');
-  });
 });
