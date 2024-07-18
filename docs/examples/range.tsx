@@ -203,7 +203,7 @@ export default () => {
           />
         </div>
         <div style={{ margin: '0 8px' }}>
-          <h3>DisabledDate</h3>
+          <h3>Limit Date</h3>
           <RangePicker<Moment>
             generateConfig={momentGenerateConfig}
             locale={zhCN}
