@@ -31,7 +31,11 @@ describe('Picker.DisabledTime', () => {
     fireEvent.click(wrapper.getByTitle('2021-06-21'));
     fireEvent.click(wrapper.getByTitle('2021-06-26'));
     closePicker(wrapper.container);
-    expect(wrapper.container.querySelectorAll('input')?.[0]?.value).toBe('2021-06-21');
-    expect(wrapper.container.querySelectorAll('input')?.[1]?.value).toBe('2021-06-21');
+    expect(
+      [
+        wrapper.container.querySelectorAll('input')?.[0]?.value,
+        wrapper.container.querySelectorAll('input')?.[0]?.value,
+      ].join(' '),
+    ).toBe(['2021-06-21', '2021-06-21'].join(' '));
   });
 });
