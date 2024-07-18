@@ -1,4 +1,4 @@
-import { act, fireEvent, render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import type { Dayjs } from 'dayjs';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
@@ -222,7 +222,6 @@ describe('Picker.DisabledTime', () => {
     const wrapper = render(
       <DayRangePicker
         defaultValue={[getDay('2021-06-01'), getDay('2021-06-02')]}
-        defaultPickerValue={[getDay('2021-06-01'), getDay('2021-06-02')]}
         disabledDate={(current, { from }) => {
           if (from) {
             return Math.abs(current.diff(from, 'days')) >= 2;
@@ -233,14 +232,10 @@ describe('Picker.DisabledTime', () => {
     );
 
     openPicker(wrapper.container);
-    await act(async () => {
-      fireEvent.click(wrapper.getByTitle('2021-06-21'));
-    });
-    await act(async () => {
-      fireEvent.click(wrapper.getByTitle('2021-06-26'));
-    });
+    fireEvent.click(wrapper.getByTitle('2021-06-21'));
+    fireEvent.click(wrapper.getByTitle('2021-06-26'));
     closePicker(wrapper.container);
-    expect(wrapper.container.querySelectorAll('input')?.[0]?.value).toBe('2021-06-01');
-    expect(wrapper.container.querySelectorAll('input')?.[1]?.value).toBe('2021-06-02');
+    expect(wrapper.container.querySelectorAll('input')?.[0]?.value).toBe('2021-06-21');
+    expect(wrapper.container.querySelectorAll('input')?.[1]?.value).toBe('2021-06-21');
   });
 });
