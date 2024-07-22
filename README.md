@@ -93,7 +93,8 @@ render(<Picker />, mountNode);
 | disabledDate | Function(date:moment) => boolean |  | whether to disable select of current date |
 | dateRender | Function(currentDate:moment, today:moment) => React.Node |  | custom rendering function for date cells |
 | monthCellRender | Function(currentDate:moment, locale:Locale) => React.Node |  | Custom month cell render method |
-| renderExtraFooter | (mode) => React.Node |  | extra footer |
+| renderExtraFooter | (mode) => React.Node |  | deprecated, use `extraFooterRender` instead |
+| extraFooterRender | (mode) => React.Node |  | extra footer |
 | onSelect | Function(date: moment) |  | a callback function, can be executed when the selected time |
 | onPanelChange | Function(value: moment, mode) |  | callback when picker panel mode is changed |
 | onMouseDown | (event:React.MouseEvent\<HTMLInputElement>) => void |  | callback when executed onMouseDown event |

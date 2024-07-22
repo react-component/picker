@@ -61,7 +61,7 @@ export default () => {
             locale={zhCN}
             allowClear
             showToday
-            renderExtraFooter={() => 'extra'}
+            extraFooterRender={() => 'extra'}
           />
         </div>
         <div style={{ margin: '0 8px' }}>
@@ -102,7 +102,7 @@ export default () => {
             locale={zhCN}
             allowClear
             picker="week"
-            renderExtraFooter={() => 'I am footer!!!'}
+            extraFooterRender={() => 'I am footer!!!'}
             ref={weekRef}
           />
 

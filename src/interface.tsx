@@ -435,7 +435,9 @@ export interface SharedPickerProps<DateType extends object = any>
   /** @deprecated Please use `showNow` instead */
   showToday?: boolean;
   panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
+  /** @deprecated Please use `extraFooterRender` instead */
   renderExtraFooter?: (mode: PanelMode) => React.ReactNode;
+  extraFooterRender?: (mode: PanelMode) => React.ReactNode;
 }
 
 // picker
