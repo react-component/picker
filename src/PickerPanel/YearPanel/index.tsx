@@ -66,13 +66,9 @@ export default function YearPanel<DateType extends object = any>(
         const startDate = generateConfig.setDate(startMonth, 1);
 
         // End
-        const endMonth = generateConfig.setMonth(
-          currentDate,
-          generateConfig.getMonth(currentDate) + 1,
-        );
-        const enDate = generateConfig.addDate(endMonth, -1);
-
-        return disabledDate(startDate, disabledInfo) && disabledDate(enDate, disabledInfo);
+        const endMonth = generateConfig.setMonth(currentDate, 11);
+        const endDate = generateConfig.addDate(endMonth, 31);
+        return disabledDate(startDate, disabledInfo) && disabledDate(endDate, disabledInfo);
       }
     : null;
 
