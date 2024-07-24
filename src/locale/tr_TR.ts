@@ -29,7 +29,7 @@ const locale: Locale = {
   nextDecade: 'Sonraki On Yıl',
   previousCentury: 'Önceki Yüzyıl',
   nextCentury: 'Sonraki Yüzyıl',
-  shortWeekDays: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
+  shortWeekDays: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
   shortMonths: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
 };
 
