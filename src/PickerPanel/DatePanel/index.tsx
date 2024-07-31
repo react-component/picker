@@ -51,7 +51,8 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   const month = generateConfig.getMonth(pickerValue);
 
   // =========================== PrefixColumn ===========================
-  const prefixColumn = showWeek
+  const showPrefixColumn = showWeek === undefined ? isWeek : showWeek;
+  const prefixColumn = showPrefixColumn
     ? (date: DateType) => {
         // >>> Additional check for disabled
         const disabled = disabledDate?.(date, { type: 'week' });
