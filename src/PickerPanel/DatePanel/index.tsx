@@ -51,42 +51,41 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   const month = generateConfig.getMonth(pickerValue);
 
   // =========================== PrefixColumn ===========================
-  const prefixColumn =
-    isWeek || showWeek
-      ? (date: DateType) => {
-          // >>> Additional check for disabled
-          const disabled = disabledDate?.(date, { type: 'week' });
+  const prefixColumn = showWeek
+    ? (date: DateType) => {
+        // >>> Additional check for disabled
+        const disabled = disabledDate?.(date, { type: 'week' });
 
-          return (
-            <td
-              key="week"
-              className={classNames(cellPrefixCls, `${cellPrefixCls}-week`, {
-                [`${cellPrefixCls}-disabled`]: disabled,
-              })}
-              // Operation: Same as code in PanelBody
-              onClick={() => {
-                if (!disabled) {
-                  onSelect(date);
-                }
-              }}
-              onMouseEnter={() => {
-                if (!disabled) {
-                  onHover?.(date);
-                }
-              }}
-              onMouseLeave={() => {
-                if (!disabled) {
-                  onHover?.(null);
-                }
-              }}
-            >
-              <div className={`${cellPrefixCls}-inner`}>
-                {generateConfig.locale.getWeek(locale.locale, date)}
-              </div>
-            </td>
-          );
-        }
-      : null;
+        return (
+          <td
+            key="week"
+            className={classNames(cellPrefixCls, `${cellPrefixCls}-week`, {
+              [`${cellPrefixCls}-disabled`]: disabled,
+            })}
+            // Operation: Same as code in PanelBody
+            onClick={() => {
+              if (!disabled) {
+                onSelect(date);
+              }
+            }}
+            onMouseEnter={() => {
+              if (!disabled) {
+                onHover?.(date);
+              }
+            }}
+            onMouseLeave={() => {
+              if (!disabled) {
+                onHover?.(null);
+              }
+            }}
+          >
+            <div className={`${cellPrefixCls}-inner`}>
+              {generateConfig.locale.getWeek(locale.locale, date)}
+            </div>
+          </td>
+        );
+      }
+    : null;
 
   // ========================= Cells ==========================
   // >>> Header Cells
