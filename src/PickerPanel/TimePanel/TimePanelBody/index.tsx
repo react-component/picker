@@ -26,7 +26,7 @@ export default function TimePanelBody<DateType extends object = any>(
     changeOnScroll,
   } = props;
 
-  const { prefixCls, values, generateConfig, locale, onSelect, pickerValue } =
+  const { prefixCls, values, generateConfig, locale, onSelect, onHover, pickerValue } =
     usePanelContext<DateType>();
 
   const value = values?.[0] || null;
@@ -185,28 +185,73 @@ export default function TimePanelBody<DateType extends object = any>(
     generateConfig,
   ]);
 
+  // ===================== Columns Change =====================
+  const fillColumnValue = (
+    val: number | string,
+    func: 'setHour' | 'setMinute' | 'setSecond' | 'setMillisecond',
+  ) => {
+    if (val === null) {
+      return null;
+    }
+    return generateConfig[func](triggerDateTmpl, val as any);
+  };
+
+  const getNextHourTime = (val: number) => fillColumnValue(val, 'setHour');
+  const getNextMinuteTime = (val: number) => fillColumnValue(val, 'setMinute');
+  const getNextSecondTime = (val: number) => fillColumnValue(val, 'setSecond');
+  const getNextMillisecondTime = (val: number) => fillColumnValue(val, 'setMillisecond');
+  const getMeridiemTime = (val: string) => {
+    if (val === null) {
+      return null;
+    }
+
+    if (val === 'am' && !isAM(hour)) {
+      return generateConfig.setHour(triggerDateTmpl, hour - 12);
+    } else if (val === 'pm' && isAM(hour)) {
+      return generateConfig.setHour(triggerDateTmpl, hour + 12);
+    }
+    return triggerDateTmpl;
+  };
+
   const onHourChange = (val: number) => {
-    triggerChange(generateConfig.setHour(triggerDateTmpl, val));
+    triggerChange(getNextHourTime(val));
   };
 
   const onMinuteChange = (val: number) => {
-    triggerChange(generateConfig.setMinute(triggerDateTmpl, val));
+    triggerChange(getNextMinuteTime(val));
   };
 
   const onSecondChange = (val: number) => {
-    triggerChange(generateConfig.setSecond(triggerDateTmpl, val));
+    triggerChange(getNextSecondTime(val));
   };
 
   const onMillisecondChange = (val: number) => {
-    triggerChange(generateConfig.setMillisecond(triggerDateTmpl, val));
+    triggerChange(getNextMillisecondTime(val));
   };
 
   const onMeridiemChange = (val: string) => {
-    if (val === 'am' && !isAM(hour)) {
-      triggerChange(generateConfig.setHour(triggerDateTmpl, hour - 12));
-    } else if (val === 'pm' && isAM(hour)) {
-      triggerChange(generateConfig.setHour(triggerDateTmpl, hour + 12));
-    }
+    triggerChange(getMeridiemTime(val));
+  };
+
+  // ====================== Column Hover ======================
+  const onHourHover = (val: number) => {
+    onHover(getNextHourTime(val));
+  };
+
+  const onMinuteHover = (val: number) => {
+    onHover(getNextMinuteTime(val));
+  };
+
+  const onSecondHover = (val: number) => {
+    onHover(getNextSecondTime(val));
+  };
+
+  const onMillisecondHover = (val: number) => {
+    onHover(getNextMillisecondTime(val));
+  };
+
+  const onMeridiemHover = (val: string) => {
+    onHover(getMeridiemTime(val));
   };
 
   // ========================= Render =========================
@@ -224,6 +269,7 @@ export default function TimePanelBody<DateType extends object = any>(
           optionalValue={pickerHour}
           type="hour"
           onChange={onHourChange}
+          onHover={onHourHover}
           {...sharedColumnProps}
         />
       )}
@@ -234,6 +280,7 @@ export default function TimePanelBody<DateType extends object = any>(
           optionalValue={pickerMinute}
           type="minute"
           onChange={onMinuteChange}
+          onHover={onMinuteHover}
           {...sharedColumnProps}
         />
       )}
@@ -244,6 +291,7 @@ export default function TimePanelBody<DateType extends object = any>(
           optionalValue={pickerSecond}
           type="second"
           onChange={onSecondChange}
+          onHover={onSecondHover}
           {...sharedColumnProps}
         />
       )}
@@ -254,6 +302,7 @@ export default function TimePanelBody<DateType extends object = any>(
           optionalValue={pickerMillisecond}
           type="millisecond"
           onChange={onMillisecondChange}
+          onHover={onMillisecondHover}
           {...sharedColumnProps}
         />
       )}
@@ -263,6 +312,7 @@ export default function TimePanelBody<DateType extends object = any>(
           value={meridiem}
           type="meridiem"
           onChange={onMeridiemChange}
+          onHover={onMeridiemHover}
           {...sharedColumnProps}
         />
       )}
