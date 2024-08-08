@@ -27,10 +27,45 @@ describe('Picker.Time', () => {
   });
 
   it('hover to show placeholder', async () => {
-    const { container } = render(<DayPicker showTime />);
+    const { container } = render(
+      <DayPicker
+        showTime={{
+          showMillisecond: true,
+          use12Hours: true,
+        }}
+      />,
+    );
     openPicker(container);
 
-    fireEvent.mouseEnter(document.querySelectorAll('.rc-picker-time-panel-cell-inner')[3]);
-    expect(container.querySelector('input')).toHaveValue('1990-09-03 03:00:00');
+    const getColCell = (colIndex: number, cellIndex: number) => {
+      const column = document.querySelectorAll('.rc-picker-time-panel-column')[colIndex];
+      const cell = column.querySelectorAll('.rc-picker-time-panel-cell-inner')[cellIndex];
+
+      return cell;
+    };
+
+    // Hour
+    fireEvent.mouseEnter(getColCell(0, 3));
+    expect(container.querySelector('input')).toHaveValue('1990-09-03 03:00:00.000 AM');
+
+    // Let test for mouse leave
+    fireEvent.mouseLeave(getColCell(0, 3));
+    expect(container.querySelector('input')).toHaveValue('');
+
+    // Minute
+    fireEvent.mouseEnter(getColCell(1, 2));
+    expect(container.querySelector('input')).toHaveValue('1990-09-03 12:02:00.000 AM');
+
+    // Second
+    fireEvent.mouseEnter(getColCell(2, 1));
+    expect(container.querySelector('input')).toHaveValue('1990-09-03 12:00:01.000 AM');
+
+    // Millisecond
+    fireEvent.mouseEnter(getColCell(3, 1));
+    expect(container.querySelector('input')).toHaveValue('1990-09-03 12:00:00.100 AM');
+
+    // Meridiem
+    fireEvent.mouseEnter(getColCell(4, 1));
+    expect(container.querySelector('input')).toHaveValue('1990-09-03 12:00:00.000 PM');
   });
 });
