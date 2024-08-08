@@ -18,12 +18,14 @@ export interface TimeUnitColumnProps {
   optionalValue?: number | string;
   type: 'hour' | 'minute' | 'second' | 'millisecond' | 'meridiem';
   onChange: (value: number | string) => void;
+  onHover: (value: number | string) => void;
   onDblClick?: VoidFunction;
   changeOnScroll?: boolean;
 }
 
 export default function TimeColumn<DateType extends object>(props: TimeUnitColumnProps) {
-  const { units, value, optionalValue, type, onChange, onDblClick, changeOnScroll } = props;
+  const { units, value, optionalValue, type, onChange, onHover, onDblClick, changeOnScroll } =
+    props;
 
   const { prefixCls, cellRender, now, locale } = usePanelContext<DateType>();
 
@@ -109,6 +111,12 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
               if (!disabled && onDblClick) {
                 onDblClick();
               }
+            }}
+            onMouseEnter={() => {
+              onHover(unitValue);
+            }}
+            onMouseLeave={() => {
+              onHover(null);
             }}
             data-value={unitValue}
           >
