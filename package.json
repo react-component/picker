@@ -1,6 +1,6 @@
 {
   "name": "@bigbinary/neeto-datepicker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React date & time picker",
   "keywords": [
     "react",
@@ -29,7 +29,6 @@
     "build": "dumi build",
     "compile": "father build && lessc assets/index.less assets/index.css",
     "gh-pages": "npm run build && father doc deploy",
-    "prepublishOnly": "npm run compile && np --yolo --no-publish",
     "lint": "eslint src/ --ext .ts,.tsx,.jsx,.js,.md",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
     "prettier": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
