@@ -1,0 +1,73 @@
+name: "Create and publish releases"
+on:
+  pull_request:
+    branches:
+      - production
+    types: [closed]
+jobs:
+  release:
+    name: "Create Release"
+    runs-on: ubuntu-latest
+    if: >-
+      ${{ github.event.pull_request.merged == true && (
+      contains(github.event.pull_request.labels.*.name, 'patch') ||
+      contains(github.event.pull_request.labels.*.name, 'minor') ||
+      contains(github.event.pull_request.labels.*.name, 'major') ) }}
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8
+
+      - name: Setup git user
+        run: |
+          git config user.name "Abhay V Ashokan"
+          git config user.email "abhay.ashokan@bigbinary.com"
+
+      - name: Setup NodeJS LTS version
+        uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Setup the project
+        run: yarn install
+
+      - name: Generate production build
+        run: yarn compile
+
+      - name: Prefix version tag with "v"
+        run: yarn config set version-tag-prefix "v"
+
+      - name: Disable Git commit hooks
+        run: git config core.hooksPath /dev/null
+
+      - name: Bump the patch version and create git tag on release
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'patch') }}
+        run: yarn version --patch
+
+      - name: Bump the minor version and create git tag on release
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'minor') }}
+        run: yarn version --minor
+
+      - name: Bump the major version and create git tag on release
+        if: ${{ contains(github.event.pull_request.labels.*.name, 'major') }}
+        run: yarn version --major
+
+      - name: Get the package version from package.json
+        uses: tyankatsu0105/read-package-version-actions@5aad2bb630a577ee4255546eb3ee0593df68f6ca
+        id: package-version
+
+      - name: Create a new version release commit
+        uses: EndBug/add-and-commit@050a66787244b10a4874a2a5f682130263edc192
+        with:
+          message: "New version release"
+
+      - name: Push the commit to production
+        uses: ad-m/github-push-action@492de9080c3179a3187bd456763f988f9a06e196
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: production
+
+      - name: Publish the package on NPM
+        uses: JS-DevTools/npm-publish@22595ff8c4d0d9f53cef0656fbb90fbe06ee885c
+        with:
+          access: "public"
+          token: ${{ secrets.NPM_TOKEN }}
