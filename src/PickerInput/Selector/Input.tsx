@@ -55,7 +55,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     active,
     showActiveCls = true,
     suffixIcon,
-    format,
+    format: originalFormat,
     validateFormat,
     onChange,
     onInput,
@@ -82,6 +82,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   const [forceSelectionSyncMark, forceSelectionSync] = React.useState<object>(null);
 
   const inputValue = internalInputValue || '';
+  const format = originalFormat?.replace(/A$/, 'AA')?.replace(/a$/, 'aa');
 
   // Sync value if needed
   React.useEffect(() => {
@@ -289,7 +290,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
       // =============== Number ===============
       default:
-        if (!isNaN(Number(key))) {
+        if (!isNaN(Number(key)) || ['A', 'P', 'M', 'a', 'p', 'm'].includes(key)) {
           nextCellText = focusCellText + key;
           nextFillText = nextCellText;
         }

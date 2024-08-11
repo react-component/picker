@@ -1,4 +1,5 @@
-const FORMAT_KEYS = ['YYYY', 'MM', 'DD', 'HH', 'mm', 'ss', 'SSS'];
+const FORMAT_KEYS = ['YYYY', 'MM', 'DD', 'd', 'HH', 'hh', 'mm', 'ss', 'SSS', 'AA', 'aa'];
+const MERIDIEM_KEYS = ['A', 'a'];
 
 export type FormatKey = (typeof FORMAT_KEYS)[number];
 
@@ -21,11 +22,18 @@ export default class MaskFormat {
   constructor(format: string) {
     this.format = format;
 
+    const transformRegex = new RegExp(
+      [...FORMAT_KEYS, ...MERIDIEM_KEYS].map((key) => `(${key})`).join('|'),
+      'g',
+    );
+    const transformedFormat = format.replace(transformRegex, (key) =>
+      key.length === 1 ? `${key}${key}` : key,
+    );
+
     // Generate mask format
     const replaceKeys = FORMAT_KEYS.map((key) => `(${key})`).join('|');
     const replaceReg = new RegExp(replaceKeys, 'g');
-
-    this.maskFormat = format.replace(
+    this.maskFormat = transformedFormat.replace(
       replaceReg,
       // Use Chinese character to avoid user use it in format
       (key: string) => REPLACE_KEY.repeat(key.length),
@@ -33,7 +41,7 @@ export default class MaskFormat {
 
     // Generate cells
     const cellReg = new RegExp(`(${FORMAT_KEYS.join('|')})`);
-    const strCells = (format.split(cellReg) || []).filter((str) => str);
+    const strCells = (transformedFormat.split(cellReg) || []).filter((str) => str);
 
     let offset = 0;
     this.cells = strCells.map((text) => {
@@ -66,7 +74,10 @@ export default class MaskFormat {
       const maskChar = this.maskFormat[i];
       const textChar = text[i];
 
-      if (!textChar || (maskChar !== REPLACE_KEY && maskChar !== textChar)) {
+      if (
+        (!textChar && i !== this.maskFormat.length - 1) ||
+        (maskChar !== REPLACE_KEY && maskChar !== textChar)
+      ) {
         return false;
       }
     }
