@@ -112,7 +112,7 @@ export async function waitFakeTimer() {
   });
 }
 
-export function openPicker(container: HTMLElement, index = 0) {
+export function openPicker(container: HTMLElement | ShadowRoot, index = 0) {
   const input = container.querySelectorAll('input')[index];
   fireEvent.mouseDown(input);
 
@@ -123,7 +123,7 @@ export function openPicker(container: HTMLElement, index = 0) {
   fireEvent.click(input);
 }
 
-export function closePicker(container: HTMLElement, index = 0) {
+export function closePicker(container: HTMLElement | ShadowRoot, index = 0) {
   const input = container.querySelectorAll('input')[index];
   fireEvent.blur(input);
 
@@ -236,11 +236,9 @@ const dateFnsLocale = {
   generateConfig: dateFnsGenerateConfig,
 };
 
-type DateFnsSinglePickerProps = Omit<PickerProps<Date>, 'locale' | 'generateConfig'> & React.RefAttributes<PickerRef>;
+type DateFnsSinglePickerProps = Omit<PickerProps<Date>, 'locale' | 'generateConfig'> &
+  React.RefAttributes<PickerRef>;
 
 export const DateFnsSinglePicker = (props: DateFnsSinglePickerProps) => {
-  return <SinglePicker
-    {...dateFnsLocale}
-    {...props}
-  />
-}
+  return <SinglePicker {...dateFnsLocale} {...props} />;
+};
