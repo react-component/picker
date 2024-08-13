@@ -1,6 +1,7 @@
 // Note: zombieJ refactoring
 
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
+import { createRoot } from 'react-dom/client';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -1972,5 +1973,33 @@ describe('Picker.Range', () => {
       '1990-09-02 00:00:00',
     ]);
     expect(isOpen()).toBeFalsy();
+  });
+
+  const renderShadow = (props?: any) => {
+    const host = document.createElement('div');
+    document.body.appendChild(host);
+
+    const shadowRoot = host.attachShadow({
+      mode: 'open',
+      delegatesFocus: false,
+    });
+    const container = document.createElement('div');
+    shadowRoot.appendChild(container);
+
+    act(() => {
+      createRoot(container).render(<DayRangePicker {...props} />);
+    });
+
+    return shadowRoot;
+  };
+
+  it('the end date selector can be selected in shadow dom', () => {
+    const shadowRoot = renderShadow();
+
+    openPicker(shadowRoot, 1);
+
+    expect(shadowRoot.querySelectorAll('.rc-picker-input')[1]).toHaveClass(
+      'rc-picker-input-active',
+    );
   });
 });

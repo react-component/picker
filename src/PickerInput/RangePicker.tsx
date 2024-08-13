@@ -428,7 +428,12 @@ function RangePicker<DateType extends object = any>(
 
   // ======================== Click =========================
   const onSelectorClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    if (!selectorRef.current.nativeElement.contains(document.activeElement)) {
+    const rootNode = (event.target as HTMLElement).getRootNode();
+    if (
+      !selectorRef.current.nativeElement.contains(
+        (rootNode as Document | ShadowRoot).activeElement ?? document.activeElement,
+      )
+    ) {
       // Click to focus the enabled input
       const enabledIndex = disabled.findIndex((d) => !d);
       if (enabledIndex >= 0) {
