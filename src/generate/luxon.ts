@@ -25,7 +25,8 @@ const normalizeFormatPart = (part: string): string =>
     .replace(/D/g, 'd')
     .replace(/gg/g, 'kk')
     .replace(/Q/g, 'q')
-    .replace(/([Ww])o/g, 'WW');
+    .replace(/([Ww])o/g, 'WW')
+    .replace(/A/g, 'a');
 
 /**
  * Normalizes a moment compatible format string to a luxon compatible format string
