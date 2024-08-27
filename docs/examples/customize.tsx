@@ -142,31 +142,6 @@ class Customize extends React.Component<{}, DateRangeState> {
             />
             <div ref={this.poupContainerRef} />
           </div>
-          {/* TODO: PickerPanel 目前已经没用 renderExtraFooter, 只在 NewPicker 中的组件有实作 */}
-          {/* <div>
-            <h3>renderExtraFooter</h3>
-            <PickerPanel
-              generateConfig={momentGenerateConfig}
-              locale={zhCN}
-              showNow
-              disabledDate={disabledDate}
-              onSelect={this.handleSelect}
-              value={initValue}
-              onPanelChange={changePanelCallBack}
-              renderExtraFooter={(mode: PanelMode) => <div>{mode} extra footer</div>}
-            />
-          </div>
-          <div>
-            <h3>month picker</h3>
-            <PickerPanel
-              generateConfig={momentGenerateConfig}
-              locale={zhCN}
-              picker="month"
-              defaultValue={now}
-              onSelect={this.handleSelectMonth}
-              renderExtraFooter={() => <div>extra footer</div>}
-            />
-          </div> */}
           <div>
             <h3>monthCellRender</h3>
             <PickerPanel
