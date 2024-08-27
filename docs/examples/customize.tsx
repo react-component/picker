@@ -5,7 +5,6 @@ import Picker, { PickerPanel } from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
 import zhCN from '../../src/locale/zh_CN';
 import './slide.less';
-import type { OnPanelChange } from '@/interface';
 
 interface DateRangeState {
   startValue: Moment | null;
@@ -13,17 +12,9 @@ interface DateRangeState {
   endOpen: boolean;
   initValue: Moment;
 }
-type PanelMode = 'time' | 'datetime' | 'date' | 'week' | 'month' | 'year' | 'decade';
 
 const now = moment();
 
-function disabledDate(current: Moment) {
-  // Can not select days before today
-  return current && current < moment().subtract(1, 'days').endOf('day');
-}
-const changePanelCallBack: OnPanelChange<Moment> = (value, mode) => {
-  console.log(value, mode);
-};
 class Customize extends React.Component<{}, DateRangeState> {
   poupContainerRef: React.RefObject<HTMLDivElement>;
 
@@ -110,7 +101,7 @@ class Customize extends React.Component<{}, DateRangeState> {
   );
 
   render() {
-    const { startValue, endValue, endOpen, initValue } = this.state;
+    const { startValue, endValue, endOpen } = this.state;
     console.log('->', endOpen);
     return (
       <div>
