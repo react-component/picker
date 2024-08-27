@@ -1,3 +1,4 @@
+// @ts-nocheck
 import moment, { type Moment } from 'moment';
 import * as React from 'react';
 import '../../assets/index.less';

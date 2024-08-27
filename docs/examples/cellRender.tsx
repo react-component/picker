@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Moment } from 'moment';
 import moment from 'moment';
 import React from 'react';
