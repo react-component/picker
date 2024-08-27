@@ -1019,12 +1019,12 @@ describe('NewPicker.Range', () => {
     expect(container.querySelectorAll('input')[1]).toBeRequired();
   });
 
-  it('renderExtraFooter not close', () => {
+  it('extraFooterRender not close', () => {
     const onOpenChange = jest.fn();
     const { container } = render(
       <DayRangePicker
         onOpenChange={onOpenChange}
-        renderExtraFooter={() => <input className="bamboo" />}
+        extraFooterRender={() => <input className="bamboo" />}
       />,
     );
 
