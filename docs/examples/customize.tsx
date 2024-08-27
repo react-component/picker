@@ -1,4 +1,3 @@
-// @ts-nocheck
 import moment, { type Moment } from 'moment';
 import * as React from 'react';
 import '../../assets/index.less';
@@ -6,6 +5,7 @@ import Picker, { PickerPanel } from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
 import zhCN from '../../src/locale/zh_CN';
 import './slide.less';
+import type { OnPanelChange } from '@/interface';
 
 interface DateRangeState {
   startValue: Moment | null;
@@ -21,9 +21,9 @@ function disabledDate(current: Moment) {
   // Can not select days before today
   return current && current < moment().subtract(1, 'days').endOf('day');
 }
-function changePanelCallBack(value: Moment, mode: PanelMode) {
+const changePanelCallBack: OnPanelChange<Moment> = (value, mode) => {
   console.log(value, mode);
-}
+};
 class Customize extends React.Component<{}, DateRangeState> {
   poupContainerRef: React.RefObject<HTMLDivElement>;
 
@@ -142,12 +142,13 @@ class Customize extends React.Component<{}, DateRangeState> {
             />
             <div ref={this.poupContainerRef} />
           </div>
-          <div>
+          {/* TODO: PickerPanel 目前已经没用 renderExtraFooter, 只在 NewPicker 中的组件有实作 */}
+          {/* <div>
             <h3>renderExtraFooter</h3>
             <PickerPanel
               generateConfig={momentGenerateConfig}
               locale={zhCN}
-              showToday
+              showNow
               disabledDate={disabledDate}
               onSelect={this.handleSelect}
               value={initValue}
@@ -165,7 +166,7 @@ class Customize extends React.Component<{}, DateRangeState> {
               onSelect={this.handleSelectMonth}
               renderExtraFooter={() => <div>extra footer</div>}
             />
-          </div>
+          </div> */}
           <div>
             <h3>monthCellRender</h3>
             <PickerPanel
