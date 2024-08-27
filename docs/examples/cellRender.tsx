@@ -1,4 +1,3 @@
-// @ts-nocheck
 import type { Moment } from 'moment';
 import moment from 'moment';
 import React from 'react';
@@ -151,7 +150,7 @@ export default () => {
             {...sharedProps}
             locale={zhCN}
             picker="time"
-            cellRender={(current, info) =>
+            cellRender={(current: number | string, info) =>
               React.cloneElement(
                 info.originNode,
                 {
@@ -174,13 +173,13 @@ export default () => {
             allowClear
             showTime
             style={{ width: 580 }}
-            cellRender={(current: Moment, info) => {
+            cellRender={(current, info) => {
               return (
                 <div
                   title={info.type}
                   style={{ background: info.type === 'time' ? 'green' : 'yellow' }}
                 >
-                  {info.type === 'time' ? current : current.get('date')}
+                  {info.type === 'time' ? (current as number) : (current as Moment).get('date')}
                 </div>
               );
             }}
