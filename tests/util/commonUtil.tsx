@@ -26,17 +26,17 @@ import enUS from '../../src/locale/en_US';
 import zh_CN from '../../src/locale/zh_CN';
 import enGB from '../../src/locale/en_GB';
 
-import type { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
-import type {
-  PickerPanelBaseProps,
-  PickerPanelDateProps,
-  PickerPanelTimeProps,
-} from '../../src/PickerPanel';
-import {
-  type RangePickerBaseProps,
-  type RangePickerDateProps,
-  type RangePickerTimeProps,
-} from '../../src/RangePicker';
+// import type { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
+// import type {
+//   PickerPanelBaseProps,
+//   PickerPanelDateProps,
+//   PickerPanelTimeProps,
+// } from '../../src/PickerPanel';
+// import {
+//   type RangePickerBaseProps,
+//   type RangePickerDateProps,
+//   type RangePickerTimeProps,
+// } from '../../src/RangePicker';
 import dateFnsGenerateConfig from '../../src/generate/dateFns';
 import SinglePicker from '../../src/PickerInput/SinglePicker';
 
@@ -79,30 +79,30 @@ export function isSame(date: Moment | Dayjs | null, dateStr: string, type: any =
   throw new Error(`${date.format(FULL_FORMAT)} is not same as expected: ${dateStr}`);
 }
 
-interface MomentDefaultProps {
-  locale?: PickerProps<Moment>['locale'];
-  generateConfig?: PickerProps<Moment>['generateConfig'];
-}
+// interface MomentDefaultProps {
+//   locale?: PickerProps<Moment>['locale'];
+//   generateConfig?: PickerProps<Moment>['generateConfig'];
+// }
 
-type InjectDefaultProps<Props> = Omit<Props, 'locale' | 'generateConfig'> & MomentDefaultProps;
+// type InjectDefaultProps<Props> = Omit<Props, 'locale' | 'generateConfig'> & MomentDefaultProps;
 
 // Moment Picker
-export type MomentPickerProps =
-  | InjectDefaultProps<PickerBaseProps<Moment>>
-  | InjectDefaultProps<PickerDateProps<Moment>>
-  | InjectDefaultProps<PickerTimeProps<Moment>>;
+// export type MomentPickerProps =
+//   | InjectDefaultProps<PickerBaseProps<Moment>>
+//   | InjectDefaultProps<PickerDateProps<Moment>>
+//   | InjectDefaultProps<PickerTimeProps<Moment>>;
 
-// Moment Panel Picker
-export type MomentPickerPanelProps =
-  | InjectDefaultProps<PickerPanelBaseProps<Moment>>
-  | InjectDefaultProps<PickerPanelDateProps<Moment>>
-  | InjectDefaultProps<PickerPanelTimeProps<Moment>>;
+// // Moment Panel Picker
+// export type MomentPickerPanelProps =
+//   | InjectDefaultProps<PickerPanelBaseProps<Moment>>
+//   | InjectDefaultProps<PickerPanelDateProps<Moment>>
+//   | InjectDefaultProps<PickerPanelTimeProps<Moment>>;
 
-// Moment Range Picker
-export type MomentRangePickerProps =
-  | InjectDefaultProps<RangePickerBaseProps<Moment>>
-  | InjectDefaultProps<RangePickerDateProps<Moment>>
-  | InjectDefaultProps<RangePickerTimeProps<Moment>>;
+// // Moment Range Picker
+// export type MomentRangePickerProps =
+//   | InjectDefaultProps<RangePickerBaseProps<Moment>>
+//   | InjectDefaultProps<RangePickerDateProps<Moment>>
+//   | InjectDefaultProps<RangePickerTimeProps<Moment>>;
 
 // ====================================== UTIL ======================================
 export async function waitFakeTimer() {
