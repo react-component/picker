@@ -26,8 +26,15 @@ export default function TimePanelBody<DateType extends object = any>(
     changeOnScroll,
   } = props;
 
-  const { prefixCls, values, generateConfig, locale, onSelect, onHover, pickerValue } =
-    usePanelContext<DateType>();
+  const {
+    prefixCls,
+    values,
+    generateConfig,
+    locale,
+    onSelect,
+    onHover = () => {},
+    pickerValue,
+  } = usePanelContext<DateType>();
 
   const value = values?.[0] || null;
 
