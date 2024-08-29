@@ -64,7 +64,7 @@
     "dumi": "^2.1.15",
     "eslint": "^8.56.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-jest": "^27.6.0",
+    "eslint-plugin-jest": "^28.8.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-unicorn": "^55.0.0",
     "father": "^4.0.0",
