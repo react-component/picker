@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'uz_UZ',
   today: 'Bugun',
   now: 'Hozir',
@@ -14,19 +16,16 @@ const locale: Locale = {
   weekSelect: 'Haftani tanlang',
   monthSelect: 'Oyni tanlang',
   yearSelect: 'Yilni tanlang',
-  decadeSelect: 'O\'n yilni tanlang',
-  yearFormat: 'YYYY',
+  decadeSelect: "O'n yilni tanlang",
   dateFormat: 'M/D/YYYY',
-  dayFormat: 'D',
   dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  monthBeforeYear: true,
   previousMonth: 'Oldingi oy (PageUp)',
   nextMonth: 'Keyingi oy (PageDown)',
-  previousYear: 'O\'tgan yili (Control + left)',
+  previousYear: "O'tgan yili (Control + left)",
   nextYear: 'Keyingi yil (Control + right)',
-  previousDecade: 'Oxirgi o\'n yil',
-  nextDecade: 'Keyingi o\'n yil',
-  previousCentury: 'O\'tgan asr',
+  previousDecade: "Oxirgi o'n yil",
+  nextDecade: "Keyingi o'n yil",
+  previousCentury: "O'tgan asr",
   nextCentury: 'Keyingi asr',
 };
 

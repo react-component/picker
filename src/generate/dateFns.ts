@@ -1,33 +1,38 @@
 import {
-  getDay,
-  getYear,
-  getMonth,
-  getDate,
+  addDays,
+  addMonths,
+  addYears,
   endOfMonth,
+  format as formatDate,
+  getDate,
+  getDay,
   getHours,
   getMinutes,
+  getMonth,
   getSeconds,
-  addYears,
-  addMonths,
-  addDays,
-  setYear,
-  setMonth,
-  setDate,
-  setHours,
-  setMinutes,
-  setSeconds,
+  getWeek,
+  getYear,
   isAfter,
   isValid,
-  getWeek,
-  startOfWeek,
-  format as formatDate,
   parse as parseDate,
+  setDate,
+  setHours,
+  setMilliseconds,
+  setMinutes,
+  setMonth,
+  setSeconds,
+  setYear,
+  startOfWeek,
+  getMilliseconds,
+  type Locale,
 } from 'date-fns';
-import * as Locale from 'date-fns/locale';
+import * as locales from 'date-fns/locale';
 import type { GenerateConfig } from '.';
 
-const dealLocal = (str: string) => {
-  return str.replace(/_/g, '');
+const getLocale = (locale: string): Locale => {
+  return (
+    locales[locale] || locales[locale.replace(/_/g, '')] || locales[locale.replace(/_.*$/g, '')]
+  );
 };
 
 const localeParse = (format: string) => {
@@ -39,18 +44,43 @@ const localeParse = (format: string) => {
     .replace(/([Ww])o/g, 'wo');
 };
 
+const parse = (text: string, format: string, locale: string) => {
+  return parseDate(text, localeParse(format), new Date(), { locale: getLocale(locale) });
+}
+
+/**
+ * Check if the text is a valid date considering the format and locale
+ *
+ * This is a strict check, the date string must match the format exactly.
+ * Date-fns allows some flexibility in parsing dates, for example, it will parse "30/01/2" as "30/01/002".
+ * This behavior is not desirable in our case, so we need to check if the date string matches the format exactly.
+ *
+ * @param text the date string
+ * @param format the date format to use
+ * @param locale the locale to use
+ */
+const isStrictValidDate = (text: string, format: string, locale: string) => {
+  const date = parse(text, format, locale);
+  if (!isValid(date)) {
+    return false;
+  }
+  const formattedDate = formatDate(date, format, { locale: getLocale(locale) });
+  return text === formattedDate;
+}
+
 const generateConfig: GenerateConfig<Date> = {
   // get
   getNow: () => new Date(),
-  getFixedDate: string => new Date(string),
-  getEndDate: date => endOfMonth(date),
-  getWeekDay: date => getDay(date),
-  getYear: date => getYear(date),
-  getMonth: date => getMonth(date),
-  getDate: date => getDate(date),
-  getHour: date => getHours(date),
-  getMinute: date => getMinutes(date),
-  getSecond: date => getSeconds(date),
+  getFixedDate: (string) => new Date(string),
+  getEndDate: (date) => endOfMonth(date),
+  getWeekDay: (date) => getDay(date),
+  getYear: (date) => getYear(date),
+  getMonth: (date) => getMonth(date),
+  getDate: (date) => getDate(date),
+  getHour: (date) => getHours(date),
+  getMinute: (date) => getMinutes(date),
+  getSecond: (date) => getSeconds(date),
+  getMillisecond: (date) => getMilliseconds(date),
 
   // set
   addYear: (date, diff) => addYears(date, diff),
@@ -62,28 +92,29 @@ const generateConfig: GenerateConfig<Date> = {
   setHour: (date, hour) => setHours(date, hour),
   setMinute: (date, minute) => setMinutes(date, minute),
   setSecond: (date, second) => setSeconds(date, second),
+  setMillisecond: (date, millisecond) => setMilliseconds(date, millisecond),
 
   // Compare
   isAfter: (date1, date2) => isAfter(date1, date2),
-  isValidate: date => isValid(date),
+  isValidate: (date) => isValid(date),
 
   locale: {
-    getWeekFirstDay: locale => {
-      const clone = Locale[dealLocal(locale)];
+    getWeekFirstDay: (locale) => {
+      const clone = getLocale(locale);
       return clone.options.weekStartsOn;
     },
     getWeekFirstDate: (locale, date) => {
-      return startOfWeek(date, { locale: Locale[dealLocal(locale)] });
+      return startOfWeek(date, { locale: getLocale(locale) });
     },
     getWeek: (locale, date) => {
-      return getWeek(date, { locale: Locale[dealLocal(locale)] });
+      return getWeek(date, { locale: getLocale(locale) });
     },
-    getShortWeekDays: locale => {
-      const clone = Locale[dealLocal(locale)];
+    getShortWeekDays: (locale) => {
+      const clone = getLocale(locale);
       return Array.from({ length: 7 }).map((_, i) => clone.localize.day(i, { width: 'short' }));
     },
-    getShortMonths: locale => {
-      const clone = Locale[dealLocal(locale)];
+    getShortMonths: (locale) => {
+      const clone = getLocale(locale);
       return Array.from({ length: 12 }).map((_, i) =>
         clone.localize.month(i, { width: 'abbreviated' }),
       );
@@ -93,18 +124,15 @@ const generateConfig: GenerateConfig<Date> = {
         return null;
       }
       return formatDate(date, localeParse(format), {
-        locale: Locale[dealLocal(locale)],
+        locale: getLocale(locale),
       });
     },
     parse: (locale, text, formats) => {
       for (let i = 0; i < formats.length; i += 1) {
         const format = localeParse(formats[i]);
-        const formatText = text;
-        const date = parseDate(formatText, format, new Date(), {
-          locale: Locale[dealLocal(locale)],
-        });
-        if (isValid(date)) {
-          return date;
+
+        if (isStrictValidDate(text, format, locale)) {
+          return parse(text, format, locale);
         }
       }
       return null;

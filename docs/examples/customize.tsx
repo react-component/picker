@@ -1,10 +1,9 @@
+import moment, { type Moment } from 'moment';
 import * as React from 'react';
-import moment, { Moment } from 'moment';
-import Picker from '../../src';
-import PickerPanel from '../../src/PickerPanel';
+import '../../assets/index.less';
+import Picker, { PickerPanel } from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
 import zhCN from '../../src/locale/zh_CN';
-import '../../assets/index.less';
 import './slide.less';
 
 interface DateRangeState {
@@ -13,30 +12,9 @@ interface DateRangeState {
   endOpen: boolean;
   initValue: Moment;
 }
-type PanelMode =
-  | 'time'
-  | 'datetime'
-  | 'date'
-  | 'week'
-  | 'month'
-  | 'year'
-  | 'decade';
 
 const now = moment();
 
-function disabledDate(current: Moment) {
-  // Can not select days before today
-  return (
-    current &&
-    current <
-      moment()
-        .subtract(1, 'days')
-        .endOf('day')
-  );
-}
-function changePanelCallBack(value: Moment, mode: PanelMode) {
-  console.log(value, mode);
-}
 class Customize extends React.Component<{}, DateRangeState> {
   poupContainerRef: React.RefObject<HTMLDivElement>;
 
@@ -123,7 +101,7 @@ class Customize extends React.Component<{}, DateRangeState> {
   );
 
   render() {
-    const { startValue, endValue, endOpen, initValue } = this.state;
+    const { startValue, endValue, endOpen } = this.state;
     console.log('->', endOpen);
     return (
       <div>
@@ -154,32 +132,6 @@ class Customize extends React.Component<{}, DateRangeState> {
               style={{ width: 200, height: 28 }}
             />
             <div ref={this.poupContainerRef} />
-          </div>
-          <div>
-            <h3>renderExtraFooter</h3>
-            <PickerPanel
-              generateConfig={momentGenerateConfig}
-              locale={zhCN}
-              showToday
-              disabledDate={disabledDate}
-              onSelect={this.handleSelect}
-              value={initValue}
-              onPanelChange={changePanelCallBack}
-              renderExtraFooter={(mode: PanelMode) => (
-                <div>{mode} extra footer</div>
-              )}
-            />
-          </div>
-          <div>
-            <h3>month picker</h3>
-            <PickerPanel
-              generateConfig={momentGenerateConfig}
-              locale={zhCN}
-              picker="month"
-              defaultValue={now}
-              onSelect={this.handleSelectMonth}
-              renderExtraFooter={() => <div>extra footer</div>}
-            />
           </div>
           <div>
             <h3>monthCellRender</h3>

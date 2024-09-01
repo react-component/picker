@@ -1,8 +1,7 @@
+import isVisible from 'rc-util/lib/Dom/isVisible';
 import KeyCode from 'rc-util/lib/KeyCode';
 import raf from 'rc-util/lib/raf';
-import isVisible from 'rc-util/lib/Dom/isVisible';
-import type { GenerateConfig } from '../generate';
-import type { CustomFormat, PanelMode, PickerMode } from '../interface';
+import type { CustomFormat, PickerMode } from '../interface';
 
 const scrollIds = new Map<HTMLElement, number>();
 
@@ -181,96 +180,27 @@ export function getDefaultFormat<DateType>(
   return mergedFormat;
 }
 
-export function getInputSize<DateType>(
-  picker: PickerMode | undefined,
-  format: string | CustomFormat<DateType>,
-  generateConfig: GenerateConfig<DateType>,
-) {
-  const defaultSize = picker === 'time' ? 8 : 10;
-  const length =
-    typeof format === 'function' ? format(generateConfig.getNow()).length : format.length;
-  return Math.max(defaultSize, length) + 2;
-}
-
-// ===================== Window =====================
-type ClickEventHandler = (event: MouseEvent) => void;
-let globalClickFunc: ClickEventHandler | null = null;
-const clickCallbacks = new Set<ClickEventHandler>();
-
-export function addGlobalMouseDownEvent(callback: ClickEventHandler) {
-  if (!globalClickFunc && typeof window !== 'undefined' && window.addEventListener) {
-    globalClickFunc = (e: MouseEvent) => {
-      // Clone a new list to avoid repeat trigger events
-      [...clickCallbacks].forEach((queueFunc) => {
-        queueFunc(e);
-      });
-    };
-    window.addEventListener('mousedown', globalClickFunc);
-  }
-
-  clickCallbacks.add(callback);
-
-  return () => {
-    clickCallbacks.delete(callback);
-    if (clickCallbacks.size === 0) {
-      window.removeEventListener('mousedown', globalClickFunc!);
-      globalClickFunc = null;
-    }
-  };
-}
-
-export function getTargetFromEvent(e: Event) {
-  const target = e.target as HTMLElement;
-
-  // get target if in shadow dom
-  if (e.composed && target.shadowRoot) {
-    return (e.composedPath?.()[0] || target) as HTMLElement;
-  }
-
-  return target;
-}
-
 // ====================== Mode ======================
-const getYearNextMode = (next: PanelMode): PanelMode => {
-  if (next === 'month' || next === 'date') {
-    return 'year';
-  }
-  return next;
-};
-
-const getMonthNextMode = (next: PanelMode): PanelMode => {
-  if (next === 'date') {
-    return 'month';
-  }
-  return next;
-};
-
-const getQuarterNextMode = (next: PanelMode): PanelMode => {
-  if (next === 'month' || next === 'date') {
-    return 'quarter';
-  }
-  return next;
-};
-
-const getWeekNextMode = (next: PanelMode): PanelMode => {
-  if (next === 'date') {
-    return 'week';
-  }
-  return next;
-};
-
-export const PickerModeMap: Record<PickerMode, ((next: PanelMode) => PanelMode) | null> = {
-  year: getYearNextMode,
-  month: getMonthNextMode,
-  quarter: getQuarterNextMode,
-  week: getWeekNextMode,
-  time: null,
-  date: null,
-};
-
 export function elementsContains(
   elements: (HTMLElement | undefined | null)[],
   target: HTMLElement,
 ) {
   return elements.some((ele) => ele && ele.contains(target));
+}
+
+export function getRealPlacement(placement: string, rtl: boolean) {
+  if (placement !== undefined) {
+    return placement;
+  }
+  return rtl ? 'bottomRight' : 'bottomLeft';
+}
+
+export function getoffsetUnit(placement: string, rtl: boolean) {
+  const realPlacement = getRealPlacement(placement, rtl);
+  const placementRight = realPlacement?.toLowerCase().endsWith('right');
+  let offsetUnit = placementRight ? 'insetInlineEnd' : 'insetInlineStart';
+  if (rtl) {
+    offsetUnit = ['insetInlineStart', 'insetInlineEnd'].find(unit => unit !== offsetUnit);
+  }
+  return offsetUnit;
 }

@@ -1,107 +1,72 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Picker.Range icon 1`] = `
-<div
-  class="rc-picker rc-picker-range"
->
-  <div
-    class="rc-picker-input rc-picker-input-active"
-  >
-    <input
-      autocomplete="off"
-      placeholder=""
-      readonly=""
-      size="12"
-      value="1990-09-03"
-    />
-  </div>
-  <div
-    class="rc-picker-range-separator"
-  >
-    ~
-  </div>
-  <div
-    class="rc-picker-input"
-  >
-    <input
-      autocomplete="off"
-      placeholder=""
-      readonly=""
-      size="12"
-      value="1990-09-03"
-    />
-  </div>
-  <div
-    class="rc-picker-active-bar"
-    style="left: 0px; width: 0px; position: absolute;"
-  />
-  <span
-    class="rc-picker-suffix"
-  >
-    <span
-      class="suffix-icon"
-    />
-  </span>
-  <span
-    class="rc-picker-clear"
-  >
-    <span
-      class="suffix-icon"
-    />
-  </span>
-</div>
-`;
-
-exports[`Picker.Range onPanelChange is array args should render correctly in rtl 1`] = `
-<div
-  class="rc-picker rc-picker-range rc-picker-rtl"
->
-  <div
-    class="rc-picker-input rc-picker-input-active"
-  >
-    <input
-      autocomplete="off"
-      placeholder=""
-      readonly=""
-      size="12"
-      value=""
-    />
-  </div>
-  <div
-    class="rc-picker-range-separator"
-  >
-    ~
-  </div>
-  <div
-    class="rc-picker-input"
-  >
-    <input
-      autocomplete="off"
-      placeholder=""
-      readonly=""
-      size="12"
-      value=""
-    />
-  </div>
-  <div
-    class="rc-picker-active-bar"
-    style="right: 0px; width: 0px; position: absolute;"
-  />
-</div>
-`;
-
-exports[`Picker.Range panelRender 1`] = `
-Array [
+<div>
   <div
     class="rc-picker rc-picker-range"
+  >
+    <div
+      class="rc-picker-input"
+    >
+      <input
+        aria-invalid="false"
+        autocomplete="off"
+        date-range="start"
+        size="12"
+        value="1990-09-03"
+      />
+    </div>
+    <div
+      class="rc-picker-range-separator"
+    >
+      ~
+    </div>
+    <div
+      class="rc-picker-input"
+    >
+      <input
+        aria-invalid="false"
+        autocomplete="off"
+        date-range="end"
+        size="12"
+        value="1990-09-03"
+      />
+    </div>
+    <div
+      class="rc-picker-active-bar"
+      style="position: absolute; width: 0px;"
+    />
+    <span
+      class="rc-picker-suffix"
+    >
+      <span
+        class="suffix-icon"
+      />
+    </span>
+    <span
+      class="rc-picker-clear"
+      role="button"
+    >
+      <span
+        class="suffix-icon"
+      />
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Picker.Range onPanelChange is array args should render correctly in placement right 1`] = `
+<div>
+  <div
+    class="rc-picker rc-picker-range rc-picker-focused"
   >
     <div
       class="rc-picker-input rc-picker-input-active"
     >
       <input
+        aria-invalid="false"
         autocomplete="off"
-        placeholder=""
-        readonly=""
+        date-range="start"
         size="12"
         value=""
       />
@@ -115,34 +80,116 @@ Array [
       class="rc-picker-input"
     >
       <input
+        aria-invalid="false"
         autocomplete="off"
-        placeholder=""
-        readonly=""
+        date-range="end"
         size="12"
         value=""
       />
     </div>
     <div
       class="rc-picker-active-bar"
-      style="left: 0px; width: 0px; position: absolute;"
+      style="position: absolute; width: 0px; inset-inline-end: 0;"
     />
-  </div>,
+  </div>
+</div>
+`;
+
+exports[`Picker.Range onPanelChange is array args should render correctly in rtl 1`] = `
+<div>
+  <div
+    class="rc-picker rc-picker-range rc-picker-rtl"
+  >
+    <div
+      class="rc-picker-input"
+    >
+      <input
+        aria-invalid="false"
+        autocomplete="off"
+        date-range="start"
+        size="12"
+        value=""
+      />
+    </div>
+    <div
+      class="rc-picker-range-separator"
+    >
+      ~
+    </div>
+    <div
+      class="rc-picker-input"
+    >
+      <input
+        aria-invalid="false"
+        autocomplete="off"
+        date-range="end"
+        size="12"
+        value=""
+      />
+    </div>
+    <div
+      class="rc-picker-active-bar"
+      style="position: absolute; width: 0px;"
+    />
+  </div>
+</div>
+`;
+
+exports[`Picker.Range panelRender 1`] = `
+<body>
   <div>
     <div
-      class="rc-picker-dropdown rc-picker-dropdown-range"
-      style="opacity: 0;"
+      class="rc-picker rc-picker-range"
+    >
+      <div
+        class="rc-picker-input rc-picker-input-active"
+      >
+        <input
+          aria-invalid="false"
+          autocomplete="off"
+          date-range="start"
+          size="12"
+          value=""
+        />
+      </div>
+      <div
+        class="rc-picker-range-separator"
+      >
+        ~
+      </div>
+      <div
+        class="rc-picker-input"
+      >
+        <input
+          aria-invalid="false"
+          autocomplete="off"
+          date-range="end"
+          size="12"
+          value=""
+        />
+      </div>
+      <div
+        class="rc-picker-active-bar"
+        style="position: absolute; width: 0px; inset-inline-start: 0;"
+      />
+    </div>
+  </div>
+  <div>
+    <div
+      class="rc-picker-dropdown rc-picker-dropdown-range rc-picker-dropdown-placement-bottomLeft"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div
         class="rc-picker-range-wrapper rc-picker-date-range-wrapper"
-        style="min-width: 0;"
       >
         <div
           class="rc-picker-range-arrow"
-          style="left: 0px;"
+          style="inset-inline-start: 0;"
         />
         <div
-          class="rc-picker-panel-container"
-          style="margin-left: 0px;"
+          class="rc-picker-panel-container rc-picker-date-panel-container"
+          style="margin-left: 0px; margin-right: auto;"
+          tabindex="-1"
         >
           <h1>
             Light
@@ -150,6 +197,1472 @@ Array [
         </div>
       </div>
     </div>
-  </div>,
-]
+  </div>
+</body>
+`;
+
+exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`] = `
+<body>
+  <div>
+    <div
+      class="rc-picker rc-picker-range rc-picker-focused"
+    >
+      <div
+        class="rc-picker-input rc-picker-input-active"
+      >
+        <input
+          aria-invalid="false"
+          autocomplete="off"
+          date-range="start"
+          size="12"
+          value=""
+        />
+      </div>
+      <div
+        class="rc-picker-range-separator"
+      >
+        ~
+      </div>
+      <div
+        class="rc-picker-input"
+      >
+        <input
+          aria-invalid="false"
+          autocomplete="off"
+          date-range="end"
+          size="12"
+          value=""
+        />
+      </div>
+      <div
+        class="rc-picker-active-bar"
+        style="position: absolute; width: 0px; inset-inline-start: 0;"
+      />
+    </div>
+  </div>
+  <div>
+    <div
+      class="rc-picker-dropdown rc-picker-dropdown-range rc-picker-dropdown-placement-bottomLeft"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+    >
+      <div
+        class="rc-picker-range-wrapper rc-picker-date-range-wrapper"
+      >
+        <div
+          class="rc-picker-range-arrow"
+          style="inset-inline-start: 0;"
+        />
+        <div
+          class="rc-picker-panel-container rc-picker-date-panel-container"
+          style="margin-left: 0px; margin-right: auto;"
+          tabindex="-1"
+        >
+          <div
+            class="rc-picker-panel-layout"
+          >
+            <div>
+              <div
+                class="rc-picker-panels"
+              >
+                <div
+                  class="rc-picker-panel"
+                  tabindex="0"
+                >
+                  <div
+                    class="rc-picker-date-panel"
+                  >
+                    <div
+                      class="rc-picker-header"
+                    >
+                      <button
+                        aria-label="super-prev-year"
+                        class="rc-picker-header-super-prev-btn"
+                        tabindex="-1"
+                        type="button"
+                      >
+                        «
+                      </button>
+                      <button
+                        aria-label="prev-year"
+                        class="rc-picker-header-prev-btn"
+                        tabindex="-1"
+                        type="button"
+                      >
+                        ‹
+                      </button>
+                      <div
+                        class="rc-picker-header-view"
+                      >
+                        <button
+                          aria-label="year panel"
+                          class="rc-picker-year-btn"
+                          tabindex="-1"
+                          type="button"
+                        >
+                          1990年
+                        </button>
+                        <button
+                          aria-label="month panel"
+                          class="rc-picker-month-btn"
+                          tabindex="-1"
+                          type="button"
+                        >
+                          9月
+                        </button>
+                      </div>
+                      <button
+                        aria-label="next-year"
+                        class="rc-picker-header-next-btn"
+                        style="visibility: hidden;"
+                        tabindex="-1"
+                        type="button"
+                      >
+                        ›
+                      </button>
+                      <button
+                        aria-label="super-next-year"
+                        class="rc-picker-header-super-next-btn"
+                        style="visibility: hidden;"
+                        tabindex="-1"
+                        type="button"
+                      >
+                        »
+                      </button>
+                    </div>
+                    <div
+                      class="rc-picker-body"
+                    >
+                      <table
+                        class="rc-picker-content"
+                      >
+                        <thead>
+                          <tr>
+                            <th>
+                              一
+                            </th>
+                            <th>
+                              二
+                            </th>
+                            <th>
+                              三
+                            </th>
+                            <th>
+                              四
+                            </th>
+                            <th>
+                              五
+                            </th>
+                            <th>
+                              六
+                            </th>
+                            <th>
+                              日
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-08-27"
+                            >
+                              <div>
+                                D
+                                27
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-08-28"
+                            >
+                              <div>
+                                D
+                                28
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-08-29"
+                            >
+                              <div>
+                                D
+                                29
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-08-30"
+                            >
+                              <div>
+                                D
+                                30
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-08-31"
+                            >
+                              <div>
+                                D
+                                31
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-01"
+                            >
+                              <div>
+                                D
+                                1
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-02"
+                            >
+                              <div>
+                                D
+                                2
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
+                              title="1990-09-03"
+                            >
+                              <div>
+                                D
+                                3
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-04"
+                            >
+                              <div>
+                                D
+                                4
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-05"
+                            >
+                              <div>
+                                D
+                                5
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-06"
+                            >
+                              <div>
+                                D
+                                6
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-07"
+                            >
+                              <div>
+                                D
+                                7
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-08"
+                            >
+                              <div>
+                                D
+                                8
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-09"
+                            >
+                              <div>
+                                D
+                                9
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-10"
+                            >
+                              <div>
+                                D
+                                10
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-11"
+                            >
+                              <div>
+                                D
+                                11
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-12"
+                            >
+                              <div>
+                                D
+                                12
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-13"
+                            >
+                              <div>
+                                D
+                                13
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-14"
+                            >
+                              <div>
+                                D
+                                14
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-15"
+                            >
+                              <div>
+                                D
+                                15
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-16"
+                            >
+                              <div>
+                                D
+                                16
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-17"
+                            >
+                              <div>
+                                D
+                                17
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-18"
+                            >
+                              <div>
+                                D
+                                18
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-19"
+                            >
+                              <div>
+                                D
+                                19
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-20"
+                            >
+                              <div>
+                                D
+                                20
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-21"
+                            >
+                              <div>
+                                D
+                                21
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-22"
+                            >
+                              <div>
+                                D
+                                22
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-23"
+                            >
+                              <div>
+                                D
+                                23
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-24"
+                            >
+                              <div>
+                                D
+                                24
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-25"
+                            >
+                              <div>
+                                D
+                                25
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-26"
+                            >
+                              <div>
+                                D
+                                26
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-27"
+                            >
+                              <div>
+                                D
+                                27
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-28"
+                            >
+                              <div>
+                                D
+                                28
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-29"
+                            >
+                              <div>
+                                D
+                                29
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09-30"
+                            >
+                              <div>
+                                D
+                                30
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-10-01"
+                            >
+                              <div>
+                                D
+                                1
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-10-02"
+                            >
+                              <div>
+                                D
+                                2
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-10-03"
+                            >
+                              <div>
+                                D
+                                3
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-10-04"
+                            >
+                              <div>
+                                D
+                                4
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-10-05"
+                            >
+                              <div>
+                                D
+                                5
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-10-06"
+                            >
+                              <div>
+                                D
+                                6
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-10-07"
+                            >
+                              <div>
+                                D
+                                7
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="rc-picker-panel"
+                  tabindex="0"
+                >
+                  <div
+                    class="rc-picker-date-panel"
+                  >
+                    <div
+                      class="rc-picker-header"
+                    >
+                      <button
+                        aria-label="super-prev-year"
+                        class="rc-picker-header-super-prev-btn"
+                        style="visibility: hidden;"
+                        tabindex="-1"
+                        type="button"
+                      >
+                        «
+                      </button>
+                      <button
+                        aria-label="prev-year"
+                        class="rc-picker-header-prev-btn"
+                        style="visibility: hidden;"
+                        tabindex="-1"
+                        type="button"
+                      >
+                        ‹
+                      </button>
+                      <div
+                        class="rc-picker-header-view"
+                      >
+                        <button
+                          aria-label="year panel"
+                          class="rc-picker-year-btn"
+                          tabindex="-1"
+                          type="button"
+                        >
+                          1990年
+                        </button>
+                        <button
+                          aria-label="month panel"
+                          class="rc-picker-month-btn"
+                          tabindex="-1"
+                          type="button"
+                        >
+                          10月
+                        </button>
+                      </div>
+                      <button
+                        aria-label="next-year"
+                        class="rc-picker-header-next-btn"
+                        tabindex="-1"
+                        type="button"
+                      >
+                        ›
+                      </button>
+                      <button
+                        aria-label="super-next-year"
+                        class="rc-picker-header-super-next-btn"
+                        tabindex="-1"
+                        type="button"
+                      >
+                        »
+                      </button>
+                    </div>
+                    <div
+                      class="rc-picker-body"
+                    >
+                      <table
+                        class="rc-picker-content"
+                      >
+                        <thead>
+                          <tr>
+                            <th>
+                              一
+                            </th>
+                            <th>
+                              二
+                            </th>
+                            <th>
+                              三
+                            </th>
+                            <th>
+                              四
+                            </th>
+                            <th>
+                              五
+                            </th>
+                            <th>
+                              六
+                            </th>
+                            <th>
+                              日
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-01"
+                            >
+                              <div>
+                                D
+                                1
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-02"
+                            >
+                              <div>
+                                D
+                                2
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-03"
+                            >
+                              <div>
+                                D
+                                3
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-04"
+                            >
+                              <div>
+                                D
+                                4
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-05"
+                            >
+                              <div>
+                                D
+                                5
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-06"
+                            >
+                              <div>
+                                D
+                                6
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-07"
+                            >
+                              <div>
+                                D
+                                7
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-08"
+                            >
+                              <div>
+                                D
+                                8
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-09"
+                            >
+                              <div>
+                                D
+                                9
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-10"
+                            >
+                              <div>
+                                D
+                                10
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-11"
+                            >
+                              <div>
+                                D
+                                11
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-12"
+                            >
+                              <div>
+                                D
+                                12
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-13"
+                            >
+                              <div>
+                                D
+                                13
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-14"
+                            >
+                              <div>
+                                D
+                                14
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-15"
+                            >
+                              <div>
+                                D
+                                15
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-16"
+                            >
+                              <div>
+                                D
+                                16
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-17"
+                            >
+                              <div>
+                                D
+                                17
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-18"
+                            >
+                              <div>
+                                D
+                                18
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-19"
+                            >
+                              <div>
+                                D
+                                19
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-20"
+                            >
+                              <div>
+                                D
+                                20
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-21"
+                            >
+                              <div>
+                                D
+                                21
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-22"
+                            >
+                              <div>
+                                D
+                                22
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-23"
+                            >
+                              <div>
+                                D
+                                23
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-24"
+                            >
+                              <div>
+                                D
+                                24
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-25"
+                            >
+                              <div>
+                                D
+                                25
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-26"
+                            >
+                              <div>
+                                D
+                                26
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-27"
+                            >
+                              <div>
+                                D
+                                27
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-28"
+                            >
+                              <div>
+                                D
+                                28
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-29"
+                            >
+                              <div>
+                                D
+                                29
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-30"
+                            >
+                              <div>
+                                D
+                                30
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10-31"
+                            >
+                              <div>
+                                D
+                                31
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-11-01"
+                            >
+                              <div>
+                                D
+                                1
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-11-02"
+                            >
+                              <div>
+                                D
+                                2
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-11-03"
+                            >
+                              <div>
+                                D
+                                3
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-11-04"
+                            >
+                              <div>
+                                D
+                                4
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-11-05"
+                            >
+                              <div>
+                                D
+                                5
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-11-06"
+                            >
+                              <div>
+                                D
+                                6
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-11-07"
+                            >
+                              <div>
+                                D
+                                7
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-11-08"
+                            >
+                              <div>
+                                D
+                                8
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-11-09"
+                            >
+                              <div>
+                                D
+                                9
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-11-10"
+                            >
+                              <div>
+                                D
+                                10
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell"
+                              title="1990-11-11"
+                            >
+                              <div>
+                                D
+                                11
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`Picker.Range use dateRender and monthCellRender in month range picker 1`] = `
+<body>
+  <div>
+    <div
+      class="rc-picker rc-picker-range rc-picker-focused"
+    >
+      <div
+        class="rc-picker-input rc-picker-input-active"
+      >
+        <input
+          aria-invalid="false"
+          autocomplete="off"
+          date-range="start"
+          size="12"
+          value=""
+        />
+      </div>
+      <div
+        class="rc-picker-range-separator"
+      >
+        ~
+      </div>
+      <div
+        class="rc-picker-input"
+      >
+        <input
+          aria-invalid="false"
+          autocomplete="off"
+          date-range="end"
+          size="12"
+          value=""
+        />
+      </div>
+      <div
+        class="rc-picker-active-bar"
+        style="position: absolute; width: 0px; inset-inline-start: 0;"
+      />
+    </div>
+  </div>
+  <div>
+    <div
+      class="rc-picker-dropdown rc-picker-dropdown-range rc-picker-dropdown-placement-bottomLeft"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
+    >
+      <div
+        class="rc-picker-range-wrapper rc-picker-month-range-wrapper"
+      >
+        <div
+          class="rc-picker-range-arrow"
+          style="inset-inline-start: 0;"
+        />
+        <div
+          class="rc-picker-panel-container rc-picker-month-panel-container"
+          style="margin-left: 0px; margin-right: auto;"
+          tabindex="-1"
+        >
+          <div
+            class="rc-picker-panel-layout"
+          >
+            <div>
+              <div
+                class="rc-picker-panels"
+              >
+                <div
+                  class="rc-picker-panel"
+                  tabindex="0"
+                >
+                  <div
+                    class="rc-picker-month-panel"
+                  >
+                    <div
+                      class="rc-picker-header"
+                    >
+                      <button
+                        aria-label="super-prev-year"
+                        class="rc-picker-header-super-prev-btn"
+                        tabindex="-1"
+                        type="button"
+                      >
+                        «
+                      </button>
+                      <div
+                        class="rc-picker-header-view"
+                      >
+                        <button
+                          aria-label="year panel"
+                          class="rc-picker-year-btn"
+                          tabindex="-1"
+                          type="button"
+                        >
+                          1990年
+                        </button>
+                      </div>
+                      <button
+                        aria-label="super-next-year"
+                        class="rc-picker-header-super-next-btn"
+                        style="visibility: hidden;"
+                        tabindex="-1"
+                        type="button"
+                      >
+                        »
+                      </button>
+                    </div>
+                    <div
+                      class="rc-picker-body"
+                    >
+                      <table
+                        class="rc-picker-content"
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-01"
+                            >
+                              <div>
+                                M
+                                1
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-02"
+                            >
+                              <div>
+                                M
+                                2
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-03"
+                            >
+                              <div>
+                                M
+                                3
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-04"
+                            >
+                              <div>
+                                M
+                                4
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-05"
+                            >
+                              <div>
+                                M
+                                5
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-06"
+                            >
+                              <div>
+                                M
+                                6
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-07"
+                            >
+                              <div>
+                                M
+                                7
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-08"
+                            >
+                              <div>
+                                M
+                                8
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-09"
+                            >
+                              <div>
+                                M
+                                9
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-10"
+                            >
+                              <div>
+                                M
+                                10
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-11"
+                            >
+                              <div>
+                                M
+                                11
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1990-12"
+                            >
+                              <div>
+                                M
+                                12
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="rc-picker-panel"
+                  tabindex="0"
+                >
+                  <div
+                    class="rc-picker-month-panel"
+                  >
+                    <div
+                      class="rc-picker-header"
+                    >
+                      <button
+                        aria-label="super-prev-year"
+                        class="rc-picker-header-super-prev-btn"
+                        style="visibility: hidden;"
+                        tabindex="-1"
+                        type="button"
+                      >
+                        «
+                      </button>
+                      <div
+                        class="rc-picker-header-view"
+                      >
+                        <button
+                          aria-label="year panel"
+                          class="rc-picker-year-btn"
+                          tabindex="-1"
+                          type="button"
+                        >
+                          1991年
+                        </button>
+                      </div>
+                      <button
+                        aria-label="super-next-year"
+                        class="rc-picker-header-super-next-btn"
+                        tabindex="-1"
+                        type="button"
+                      >
+                        »
+                      </button>
+                    </div>
+                    <div
+                      class="rc-picker-body"
+                    >
+                      <table
+                        class="rc-picker-content"
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1991-01"
+                            >
+                              <div>
+                                M
+                                1
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1991-02"
+                            >
+                              <div>
+                                M
+                                2
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1991-03"
+                            >
+                              <div>
+                                M
+                                3
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1991-04"
+                            >
+                              <div>
+                                M
+                                4
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1991-05"
+                            >
+                              <div>
+                                M
+                                5
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1991-06"
+                            >
+                              <div>
+                                M
+                                6
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1991-07"
+                            >
+                              <div>
+                                M
+                                7
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1991-08"
+                            >
+                              <div>
+                                M
+                                8
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1991-09"
+                            >
+                              <div>
+                                M
+                                9
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1991-10"
+                            >
+                              <div>
+                                M
+                                10
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1991-11"
+                            >
+                              <div>
+                                M
+                                11
+                              </div>
+                            </td>
+                            <td
+                              class="rc-picker-cell rc-picker-cell-in-view"
+                              title="1991-12"
+                            >
+                              <div>
+                                M
+                                12
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
 `;

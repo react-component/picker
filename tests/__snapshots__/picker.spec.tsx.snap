@@ -5,10 +5,9 @@ exports[`Picker.Basic icon 1`] = `
   class="rc-picker-input"
 >
   <input
+    aria-invalid="false"
     autocomplete="off"
-    readonly=""
     size="12"
-    title="1990-09-03"
     value="1990-09-03"
   />
   <span
@@ -34,50 +33,16 @@ exports[`Picker.Basic inputRender 1`] = `
   class="rc-picker-input"
 >
   <input
+    aria-invalid="false"
     autocomplete="off"
-    readonly=""
+    data-customize="yes"
     size="12"
-    title=""
     value=""
   />
 </div>
 `;
 
 exports[`Picker.Basic panelRender 1`] = `
-Array [
-  <div
-    class="rc-picker"
-  >
-    <div
-      class="rc-picker-input"
-    >
-      <input
-        autocomplete="off"
-        readonly=""
-        size="12"
-        title=""
-        value=""
-      />
-    </div>
-  </div>,
-  <div>
-    <div
-      class="rc-picker-dropdown"
-      style="opacity: 0;"
-    >
-      <div
-        class="rc-picker-panel-container"
-      >
-        <h1>
-          Light
-        </h1>
-      </div>
-    </div>
-  </div>,
-]
-`;
-
-exports[`Picker.Basic pass data- & aria- & role 1`] = `
 <div
   class="rc-picker"
 >
@@ -85,33 +50,52 @@ exports[`Picker.Basic pass data- & aria- & role 1`] = `
     class="rc-picker-input"
   >
     <input
-      aria-label="3334"
+      aria-invalid="false"
       autocomplete="off"
-      data-test="233"
-      readonly=""
-      role="search"
       size="12"
-      title=""
       value=""
     />
   </div>
 </div>
 `;
 
-exports[`Picker.Basic should render correctly in rtl 1`] = `
-<div
-  class="rc-picker rc-picker-rtl"
->
+exports[`Picker.Basic pass data- & aria- & role 1`] = `
+<div>
   <div
-    class="rc-picker-input"
+    class="rc-picker"
   >
-    <input
-      autocomplete="off"
-      readonly=""
-      size="12"
-      title=""
-      value=""
-    />
+    <div
+      class="rc-picker-input"
+    >
+      <input
+        aria-invalid="false"
+        aria-label="3334"
+        autocomplete="off"
+        data-test="233"
+        role="search"
+        size="12"
+        value=""
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Picker.Basic should render correctly in rtl 1`] = `
+<div>
+  <div
+    class="rc-picker rc-picker-rtl"
+  >
+    <div
+      class="rc-picker-input"
+    >
+      <input
+        aria-invalid="false"
+        autocomplete="off"
+        size="12"
+        value=""
+      />
+    </div>
   </div>
 </div>
 `;

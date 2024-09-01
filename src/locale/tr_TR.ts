@@ -1,11 +1,13 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'tr_TR',
   today: 'Bugün',
   now: 'Şimdi',
   backToToday: 'Bugüne Geri Dön',
-  ok: 'tamam',
+  ok: 'Tamam',
   clear: 'Temizle',
   month: 'Ay',
   year: 'Yıl',
@@ -14,11 +16,11 @@ const locale: Locale = {
   monthSelect: 'Ay Seç',
   yearSelect: 'Yıl Seç',
   decadeSelect: 'On Yıl Seç',
-  yearFormat: 'YYYY',
-  dateFormat: 'M/D/YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
+  dateFormat: 'DD/MM/YYYY',
+
+  dateTimeFormat: 'DD/MM/YYYY HH:mm:ss',
+
   previousMonth: 'Önceki Ay (PageUp)',
   nextMonth: 'Sonraki Ay (PageDown)',
   previousYear: 'Önceki Yıl (Control + Sol)',
@@ -27,6 +29,8 @@ const locale: Locale = {
   nextDecade: 'Sonraki On Yıl',
   previousCentury: 'Önceki Yüzyıl',
   nextCentury: 'Sonraki Yüzyıl',
+  shortWeekDays: ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'],
+  shortMonths: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
 };
 
 export default locale;

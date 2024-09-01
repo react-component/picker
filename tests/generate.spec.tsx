@@ -1,15 +1,17 @@
 import MockDate from 'mockdate';
-import momentGenerateConfig from '../src/generate/moment';
-import dayjsGenerateConfig from '../src/generate/dayjs';
 import dateFnsGenerateConfig from '../src/generate/dateFns';
+import dayjsGenerateConfig from '../src/generate/dayjs';
+import luxonGenerateConfig from '../src/generate/luxon';
+import momentGenerateConfig from '../src/generate/moment';
 import { getMoment } from './util/commonUtil';
 
 import 'dayjs/locale/zh-cn';
+import 'dayjs/locale/ko';
 import type { GenerateConfig } from '../src/generate';
 
 describe('Picker.Generate', () => {
   beforeAll(() => {
-    MockDate.set(getMoment('1990-09-03 01:02:03').toDate());
+    MockDate.set(getMoment('1990-09-03 01:02:03.005').toDate());
   });
 
   afterAll(() => {
@@ -20,6 +22,7 @@ describe('Picker.Generate', () => {
     { name: 'moment', generateConfig: momentGenerateConfig },
     { name: 'dayjs', generateConfig: dayjsGenerateConfig },
     { name: 'date-fns', generateConfig: dateFnsGenerateConfig },
+    { name: 'luxon', generateConfig: luxonGenerateConfig },
   ];
 
   list.forEach(({ name, generateConfig }) => {
@@ -30,6 +33,7 @@ describe('Picker.Generate', () => {
         const endDate = generateConfig.getEndDate(fixedDate);
         expect(generateConfig.getWeekDay(now)).toEqual(1);
         expect(generateConfig.getSecond(now)).toEqual(3);
+        expect(generateConfig.getMillisecond(now)).toEqual(5);
         expect(generateConfig.getMinute(now)).toEqual(2);
         expect(generateConfig.getHour(now)).toEqual(1);
         expect(generateConfig.getDate(now)).toEqual(3);
@@ -51,9 +55,10 @@ describe('Picker.Generate', () => {
         date = generateConfig.setHour(date, 2);
         date = generateConfig.setMinute(date, 3);
         date = generateConfig.setSecond(date, 5);
+        date = generateConfig.setMillisecond(date, 7);
 
-        expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD HH:mm:ss')).toEqual(
-          '2020-10-23 02:03:05',
+        expect(generateConfig.locale.format('en_US', date, 'YYYY-MM-DD HH:mm:ss.SSS')).toEqual(
+          '2020-10-23 02:03:05.007',
         );
       });
 
@@ -87,10 +92,17 @@ describe('Picker.Generate', () => {
                 '2000-01-02',
               );
             });
+            ['2000-01-02', '02/01/2000'].forEach((str) => {
+              const date = generateConfig.locale.parse('ko_KR', str, ['YYYY-MM-DD', 'DD/MM/YYYY']);
+
+              expect(generateConfig.locale.format('ko_KR', date!, 'YYYY-MM-DD')).toEqual(
+                '2000-01-02',
+              );
+            });
           });
 
           it('week', () => {
-            if (name !== 'date-fns') {
+            if (!['date-fns', 'luxon'].includes(name)) {
               expect(
                 generateConfig.locale.format(
                   'en_US',
@@ -116,10 +128,22 @@ describe('Picker.Generate', () => {
             }
           });
         });
+
+        describe('format', () => {
+          it('escape strings', () => {
+            if (name !== 'date-fns') {
+              expect(
+                generateConfig.locale.format('en_US', generateConfig.getNow(), 'YYYY-[Q]Q'),
+              ).toEqual('1990-Q3');
+            }
+          });
+        });
       });
 
       it('getWeekFirstDay', () => {
-        expect(generateConfig.locale.getWeekFirstDay('en_US')).toEqual(0);
+        const expectedUsFirstDay = name === 'luxon' ? 1 : 0;
+
+        expect(generateConfig.locale.getWeekFirstDay('en_US')).toEqual(expectedUsFirstDay);
         expect(generateConfig.locale.getWeekFirstDay('zh_CN')).toEqual(1);
 
         // Should keep same weekday
@@ -142,12 +166,17 @@ describe('Picker.Generate', () => {
           'zh_CN',
           generateConfig.locale.parse('zh_CN', '2020-12-30', [formatStr]),
         );
-        expect(generateConfig.locale.format('en_US', usDate, formatStr)).toEqual('2020-12-27');
+
+        const expectedUsFirstDate = name === 'luxon' ? '28' : '27';
+
+        expect(generateConfig.locale.format('en_US', usDate, formatStr)).toEqual(
+          `2020-12-${expectedUsFirstDate}`,
+        );
         expect(generateConfig.locale.format('zh_CN', cnDate, formatStr)).toEqual('2020-12-28');
       });
 
       it('Parse format Wo', () => {
-        if (name !== 'date-fns') {
+        if (!['date-fns', 'luxon'].includes(name)) {
           expect(
             generateConfig.locale.parse('en_US', '2012-51st', ['YYYY-Wo']).format('Wo'),
           ).toEqual('51st');
@@ -167,6 +196,15 @@ describe('Picker.Generate', () => {
       });
 
       it('getShortWeekDays', () => {
+        expect(generateConfig.locale.getShortWeekDays!('ko_KR')).toEqual([
+          '일',
+          '월',
+          '화',
+          '수',
+          '목',
+          '금',
+          '토',
+        ]);
         expect(generateConfig.locale.getShortWeekDays!('zh_CN')).toEqual([
           '日',
           '一',
@@ -226,12 +264,14 @@ describe('Picker.Generate', () => {
             generateConfig.locale.parse('zh_CN', '2019-12-08', [formatStr]),
           ),
         ).toEqual(49);
+
+        const expectedUsWeek = name === 'luxon' ? 49 : 50;
         expect(
           generateConfig.locale.getWeek(
             'en_US',
             generateConfig.locale.parse('en_US', '2019-12-08', [formatStr]),
           ),
-        ).toEqual(50);
+        ).toEqual(expectedUsWeek);
       });
     });
   });
@@ -254,5 +294,32 @@ describe('Generate:dayjs', () => {
     const timeb = dayjsGenerateConfig.getFixedDate('2019-02-08');
     expect(timea.isValid()).toBeTruthy();
     expect(timea.valueOf()).toEqual(timeb.valueOf());
+  });
+
+  it('parse', () => {
+    const timea = dayjsGenerateConfig.locale.parse('en_US', '2022-11-23 13:5', [
+      'YYYY-MM-DD HH:mm',
+    ]);
+    expect(timea).toEqual(null);
+
+    const timeb = dayjsGenerateConfig.locale.parse('en_US', '2022-11-23 13:05', [
+      'YYYY-MM-DD HH:mm',
+    ]);
+    const dateb = dayjsGenerateConfig.locale.format('en_US', timeb, 'YYYY-MM-DD HH:mm');
+    expect(dateb).toEqual('2022-11-23 13:05');
+  });
+});
+
+describe('Generate:date-fns', () => {
+  it('getWeekFirstDay', () => {
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('en_US')).toEqual(0);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('zh_CN')).toEqual(1);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('ar_EG')).toEqual(0);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('ar_MA')).toEqual(1);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('ar')).toEqual(6);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('ar')).toEqual(6);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('ko_KR')).toEqual(0);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('it_IT')).toEqual(1);
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('fr_FR')).toEqual(1);
   });
 });

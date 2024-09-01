@@ -1,2 +1,8 @@
-## customize
-<code src="../examples/customize.tsx">
+---
+title: customize
+nav:
+  title: Demo
+  path: /demo
+---
+
+<code src="../examples/customize.tsx"></code>

@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Moment } from 'moment';
 import moment from 'moment';
-import Picker from '../../src/Picker';
+import Picker from '../../src';
 import momentGenerateConfig from '../../src/generate/moment';
 import enUS from '../../src/locale/en_US';
 import '../../assets/index.less';
