@@ -1,7 +1,7 @@
 import type { Locale } from '../interface';
 
 const locale: Locale = {
-  locale: 'am',
+  locale: 'am_ET',
   today: 'ዛሬ',
   now: 'አሁን',
   backToToday: 'ወደ ዛሬ ተመለስ',
