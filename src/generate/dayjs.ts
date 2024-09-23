@@ -107,7 +107,13 @@ const parseNoMatchNotice = () => {
 
 const generateConfig: GenerateConfig<Dayjs> = {
   // get
-  getNow: () => dayjs(),
+  getNow: () => {
+    if (typeof dayjs.tz === 'function') {
+      // https://github.com/ant-design/ant-design/discussions/50934
+      return dayjs.tz();
+    }
+    return dayjs();
+  },
   getFixedDate: (string) => dayjs(string, ['YYYY-M-DD', 'YYYY-MM-DD']),
   getEndDate: (date) => date.endOf('month'),
   getWeekDay: (date) => {
