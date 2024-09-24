@@ -4,6 +4,7 @@ import dayjsGenerateConfig from '../src/generate/dayjs';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import moment from 'moment-timezone';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -12,7 +13,7 @@ const CN = 'Asia/Shanghai';
 const JP = 'Asia/Tokyo';
 
 beforeEach(() => {
-  MockDate.set(dayjs.tz('2024-09-23 05:02:03.172', CN).toDate());
+  MockDate.set(new Date());
 });
 
 afterEach(() => {
@@ -22,16 +23,18 @@ afterEach(() => {
 
 describe('dayjs: getNow', () => {
   it('normal', () => {
-    const now = new Date();
-    expect(now.toDateString()).toEqual('Mon Sep 23 2024');
-    expect(now.toTimeString()).toContain('05:02:03 GMT+0800');
+    const D_now = dayjsGenerateConfig.getNow();
+    const M_now = moment();
+
+    expect(D_now.format()).toEqual(M_now.format());
   });
 
-  it('should be work', async () => {
+  it('should work normally in timezone', async () => {
     dayjs.tz.setDefault(JP);
-    const now = dayjsGenerateConfig.getNow();
-    const L_now = dayjs();
-    expect(L_now.format()).toEqual('2024-09-23T05:02:03+08:00');
-    expect(now.format()).toEqual('2024-09-23T06:02:03+09:00');
+    const D_now = dayjsGenerateConfig.getNow();
+    const M_now = moment().tz(JP);
+
+    expect(D_now.format()).toEqual(M_now.format());
+    expect(D_now.get('hour') - D_now.utc().get('hour')).toEqual(9);
   });
 });
