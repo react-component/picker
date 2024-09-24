@@ -108,11 +108,12 @@ const parseNoMatchNotice = () => {
 const generateConfig: GenerateConfig<Dayjs> = {
   // get
   getNow: () => {
-    // if (typeof dayjs.tz === 'function') {
-    //   // https://github.com/ant-design/ant-design/discussions/50934
-    //   return dayjs.tz();
-    // }
-    return dayjs();
+    const now = dayjs();
+    // https://github.com/ant-design/ant-design/discussions/50934
+    if (typeof now.tz === 'function') {
+      return now.tz(); // use default timezone
+    }
+    return now;
   },
   getFixedDate: (string) => dayjs(string, ['YYYY-M-DD', 'YYYY-MM-DD']),
   getEndDate: (date) => date.endOf('month'),
