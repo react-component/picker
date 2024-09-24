@@ -1,0 +1,32 @@
+import type { Locale } from '../interface';
+
+const locale: Locale = {
+  locale: 'uz_LA',
+  today: 'Bugun',
+  now: 'Xozir',
+  backToToday: 'Kechagi kunga qaytish',
+  ok: 'Tasdiqlash',
+  clear: 'O‘chirish',
+  month: 'Oy',
+  year: 'Yil',
+  timeSelect: 'Vaqtni tanlang',
+  dateSelect: 'Sanani tanlang',
+  monthSelect: 'Oyni tanlang',
+  yearSelect: 'Yilni tanang',
+  decadeSelect: '10 yillikni tanlang',
+  yearFormat: 'YYYY',
+  dateFormat: 'D/M/YYYY',
+  dayFormat: 'D',
+  dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+  monthBeforeYear: true,
+  previousMonth: 'O‘tgan oy (PageUp)',
+  nextMonth: 'Keyingi oy (PageDown)',
+  previousYear: 'O‘tgan yil (Control + left)',
+  nextYear: 'Keyingi yil (Control + right)',
+  previousDecade: 'O‘tgan 10 yillik',
+  nextDecade: 'Keyingi 10 yillik',
+  previousCentury: 'O‘tgan asr',
+  nextCentury: 'Keyingi asr',
+};
+
+export default locale;
