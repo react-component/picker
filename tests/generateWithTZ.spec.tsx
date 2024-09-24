@@ -14,10 +14,13 @@ const JP = 'Asia/Tokyo';
 
 beforeEach(() => {
   MockDate.set(new Date());
+  dayjs.tz.setDefault(CN);
+  moment.tz.setDefault(CN);
 });
 
 afterEach(() => {
   dayjs.tz.setDefault();
+  moment.tz.setDefault();
   MockDate.reset();
 });
 
