@@ -19,6 +19,7 @@
     "src/**/*.tsx",
     "docs/examples/*.tsx",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx",
+    "typings.d.ts"
   ]
 }
