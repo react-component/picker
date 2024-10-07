@@ -13,12 +13,12 @@ import type { PanelMode, PickerMode } from '../src/interface';
 import enUS from '../src/locale/en_US';
 import zhCN from '../src/locale/zh_CN';
 import {
-  clearValue,
-  closePicker,
-  confirmOK,
   // MomentPicker,
   DayPicker,
   DayRangePicker,
+  clearValue,
+  closePicker,
+  confirmOK,
   findCell,
   getDay,
   isOpen,
@@ -364,6 +364,16 @@ describe('Picker.Basic', () => {
       fireEvent.blur(container.querySelector('input'));
       expect(onBlur).toHaveBeenCalled();
       expect(document.querySelector('.rc-picker-focused')).toBeFalsy();
+    });
+
+    it('pass tabIndex', () => {
+      const { container } = render(
+        <div>
+          <DayPicker tabIndex={-1}/>
+        </div>,
+      );
+
+      expect(container.querySelector('input').getAttribute('tabIndex')).toBe('-1');
     });
   });
 
