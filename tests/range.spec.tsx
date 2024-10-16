@@ -11,10 +11,10 @@ import React from 'react';
 import type { PickerRef, RangePickerProps } from '../src';
 import type { PickerMode } from '../src/interface';
 import {
+  DayRangePicker,
   clearValue,
   clickButton,
   closePicker,
-  DayRangePicker,
   findCell,
   getDay,
   inputValue,
@@ -536,6 +536,16 @@ describe('Picker.Range', () => {
       selectCell(23);
 
       matchValues(container, '1990-09-13 01:02:03', '1990-09-23 05:06:07');
+    });
+
+    it('pass tabIndex', () => {
+      const { container } = render(
+        <div>
+          <DayRangePicker tabIndex={-1}/>
+        </div>,
+      );
+
+      expect(container.querySelector('input').getAttribute('tabIndex')).toBe('-1');
     });
   });
 
