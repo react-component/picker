@@ -57,7 +57,14 @@ const normalizeLocale = (locale: string): string => locale.replace(/_/g, '-');
 
 const generateConfig: GenerateConfig<DateTime> = {
   // get
-  getNow: () => DateTime.local(),
+  getNow: () => {
+    /**
+     * The current time that can respond to tz settings is required.
+     * @see: https://github.com/ant-design/ant-design/issues/51282
+     * like `dayjs().tz()`: https://github.com/ant-design/ant-design/discussions/50934
+     */
+    return DateTime.now();
+  },
   getFixedDate: (string) => DateTime.fromFormat(string, 'yyyy-MM-dd'),
   getEndDate: (date) => date.endOf('month'),
   getWeekDay: (date) => date.weekday,
