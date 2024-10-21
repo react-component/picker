@@ -118,8 +118,7 @@ export interface BasePickerPanelProps<DateType extends object = any>
   hideHeader?: boolean;
 }
 
-export interface SinglePickerPanelProps<DateType extends object = any>
-  extends BasePickerPanelProps<DateType> {
+export type SinglePickerPanelProps<DateType extends object = any> = BasePickerPanelProps<DateType> & {
   multiple?: false;
 
   defaultValue?: DateType | null;
