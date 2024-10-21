@@ -52,6 +52,7 @@ function RangeSelector<DateType extends object = any>(
   const {
     id,
 
+    prefix,
     clearIcon,
     suffixIcon,
     separator = '~',
@@ -238,6 +239,7 @@ function RangeSelector<DateType extends object = any>(
           onMouseDown?.(e);
         }}
       >
+        {prefix && <div className={`${prefixCls}-prefix`}>{prefix}</div>}
         <Input
           ref={inputStartRef}
           {...getInputProps(0)}

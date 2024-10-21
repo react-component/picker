@@ -43,6 +43,7 @@ function SingleSelector<DateType extends object = any>(
 
     open,
 
+    prefix,
     clearIcon,
     suffixIcon,
     activeHelp,
@@ -224,6 +225,7 @@ function SingleSelector<DateType extends object = any>(
         onMouseDown?.(e);
       }}
     >
+      {prefix && <div className={`${prefixCls}-prefix`}>{prefix}</div>}
       {selectorNode}
     </div>
   );

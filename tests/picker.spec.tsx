@@ -582,6 +582,16 @@ describe('Picker.Basic', () => {
     });
   });
 
+  it('prefix', () => {
+    render(
+      <DayPicker
+        prefix={<span className="prefix" />}
+        allowClear
+      />,
+    );
+    expect(document.querySelector('.prefix')).toBeInTheDocument();
+  });
+
   it('icon', () => {
     expect(errorSpy).not.toHaveBeenCalled();
     render(
