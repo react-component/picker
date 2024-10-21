@@ -704,6 +704,16 @@ describe('Picker.Range', () => {
     expect(isOpen()).toBeFalsy();
   });
 
+  it('prefix', () => {
+    render(
+      <DayRangePicker
+        prefix={<span className="prefix" />}
+        allowClear
+      />,
+    );
+    expect(document.querySelector('.prefix')).toBeInTheDocument();
+  });
+
   it('icon', () => {
     const { container } = render(
       <DayRangePicker

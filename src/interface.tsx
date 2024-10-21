@@ -302,6 +302,7 @@ export type SharedHTMLAttrs = Omit<
   | 'max'
   | 'onKeyDown'
   | 'size'
+  | 'prefix'
 >;
 
 export type PickerFocusEventHandler = (e: React.FocusEvent<HTMLElement>, info: BaseInfo) => void;
@@ -354,6 +355,7 @@ export interface SharedPickerProps<DateType extends object = any>
       };
 
   // Icons
+  prefix?: React.ReactNode;
   suffixIcon?: React.ReactNode;
   allowClear?:
     | boolean
@@ -468,6 +470,7 @@ export type OnOpenChange = (open: boolean, config?: OpenConfig) => void;
 export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
   picker: PickerMode;
 
+  prefix?: React.ReactNode;
   clearIcon?: React.ReactNode;
   suffixIcon?: React.ReactNode;
   className?: string;

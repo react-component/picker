@@ -121,6 +121,7 @@ class Customize extends React.Component<{}, DateRangeState> {
               // format="YYYY/MM/DD"
               format={['YYYY-MM-DD', 'YYYY/MM/DD']}
               allowClear
+              prefix="Foobar"
               clearIcon={<span>X</span>}
               suffixIcon={<span>O</span>}
               prevIcon={<span>&lt;</span>}
