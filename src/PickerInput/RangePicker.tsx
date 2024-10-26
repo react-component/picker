@@ -666,6 +666,9 @@ function RangePicker<DateType extends object = any>(
     onKeyDown?.(event, preventDefault);
   };
 
+  // =======================  popup align =======================
+  const [alignedPlacement, setAlignedPlacement] = React.useState<string>();
+
   // ======================= Context ========================
   const context = React.useMemo(
     () => ({
@@ -674,8 +677,18 @@ function RangePicker<DateType extends object = any>(
       generateConfig,
       button: components.button,
       input: components.input,
+      alignedPlacement,
+      setAlignedPlacement,
     }),
-    [prefixCls, locale, generateConfig, components.button, components.input],
+    [
+      prefixCls,
+      locale,
+      generateConfig,
+      components.button,
+      components.input,
+      alignedPlacement,
+      setAlignedPlacement,
+    ],
   );
 
   // ======================== Effect ========================
