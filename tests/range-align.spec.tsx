@@ -15,6 +15,7 @@ describe('the popup arrow should be placed in the correct position.', () => {
     };
 
     document.documentElement.scrollLeft = 0;
+    jest.useFakeTimers();
   });
 
   beforeAll(() => {
@@ -74,10 +75,6 @@ describe('the popup arrow should be placed in the correct position.', () => {
         get: () => document.body,
       },
     });
-  });
-
-  beforeEach(() => {
-    jest.useFakeTimers();
   });
 
   afterEach(() => {
