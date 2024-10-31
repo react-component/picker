@@ -187,8 +187,8 @@ function RangeSelector<DateType extends object = any>(
       const { offsetWidth, offsetLeft, offsetParent } = input.nativeElement;
       const parentWidth = (offsetParent as HTMLElement)?.offsetWidth || 0;
       const activeOffset = placementRight ? parentWidth - offsetWidth - offsetLeft : offsetLeft;
-      setActiveBarStyle((ori) => ({
-        ...ori,
+      setActiveBarStyle(({ position }) => ({
+        position,
         width: offsetWidth,
         [offsetUnit]: activeOffset,
       }));
@@ -198,7 +198,7 @@ function RangeSelector<DateType extends object = any>(
 
   React.useEffect(() => {
     syncActiveOffset();
-  }, [activeIndex]);
+  }, [activeIndex, alignedPlacement]);
 
   // ======================== Clear =========================
   const showClear = clearIcon && ((value[0] && !disabled[0]) || (value[1] && !disabled[1]));
