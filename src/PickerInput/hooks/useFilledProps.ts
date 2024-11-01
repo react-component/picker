@@ -41,6 +41,7 @@ type PickedProps<DateType extends object = any> = Pick<
   defaultValue?: any;
   pickerValue?: any;
   defaultPickerValue?: any;
+  getNow?: () => string;
 };
 
 type ExcludeBooleanType<T> = T extends boolean ? never : T;
@@ -161,6 +162,10 @@ export default function useFilledProps<
   const filledProps = React.useMemo(
     () => ({
       ...props,
+      generateConfig: {
+        ...generateConfig,
+        getNow: props.getNow || props.generateConfig.getNow,
+      },
       prefixCls,
       locale: mergedLocale,
       picker,

@@ -99,7 +99,9 @@ export interface BasePickerProps<DateType extends object = any>
 
 export interface PickerProps<DateType extends object = any>
   extends BasePickerProps<DateType>,
-    Omit<SharedTimeProps<DateType>, 'format' | 'defaultValue'> {}
+    Omit<SharedTimeProps<DateType>, 'format' | 'defaultValue'> {
+  getNow?: () => string;
+}
 
 /** Internal usage. For cross function get same aligned props */
 export type ReplacedPickerProps<DateType extends object = any> = {
