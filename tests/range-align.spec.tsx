@@ -74,6 +74,13 @@ describe('the popup arrow should be placed in the correct position.', () => {
       offsetParent: {
         get: () => document.body,
       },
+      offsetWidth: {
+        get() {
+          if (this.tagName === 'BODY') {
+            return 200;
+          }
+        },
+      },
     });
   });
 
@@ -123,7 +130,11 @@ describe('the popup arrow should be placed in the correct position.', () => {
       await Promise.resolve();
     });
     expect(document.querySelector('.rc-picker-range-arrow')).toHaveStyle({
-      'inset-inline-end': '0',
+      'inset-inline-end': '100px',
+    });
+
+    expect(document.querySelector('.rc-picker-active-bar')).toHaveStyle({
+      'inset-inline-end': '100px',
     });
 
     mock.mockRestore();
