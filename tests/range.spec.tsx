@@ -541,7 +541,7 @@ describe('Picker.Range', () => {
     it('pass tabIndex', () => {
       const { container } = render(
         <div>
-          <DayRangePicker tabIndex={-1}/>
+          <DayRangePicker tabIndex={-1} />
         </div>,
       );
 
@@ -705,12 +705,7 @@ describe('Picker.Range', () => {
   });
 
   it('prefix', () => {
-    render(
-      <DayRangePicker
-        prefix={<span className="prefix" />}
-        allowClear
-      />,
-    );
+    render(<DayRangePicker prefix={<span className="prefix" />} allowClear />);
     expect(document.querySelector('.prefix')).toBeInTheDocument();
   });
 
@@ -1770,6 +1765,36 @@ describe('Picker.Range', () => {
             return 100;
           }
         },
+      },
+      getBoundingClientRect() {
+        if (this.className.includes('rc-picker-dropdown')) {
+          return {
+            x: 0,
+            y: 0,
+            width: 300,
+          };
+        }
+        if (this.className.includes('rc-picker-range')) {
+          return {
+            x: 0,
+            y: 0,
+            width: 200,
+          };
+        }
+        if (this.className.includes('rc-picker-input')) {
+          return {
+            x: 100,
+            y: 0,
+            width: 100,
+          };
+        }
+        if (this.className.includes('rc-picker')) {
+          return {
+            x: 0,
+            y: 0,
+            width: 200,
+          };
+        }
       },
     });
     const { container } = render(
