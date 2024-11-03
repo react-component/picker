@@ -752,6 +752,7 @@ function RangePicker<DateType extends object = any>(
         // Visible
         visible={mergedOpen}
         onClose={onPopupClose}
+        alignedPlacement={alignedPlacement}
         // Range
         range
       >
