@@ -2,7 +2,7 @@
 import { act, fireEvent, render } from '@testing-library/react';
 import dayjs, { type Dayjs } from 'dayjs';
 import 'dayjs/locale/ar';
-import { spyElementPrototype } from 'rc-util/lib/test/domHook';
+import { spyElementPrototype, spyElementPrototypes } from 'rc-util/lib/test/domHook';
 import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import type { RangePickerProps } from '../src';
@@ -41,6 +41,89 @@ describe('NewPicker.Range', () => {
   afterEach(() => {
     jest.clearAllTimers();
     jest.useRealTimers();
+  });
+
+  let rangeRect = { x: 0, y: 0, width: 0, height: 0 };
+
+  beforeEach(() => {
+    rangeRect = {
+      x: 0,
+      y: 0,
+      width: 200,
+      height: 100,
+    };
+
+    document.documentElement.scrollLeft = 0;
+    // jest.useFakeTimers();
+  });
+
+  beforeAll(() => {
+    jest.spyOn(document.documentElement, 'scrollWidth', 'get').mockReturnValue(1000);
+
+    // Viewport size
+    spyElementPrototypes(HTMLElement, {
+      clientWidth: {
+        get: () => 400,
+      },
+      clientHeight: {
+        get: () => 400,
+      },
+    });
+
+    // Popup size
+    spyElementPrototypes(HTMLDivElement, {
+      getBoundingClientRect() {
+        if (this.className.includes('rc-picker-dropdown')) {
+          return {
+            x: 0,
+            y: 0,
+            width: 300,
+            height: 100,
+          };
+        }
+        if (this.className.includes('rc-picker-range')) {
+          return rangeRect;
+        }
+        if (this.className.includes('rc-picker')) {
+          return rangeRect;
+        }
+      },
+      offsetWidth: {
+        get() {
+          if (this.className.includes('rc-picker-range-wrapper')) {
+            return rangeRect.width;
+          }
+          if (this.className.includes('rc-picker-range-arrow')) {
+            return 10;
+          }
+          if (this.className.includes('rc-picker-input')) {
+            return 100;
+          }
+          if (this.className.includes('rc-picker-dropdown')) {
+            return 300;
+          }
+        },
+      },
+      offsetLeft: {
+        get() {
+          if (this.className.includes('rc-picker-input')) {
+            return 0;
+          }
+        },
+      },
+    });
+    spyElementPrototypes(HTMLElement, {
+      offsetParent: {
+        get: () => document.body,
+      },
+      offsetWidth: {
+        get() {
+          if (this.tagName === 'BODY') {
+            return 200;
+          }
+        },
+      },
+    });
   });
 
   describe('PickerValue', () => {
@@ -1098,7 +1181,7 @@ describe('NewPicker.Range', () => {
   it('pass tabIndex', () => {
     const { container } = render(
       <div>
-        <DayRangePicker tabIndex={-1}/>
+        <DayRangePicker tabIndex={-1} />
       </div>,
     );
 
@@ -1337,5 +1420,58 @@ describe('NewPicker.Range', () => {
       }
     }
     expect(existed).toBeTruthy();
+  });
+
+  describe('pupop aligned position', () => {
+    it('the arrow should be set to `inset-inline-start` when the popup is aligned to `bottomLeft`.', async () => {
+      render(<DayRangePicker open />);
+
+      await act(async () => {
+        jest.runAllTimers();
+
+        await Promise.resolve();
+      });
+      expect(document.querySelector('.rc-picker-range-arrow')).toHaveStyle({
+        'inset-inline-start': '0',
+      });
+    });
+
+    it('the arrow should be set to `inset-inline-end` when the popup is aligned to `bottomRight`.', async () => {
+      const mock = spyElementPrototypes(HTMLDivElement, {
+        getBoundingClientRect() {
+          if (this.className.includes('rc-picker-dropdown')) {
+            return {
+              x: 0,
+              y: 0,
+              width: 300,
+              height: 100,
+            };
+          }
+          if (this.className.includes('rc-picker-range')) {
+            return {
+              ...rangeRect,
+              x: 300,
+            };
+          }
+        },
+      });
+
+      render(<DayRangePicker open />);
+
+      await act(async () => {
+        jest.runAllTimers();
+
+        await Promise.resolve();
+      });
+      expect(document.querySelector('.rc-picker-range-arrow')).toHaveStyle({
+        'inset-inline-end': '100px',
+      });
+
+      expect(document.querySelector('.rc-picker-active-bar')).toHaveStyle({
+        'inset-inline-end': '100px',
+      });
+
+      mock.mockRestore();
+    });
   });
 });
