@@ -231,6 +231,25 @@ describe('Picker.Range', () => {
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
     });
 
+    it('should not be checked if the value is disabled', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          disabled={[true, false]}
+          defaultValue={[getDay('2024-10-28'), getDay('2024-11-20')]}
+          disabledDate={(date: Dayjs) => date <= dayjs('2024-11-20').endOf('day')}
+          onChange={onChange}
+        />,
+      );
+
+      openPicker(container, 1);
+      selectCell('21', 1);
+      expect(onChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['2024-10-28', '2024-11-21'],
+      );
+    });
+
     it('should close panel when finish first choose with showTime = true and disabled = [false, true]', () => {
       const { baseElement } = render(<DayRangePicker showTime disabled={[false, true]} />);
       expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
@@ -541,7 +560,7 @@ describe('Picker.Range', () => {
     it('pass tabIndex', () => {
       const { container } = render(
         <div>
-          <DayRangePicker tabIndex={-1}/>
+          <DayRangePicker tabIndex={-1} />
         </div>,
       );
 
@@ -705,12 +724,7 @@ describe('Picker.Range', () => {
   });
 
   it('prefix', () => {
-    render(
-      <DayRangePicker
-        prefix={<span className="prefix" />}
-        allowClear
-      />,
-    );
+    render(<DayRangePicker prefix={<span className="prefix" />} allowClear />);
     expect(document.querySelector('.prefix')).toBeInTheDocument();
   });
 
