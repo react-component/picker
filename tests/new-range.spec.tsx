@@ -25,6 +25,7 @@ jest.mock('rc-util/lib/Dom/isVisible', () => {
 });
 
 describe('NewPicker.Range', () => {
+  let rangeRect = { x: 0, y: 0, width: 0, height: 0 };
   beforeEach(() => {
     resetWarned();
     jest.useFakeTimers().setSystemTime(getDay('1990-09-03 00:00:00').valueOf());
@@ -36,16 +37,8 @@ describe('NewPicker.Range', () => {
         return childList.indexOf(this) * 30;
       },
     });
-  });
 
-  afterEach(() => {
-    jest.clearAllTimers();
-    jest.useRealTimers();
-  });
-
-  let rangeRect = { x: 0, y: 0, width: 0, height: 0 };
-
-  beforeEach(() => {
+    // =============== handle trigger align ===============
     rangeRect = {
       x: 0,
       y: 0,
@@ -54,7 +47,11 @@ describe('NewPicker.Range', () => {
     };
 
     document.documentElement.scrollLeft = 0;
-    // jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
   });
 
   beforeAll(() => {
