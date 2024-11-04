@@ -231,7 +231,7 @@ describe('Picker.Range', () => {
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
     });
 
-    it('should not be checked if the value is disabled', () => {
+    it('should not be checked if the startDate is disabled', () => {
       const onChange = jest.fn();
       const { container } = render(
         <DayRangePicker
@@ -247,6 +247,24 @@ describe('Picker.Range', () => {
       expect(onChange).toHaveBeenCalledWith(
         [expect.anything(), expect.anything()],
         ['2024-10-28', '2024-11-21'],
+      );
+    });
+    it('should not be checked if the endDate is disabled', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          disabled={[false, true]}
+          defaultValue={[getDay('2024-10-28'), getDay('2024-11-20')]}
+          disabledDate={(date: Dayjs) => date >= dayjs('2024-11-10').endOf('day')}
+          onChange={onChange}
+        />,
+      );
+
+      openPicker(container, 0);
+      selectCell('21', 0);
+      expect(onChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['2024-10-21', '2024-11-20'],
       );
     });
 
