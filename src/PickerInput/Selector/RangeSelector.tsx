@@ -200,8 +200,8 @@ function RangeSelector<DateType extends object = any>(
       const offsetLeft = x - pX;
 
       const activeOffset = placementRight ? parentWidth - inputWidth - offsetLeft : offsetLeft;
-      setActiveBarStyle(({ position }) => ({
-        position,
+      setActiveBarStyle(({ insetInlineStart, insetInlineEnd, ...rest }) => ({
+        ...rest,
         width: inputWidth,
         // parent will have border while focus, so need to  cut `parentBorderWidth` on opposite side.
         [offsetUnit]: activeOffset - parentBorderRightWidth,
