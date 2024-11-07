@@ -54,7 +54,7 @@ export type PickerTriggerProps = {
   placement?: string;
   builtinPlacements?: BuildInPlacements;
   direction?: 'ltr' | 'rtl';
-  alignedPlacement: string;
+  alignedPlacement?: string;
   // Visible
   visible: boolean;
   onClose: () => void;
