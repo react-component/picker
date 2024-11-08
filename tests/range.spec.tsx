@@ -2054,4 +2054,48 @@ describe('Picker.Range', () => {
       'rc-picker-input-active',
     );
   });
+
+  describe('activeBar position', () => {
+    const TestComponent = () => {
+      const [placement, setPlacement] = React.useState('bottomLeft');
+      return (
+        <>
+          <DayRangePicker className="#test-container" placement={placement} />
+          <button
+            data-testid="toggle-placement"
+            onClick={() => {
+              setPlacement(placement === 'bottomLeft' ? 'bottomRight' : 'bottomLeft');
+            }}
+          >
+            Toggle Placement
+          </button>
+        </>
+      );
+    };
+
+    it('should position the activeBar correctly when changing placement direction', () => {
+      const { container, getByTestId } = render(<TestComponent />);
+
+      // Test first input (left placement)
+      openPicker(container, 0);
+
+      const activeBar = container.querySelector('.rc-picker-active-bar');
+      expect(activeBar).toHaveStyle({
+        'inset-inline-start': 0,
+        'inset-inline-end': '',
+      });
+
+      // Change placement using state
+      getByTestId('toggle-placement').click();
+
+      openPicker(container, 1);
+
+      // Test second input (right placement)
+      expect(activeBar).toHaveStyle({
+        // ensure the startProps was removed
+        'inset-inline-start': '',
+        'inset-inline-end': 0,
+      });
+    });
+  });
 });
