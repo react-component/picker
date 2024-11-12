@@ -76,7 +76,7 @@ function orderDates<DateType extends object, DatesType extends DateType[]>(
  * Used for internal value management.
  * It should always use `mergedValue` in render logic
  */
-export function useCalendarValue<MergedValueType extends object[]>(mergedValue: MergedValueType) {
+function useCalendarValue<MergedValueType extends object[]>(mergedValue: MergedValueType) {
   const [calendarValue, setCalendarValue] = useSyncState(mergedValue);
 
   /** Sync calendarValue & submitValue back with value */
@@ -186,6 +186,8 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   flushSubmit: (index: number, needTriggerChange: boolean) => void,
   /** Trigger `onChange` directly without check `disabledDate` */
   triggerSubmitChange: (value: ValueType) => boolean,
+  /** Tell `index` has filled value in it */
+  hasSubmitValue: (index: number) => boolean,
 ] {
   const {
     // MISC
@@ -331,6 +333,11 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     2,
   );
 
+  // ============================ Check =============================
+  function hasSubmitValue(index: number) {
+    return !!submitValue()[index];
+  }
+
   // ============================ Return ============================
-  return [flushSubmit, triggerSubmit];
+  return [flushSubmit, triggerSubmit, hasSubmitValue];
 }
