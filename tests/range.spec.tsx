@@ -49,6 +49,7 @@ describe('Picker.Range', () => {
     resetWarned();
     global.scrollCalled = false;
     jest.useFakeTimers().setSystemTime(getDay('1990-09-03 00:00:00').valueOf());
+    document.body.innerHTML = '';
   });
 
   afterEach(() => {
@@ -2053,5 +2054,21 @@ describe('Picker.Range', () => {
     expect(shadowRoot.querySelectorAll('.rc-picker-input')[1]).toHaveClass(
       'rc-picker-input-active',
     );
+  });
+
+  it('should not click to focus on next field if first field is not confirm', () => {
+    const onCalendarChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker onCalendarChange={onCalendarChange} showTime needConfirm />,
+    );
+
+    // Select first field
+    openPicker(container, 0);
+    selectCell(11);
+    expect(onCalendarChange).toHaveBeenCalled();
+
+    // Not click confirm and click next field
+    openPicker(container, 1);
+    expect(container.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
   });
 });
