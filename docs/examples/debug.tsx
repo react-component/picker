@@ -83,7 +83,13 @@ export default () => {
         // }}
       />
 
-      <RangePicker {...sharedLocale} style={{ width: 400 }} allowEmpty />
+      <RangePicker
+        {...sharedLocale}
+        style={{ width: 400 }}
+        minDate={dayjs('2024')}
+        open
+        mode={['year', 'year']}
+      />
       {/* <SinglePicker
         {...dateFnsSharedLocale}
         style={{ width: 400 }}
