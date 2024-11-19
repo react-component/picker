@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import * as React from 'react';
 import type { InternalMode, PickerRef, SelectorProps } from '../../../interface';
 import { isSame } from '../../../utils/dateUtil';
-import PickerContext from '../../context';
 import type { PickerProps } from '../../SinglePicker';
-import useInputProps from '../hooks/useInputProps';
-import useRootProps from '../hooks/useRootProps';
+import PickerContext from '../../context';
 import Icon, { ClearIcon } from '../Icon';
 import Input, { type InputRef } from '../Input';
+import useInputProps from '../hooks/useInputProps';
+import useRootProps from '../hooks/useRootProps';
 import MultipleDates from './MultipleDates';
 
 export interface SingleSelectorProps<DateType extends object = any>
@@ -43,6 +43,7 @@ function SingleSelector<DateType extends object = any>(
 
     open,
 
+    prefix,
     clearIcon,
     suffixIcon,
     activeHelp,
@@ -99,6 +100,7 @@ function SingleSelector<DateType extends object = any>(
     required,
     'aria-required': ariaRequired,
     autoFocus,
+    tabIndex,
 
     removeIcon,
 
@@ -178,6 +180,7 @@ function SingleSelector<DateType extends object = any>(
         ref={inputRef as any}
         readOnly
         autoFocus={autoFocus}
+        tabIndex={tabIndex}
       />
       <Icon type="suffix" icon={suffixIcon} />
       {showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
@@ -187,6 +190,7 @@ function SingleSelector<DateType extends object = any>(
       ref={inputRef}
       {...getInputProps()}
       autoFocus={autoFocus}
+      tabIndex={tabIndex}
       suffixIcon={suffixIcon}
       clearIcon={showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
       showActiveCls={false}
@@ -221,6 +225,7 @@ function SingleSelector<DateType extends object = any>(
         onMouseDown?.(e);
       }}
     >
+      {prefix && <div className={`${prefixCls}-prefix`}>{prefix}</div>}
       {selectorNode}
     </div>
   );

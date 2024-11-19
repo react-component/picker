@@ -1,6 +1,7 @@
 // Note: zombieJ refactoring
 
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
+import { createRoot } from 'react-dom/client';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import KeyCode from 'rc-util/lib/KeyCode';
@@ -10,10 +11,10 @@ import React from 'react';
 import type { PickerRef, RangePickerProps } from '../src';
 import type { PickerMode } from '../src/interface';
 import {
+  DayRangePicker,
   clearValue,
   clickButton,
   closePicker,
-  DayRangePicker,
   findCell,
   getDay,
   inputValue,
@@ -228,6 +229,43 @@ describe('Picker.Range', () => {
       });
 
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
+    });
+
+    it('should not be checked if the startDate is disabled', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          disabled={[true, false]}
+          defaultValue={[getDay('2024-10-28'), getDay('2024-11-20')]}
+          disabledDate={(date: Dayjs) => date <= dayjs('2024-11-20').endOf('day')}
+          onChange={onChange}
+        />,
+      );
+
+      openPicker(container, 1);
+      selectCell('21', 1);
+      expect(onChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['2024-10-28', '2024-11-21'],
+      );
+    });
+    it('should not be checked if the endDate is disabled', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          disabled={[false, true]}
+          defaultValue={[getDay('2024-10-28'), getDay('2024-11-20')]}
+          disabledDate={(date: Dayjs) => date >= dayjs('2024-11-10').endOf('day')}
+          onChange={onChange}
+        />,
+      );
+
+      openPicker(container, 0);
+      selectCell('21', 0);
+      expect(onChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['2024-10-21', '2024-11-20'],
+      );
     });
 
     it('should close panel when finish first choose with showTime = true and disabled = [false, true]', () => {
@@ -557,6 +595,16 @@ describe('Picker.Range', () => {
 
       matchValues(container, '1990-09-13 01:02:03', '1990-09-23 05:06:07');
     });
+
+    it('pass tabIndex', () => {
+      const { container } = render(
+        <div>
+          <DayRangePicker tabIndex={-1} />
+        </div>,
+      );
+
+      expect(container.querySelector('input').getAttribute('tabIndex')).toBe('-1');
+    });
   });
 
   it('mode is array', () => {
@@ -712,6 +760,11 @@ describe('Picker.Range', () => {
     });
 
     expect(isOpen()).toBeFalsy();
+  });
+
+  it('prefix', () => {
+    render(<DayRangePicker prefix={<span className="prefix" />} allowClear />);
+    expect(document.querySelector('.prefix')).toBeInTheDocument();
   });
 
   it('icon', () => {
@@ -1993,5 +2046,33 @@ describe('Picker.Range', () => {
       '1990-09-02 00:00:00',
     ]);
     expect(isOpen()).toBeFalsy();
+  });
+
+  const renderShadow = (props?: any) => {
+    const host = document.createElement('div');
+    document.body.appendChild(host);
+
+    const shadowRoot = host.attachShadow({
+      mode: 'open',
+      delegatesFocus: false,
+    });
+    const container = document.createElement('div');
+    shadowRoot.appendChild(container);
+
+    act(() => {
+      createRoot(container).render(<DayRangePicker {...props} />);
+    });
+
+    return shadowRoot;
+  };
+
+  it('the end date selector can be selected in shadow dom', () => {
+    const shadowRoot = renderShadow();
+
+    openPicker(shadowRoot, 1);
+
+    expect(shadowRoot.querySelectorAll('.rc-picker-input')[1]).toHaveClass(
+      'rc-picker-input-active',
+    );
   });
 });

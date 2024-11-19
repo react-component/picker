@@ -41,3 +41,5 @@ coverage/
 # dumi
 .dumi/tmp
 .dumi/tmp-production
+
+bun.lockb

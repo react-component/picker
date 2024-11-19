@@ -715,4 +715,15 @@ describe('Picker.Panel', () => {
     expect(container.querySelector('.rc-picker-header-view').textContent).toEqual('01:02:03 AM');
   });
 
+  it('year panel disabled check', () => {
+    const { container } = render(
+      <DayPickerPanel
+        picker="year"
+        disabledDate={(date) => date.isBefore(getDay('1990-12-25'))}
+        defaultValue={getDay('1990-01-01')}
+      />,
+    );
+
+    expect(container.querySelector('.rc-picker-cell-selected').textContent).toEqual('1990');
+  });
 });

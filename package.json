@@ -1,6 +1,6 @@
 {
   "name": "rc-picker",
-  "version": "4.6.9",
+  "version": "4.7.0",
   "description": "React date & time picker",
   "keywords": [
     "react",
@@ -64,9 +64,9 @@
     "dumi": "^2.1.15",
     "eslint": "^8.56.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-jest": "^27.6.0",
+    "eslint-plugin-jest": "^28.8.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-unicorn": "^54.0.0",
+    "eslint-plugin-unicorn": "^55.0.0",
     "father": "^4.0.0",
     "glob": "^10.4.1",
     "husky": "^9.0.11",
@@ -75,6 +75,7 @@
     "luxon": "3.x",
     "mockdate": "^3.0.2",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.45",
     "np": "^10.0.2",
     "prettier": "^3.1.0",
     "rc-test": "^7.0.9",

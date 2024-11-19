@@ -1095,6 +1095,16 @@ describe('NewPicker.Range', () => {
     );
   });
 
+  it('pass tabIndex', () => {
+    const { container } = render(
+      <div>
+        <DayRangePicker tabIndex={-1}/>
+      </div>,
+    );
+
+    expect(container.querySelector('input').getAttribute('tabIndex')).toBe('-1');
+  });
+
   describe('7 days', () => {
     const SevenRangePicker = (props: Partial<RangePickerProps<Dayjs>>) => (
       <DayRangePicker
