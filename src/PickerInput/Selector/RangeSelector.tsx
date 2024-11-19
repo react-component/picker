@@ -187,10 +187,10 @@ function RangeSelector<DateType extends object = any>(
       const { offsetWidth, offsetLeft, offsetParent } = input.nativeElement;
       const parentWidth = (offsetParent as HTMLElement)?.offsetWidth || 0;
       const activeOffset = placementRight ? (parentWidth - offsetWidth - offsetLeft) : offsetLeft;
-      setActiveBarStyle((ori) => ({
-        ...ori,
+      setActiveBarStyle(({ insetInlineStart, insetInlineEnd, ...rest }) => ({
+        ...rest,
         width: offsetWidth,
-        [offsetUnit]: activeOffset,
+        [offsetUnit]: activeOffset
       }));
       onActiveOffset(activeOffset);
     }

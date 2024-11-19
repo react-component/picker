@@ -55,31 +55,40 @@ export default () => {
         {...sharedLocale}
         style={{ width: 400 }}
         showTime
+        // allowEmpty
         // disabledDate={(_, info) => {
         //   console.log('Date:', info);
         //   return false;
         // }}
-        disabledTime={(date, range, info) => {
-          // console.log(`Time-${range}`, range, info);
-          const { from } = info;
+        // disabledTime={(date, range, info) => {
+        //   // console.log(`Time-${range}`, range, info);
+        //   const { from } = info;
 
-          if (from) {
-            console.log(
-              `Time-${range}`,
-              from.format('YYYY-MM-DD HH:mm:ss'),
-              date.format('YYYY-MM-DD HH:mm:ss'),
-            );
-          }
+        //   if (from) {
+        //     console.log(
+        //       `Time-${range}`,
+        //       from.format('YYYY-MM-DD HH:mm:ss'),
+        //       date.format('YYYY-MM-DD HH:mm:ss'),
+        //     );
+        //   }
 
-          if (from && from.isSame(date, 'day')) {
-            return {
-              disabledHours: () => [from.hour()],
-              disabledMinutes: () => [0, 1, 2, 3],
-              disabledSeconds: () => [0, 1, 2, 3],
-            };
-          }
-          return {};
-        }}
+        //   if (from && from.isSame(date, 'day')) {
+        //     return {
+        //       disabledHours: () => [from.hour()],
+        //       disabledMinutes: () => [0, 1, 2, 3],
+        //       disabledSeconds: () => [0, 1, 2, 3],
+        //     };
+        //   }
+        //   return {};
+        // }}
+      />
+
+      <RangePicker
+        {...sharedLocale}
+        style={{ width: 400 }}
+        minDate={dayjs('2024')}
+        open
+        mode={['year', 'year']}
       />
       {/* <SinglePicker
         {...dateFnsSharedLocale}
