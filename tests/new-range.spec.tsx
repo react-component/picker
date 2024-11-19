@@ -1098,7 +1098,7 @@ describe('NewPicker.Range', () => {
   it('pass tabIndex', () => {
     const { container } = render(
       <div>
-        <DayRangePicker tabIndex={-1}/>
+        <DayRangePicker tabIndex={-1} />
       </div>,
     );
 
@@ -1254,6 +1254,13 @@ describe('NewPicker.Range', () => {
         key: 'Enter',
       });
       expect(onChange).toHaveBeenCalled();
+    });
+
+    it('should disabled super prev correctly', () => {
+      render(<DayRangePicker minDate={dayjs()} picker="year" open />);
+
+      // Expect super prev disabled
+      expect(document.querySelector('.rc-picker-header-super-prev-btn-disabled')).toBeDisabled();
     });
   });
 

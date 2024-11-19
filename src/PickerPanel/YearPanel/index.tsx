@@ -23,7 +23,7 @@ export default function YearPanel<DateType extends object = any>(
   // ========================== Base ==========================
   const [info] = useInfo(props, 'year');
   const getStartYear = (date: DateType) => {
-    const startYear = Math.floor(generateConfig.getYear(pickerValue) / 10) * 10;
+    const startYear = Math.floor(generateConfig.getYear(date) / 10) * 10;
     return generateConfig.setYear(date, startYear);
   };
   const getEndYear = (date: DateType) => {

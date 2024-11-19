@@ -17,7 +17,7 @@ export default function DecadePanel<DateType extends object = any>(
   const [info] = useInfo(props, 'decade');
 
   const getStartYear = (date: DateType) => {
-    const startYear = Math.floor(generateConfig.getYear(pickerValue) / 100) * 100;
+    const startYear = Math.floor(generateConfig.getYear(date) / 100) * 100;
     return generateConfig.setYear(date, startYear);
   };
   const getEndYear = (date: DateType) => {

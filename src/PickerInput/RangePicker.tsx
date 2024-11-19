@@ -33,7 +33,7 @@ import useRangeDisabledDate from './hooks/useRangeDisabledDate';
 import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
-import Popup, { PopupShowTimeConfig } from './Popup';
+import Popup, { type PopupShowTimeConfig } from './Popup';
 import RangeSelector, { type SelectorIdType } from './Selector/RangeSelector';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
@@ -325,6 +325,8 @@ function RangePicker<DateType extends object = any>(
     flushSubmit,
     /** Trigger `onChange` directly without check `disabledDate` */
     triggerSubmitChange,
+    /** Tell `index` has filled value in it */
+    hasSubmitValue,
   ] = useRangeValue<RangeValueType<DateType>, DateType>(
     filledProps,
     mergedValue,
@@ -630,6 +632,22 @@ function RangePicker<DateType extends object = any>(
 
   // ======================= Selector =======================
   const onSelectorFocus: SelectorProps['onFocus'] = (event, index) => {
+    // Check if `needConfirm` but user not submit yet
+    const activeListLen = activeIndexList.length;
+    const lastActiveIndex = activeIndexList[activeListLen - 1];
+    if (
+      activeListLen &&
+      lastActiveIndex !== index &&
+      needConfirm &&
+      // Not change index if is not filled
+      !allowEmpty[lastActiveIndex] &&
+      !hasSubmitValue(lastActiveIndex) &&
+      calendarValue[lastActiveIndex]
+    ) {
+      selectorRef.current.focus({ index: lastActiveIndex });
+      return;
+    }
+
     lastOperation('input');
 
     triggerOpen(true, {
