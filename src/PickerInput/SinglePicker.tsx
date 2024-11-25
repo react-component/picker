@@ -441,6 +441,11 @@ function Picker<DateType extends object = any>(
   const onPanelSelect = (date: DateType) => {
     lastOperation('panel');
 
+    // Not change values if multiple and current panel is to match with picker
+    if (multiple && internalMode !== picker) {
+      return;
+    }
+
     const nextValues = multiple ? toggleDates(getCalendarValue(), date) : [date];
 
     // Only trigger calendar event but not update internal `calendarValue` state

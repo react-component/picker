@@ -155,4 +155,40 @@ describe('Picker.Multiple', () => {
       ).toBeFalsy();
     });
   });
+
+  it('click year panel should not select', () => {
+    const onChange = jest.fn();
+    const onCalendarChange = jest.fn();
+    const { container } = render(
+      <DayPicker multiple onChange={onChange} onCalendarChange={onCalendarChange} needConfirm />,
+    );
+
+    expect(container.querySelector('.rc-picker-multiple')).toBeTruthy();
+
+    openPicker(container);
+
+    // Select year
+    fireEvent.click(document.querySelector('.rc-picker-year-btn'));
+    selectCell(1998);
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onCalendarChange).not.toHaveBeenCalled();
+
+    // Select Month
+    selectCell('Oct');
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onCalendarChange).not.toHaveBeenCalled();
+
+    // Select Date
+    selectCell(23);
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onCalendarChange).toHaveBeenCalledWith(
+      expect.anything(),
+      ['1998-10-23'],
+      expect.anything(),
+    );
+
+    // Confirm
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1998-10-23']);
+  });
 });
