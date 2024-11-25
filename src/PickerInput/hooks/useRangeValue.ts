@@ -4,7 +4,7 @@ import type { GenerateConfig } from '../../generate';
 import useSyncState from '../../hooks/useSyncState';
 import type { BaseInfo, FormatType, Locale, ReplaceListType } from '../../interface';
 import { formatValue, isSame, isSameTimestamp } from '../../utils/dateUtil';
-import { fillIndex } from '../../utils/miscUtil';
+import { fillRangeValues } from '../../utils/miscUtil';
 import type { RangePickerProps } from '../RangePicker';
 import type { ReplacedPickerProps } from '../SinglePicker';
 import useLockEffect from './useLockEffect';
@@ -142,7 +142,6 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
 
       // Update merged value
       const [isSameMergedDates, isSameStart] = isSameDates(calendarValue(), clone);
-
       if (!isSameMergedDates) {
         setCalendarValue(clone);
 
@@ -302,8 +301,11 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   });
 
   // ========================= Flush Submit =========================
-  const flushSubmit = useEvent((index: number, needTriggerChange: boolean) => {
-    const nextSubmitValue = fillIndex(submitValue(), index, getCalendarValue()[index]);
+  const flushSubmit = useEvent((_: number, needTriggerChange: boolean) => {
+    const start = getCalendarValue()[0];
+    const end = getCalendarValue()[1];
+
+    const nextSubmitValue = fillRangeValues(submitValue(), start, end);
     setSubmitValue(nextSubmitValue);
 
     if (needTriggerChange) {

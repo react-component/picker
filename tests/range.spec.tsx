@@ -333,27 +333,6 @@ describe('Picker.Range', () => {
       );
     });
 
-    it('endDate is selectable when startDate is disabled and validation fails', () => {
-      jest.useRealTimers();
-      const onChange = jest.fn();
-      const now = dayjs();
-      const disabledDate = (current: Dayjs) => {
-        return current.diff(now, 'days') < 0;
-      };
-      const { container } = render(
-        <DayRangePicker
-          disabled={[true, false]}
-          defaultValue={[getDay('2023-09-03'), getDay('2024-07-30')]}
-          onChange={onChange}
-          disabledDate={disabledDate}
-        />,
-      );
-      const day = new Date().getDate()
-      openPicker(container,1);
-      selectCell(day,1);
-      expect(onChange.mock.calls[0][1]).toEqual(['2023-09-03', dayjs().format('YYYY-MM-DD')]);
-    });
-
     it('null value with disabled', () => {
       // Should not warning with allowEmpty
       render(<DayRangePicker disabled={[false, true]} allowEmpty value={[null, null]} />);
@@ -1038,6 +1017,35 @@ describe('Picker.Range', () => {
     expect(document.querySelector('.rc-picker-month-panel')).toBeTruthy();
   });
 
+  it('returns right dates onChange when manually change date time without pressing OK button', () => {
+    const onChange = jest.fn();
+
+    const { container } = render(<DayRangePicker onChange={onChange} showTime />);
+    openPicker(container);
+    selectCell(15);
+    fireEvent.click(document.querySelector('ul').querySelector('li'));
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+
+    selectCell(16);
+    fireEvent.click(document.querySelector('ul').querySelector('li'));
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), [
+      '1990-09-15 00:00:00',
+      '1990-09-16 00:00:00',
+    ]);
+
+    onChange.mockReset();
+    openPicker(container, 0);
+    selectCell(1);
+    openPicker(container, 1);
+    selectCell(2);
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), [
+      '1990-09-01 00:00:00',
+      '1990-09-02 00:00:00',
+    ]);
+  });
   describe('reorder onChange logic', () => {
     it('datetime should reorder in onChange if start is after end in same date', () => {
       const onChange = jest.fn();

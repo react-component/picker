@@ -26,6 +26,12 @@ export function fillIndex<T extends any[]>(ori: T, index: number, value: T[numbe
   return clone;
 }
 
+export function fillRangeValues<T extends any[]>(ori: T, start: T[number], end: T[number]): T {
+  const clone = [...ori] as T;
+  [clone[0], clone[1]] = [start, end];
+
+  return clone;
+}
 /** Pick props from the key list. Will filter empty value */
 export function pickProps<T extends object>(props: T, keys?: (keyof T)[] | readonly (keyof T)[]) {
   const clone = {} as T;
