@@ -716,6 +716,40 @@ describe('NewPicker.Range', () => {
       expect(onChange).toHaveBeenCalledWith(expect.anything(), ['06:00:00', '11:00:00']);
     });
 
+    it('Field switch should be locked even when the field already has the values', () => {
+      const onChange = jest.fn();
+
+      const { container } = render(<DayRangePicker onChange={onChange} showTime />);
+      openPicker(container);
+      selectCell(15);
+      fireEvent.click(document.querySelector('ul').querySelector('li'));
+      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+
+      selectCell(16);
+      fireEvent.click(document.querySelector('ul').querySelector('li'));
+      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), [
+        '1990-09-15 00:00:00',
+        '1990-09-16 00:00:00',
+      ]);
+
+      onChange.mockReset();
+      openPicker(container, 0);
+      selectCell(1);
+      openPicker(container, 1);
+      expect(container.querySelectorAll('input')[0]).toHaveFocus();
+      expect(container.querySelectorAll('input')[1]).not.toHaveFocus();
+
+      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      selectCell(2);
+      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      expect(onChange).toHaveBeenCalledWith(expect.anything(), [
+        '1990-09-01 00:00:00',
+        '1990-09-02 00:00:00',
+      ]);
+    });
+
     it('double click to confirm if needConfirm', () => {
       const onChange = jest.fn();
 

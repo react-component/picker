@@ -4,7 +4,7 @@ import type { GenerateConfig } from '../../generate';
 import useSyncState from '../../hooks/useSyncState';
 import type { BaseInfo, FormatType, Locale, ReplaceListType } from '../../interface';
 import { formatValue, isSame, isSameTimestamp } from '../../utils/dateUtil';
-import { fillRangeValues } from '../../utils/miscUtil';
+import { fillIndex } from '../../utils/miscUtil';
 import type { RangePickerProps } from '../RangePicker';
 import type { ReplacedPickerProps } from '../SinglePicker';
 import useLockEffect from './useLockEffect';
@@ -301,11 +301,8 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   });
 
   // ========================= Flush Submit =========================
-  const flushSubmit = useEvent((_: number, needTriggerChange: boolean) => {
-    const start = getCalendarValue()[0];
-    const end = getCalendarValue()[1];
-
-    const nextSubmitValue = fillRangeValues(submitValue(), start, end);
+  const flushSubmit = useEvent((index: number, needTriggerChange: boolean) => {
+    const nextSubmitValue = fillIndex(submitValue(), index, getCalendarValue()[index]);
     setSubmitValue(nextSubmitValue);
 
     if (needTriggerChange) {
@@ -337,7 +334,10 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
 
   // ============================ Check =============================
   function hasSubmitValue(index: number) {
-    return !!submitValue()[index];
+    return (
+      !!submitValue()[index] &&
+      isSame(generateConfig, locale, submitValue()[index], getCalendarValue()[index], picker)
+    );
   }
 
   // ============================ Return ============================

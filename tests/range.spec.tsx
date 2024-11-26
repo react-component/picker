@@ -1017,35 +1017,6 @@ describe('Picker.Range', () => {
     expect(document.querySelector('.rc-picker-month-panel')).toBeTruthy();
   });
 
-  it('returns right dates onChange when manually change date time without pressing OK button', () => {
-    const onChange = jest.fn();
-
-    const { container } = render(<DayRangePicker onChange={onChange} showTime />);
-    openPicker(container);
-    selectCell(15);
-    fireEvent.click(document.querySelector('ul').querySelector('li'));
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
-
-    selectCell(16);
-    fireEvent.click(document.querySelector('ul').querySelector('li'));
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
-
-    expect(onChange).toHaveBeenCalledWith(expect.anything(), [
-      '1990-09-15 00:00:00',
-      '1990-09-16 00:00:00',
-    ]);
-
-    onChange.mockReset();
-    openPicker(container, 0);
-    selectCell(1);
-    openPicker(container, 1);
-    selectCell(2);
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
-    expect(onChange).toHaveBeenCalledWith(expect.anything(), [
-      '1990-09-01 00:00:00',
-      '1990-09-02 00:00:00',
-    ]);
-  });
   describe('reorder onChange logic', () => {
     it('datetime should reorder in onChange if start is after end in same date', () => {
       const onChange = jest.fn();
