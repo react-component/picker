@@ -722,11 +722,9 @@ describe('NewPicker.Range', () => {
       const { container } = render(<DayRangePicker onChange={onChange} showTime />);
       openPicker(container);
       selectCell(15);
-      fireEvent.click(document.querySelector('ul').querySelector('li'));
       fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
       selectCell(16);
-      fireEvent.click(document.querySelector('ul').querySelector('li'));
       fireEvent.click(document.querySelector('.rc-picker-ok button'));
 
       expect(onChange).toHaveBeenCalledWith(expect.anything(), [
@@ -742,6 +740,8 @@ describe('NewPicker.Range', () => {
       expect(container.querySelectorAll('input')[1]).not.toHaveFocus();
 
       fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      openPicker(container, 1);
+      expect(container.querySelectorAll('input')[1]).toHaveFocus();
       selectCell(2);
       fireEvent.click(document.querySelector('.rc-picker-ok button'));
       expect(onChange).toHaveBeenCalledWith(expect.anything(), [
