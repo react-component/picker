@@ -1,6 +1,5 @@
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
-import { noteOnce } from 'rc-util/lib/warning';
 import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
