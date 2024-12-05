@@ -100,9 +100,13 @@ const parseLocale = (locale: string) => {
   return mapLocale || locale.split('_')[0];
 };
 
+/* istanbul ignore next */
 const parseNoMatchNotice = () => {
-  /* istanbul ignore next */
-  noteOnce(false, 'Not match any format. Please help to fire a issue about this.');
+  // zombieJ:
+  // When user typing, its always miss match format.
+  // This check is meaningless.
+  // https://github.com/ant-design/ant-design/issues/51839
+  // noteOnce(false, 'Not match any format. Please help to fire a issue about this.');
 };
 
 const generateConfig: GenerateConfig<Dayjs> = {
