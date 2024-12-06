@@ -142,7 +142,6 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
 
       // Update merged value
       const [isSameMergedDates, isSameStart] = isSameDates(calendarValue(), clone);
-
       if (!isSameMergedDates) {
         setCalendarValue(clone);
 
@@ -335,7 +334,10 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
 
   // ============================ Check =============================
   function hasSubmitValue(index: number) {
-    return !!submitValue()[index];
+    return (
+      !!submitValue()[index] &&
+      isSame(generateConfig, locale, submitValue()[index], getCalendarValue()[index], picker)
+    );
   }
 
   // ============================ Return ============================
