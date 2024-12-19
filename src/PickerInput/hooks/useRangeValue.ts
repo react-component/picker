@@ -186,7 +186,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   /** Trigger `onChange` directly without check `disabledDate` */
   triggerSubmitChange: (value: ValueType) => boolean,
   /** Tell `index` has filled value in it */
-  hasSubmitValue: (index: number, submitIndex: number | null) => boolean,
+  hasSubmitValue: (index: number) => boolean,
 ] {
   const {
     // MISC
@@ -333,8 +333,8 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   );
 
   // ============================ Check =============================
-  function hasSubmitValue(index: number, submitIndex: number | null) {
-    return submitIndex === index;
+  function hasSubmitValue(index: number) {
+    return !!submitValue()[index];
   }
 
   // ============================ Return ============================
