@@ -142,7 +142,6 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
 
       // Update merged value
       const [isSameMergedDates, isSameStart] = isSameDates(calendarValue(), clone);
-
       if (!isSameMergedDates) {
         setCalendarValue(clone);
 
@@ -186,8 +185,6 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   flushSubmit: (index: number, needTriggerChange: boolean) => void,
   /** Trigger `onChange` directly without check `disabledDate` */
   triggerSubmitChange: (value: ValueType) => boolean,
-  /** Tell `index` has filled value in it */
-  hasSubmitValue: (index: number) => boolean,
 ] {
   const {
     // MISC
@@ -333,11 +330,6 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     2,
   );
 
-  // ============================ Check =============================
-  function hasSubmitValue(index: number) {
-    return !!submitValue()[index];
-  }
-
   // ============================ Return ============================
-  return [flushSubmit, triggerSubmit, hasSubmitValue];
+  return [flushSubmit, triggerSubmit];
 }

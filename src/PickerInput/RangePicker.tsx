@@ -260,6 +260,8 @@ function RangePicker<DateType extends object = any>(
     setActiveIndex,
     nextActiveIndex,
     activeIndexList,
+    updateSubmitIndex,
+    hasActiveSubmitValue,
   ] = useRangeActive(disabled, allowEmpty, mergedOpen);
 
   const onSharedFocus = (event: React.FocusEvent<HTMLElement>, index?: number) => {
@@ -325,8 +327,6 @@ function RangePicker<DateType extends object = any>(
     flushSubmit,
     /** Trigger `onChange` directly without check `disabledDate` */
     triggerSubmitChange,
-    /** Tell `index` has filled value in it */
-    hasSubmitValue,
   ] = useRangeValue<RangeValueType<DateType>, DateType>(
     filledProps,
     mergedValue,
@@ -413,7 +413,7 @@ function RangePicker<DateType extends object = any>(
     if (date) {
       nextValue = fillCalendarValue(date, activeIndex);
     }
-
+    updateSubmitIndex(activeIndex);
     // Get next focus index
     const nextIndex = nextActiveIndex(nextValue);
 
@@ -641,7 +641,7 @@ function RangePicker<DateType extends object = any>(
       needConfirm &&
       // Not change index if is not filled
       !allowEmpty[lastActiveIndex] &&
-      !hasSubmitValue(lastActiveIndex) &&
+      !hasActiveSubmitValue(lastActiveIndex) &&
       calendarValue[lastActiveIndex]
     ) {
       selectorRef.current.focus({ index: lastActiveIndex });
