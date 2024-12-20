@@ -23,13 +23,23 @@ export default function useRangeActive<DateType>(
   setActiveIndex: (index: number) => void,
   nextActiveIndex: NextActive<DateType>,
   activeList: number[],
+  updateSubmitIndex: (index: number | null) => void,
+  hasActiveSubmitValue: (index: number) => boolean,
 ] {
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [focused, setFocused] = React.useState<boolean>(false);
 
   const activeListRef = React.useRef<number[]>([]);
-
+  const submitIndexRef = React.useRef<number | null>(null);
   const lastOperationRef = React.useRef<OperationType>(null);
+
+  const updateSubmitIndex = (index: number | null) => {
+    submitIndexRef.current = index;
+  };
+
+  const hasActiveSubmitValue = (index: number) => {
+    return submitIndexRef.current === index;
+  };
 
   const triggerFocus = (nextFocus: boolean) => {
     setFocused(nextFocus);
@@ -62,6 +72,7 @@ export default function useRangeActive<DateType>(
   useLockEffect(focused || mergedOpen, () => {
     if (!focused) {
       activeListRef.current = [];
+      updateSubmitIndex(null);
     }
   });
 
@@ -79,5 +90,7 @@ export default function useRangeActive<DateType>(
     setActiveIndex,
     nextActiveIndex,
     activeListRef.current,
+    updateSubmitIndex,
+    hasActiveSubmitValue,
   ];
 }
