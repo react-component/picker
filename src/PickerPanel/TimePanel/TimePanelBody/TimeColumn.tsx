@@ -54,7 +54,7 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
       stopScroll();
       clearDelayCheck();
     };
-  }, [value, optionalValue, units]);
+  }, [value, optionalValue, units.join(',')]);
 
   // ========================= Change =========================
   // Scroll event if sync onScroll

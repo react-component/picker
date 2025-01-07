@@ -292,9 +292,7 @@ describe('Picker.Basic', () => {
 
     // https://github.com/ant-design/ant-design/issues/49400
     it('should not throw errow when input end year first', () => {
-      const { container } = render(
-        <DayRangePicker picker="year" />,
-      );
+      const { container } = render(<DayRangePicker picker="year" />);
       openPicker(container);
       fireEvent.focus(container.querySelectorAll('input')[1]);
       expect(() => {
@@ -369,7 +367,7 @@ describe('Picker.Basic', () => {
     it('pass tabIndex', () => {
       const { container } = render(
         <div>
-          <DayPicker tabIndex={-1}/>
+          <DayPicker tabIndex={-1} />
         </div>,
       );
 
@@ -583,12 +581,7 @@ describe('Picker.Basic', () => {
   });
 
   it('prefix', () => {
-    render(
-      <DayPicker
-        prefix={<span className="prefix" />}
-        allowClear
-      />,
-    );
+    render(<DayPicker prefix={<span className="prefix" />} allowClear />);
     expect(document.querySelector('.prefix')).toBeInTheDocument();
   });
 
@@ -1064,6 +1057,10 @@ describe('Picker.Basic', () => {
       });
     });
 
+    beforeEach(() => {
+      triggered = false;
+    });
+
     afterAll(() => {
       domMock.mockRestore();
     });
@@ -1082,6 +1079,46 @@ describe('Picker.Basic', () => {
 
       jest.useRealTimers();
       unmount();
+    });
+
+    it('not repeat scroll if disabledTime return same value', () => {
+      const getDisabledTimeFn = () => () => ({
+        disabledHours: () => [10],
+        disabledMinutes: () => [10],
+        disabledSeconds: () => [10],
+      });
+
+      const { rerender } = render(
+        <DayPicker
+          picker="time"
+          defaultValue={getDay('2020-07-22 09:03:28')}
+          open
+          disabledTime={getDisabledTimeFn()}
+        />,
+      );
+
+      act(() => {
+        jest.advanceTimersByTime(1000);
+        jest.clearAllTimers();
+      });
+      expect(triggered).toBeTruthy();
+
+      // New disabledTime
+      triggered = false;
+      rerender(
+        <DayPicker
+          picker="time"
+          defaultValue={getDay('2020-07-22 09:03:28')}
+          open
+          disabledTime={getDisabledTimeFn()}
+        />,
+      );
+
+      act(() => {
+        jest.advanceTimersByTime(1000);
+        jest.clearAllTimers();
+      });
+      expect(triggered).toBeFalsy();
     });
   });
 
