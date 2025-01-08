@@ -1082,20 +1082,24 @@ describe('Picker.Basic', () => {
     });
 
     it('not repeat scroll if disabledTime return same value', () => {
-      const getDisabledTimeFn = () => () => ({
-        disabledHours: () => [10],
-        disabledMinutes: () => [10],
-        disabledSeconds: () => [10],
-      });
+      const getDisabledTimeFn =
+        (num = 10) =>
+        () => ({
+          disabledHours: () => [num],
+          disabledMinutes: () => [num],
+          disabledSeconds: () => [num],
+        });
 
-      const { rerender } = render(
+      const renderDemo = (disabledTime: any) => (
         <DayPicker
           picker="time"
           defaultValue={getDay('2020-07-22 09:03:28')}
           open
-          disabledTime={getDisabledTimeFn()}
-        />,
+          disabledTime={disabledTime}
+        />
       );
+
+      const { rerender } = render(renderDemo(getDisabledTimeFn()));
 
       act(() => {
         jest.advanceTimersByTime(1000);
@@ -1105,20 +1109,23 @@ describe('Picker.Basic', () => {
 
       // New disabledTime
       triggered = false;
-      rerender(
-        <DayPicker
-          picker="time"
-          defaultValue={getDay('2020-07-22 09:03:28')}
-          open
-          disabledTime={getDisabledTimeFn()}
-        />,
-      );
+      renderDemo(getDisabledTimeFn());
 
       act(() => {
         jest.advanceTimersByTime(1000);
         jest.clearAllTimers();
       });
       expect(triggered).toBeFalsy();
+
+      // New disabledTime but different disabled value
+      triggered = false;
+      rerender(renderDemo(getDisabledTimeFn(11)));
+
+      act(() => {
+        jest.advanceTimersByTime(1000);
+        jest.clearAllTimers();
+      });
+      expect(triggered).toBeTruthy();
     });
   });
 
