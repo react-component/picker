@@ -23,6 +23,11 @@ export interface TimeUnitColumnProps {
   changeOnScroll?: boolean;
 }
 
+// Not use JSON.stringify to avoid dead loop
+function flattenUnits(units: Unit<string | number>[]) {
+  return units.map(({ value, label, disabled }) => [value, label, disabled].join(',')).join(';');
+}
+
 export default function TimeColumn<DateType extends object>(props: TimeUnitColumnProps) {
   const { units, value, optionalValue, type, onChange, onHover, onDblClick, changeOnScroll } =
     props;
@@ -54,7 +59,7 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
       stopScroll();
       clearDelayCheck();
     };
-  }, [value, optionalValue, units.join(',')]);
+  }, [value, optionalValue, flattenUnits(units)]);
 
   // ========================= Change =========================
   // Scroll event if sync onScroll
