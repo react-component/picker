@@ -98,7 +98,13 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
       : []);
 
   if (prefixColumn) {
-    headerCells.push(<th key="empty" aria-label="empty cell" />);
+    headerCells.push(
+      <th key="empty">
+        <span style={{ width: 0, height: 0, position: 'absolute', overflow: 'hidden', opacity: 0 }}>
+          Week
+        </span>
+      </th>,
+    );
   }
   for (let i = 0; i < WEEK_DAY_COUNT; i += 1) {
     headerCells.push(<th key={i}>{weekDaysLocale[(i + weekFirstDay) % WEEK_DAY_COUNT]}</th>);
