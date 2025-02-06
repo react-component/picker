@@ -12,6 +12,7 @@ const locale: Locale = {
   dateSelect: 'Pilih tarikh',
   weekSelect: 'Pilih minggu',
   clear: 'Padam',
+  week: 'Minggu',
   month: 'Bulan',
   year: 'Tahun',
   previousMonth: 'Bulan lepas',

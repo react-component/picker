@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'მიმდინარე თარიღი',
   ok: 'OK',
   clear: 'გასუფთავება',
+  week: 'კვირა',
   month: 'თვე',
   year: 'წელი',
   timeSelect: 'დროის არჩევა',

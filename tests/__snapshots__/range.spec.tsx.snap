@@ -275,7 +275,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                       class="rc-picker-header"
                     >
                       <button
-                        aria-label="super-prev-year"
+                        aria-label="上一年 (Control键加左方向键)"
                         class="rc-picker-header-super-prev-btn"
                         tabindex="-1"
                         type="button"
@@ -283,7 +283,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         «
                       </button>
                       <button
-                        aria-label="prev-year"
+                        aria-label="上个月 (翻页上键)"
                         class="rc-picker-header-prev-btn"
                         tabindex="-1"
                         type="button"
@@ -294,7 +294,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         class="rc-picker-header-view"
                       >
                         <button
-                          aria-label="year panel"
+                          aria-label="选择年份"
                           class="rc-picker-year-btn"
                           tabindex="-1"
                           type="button"
@@ -302,7 +302,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                           1990年
                         </button>
                         <button
-                          aria-label="month panel"
+                          aria-label="选择月份"
                           class="rc-picker-month-btn"
                           tabindex="-1"
                           type="button"
@@ -311,7 +311,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         </button>
                       </div>
                       <button
-                        aria-label="next-year"
+                        aria-label="下个月 (翻页下键)"
                         class="rc-picker-header-next-btn"
                         style="visibility: hidden;"
                         tabindex="-1"
@@ -320,7 +320,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         ›
                       </button>
                       <button
-                        aria-label="super-next-year"
+                        aria-label="下一年 (Control键加右方向键)"
                         class="rc-picker-header-super-next-btn"
                         style="visibility: hidden;"
                         tabindex="-1"
@@ -767,7 +767,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                       class="rc-picker-header"
                     >
                       <button
-                        aria-label="super-prev-year"
+                        aria-label="上一年 (Control键加左方向键)"
                         class="rc-picker-header-super-prev-btn"
                         style="visibility: hidden;"
                         tabindex="-1"
@@ -776,7 +776,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         «
                       </button>
                       <button
-                        aria-label="prev-year"
+                        aria-label="上个月 (翻页上键)"
                         class="rc-picker-header-prev-btn"
                         style="visibility: hidden;"
                         tabindex="-1"
@@ -788,7 +788,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         class="rc-picker-header-view"
                       >
                         <button
-                          aria-label="year panel"
+                          aria-label="选择年份"
                           class="rc-picker-year-btn"
                           tabindex="-1"
                           type="button"
@@ -796,7 +796,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                           1990年
                         </button>
                         <button
-                          aria-label="month panel"
+                          aria-label="选择月份"
                           class="rc-picker-month-btn"
                           tabindex="-1"
                           type="button"
@@ -805,7 +805,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         </button>
                       </div>
                       <button
-                        aria-label="next-year"
+                        aria-label="下个月 (翻页下键)"
                         class="rc-picker-header-next-btn"
                         tabindex="-1"
                         type="button"
@@ -813,7 +813,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         ›
                       </button>
                       <button
-                        aria-label="super-next-year"
+                        aria-label="下一年 (Control键加右方向键)"
                         class="rc-picker-header-super-next-btn"
                         tabindex="-1"
                         type="button"
@@ -1332,7 +1332,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                       class="rc-picker-header"
                     >
                       <button
-                        aria-label="super-prev-year"
+                        aria-label="上一年 (Control键加左方向键)"
                         class="rc-picker-header-super-prev-btn"
                         tabindex="-1"
                         type="button"
@@ -1343,7 +1343,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                         class="rc-picker-header-view"
                       >
                         <button
-                          aria-label="year panel"
+                          aria-label="选择年份"
                           class="rc-picker-year-btn"
                           tabindex="-1"
                           type="button"
@@ -1352,7 +1352,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                         </button>
                       </div>
                       <button
-                        aria-label="super-next-year"
+                        aria-label="下一年 (Control键加右方向键)"
                         class="rc-picker-header-super-next-btn"
                         style="visibility: hidden;"
                         tabindex="-1"
@@ -1500,7 +1500,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                       class="rc-picker-header"
                     >
                       <button
-                        aria-label="super-prev-year"
+                        aria-label="上一年 (Control键加左方向键)"
                         class="rc-picker-header-super-prev-btn"
                         style="visibility: hidden;"
                         tabindex="-1"
@@ -1512,7 +1512,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                         class="rc-picker-header-view"
                       >
                         <button
-                          aria-label="year panel"
+                          aria-label="选择年份"
                           class="rc-picker-year-btn"
                           tabindex="-1"
                           type="button"
@@ -1521,7 +1521,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                         </button>
                       </div>
                       <button
-                        aria-label="super-next-year"
+                        aria-label="下一年 (Control键加右方向键)"
                         class="rc-picker-header-super-next-btn"
                         tabindex="-1"
                         type="button"

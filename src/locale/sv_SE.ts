@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'Till idag',
   ok: 'OK',
   clear: 'Avbryt',
+  week: 'Vecka',
   month: 'Månad',
   year: 'År',
   timeSelect: 'Välj tidpunkt',

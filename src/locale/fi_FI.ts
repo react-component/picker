@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'Tämä päivä',
   ok: 'OK',
   clear: 'Tyhjennä',
+  week: 'Viikko',
   month: 'Kuukausi',
   year: 'Vuosi',
   timeSelect: 'Valise aika',

@@ -10,6 +10,7 @@ const locale: Locale = {
   ok: 'Bolýar',
   clear: 'Arassala',
   month: 'Aý',
+  week: 'Gün',
   year: 'Ýyl',
   timeSelect: 'Wagt saýla',
   dateSelect: 'Gün saýla',

@@ -12,6 +12,7 @@ const locale: Locale = {
   dateSelect: 'ជ្រើសរើសកាលបរិច្ឆេទ',
   weekSelect: 'ជ្រើសរើសសប្តាហ៍',
   clear: 'ច្បាស់',
+  week: 'សប្តាហ៍',
   month: 'ខែ',
   year: 'ឆ្នាំ',
   previousMonth: 'ខែមុន (ឡើងទំព័រ)',

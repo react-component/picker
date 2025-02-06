@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'Vissza a mai napra', // 'Back to today',
   ok: 'OK',
   clear: 'Törlés', // 'Clear',
+  week: 'Hét',
   month: 'Hónap', // 'Month',
   year: 'Év', // 'Year',
   timeSelect: 'Időpont kiválasztása', // 'Select time',

@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'Rodyti šiandien',
   ok: 'Gerai',
   clear: 'Išvalyti',
+  week: 'Savaitė',
   month: 'Mėnesis',
   year: 'Metai',
   timeSelect: 'Pasirinkti laiką',

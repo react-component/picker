@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'Поточна дата',
   ok: 'OK',
   clear: 'Очистити',
+  week: 'Тиждень',
   month: 'Місяць',
   year: 'Рік',
   timeSelect: 'Обрати час',

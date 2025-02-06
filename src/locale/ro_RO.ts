@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'Înapoi la azi',
   ok: 'OK',
   clear: 'Șterge',
+  week: 'Săptămână',
   month: 'Lună',
   year: 'An',
   timeSelect: 'selectează timpul',

@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'Bugunga qaytish',
   ok: 'OK',
   clear: 'Toza',
+  week: 'Xafta',
   month: 'Oy',
   year: 'Yil',
   timeSelect: 'vaqtni tanlang',
