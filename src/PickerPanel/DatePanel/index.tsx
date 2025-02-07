@@ -99,10 +99,8 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
 
   if (prefixColumn) {
     headerCells.push(
-      <th key="empty">
-        <span style={{ width: 0, height: 0, position: 'absolute', overflow: 'hidden', opacity: 0 }}>
-          {locale.week}
-        </span>
+      <th key="empty" style={{ pointerEvents: 'none', opacity: 0 }}>
+        {locale.week}
       </th>,
     );
   }

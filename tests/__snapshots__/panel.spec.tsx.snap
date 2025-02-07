@@ -3395,12 +3395,10 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
         >
           <thead>
             <tr>
-              <th>
-                <span
-                  style="width: 0px; height: 0px; position: absolute; overflow: hidden; opacity: 0;"
-                >
-                  Week
-                </span>
+              <th
+                style="pointer-events: none; opacity: 0;"
+              >
+                Week
               </th>
               <th>
                 Su
@@ -6958,12 +6956,10 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
         >
           <thead>
             <tr>
-              <th>
-                <span
-                  style="width: 0px; height: 0px; position: absolute; overflow: hidden; opacity: 0;"
-                >
-                  Week
-                </span>
+              <th
+                style="pointer-events: none; opacity: 0;"
+              >
+                Week
               </th>
               <th>
                 Su
