@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'Zpět na dnešek',
   ok: 'OK',
   clear: 'Vymazat',
+  week: 'Týden',
   month: 'Měsíc',
   year: 'Rok',
   timeSelect: 'Vybrat čas',

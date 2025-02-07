@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'Vrati se na danas',
   ok: 'U redu',
   clear: 'Obriši',
+  week: 'Nedelja',
   month: 'Mesec',
   year: 'Godina',
   timeSelect: 'Izaberi vreme',

@@ -13,6 +13,7 @@ const locale: Locale = {
   dateSelect: '選擇日期',
   weekSelect: '選擇周',
   clear: '清除',
+  week: '週',
   month: '月',
   year: '年',
   previousMonth: '上個月 (翻頁上鍵)',

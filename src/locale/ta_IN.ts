@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'இன்றுக்கு திரும்பு',
   ok: 'சரி',
   clear: 'அழி',
+  week: 'வாரம்',
   month: 'மாதம்',
   year: 'வருடம்',
   timeSelect: 'நேரத்தைத் தேர்ந்தெடு',

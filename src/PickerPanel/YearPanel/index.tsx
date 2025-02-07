@@ -77,7 +77,7 @@ export default function YearPanel<DateType extends object = any>(
     <button
       type="button"
       key="decade"
-      aria-label="decade panel"
+      aria-label={locale.decadeSelect}
       onClick={() => {
         onModeChange('decade');
       }}

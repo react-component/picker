@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'Tornar a avui',
   ok: 'Acceptar',
   clear: 'Netejar',
+  week: 'Setmana',
   month: 'Mes',
   year: 'Any',
   timeSelect: 'Seleccionar hora',

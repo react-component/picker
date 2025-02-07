@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'Tagasi tänase juurde',
   ok: 'OK',
   clear: 'Tühista',
+  week: 'Nädal',
   month: 'Kuu',
   year: 'Aasta',
   timeSelect: 'Vali aeg',

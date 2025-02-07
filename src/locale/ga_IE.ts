@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'Ar ais inniu',
   ok: 'ceart go leor',
   clear: 'soiléir',
+  week: 'seachtain',
   month: 'mhí',
   year: 'bhliain',
   timeSelect: 'roghnaigh am',

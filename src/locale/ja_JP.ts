@@ -12,6 +12,7 @@ const locale: Locale = {
   dateSelect: '日時を選択',
   weekSelect: '週を選択',
   clear: 'クリア',
+  week: '週',
   month: '月',
   year: '年',
   previousMonth: '前月 (ページアップキー)',

@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'חזור להיום',
   ok: 'אישור',
   clear: 'איפוס',
+  week: 'שבוע',
   month: 'חודש',
   year: 'שנה',
   timeSelect: 'בחר שעה',

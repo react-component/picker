@@ -63,6 +63,7 @@ export type Locale = {
   dateSelect: string;
   weekSelect?: string;
   clear: string;
+  week: string;
   month: string;
   year: string;
   previousMonth: string;

@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'Πίσω στη σημερινή μέρα',
   ok: 'OK',
   clear: 'Καθαρισμός',
+  week: 'Εβδομάδα',
   month: 'Μήνας',
   year: 'Έτος',
   timeSelect: 'Επιλογή ώρας',

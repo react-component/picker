@@ -9,6 +9,7 @@ const locale: Locale = {
   backToToday: 'Gaur itzuli',
   ok: 'OK',
   clear: 'Garbitu',
+  week: 'Asteko',
   month: 'Hilabete',
   year: 'Urte',
   timeSelect: 'Ordua aukeratu',

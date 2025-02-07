@@ -11,6 +11,7 @@ const locale: Locale = {
   timeSelect: 'ۋاقىت تاللاش',
   dateSelect: 'كۈن تاللاش',
   clear: 'تازىلاش',
+  week: 'ھەپتە',
   month: 'ئاي',
   year: 'يىل',
   previousMonth: 'ئالدىنقى ئاي(ئالدىنقى بەت )',
