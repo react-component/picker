@@ -8,7 +8,6 @@ import useInputProps from './hooks/useInputProps';
 import useRootProps from './hooks/useRootProps';
 import Icon, { ClearIcon } from './Icon';
 import Input, { type InputRef } from './Input';
-// import { getOffsetUnit, getRealPlacement } from '../../utils/uiUtil';
 
 export type SelectorIdType =
   | string
@@ -175,9 +174,6 @@ function RangeSelector<DateType extends object = any>(
   });
 
   // ====================== ActiveBar =======================
-  // const realPlacement = getRealPlacement(placement, rtl);
-  // const offsetUnit = getOffsetUnit(realPlacement, rtl);
-  // const placementRight = realPlacement?.toLowerCase().endsWith('right');
   const [activeBarStyle, setActiveBarStyle] = React.useState<React.CSSProperties>({
     position: 'absolute',
     width: 0,
@@ -186,23 +182,13 @@ function RangeSelector<DateType extends object = any>(
   const syncActiveOffset = useEvent(() => {
     const input = getInput(activeIndex);
     if (input) {
-      const { offsetWidth, offsetParent } = input.nativeElement;
-      // const parentWidth = (offsetParent as HTMLElement)?.offsetWidth || 0;
-      // const activeOffset = placementRight ? parentWidth - offsetWidth - offsetLeft : offsetLeft;
-      // setActiveBarStyle(({ insetInlineStart, insetInlineEnd, ...rest }) => ({
-      //   ...rest,
-      //   width: offsetWidth,
-      //   [offsetUnit]: activeOffset
-      // }));
-      // onActiveOffset(activeOffset);
-
       const inputRect = input.nativeElement.getBoundingClientRect();
       const parentRect = rootRef.current.getBoundingClientRect();
 
       const rectOffset = inputRect.left - parentRect.left;
       setActiveBarStyle((ori) => ({
         ...ori,
-        width: offsetWidth,
+        width: inputRect.width,
         left: rectOffset,
       }));
       onActiveInfo([inputRect.left, inputRect.right, parentRect.width]);

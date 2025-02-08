@@ -236,7 +236,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
       </div>
       <div
         class="rc-picker-active-bar"
-        style="position: absolute; left: 0px;"
+        style="position: absolute; width: 0px; left: 0px;"
       />
     </div>
   </div>
@@ -1293,7 +1293,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
       </div>
       <div
         class="rc-picker-active-bar"
-        style="position: absolute; left: 0px;"
+        style="position: absolute; width: 0px; left: 0px;"
       />
     </div>
   </div>

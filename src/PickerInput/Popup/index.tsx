@@ -8,7 +8,6 @@ import type {
   ValueDate,
 } from '../../interface';
 import { toArray } from '../../utils/miscUtil';
-import { getRealPlacement, getOffsetUnit } from '../../utils/uiUtil';
 import PickerContext from '../context';
 import Footer, { type FooterProps } from './Footer';
 import PopupPanel, { type PopupPanelProps } from './PopupPanel';
@@ -33,7 +32,6 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
 
   // Range
   activeInfo?: [activeInputLeft: number, activeInputRight: number, selectorWidth: number];
-  placement?: string;
   // Direction
   direction?: 'ltr' | 'rtl';
 
@@ -60,7 +58,6 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     range,
     multiple,
     activeInfo = [0, 0, 0],
-    placement,
 
     // Presets
     presets,
@@ -99,8 +96,8 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   const [arrowOffset, setArrowOffset] = React.useState<number>(0);
 
   const onResize: ResizeObserverProps['onResize'] = (info) => {
-    if (info.offsetWidth) {
-      setContainerWidth(info.offsetWidth);
+    if (info.width) {
+      setContainerWidth(info.width);
     }
   };
 
@@ -122,15 +119,12 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
 
       // Container Offset
       if (containerWidth < selectorWidth) {
-        if (rtl) {
-          const offset = wrapperRect.right - (activeInputRight - arrowWidth + containerWidth);
-          const safeOffset = Math.max(0, offset);
-          setContainerOffset(safeOffset);
-        } else {
-          const offset = activeInputLeft + arrowWidth - wrapperRect.left - containerWidth;
-          const safeOffset = Math.max(0, offset);
-          setContainerOffset(safeOffset);
-        }
+        const offset = rtl
+          ? wrapperRect.right - (activeInputRight - arrowWidth + containerWidth)
+          : activeInputLeft + arrowWidth - wrapperRect.left - containerWidth;
+
+        const safeOffset = Math.max(0, offset);
+        setContainerOffset(safeOffset);
       } else {
         setContainerOffset(0);
       }

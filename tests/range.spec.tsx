@@ -10,6 +10,14 @@ import { resetWarned } from 'rc-util/lib/warning';
 import React from 'react';
 import type { PickerRef, RangePickerProps } from '../src';
 import type { PickerMode } from '../src/interface';
+import { _rs } from 'rc-resize-observer';
+
+const triggerResize = (target: Element) => {
+  act(() => {
+    _rs([{ target } as ResizeObserverEntry]);
+  });
+};
+
 import {
   DayRangePicker,
   clearValue,
@@ -1788,20 +1796,52 @@ describe('Picker.Range', () => {
     mock.mockRestore();
   });
 
-  it('panel should be stable: arrow right and panel right', () => {
+  it('panel should be stable: arrow right and panel right', async () => {
+    const mockMatch = (element: HTMLElement, values: Record<string, number>) => {
+      const keys = Object.keys(values);
+      for (const key of keys) {
+        if (element.classList.contains(key)) {
+          return values[key];
+        }
+      }
+      return 0;
+    };
+
+    const getWidth = (element: HTMLElement) => {
+      return mockMatch(element, {
+        'rc-picker-range': 200,
+        'rc-picker-panel-container': 50,
+        'rc-picker-range-wrapper': 200,
+        'rc-picker-input': 100,
+        'rc-picker-range-arrow': 0,
+      });
+    };
+    const getLeft = (element: HTMLElement) => {
+      return mockMatch(element, {
+        'rc-picker-range-wrapper': 0,
+        'rc-picker-input': 100,
+      });
+    };
+
     const mock = spyElementPrototypes(HTMLElement, {
+      getBoundingClientRect() {
+        const left = getLeft(this);
+        const width = getWidth(this);
+
+        return {
+          width,
+          left,
+          right: left + width,
+        };
+      },
       offsetWidth: {
         get() {
-          if (this.className.includes('rc-picker-range-wrapper')) {
-            return 200;
-          }
+          return getWidth(this);
         },
       },
       offsetLeft: {
         get() {
-          if (this.className.includes('rc-picker-input')) {
-            return 100;
-          }
+          return getLeft(this);
         },
       },
     });
@@ -1814,8 +1854,16 @@ describe('Picker.Range', () => {
       />,
     );
     openPicker(container, 1);
+
+    triggerResize(container.querySelector('.rc-picker-range'));
+    triggerResize(document.body.querySelector('.rc-picker-panel-container'));
+
+    await act(async () => {
+      await Promise.resolve();
+    });
+
     expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({
-      marginLeft: '100px',
+      marginLeft: '50px',
     });
     mock.mockRestore();
   });
