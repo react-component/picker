@@ -195,12 +195,12 @@ export function getRealPlacement(placement: string, rtl: boolean) {
   return rtl ? 'bottomRight' : 'bottomLeft';
 }
 
-export function getoffsetUnit(placement: string, rtl: boolean) {
+export function getOffsetUnit(placement: string, rtl: boolean) {
   const realPlacement = getRealPlacement(placement, rtl);
   const placementRight = realPlacement?.toLowerCase().endsWith('right');
   let offsetUnit = placementRight ? 'insetInlineEnd' : 'insetInlineStart';
   if (rtl) {
-    offsetUnit = ['insetInlineStart', 'insetInlineEnd'].find(unit => unit !== offsetUnit);
+    offsetUnit = ['insetInlineStart', 'insetInlineEnd'].find((unit) => unit !== offsetUnit);
   }
   return offsetUnit;
 }

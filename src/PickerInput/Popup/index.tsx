@@ -8,7 +8,7 @@ import type {
   ValueDate,
 } from '../../interface';
 import { toArray } from '../../utils/miscUtil';
-import { getRealPlacement, getoffsetUnit } from '../../utils/uiUtil';
+import { getRealPlacement, getOffsetUnit } from '../../utils/uiUtil';
 import PickerContext from '../context';
 import Footer, { type FooterProps } from './Footer';
 import PopupPanel, { type PopupPanelProps } from './PopupPanel';
@@ -32,7 +32,7 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   onPresetSubmit: (presetValue: PresetValue) => void;
 
   // Range
-  activeOffset?: number;
+  activeInfo?: [activeInputLeft: number, activeInputRight: number, selectorWidth: number];
   placement?: string;
   // Direction
   direction?: 'ltr' | 'rtl';
@@ -59,7 +59,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     // Range
     range,
     multiple,
-    activeOffset = 0,
+    activeInfo = [0, 0, 0],
     placement,
 
     // Presets
@@ -96,6 +96,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   // ======================== Offset ========================
   const [containerWidth, setContainerWidth] = React.useState<number>(0);
   const [containerOffset, setContainerOffset] = React.useState<number>(0);
+  const [arrowOffset, setArrowOffset] = React.useState<number>(0);
 
   const onResize: ResizeObserverProps['onResize'] = (info) => {
     if (info.offsetWidth) {
@@ -103,21 +104,38 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     }
   };
 
+  const [activeInputLeft, activeInputRight, selectorWidth] = activeInfo;
+
   React.useEffect(() => {
     // `activeOffset` is always align with the active input element
     // So we need only check container contains the `activeOffset`
-    if (range) {
+    if (range && wrapperRef.current) {
       // Offset in case container has border radius
       const arrowWidth = arrowRef.current?.offsetWidth || 0;
 
-      const maxOffset = containerWidth - arrowWidth;
-      if (activeOffset <= maxOffset) {
-        setContainerOffset(0);
+      // Arrow Offset
+      const wrapperRect = wrapperRef.current.getBoundingClientRect();
+      const nextArrowOffset = rtl
+        ? activeInputRight - arrowWidth
+        : activeInputLeft - wrapperRect.left;
+      setArrowOffset(nextArrowOffset);
+
+      // Container Offset
+      if (containerWidth < selectorWidth) {
+        if (rtl) {
+          const offset = wrapperRect.right - (activeInputRight - arrowWidth + containerWidth);
+          const safeOffset = Math.max(0, offset);
+          setContainerOffset(safeOffset);
+        } else {
+          const offset = activeInputLeft + arrowWidth - wrapperRect.left - containerWidth;
+          const safeOffset = Math.max(0, offset);
+          setContainerOffset(safeOffset);
+        }
       } else {
-        setContainerOffset(activeOffset + arrowWidth - containerWidth);
+        setContainerOffset(0);
       }
     }
-  }, [containerWidth, activeOffset, range]);
+  }, [rtl, containerWidth, activeInputLeft, activeInputRight, selectorWidth, range]);
 
   // ======================== Custom ========================
   function filterEmpty<T>(list: T[]) {
@@ -213,19 +231,13 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   );
 
   if (range) {
-    const realPlacement = getRealPlacement(placement, rtl);
-    const offsetUnit = getoffsetUnit(realPlacement, rtl);
     renderNode = (
       <div
         onMouseDown={onPanelMouseDown}
         ref={wrapperRef}
         className={classNames(`${prefixCls}-range-wrapper`, `${prefixCls}-${picker}-range-wrapper`)}
       >
-        <div
-          ref={arrowRef}
-          className={`${prefixCls}-range-arrow`}
-          style={{ [offsetUnit]: activeOffset }}
-        />
+        <div ref={arrowRef} className={`${prefixCls}-range-arrow`} style={{ left: arrowOffset }} />
 
         {/* Watch for container size */}
         <ResizeObserver onResize={onResize}>{renderNode}</ResizeObserver>
