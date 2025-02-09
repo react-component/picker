@@ -118,7 +118,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
       setArrowOffset(nextArrowOffset);
 
       // Container Offset
-      if (containerWidth < selectorWidth) {
+      if (containerWidth && containerWidth < selectorWidth) {
         const offset = rtl
           ? wrapperRect.right - (activeInputRight - arrowWidth + containerWidth)
           : activeInputLeft + arrowWidth - wrapperRect.left - containerWidth;
