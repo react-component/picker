@@ -8,7 +8,6 @@ import useInputProps from './hooks/useInputProps';
 import useRootProps from './hooks/useRootProps';
 import Icon, { ClearIcon } from './Icon';
 import Input, { type InputRef } from './Input';
-import { getoffsetUnit, getRealPlacement } from '../../utils/uiUtil';
 
 export type SelectorIdType =
   | string
@@ -42,7 +41,9 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
    * Trigger when the active bar offset position changed.
    * This is used for popup panel offset.
    */
-  onActiveOffset: (offset: number) => void;
+  onActiveInfo: (
+    info: [activeInputLeft: number, activeInputRight: number, selectorWidth: number],
+  ) => void;
 }
 
 function RangeSelector<DateType extends object = any>(
@@ -102,7 +103,7 @@ function RangeSelector<DateType extends object = any>(
     onOpenChange,
 
     // Offset
-    onActiveOffset,
+    onActiveInfo,
     placement,
 
     // Native
@@ -173,9 +174,6 @@ function RangeSelector<DateType extends object = any>(
   });
 
   // ====================== ActiveBar =======================
-  const realPlacement = getRealPlacement(placement, rtl);
-  const offsetUnit = getoffsetUnit(realPlacement, rtl);
-  const placementRight = realPlacement?.toLowerCase().endsWith('right');
   const [activeBarStyle, setActiveBarStyle] = React.useState<React.CSSProperties>({
     position: 'absolute',
     width: 0,
@@ -184,15 +182,16 @@ function RangeSelector<DateType extends object = any>(
   const syncActiveOffset = useEvent(() => {
     const input = getInput(activeIndex);
     if (input) {
-      const { offsetWidth, offsetLeft, offsetParent } = input.nativeElement;
-      const parentWidth = (offsetParent as HTMLElement)?.offsetWidth || 0;
-      const activeOffset = placementRight ? (parentWidth - offsetWidth - offsetLeft) : offsetLeft;
-      setActiveBarStyle(({ insetInlineStart, insetInlineEnd, ...rest }) => ({
-        ...rest,
-        width: offsetWidth,
-        [offsetUnit]: activeOffset
+      const inputRect = input.nativeElement.getBoundingClientRect();
+      const parentRect = rootRef.current.getBoundingClientRect();
+
+      const rectOffset = inputRect.left - parentRect.left;
+      setActiveBarStyle((ori) => ({
+        ...ori,
+        width: inputRect.width,
+        left: rectOffset,
       }));
-      onActiveOffset(activeOffset);
+      onActiveInfo([inputRect.left, inputRect.right, parentRect.width]);
     }
   });
 

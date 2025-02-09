@@ -160,7 +160,6 @@ function RangePicker<DateType extends object = any>(
     prefixCls,
     styles,
     classNames,
-    placement,
 
     // Value
     defaultValue,
@@ -473,7 +472,10 @@ function RangePicker<DateType extends object = any>(
   // ==                       Panels                       ==
   // ========================================================
   // Save the offset with active bar position
-  const [activeOffset, setActiveOffset] = React.useState(0);
+  // const [activeOffset, setActiveOffset] = React.useState(0);
+  const [activeInfo, setActiveInfo] = React.useState<
+    [activeInputLeft: number, activeInputRight: number, selectorWidth: number]
+  >([0, 0, 0]);
 
   // ======================= Presets ========================
   const presetList = usePresets(presets, ranges);
@@ -574,8 +576,7 @@ function RangePicker<DateType extends object = any>(
       // Range
       range
       multiplePanel={multiplePanel}
-      activeOffset={activeOffset}
-      placement={placement}
+      activeInfo={activeInfo}
       // Disabled
       disabledDate={mergedDisabledDate}
       // Focus
@@ -796,7 +797,7 @@ function RangePicker<DateType extends object = any>(
           invalid={submitInvalidates}
           onInvalid={onSelectorInvalid}
           // Offset
-          onActiveOffset={setActiveOffset}
+          onActiveInfo={setActiveInfo}
         />
       </PickerTrigger>
     </PickerContext.Provider>
