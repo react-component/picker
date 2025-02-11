@@ -112,9 +112,8 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
 
       // Arrow Offset
       const wrapperRect = wrapperRef.current.getBoundingClientRect();
-      const nextArrowOffset = rtl
-        ? activeInputRight - arrowWidth
-        : activeInputLeft - wrapperRect.left;
+      const nextArrowOffset =
+        (rtl ? activeInputRight - arrowWidth : activeInputLeft) - wrapperRect.left;
       setArrowOffset(nextArrowOffset);
 
       // Container Offset
