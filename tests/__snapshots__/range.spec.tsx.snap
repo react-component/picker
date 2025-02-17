@@ -236,14 +236,14 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
       </div>
       <div
         class="rc-picker-active-bar"
-        style="position: absolute; width: 100px; left: 100px;"
+        style="position: absolute; width: 0px; left: 0px;"
       />
     </div>
   </div>
   <div>
     <div
       class="rc-picker-dropdown rc-picker-dropdown-range rc-picker-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 200px;"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div
         class="rc-picker-range-wrapper rc-picker-date-range-wrapper"
@@ -1293,14 +1293,14 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
       </div>
       <div
         class="rc-picker-active-bar"
-        style="position: absolute; width: 100px; left: 100px;"
+        style="position: absolute; width: 0px; left: 0px;"
       />
     </div>
   </div>
   <div>
     <div
       class="rc-picker-dropdown rc-picker-dropdown-range rc-picker-dropdown-placement-bottomLeft"
-      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box; min-width: 200px;"
+      style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
     >
       <div
         class="rc-picker-range-wrapper rc-picker-month-range-wrapper"
