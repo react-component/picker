@@ -1832,6 +1832,7 @@ describe('Picker.Range', () => {
           width,
           left,
           right: left + width,
+          height: 1,
         };
       },
       offsetWidth: {

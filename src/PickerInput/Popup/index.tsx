@@ -102,6 +102,11 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   };
 
   const [activeInputLeft, activeInputRight, selectorWidth] = activeInfo;
+  const [retryTimes, setRetryTimes] = React.useState(0);
+
+  React.useEffect(() => {
+    setRetryTimes(10);
+  }, [activeInputLeft]);
 
   React.useEffect(() => {
     // `activeOffset` is always align with the active input element
@@ -112,6 +117,11 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
 
       // Arrow Offset
       const wrapperRect = wrapperRef.current.getBoundingClientRect();
+      if (!wrapperRect.height || wrapperRect.right < 0) {
+        setRetryTimes((times) => Math.max(0, times - 1));
+        return;
+      }
+
       const nextArrowOffset =
         (rtl ? activeInputRight - arrowWidth : activeInputLeft) - wrapperRect.left;
       setArrowOffset(nextArrowOffset);
@@ -128,7 +138,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
         setContainerOffset(0);
       }
     }
-  }, [rtl, containerWidth, activeInputLeft, activeInputRight, selectorWidth, range]);
+  }, [retryTimes, rtl, containerWidth, activeInputLeft, activeInputRight, selectorWidth, range]);
 
   // ======================== Custom ========================
   function filterEmpty<T>(list: T[]) {
