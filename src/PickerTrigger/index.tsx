@@ -89,7 +89,7 @@ function PickerTrigger({
       popupPlacement={realPlacement}
       builtinPlacements={builtinPlacements}
       prefixCls={dropdownPrefixCls}
-      popupTransitionName={transitionName}
+      popupMotion={{ motionName: transitionName }}
       popup={popupElement}
       popupAlign={popupAlign}
       popupVisible={visible}
