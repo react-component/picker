@@ -1,4 +1,4 @@
-import { warning } from 'rc-util';
+import { warning } from '@rc-component/util';
 import * as React from 'react';
 import useLocale from '../../hooks/useLocale';
 import { fillShowTimeConfig, getTimeProps } from '../../hooks/useTimeConfig';
@@ -167,10 +167,7 @@ export default function useFilledProps<
       styles,
       classNames,
       order,
-      components: {
-        input: inputRender,
-        ...components,
-      },
+      components: { input: inputRender, ...components },
       clearIcon: fillClearIcon(prefixCls, allowClear, clearIcon),
       showTime: mergedShowTime,
       value: values,

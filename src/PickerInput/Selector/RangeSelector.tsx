@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import ResizeObserver from 'rc-resize-observer';
-import { useEvent } from 'rc-util';
+import ResizeObserver from '@rc-component/resize-observer';
+import { useEvent } from '@rc-component/util';
 import * as React from 'react';
 import type { RangePickerRef, SelectorProps } from '../../interface';
 import PickerContext from '../context';

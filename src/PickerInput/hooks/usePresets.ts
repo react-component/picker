@@ -1,5 +1,5 @@
 import * as React from 'react';
-import warning from 'rc-util/lib/warning';
+import warning from '@rc-component/util/lib/warning';
 import type { ValueDate } from '../../interface';
 
 export default function usePresets<DateType = any>(
@@ -14,10 +14,7 @@ export default function usePresets<DateType = any>(
     if (legacyRanges) {
       warning(false, '`ranges` is deprecated. Please use `presets` instead.');
 
-      return Object.entries(legacyRanges).map(([label, value]) => ({
-        label,
-        value,
-      }));
+      return Object.entries(legacyRanges).map(([label, value]) => ({ label, value }));
     }
 
     return [];

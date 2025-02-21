@@ -1,4 +1,4 @@
-import { warning } from 'rc-util';
+import { warning } from '@rc-component/util';
 import * as React from 'react';
 import type { GenerateConfig } from '../generate';
 import type { DisabledTimes, SharedTimeProps } from '../interface';

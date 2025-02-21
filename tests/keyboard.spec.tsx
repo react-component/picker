@@ -1,5 +1,5 @@
 import { act, fireEvent, render } from '@testing-library/react';
-import { resetWarned } from 'rc-util/lib/warning';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
 import { DateFnsSinglePicker, DayPicker, getMoment, isOpen, openPicker } from './util/commonUtil';
 

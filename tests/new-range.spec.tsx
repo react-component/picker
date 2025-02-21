@@ -2,8 +2,8 @@
 import { act, fireEvent, render } from '@testing-library/react';
 import dayjs, { type Dayjs } from 'dayjs';
 import 'dayjs/locale/ar';
-import { spyElementPrototype } from 'rc-util/lib/test/domHook';
-import { resetWarned } from 'rc-util/lib/warning';
+import { spyElementPrototype } from '@rc-component/util/lib/test/domHook';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
 import type { RangePickerProps } from '../src';
 import zh_CN from '../src/locale/zh_CN';
@@ -20,7 +20,7 @@ import {
   waitFakeTimer,
 } from './util/commonUtil';
 
-jest.mock('rc-util/lib/Dom/isVisible', () => {
+jest.mock('@rc-component/util/lib/Dom/isVisible', () => {
   return () => true;
 });
 

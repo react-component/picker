@@ -1,4 +1,4 @@
-import { useEvent } from 'rc-util';
+import { useEvent } from '@rc-component/util';
 import type { GenerateConfig } from '../../generate';
 import { isSame } from '../../utils/dateUtil';
 import type { DisabledDate, InternalMode, Locale } from '../../interface';

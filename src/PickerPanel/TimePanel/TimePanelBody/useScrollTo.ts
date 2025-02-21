@@ -1,6 +1,6 @@
-import { useEvent } from 'rc-util';
-import raf from 'rc-util/lib/raf';
-import isVisible from 'rc-util/lib/Dom/isVisible';
+import { useEvent } from '@rc-component/util';
+import raf from '@rc-component/util/lib/raf';
+import isVisible from '@rc-component/util/lib/Dom/isVisible';
 import * as React from 'react';
 
 const SPEED_PTG = 1 / 3;
