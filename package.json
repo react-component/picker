@@ -1,6 +1,6 @@
 {
   "name": "@rc-component/picker",
-  "version": "4.11.2",
+  "version": "1.0.0",
   "description": "React date & time picker",
   "keywords": [
     "react",
