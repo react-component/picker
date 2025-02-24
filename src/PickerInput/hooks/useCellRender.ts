@@ -1,4 +1,4 @@
-import { warning } from 'rc-util';
+import { warning } from '@rc-component/util';
 import * as React from 'react';
 import type { CellRender, CellRenderInfo, SharedPickerProps } from '../../interface';
 
@@ -36,11 +36,7 @@ export default function useCellRender<DateType extends object = any>(
 
   // Cell render
   const onInternalCellRender: CellRender<DateType> = React.useCallback(
-    (date, info) =>
-      mergedCellRender(date, {
-        ...info,
-        range,
-      }),
+    (date, info) => mergedCellRender(date, { ...info, range }),
     [mergedCellRender, range],
   );
 

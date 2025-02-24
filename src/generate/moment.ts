@@ -1,6 +1,6 @@
 import type { Moment } from 'moment';
 import moment from 'moment';
-import { noteOnce } from 'rc-util/lib/warning';
+import { noteOnce } from '@rc-component/util/lib/warning';
 import type { GenerateConfig } from '.';
 
 const generateConfig: GenerateConfig<Moment> = {

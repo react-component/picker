@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import { useEvent } from 'rc-util';
-import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
-import raf from 'rc-util/lib/raf';
+import { useEvent } from '@rc-component/util';
+import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
+import raf from '@rc-component/util/lib/raf';
 import * as React from 'react';
 import { leftPad } from '../../utils/miscUtil';
 import PickerContext from '../context';

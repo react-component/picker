@@ -4,9 +4,9 @@ import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-import KeyCode from 'rc-util/lib/KeyCode';
-import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import { resetWarned } from 'rc-util/lib/warning';
+import KeyCode from '@rc-component/util/lib/KeyCode';
+import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
 import type { PickerRef } from '../src';
 import type { PanelMode, PickerMode } from '../src/interface';
@@ -30,7 +30,7 @@ import {
 
 const fakeTime = getDay('1990-09-03 00:00:00').valueOf();
 
-jest.mock('rc-util/lib/Dom/isVisible', () => {
+jest.mock('@rc-component/util/lib/Dom/isVisible', () => {
   return () => true;
 });
 

@@ -1,5 +1,5 @@
-import { warning } from 'rc-util';
-import pickAttrs from 'rc-util/lib/pickAttrs';
+import { warning } from '@rc-component/util';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
 import * as React from 'react';
 import type { SelectorProps } from '../../../interface';
 import { formatValue } from '../../../utils/dateUtil';
@@ -86,12 +86,7 @@ export default function useInputProps<DateType extends object = any>(
   const firstFormat = format[0];
 
   const getText = React.useCallback(
-    (date: DateType) =>
-      formatValue(date, {
-        locale,
-        format: firstFormat,
-        generateConfig,
-      }),
+    (date: DateType) => formatValue(date, { locale, format: firstFormat, generateConfig }),
     [locale, generateConfig, firstFormat],
   );
 
@@ -131,10 +126,7 @@ export default function useInputProps<DateType extends object = any>(
       return index !== undefined ? propValue[index] : propValue;
     }
 
-    const pickedAttrs = pickAttrs(props, {
-      aria: true,
-      data: true,
-    });
+    const pickedAttrs = pickAttrs(props, { aria: true, data: true });
 
     const inputProps = {
       ...pickedAttrs,
@@ -198,9 +190,7 @@ export default function useInputProps<DateType extends object = any>(
         onInvalid(!!text, index);
       },
       onHelp: () => {
-        onOpenChange(true, {
-          index,
-        });
+        onOpenChange(true, { index });
       },
       onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => {
         let prevented = false;
@@ -218,9 +208,7 @@ export default function useInputProps<DateType extends object = any>(
         if (!event.defaultPrevented && !prevented) {
           switch (event.key) {
             case 'Escape':
-              onOpenChange(false, {
-                index,
-              });
+              onOpenChange(false, { index });
               break;
             case 'Enter':
               if (!open) {
@@ -232,9 +220,7 @@ export default function useInputProps<DateType extends object = any>(
       },
 
       // ============ Post Props ============
-      ...postProps?.({
-        valueTexts,
-      }),
+      ...postProps?.({ valueTexts }),
     };
 
     // ============== Clean Up ==============

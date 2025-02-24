@@ -4,13 +4,13 @@ import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import { createRoot } from 'react-dom/client';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
-import KeyCode from 'rc-util/lib/KeyCode';
-import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import { resetWarned } from 'rc-util/lib/warning';
+import KeyCode from '@rc-component/util/lib/KeyCode';
+import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
 import type { PickerRef, RangePickerProps } from '../src';
 import type { PickerMode } from '../src/interface';
-import { _rs } from 'rc-resize-observer';
+import { _rs } from '@rc-component/resize-observer';
 
 const triggerResize = (target: Element) => {
   act(() => {

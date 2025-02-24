@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-loop-func */
 import { fireEvent, render } from '@testing-library/react';
-import { resetWarned } from 'rc-util/lib/warning';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
 import { DayPicker, getDay, isOpen, openPicker, selectCell } from './util/commonUtil';
 

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import ResizeObserver, { type ResizeObserverProps } from 'rc-resize-observer';
+import ResizeObserver, { type ResizeObserverProps } from '@rc-component/resize-observer';
 import * as React from 'react';
 import type {
   RangeTimeProps,

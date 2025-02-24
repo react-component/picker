@@ -1,8 +1,8 @@
-import { useEvent, useMergedState } from 'rc-util';
-import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
-import omit from 'rc-util/lib/omit';
-import pickAttrs from 'rc-util/lib/pickAttrs';
-import warning from 'rc-util/lib/warning';
+import { useEvent, useMergedState } from '@rc-component/util';
+import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
+import omit from '@rc-component/util/lib/omit';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
+import warning from '@rc-component/util/lib/warning';
 import * as React from 'react';
 import type {
   BaseInfo,

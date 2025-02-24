@@ -1,4 +1,4 @@
-import { useEvent } from 'rc-util';
+import { useEvent } from '@rc-component/util';
 import type { GenerateConfig } from '../../generate';
 import type {
   PanelMode,
@@ -19,10 +19,7 @@ export default function useInvalidate<DateType extends object = any>(
   // Check disabled date
   const isInvalidate = useEvent(
     (date: DateType, info?: { from?: DateType; activeIndex: number }) => {
-      const outsideInfo = {
-        type: picker,
-        ...info,
-      };
+      const outsideInfo = { type: picker, ...info };
       delete outsideInfo.activeIndex;
 
       if (
@@ -37,9 +34,7 @@ export default function useInvalidate<DateType extends object = any>(
       if ((picker === 'date' || picker === 'time') && showTime) {
         const range = info && info.activeIndex === 1 ? 'end' : 'start';
         const { disabledHours, disabledMinutes, disabledSeconds, disabledMilliseconds } =
-          showTime.disabledTime?.(date, range, {
-            from: outsideInfo.from,
-          }) || {};
+          showTime.disabledTime?.(date, range, { from: outsideInfo.from }) || {};
 
         const {
           disabledHours: legacyDisabledHours,

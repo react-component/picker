@@ -1,4 +1,4 @@
-import { useEvent, useMergedState } from 'rc-util';
+import { useEvent, useMergedState } from '@rc-component/util';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import useSyncState from '../../hooks/useSyncState';
@@ -117,9 +117,7 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
   onOk?: (dates: ValueType) => void,
 ) {
   // This is the root value which will sync with controlled or uncontrolled value
-  const [innerValue, setInnerValue] = useMergedState(defaultValue, {
-    value,
-  });
+  const [innerValue, setInnerValue] = useMergedState(defaultValue, { value });
   const mergedValue = innerValue || (EMPTY_VALUE as ValueType);
 
   // ========================= Inner Values =========================
@@ -148,9 +146,7 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
         // Trigger calendar change event
         if (onCalendarChange) {
           const cellTexts = getDateTexts(clone);
-          onCalendarChange(clone, cellTexts, {
-            range: isSameStart ? 'end' : 'start',
-          });
+          onCalendarChange(clone, cellTexts, { range: isSameStart ? 'end' : 'start' });
         }
       }
     },
