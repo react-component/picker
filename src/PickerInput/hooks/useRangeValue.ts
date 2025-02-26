@@ -117,7 +117,9 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
   onOk?: (dates: ValueType) => void,
 ) {
   // This is the root value which will sync with controlled or uncontrolled value
-  const [innerValue, setInnerValue] = useMergedState(defaultValue, { value });
+  const [innerValue, setInnerValue] = useMergedState(defaultValue, {
+    value: value || undefined,
+  });
   const mergedValue = innerValue || (EMPTY_VALUE as ValueType);
 
   // ========================= Inner Values =========================
