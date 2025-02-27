@@ -603,7 +603,6 @@ function Picker<DateType extends object = any>(
 
     // Submit with complex picker
     if (!mergedOpen && complexPicker && !needConfirm && lastOp === 'panel') {
-      triggerOpen(true);
       triggerConfirm();
     }
   }, [mergedOpen]);
