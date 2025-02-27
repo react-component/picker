@@ -785,6 +785,32 @@ describe('NewPicker.Range', () => {
       expect(container.querySelectorAll('input')[0]).toHaveValue('1990-09-05');
       expect(container.querySelectorAll('input')[1]).toHaveValue('1990-09-05');
     });
+
+    it('not trigger open when !needConfirm', () => {
+      const onChange = jest.fn();
+      const onOpenChange = jest.fn();
+
+      const { container } = render(
+        <DayPicker showTime onChange={onChange} onOpenChange={onOpenChange} needConfirm={false} />,
+      );
+      openPicker(container);
+
+      fireEvent.click(findCell(5));
+
+      act(() => {
+        jest.runAllTimers();
+      });
+      expect(onOpenChange).toHaveBeenCalledWith(true);
+
+      // Window click to close
+      fireEvent.mouseDown(document.body);
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(onOpenChange).toHaveBeenCalledTimes(2);
+      expect(onOpenChange).toHaveBeenCalledWith(false);
+    });
   });
 
   describe('open', () => {
