@@ -17,7 +17,6 @@ const locale: Locale = {
   yearSelect: 'አመት ምረጥ',
   decadeSelect: 'አስርት አመታት ምረጥ',
   yearFormat: 'YYYY',
-  dateFormat: 'D/M/YYYY',
   dayFormat: 'D',
   dateTimeFormat: 'D/M/YYYY HH:mm:ss',
   monthBeforeYear: true,

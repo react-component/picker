@@ -19,7 +19,6 @@ const locale: Locale = {
   yearSelect: 'Pasirinkti metus',
   decadeSelect: 'Pasirinkti dešimtmetį',
 
-  dateFormat: 'YYYY-MM-DD',
   dayFormat: 'DD',
   dateTimeFormat: 'YYYY-MM-DD HH:MM:SS',
 

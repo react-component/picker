@@ -19,8 +19,6 @@ const locale: Locale = {
   yearSelect: 'Выбраць год',
   decadeSelect: 'Выбраць дзесяцігоддзе',
 
-  dateFormat: 'D-M-YYYY',
-
   dateTimeFormat: 'D-M-YYYY HH:mm:ss',
 
   previousMonth: 'Папярэдні месяц (PageUp)',

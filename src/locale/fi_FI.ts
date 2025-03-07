@@ -18,8 +18,6 @@ const locale: Locale = {
   yearSelect: 'Valitse vuosi',
   decadeSelect: 'Valitse vuosikymmen',
 
-  dateFormat: 'D.M.YYYY',
-
   dateTimeFormat: 'D.M.YYYY HH:mm:ss',
 
   previousMonth: 'Edellinen kuukausi (PageUp)',

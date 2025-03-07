@@ -18,8 +18,6 @@ const locale: Locale = {
   yearSelect: 'Выбрать год',
   decadeSelect: 'Выбрать десятилетие',
 
-  dateFormat: 'D-M-YYYY',
-
   dateTimeFormat: 'D-M-YYYY HH:mm:ss',
 
   previousMonth: 'Предыдущий месяц (PageUp)',

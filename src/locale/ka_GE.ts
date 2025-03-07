@@ -19,8 +19,6 @@ const locale: Locale = {
   yearSelect: 'წლის არჩევა',
   decadeSelect: 'ათწლეულის არჩევა',
 
-  dateFormat: 'M/D/YYYY',
-
   dateTimeFormat: 'M/D/YYYY HH:mm:ss',
 
   previousMonth: 'წინა თვე (PageUp)',

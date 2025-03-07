@@ -18,8 +18,6 @@ const locale: Locale = {
   yearSelect: 'Жылды таңдаңыз',
   decadeSelect: 'Онжылды таңдаңыз',
 
-  dateFormat: 'D-M-YYYY',
-
   dateTimeFormat: 'D-M-YYYY HH:mm:ss',
 
   previousMonth: 'Алдыңғы ай (PageUp)',

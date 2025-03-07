@@ -19,7 +19,6 @@ const locale: Locale = {
   yearSelect: 'Velg år',
   decadeSelect: 'Velg tiår',
 
-  dateFormat: 'DD.MM.YYYY',
   dayFormat: 'DD',
   dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
 

@@ -19,8 +19,6 @@ const locale: Locale = {
   yearSelect: 'နှစ်ကိုရွေး',
   decadeSelect: 'ဆယ်စုနှစ်ကိုရွေး',
 
-  dateFormat: 'M/D/YYYY',
-
   dateTimeFormat: 'M/D/YYYY HH:mm:ss',
 
   previousMonth: 'ယခင်လ (PageUp)',

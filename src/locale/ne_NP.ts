@@ -19,8 +19,6 @@ const locale: Locale = {
   yearSelect: 'एक वर्ष छान्नुहोस्',
   decadeSelect: 'एक दशक छान्नुहोस्',
 
-  dateFormat: 'M/D/YYYY',
-
   dateTimeFormat: 'M/D/YYYY HH:mm:ss',
 
   previousMonth: 'अघिल्लो महिना (पृष्ठ माथि)',

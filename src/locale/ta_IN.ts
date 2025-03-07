@@ -19,8 +19,6 @@ const locale: Locale = {
   yearSelect: 'வருடத்தைத் தேர்வுசெய்க',
   decadeSelect: 'தசாப்தத்தைத் தேர்வுசெய்க',
 
-  dateFormat: 'M/D/YYYY',
-
   dateTimeFormat: 'M/D/YYYY HH:mm:ss',
 
   previousMonth: 'முந்தைய மாதம் (PageUp)',
