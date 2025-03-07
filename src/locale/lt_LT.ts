@@ -20,7 +20,6 @@ const locale: Locale = {
   decadeSelect: 'Pasirinkti dešimtmetį',
 
   dayFormat: 'DD',
-  dateTimeFormat: 'YYYY-MM-DD HH:MM:SS',
 
   previousMonth: 'Buvęs mėnesis (PageUp)',
   nextMonth: 'Kitas mėnesis (PageDown)',

@@ -19,8 +19,6 @@ const locale: Locale = {
   yearSelect: 'בחר שנה',
   decadeSelect: 'בחר עשור',
 
-  dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-
   previousMonth: 'חודש קודם (PageUp)',
   nextMonth: 'חודש הבא (PageDown)',
   previousYear: 'שנה שעברה (Control + left)',

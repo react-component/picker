@@ -21,7 +21,6 @@ const locale: Locale = {
   decadeSelect: 'يىللارنى تاللاش',
   yearFormat: 'YYYY-يىلى',
   dayFormat: 'D-كۈنى',
-  dateTimeFormat: 'YYYY-يىلىM—ئاينىڭD-كۈنى، HH:mm:ss',
   previousYear: 'ئالدىنقى يىلى (Controlبىلەن يۆنىلىش كونۇپكىسى)',
   nextYear: 'كېلەركى يىلى (Controlبىلەن يۆنىلىش كونۇپكىسى)',
   previousDecade: 'ئالدىنقى يىللار',

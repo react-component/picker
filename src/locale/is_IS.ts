@@ -18,8 +18,6 @@ const locale: Locale = {
   yearSelect: 'Velja ár',
   decadeSelect: 'Velja áratug',
 
-  dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-
   previousMonth: 'Fyrri mánuður (PageUp)',
   nextMonth: 'Næsti mánuður (PageDown)',
   previousYear: 'Fyrra ár (Control + left)',

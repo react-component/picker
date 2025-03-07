@@ -18,7 +18,6 @@ const locale: Locale = {
   monthSelect: 'Hilabetea aukeratu',
   yearSelect: 'Urtea aukeratu',
   decadeSelect: 'Hamarkada aukeratu',
-  dateTimeFormat: 'YYYY/M/D HH:mm:ss',
   monthBeforeYear: false,
   previousMonth: 'Aurreko hilabetea (RePag)',
   nextMonth: 'Urrengo hilabetea (AvPag)',

@@ -19,8 +19,6 @@ const locale: Locale = {
   yearSelect: 'Alege un an',
   decadeSelect: 'Alege un deceniu',
 
-  dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-
   previousMonth: 'Luna anterioară (PageUp)',
   nextMonth: 'Luna următoare (PageDown)',
   previousYear: 'Anul anterior (Control + stânga)',

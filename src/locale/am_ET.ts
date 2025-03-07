@@ -18,7 +18,6 @@ const locale: Locale = {
   decadeSelect: 'አስርት አመታት ምረጥ',
   yearFormat: 'YYYY',
   dayFormat: 'D',
-  dateTimeFormat: 'D/M/YYYY HH:mm:ss',
   monthBeforeYear: true,
   previousMonth: 'ያለፈው ወር (PageUp)',
   nextMonth: 'ቀጣይ ወር (PageDown)',

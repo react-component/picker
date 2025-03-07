@@ -19,7 +19,6 @@ const locale: Locale = {
   decadeSelect: 'Évtized kiválasztása', // 'Choose a decade',
 
   dayFormat: 'DD', // 'D',
-  dateTimeFormat: 'YYYY/MM/DD HH:mm:ss', // 'M/D/YYYY HH:mm:ss',
 
   previousMonth: 'Előző hónap (PageUp)', // 'Previous month (PageUp)',
   nextMonth: 'Következő hónap (PageDown)', // 'Next month (PageDown)',

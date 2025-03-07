@@ -20,7 +20,6 @@ const locale: Locale = {
   decadeSelect: 'Velg tiår',
 
   dayFormat: 'DD',
-  dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
 
   previousMonth: 'Forrige måned (PageUp)',
   nextMonth: 'Neste måned (PageDown)',

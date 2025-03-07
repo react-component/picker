@@ -18,8 +18,6 @@ const locale: Locale = {
   yearSelect: 'Επιλογή έτους',
   decadeSelect: 'Επιλογή δεκαετίας',
 
-  dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-
   previousMonth: 'Προηγούμενος μήνας (PageUp)',
   nextMonth: 'Επόμενος μήνας (PageDown)',
   previousYear: 'Προηγούμενο έτος (Control + αριστερά)',

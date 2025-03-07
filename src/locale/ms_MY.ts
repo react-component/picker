@@ -21,7 +21,6 @@ const locale: Locale = {
   yearSelect: 'Pilih tahun',
   decadeSelect: 'Pilih dekad',
 
-  dateTimeFormat: 'M/D/YYYY HH:mm:ss',
   previousYear: 'Tahun lepas (Ctrl+left)',
   nextYear: 'Tahun depan (Ctrl+right)',
   previousDecade: 'Dekad lepas',

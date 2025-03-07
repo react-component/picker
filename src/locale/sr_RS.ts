@@ -18,8 +18,6 @@ const locale: Locale = {
   yearSelect: 'Izaberi godinu',
   decadeSelect: 'Izaberi deceniju',
 
-  dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
-
   previousMonth: 'Prethodni mesec (PageUp)',
   nextMonth: 'Sledeći mesec (PageDown)',
   previousYear: 'Prethodna godina (Control + left)',
