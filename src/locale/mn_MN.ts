@@ -19,7 +19,7 @@ const locale: Locale = {
   yearSelect: 'Жил сонгох',
   decadeSelect: 'Арван сонгох',
 
-  dateFormat: 'YYYY/MM/DD',
+  fieldDateFormat: 'YYYY/MM/DD',
   dayFormat: 'DD',
   dateTimeFormat: 'YYYY/MM/DD HH:mm:ss',
 
