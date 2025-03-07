@@ -20,7 +20,7 @@ const locale: Locale = {
   decadeSelect: 'Velg tiår',
 
   fieldDateFormat: 'DD.MM.YYYY',
-  dayFormat: 'DD',
+  cellDateFormat: 'DD',
   dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
 
   previousMonth: 'Forrige måned (PageUp)',

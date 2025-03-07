@@ -20,7 +20,7 @@ const locale: Locale = {
   yearSelect: 'يىل تاللاش',
   decadeSelect: 'يىللارنى تاللاش',
   yearFormat: 'YYYY-يىلى',
-  dayFormat: 'D-كۈنى',
+  cellDateFormat: 'D-كۈنى',
   fieldDateFormat: 'YYYY-يىلىM-ئاينىڭD-كۈنى',
   dateTimeFormat: 'YYYY-يىلىM—ئاينىڭD-كۈنى، HH:mm:ss',
   previousYear: 'ئالدىنقى يىلى (Controlبىلەن يۆنىلىش كونۇپكىسى)',

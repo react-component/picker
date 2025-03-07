@@ -19,7 +19,7 @@ const locale: Locale = {
   decadeSelect: 'Évtized kiválasztása', // 'Choose a decade',
 
   fieldDateFormat: 'YYYY/MM/DD', // 'M/D/YYYY',
-  dayFormat: 'DD', // 'D',
+  cellDateFormat: 'DD', // 'D',
   dateTimeFormat: 'YYYY/MM/DD HH:mm:ss', // 'M/D/YYYY HH:mm:ss',
 
   previousMonth: 'Előző hónap (PageUp)', // 'Previous month (PageUp)',
