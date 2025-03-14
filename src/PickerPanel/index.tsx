@@ -183,7 +183,15 @@ function PickerPanel<DateType extends object = any>(
     hideHeader,
   } = props;
 
-  const mergedPrefixCls = React.useContext(PickerContext)?.prefixCls || prefixCls || 'rc-picker';
+  // ======================== Context ========================
+  const {
+    prefixCls: contextPrefixCls,
+    classNames: pickerClassNames,
+    styles,
+  } = React.useContext(PickerContext) || {};
+
+  // ======================== prefixCls ========================
+  const mergedPrefixCls = contextPrefixCls || prefixCls || 'rc-picker';
 
   // ========================== Refs ==========================
   const rootRef = React.useRef<HTMLDivElement>();
@@ -366,8 +374,8 @@ function PickerPanel<DateType extends object = any>(
   // ======================== Context =========================
   const parentHackContext = React.useContext(PickerHackContext);
   const pickerPanelContext = React.useMemo(
-    () => ({ ...parentHackContext, hideHeader }),
-    [parentHackContext, hideHeader],
+    () => ({ ...parentHackContext, hideHeader, classNames: pickerClassNames, styles }),
+    [parentHackContext, hideHeader, pickerClassNames, styles],
   );
 
   // ======================== Warnings ========================

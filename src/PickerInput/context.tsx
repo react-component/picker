@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { GenerateConfig } from '../generate';
-import type { Components, Locale } from '../interface';
+import type { Components, Locale, SemanticStructure } from '../interface';
 
 export interface PickerContextProps<DateType = any> {
   prefixCls: string;
@@ -9,7 +9,8 @@ export interface PickerContextProps<DateType = any> {
   /** Customize button component */
   button?: Components['button'];
   input?: Components['input'];
-
+  styles?: Partial<Record<SemanticStructure, React.CSSProperties>>;
+  classNames?: Partial<Record<SemanticStructure, string>>;
 }
 
 const PickerContext = React.createContext<PickerContextProps>(null!);

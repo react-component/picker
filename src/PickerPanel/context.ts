@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { PanelMode, SharedPanelProps } from '../interface';
+import type { PanelMode, SemanticStructure, SharedPanelProps } from '../interface';
 
 export interface PanelContextProps<DateType extends object = any>
   extends Pick<
@@ -106,6 +106,8 @@ export interface PickerHackContextProps {
   hideNext?: boolean;
   hideHeader?: boolean;
   onCellDblClick?: () => void;
+  styles?: Partial<Record<SemanticStructure, React.CSSProperties>>;
+  classNames?: Partial<Record<SemanticStructure, string>>;
 }
 
 /**

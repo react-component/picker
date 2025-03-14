@@ -1349,17 +1349,27 @@ describe('Picker.Basic', () => {
     );
   });
 
-  it('classNames.popup', () => {
-    render(
-      <DayPicker
-        classNames={{
-          popup: 'bamboo',
-        }}
-        open
-      />,
-    );
+  it('support classNames and styles', () => {
+    const customClassNames = {
+      popup: 'custom-popup',
+      body: 'custom-body',
+      content: 'custom-content',
+    };
+    const customStyles = {
+      popup: { color: 'red' },
+      body: { color: 'green' },
+      content: { color: 'blue' },
+    };
+    render(<DayPicker classNames={customClassNames} styles={customStyles} open />);
 
-    expect(document.querySelector('.rc-picker-dropdown')).toHaveClass('bamboo');
+    expect(document.querySelector('.rc-picker-dropdown')).toHaveClass(customClassNames.popup);
+    expect(document.querySelector('.rc-picker-dropdown')).toHaveStyle(customStyles.popup);
+    const content = document.querySelector('.rc-picker-content');
+    const body = document.querySelector('.rc-picker-body');
+    expect(content).toHaveClass(customClassNames.content);
+    expect(content).toHaveStyle(customStyles.content);
+    expect(body).toHaveClass(customClassNames.body);
+    expect(body).toHaveStyle(customStyles.body);
   });
 
   it('showTime config should have format', () => {

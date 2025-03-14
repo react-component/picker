@@ -63,7 +63,11 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
   const cellPrefixCls = `${prefixCls}-cell`;
 
   // ============================= Context ==============================
-  const { onCellDblClick } = React.useContext(PickerHackContext);
+  const {
+    onCellDblClick,
+    classNames: pickerClassNames,
+    styles,
+  } = React.useContext(PickerHackContext);
 
   // ============================== Value ===============================
   const matchValues = (date: DateType) =>
@@ -181,8 +185,11 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
 
   // ============================== Render ==============================
   return (
-    <div className={`${prefixCls}-body`}>
-      <table className={`${prefixCls}-content`}>
+    <div className={classNames(`${prefixCls}-body`, pickerClassNames?.body)} style={styles?.body}>
+      <table
+        className={classNames(`${prefixCls}-content`, pickerClassNames?.content)}
+        style={styles?.content}
+      >
         {headerCells && (
           <thead>
             <tr>{headerCells}</tr>

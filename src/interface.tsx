@@ -281,7 +281,7 @@ export type Components<DateType extends object = any> = Partial<
 >;
 
 // ========================= Picker =========================
-export type SemanticStructure = 'popup';
+export type SemanticStructure = 'popup' | 'body' | 'content';
 
 export type CustomFormat<DateType> = (value: DateType) => string;
 
