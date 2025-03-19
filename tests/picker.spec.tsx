@@ -8,8 +8,9 @@ import KeyCode from '@rc-component/util/lib/KeyCode';
 import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
 import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
-import type { PickerRef } from '../src';
+import { PickerPanel, type PickerRef } from '../src';
 import type { PanelMode, PickerMode } from '../src/interface';
+import momentGenerateConfig from '../src/generate/moment';
 import enUS from '../src/locale/en_US';
 import zhCN from '../src/locale/zh_CN';
 import {
@@ -1371,7 +1372,30 @@ describe('Picker.Basic', () => {
     expect(body).toHaveClass(customClassNames.popupBody);
     expect(body).toHaveStyle(customStyles.popupBody);
   });
-
+  it('support classNames and styles for panel', () => {
+    const customClassNames = {
+      popupBody: 'custom-body',
+      popupContent: 'custom-content',
+    };
+    const customStyles = {
+      popupBody: { color: 'green' },
+      popupContent: { color: 'blue' },
+    };
+    render(
+      <PickerPanel
+        classNames={customClassNames}
+        styles={customStyles}
+        locale={enUS}
+        generateConfig={momentGenerateConfig}
+      />,
+    );
+    const content = document.querySelector('.rc-picker-content');
+    const body = document.querySelector('.rc-picker-body');
+    expect(content).toHaveClass(customClassNames.popupContent);
+    expect(content).toHaveStyle(customStyles.popupContent);
+    expect(body).toHaveClass(customClassNames.popupBody);
+    expect(body).toHaveStyle(customStyles.popupBody);
+  });
   it('showTime config should have format', () => {
     render(
       <DayPicker
