@@ -1352,13 +1352,13 @@ describe('Picker.Basic', () => {
   it('support classNames and styles', () => {
     const customClassNames = {
       popup: 'custom-popup',
-      body: 'custom-body',
-      content: 'custom-content',
+      popupBody: 'custom-body',
+      popupContent: 'custom-content',
     };
     const customStyles = {
       popup: { color: 'red' },
-      body: { color: 'green' },
-      content: { color: 'blue' },
+      popupBody: { color: 'green' },
+      popupContent: { color: 'blue' },
     };
     render(<DayPicker classNames={customClassNames} styles={customStyles} open />);
 
@@ -1366,10 +1366,10 @@ describe('Picker.Basic', () => {
     expect(document.querySelector('.rc-picker-dropdown')).toHaveStyle(customStyles.popup);
     const content = document.querySelector('.rc-picker-content');
     const body = document.querySelector('.rc-picker-body');
-    expect(content).toHaveClass(customClassNames.content);
-    expect(content).toHaveStyle(customStyles.content);
-    expect(body).toHaveClass(customClassNames.body);
-    expect(body).toHaveStyle(customStyles.body);
+    expect(content).toHaveClass(customClassNames.popupContent);
+    expect(content).toHaveStyle(customStyles.popupContent);
+    expect(body).toHaveClass(customClassNames.popupBody);
+    expect(body).toHaveStyle(customStyles.popupBody);
   });
 
   it('showTime config should have format', () => {

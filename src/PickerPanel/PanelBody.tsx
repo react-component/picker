@@ -185,10 +185,13 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
 
   // ============================== Render ==============================
   return (
-    <div className={classNames(`${prefixCls}-body`, pickerClassNames?.body)} style={styles?.body}>
+    <div
+      className={classNames(`${prefixCls}-body`, pickerClassNames?.popupBody)}
+      style={styles?.popupBody}
+    >
       <table
-        className={classNames(`${prefixCls}-content`, pickerClassNames?.content)}
-        style={styles?.content}
+        className={classNames(`${prefixCls}-content`, pickerClassNames?.popupContent)}
+        style={styles?.popupContent}
       >
         {headerCells && (
           <thead>
