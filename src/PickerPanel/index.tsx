@@ -127,6 +127,7 @@ export interface SinglePickerPanelProps<DateType extends object = any>
   onChange?: (date: DateType) => void;
 }
 
+type PanelSemanticName = 'popupBody' | 'popupContent';
 export type PickerPanelProps<DateType extends object = any> = BasePickerPanelProps<DateType> & {
   /** multiple selection. Not support time or datetime picker */
   multiple?: boolean;
@@ -134,6 +135,8 @@ export type PickerPanelProps<DateType extends object = any> = BasePickerPanelPro
   defaultValue?: DateType | DateType[] | null;
   value?: DateType | DateType[] | null;
   onChange?: (date: DateType | DateType[]) => void;
+  styles?: Partial<Record<PanelSemanticName, React.CSSProperties>>;
+  classNames?: Partial<Record<PanelSemanticName, string>>;
 };
 
 function PickerPanel<DateType extends object = any>(
@@ -141,6 +144,9 @@ function PickerPanel<DateType extends object = any>(
   ref: React.Ref<PickerPanelRef>,
 ) {
   const {
+    classNames: panelClassNames,
+    styles: panelStyles,
+
     locale,
     generateConfig,
 
@@ -187,7 +193,7 @@ function PickerPanel<DateType extends object = any>(
   const {
     prefixCls: contextPrefixCls,
     classNames: pickerClassNames,
-    styles,
+    styles: pickerStyles,
   } = React.useContext(PickerContext) || {};
 
   // ======================== prefixCls ========================
@@ -372,10 +378,17 @@ function PickerPanel<DateType extends object = any>(
     DatePanel) as typeof DatePanel;
 
   // ======================== Context =========================
+  const mergedStyles = pickerStyles ?? panelStyles;
+  const mergedClassNames = pickerClassNames ?? panelClassNames;
   const parentHackContext = React.useContext(PickerHackContext);
   const pickerPanelContext = React.useMemo(
-    () => ({ ...parentHackContext, hideHeader, classNames: pickerClassNames, styles }),
-    [parentHackContext, hideHeader, pickerClassNames, styles],
+    () => ({
+      ...parentHackContext,
+      hideHeader,
+      classNames: mergedClassNames,
+      styles: mergedStyles,
+    }),
+    [parentHackContext, hideHeader, mergedClassNames, mergedStyles],
   );
 
   // ======================== Warnings ========================
