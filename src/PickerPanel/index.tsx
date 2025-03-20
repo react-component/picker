@@ -127,7 +127,7 @@ export interface SinglePickerPanelProps<DateType extends object = any>
   onChange?: (date: DateType) => void;
 }
 
-type PanelSemanticName = 'popupBody' | 'popupContent';
+type PanelSemanticName = 'popupBody' | 'popupContent' | 'popupItem';
 export type PickerPanelProps<DateType extends object = any> = BasePickerPanelProps<DateType> & {
   /** multiple selection. Not support time or datetime picker */
   multiple?: boolean;
