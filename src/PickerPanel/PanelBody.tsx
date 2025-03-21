@@ -127,7 +127,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
         <td
           key={col}
           title={title}
-          className={classNames(cellPrefixCls, {
+          className={classNames(cellPrefixCls, pickerClassNames?.popupItem, {
             [`${cellPrefixCls}-disabled`]: disabled,
             [`${cellPrefixCls}-hover`]: (hoverValue || []).some((date) =>
               isSame(generateConfig, locale, currentDate, date, type),
@@ -142,6 +142,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
               matchValues(currentDate),
             ...getCellClassName(currentDate),
           })}
+          style={styles?.popupItem}
           onClick={() => {
             if (!disabled) {
               onSelect(currentDate);

@@ -1355,11 +1355,13 @@ describe('Picker.Basic', () => {
       popup: 'custom-popup',
       popupBody: 'custom-body',
       popupContent: 'custom-content',
+      popupItem: 'custom-item',
     };
     const customStyles = {
       popup: { color: 'red' },
       popupBody: { color: 'green' },
       popupContent: { color: 'blue' },
+      popupItem: { color: 'yellow' },
     };
     render(<DayPicker classNames={customClassNames} styles={customStyles} open />);
 
@@ -1367,19 +1369,24 @@ describe('Picker.Basic', () => {
     expect(document.querySelector('.rc-picker-dropdown')).toHaveStyle(customStyles.popup);
     const content = document.querySelector('.rc-picker-content');
     const body = document.querySelector('.rc-picker-body');
+    const item = document.querySelector('.rc-picker-cell');
     expect(content).toHaveClass(customClassNames.popupContent);
     expect(content).toHaveStyle(customStyles.popupContent);
     expect(body).toHaveClass(customClassNames.popupBody);
     expect(body).toHaveStyle(customStyles.popupBody);
+    expect(item).toHaveClass(customClassNames.popupItem);
+    expect(item).toHaveStyle(customStyles.popupItem);
   });
   it('support classNames and styles for panel', () => {
     const customClassNames = {
       popupBody: 'custom-body',
       popupContent: 'custom-content',
+      popupItem: 'custom-item',
     };
     const customStyles = {
       popupBody: { color: 'green' },
       popupContent: { color: 'blue' },
+      popupItem: { color: 'yellow' },
     };
     render(
       <PickerPanel
@@ -1391,10 +1398,13 @@ describe('Picker.Basic', () => {
     );
     const content = document.querySelector('.rc-picker-content');
     const body = document.querySelector('.rc-picker-body');
+    const item = document.querySelector('.rc-picker-cell');
     expect(content).toHaveClass(customClassNames.popupContent);
     expect(content).toHaveStyle(customStyles.popupContent);
     expect(body).toHaveClass(customClassNames.popupBody);
     expect(body).toHaveStyle(customStyles.popupBody);
+    expect(item).toHaveClass(customClassNames.popupItem);
+    expect(item).toHaveStyle(customStyles.popupItem);
   });
   it('showTime config should have format', () => {
     render(
