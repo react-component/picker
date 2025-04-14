@@ -110,7 +110,7 @@ function SingleSelector<DateType extends object = any>(
   const rtl = direction === 'rtl';
 
   // ======================== Prefix ========================
-  const { prefixCls } = React.useContext(PickerContext);
+  const { prefixCls, classNames: selectorClassNames, styles } = React.useContext(PickerContext);
 
   // ========================= Refs =========================
   const rootRef = React.useRef<HTMLDivElement>();
@@ -225,7 +225,14 @@ function SingleSelector<DateType extends object = any>(
         onMouseDown?.(e);
       }}
     >
-      {prefix && <div className={`${prefixCls}-prefix`}>{prefix}</div>}
+      {prefix && (
+        <div
+          className={classNames(`${prefixCls}-prefix`, selectorClassNames?.prefix)}
+          style={styles?.prefix}
+        >
+          {prefix}
+        </div>
+      )}
       {selectorNode}
     </div>
   );
