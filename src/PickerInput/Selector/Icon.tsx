@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PickerContext from '../context';
+import classNames from 'classnames';
 
 export interface IconProps extends React.HtmlHTMLAttributes<HTMLElement> {
   icon?: React.ReactNode;
@@ -8,11 +9,14 @@ export interface IconProps extends React.HtmlHTMLAttributes<HTMLElement> {
 
 export default function Icon(props: IconProps) {
   const { icon, type, ...restProps } = props;
-
-  const { prefixCls } = React.useContext(PickerContext);
+  const { prefixCls, classNames: iconClassNames, styles } = React.useContext(PickerContext);
 
   return icon ? (
-    <span className={`${prefixCls}-${type}`} {...restProps}>
+    <span
+      className={classNames(`${prefixCls}-${type}`, iconClassNames?.suffix)}
+      style={styles?.suffix}
+      {...restProps}
+    >
       {icon}
     </span>
   ) : null;

@@ -8,7 +8,7 @@ import KeyCode from '@rc-component/util/lib/KeyCode';
 import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
 import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
-import { PickerPanel, type PickerRef } from '../src';
+import Picker, { PickerPanel, type PickerRef } from '../src';
 import type { PanelMode, PickerMode } from '../src/interface';
 import momentGenerateConfig from '../src/generate/moment';
 import enUS from '../src/locale/en_US';
@@ -1405,6 +1405,62 @@ describe('Picker.Basic', () => {
     expect(body).toHaveStyle(customStyles.popupBody);
     expect(item).toHaveClass(customClassNames.popupItem);
     expect(item).toHaveStyle(customStyles.popupItem);
+  });
+  it('classNames and styles should support time panel', async () => {
+    const testClassNames = {
+      input: 'test-input',
+      prefix: 'test-prefix',
+      suffix: 'test-suffix',
+      popupContent: 'custom-content',
+      popupItem: 'custom-item',
+    };
+    const testStyles = {
+      input: { color: 'red' },
+      prefix: { color: 'green' },
+      suffix: { color: 'blue' },
+      popupContent: { color: 'blue' },
+      popupItem: { color: 'yellow' },
+    };
+    const defaultValue = moment('2019-11-28 01:02:03');
+    const { container } = render(
+      <Picker
+        classNames={testClassNames}
+        styles={testStyles}
+        prefix="prefix"
+        suffixIcon="suffix"
+        defaultValue={defaultValue}
+        picker="time"
+        locale={zhCN}
+        disabledTime={(now) => ({
+          disabledHours: () => [now.hours()],
+        })}
+        generateConfig={momentGenerateConfig}
+      />,
+    );
+    const input = container.querySelectorAll('.rc-picker-input')[0];
+    const prefix = container.querySelector('.rc-picker-prefix');
+    const suffix = container.querySelector('.rc-picker-suffix');
+    expect(input).toHaveClass(testClassNames.input);
+    expect(input).toHaveStyle(testStyles.input);
+    expect(prefix).toHaveClass(testClassNames.prefix);
+    expect(prefix).toHaveStyle(testStyles.prefix);
+    expect(suffix).toHaveClass(testClassNames.suffix);
+    expect(suffix).toHaveStyle(testStyles.suffix);
+    const { container: panel } = render(
+      <PickerPanel
+        classNames={testClassNames}
+        styles={testStyles}
+        picker="time"
+        locale={enUS}
+        generateConfig={momentGenerateConfig}
+      />,
+    );
+    const content = panel.querySelector('.rc-picker-content');
+    const item = panel.querySelector('.rc-picker-time-panel-cell');
+    expect(content).toHaveClass(testClassNames.popupContent);
+    expect(content).toHaveStyle(testStyles.popupContent);
+    expect(item).toHaveClass(testClassNames.popupItem);
+    expect(item).toHaveStyle(testStyles.popupItem);
   });
   it('showTime config should have format', () => {
     render(

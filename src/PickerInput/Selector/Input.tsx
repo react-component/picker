@@ -72,7 +72,12 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   } = props;
   const { value, onFocus, onBlur, onMouseUp } = props;
 
-  const { prefixCls, input: Component = 'input' } = React.useContext(PickerContext);
+  const {
+    prefixCls,
+    input: Component = 'input',
+    classNames: inputClassNames,
+    styles,
+  } = React.useContext(PickerContext);
   const inputPrefixCls = `${prefixCls}-input`;
 
   // ======================== Value =========================
@@ -380,12 +385,14 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
       ref={holderRef}
       className={classNames(
         inputPrefixCls,
+        inputClassNames?.input,
         {
           [`${inputPrefixCls}-active`]: active && showActiveCls,
           [`${inputPrefixCls}-placeholder`]: helped,
         },
         className,
       )}
+      style={styles?.input}
     >
       <Component
         ref={inputRef}

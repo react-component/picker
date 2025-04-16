@@ -121,7 +121,7 @@ function RangeSelector<DateType extends object = any>(
   const rtl = direction === 'rtl';
 
   // ======================== Prefix ========================
-  const { prefixCls } = React.useContext(PickerContext);
+  const { prefixCls, classNames: selectorClassNames, styles } = React.useContext(PickerContext);
 
   // ========================== Id ==========================
   const ids = React.useMemo(() => {
@@ -238,7 +238,14 @@ function RangeSelector<DateType extends object = any>(
           onMouseDown?.(e);
         }}
       >
-        {prefix && <div className={`${prefixCls}-prefix`}>{prefix}</div>}
+        {prefix && (
+          <div
+            className={classNames(`${prefixCls}-prefix`, selectorClassNames?.prefix)}
+            style={styles?.prefix}
+          >
+            {prefix}
+          </div>
+        )}
         <Input
           ref={inputStartRef}
           {...getInputProps(0)}

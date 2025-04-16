@@ -6,6 +6,13 @@ import zhCN from '../../src/locale/zh_CN';
 import '../../assets/index.less';
 
 const defaultValue = moment('2019-11-28 01:02:03');
+const testClassNames = {
+  input: 'test-input',
+  prefix: 'test-prefix',
+  suffix: 'test-suffix',
+  popupContent: 'test-popup-content',
+  popupItem: 'test-popup-item',
+}
 
 export default () => {
   return (
@@ -24,6 +31,9 @@ export default () => {
 
       <h3>TimePicker</h3>
       <Picker
+        classNames={testClassNames}
+        prefix="prefix"
+        suffixIcon="suffix"
         defaultValue={defaultValue}
         picker="time"
         locale={zhCN}

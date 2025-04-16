@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
-import { usePanelContext } from '../../context';
+import { PickerHackContext, usePanelContext } from '../../context';
 import useScrollTo from './useScrollTo';
 
 const SCROLL_DELAY = 300;
@@ -33,6 +33,7 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
     props;
 
   const { prefixCls, cellRender, now, locale } = usePanelContext<DateType>();
+  const { classNames: pickerClassNames, styles } = React.useContext(PickerHackContext);
 
   const panelPrefixCls = `${prefixCls}-time-panel`;
   const cellPrefixCls = `${prefixCls}-time-panel-cell`;
@@ -103,7 +104,8 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
         return (
           <li
             key={unitValue}
-            className={classNames(cellPrefixCls, {
+            style={styles?.popupItem}
+            className={classNames(cellPrefixCls, pickerClassNames?.popupItem, {
               [`${cellPrefixCls}-selected`]: value === unitValue,
               [`${cellPrefixCls}-disabled`]: disabled,
             })}
