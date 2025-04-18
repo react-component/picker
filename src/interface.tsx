@@ -281,8 +281,6 @@ export type Components<DateType extends object = any> = Partial<
 >;
 
 // ========================= Picker =========================
-export type SemanticStructure = 'popup' | 'popupBody' | 'popupContent' | 'popupItem' | 'suffix' | 'prefix' | 'input';
-
 export type CustomFormat<DateType> = (value: DateType) => string;
 
 export type FormatType<DateType = any> = string | CustomFormat<DateType>;
@@ -313,6 +311,10 @@ export type LegacyOnKeyDown = (
   preventDefault: VoidFunction,
 ) => void;
 
+export type SemanticName = 'root' | 'prefix' | 'input' | 'suffix';
+
+export type PanelSemanticName = 'root' | 'header' | 'body' | 'content' | 'item' | 'footer';
+
 export interface SharedPickerProps<DateType extends object = any>
   extends SharedHTMLAttrs,
     Pick<
@@ -328,8 +330,12 @@ export interface SharedPickerProps<DateType extends object = any>
   className?: string;
   style?: React.CSSProperties;
 
-  styles?: Partial<Record<SemanticStructure, React.CSSProperties>>;
-  classNames?: Partial<Record<SemanticStructure, string>>;
+  styles?: Partial<Record<SemanticName, React.CSSProperties>> & {
+    popup: Partial<Record<PanelSemanticName, React.CSSProperties>>;
+  };
+  classNames?: Partial<Record<SemanticName, string>> & {
+    popup: Partial<Record<PanelSemanticName, string>>;
+  };
 
   // Config
   locale: Locale;

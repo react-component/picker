@@ -385,14 +385,12 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
       ref={holderRef}
       className={classNames(
         inputPrefixCls,
-        inputClassNames?.input,
         {
           [`${inputPrefixCls}-active`]: active && showActiveCls,
           [`${inputPrefixCls}-placeholder`]: helped,
         },
         className,
       )}
-      style={styles?.input}
     >
       <Component
         ref={inputRef}
@@ -406,6 +404,8 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
         // Value
         value={inputValue}
         onChange={onInternalChange}
+        className={inputClassNames?.input}
+        style={styles?.input}
       />
       <Icon type="suffix" icon={suffixIcon} />
       {clearIcon}
