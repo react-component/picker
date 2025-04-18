@@ -1,5 +1,6 @@
 import * as React from 'react';
-import type { PanelMode, SemanticStructure, SharedPanelProps } from '../interface';
+import type { PanelMode, SharedPanelProps } from '../interface';
+import type { FilledPanelClassNames, FilledPanelStyles } from '../hooks/useSemantic';
 
 export interface PanelContextProps<DateType extends object = any>
   extends Pick<
@@ -31,6 +32,9 @@ export interface PanelContextProps<DateType extends object = any>
 
   // Shared
   now: DateType;
+
+  classNames: FilledPanelClassNames;
+  styles: FilledPanelStyles;
 }
 
 /** Used for each single Panel. e.g. DatePanel */
@@ -49,7 +53,7 @@ export function useInfo<DateType extends object = any>(
 ): [sharedProps: PanelContextProps<DateType>, now: DateType] {
   const {
     prefixCls,
-    generateConfig,
+    // generateConfig,
     locale,
     disabledDate,
     minDate,
@@ -69,6 +73,9 @@ export function useInfo<DateType extends object = any>(
     superNextIcon,
   } = props;
 
+  // ======================= Context ========================
+  const { classNames, styles, generateConfig } = usePanelContext();
+
   // ========================= MISC =========================
   const now = generateConfig.getNow();
 
@@ -78,6 +85,8 @@ export function useInfo<DateType extends object = any>(
     values,
     pickerValue,
     prefixCls,
+    classNames,
+    styles,
     disabledDate,
     minDate,
     maxDate,
@@ -106,8 +115,6 @@ export interface PickerHackContextProps {
   hideNext?: boolean;
   hideHeader?: boolean;
   onCellDblClick?: () => void;
-  styles?: Partial<Record<SemanticStructure, React.CSSProperties>>;
-  classNames?: Partial<Record<SemanticStructure, string>>;
 }
 
 /**

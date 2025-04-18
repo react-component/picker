@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import cls from 'classnames';
 import ResizeObserver from '@rc-component/resize-observer';
 import { useEvent } from '@rc-component/util';
 import * as React from 'react';
@@ -121,7 +121,7 @@ function RangeSelector<DateType extends object = any>(
   const rtl = direction === 'rtl';
 
   // ======================== Prefix ========================
-  const { prefixCls, classNames: selectorClassNames, styles } = React.useContext(PickerContext);
+  const { prefixCls, classNames, styles } = React.useContext(PickerContext);
 
   // ========================== Id ==========================
   const ids = React.useMemo(() => {
@@ -211,7 +211,7 @@ function RangeSelector<DateType extends object = any>(
     <ResizeObserver onResize={syncActiveOffset}>
       <div
         {...rootProps}
-        className={classNames(
+        className={cls(
           prefixCls,
           `${prefixCls}-range`,
           {
@@ -239,10 +239,7 @@ function RangeSelector<DateType extends object = any>(
         }}
       >
         {prefix && (
-          <div
-            className={classNames(`${prefixCls}-prefix`, selectorClassNames?.prefix)}
-            style={styles?.prefix}
-          >
+          <div className={cls(`${prefixCls}-prefix`, classNames.prefix)} style={styles.prefix}>
             {prefix}
           </div>
         )}

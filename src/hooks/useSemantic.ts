@@ -1,12 +1,16 @@
 import { useMemo } from 'react';
 import type { SharedPickerProps } from '../interface';
 
+export type FilledPanelClassNames = NonNullable<SharedPickerProps['classNames']>['popup'];
+
+export type FilledPanelStyles = NonNullable<SharedPickerProps['styles']>['popup'];
+
 export type FilledClassNames = NonNullable<SharedPickerProps['classNames']> & {
-  popup: NonNullable<SharedPickerProps['classNames']>['popup'];
+  popup: FilledPanelClassNames;
 };
 
 export type FilledStyles = NonNullable<SharedPickerProps['styles']> & {
-  popup: NonNullable<SharedPickerProps['styles']>['popup'];
+  popup: FilledPanelStyles;
 };
 
 /**
