@@ -378,17 +378,15 @@ function PickerPanel<DateType extends object = any>(
     DatePanel) as typeof DatePanel;
 
   // ======================== Context =========================
-  const mergedStyles = pickerStyles ?? panelStyles;
-  const mergedClassNames = pickerClassNames ?? panelClassNames;
   const parentHackContext = React.useContext(PickerHackContext);
   const pickerPanelContext = React.useMemo(
     () => ({
       ...parentHackContext,
       hideHeader,
-      classNames: mergedClassNames,
-      styles: mergedStyles,
+      classNames: pickerClassNames ?? panelClassNames ?? {},
+      styles: pickerStyles ?? panelStyles ?? {},
     }),
-    [parentHackContext, hideHeader, mergedClassNames, mergedStyles],
+    [parentHackContext, hideHeader, pickerClassNames, panelClassNames, pickerStyles, panelStyles],
   );
 
   // ======================== Warnings ========================

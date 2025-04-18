@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import cls from 'classnames';
 import * as React from 'react';
 import type { DisabledDate } from '../interface';
 import { formatValue, isInRange, isSame } from '../utils/dateUtil';
@@ -45,6 +45,8 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
 
   const {
     prefixCls,
+    classNames,
+    styles,
     panelType: type,
     now,
     disabledDate: contextDisabledDate,
@@ -63,11 +65,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
   const cellPrefixCls = `${prefixCls}-cell`;
 
   // ============================= Context ==============================
-  const {
-    onCellDblClick,
-    classNames: pickerClassNames,
-    styles,
-  } = React.useContext(PickerHackContext);
+  const { onCellDblClick } = React.useContext(PickerHackContext);
 
   // ============================== Value ===============================
   const matchValues = (date: DateType) =>
@@ -127,7 +125,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
         <td
           key={col}
           title={title}
-          className={classNames(cellPrefixCls, pickerClassNames?.popupItem, {
+          className={cls(cellPrefixCls, classNames.item, {
             [`${cellPrefixCls}-disabled`]: disabled,
             [`${cellPrefixCls}-hover`]: (hoverValue || []).some((date) =>
               isSame(generateConfig, locale, currentDate, date, type),
@@ -142,7 +140,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
               matchValues(currentDate),
             ...getCellClassName(currentDate),
           })}
-          style={styles?.popupItem}
+          style={styles.item}
           onClick={() => {
             if (!disabled) {
               onSelect(currentDate);
@@ -186,14 +184,8 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
 
   // ============================== Render ==============================
   return (
-    <div
-      className={classNames(`${prefixCls}-body`, pickerClassNames?.popupBody)}
-      style={styles?.popupBody}
-    >
-      <table
-        className={classNames(`${prefixCls}-content`, pickerClassNames?.popupContent)}
-        style={styles?.popupContent}
-      >
+    <div className={cls(`${prefixCls}-body`, classNames.body)} style={styles.body}>
+      <table className={cls(`${prefixCls}-content`, classNames.content)} style={styles.content}>
         {headerCells && (
           <thead>
             <tr>{headerCells}</tr>
