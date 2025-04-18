@@ -1353,12 +1353,14 @@ describe('Picker.Basic', () => {
   it('support classNames and styles', () => {
     const popupClassNames = {
       root: 'custom-popup',
+      header: 'custom-header',
       body: 'custom-body',
       content: 'custom-content',
       item: 'custom-item',
     };
     const popupStyles = {
       root: { color: 'red' },
+      header: { color: 'purple' },
       body: { color: 'green' },
       content: { color: 'blue' },
       item: { color: 'yellow' },
@@ -1377,13 +1379,18 @@ describe('Picker.Basic', () => {
 
     expect(document.querySelector('.rc-picker-dropdown')).toHaveClass(popupClassNames.root);
     expect(document.querySelector('.rc-picker-dropdown')).toHaveStyle(popupStyles.root);
-    const content = document.querySelector('.rc-picker-content');
+
+    const header = document.querySelector('.rc-picker-header');
     const body = document.querySelector('.rc-picker-body');
+    const content = document.querySelector('.rc-picker-content');
     const item = document.querySelector('.rc-picker-cell');
-    expect(content).toHaveClass(popupClassNames.content);
-    expect(content).toHaveStyle(popupStyles.content);
+
+    expect(header).toHaveClass(popupClassNames.header);
+    expect(header).toHaveStyle(popupStyles.header);
     expect(body).toHaveClass(popupClassNames.body);
     expect(body).toHaveStyle(popupStyles.body);
+    expect(content).toHaveClass(popupClassNames.content);
+    expect(content).toHaveStyle(popupStyles.content);
     expect(item).toHaveClass(popupClassNames.item);
     expect(item).toHaveStyle(popupStyles.item);
   });
