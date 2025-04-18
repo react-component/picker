@@ -1432,6 +1432,7 @@ describe('Picker.Basic', () => {
 
   it('classNames and styles should support time panel', async () => {
     const testClassNames = {
+      root: 'test-root',
       input: 'test-input',
       prefix: 'test-prefix',
       suffix: 'test-suffix',
@@ -1442,6 +1443,7 @@ describe('Picker.Basic', () => {
     };
 
     const testStyles = {
+      root: { color: 'red' },
       input: { color: 'red' },
       prefix: { color: 'green' },
       suffix: { color: 'blue' },
@@ -1470,15 +1472,20 @@ describe('Picker.Basic', () => {
         generateConfig={momentGenerateConfig}
       />,
     );
+    const root = container.querySelector('.rc-picker');
     const input = container.querySelectorAll('.rc-picker-input input')[0];
     const prefix = container.querySelector('.rc-picker-prefix');
     const suffix = container.querySelector('.rc-picker-suffix');
+
+    expect(root).toHaveClass(testClassNames.root);
+    expect(root).toHaveStyle(testStyles.root);
     expect(input).toHaveClass(testClassNames.input);
     expect(input).toHaveStyle(testStyles.input);
     expect(prefix).toHaveClass(testClassNames.prefix);
     expect(prefix).toHaveStyle(testStyles.prefix);
     expect(suffix).toHaveClass(testClassNames.suffix);
     expect(suffix).toHaveStyle(testStyles.suffix);
+
     const { container: panel } = render(
       <PickerPanel
         classNames={testPopupClassNames}
@@ -1494,6 +1501,14 @@ describe('Picker.Basic', () => {
     expect(content).toHaveStyle(testPopupStyles.content);
     expect(item).toHaveClass(testPopupClassNames.item);
     expect(item).toHaveStyle(testPopupStyles.item);
+  });
+
+  it('rootClassName', () => {
+    render(<DayPicker rootClassName="bamboo" open />);
+
+    expect(document.body.querySelectorAll('.bamboo')).toHaveLength(2);
+    expect(document.body.querySelector('.rc-picker')).toHaveClass('bamboo');
+    expect(document.body.querySelector('.rc-picker-dropdown')).toHaveClass('bamboo');
   });
 
   it('showTime config should have format', () => {
