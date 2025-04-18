@@ -51,7 +51,16 @@ export default () => {
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         <div style={{ margin: '0 8px' }}>
           <h3>Basic</h3>
-          <Picker<Moment> {...sharedProps} locale={zhCN} suffixIcon="SUFFIX" />
+          <Picker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            suffixIcon="SUFFIX"
+            rootClassName="bamboo"
+            className="little"
+            classNames={{
+              root: 'light',
+            }}
+          />
           <Picker<Moment> {...sharedProps} locale={enUS} />
         </div>
         <div style={{ margin: '0 8px' }}>

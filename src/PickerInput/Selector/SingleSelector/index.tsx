@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import cls from 'classnames';
 import * as React from 'react';
 import type { InternalMode, PickerRef, SelectorProps } from '../../../interface';
 import { isSame } from '../../../utils/dateUtil';
@@ -110,7 +110,7 @@ function SingleSelector<DateType extends object = any>(
   const rtl = direction === 'rtl';
 
   // ======================== Prefix ========================
-  const { prefixCls, classNames: selectorClassNames, styles } = React.useContext(PickerContext);
+  const { prefixCls, classNames, styles } = React.useContext(PickerContext);
 
   // ========================= Refs =========================
   const rootRef = React.useRef<HTMLDivElement>();
@@ -201,7 +201,7 @@ function SingleSelector<DateType extends object = any>(
   return (
     <div
       {...rootProps}
-      className={classNames(
+      className={cls(
         prefixCls,
         {
           [`${prefixCls}-multiple`]: multiple,
@@ -226,10 +226,7 @@ function SingleSelector<DateType extends object = any>(
       }}
     >
       {prefix && (
-        <div
-          className={classNames(`${prefixCls}-prefix`, selectorClassNames?.prefix)}
-          style={styles?.prefix}
-        >
+        <div className={cls(`${prefixCls}-prefix`, classNames.prefix)} style={styles.prefix}>
           {prefix}
         </div>
       )}

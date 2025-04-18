@@ -4,7 +4,7 @@ import type { SharedPanelProps, SharedTimeProps } from '../../../interface';
 import { formatValue } from '../../../utils/dateUtil';
 import { PickerHackContext, usePanelContext } from '../../context';
 import TimeColumn, { type Unit } from './TimeColumn';
-import classNames from 'classnames';
+import cls from 'classnames';
 
 function isAM(hour: number) {
   return hour < 12;
@@ -29,6 +29,8 @@ export default function TimePanelBody<DateType extends object = any>(
 
   const {
     prefixCls,
+    classNames,
+    styles,
     values,
     generateConfig,
     locale,
@@ -39,11 +41,7 @@ export default function TimePanelBody<DateType extends object = any>(
 
   const value = values?.[0] || null;
 
-  const {
-    onCellDblClick,
-    classNames: pickerClassNames,
-    styles,
-  } = React.useContext(PickerHackContext);
+  const { onCellDblClick } = React.useContext(PickerHackContext);
 
   // ========================== Info ==========================
   const [getValidTime, rowHourUnits, getMinuteUnits, getSecondUnits, getMillisecondUnits] =
@@ -273,10 +271,7 @@ export default function TimePanelBody<DateType extends object = any>(
   };
 
   return (
-    <div
-      className={classNames(`${prefixCls}-content`, pickerClassNames?.popupContent)}
-      style={styles?.popupContent}
-    >
+    <div className={cls(`${prefixCls}-content`, classNames.content)} style={styles.content}>
       {showHour && (
         <TimeColumn
           units={hourUnits}

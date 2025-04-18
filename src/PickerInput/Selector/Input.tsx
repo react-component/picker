@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import cls from 'classnames';
 import { useEvent } from '@rc-component/util';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import raf from '@rc-component/util/lib/raf';
@@ -75,7 +75,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   const {
     prefixCls,
     input: Component = 'input',
-    classNames: inputClassNames,
+    classNames,
     styles,
   } = React.useContext(PickerContext);
   const inputPrefixCls = `${prefixCls}-input`;
@@ -383,16 +383,14 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   return (
     <div
       ref={holderRef}
-      className={classNames(
+      className={cls(
         inputPrefixCls,
-        inputClassNames?.input,
         {
           [`${inputPrefixCls}-active`]: active && showActiveCls,
           [`${inputPrefixCls}-placeholder`]: helped,
         },
         className,
       )}
-      style={styles?.input}
     >
       <Component
         ref={inputRef}
@@ -406,6 +404,8 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
         // Value
         value={inputValue}
         onChange={onInternalChange}
+        className={classNames.input}
+        style={styles.input}
       />
       <Icon type="suffix" icon={suffixIcon} />
       {clearIcon}

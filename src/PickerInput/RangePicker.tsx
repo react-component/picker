@@ -1,4 +1,5 @@
 import { useEvent, useMergedState } from '@rc-component/util';
+import cls from 'classnames';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import omit from '@rc-component/util/lib/omit';
 import pickAttrs from '@rc-component/util/lib/pickAttrs';
@@ -35,6 +36,7 @@ import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
 import Popup, { type PopupShowTimeConfig } from './Popup';
 import RangeSelector, { type SelectorIdType } from './Selector/RangeSelector';
+import useSemantic from '../hooks/useSemantic';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
   const singleConfig = config ?? defaultConfig;
@@ -158,8 +160,9 @@ function RangePicker<DateType extends object = any>(
   const {
     // Style
     prefixCls,
-    styles,
-    classNames,
+    rootClassName,
+    styles: propStyles,
+    classNames: propClassNames,
 
     // Value
     defaultValue,
@@ -223,6 +226,9 @@ function RangePicker<DateType extends object = any>(
 
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
+
+  // ======================= Semantic =======================
+  const [mergedClassNames, mergedStyles] = useSemantic(propClassNames, propStyles);
 
   // ========================= Open =========================
   const [mergedOpen, setMergeOpen] = useOpen(open, defaultOpen, disabled, onOpenChange);
@@ -562,6 +568,8 @@ function RangePicker<DateType extends object = any>(
       'className',
       'onPanelChange',
       'disabledTime',
+      'classNames',
+      'styles',
     ]);
     return restProps;
   }, [filledProps]);
@@ -693,10 +701,18 @@ function RangePicker<DateType extends object = any>(
       generateConfig,
       button: components.button,
       input: components.input,
-      styles,
-      classNames,
+      classNames: mergedClassNames,
+      styles: mergedStyles,
     }),
-    [prefixCls, locale, generateConfig, components.button, components.input, classNames, styles],
+    [
+      prefixCls,
+      locale,
+      generateConfig,
+      components.button,
+      components.input,
+      mergedClassNames,
+      mergedStyles,
+    ],
   );
 
   // ======================== Effect ========================
@@ -755,8 +771,8 @@ function RangePicker<DateType extends object = any>(
       <PickerTrigger
         {...pickTriggerProps(filledProps)}
         popupElement={panel}
-        popupStyle={styles.popup}
-        popupClassName={classNames.popup}
+        popupStyle={mergedStyles.popup.root}
+        popupClassName={cls(rootClassName, mergedClassNames.popup.root)}
         // Visible
         visible={mergedOpen}
         onClose={onPopupClose}
@@ -768,6 +784,12 @@ function RangePicker<DateType extends object = any>(
           {...filledProps}
           // Ref
           ref={selectorRef}
+          // Style
+          className={cls(filledProps.className, rootClassName, mergedClassNames.root)}
+          style={{
+            ...mergedStyles.root,
+            ...filledProps.style,
+          }}
           // Icon
           suffixIcon={suffixIcon}
           // Active
