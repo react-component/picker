@@ -39,6 +39,9 @@ export interface PanelContextProps<DateType extends object = any>
 
   // Shared
   now: DateType;
+
+  classNames: FilledPanelClassNames;
+  styles: FilledPanelStyles;
 }
 
 /** Used for each single Panel. e.g. DatePanel */
