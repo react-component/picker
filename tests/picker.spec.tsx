@@ -1357,6 +1357,7 @@ describe('Picker.Basic', () => {
       body: 'custom-body',
       content: 'custom-content',
       item: 'custom-item',
+      footer: 'custom-footer',
     };
     const popupStyles = {
       root: { color: 'red' },
@@ -1364,6 +1365,7 @@ describe('Picker.Basic', () => {
       body: { color: 'green' },
       content: { color: 'blue' },
       item: { color: 'yellow' },
+      footer: { color: 'orange' },
     };
     render(
       <DayPicker
@@ -1384,6 +1386,7 @@ describe('Picker.Basic', () => {
     const body = document.querySelector('.rc-picker-body');
     const content = document.querySelector('.rc-picker-content');
     const item = document.querySelector('.rc-picker-cell');
+    const footer = document.querySelector('.rc-picker-footer');
 
     expect(header).toHaveClass(popupClassNames.header);
     expect(header).toHaveStyle(popupStyles.header);
@@ -1393,6 +1396,8 @@ describe('Picker.Basic', () => {
     expect(content).toHaveStyle(popupStyles.content);
     expect(item).toHaveClass(popupClassNames.item);
     expect(item).toHaveStyle(popupStyles.item);
+    expect(footer).toHaveClass(popupClassNames.footer);
+    expect(footer).toHaveStyle(popupStyles.footer);
   });
 
   it('support classNames and styles for panel', () => {
