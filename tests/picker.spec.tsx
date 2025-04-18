@@ -1351,42 +1351,53 @@ describe('Picker.Basic', () => {
   });
 
   it('support classNames and styles', () => {
-    const customClassNames = {
-      popup: 'custom-popup',
-      popupBody: 'custom-body',
-      popupContent: 'custom-content',
-      popupItem: 'custom-item',
+    const popupClassNames = {
+      root: 'custom-popup',
+      body: 'custom-body',
+      content: 'custom-content',
+      item: 'custom-item',
     };
-    const customStyles = {
-      popup: { color: 'red' },
-      popupBody: { color: 'green' },
-      popupContent: { color: 'blue' },
-      popupItem: { color: 'yellow' },
+    const popupStyles = {
+      root: { color: 'red' },
+      body: { color: 'green' },
+      content: { color: 'blue' },
+      item: { color: 'yellow' },
     };
-    render(<DayPicker classNames={customClassNames} styles={customStyles} open />);
+    render(
+      <DayPicker
+        classNames={{
+          popup: popupClassNames,
+        }}
+        styles={{
+          popup: popupStyles,
+        }}
+        open
+      />,
+    );
 
-    expect(document.querySelector('.rc-picker-dropdown')).toHaveClass(customClassNames.popup);
-    expect(document.querySelector('.rc-picker-dropdown')).toHaveStyle(customStyles.popup);
+    expect(document.querySelector('.rc-picker-dropdown')).toHaveClass(popupClassNames.root);
+    expect(document.querySelector('.rc-picker-dropdown')).toHaveStyle(popupStyles.root);
     const content = document.querySelector('.rc-picker-content');
     const body = document.querySelector('.rc-picker-body');
     const item = document.querySelector('.rc-picker-cell');
-    expect(content).toHaveClass(customClassNames.popupContent);
-    expect(content).toHaveStyle(customStyles.popupContent);
-    expect(body).toHaveClass(customClassNames.popupBody);
-    expect(body).toHaveStyle(customStyles.popupBody);
-    expect(item).toHaveClass(customClassNames.popupItem);
-    expect(item).toHaveStyle(customStyles.popupItem);
+    expect(content).toHaveClass(popupClassNames.content);
+    expect(content).toHaveStyle(popupStyles.content);
+    expect(body).toHaveClass(popupClassNames.body);
+    expect(body).toHaveStyle(popupStyles.body);
+    expect(item).toHaveClass(popupClassNames.item);
+    expect(item).toHaveStyle(popupStyles.item);
   });
+
   it('support classNames and styles for panel', () => {
     const customClassNames = {
-      popupBody: 'custom-body',
-      popupContent: 'custom-content',
-      popupItem: 'custom-item',
+      body: 'custom-body',
+      content: 'custom-content',
+      item: 'custom-item',
     };
     const customStyles = {
-      popupBody: { color: 'green' },
-      popupContent: { color: 'blue' },
-      popupItem: { color: 'yellow' },
+      body: { color: 'green' },
+      content: { color: 'blue' },
+      item: { color: 'yellow' },
     };
     render(
       <PickerPanel
@@ -1399,33 +1410,43 @@ describe('Picker.Basic', () => {
     const content = document.querySelector('.rc-picker-content');
     const body = document.querySelector('.rc-picker-body');
     const item = document.querySelector('.rc-picker-cell');
-    expect(content).toHaveClass(customClassNames.popupContent);
-    expect(content).toHaveStyle(customStyles.popupContent);
-    expect(body).toHaveClass(customClassNames.popupBody);
-    expect(body).toHaveStyle(customStyles.popupBody);
-    expect(item).toHaveClass(customClassNames.popupItem);
-    expect(item).toHaveStyle(customStyles.popupItem);
+    expect(content).toHaveClass(customClassNames.content);
+    expect(content).toHaveStyle(customStyles.content);
+    expect(body).toHaveClass(customClassNames.body);
+    expect(body).toHaveStyle(customStyles.body);
+    expect(item).toHaveClass(customClassNames.item);
+    expect(item).toHaveStyle(customStyles.item);
   });
+
   it('classNames and styles should support time panel', async () => {
     const testClassNames = {
       input: 'test-input',
       prefix: 'test-prefix',
       suffix: 'test-suffix',
-      popupContent: 'custom-content',
-      popupItem: 'custom-item',
     };
+    const testPopupClassNames = {
+      content: 'test-popup-content',
+      item: 'test-popup-item',
+    };
+
     const testStyles = {
       input: { color: 'red' },
       prefix: { color: 'green' },
       suffix: { color: 'blue' },
-      popupContent: { color: 'blue' },
-      popupItem: { color: 'yellow' },
     };
+    const testPopupStyles = {
+      content: { color: 'blue' },
+      item: { color: 'yellow' },
+    };
+
     const defaultValue = moment('2019-11-28 01:02:03');
     const { container } = render(
       <Picker
-        classNames={testClassNames}
-        styles={testStyles}
+        classNames={{ ...testClassNames, popup: testPopupClassNames }}
+        styles={{
+          ...testStyles,
+          popup: testPopupStyles,
+        }}
         prefix="prefix"
         suffixIcon="suffix"
         defaultValue={defaultValue}
@@ -1437,7 +1458,7 @@ describe('Picker.Basic', () => {
         generateConfig={momentGenerateConfig}
       />,
     );
-    const input = container.querySelectorAll('.rc-picker-input')[0];
+    const input = container.querySelectorAll('.rc-picker-input input')[0];
     const prefix = container.querySelector('.rc-picker-prefix');
     const suffix = container.querySelector('.rc-picker-suffix');
     expect(input).toHaveClass(testClassNames.input);
@@ -1448,8 +1469,8 @@ describe('Picker.Basic', () => {
     expect(suffix).toHaveStyle(testStyles.suffix);
     const { container: panel } = render(
       <PickerPanel
-        classNames={testClassNames}
-        styles={testStyles}
+        classNames={testPopupClassNames}
+        styles={testPopupStyles}
         picker="time"
         locale={enUS}
         generateConfig={momentGenerateConfig}
@@ -1457,11 +1478,12 @@ describe('Picker.Basic', () => {
     );
     const content = panel.querySelector('.rc-picker-content');
     const item = panel.querySelector('.rc-picker-time-panel-cell');
-    expect(content).toHaveClass(testClassNames.popupContent);
-    expect(content).toHaveStyle(testStyles.popupContent);
-    expect(item).toHaveClass(testClassNames.popupItem);
-    expect(item).toHaveStyle(testStyles.popupItem);
+    expect(content).toHaveClass(testPopupClassNames.content);
+    expect(content).toHaveStyle(testPopupStyles.content);
+    expect(item).toHaveClass(testPopupClassNames.item);
+    expect(item).toHaveStyle(testPopupStyles.item);
   });
+
   it('showTime config should have format', () => {
     render(
       <DayPicker

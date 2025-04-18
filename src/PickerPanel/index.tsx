@@ -11,6 +11,7 @@ import type {
   Locale,
   OnPanelChange,
   PanelMode,
+  PanelSemanticName,
   PickerMode,
   SharedPanelProps,
   SharedTimeProps,
@@ -19,7 +20,7 @@ import PickerContext from '../PickerInput/context';
 import useCellRender from '../PickerInput/hooks/useCellRender';
 import { isSame } from '../utils/dateUtil';
 import { pickProps, toArray } from '../utils/miscUtil';
-import { PickerHackContext } from './context';
+import { PickerHackContext, SharedPanelContext } from './context';
 import DatePanel from './DatePanel';
 import DateTimePanel from './DateTimePanel';
 import DecadePanel from './DecadePanel';
@@ -127,7 +128,6 @@ export interface SinglePickerPanelProps<DateType extends object = any>
   onChange?: (date: DateType) => void;
 }
 
-type PanelSemanticName = 'popupBody' | 'popupContent' | 'popupItem';
 export type PickerPanelProps<DateType extends object = any> = BasePickerPanelProps<DateType> & {
   /** multiple selection. Not support time or datetime picker */
   multiple?: boolean;
@@ -378,15 +378,21 @@ function PickerPanel<DateType extends object = any>(
     DatePanel) as typeof DatePanel;
 
   // ======================== Context =========================
+  const sharedPanelContext = React.useMemo(
+    () => ({
+      classNames: pickerClassNames?.popup ?? panelClassNames ?? {},
+      styles: pickerStyles?.popup ?? panelStyles ?? {},
+    }),
+    [pickerClassNames, panelClassNames, pickerStyles, panelStyles],
+  );
+
   const parentHackContext = React.useContext(PickerHackContext);
   const pickerPanelContext = React.useMemo(
     () => ({
       ...parentHackContext,
       hideHeader,
-      classNames: pickerClassNames ?? panelClassNames ?? {},
-      styles: pickerStyles ?? panelStyles ?? {},
     }),
-    [parentHackContext, hideHeader, pickerClassNames, panelClassNames, pickerStyles, panelStyles],
+    [parentHackContext, hideHeader],
   );
 
   // ======================== Warnings ========================
@@ -420,40 +426,42 @@ function PickerPanel<DateType extends object = any>(
   ]);
 
   return (
-    <PickerHackContext.Provider value={pickerPanelContext}>
-      <div
-        ref={rootRef}
-        tabIndex={tabIndex}
-        className={classNames(panelCls, {
-          [`${panelCls}-rtl`]: direction === 'rtl',
-        })}
-      >
-        <PanelComponent
-          {...panelProps}
-          // Time
-          showTime={mergedShowTime}
-          // MISC
-          prefixCls={mergedPrefixCls}
-          locale={filledLocale}
-          generateConfig={generateConfig}
-          // Mode
-          onModeChange={triggerModeChange}
-          // Value
-          pickerValue={mergedPickerValue}
-          onPickerValueChange={(nextPickerValue) => {
-            setPickerValue(nextPickerValue, true);
-          }}
-          value={mergedValue[0]}
-          onSelect={onPanelValueSelect}
-          values={mergedValue}
-          // Render
-          cellRender={onInternalCellRender}
-          // Hover
-          hoverRangeValue={hoverRangeDate}
-          hoverValue={hoverValue}
-        />
-      </div>
-    </PickerHackContext.Provider>
+    <SharedPanelContext.Provider value={sharedPanelContext}>
+      <PickerHackContext.Provider value={pickerPanelContext}>
+        <div
+          ref={rootRef}
+          tabIndex={tabIndex}
+          className={classNames(panelCls, {
+            [`${panelCls}-rtl`]: direction === 'rtl',
+          })}
+        >
+          <PanelComponent
+            {...panelProps}
+            // Time
+            showTime={mergedShowTime}
+            // MISC
+            prefixCls={mergedPrefixCls}
+            locale={filledLocale}
+            generateConfig={generateConfig}
+            // Mode
+            onModeChange={triggerModeChange}
+            // Value
+            pickerValue={mergedPickerValue}
+            onPickerValueChange={(nextPickerValue) => {
+              setPickerValue(nextPickerValue, true);
+            }}
+            value={mergedValue[0]}
+            onSelect={onPanelValueSelect}
+            values={mergedValue}
+            // Render
+            cellRender={onInternalCellRender}
+            // Hover
+            hoverRangeValue={hoverRangeDate}
+            hoverValue={hoverValue}
+          />
+        </div>
+      </PickerHackContext.Provider>
+    </SharedPanelContext.Provider>
   );
 }
 
