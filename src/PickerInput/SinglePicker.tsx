@@ -1,4 +1,5 @@
 import { useEvent, useMergedState } from '@rc-component/util';
+import cls from 'classnames';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import omit from '@rc-component/util/lib/omit';
 import pickAttrs from '@rc-component/util/lib/pickAttrs';
@@ -123,6 +124,7 @@ function Picker<DateType extends object = any>(
   const {
     // Style
     prefixCls,
+    rootClassName,
     styles: propStyles,
     classNames: propClassNames,
 
@@ -630,7 +632,7 @@ function Picker<DateType extends object = any>(
         {...pickTriggerProps(filledProps)}
         popupElement={panel}
         popupStyle={mergedStyles.popup.root}
-        popupClassName={mergedClassNames.popup.root}
+        popupClassName={cls(rootClassName, mergedClassNames.popup.root)}
         // Visible
         visible={mergedOpen}
         onClose={onPopupClose}
@@ -640,6 +642,12 @@ function Picker<DateType extends object = any>(
           {...filledProps}
           // Ref
           ref={selectorRef}
+          // Style
+          className={cls(filledProps.className, rootClassName, mergedClassNames.root)}
+          style={{
+            ...mergedStyles.root,
+            ...filledProps.style,
+          }}
           // Icon
           suffixIcon={suffixIcon}
           removeIcon={removeIcon}

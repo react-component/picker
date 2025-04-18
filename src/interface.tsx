@@ -329,12 +329,13 @@ export interface SharedPickerProps<DateType extends object = any>
   prefixCls?: string;
   className?: string;
   style?: React.CSSProperties;
+  rootClassName?: string;
 
   styles?: Partial<Record<SemanticName, React.CSSProperties>> & {
-    popup: Partial<Record<PanelSemanticName, React.CSSProperties>>;
+    popup?: Partial<Record<PanelSemanticName, React.CSSProperties>>;
   };
   classNames?: Partial<Record<SemanticName, string>> & {
-    popup: Partial<Record<PanelSemanticName, string>>;
+    popup?: Partial<Record<PanelSemanticName, string>>;
   };
 
   // Config
