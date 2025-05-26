@@ -592,6 +592,7 @@ function RangePicker<DateType extends object = any>(
       onNow={onNow}
       // Render
       cellRender={onInternalCellRender}
+      maxDate={maxDate}
     />
   );
 

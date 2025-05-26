@@ -1115,6 +1115,32 @@ describe('Picker.Basic', () => {
     expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('1990-09-04');
   });
 
+  it('presets - disabled does not trigger', () => {
+    const onChange = jest.fn();
+    const onHover = jest.fn();
+
+    const futureDate = dayjs().add(1, 'day');
+    render(
+      <DayPicker
+        onChange={onChange}
+        onHover={onHover}
+        open
+        presets={[{ label: 'Future', value: futureDate }]}
+        maxDate={dayjs()} // maxDate 是今天，futureDate 是明天，禁用
+      />,
+    );
+
+    const presetEle = document.querySelector('.rc-picker-presets li');
+
+    // Hover
+    fireEvent.mouseEnter(presetEle);
+    expect(onHover).not.toHaveBeenCalled();
+
+    // Click
+    fireEvent.click(presetEle);
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
   it('presets support callback', () => {
     const onChange = jest.fn();
     const mockPresetValue = jest.fn().mockImplementationOnce(() => getDay('2000-09-03'));
