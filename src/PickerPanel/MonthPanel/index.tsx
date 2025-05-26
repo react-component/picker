@@ -71,6 +71,7 @@ export default function MonthPanel<DateType extends object = any>(
     <button
       type="button"
       key="year"
+      aria-label={locale.yearSelect}
       onClick={() => {
         onModeChange('year');
       }}

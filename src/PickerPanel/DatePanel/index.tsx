@@ -51,42 +51,42 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   const month = generateConfig.getMonth(pickerValue);
 
   // =========================== PrefixColumn ===========================
-  const prefixColumn =
-    isWeek || showWeek
-      ? (date: DateType) => {
-          // >>> Additional check for disabled
-          const disabled = disabledDate?.(date, { type: 'week' });
+  const showPrefixColumn = showWeek === undefined ? isWeek : showWeek;
+  const prefixColumn = showPrefixColumn
+    ? (date: DateType) => {
+        // >>> Additional check for disabled
+        const disabled = disabledDate?.(date, { type: 'week' });
 
-          return (
-            <td
-              key="week"
-              className={classNames(cellPrefixCls, `${cellPrefixCls}-week`, {
-                [`${cellPrefixCls}-disabled`]: disabled,
-              })}
-              // Operation: Same as code in PanelBody
-              onClick={() => {
-                if (!disabled) {
-                  onSelect(date);
-                }
-              }}
-              onMouseEnter={() => {
-                if (!disabled) {
-                  onHover?.(date);
-                }
-              }}
-              onMouseLeave={() => {
-                if (!disabled) {
-                  onHover?.(null);
-                }
-              }}
-            >
-              <div className={`${cellPrefixCls}-inner`}>
-                {generateConfig.locale.getWeek(locale.locale, date)}
-              </div>
-            </td>
-          );
-        }
-      : null;
+        return (
+          <td
+            key="week"
+            className={classNames(cellPrefixCls, `${cellPrefixCls}-week`, {
+              [`${cellPrefixCls}-disabled`]: disabled,
+            })}
+            // Operation: Same as code in PanelBody
+            onClick={() => {
+              if (!disabled) {
+                onSelect(date);
+              }
+            }}
+            onMouseEnter={() => {
+              if (!disabled) {
+                onHover?.(date);
+              }
+            }}
+            onMouseLeave={() => {
+              if (!disabled) {
+                onHover?.(null);
+              }
+            }}
+          >
+            <div className={`${cellPrefixCls}-inner`}>
+              {generateConfig.locale.getWeek(locale.locale, date)}
+            </div>
+          </td>
+        );
+      }
+    : null;
 
   // ========================= Cells ==========================
   // >>> Header Cells
@@ -98,7 +98,13 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
       : []);
 
   if (prefixColumn) {
-    headerCells.push(<th key="empty" aria-label="empty cell" />);
+    headerCells.push(
+      <th key="empty">
+        <span style={{ width: 0, height: 0, position: 'absolute', overflow: 'hidden', opacity: 0 }}>
+          {locale.week}
+        </span>
+      </th>,
+    );
   }
   for (let i = 0; i < WEEK_DAY_COUNT; i += 1) {
     headerCells.push(<th key={i}>{weekDaysLocale[(i + weekFirstDay) % WEEK_DAY_COUNT]}</th>);
@@ -136,6 +142,7 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   const yearNode: React.ReactNode = (
     <button
       type="button"
+      aria-label={locale.yearSelect}
       key="year"
       onClick={() => {
         onModeChange('year', pickerValue);
@@ -153,6 +160,7 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   const monthNode: React.ReactNode = (
     <button
       type="button"
+      aria-label={locale.monthSelect}
       key="month"
       onClick={() => {
         onModeChange('month', pickerValue);

@@ -2,6 +2,7 @@ import Trigger from '@rc-component/trigger';
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
 import classNames from 'classnames';
 import * as React from 'react';
+import { getRealPlacement } from '../utils/uiUtil';
 import PickerContext from '../PickerInput/context';
 
 const BUILT_IN_PLACEMENTS = {
@@ -79,21 +80,16 @@ function PickerTrigger({
   const { prefixCls } = React.useContext(PickerContext);
   const dropdownPrefixCls = `${prefixCls}-dropdown`;
 
-  const mergedPlacement = React.useMemo(() => {
-    if (placement !== undefined) {
-      return placement;
-    }
-    return direction === 'rtl' ? 'bottomRight' : 'bottomLeft';
-  }, [placement, direction]);
+  const realPlacement = getRealPlacement(placement, direction === 'rtl');
 
   return (
     <Trigger
       showAction={[]}
       hideAction={['click']}
-      popupPlacement={mergedPlacement}
+      popupPlacement={realPlacement}
       builtinPlacements={builtinPlacements}
       prefixCls={dropdownPrefixCls}
-      popupTransitionName={transitionName}
+      popupMotion={{ motionName: transitionName }}
       popup={popupElement}
       popupAlign={popupAlign}
       popupVisible={visible}

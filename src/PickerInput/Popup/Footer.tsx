@@ -1,15 +1,10 @@
-import classNames from 'classnames';
+import cls from 'classnames';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import useTimeInfo from '../../hooks/useTimeInfo';
-import type {
-  DisabledDate,
-  InternalMode,
-  PanelMode,
-  RangeTimeProps,
-  SharedPickerProps,
-} from '../../interface';
+import type { DisabledDate, InternalMode, PanelMode, SharedPickerProps } from '../../interface';
 import PickerContext from '../context';
+import type { PopupShowTimeConfig } from '.';
 
 export interface FooterProps<DateType extends object = any> {
   mode: PanelMode;
@@ -18,7 +13,7 @@ export interface FooterProps<DateType extends object = any> {
   showNow: boolean;
   generateConfig: GenerateConfig<DateType>;
   disabledDate: DisabledDate<DateType>;
-  showTime?: Omit<RangeTimeProps<DateType>, 'defaultValue' | 'defaultOpenValue'>;
+  showTime?: PopupShowTimeConfig<DateType>;
 
   // Invalid
   /** From Footer component used only. Check if can OK button click */
@@ -47,7 +42,13 @@ export default function Footer(props: FooterProps) {
     disabledDate,
   } = props;
 
-  const { prefixCls, locale, button: Button = 'button' } = React.useContext(PickerContext);
+  const {
+    prefixCls,
+    locale,
+    button: Button = 'button',
+    classNames,
+    styles,
+  } = React.useContext(PickerContext);
 
   // >>> Now
   const now = generateConfig.getNow();
@@ -75,7 +76,7 @@ export default function Footer(props: FooterProps) {
   const presetNode = showNow && (
     <li className={nowPrefixCls}>
       <a
-        className={classNames(nowBtnPrefixCls, nowDisabled && `${nowBtnPrefixCls}-disabled`)}
+        className={cls(nowBtnPrefixCls, nowDisabled && `${nowBtnPrefixCls}-disabled`)}
         aria-disabled={nowDisabled}
         onClick={onInternalNow}
       >
@@ -106,7 +107,10 @@ export default function Footer(props: FooterProps) {
   }
 
   return (
-    <div className={`${prefixCls}-footer`}>
+    <div
+      className={cls(`${prefixCls}-footer`, classNames.popup.footer)}
+      style={styles.popup.footer}
+    >
       {extraNode && <div className={`${prefixCls}-footer-extra`}>{extraNode}</div>}
       {rangeNode}
     </div>

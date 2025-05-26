@@ -63,6 +63,7 @@ export type Locale = {
   dateSelect: string;
   weekSelect?: string;
   clear: string;
+  week: string;
   month: string;
   year: string;
   previousMonth: string;
@@ -176,7 +177,7 @@ export interface SharedTimeProps<DateType extends object = any> {
   disabledSeconds?: DisabledTimes['disabledSeconds'];
 
   /** Only work in picker is `time` */
-  disabledTime?: (date: DateType, range?: 'start' | 'end') => DisabledTimes;
+  disabledTime?: (date: DateType) => DisabledTimes;
 
   /** Only work in picker is `time` */
   changeOnScroll?: boolean;
@@ -184,11 +185,17 @@ export interface SharedTimeProps<DateType extends object = any> {
 
 export type RangeTimeProps<DateType extends object = any> = Omit<
   SharedTimeProps<DateType>,
-  'defaultValue' | 'defaultOpenValue'
+  'defaultValue' | 'defaultOpenValue' | 'disabledTime'
 > & {
   /** @deprecated Use `defaultOpenValue` instead. */
   defaultValue?: DateType[];
   defaultOpenValue?: DateType[];
+
+  disabledTime?: (
+    date: DateType,
+    range: 'start' | 'end',
+    info: { from?: DateType },
+  ) => DisabledTimes;
 };
 
 // ======================= Components =======================
@@ -274,8 +281,6 @@ export type Components<DateType extends object = any> = Partial<
 >;
 
 // ========================= Picker =========================
-export type SemanticStructure = 'popup';
-
 export type CustomFormat<DateType> = (value: DateType) => string;
 
 export type FormatType<DateType = any> = string | CustomFormat<DateType>;
@@ -296,6 +301,7 @@ export type SharedHTMLAttrs = Omit<
   | 'max'
   | 'onKeyDown'
   | 'size'
+  | 'prefix'
 >;
 
 export type PickerFocusEventHandler = (e: React.FocusEvent<HTMLElement>, info: BaseInfo) => void;
@@ -304,6 +310,10 @@ export type LegacyOnKeyDown = (
   event: React.KeyboardEvent<HTMLElement>,
   preventDefault: VoidFunction,
 ) => void;
+
+export type SemanticName = 'root' | 'prefix' | 'input' | 'suffix';
+
+export type PanelSemanticName = 'root' | 'header' | 'body' | 'content' | 'item' | 'footer';
 
 export interface SharedPickerProps<DateType extends object = any>
   extends SharedHTMLAttrs,
@@ -319,9 +329,14 @@ export interface SharedPickerProps<DateType extends object = any>
   prefixCls?: string;
   className?: string;
   style?: React.CSSProperties;
+  rootClassName?: string;
 
-  styles?: Partial<Record<SemanticStructure, React.CSSProperties>>;
-  classNames?: Partial<Record<SemanticStructure, string>>;
+  styles?: Partial<Record<SemanticName, React.CSSProperties>> & {
+    popup?: Partial<Record<PanelSemanticName, React.CSSProperties>>;
+  };
+  classNames?: Partial<Record<SemanticName, string>> & {
+    popup?: Partial<Record<PanelSemanticName, string>>;
+  };
 
   // Config
   locale: Locale;
@@ -348,6 +363,7 @@ export interface SharedPickerProps<DateType extends object = any>
       };
 
   // Icons
+  prefix?: React.ReactNode;
   suffixIcon?: React.ReactNode;
   allowClear?:
     | boolean
@@ -462,6 +478,7 @@ export type OnOpenChange = (open: boolean, config?: OpenConfig) => void;
 export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
   picker: PickerMode;
 
+  prefix?: React.ReactNode;
   clearIcon?: React.ReactNode;
   suffixIcon?: React.ReactNode;
   className?: string;

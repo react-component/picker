@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'az_AZ',
   today: 'Bugün',
   now: 'İndi',
   backToToday: 'Bugünə qayıt',
   ok: 'Təsdiq',
   clear: 'Təmizlə',
+  week: 'Həftə',
   month: 'Ay',
   year: 'İl',
   timeSelect: 'vaxtı seç',
@@ -15,11 +18,6 @@ const locale: Locale = {
   monthSelect: 'Ay seç',
   yearSelect: 'il seç',
   decadeSelect: 'Onillik seçin',
-  yearFormat: 'YYYY',
-  dateFormat: 'D.M.YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'D.M.YYYY HH:mm:ss',
-  monthBeforeYear: true,
   previousMonth: 'Əvvəlki ay (PageUp)',
   nextMonth: 'Növbəti ay (PageDown)',
   previousYear: 'Sonuncu il (Control + left)',

@@ -1,13 +1,9 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'zh_CN',
-
-  yearFormat: 'YYYY年',
-
-  cellDateFormat: 'D',
-  cellMeridiemFormat: 'A',
-
   today: '今天',
   now: '此刻',
   backToToday: '返回今天',
@@ -16,6 +12,7 @@ const locale: Locale = {
   dateSelect: '选择日期',
   weekSelect: '选择周',
   clear: '清除',
+  week: '周',
   month: '月',
   year: '年',
   previousMonth: '上个月 (翻页上键)',
@@ -30,6 +27,10 @@ const locale: Locale = {
   nextDecade: '下一年代',
   previousCentury: '上一世纪',
   nextCentury: '下一世纪',
+
+  yearFormat: 'YYYY年',
+  cellDateFormat: 'D',
+  monthBeforeYear: false,
 };
 
 export default locale;

@@ -4,20 +4,22 @@ import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-import KeyCode from 'rc-util/lib/KeyCode';
-import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import { resetWarned } from 'rc-util/lib/warning';
+import KeyCode from '@rc-component/util/lib/KeyCode';
+import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
-import type { PickerRef } from '../src';
+import Picker, { PickerPanel, type PickerRef } from '../src';
 import type { PanelMode, PickerMode } from '../src/interface';
+import momentGenerateConfig from '../src/generate/moment';
 import enUS from '../src/locale/en_US';
 import zhCN from '../src/locale/zh_CN';
 import {
+  // MomentPicker,
+  DayPicker,
+  DayRangePicker,
   clearValue,
   closePicker,
   confirmOK,
-  // MomentPicker,
-  DayPicker,
   findCell,
   getDay,
   isOpen,
@@ -29,7 +31,7 @@ import {
 
 const fakeTime = getDay('1990-09-03 00:00:00').valueOf();
 
-jest.mock('rc-util/lib/Dom/isVisible', () => {
+jest.mock('@rc-component/util/lib/Dom/isVisible', () => {
   return () => true;
 });
 
@@ -288,6 +290,20 @@ describe('Picker.Basic', () => {
         expect(document.querySelector(selected)).toBeFalsy();
       });
     });
+
+    // https://github.com/ant-design/ant-design/issues/49400
+    it('should not throw errow when input end year first', () => {
+      const { container } = render(<DayRangePicker picker="year" />);
+      openPicker(container);
+      fireEvent.focus(container.querySelectorAll('input')[1]);
+      expect(() => {
+        fireEvent.change(container.querySelectorAll('input')[1], {
+          target: {
+            value: '2024',
+          },
+        });
+      }).not.toThrow();
+    });
   });
 
   describe('focus test', () => {
@@ -347,6 +363,16 @@ describe('Picker.Basic', () => {
       fireEvent.blur(container.querySelector('input'));
       expect(onBlur).toHaveBeenCalled();
       expect(document.querySelector('.rc-picker-focused')).toBeFalsy();
+    });
+
+    it('pass tabIndex', () => {
+      const { container } = render(
+        <div>
+          <DayPicker tabIndex={-1} />
+        </div>,
+      );
+
+      expect(container.querySelector('input').getAttribute('tabIndex')).toBe('-1');
     });
   });
 
@@ -553,6 +579,11 @@ describe('Picker.Basic', () => {
         expect(document.querySelector('.rc-picker-now-btn')).toBeFalsy();
       });
     });
+  });
+
+  it('prefix', () => {
+    render(<DayPicker prefix={<span className="prefix" />} allowClear />);
+    expect(document.querySelector('.prefix')).toBeInTheDocument();
   });
 
   it('icon', () => {
@@ -1027,6 +1058,10 @@ describe('Picker.Basic', () => {
       });
     });
 
+    beforeEach(() => {
+      triggered = false;
+    });
+
     afterAll(() => {
       domMock.mockRestore();
     });
@@ -1045,6 +1080,53 @@ describe('Picker.Basic', () => {
 
       jest.useRealTimers();
       unmount();
+    });
+
+    it('not repeat scroll if disabledTime return same value', () => {
+      const getDisabledTimeFn =
+        (num = 10) =>
+        () => ({
+          disabledHours: () => [num],
+          disabledMinutes: () => [num],
+          disabledSeconds: () => [num],
+        });
+
+      const renderDemo = (disabledTime: any) => (
+        <DayPicker
+          picker="time"
+          defaultValue={getDay('2020-07-22 09:03:28')}
+          open
+          disabledTime={disabledTime}
+        />
+      );
+
+      const { rerender } = render(renderDemo(getDisabledTimeFn()));
+
+      act(() => {
+        jest.advanceTimersByTime(1000);
+        jest.clearAllTimers();
+      });
+      expect(triggered).toBeTruthy();
+
+      // New disabledTime
+      triggered = false;
+      renderDemo(getDisabledTimeFn());
+
+      act(() => {
+        jest.advanceTimersByTime(1000);
+        jest.clearAllTimers();
+      });
+      expect(triggered).toBeFalsy();
+
+      // New disabledTime but different disabled value
+      triggered = false;
+      rerender(renderDemo(getDisabledTimeFn(11)));
+
+      act(() => {
+        jest.advanceTimersByTime(1000);
+        jest.clearAllTimers();
+      });
+      expect(triggered).toBeTruthy();
     });
   });
 
@@ -1294,17 +1376,165 @@ describe('Picker.Basic', () => {
     );
   });
 
-  it('classNames.popup', () => {
+  it('support classNames and styles', () => {
+    const popupClassNames = {
+      root: 'custom-popup',
+      header: 'custom-header',
+      body: 'custom-body',
+      content: 'custom-content',
+      item: 'custom-item',
+      footer: 'custom-footer',
+    };
+    const popupStyles = {
+      root: { color: 'red' },
+      header: { color: 'purple' },
+      body: { color: 'green' },
+      content: { color: 'blue' },
+      item: { color: 'yellow' },
+      footer: { color: 'orange' },
+    };
     render(
       <DayPicker
         classNames={{
-          popup: 'bamboo',
+          popup: popupClassNames,
+        }}
+        styles={{
+          popup: popupStyles,
         }}
         open
       />,
     );
 
-    expect(document.querySelector('.rc-picker-dropdown')).toHaveClass('bamboo');
+    expect(document.querySelector('.rc-picker-dropdown')).toHaveClass(popupClassNames.root);
+    expect(document.querySelector('.rc-picker-dropdown')).toHaveStyle(popupStyles.root);
+
+    const header = document.querySelector('.rc-picker-header');
+    const body = document.querySelector('.rc-picker-body');
+    const content = document.querySelector('.rc-picker-content');
+    const item = document.querySelector('.rc-picker-cell');
+    const footer = document.querySelector('.rc-picker-footer');
+
+    expect(header).toHaveClass(popupClassNames.header);
+    expect(header).toHaveStyle(popupStyles.header);
+    expect(body).toHaveClass(popupClassNames.body);
+    expect(body).toHaveStyle(popupStyles.body);
+    expect(content).toHaveClass(popupClassNames.content);
+    expect(content).toHaveStyle(popupStyles.content);
+    expect(item).toHaveClass(popupClassNames.item);
+    expect(item).toHaveStyle(popupStyles.item);
+    expect(footer).toHaveClass(popupClassNames.footer);
+    expect(footer).toHaveStyle(popupStyles.footer);
+  });
+
+  it('support classNames and styles for panel', () => {
+    const customClassNames = {
+      body: 'custom-body',
+      content: 'custom-content',
+      item: 'custom-item',
+    };
+    const customStyles = {
+      body: { color: 'green' },
+      content: { color: 'blue' },
+      item: { color: 'yellow' },
+    };
+    render(
+      <PickerPanel
+        classNames={customClassNames}
+        styles={customStyles}
+        locale={enUS}
+        generateConfig={momentGenerateConfig}
+      />,
+    );
+    const content = document.querySelector('.rc-picker-content');
+    const body = document.querySelector('.rc-picker-body');
+    const item = document.querySelector('.rc-picker-cell');
+    expect(content).toHaveClass(customClassNames.content);
+    expect(content).toHaveStyle(customStyles.content);
+    expect(body).toHaveClass(customClassNames.body);
+    expect(body).toHaveStyle(customStyles.body);
+    expect(item).toHaveClass(customClassNames.item);
+    expect(item).toHaveStyle(customStyles.item);
+  });
+
+  it('classNames and styles should support time panel', async () => {
+    const testClassNames = {
+      root: 'test-root',
+      input: 'test-input',
+      prefix: 'test-prefix',
+      suffix: 'test-suffix',
+    };
+    const testPopupClassNames = {
+      content: 'test-popup-content',
+      item: 'test-popup-item',
+    };
+
+    const testStyles = {
+      root: { color: 'red' },
+      input: { color: 'red' },
+      prefix: { color: 'green' },
+      suffix: { color: 'blue' },
+    };
+    const testPopupStyles = {
+      content: { color: 'blue' },
+      item: { color: 'yellow' },
+    };
+
+    const defaultValue = moment('2019-11-28 01:02:03');
+    const { container } = render(
+      <Picker
+        classNames={{ ...testClassNames, popup: testPopupClassNames }}
+        styles={{
+          ...testStyles,
+          popup: testPopupStyles,
+        }}
+        prefix="prefix"
+        suffixIcon="suffix"
+        defaultValue={defaultValue}
+        picker="time"
+        locale={zhCN}
+        disabledTime={(now) => ({
+          disabledHours: () => [now.hours()],
+        })}
+        generateConfig={momentGenerateConfig}
+      />,
+    );
+    const root = container.querySelector('.rc-picker');
+    const input = container.querySelectorAll('.rc-picker-input input')[0];
+    const prefix = container.querySelector('.rc-picker-prefix');
+    const suffix = container.querySelector('.rc-picker-suffix');
+
+    expect(root).toHaveClass(testClassNames.root);
+    expect(root).toHaveStyle(testStyles.root);
+    expect(input).toHaveClass(testClassNames.input);
+    expect(input).toHaveStyle(testStyles.input);
+    expect(prefix).toHaveClass(testClassNames.prefix);
+    expect(prefix).toHaveStyle(testStyles.prefix);
+    expect(suffix).toHaveClass(testClassNames.suffix);
+    expect(suffix).toHaveStyle(testStyles.suffix);
+
+    const { container: panel } = render(
+      <PickerPanel
+        classNames={testPopupClassNames}
+        styles={testPopupStyles}
+        picker="time"
+        locale={enUS}
+        generateConfig={momentGenerateConfig}
+      />,
+    );
+    const content = panel.querySelector('.rc-picker-content');
+    const item = panel.querySelector('.rc-picker-time-panel-cell');
+    expect(content).toHaveClass(testPopupClassNames.content);
+    expect(content).toHaveStyle(testPopupStyles.content);
+    expect(item).toHaveClass(testPopupClassNames.item);
+    expect(item).toHaveStyle(testPopupStyles.item);
+  });
+
+  it('rootClassName', () => {
+    render(<DayPicker rootClassName="bamboo" open />);
+
+    expect(document.body.querySelectorAll('.bamboo')).toHaveLength(2);
+    expect(document.body.querySelector('.rc-picker')).toHaveClass('bamboo');
+    expect(document.body.querySelector('.rc-picker-dropdown')).toHaveClass('bamboo');
   });
 
   it('showTime config should have format', () => {

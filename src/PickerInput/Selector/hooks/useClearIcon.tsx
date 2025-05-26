@@ -1,4 +1,4 @@
-import warning from 'rc-util/lib/warning';
+import warning from '@rc-component/util/lib/warning';
 import type { ReactNode } from 'react';
 import * as React from 'react';
 
@@ -22,4 +22,3 @@ export function fillClearIcon(
 
   return config.clearIcon || clearIcon || <span className={`${prefixCls}-clear-btn`} />;
 }
-

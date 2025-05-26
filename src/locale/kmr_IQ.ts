@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ku',
   today: 'Îro',
   now: 'Niha',
   backToToday: 'Vegere îro',
   ok: 'Temam',
   clear: 'Paqij bike',
+  week: 'Sêbê',
   month: 'Meh',
   year: 'Sal',
   timeSelect: 'Demê hilbijêre',
@@ -14,11 +17,7 @@ const locale: Locale = {
   monthSelect: 'Meh hilbijêre',
   yearSelect: 'Sal hilbijêre',
   decadeSelect: 'Dehsal hilbijêre',
-  yearFormat: 'YYYY',
-  dateFormat: 'D/M/YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'Meha peş (PageUp))',
   nextMonth: 'Meha paş (PageDown)',
   previousYear: 'Sala peş (Control + şep)',

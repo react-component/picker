@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ta_IN',
   today: 'இன்று',
   now: 'இப்போது',
   backToToday: 'இன்றுக்கு திரும்பு',
   ok: 'சரி',
   clear: 'அழி',
+  week: 'வாரம்',
   month: 'மாதம்',
   year: 'வருடம்',
   timeSelect: 'நேரத்தைத் தேர்ந்தெடு',
@@ -15,11 +18,7 @@ const locale: Locale = {
   monthSelect: 'மாதத்தைத் தேர்வுசெய்க',
   yearSelect: 'வருடத்தைத் தேர்வுசெய்க',
   decadeSelect: 'தசாப்தத்தைத் தேர்வுசெய்க',
-  yearFormat: 'YYYY',
-  dateFormat: 'M/D/YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'முந்தைய மாதம் (PageUp)',
   nextMonth: 'அடுத்த மாதம் (PageDown)',
   previousYear: 'முந்தைய வருடம் (Control + left)',

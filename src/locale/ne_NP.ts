@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ne_NP',
   today: 'आज',
   now: 'अब',
   backToToday: 'आज फर्कनुहोस्',
   ok: 'ठिक छ',
   clear: 'खाली गर्नुहोस्',
+  week: 'हप्ता',
   month: 'महिना',
   year: 'वर्ष',
   timeSelect: 'समय चयन गर्नुहोस्',
@@ -15,11 +18,7 @@ const locale: Locale = {
   monthSelect: 'एक महिना छान्नुहोस्',
   yearSelect: 'एक वर्ष छान्नुहोस्',
   decadeSelect: 'एक दशक छान्नुहोस्',
-  yearFormat: 'YYYY',
-  dateFormat: 'M/D/YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'अघिल्लो महिना (पृष्ठ माथि)',
   nextMonth: 'अर्को महिना (पृष्ठ तल)',
   previousYear: 'गत वर्ष (Control + left)',

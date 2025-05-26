@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'id_ID',
   today: 'Hari ini',
   now: 'Sekarang',
   backToToday: 'Kembali ke hari ini',
   ok: 'Baik',
   clear: 'Bersih',
+  week: 'Minggu',
   month: 'Bulan',
   year: 'Tahun',
   timeSelect: 'pilih waktu',
@@ -15,11 +18,7 @@ const locale: Locale = {
   monthSelect: 'Pilih satu bulan',
   yearSelect: 'Pilih satu tahun',
   decadeSelect: 'Pilih satu dekade',
-  yearFormat: 'YYYY',
-  dateFormat: 'D/M/YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'Bulan sebelumnya (PageUp)',
   nextMonth: 'Bulan selanjutnya (PageDown)',
   previousYear: 'Tahun lalu (Control + kiri)',

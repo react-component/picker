@@ -1,6 +1,6 @@
-import classNames from 'classnames';
-import ResizeObserver from 'rc-resize-observer';
-import { useEvent } from 'rc-util';
+import cls from 'classnames';
+import ResizeObserver from '@rc-component/resize-observer';
+import { useEvent } from '@rc-component/util';
 import * as React from 'react';
 import type { RangePickerRef, SelectorProps } from '../../interface';
 import PickerContext from '../context';
@@ -35,13 +35,15 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
 
   // Invalid
   invalid: [boolean, boolean];
-
+  placement?: string;
   // Offset
   /**
    * Trigger when the active bar offset position changed.
    * This is used for popup panel offset.
    */
-  onActiveOffset: (offset: number) => void;
+  onActiveInfo: (
+    info: [activeInputLeft: number, activeInputRight: number, selectorWidth: number],
+  ) => void;
 }
 
 function RangeSelector<DateType extends object = any>(
@@ -51,6 +53,7 @@ function RangeSelector<DateType extends object = any>(
   const {
     id,
 
+    prefix,
     clearIcon,
     suffixIcon,
     separator = '~',
@@ -100,7 +103,8 @@ function RangeSelector<DateType extends object = any>(
     onOpenChange,
 
     // Offset
-    onActiveOffset,
+    onActiveInfo,
+    placement,
 
     // Native
     onMouseDown,
@@ -109,6 +113,7 @@ function RangeSelector<DateType extends object = any>(
     required,
     'aria-required': ariaRequired,
     autoFocus,
+    tabIndex,
 
     ...restProps
   } = props;
@@ -116,7 +121,7 @@ function RangeSelector<DateType extends object = any>(
   const rtl = direction === 'rtl';
 
   // ======================== Prefix ========================
-  const { prefixCls } = React.useContext(PickerContext);
+  const { prefixCls, classNames, styles } = React.useContext(PickerContext);
 
   // ========================== Id ==========================
   const ids = React.useMemo(() => {
@@ -169,39 +174,24 @@ function RangeSelector<DateType extends object = any>(
   });
 
   // ====================== ActiveBar =======================
-  const offsetUnit = rtl ? 'right' : 'left';
-
   const [activeBarStyle, setActiveBarStyle] = React.useState<React.CSSProperties>({
     position: 'absolute',
     width: 0,
-    [offsetUnit]: 0,
   });
 
   const syncActiveOffset = useEvent(() => {
     const input = getInput(activeIndex);
     if (input) {
-      const { offsetWidth, offsetLeft, offsetParent } = input.nativeElement;
+      const inputRect = input.nativeElement.getBoundingClientRect();
+      const parentRect = rootRef.current.getBoundingClientRect();
 
-      let offset = offsetLeft;
-      if (rtl) {
-        const parentElement = offsetParent as HTMLElement;
-        const parentStyle = getComputedStyle(parentElement);
-
-        offset =
-          parentElement.offsetWidth -
-          parseFloat(parentStyle.borderRightWidth) -
-          parseFloat(parentStyle.borderLeftWidth) -
-          offsetLeft -
-          offsetWidth;
-      }
-
+      const rectOffset = inputRect.left - parentRect.left;
       setActiveBarStyle((ori) => ({
         ...ori,
-        width: offsetWidth,
-        [offsetUnit]: offset,
+        width: inputRect.width,
+        left: rectOffset,
       }));
-
-      onActiveOffset(activeIndex === 0 ? 0 : offset);
+      onActiveInfo([inputRect.left, inputRect.right, parentRect.width]);
     }
   });
 
@@ -221,7 +211,7 @@ function RangeSelector<DateType extends object = any>(
     <ResizeObserver onResize={syncActiveOffset}>
       <div
         {...rootProps}
-        className={classNames(
+        className={cls(
           prefixCls,
           `${prefixCls}-range`,
           {
@@ -248,14 +238,28 @@ function RangeSelector<DateType extends object = any>(
           onMouseDown?.(e);
         }}
       >
+        {prefix && (
+          <div className={cls(`${prefixCls}-prefix`, classNames.prefix)} style={styles.prefix}>
+            {prefix}
+          </div>
+        )}
         <Input
           ref={inputStartRef}
           {...getInputProps(0)}
+          className={`${prefixCls}-input-start`}
           autoFocus={startAutoFocus}
+          tabIndex={tabIndex}
           date-range="start"
         />
         <div className={`${prefixCls}-range-separator`}>{separator}</div>
-        <Input ref={inputEndRef} {...getInputProps(1)} autoFocus={endAutoFocus} date-range="end" />
+        <Input
+          ref={inputEndRef}
+          {...getInputProps(1)}
+          className={`${prefixCls}-input-end`}
+          autoFocus={endAutoFocus}
+          tabIndex={tabIndex}
+          date-range="end"
+        />
         <div className={`${prefixCls}-active-bar`} style={activeBarStyle} />
         <Icon type="suffix" icon={suffixIcon} />
         {showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}

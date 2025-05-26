@@ -23,7 +23,7 @@ export default function YearPanel<DateType extends object = any>(
   // ========================== Base ==========================
   const [info] = useInfo(props, 'year');
   const getStartYear = (date: DateType) => {
-    const startYear = Math.floor(generateConfig.getYear(pickerValue) / 10) * 10;
+    const startYear = Math.floor(generateConfig.getYear(date) / 10) * 10;
     return generateConfig.setYear(date, startYear);
   };
   const getEndYear = (date: DateType) => {
@@ -66,13 +66,9 @@ export default function YearPanel<DateType extends object = any>(
         const startDate = generateConfig.setDate(startMonth, 1);
 
         // End
-        const endMonth = generateConfig.setMonth(
-          currentDate,
-          generateConfig.getMonth(currentDate) + 1,
-        );
-        const enDate = generateConfig.addDate(endMonth, -1);
-
-        return disabledDate(startDate, disabledInfo) && disabledDate(enDate, disabledInfo);
+        const endMonth = generateConfig.addYear(startDate, 1);
+        const endDate = generateConfig.addDate(endMonth, -1);
+        return disabledDate(startDate, disabledInfo) && disabledDate(endDate, disabledInfo);
       }
     : null;
 
@@ -80,7 +76,8 @@ export default function YearPanel<DateType extends object = any>(
   const yearNode: React.ReactNode = (
     <button
       type="button"
-      key="year"
+      key="decade"
+      aria-label={locale.decadeSelect}
       onClick={() => {
         onModeChange('decade');
       }}

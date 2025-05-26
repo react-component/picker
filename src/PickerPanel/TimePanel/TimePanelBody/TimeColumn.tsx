@@ -1,5 +1,5 @@
-import classNames from 'classnames';
-import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
+import cls from 'classnames';
+import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
 import { usePanelContext } from '../../context';
 import useScrollTo from './useScrollTo';
@@ -18,14 +18,21 @@ export interface TimeUnitColumnProps {
   optionalValue?: number | string;
   type: 'hour' | 'minute' | 'second' | 'millisecond' | 'meridiem';
   onChange: (value: number | string) => void;
+  onHover: (value: number | string) => void;
   onDblClick?: VoidFunction;
   changeOnScroll?: boolean;
 }
 
-export default function TimeColumn<DateType extends object>(props: TimeUnitColumnProps) {
-  const { units, value, optionalValue, type, onChange, onDblClick, changeOnScroll } = props;
+// Not use JSON.stringify to avoid dead loop
+function flattenUnits(units: Unit<string | number>[]) {
+  return units.map(({ value, label, disabled }) => [value, label, disabled].join(',')).join(';');
+}
 
-  const { prefixCls, cellRender, now, locale } = usePanelContext<DateType>();
+export default function TimeColumn<DateType extends object>(props: TimeUnitColumnProps) {
+  const { units, value, optionalValue, type, onChange, onHover, onDblClick, changeOnScroll } =
+    props;
+
+  const { prefixCls, cellRender, now, locale, classNames, styles } = usePanelContext<DateType>();
 
   const panelPrefixCls = `${prefixCls}-time-panel`;
   const cellPrefixCls = `${prefixCls}-time-panel-cell`;
@@ -52,7 +59,7 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
       stopScroll();
       clearDelayCheck();
     };
-  }, [value, optionalValue, units]);
+  }, [value, optionalValue, flattenUnits(units)]);
 
   // ========================= Change =========================
   // Scroll event if sync onScroll
@@ -96,7 +103,8 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
         return (
           <li
             key={unitValue}
-            className={classNames(cellPrefixCls, {
+            style={styles.item}
+            className={cls(cellPrefixCls, classNames.item, {
               [`${cellPrefixCls}-selected`]: value === unitValue,
               [`${cellPrefixCls}-disabled`]: disabled,
             })}
@@ -109,6 +117,12 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
               if (!disabled && onDblClick) {
                 onDblClick();
               }
+            }}
+            onMouseEnter={() => {
+              onHover(unitValue);
+            }}
+            onMouseLeave={() => {
+              onHover(null);
             }}
             data-value={unitValue}
           >

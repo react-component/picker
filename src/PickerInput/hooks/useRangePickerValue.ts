@@ -1,5 +1,5 @@
-import { useMergedState } from 'rc-util';
-import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
+import { useMergedState } from '@rc-component/util';
+import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import type { InternalMode, Locale, PanelMode } from '../../interface';
@@ -74,9 +74,7 @@ export default function useRangePickerValue<DateType extends object, ValueType e
   // PickerValue state
   const [mergedStartPickerValue, setStartPickerValue] = useMergedState(
     () => getDefaultPickerValue(0),
-    {
-      value: startPickerValue,
-    },
+    { value: startPickerValue },
   );
 
   const [mergedEndPickerValue, setEndPickerValue] = useMergedState(() => getDefaultPickerValue(1), {
@@ -146,7 +144,7 @@ export default function useRangePickerValue<DateType extends object, ValueType e
       }
 
       // Year offset
-      if (pickerMode === 'year') {
+      if (pickerMode === 'year' && startDate) {
         const srcYear = Math.floor(generateConfig.getYear(startDate) / 10);
         const tgtYear = Math.floor(generateConfig.getYear(endDate) / 10);
         if (srcYear !== tgtYear) {

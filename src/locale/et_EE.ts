@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'et_EE',
   today: 'Täna',
   now: 'Praegu',
   backToToday: 'Tagasi tänase juurde',
   ok: 'OK',
   clear: 'Tühista',
+  week: 'Nädal',
   month: 'Kuu',
   year: 'Aasta',
   timeSelect: 'Vali aeg',
@@ -14,11 +17,7 @@ const locale: Locale = {
   monthSelect: 'Vali kuu',
   yearSelect: 'Vali aasta',
   decadeSelect: 'Vali dekaad',
-  yearFormat: 'YYYY',
-  dateFormat: 'D.M.YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'D.M.YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'Eelmine kuu (PageUp)',
   nextMonth: 'Järgmine kuu (PageDown)',
   previousYear: 'Eelmine aasta (Control + left)',

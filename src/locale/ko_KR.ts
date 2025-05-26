@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ko_KR',
   today: '오늘',
   now: '현재 시각',
   backToToday: '오늘로 돌아가기',
   ok: '확인',
   clear: '지우기',
+  week: '주',
   month: '월',
   year: '년',
   timeSelect: '시간 선택',
@@ -15,9 +18,6 @@ const locale: Locale = {
   yearSelect: '연 선택',
   decadeSelect: '연대 선택',
   yearFormat: 'YYYY년',
-  dateFormat: 'YYYY-MM-DD',
-  dayFormat: 'D',
-  dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
   monthBeforeYear: false,
   previousMonth: '이전 달 (PageUp)',
   nextMonth: '다음 달 (PageDown)',

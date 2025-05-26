@@ -1,4 +1,4 @@
-import { warning } from 'rc-util';
+import { warning } from '@rc-component/util';
 import * as React from 'react';
 import useLocale from '../../hooks/useLocale';
 import { fillShowTimeConfig, getTimeProps } from '../../hooks/useTimeConfig';
@@ -167,10 +167,7 @@ export default function useFilledProps<
       styles,
       classNames,
       order,
-      components: {
-        input: inputRender,
-        ...components,
-      },
+      components: { input: inputRender, ...components },
       clearIcon: fillClearIcon(prefixCls, allowClear, clearIcon),
       showTime: mergedShowTime,
       value: values,
@@ -198,7 +195,12 @@ export default function useFilledProps<
   );
 
   // ====================== Invalidate ======================
-  const isInvalidateDate = useInvalidate(generateConfig, picker, disabledDate, mergedShowTime);
+  const isInvalidateDate = useInvalidate(
+    generateConfig,
+    picker,
+    disabledBoundaryDate,
+    mergedShowTime,
+  );
 
   // ======================== Merged ========================
   const mergedProps = React.useMemo(
@@ -211,12 +213,5 @@ export default function useFilledProps<
     [filledProps, mergedNeedConfirm, mergedInputReadOnly, disabledBoundaryDate],
   );
 
-  return [
-    mergedProps,
-    internalPicker,
-    complexPicker,
-    formatList,
-    maskFormat,
-    isInvalidateDate,
-  ];
+  return [mergedProps, internalPicker, complexPicker, formatList, maskFormat, isInvalidateDate];
 }

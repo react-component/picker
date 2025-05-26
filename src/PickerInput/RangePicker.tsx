@@ -1,8 +1,9 @@
-import { useEvent, useMergedState } from 'rc-util';
-import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
-import omit from 'rc-util/lib/omit';
-import pickAttrs from 'rc-util/lib/pickAttrs';
-import warning from 'rc-util/lib/warning';
+import { useEvent, useMergedState } from '@rc-component/util';
+import cls from 'classnames';
+import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
+import omit from '@rc-component/util/lib/omit';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
+import warning from '@rc-component/util/lib/warning';
 import * as React from 'react';
 import type {
   BaseInfo,
@@ -20,7 +21,7 @@ import type {
 import type { PickerPanelProps } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import { pickTriggerProps } from '../PickerTrigger/util';
-import { fillIndex, toArray } from '../utils/miscUtil';
+import { fillIndex, getFromDate, toArray } from '../utils/miscUtil';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';
@@ -33,8 +34,9 @@ import useRangeDisabledDate from './hooks/useRangeDisabledDate';
 import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
-import Popup from './Popup';
+import Popup, { type PopupShowTimeConfig } from './Popup';
 import RangeSelector, { type SelectorIdType } from './Selector/RangeSelector';
+import useSemantic from '../hooks/useSemantic';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
   const singleConfig = config ?? defaultConfig;
@@ -158,8 +160,9 @@ function RangePicker<DateType extends object = any>(
   const {
     // Style
     prefixCls,
-    styles,
-    classNames,
+    rootClassName,
+    styles: propStyles,
+    classNames: propClassNames,
 
     // Value
     defaultValue,
@@ -224,6 +227,9 @@ function RangePicker<DateType extends object = any>(
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
 
+  // ======================= Semantic =======================
+  const [mergedClassNames, mergedStyles] = useSemantic(propClassNames, propStyles);
+
   // ========================= Open =========================
   const [mergedOpen, setMergeOpen] = useOpen(open, defaultOpen, disabled, onOpenChange);
 
@@ -259,7 +265,9 @@ function RangePicker<DateType extends object = any>(
     setActiveIndex,
     nextActiveIndex,
     activeIndexList,
-  ] = useRangeActive(disabled, allowEmpty);
+    updateSubmitIndex,
+    hasActiveSubmitValue,
+  ] = useRangeActive(disabled, allowEmpty, mergedOpen);
 
   const onSharedFocus = (event: React.FocusEvent<HTMLElement>, index?: number) => {
     triggerFocus(true);
@@ -278,7 +286,10 @@ function RangePicker<DateType extends object = any>(
   };
 
   // ======================= ShowTime =======================
-  const mergedShowTime = React.useMemo(() => {
+  /** Used for Popup panel */
+  const mergedShowTime = React.useMemo<
+    PopupShowTimeConfig<DateType> & Pick<RangeTimeProps<DateType>, 'defaultOpenValue'>
+  >(() => {
     if (!showTime) {
       return null;
     }
@@ -288,12 +299,15 @@ function RangePicker<DateType extends object = any>(
     const proxyDisabledTime = disabledTime
       ? (date: DateType) => {
           const range = getActiveRange(activeIndex);
-          return disabledTime(date, range);
+          const fromDate = getFromDate(calendarValue, activeIndexList, activeIndex);
+          return disabledTime(date, range, {
+            from: fromDate,
+          });
         }
       : undefined;
 
     return { ...showTime, disabledTime: proxyDisabledTime };
-  }, [showTime, activeIndex]);
+  }, [showTime, activeIndex, calendarValue, activeIndexList]);
 
   // ========================= Mode =========================
   const [modes, setModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
@@ -404,7 +418,7 @@ function RangePicker<DateType extends object = any>(
     if (date) {
       nextValue = fillCalendarValue(date, activeIndex);
     }
-
+    updateSubmitIndex(activeIndex);
     // Get next focus index
     const nextIndex = nextActiveIndex(nextValue);
 
@@ -421,7 +435,12 @@ function RangePicker<DateType extends object = any>(
 
   // ======================== Click =========================
   const onSelectorClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    if (!selectorRef.current.nativeElement.contains(document.activeElement)) {
+    const rootNode = (event.target as HTMLElement).getRootNode();
+    if (
+      !selectorRef.current.nativeElement.contains(
+        (rootNode as Document | ShadowRoot).activeElement ?? document.activeElement,
+      )
+    ) {
       // Click to focus the enabled input
       const enabledIndex = disabled.findIndex((d) => !d);
       if (enabledIndex >= 0) {
@@ -459,7 +478,10 @@ function RangePicker<DateType extends object = any>(
   // ==                       Panels                       ==
   // ========================================================
   // Save the offset with active bar position
-  const [activeOffset, setActiveOffset] = React.useState(0);
+  // const [activeOffset, setActiveOffset] = React.useState(0);
+  const [activeInfo, setActiveInfo] = React.useState<
+    [activeInputLeft: number, activeInputRight: number, selectorWidth: number]
+  >([0, 0, 0]);
 
   // ======================= Presets ========================
   const presetList = usePresets(presets, ranges);
@@ -493,10 +515,13 @@ function RangePicker<DateType extends object = any>(
     onSharedFocus(event);
   };
 
+  // >>> MouseDown
+  const onPanelMouseDown: React.MouseEventHandler<HTMLDivElement> = () => {
+    lastOperation('panel');
+  };
+
   // >>> Calendar
   const onPanelSelect: PickerPanelProps<DateType>['onChange'] = (date: DateType) => {
-    lastOperation('panel');
-
     const clone: RangeValueType<DateType> = fillIndex(calendarValue, activeIndex, date);
 
     // Only trigger calendar event but not update internal `calendarValue` state
@@ -542,6 +567,9 @@ function RangePicker<DateType extends object = any>(
       'style',
       'className',
       'onPanelChange',
+      'disabledTime',
+      'classNames',
+      'styles',
     ]);
     return restProps;
   }, [filledProps]);
@@ -556,12 +584,13 @@ function RangePicker<DateType extends object = any>(
       // Range
       range
       multiplePanel={multiplePanel}
-      activeOffset={activeOffset}
+      activeInfo={activeInfo}
       // Disabled
       disabledDate={mergedDisabledDate}
       // Focus
       onFocus={onPanelFocus}
       onBlur={onSharedBlur}
+      onPanelMouseDown={onPanelMouseDown}
       // Mode
       picker={picker}
       mode={mergedMode}
@@ -613,11 +642,34 @@ function RangePicker<DateType extends object = any>(
 
   // ======================= Selector =======================
   const onSelectorFocus: SelectorProps['onFocus'] = (event, index) => {
+    // Check if `needConfirm` but user not submit yet
+    const activeListLen = activeIndexList.length;
+    const lastActiveIndex = activeIndexList[activeListLen - 1];
+    if (
+      activeListLen &&
+      lastActiveIndex !== index &&
+      needConfirm &&
+      // Not change index if is not filled
+      !allowEmpty[lastActiveIndex] &&
+      !hasActiveSubmitValue(lastActiveIndex) &&
+      calendarValue[lastActiveIndex]
+    ) {
+      selectorRef.current.focus({ index: lastActiveIndex });
+      return;
+    }
+
     lastOperation('input');
 
     triggerOpen(true, {
       inherit: true,
     });
+
+    // When click input to switch the field, it will not trigger close.
+    // Which means it will lose the part confirm and we need fill back.
+    // ref: https://github.com/ant-design/ant-design/issues/49512
+    if (activeIndex !== index && mergedOpen && !needConfirm && complexPicker) {
+      triggerPartConfirm(null, true);
+    }
 
     setActiveIndex(index);
 
@@ -626,6 +678,10 @@ function RangePicker<DateType extends object = any>(
 
   const onSelectorBlur: SelectorProps['onBlur'] = (event, index) => {
     triggerOpen(false);
+    if (!needConfirm && lastOperation() === 'input') {
+      const nextIndex = nextActiveIndex(calendarValue);
+      flushSubmit(activeIndex, nextIndex === null);
+    }
 
     onSharedBlur(event, index);
   };
@@ -646,8 +702,18 @@ function RangePicker<DateType extends object = any>(
       generateConfig,
       button: components.button,
       input: components.input,
+      classNames: mergedClassNames,
+      styles: mergedStyles,
     }),
-    [prefixCls, locale, generateConfig, components.button, components.input],
+    [
+      prefixCls,
+      locale,
+      generateConfig,
+      components.button,
+      components.input,
+      mergedClassNames,
+      mergedStyles,
+    ],
   );
 
   // ======================== Effect ========================
@@ -706,8 +772,8 @@ function RangePicker<DateType extends object = any>(
       <PickerTrigger
         {...pickTriggerProps(filledProps)}
         popupElement={panel}
-        popupStyle={styles.popup}
-        popupClassName={classNames.popup}
+        popupStyle={mergedStyles.popup.root}
+        popupClassName={cls(rootClassName, mergedClassNames.popup.root)}
         // Visible
         visible={mergedOpen}
         onClose={onPopupClose}
@@ -719,6 +785,12 @@ function RangePicker<DateType extends object = any>(
           {...filledProps}
           // Ref
           ref={selectorRef}
+          // Style
+          className={cls(filledProps.className, rootClassName, mergedClassNames.root)}
+          style={{
+            ...mergedStyles.root,
+            ...filledProps.style,
+          }}
           // Icon
           suffixIcon={suffixIcon}
           // Active
@@ -750,7 +822,7 @@ function RangePicker<DateType extends object = any>(
           invalid={submitInvalidates}
           onInvalid={onSelectorInvalid}
           // Offset
-          onActiveOffset={setActiveOffset}
+          onActiveInfo={setActiveInfo}
         />
       </PickerTrigger>
     </PickerContext.Provider>

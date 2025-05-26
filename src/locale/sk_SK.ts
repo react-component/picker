@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'sk_SK',
   today: 'Dnes',
   now: 'Teraz',
   backToToday: 'Späť na dnes',
   ok: 'OK',
   clear: 'Vymazať',
+  week: 'Týždeň',
   month: 'Mesiac',
   year: 'Rok',
   timeSelect: 'Vybrať čas',
@@ -14,11 +17,7 @@ const locale: Locale = {
   monthSelect: 'Vybrať mesiac',
   yearSelect: 'Vybrať rok',
   decadeSelect: 'Vybrať dekádu',
-  yearFormat: 'YYYY',
-  dateFormat: 'D.M.YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'D.M.YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'Predchádzajúci mesiac (PageUp)',
   nextMonth: 'Nasledujúci mesiac (PageDown)',
   previousYear: 'Predchádzajúci rok (Control + left)',

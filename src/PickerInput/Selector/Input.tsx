@@ -1,7 +1,7 @@
-import classNames from 'classnames';
-import { useEvent } from 'rc-util';
-import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
-import raf from 'rc-util/lib/raf';
+import cls from 'classnames';
+import { useEvent } from '@rc-component/util';
+import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
+import raf from '@rc-component/util/lib/raf';
 import * as React from 'react';
 import { leftPad } from '../../utils/miscUtil';
 import PickerContext from '../context';
@@ -52,6 +52,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
 
 const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   const {
+    className,
     active,
     showActiveCls = true,
     suffixIcon,
@@ -71,7 +72,12 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   } = props;
   const { value, onFocus, onBlur, onMouseUp } = props;
 
-  const { prefixCls, input: Component = 'input' } = React.useContext(PickerContext);
+  const {
+    prefixCls,
+    input: Component = 'input',
+    classNames,
+    styles,
+  } = React.useContext(PickerContext);
   const inputPrefixCls = `${prefixCls}-input`;
 
   // ======================== Value =========================
@@ -377,10 +383,14 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   return (
     <div
       ref={holderRef}
-      className={classNames(inputPrefixCls, {
-        [`${inputPrefixCls}-active`]: active && showActiveCls,
-        [`${inputPrefixCls}-placeholder`]: helped,
-      })}
+      className={cls(
+        inputPrefixCls,
+        {
+          [`${inputPrefixCls}-active`]: active && showActiveCls,
+          [`${inputPrefixCls}-placeholder`]: helped,
+        },
+        className,
+      )}
     >
       <Component
         ref={inputRef}
@@ -394,6 +404,8 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
         // Value
         value={inputValue}
         onChange={onInternalChange}
+        className={classNames.input}
+        style={styles.input}
       />
       <Icon type="suffix" icon={suffixIcon} />
       {clearIcon}

@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'el_GR',
   today: 'Σήμερα',
   now: 'Τώρα',
   backToToday: 'Πίσω στη σημερινή μέρα',
   ok: 'OK',
   clear: 'Καθαρισμός',
+  week: 'Εβδομάδα',
   month: 'Μήνας',
   year: 'Έτος',
   timeSelect: 'Επιλογή ώρας',
@@ -14,11 +17,7 @@ const locale: Locale = {
   monthSelect: 'Επιλογή μήνα',
   yearSelect: 'Επιλογή έτους',
   decadeSelect: 'Επιλογή δεκαετίας',
-  yearFormat: 'YYYY',
-  dateFormat: 'D/M/YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'Προηγούμενος μήνας (PageUp)',
   nextMonth: 'Επόμενος μήνας (PageDown)',
   previousYear: 'Προηγούμενο έτος (Control + αριστερά)',

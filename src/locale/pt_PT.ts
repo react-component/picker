@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'pt_PT',
   today: 'Hoje',
   now: 'Agora',
   backToToday: 'Hoje',
   ok: 'OK',
   clear: 'Limpar',
+  week: 'Semana',
   month: 'Mês',
   year: 'Ano',
   timeSelect: 'Selecionar hora',
@@ -14,11 +17,7 @@ const locale: Locale = {
   monthSelect: 'Selecionar mês',
   yearSelect: 'Selecionar ano',
   decadeSelect: 'Selecionar década',
-  yearFormat: 'YYYY',
-  dateFormat: 'D/M/YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'Mês anterior (PageUp)',
   nextMonth: 'Mês seguinte (PageDown)',
   previousYear: 'Ano anterior (Control + left)',
@@ -27,21 +26,8 @@ const locale: Locale = {
   nextDecade: 'Década seguinte',
   previousCentury: 'Século anterior',
   nextCentury: 'Século seguinte',
-  shortWeekDays: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
-  shortMonths: [
-    "Jan",
-    "Fev",
-    "Mar",
-    "Abr",
-    "Mai",
-    "Jun",
-    "Jul",
-    "Ago",
-    "Set",
-    "Out",
-    "Nov",
-    "Dez",
-  ],
+  shortWeekDays: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+  shortMonths: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
 };
 
 export default locale;

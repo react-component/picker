@@ -1,6 +1,5 @@
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
-import { noteOnce } from 'rc-util/lib/warning';
 import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
@@ -100,14 +99,25 @@ const parseLocale = (locale: string) => {
   return mapLocale || locale.split('_')[0];
 };
 
+/* istanbul ignore next */
 const parseNoMatchNotice = () => {
-  /* istanbul ignore next */
-  noteOnce(false, 'Not match any format. Please help to fire a issue about this.');
+  // zombieJ:
+  // When user typing, its always miss match format.
+  // This check is meaningless.
+  // https://github.com/ant-design/ant-design/issues/51839
+  // noteOnce(false, 'Not match any format. Please help to fire a issue about this.');
 };
 
 const generateConfig: GenerateConfig<Dayjs> = {
   // get
-  getNow: () => dayjs(),
+  getNow: () => {
+    const now = dayjs();
+    // https://github.com/ant-design/ant-design/discussions/50934
+    if (typeof now.tz === 'function') {
+      return now.tz(); // use default timezone
+    }
+    return now;
+  },
   getFixedDate: (string) => dayjs(string, ['YYYY-M-DD', 'YYYY-MM-DD']),
   getEndDate: (date) => date.endOf('month'),
   getWeekDay: (date) => {

@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import cls from 'classnames';
 import * as React from 'react';
 import type { DisabledDate } from '../interface';
 import { formatValue, isInRange, isSame } from '../utils/dateUtil';
@@ -45,6 +45,8 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
 
   const {
     prefixCls,
+    classNames,
+    styles,
     panelType: type,
     now,
     disabledDate: contextDisabledDate,
@@ -123,7 +125,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
         <td
           key={col}
           title={title}
-          className={classNames(cellPrefixCls, {
+          className={cls(cellPrefixCls, classNames.item, {
             [`${cellPrefixCls}-disabled`]: disabled,
             [`${cellPrefixCls}-hover`]: (hoverValue || []).some((date) =>
               isSame(generateConfig, locale, currentDate, date, type),
@@ -138,6 +140,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
               matchValues(currentDate),
             ...getCellClassName(currentDate),
           })}
+          style={styles.item}
           onClick={() => {
             if (!disabled) {
               onSelect(currentDate);
@@ -181,8 +184,8 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
 
   // ============================== Render ==============================
   return (
-    <div className={`${prefixCls}-body`}>
-      <table className={`${prefixCls}-content`}>
+    <div className={cls(`${prefixCls}-body`, classNames.body)} style={styles.body}>
+      <table className={cls(`${prefixCls}-content`, classNames.content)} style={styles.content}>
         {headerCells && (
           <thead>
             <tr>{headerCells}</tr>

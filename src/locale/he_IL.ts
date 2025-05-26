@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'he_IL',
   today: 'היום',
   now: 'עכשיו',
   backToToday: 'חזור להיום',
   ok: 'אישור',
   clear: 'איפוס',
+  week: 'שבוע',
   month: 'חודש',
   year: 'שנה',
   timeSelect: 'בחר שעה',
@@ -15,11 +18,7 @@ const locale: Locale = {
   monthSelect: 'בחר חודש',
   yearSelect: 'בחר שנה',
   decadeSelect: 'בחר עשור',
-  yearFormat: 'YYYY',
-  dateFormat: 'M/D/YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'חודש קודם (PageUp)',
   nextMonth: 'חודש הבא (PageDown)',
   previousYear: 'שנה שעברה (Control + left)',

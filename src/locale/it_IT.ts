@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'it_IT',
   today: 'Oggi',
   now: 'Adesso',
   backToToday: 'Torna ad oggi',
   ok: 'OK',
   clear: 'Cancella',
+  week: 'Settimana',
   month: 'Mese',
   year: 'Anno',
   timeSelect: "Seleziona l'ora",
@@ -14,11 +17,7 @@ const locale: Locale = {
   monthSelect: 'Seleziona il mese',
   yearSelect: "Seleziona l'anno",
   decadeSelect: 'Seleziona il decennio',
-  yearFormat: 'YYYY',
-  dateFormat: 'D/M/YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'Il mese scorso (PageUp)',
   nextMonth: 'Il prossimo mese (PageDown)',
   previousYear: "L'anno scorso (Control + sinistra)",
@@ -27,6 +26,8 @@ const locale: Locale = {
   nextDecade: 'Prossimo decennio',
   previousCentury: 'Secolo precedente',
   nextCentury: 'Prossimo secolo',
+  shortWeekDays: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
+  shortMonths: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
 };
 
 export default locale;

@@ -1,10 +1,6 @@
 # rc-picker
 
-[![NPM version][npm-image]][npm-url]
-[![build status][github-actions-image]][github-actions-url]
-[![Codecov][codecov-image]][codecov-url]
-[![npm download][download-image]][download-url]
-[![bundle size][bundlephobia-image]][bundlephobia-url]
+[![NPM version][npm-image]][npm-url] [![build status][github-actions-image]][github-actions-url] [![Codecov][codecov-image]][codecov-url] [![npm download][download-image]][download-url] [![bundle size][bundlephobia-image]][bundlephobia-url]
 
 [npm-image]: http://img.shields.io/npm/v/rc-picker.svg?style=flat-square
 [npm-url]: http://npmjs.org/package/rc-picker
@@ -49,7 +45,7 @@ render(<Picker />, mountNode);
 | className | String | '' | additional css class of root dom node |
 | style | React.CSSProperties |  | additional style of root dom node |
 | dropdownClassName | String | '' | additional className applied to dropdown |
-| dropdownAlign | Object:alignConfig of [dom-align](https://github.com/yiminghe/dom-align) |  | value will be merged into placement's dropdownAlign config |
+| popupAlign | Object:alignConfig of [dom-align](https://github.com/yiminghe/dom-align) |  | value will be merged into placement's popupAlign config |
 | popupStyle | React.CSSProperties |  | customize popup style |
 | transitionName | String | '' | css class for animation |
 | locale | Object | import from 'rc-picker/lib/locale/en_US' | rc-picker locale |

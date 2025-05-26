@@ -1,19 +1,28 @@
 // Note: zombieJ refactoring
 
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
+import { createRoot } from 'react-dom/client';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
-import KeyCode from 'rc-util/lib/KeyCode';
-import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import { resetWarned } from 'rc-util/lib/warning';
+import KeyCode from '@rc-component/util/lib/KeyCode';
+import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
 import type { PickerRef, RangePickerProps } from '../src';
 import type { PickerMode } from '../src/interface';
+import { _rs } from '@rc-component/resize-observer';
+
+const triggerResize = (target: Element) => {
+  act(() => {
+    _rs([{ target } as ResizeObserverEntry]);
+  });
+};
+
 import {
+  DayRangePicker,
   clearValue,
   clickButton,
   closePicker,
-  DayRangePicker,
   findCell,
   getDay,
   inputValue,
@@ -48,6 +57,7 @@ describe('Picker.Range', () => {
     resetWarned();
     global.scrollCalled = false;
     jest.useFakeTimers().setSystemTime(getDay('1990-09-03 00:00:00').valueOf());
+    document.body.innerHTML = '';
   });
 
   afterEach(() => {
@@ -228,6 +238,43 @@ describe('Picker.Range', () => {
       });
 
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeTruthy();
+    });
+
+    it('should not be checked if the startDate is disabled', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          disabled={[true, false]}
+          defaultValue={[getDay('2024-10-28'), getDay('2024-11-20')]}
+          disabledDate={(date: Dayjs) => date <= dayjs('2024-11-20').endOf('day')}
+          onChange={onChange}
+        />,
+      );
+
+      openPicker(container, 1);
+      selectCell('21', 1);
+      expect(onChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['2024-10-28', '2024-11-21'],
+      );
+    });
+    it('should not be checked if the endDate is disabled', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          disabled={[false, true]}
+          defaultValue={[getDay('2024-10-28'), getDay('2024-11-20')]}
+          disabledDate={(date: Dayjs) => date >= dayjs('2024-11-10').endOf('day')}
+          onChange={onChange}
+        />,
+      );
+
+      openPicker(container, 0);
+      selectCell('21', 0);
+      expect(onChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['2024-10-21', '2024-11-20'],
+      );
     });
 
     it('should close panel when finish first choose with showTime = true and disabled = [false, true]', () => {
@@ -536,6 +583,16 @@ describe('Picker.Range', () => {
 
       matchValues(container, '1990-09-13 01:02:03', '1990-09-23 05:06:07');
     });
+
+    it('pass tabIndex', () => {
+      const { container } = render(
+        <div>
+          <DayRangePicker tabIndex={-1} />
+        </div>,
+      );
+
+      expect(container.querySelector('input').getAttribute('tabIndex')).toBe('-1');
+    });
   });
 
   it('mode is array', () => {
@@ -602,6 +659,14 @@ describe('Picker.Range', () => {
     it('should render correctly in rtl', () => {
       const { container } = render(<DayRangePicker direction="rtl" />);
       expect(container).toMatchSnapshot();
+    });
+
+    it('should render correctly in placement right', () => {
+      const { container } = render(<DayRangePicker placement="bottomRight" />);
+      openPicker(container);
+
+      expect(container).toMatchSnapshot();
+      expect(document.querySelector('.rc-picker-dropdown-placement-bottomRight')).toBeTruthy();
     });
   });
 
@@ -683,6 +748,11 @@ describe('Picker.Range', () => {
     });
 
     expect(isOpen()).toBeFalsy();
+  });
+
+  it('prefix', () => {
+    render(<DayRangePicker prefix={<span className="prefix" />} allowClear />);
+    expect(document.querySelector('.prefix')).toBeInTheDocument();
   });
 
   it('icon', () => {
@@ -1722,25 +1792,57 @@ describe('Picker.Range', () => {
       />,
     );
     openPicker(container, 1);
-    console.log(document.querySelector<HTMLElement>('.rc-picker-panel-container').style.cssText);
     expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({ marginLeft: 0 });
     mock.mockRestore();
   });
 
-  it('panel should be stable: arrow right and panel right', () => {
+  it('panel should be stable: arrow right and panel right', async () => {
+    const mockMatch = (element: HTMLElement, values: Record<string, number>) => {
+      const keys = Object.keys(values);
+      for (const key of keys) {
+        if (element.classList.contains(key)) {
+          return values[key];
+        }
+      }
+      return 0;
+    };
+
+    const getWidth = (element: HTMLElement) => {
+      return mockMatch(element, {
+        'rc-picker-range': 200,
+        'rc-picker-panel-container': 50,
+        'rc-picker-range-wrapper': 200,
+        'rc-picker-input': 100,
+        'rc-picker-range-arrow': 0,
+      });
+    };
+    const getLeft = (element: HTMLElement) => {
+      return mockMatch(element, {
+        'rc-picker-range-wrapper': 0,
+        'rc-picker-input': 100,
+      });
+    };
+
     const mock = spyElementPrototypes(HTMLElement, {
+      getBoundingClientRect() {
+        const left = getLeft(this);
+        const width = getWidth(this);
+
+        return {
+          width,
+          left,
+          right: left + width,
+          height: 1,
+        };
+      },
       offsetWidth: {
         get() {
-          if (this.className.includes('rc-picker-range-wrapper')) {
-            return 200;
-          }
+          return getWidth(this);
         },
       },
       offsetLeft: {
         get() {
-          if (this.className.includes('rc-picker-input')) {
-            return 100;
-          }
+          return getLeft(this);
         },
       },
     });
@@ -1753,8 +1855,16 @@ describe('Picker.Range', () => {
       />,
     );
     openPicker(container, 1);
+
+    triggerResize(container.querySelector('.rc-picker-range'));
+    triggerResize(document.body.querySelector('.rc-picker-panel-container'));
+
+    await act(async () => {
+      await Promise.resolve();
+    });
+
     expect(document.querySelector('.rc-picker-panel-container')).toHaveStyle({
-      marginLeft: '100px',
+      marginLeft: '50px',
     });
     mock.mockRestore();
   });
@@ -1906,5 +2016,108 @@ describe('Picker.Range', () => {
     }
 
     expect(onOpenChange).toHaveBeenCalledWith(false);
+  });
+
+  it('should save both dates, but not only the last that was changed without submit, enter, tab, etc.', async () => {
+    const { container } = render(<DayRangePicker />);
+
+    act(() => {
+      fireEvent.focus(container.querySelectorAll('input')[0]);
+      fireEvent.change(container.querySelectorAll('input')[0], {
+        target: {
+          value: '2024-06-13',
+        },
+      });
+      fireEvent.blur(container.querySelectorAll('input')[0]);
+
+      fireEvent.focus(container.querySelectorAll('input')[1]);
+      fireEvent.change(container.querySelectorAll('input')[1], {
+        target: {
+          value: '2024-06-15',
+        },
+      });
+
+      fireEvent.keyDown(container.querySelectorAll('input')[1], {
+        key: 'Enter',
+        code: 'Enter',
+      });
+    });
+
+    expect(container.querySelectorAll('input')[1].value).toBe('2024-06-15');
+    expect(container.querySelectorAll('input')[0].value).toBe('2024-06-13');
+  });
+
+  it('click on the input should trigger success when with !needConfirm', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker showTime needConfirm={false} onChange={onChange} />,
+    );
+
+    // Select first field
+    openPicker(container, 0);
+    selectCell(1, 0);
+
+    // Select second field
+    openPicker(container, 1);
+    selectCell(2, 0);
+
+    // Click outside to blur
+    fireEvent.mouseDown(document.body);
+    fireEvent.mouseUp(document.body);
+    fireEvent.click(document.body);
+
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), [
+      '1990-09-01 00:00:00',
+      '1990-09-02 00:00:00',
+    ]);
+    expect(isOpen()).toBeFalsy();
+  });
+
+  const renderShadow = (props?: any) => {
+    const host = document.createElement('div');
+    document.body.appendChild(host);
+
+    const shadowRoot = host.attachShadow({
+      mode: 'open',
+      delegatesFocus: false,
+    });
+    const container = document.createElement('div');
+    shadowRoot.appendChild(container);
+
+    act(() => {
+      createRoot(container).render(<DayRangePicker {...props} />);
+    });
+
+    return shadowRoot;
+  };
+
+  it('the end date selector can be selected in shadow dom', () => {
+    const shadowRoot = renderShadow();
+
+    openPicker(shadowRoot, 1);
+
+    expect(shadowRoot.querySelectorAll('.rc-picker-input')[1]).toHaveClass(
+      'rc-picker-input-active',
+    );
+  });
+
+  it('should not click to focus on next field if first field is not confirm', () => {
+    const onCalendarChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker onCalendarChange={onCalendarChange} showTime needConfirm />,
+    );
+
+    // Select first field
+    openPicker(container, 0);
+    selectCell(11);
+    expect(onCalendarChange).toHaveBeenCalled();
+
+    // Not click confirm and click next field
+    openPicker(container, 1);
+    expect(container.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
   });
 });

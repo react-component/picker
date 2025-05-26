@@ -25,7 +25,8 @@ const normalizeFormatPart = (part: string): string =>
     .replace(/D/g, 'd')
     .replace(/gg/g, 'kk')
     .replace(/Q/g, 'q')
-    .replace(/([Ww])o/g, 'WW');
+    .replace(/([Ww])o/g, 'WW')
+    .replace(/A/g, 'a');
 
 /**
  * Normalizes a moment compatible format string to a luxon compatible format string
@@ -56,7 +57,14 @@ const normalizeLocale = (locale: string): string => locale.replace(/_/g, '-');
 
 const generateConfig: GenerateConfig<DateTime> = {
   // get
-  getNow: () => DateTime.local(),
+  getNow: () => {
+    /**
+     * The current time that can respond to tz settings is required. like `dayjs().tz()`.
+     * @see: https://github.com/ant-design/ant-design/issues/51282
+     *       https://github.com/react-component/picker/pull/878
+     */
+    return DateTime.now();
+  },
   getFixedDate: (string) => DateTime.fromFormat(string, 'yyyy-MM-dd'),
   getEndDate: (date) => date.endOf('month'),
   getWeekDay: (date) => date.weekday,

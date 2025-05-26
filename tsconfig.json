@@ -10,15 +10,16 @@
     "paths": {
       "@/*": ["src/*"],
       "@@/*": [".dumi/tmp/*"],
-      "rc-picker": ["src/index.tsx"]
+      "@rc-component/picker": ["src/index.tsx"]
     }
   },
   "include": [
     ".dumirc.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "docs/examples/focus.tsx",
+    "docs/examples/*.tsx",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx",
+    "typings.d.ts"
   ]
 }

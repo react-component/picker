@@ -1,11 +1,14 @@
 import moment, { type Moment } from 'moment';
 import React from 'react';
 import '../../assets/index.less';
+import type { PickerRef } from '../../src/';
 import { Picker, PickerPanel, RangePicker } from '../../src/';
 import momentGenerateConfig from '../../src/generate/moment';
 import enUS from '../../src/locale/en_US';
 import jaJP from '../../src/locale/ja_JP';
 import zhCN from '../../src/locale/zh_CN';
+import type { RangePickerRef } from '@/interface';
+import type { NoUndefinedRangeValueType } from '@/PickerInput/RangePicker';
 
 const defaultValue = moment();
 
@@ -16,13 +19,16 @@ function formatDate(date: Moment | null) {
 export default () => {
   const [value, setValue] = React.useState<Moment | null>(defaultValue);
 
-  const weekRef = React.useRef<Picker<Moment>>(null);
+  const weekRef = React.useRef<PickerRef>(null);
 
   const onSelect = (newValue: Moment) => {
     console.log('Select:', newValue);
   };
 
-  const onChange = (newValue: Moment | null, formatString?: string) => {
+  const onChange = (
+    newValue: NoUndefinedRangeValueType<Moment>,
+    formatString?: string | [string, string],
+  ) => {
     const lastValue = Array.isArray(newValue) ? newValue[1] : newValue;
     console.log('Change:', lastValue, newValue, formatString);
     setValue(lastValue);
@@ -33,10 +39,10 @@ export default () => {
     value,
     onSelect,
     onChange,
-    direction: 'rtl',
+    direction: 'rtl' as const,
   };
 
-  const rangePickerRef = React.useRef<RangePicker<Moment>>(null);
+  const rangePickerRef = React.useRef<RangePickerRef>(null);
 
   return (
     <div dir="rtl">

@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ga_IE',
   today: 'inniu',
   now: 'anois',
   backToToday: 'Ar ais inniu',
   ok: 'ceart go leor',
   clear: 'soiléir',
+  week: 'seachtain',
   month: 'mhí',
   year: 'bhliain',
   timeSelect: 'roghnaigh am',
@@ -15,11 +18,7 @@ const locale: Locale = {
   monthSelect: 'Roghnaigh mí',
   yearSelect: 'Roghnaigh bliain',
   decadeSelect: 'Roghnaigh deich mbliana',
-  yearFormat: 'YYYY',
-  dateFormat: 'D/M/YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'D/M/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'An mhí roimhe seo (PageUp)',
   nextMonth: 'An mhí seo chugainn (PageDown)',
   previousYear: 'Anuraidh (Control + left)',

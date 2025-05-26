@@ -1,5 +1,4 @@
 import React from 'react';
-// import { mount as originMount, ReactWrapper } from 'enzyme';
 import { act, fireEvent } from '@testing-library/react';
 import dayjs, { isDayjs, type Dayjs } from 'dayjs';
 import 'dayjs/locale/zh-cn';
@@ -24,17 +23,10 @@ import {
 import dayGenerateConfig from '../../src/generate/dayjs';
 import enUS from '../../src/locale/en_US';
 import zh_CN from '../../src/locale/zh_CN';
-import type { PickerBaseProps, PickerDateProps, PickerTimeProps } from '../../src/Picker';
-import type {
-  PickerPanelBaseProps,
-  PickerPanelDateProps,
-  PickerPanelTimeProps,
-} from '../../src/PickerPanel';
-import {
-  type RangePickerBaseProps,
-  type RangePickerDateProps,
-  type RangePickerTimeProps,
-} from '../../src/RangePicker';
+import enGB from '../../src/locale/en_GB';
+
+import dateFnsGenerateConfig from '../../src/generate/dateFns';
+import SinglePicker from '../../src/PickerInput/SinglePicker';
 
 dayjs.locale('zh-cn');
 dayjs.extend(buddhistEra);
@@ -75,31 +67,6 @@ export function isSame(date: Moment | Dayjs | null, dateStr: string, type: any =
   throw new Error(`${date.format(FULL_FORMAT)} is not same as expected: ${dateStr}`);
 }
 
-interface MomentDefaultProps {
-  locale?: PickerProps<Moment>['locale'];
-  generateConfig?: PickerProps<Moment>['generateConfig'];
-}
-
-type InjectDefaultProps<Props> = Omit<Props, 'locale' | 'generateConfig'> & MomentDefaultProps;
-
-// Moment Picker
-export type MomentPickerProps =
-  | InjectDefaultProps<PickerBaseProps<Moment>>
-  | InjectDefaultProps<PickerDateProps<Moment>>
-  | InjectDefaultProps<PickerTimeProps<Moment>>;
-
-// Moment Panel Picker
-export type MomentPickerPanelProps =
-  | InjectDefaultProps<PickerPanelBaseProps<Moment>>
-  | InjectDefaultProps<PickerPanelDateProps<Moment>>
-  | InjectDefaultProps<PickerPanelTimeProps<Moment>>;
-
-// Moment Range Picker
-export type MomentRangePickerProps =
-  | InjectDefaultProps<RangePickerBaseProps<Moment>>
-  | InjectDefaultProps<RangePickerDateProps<Moment>>
-  | InjectDefaultProps<RangePickerTimeProps<Moment>>;
-
 // ====================================== UTIL ======================================
 export async function waitFakeTimer() {
   await act(async () => {
@@ -108,7 +75,7 @@ export async function waitFakeTimer() {
   });
 }
 
-export function openPicker(container: HTMLElement, index = 0) {
+export function openPicker(container: HTMLElement | ShadowRoot, index = 0) {
   const input = container.querySelectorAll('input')[index];
   fireEvent.mouseDown(input);
 
@@ -119,7 +86,7 @@ export function openPicker(container: HTMLElement, index = 0) {
   fireEvent.click(input);
 }
 
-export function closePicker(container: HTMLElement, index = 0) {
+export function closePicker(container: HTMLElement | ShadowRoot, index = 0) {
   const input = container.querySelectorAll('input')[index];
   fireEvent.blur(input);
 
@@ -226,3 +193,15 @@ export function getDay(str: string): Dayjs {
   }
   throw new Error(`Format not match with: ${str}`);
 }
+// ===================================== Date fns =====================================
+const dateFnsLocale = {
+  locale: enGB,
+  generateConfig: dateFnsGenerateConfig,
+};
+
+type DateFnsSinglePickerProps = Omit<PickerProps<Date>, 'locale' | 'generateConfig'> &
+  React.RefAttributes<PickerRef>;
+
+export const DateFnsSinglePicker = (props: DateFnsSinglePickerProps) => {
+  return <SinglePicker {...dateFnsLocale} {...props} />;
+};

@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'fa_IR',
   today: 'امروز',
   now: 'اکنون',
   backToToday: 'بازگشت به روز',
   ok: 'باشه',
   clear: 'پاک کردن',
+  week: 'هفته',
   month: 'ماه',
   year: 'سال',
   timeSelect: 'انتخاب زمان',
@@ -14,11 +17,7 @@ const locale: Locale = {
   monthSelect: 'یک ماه را انتخاب کنید',
   yearSelect: 'یک سال را انتخاب کنید',
   decadeSelect: 'یک دهه را انتخاب کنید',
-  yearFormat: 'YYYY',
-  dateFormat: 'M/D/YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'ماه قبل (PageUp)',
   nextMonth: 'ماه بعد (PageDown)',
   previousYear: 'سال قبل (Control + left)',

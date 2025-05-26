@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-loop-func */
 import { fireEvent, render } from '@testing-library/react';
-import { resetWarned } from 'rc-util/lib/warning';
+import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
 import { DayPicker, getDay, isOpen, openPicker, selectCell } from './util/commonUtil';
 
@@ -136,5 +136,59 @@ describe('Picker.Multiple', () => {
     );
 
     expect(container.querySelector('.custom-remove')).toBeTruthy();
+  });
+
+  describe('placeholder', () => {
+    it('show placeholder', () => {
+      const { container } = render(<DayPicker multiple placeholder="bamboo" />);
+      expect(
+        container.querySelector<HTMLSpanElement>('.rc-picker-selection-placeholder').textContent,
+      ).toBe('bamboo');
+    });
+
+    it('hide if has value', () => {
+      const { container } = render(
+        <DayPicker multiple defaultValue={[getDay('2000-01-01')]} placeholder="bamboo" />,
+      );
+      expect(
+        container.querySelector<HTMLSpanElement>('.rc-picker-selection-placeholder'),
+      ).toBeFalsy();
+    });
+  });
+
+  it('click year panel should not select', () => {
+    const onChange = jest.fn();
+    const onCalendarChange = jest.fn();
+    const { container } = render(
+      <DayPicker multiple onChange={onChange} onCalendarChange={onCalendarChange} needConfirm />,
+    );
+
+    expect(container.querySelector('.rc-picker-multiple')).toBeTruthy();
+
+    openPicker(container);
+
+    // Select year
+    fireEvent.click(document.querySelector('.rc-picker-year-btn'));
+    selectCell(1998);
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onCalendarChange).not.toHaveBeenCalled();
+
+    // Select Month
+    selectCell('Oct');
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onCalendarChange).not.toHaveBeenCalled();
+
+    // Select Date
+    selectCell(23);
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onCalendarChange).toHaveBeenCalledWith(
+      expect.anything(),
+      ['1998-10-23'],
+      expect.anything(),
+    );
+
+    // Confirm
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1998-10-23']);
   });
 });

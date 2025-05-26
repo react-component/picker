@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'hr_HR',
   today: 'Danas',
   now: 'Sad',
   backToToday: 'Natrag na danas',
   ok: 'OK',
   clear: 'Očisti',
+  week: 'Sedmica',
   month: 'Mjesec',
   year: 'Godina',
   timeSelect: 'odaberite vrijeme',
@@ -15,11 +18,7 @@ const locale: Locale = {
   monthSelect: 'Odaberite mjesec',
   yearSelect: 'Odaberite godinu',
   decadeSelect: 'Odaberite desetljeće',
-  yearFormat: 'YYYY',
-  dateFormat: 'D.M.YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'D.M.YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'Prošli mjesec (PageUp)',
   nextMonth: 'Sljedeći mjesec (PageDown)',
   previousYear: 'Prošla godina (Control + left)',

@@ -1,12 +1,23 @@
 import classNames from 'classnames';
-import ResizeObserver, { type ResizeObserverProps } from 'rc-resize-observer';
+import ResizeObserver, { type ResizeObserverProps } from '@rc-component/resize-observer';
 import * as React from 'react';
-import type { SharedPickerProps, ValueDate } from '../../interface';
+import type {
+  RangeTimeProps,
+  SharedPickerProps,
+  SharedTimeProps,
+  ValueDate,
+} from '../../interface';
 import { toArray } from '../../utils/miscUtil';
 import PickerContext from '../context';
 import Footer, { type FooterProps } from './Footer';
 import PopupPanel, { type PopupPanelProps } from './PopupPanel';
 import PresetPanel from './PresetPanel';
+
+export type PopupShowTimeConfig<DateType extends object = any> = Omit<
+  RangeTimeProps<DateType>,
+  'defaultValue' | 'defaultOpenValue' | 'disabledTime'
+> &
+  Pick<SharedTimeProps<DateType>, 'disabledTime'>;
 
 export interface PopupProps<DateType extends object = any, PresetValue = DateType>
   extends Pick<React.InputHTMLAttributes<HTMLDivElement>, 'onFocus' | 'onBlur'>,
@@ -20,8 +31,7 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   onPresetSubmit: (presetValue: PresetValue) => void;
 
   // Range
-  activeOffset?: number;
-
+  activeInfo?: [activeInputLeft: number, activeInputRight: number, selectorWidth: number];
   // Direction
   direction?: 'ltr' | 'rtl';
 
@@ -34,7 +44,9 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   isInvalid: (date: DateType | DateType[]) => boolean;
   onOk: VoidFunction;
 
+
   maxDate?: DateType;
+  onPanelMouseDown?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 export default function Popup<DateType extends object = any>(props: PopupProps<DateType>) {
@@ -47,7 +59,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     // Range
     range,
     multiple,
-    activeOffset = 0,
+    activeInfo = [0, 0, 0],
 
     // Presets
     presets,
@@ -57,6 +69,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     // Focus
     onFocus,
     onBlur,
+    onPanelMouseDown,
 
     // Direction
     direction,
@@ -84,28 +97,52 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   // ======================== Offset ========================
   const [containerWidth, setContainerWidth] = React.useState<number>(0);
   const [containerOffset, setContainerOffset] = React.useState<number>(0);
+  const [arrowOffset, setArrowOffset] = React.useState<number>(0);
 
   const onResize: ResizeObserverProps['onResize'] = (info) => {
-    if (info.offsetWidth) {
-      setContainerWidth(info.offsetWidth);
+    if (info.width) {
+      setContainerWidth(info.width);
     }
   };
+
+  const [activeInputLeft, activeInputRight, selectorWidth] = activeInfo;
+  const [retryTimes, setRetryTimes] = React.useState(0);
+
+  React.useEffect(() => {
+    setRetryTimes(10);
+  }, [activeInputLeft]);
 
   React.useEffect(() => {
     // `activeOffset` is always align with the active input element
     // So we need only check container contains the `activeOffset`
-    if (range) {
+    if (range && wrapperRef.current) {
       // Offset in case container has border radius
       const arrowWidth = arrowRef.current?.offsetWidth || 0;
 
-      const maxOffset = containerWidth - arrowWidth;
-      if (activeOffset <= maxOffset) {
-        setContainerOffset(0);
+      // Arrow Offset
+      const wrapperRect = wrapperRef.current.getBoundingClientRect();
+      if (!wrapperRect.height || wrapperRect.right < 0) {
+        setRetryTimes((times) => Math.max(0, times - 1));
+        return;
+      }
+
+      const nextArrowOffset =
+        (rtl ? activeInputRight - arrowWidth : activeInputLeft) - wrapperRect.left;
+      setArrowOffset(nextArrowOffset);
+
+      // Container Offset
+      if (containerWidth && containerWidth < selectorWidth) {
+        const offset = rtl
+          ? wrapperRect.right - (activeInputRight - arrowWidth + containerWidth)
+          : activeInputLeft + arrowWidth - wrapperRect.left - containerWidth;
+
+        const safeOffset = Math.max(0, offset);
+        setContainerOffset(safeOffset);
       } else {
-        setContainerOffset(activeOffset + arrowWidth - containerWidth);
+        setContainerOffset(0);
       }
     }
-  }, [containerWidth, activeOffset, range]);
+  }, [retryTimes, rtl, containerWidth, activeInputLeft, activeInputRight, selectorWidth, range]);
 
   // ======================== Custom ========================
   function filterEmpty<T>(list: T[]) {
@@ -179,6 +216,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   // Container
   let renderNode = (
     <div
+      onMouseDown={onPanelMouseDown}
       tabIndex={-1}
       className={classNames(
         containerPrefixCls,
@@ -203,14 +241,11 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   if (range) {
     renderNode = (
       <div
+        onMouseDown={onPanelMouseDown}
         ref={wrapperRef}
         className={classNames(`${prefixCls}-range-wrapper`, `${prefixCls}-${picker}-range-wrapper`)}
       >
-        <div
-          ref={arrowRef}
-          className={`${prefixCls}-range-arrow`}
-          style={{ [rtl ? 'right' : 'left']: activeOffset }}
-        />
+        <div ref={arrowRef} className={`${prefixCls}-range-arrow`} style={{ left: arrowOffset }} />
 
         {/* Watch for container size */}
         <ResizeObserver onResize={onResize}>{renderNode}</ResizeObserver>

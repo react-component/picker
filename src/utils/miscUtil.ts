@@ -69,3 +69,15 @@ export function getRowFormat(
       return locale.fieldDateFormat;
   }
 }
+
+export function getFromDate<DateType>(
+  calendarValues: DateType[],
+  activeIndexList: number[],
+  activeIndex?: number,
+) {
+  const mergedActiveIndex =
+    activeIndex !== undefined ? activeIndex : activeIndexList[activeIndexList.length - 1];
+  const firstValuedIndex = activeIndexList.find((index) => calendarValues[index]);
+
+  return mergedActiveIndex !== firstValuedIndex ? calendarValues[firstValuedIndex] : undefined;
+}

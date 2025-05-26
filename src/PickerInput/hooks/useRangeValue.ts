@@ -1,4 +1,4 @@
-import { useEvent, useMergedState } from 'rc-util';
+import { useEvent, useMergedState } from '@rc-component/util';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import useSyncState from '../../hooks/useSyncState';
@@ -76,7 +76,7 @@ function orderDates<DateType extends object, DatesType extends DateType[]>(
  * Used for internal value management.
  * It should always use `mergedValue` in render logic
  */
-export function useCalendarValue<MergedValueType extends object[]>(mergedValue: MergedValueType) {
+function useCalendarValue<MergedValueType extends object[]>(mergedValue: MergedValueType) {
   const [calendarValue, setCalendarValue] = useSyncState(mergedValue);
 
   /** Sync calendarValue & submitValue back with value */
@@ -117,9 +117,7 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
   onOk?: (dates: ValueType) => void,
 ) {
   // This is the root value which will sync with controlled or uncontrolled value
-  const [innerValue, setInnerValue] = useMergedState(defaultValue, {
-    value,
-  });
+  const [innerValue, setInnerValue] = useMergedState(defaultValue, { value });
   const mergedValue = innerValue || (EMPTY_VALUE as ValueType);
 
   // ========================= Inner Values =========================
@@ -142,16 +140,13 @@ export function useInnerValue<ValueType extends DateType[], DateType extends obj
 
       // Update merged value
       const [isSameMergedDates, isSameStart] = isSameDates(calendarValue(), clone);
-
       if (!isSameMergedDates) {
         setCalendarValue(clone);
 
         // Trigger calendar change event
         if (onCalendarChange) {
           const cellTexts = getDateTexts(clone);
-          onCalendarChange(clone, cellTexts, {
-            range: isSameStart ? 'end' : 'start',
-          });
+          onCalendarChange(clone, cellTexts, { range: isSameStart ? 'end' : 'start' });
         }
       }
     },
@@ -270,10 +265,9 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     // >>> Invalid
     const validateDates =
       // Validate start
-      (!start || !isInvalidateDate(start, { activeIndex: 0 })) &&
+      (disabled[0] || !start || !isInvalidateDate(start, { activeIndex: 0 })) &&
       // Validate end
-      (!end || !isInvalidateDate(end, { from: start, activeIndex: 1 }));
-
+      (disabled[1] || !end || !isInvalidateDate(end, { from: start, activeIndex: 1 }));
     // >>> Result
     const allPassed =
       // Null value is from clear button

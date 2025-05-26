@@ -1,6 +1,8 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ug_CN',
   today: 'بۈگۈن',
   now: 'ھازىر',
@@ -9,6 +11,7 @@ const locale: Locale = {
   timeSelect: 'ۋاقىت تاللاش',
   dateSelect: 'كۈن تاللاش',
   clear: 'تازىلاش',
+  week: 'ھەپتە',
   month: 'ئاي',
   year: 'يىل',
   previousMonth: 'ئالدىنقى ئاي(ئالدىنقى بەت )',
@@ -18,14 +21,13 @@ const locale: Locale = {
   decadeSelect: 'يىللارنى تاللاش',
   yearFormat: 'YYYY-يىلى',
   dayFormat: 'D-كۈنى',
-  dateFormat: 'YYYY-يىلىM-ئاينىڭD-كۈنى',
-  dateTimeFormat: 'YYYY-يىلىM—ئاينىڭD-كۈنى، HH:mm:ss',
   previousYear: 'ئالدىنقى يىلى (Controlبىلەن يۆنىلىش كونۇپكىسى)',
   nextYear: 'كېلەركى يىلى (Controlبىلەن يۆنىلىش كونۇپكىسى)',
   previousDecade: 'ئالدىنقى يىللار',
   nextDecade: 'كېيىنكى يىللار',
   previousCentury: 'ئالدىنقى ئەسىر',
   nextCentury: 'كېيىنكى ئەسىر',
+  monthBeforeYear: false,
 };
 
 export default locale;

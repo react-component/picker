@@ -1,7 +1,8 @@
-import { useEvent, useMergedState } from 'rc-util';
-import useLayoutEffect from 'rc-util/lib/hooks/useLayoutEffect';
-import omit from 'rc-util/lib/omit';
-import pickAttrs from 'rc-util/lib/pickAttrs';
+import { useEvent, useMergedState } from '@rc-component/util';
+import cls from 'classnames';
+import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
+import omit from '@rc-component/util/lib/omit';
+import pickAttrs from '@rc-component/util/lib/pickAttrs';
 import * as React from 'react';
 import useToggleDates from '../hooks/useToggleDates';
 import type {
@@ -31,6 +32,7 @@ import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
 import SingleSelector from './Selector/SingleSelector';
+import useSemantic from '../hooks/useSemantic';
 
 // TODO: isInvalidateDate with showTime.disabledTime should not provide `range` prop
 
@@ -122,8 +124,9 @@ function Picker<DateType extends object = any>(
   const {
     // Style
     prefixCls,
-    styles,
-    classNames,
+    rootClassName,
+    styles: propStyles,
+    classNames: propClassNames,
 
     // Value
     order,
@@ -201,6 +204,9 @@ function Picker<DateType extends object = any>(
   }
 
   const toggleDates = useToggleDates(generateConfig, locale, internalPicker);
+
+  // ======================= Semantic =======================
+  const [mergedClassNames, mergedStyles] = useSemantic(propClassNames, propStyles);
 
   // ========================= Open =========================
   const [mergedOpen, triggerOpen] = useOpen(open, defaultOpen, [disabled], onOpenChange);
@@ -441,6 +447,11 @@ function Picker<DateType extends object = any>(
   const onPanelSelect = (date: DateType) => {
     lastOperation('panel');
 
+    // Not change values if multiple and current panel is to match with picker
+    if (multiple && internalMode !== picker) {
+      return;
+    }
+
     const nextValues = multiple ? toggleDates(getCalendarValue(), date) : [date];
 
     // Only trigger calendar event but not update internal `calendarValue` state
@@ -473,6 +484,8 @@ function Picker<DateType extends object = any>(
       'style',
       'className',
       'onPanelChange',
+      'classNames',
+      'styles',
     ]);
     return {
       ...restProps,
@@ -573,8 +586,18 @@ function Picker<DateType extends object = any>(
       generateConfig,
       button: components.button,
       input: components.input,
+      classNames: mergedClassNames,
+      styles: mergedStyles,
     }),
-    [prefixCls, locale, generateConfig, components.button, components.input],
+    [
+      prefixCls,
+      locale,
+      generateConfig,
+      components.button,
+      components.input,
+      mergedClassNames,
+      mergedStyles,
+    ],
   );
 
   // ======================== Effect ========================
@@ -599,7 +622,6 @@ function Picker<DateType extends object = any>(
 
     // Submit with complex picker
     if (!mergedOpen && complexPicker && !needConfirm && lastOp === 'panel') {
-      triggerOpen(true);
       triggerConfirm();
     }
   }, [mergedOpen]);
@@ -610,8 +632,8 @@ function Picker<DateType extends object = any>(
       <PickerTrigger
         {...pickTriggerProps(filledProps)}
         popupElement={panel}
-        popupStyle={styles.popup}
-        popupClassName={classNames.popup}
+        popupStyle={mergedStyles.popup.root}
+        popupClassName={cls(rootClassName, mergedClassNames.popup.root)}
         // Visible
         visible={mergedOpen}
         onClose={onPopupClose}
@@ -621,6 +643,12 @@ function Picker<DateType extends object = any>(
           {...filledProps}
           // Ref
           ref={selectorRef}
+          // Style
+          className={cls(filledProps.className, rootClassName, mergedClassNames.root)}
+          style={{
+            ...mergedStyles.root,
+            ...filledProps.style,
+          }}
           // Icon
           suffixIcon={suffixIcon}
           removeIcon={removeIcon}

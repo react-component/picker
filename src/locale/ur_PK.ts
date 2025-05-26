@@ -1,12 +1,15 @@
+import { commonLocale } from './common';
 import type { Locale } from '../interface';
 
 const locale: Locale = {
+  ...commonLocale,
   locale: 'ur_PK',
   today: 'آج',
   now: 'ابھی',
   backToToday: 'آج واپس',
   ok: 'ٹھیک ہے',
   clear: 'صاف',
+  week: 'ہفتہ',
   month: 'مہینہ',
   year: 'سال',
   timeSelect: 'وقت منتخب کریں',
@@ -15,11 +18,7 @@ const locale: Locale = {
   monthSelect: 'ایک مہینہ کا انتخاب کریں',
   yearSelect: 'ایک سال کا انتخاب کریں',
   decadeSelect: 'ایک دہائی کا انتخاب کریں',
-  yearFormat: 'YYYY',
-  dateFormat: 'M/D/YYYY',
-  dayFormat: 'D',
-  dateTimeFormat: 'M/D/YYYY HH:mm:ss',
-  monthBeforeYear: true,
+
   previousMonth: 'پچھلے مہینے (PageUp)',
   nextMonth: 'اگلے مہینے (PageDown)',
   previousYear: 'گزشتہ سال (Control + left)',
