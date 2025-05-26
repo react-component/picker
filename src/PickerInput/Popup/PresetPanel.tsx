@@ -27,7 +27,7 @@ export default function PresetPanel<DateType extends object = any>(
     <div className={`${prefixCls}-presets`}>
       <ul>
         {presets.map(({ label, value }, index) => {
-          const isDisabled = moment(value).isAfter(maxDate) || moment(value).isSame(maxDate);
+          const isDisabled = moment(value).isAfter(maxDate);
           return (
             <li
               key={index}
