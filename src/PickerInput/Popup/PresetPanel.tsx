@@ -7,7 +7,7 @@ export interface PresetPanelProps<ValueType = any> {
   presets: ValueDate<ValueType>[];
   onClick: (value: ValueType) => void;
   onHover: (value: ValueType) => void;
-  maxDate?: dateTy;
+  maxDate?: DateType;
 }
 
 function executeValue<ValueType extends object>(value: ValueDate<ValueType>['value']): ValueType {
