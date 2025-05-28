@@ -1,8 +1,9 @@
 import * as React from 'react';
 import type { ValueDate } from '../../interface';
+import type { MomentInput } from 'moment';
 import moment from 'moment';
 
-export interface PresetPanelProps<ValueType = any, DateType extends object = any> {
+export interface PresetPanelProps<ValueType = any, DateType extends MomentInput = MomentInput> {
   prefixCls: string;
   presets: ValueDate<ValueType>[];
   onClick: (value: ValueType) => void;
