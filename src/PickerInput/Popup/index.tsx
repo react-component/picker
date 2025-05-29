@@ -44,6 +44,7 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   isInvalid: (date: DateType | DateType[]) => boolean;
   onOk: VoidFunction;
 
+  maxDate?: DateType;
   onPanelMouseDown?: React.MouseEventHandler<HTMLDivElement>;
   maxDate?: DateType;
 }
