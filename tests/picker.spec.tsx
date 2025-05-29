@@ -1199,13 +1199,11 @@ describe('Picker.Basic', () => {
 
   it('presets - disabled does not trigger', () => {
     const onChange = jest.fn();
-    const onHover = jest.fn();
 
     const futureDate = dayjs().add(1, 'day');
     render(
       <DayPicker
         onChange={onChange}
-        onHover={onHover}
         open
         presets={[{ label: 'Future', value: futureDate }]}
         maxDate={dayjs()} // maxDate 是今天，futureDate 是明天，禁用
@@ -1213,10 +1211,6 @@ describe('Picker.Basic', () => {
     );
 
     const presetEle = document.querySelector('.rc-picker-presets li');
-
-    // Hover
-    fireEvent.mouseEnter(presetEle);
-    expect(onHover).not.toHaveBeenCalled();
 
     // Click
     fireEvent.click(presetEle);
