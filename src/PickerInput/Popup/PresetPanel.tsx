@@ -1,9 +1,8 @@
 import * as React from 'react';
 import type { ValueDate } from '../../interface';
-import type { MomentInput } from 'moment';
 import moment from 'moment';
 
-export interface PresetPanelProps<ValueType = any, DateType extends MomentInput = MomentInput> {
+export interface PresetPanelProps<ValueType = any, DateType extends object = any> {
   prefixCls: string;
   presets: ValueDate<ValueType>[];
   onClick: (value: ValueType) => void;
@@ -28,7 +27,11 @@ export default function PresetPanel<DateType extends object = any>(
     <div className={`${prefixCls}-presets`}>
       <ul>
         {presets.map(({ label, value }, index) => {
-          const isDisabled = moment(value).isAfter(maxDate);
+          const isDisabled =
+            maxDate && moment.isMoment(maxDate)
+              ? moment(typeof value === 'function' ? value() : value).isAfter(maxDate)
+              : false;
+
           return (
             <li
               key={index}
