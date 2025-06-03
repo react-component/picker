@@ -43,8 +43,8 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   needConfirm: boolean;
   isInvalid: (date: DateType | DateType[]) => boolean;
   onOk: VoidFunction;
-
   onPanelMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+  maxDate?: DateType;
 }
 
 export default function Popup<DateType extends object = any>(props: PopupProps<DateType>) {
@@ -79,6 +79,8 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     defaultOpenValue,
     onOk,
     onSubmit,
+
+    maxDate,
   } = props;
 
   const { prefixCls } = React.useContext(PickerContext);
@@ -181,6 +183,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     <div className={`${prefixCls}-panel-layout`}>
       {/* `any` here since PresetPanel is reused for both Single & Range Picker which means return type is not stable */}
       <PresetPanel<any>
+        maxDate={maxDate}
         prefixCls={prefixCls}
         presets={presets}
         onClick={onPresetSubmit}
