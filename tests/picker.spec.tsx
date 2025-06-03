@@ -1226,16 +1226,18 @@ describe('Picker.Basic', () => {
   it('should not trigger onClick when preset date is after maxDate', () => {
     const onChange = jest.fn();
     const mockHover = jest.fn();
-    const futureDate = moment().add(1, 'day');
+    const futureDate = dayjs().add(1, 'day'); // 使用 dayjs 替代 moment
+    const maxDate = dayjs(); //
+    const onHover = mockHover as jest.MockedFunction<(date: Dayjs | null) => void>;
     render(
       <DayPicker
-        {...({
+        {...{
           onChange,
-          onHover: mockHover,
+          onHover,
           open: true,
           presets: [{ label: 'Tomorrow', value: futureDate }],
-          maxDate: moment(),
-        } as React.ComponentProps<typeof DayPicker> & { onHover?: (date: Dayjs | null) => void })}
+          maxDate,
+        }}
       />,
     );
 
@@ -1252,17 +1254,16 @@ describe('Picker.Basic', () => {
   it('should not render presets when presets is empty', () => {
     const mockHover = jest.fn();
     const mockChange = jest.fn();
+    const onHover = mockHover as jest.MockedFunction<(date: Dayjs | null) => void>;
 
     render(
       <DayPicker
-        {...({
+        {...{
           onChange: mockChange,
-          onHover: mockHover,
+          onHover,
           open: true,
           presets: [{ label: 'Tomorrow', value: dayjs().add(1, 'day') }],
-        } as React.ComponentProps<typeof DayPicker> & {
-          onHover?: (date: dayjs.Dayjs | null) => void;
-        })}
+        }}
       />,
     );
 
@@ -1278,18 +1279,16 @@ describe('Picker.Basic', () => {
   it('should not render presets when presets is function', () => {
     const mockHover = jest.fn();
     const mockChange = jest.fn();
-
+    const onHover = mockHover as jest.MockedFunction<(date: Dayjs | null) => void>;
     render(
       <DayPicker
-        {...({
+        {...{
           onChange: mockChange,
-          onHover: mockHover,
+          onHover,
           open: true,
-          maxDate: moment(),
+          maxDate: dayjs(),
           presets: [{ label: 'Tomorrow', value: () => dayjs().subtract(1, 'day') }],
-        } as React.ComponentProps<typeof DayPicker> & {
-          onHover?: (date: dayjs.Dayjs | null) => void;
-        })}
+        }}
       />,
     );
 
