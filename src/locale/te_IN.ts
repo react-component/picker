@@ -27,7 +27,5 @@ const locale: Locale={
     nextDecade:'తదుపరి దశాబ్దం',
     previousCentury:'మునుపటి శతాబ్దం',
     nextCentury:'తదుపరి శతాబ్దం',
-
-
 };
 export default locale;
