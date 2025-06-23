@@ -281,7 +281,7 @@ export type Components<DateType extends object = any> = Partial<
 >;
 
 // ========================= Picker =========================
-export type CustomFormat<DateType> = (value: DateType) => string;
+export type CustomFormat<DateType> = (value: DateType, index: number) => string;
 
 export type FormatType<DateType = any> = string | CustomFormat<DateType>;
 

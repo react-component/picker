@@ -86,7 +86,8 @@ export default function useInputProps<DateType extends object = any>(
   const firstFormat = format[0];
 
   const getText = React.useCallback(
-    (date: DateType) => formatValue(date, { locale, format: firstFormat, generateConfig }),
+    (date: DateType, index: number) =>
+      formatValue(date, { locale, index, format: firstFormat, generateConfig }),
     [locale, generateConfig, firstFormat],
   );
 
@@ -97,7 +98,7 @@ export default function useInputProps<DateType extends object = any>(
     const defaultSize = picker === 'time' ? 8 : 10;
     const length =
       typeof firstFormat === 'function'
-        ? firstFormat(generateConfig.getNow()).length
+        ? firstFormat(generateConfig.getNow(), 0).length
         : firstFormat.length;
     return Math.max(defaultSize, length) + 2;
   }, [firstFormat, picker, generateConfig]);

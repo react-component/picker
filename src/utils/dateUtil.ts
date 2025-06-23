@@ -232,10 +232,12 @@ export function formatValue<DateType>(
     generateConfig,
     locale,
     format,
+    index = 0,
   }: {
     generateConfig: GenerateConfig<DateType>;
     locale: Locale;
     format: string | CustomFormat<DateType>;
+    index?: number;
   },
 ) {
   if (!value) {
@@ -243,7 +245,7 @@ export function formatValue<DateType>(
   }
 
   return typeof format === 'function'
-    ? format(value)
+    ? format(value, index)
     : generateConfig.locale.format(locale.locale, value, format);
 }
 
