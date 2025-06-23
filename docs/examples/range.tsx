@@ -202,6 +202,17 @@ export default () => {
             disabledDate={disabledDate}
           />
         </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>Custom Format</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            locale={zhCN}
+            picker="year"
+            format={(date, index) => {
+              return index === 0 ? date.format('YYYY') : date.format('YYYY-MM-DD');
+            }}
+          />
+        </div>
       </div>
     </div>
   );
