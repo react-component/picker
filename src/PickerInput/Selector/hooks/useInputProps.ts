@@ -86,7 +86,7 @@ export default function useInputProps<DateType extends object = any>(
   const firstFormat = format[0];
 
   const getText = React.useCallback(
-    (date: DateType, index: number) =>
+    (date: DateType, index?: number) =>
       formatValue(date, { locale, index, format: firstFormat, generateConfig }),
     [locale, generateConfig, firstFormat],
   );
