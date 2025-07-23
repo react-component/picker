@@ -1,7 +1,8 @@
 import { fireEvent, render } from '@testing-library/react';
 import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
-import { DayPicker, getDay, openPicker, selectCell, findCell } from './util/commonUtil';
+import dayjs from 'dayjs';
+import { DayPicker, getDay, openPicker, selectCell } from './util/commonUtil';
 
 describe('Picker.Time', () => {
   beforeEach(() => {
@@ -67,5 +68,50 @@ describe('Picker.Time', () => {
     // Meridiem
     fireEvent.mouseEnter(getColCell(4, 1));
     expect(container.querySelector('input')).toHaveValue('1990-09-03 12:00:00.000 PM');
+  });
+
+  it('hover should not update preview value in input when showPreviewValue is false', async () => {
+    const { container } = render(
+      <DayPicker
+        showTime={{
+          showMillisecond: true,
+          use12Hours: true,
+        }}
+        showPreviewValue={false}
+        defaultValue={dayjs('1990-09-03 01:02:03')}
+      />,
+    );
+    openPicker(container);
+
+    const getColCell = (colIndex: number, cellIndex: number) => {
+      const column = document.querySelectorAll('.rc-picker-time-panel-column')[colIndex];
+      const cell = column.querySelectorAll('.rc-picker-time-panel-cell-inner')[cellIndex];
+
+      return cell;
+    };
+
+    // Hour
+    fireEvent.mouseEnter(getColCell(0, 3));
+    expect(container.querySelector('input')).toHaveValue('1990-09-03 01:02:03.000 AM');
+
+    // Let test for mouse leave
+    fireEvent.mouseLeave(getColCell(0, 3));
+    expect(container.querySelector('input')).toHaveValue('1990-09-03 01:02:03.000 AM');
+
+    // Minute
+    fireEvent.mouseEnter(getColCell(1, 2));
+    expect(container.querySelector('input')).toHaveValue('1990-09-03 01:02:03.000 AM');
+
+    // Second
+    fireEvent.mouseEnter(getColCell(2, 1));
+    expect(container.querySelector('input')).toHaveValue('1990-09-03 01:02:03.000 AM');
+
+    // Millisecond
+    fireEvent.mouseEnter(getColCell(3, 1));
+    expect(container.querySelector('input')).toHaveValue('1990-09-03 01:02:03.000 AM');
+
+    // Meridiem
+    fireEvent.mouseEnter(getColCell(4, 1));
+    expect(container.querySelector('input')).toHaveValue('1990-09-03 01:02:03.000 AM');
   });
 });
