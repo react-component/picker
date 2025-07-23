@@ -425,6 +425,8 @@ export interface SharedPickerProps<DateType extends object = any>
    */
   preserveInvalidOnBlur?: boolean;
 
+  showPreviewValue?: boolean;
+
   // Motion
   transitionName?: string;
 

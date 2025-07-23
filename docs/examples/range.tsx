@@ -202,6 +202,17 @@ export default () => {
             disabledDate={disabledDate}
           />
         </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>ShowPreviewValue is false</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            showPreviewValue={false}
+            value={undefined}
+            locale={zhCN}
+            placeholder={['start...', 'end...']}
+            disabledDate={disabledDate}
+          />
+        </div>
       </div>
     </div>
   );

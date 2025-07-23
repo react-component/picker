@@ -12,7 +12,7 @@ const testClassNames = {
   suffix: 'test-suffix',
   popupContent: 'test-popup-content',
   popupItem: 'test-popup-item',
-}
+};
 
 export default () => {
   return (
@@ -48,6 +48,18 @@ export default () => {
         defaultValue={[defaultValue, defaultValue]}
         picker="time"
         locale={zhCN}
+        generateConfig={momentGenerateConfig}
+        disabledTime={(now, type) => ({
+          disabledHours: () => (type === 'start' ? [now.hours()] : [now.hours() - 5]),
+        })}
+      />
+
+      <h3>ShowPreviewValue is false</h3>
+      <RangePicker
+        defaultValue={[defaultValue, defaultValue]}
+        picker="time"
+        locale={zhCN}
+        showPreviewValue={false}
         generateConfig={momentGenerateConfig}
         disabledTime={(now, type) => ({
           disabledHours: () => (type === 'start' ? [now.hours()] : [now.hours() - 5]),
