@@ -155,12 +155,12 @@ export default () => {
           <Picker<Moment> {...sharedProps} locale={enUS} onKeyDown={keyDown} />
         </div>
         <div style={{ margin: '0 8px' }}>
-          <h3>ShowPreviewValue is false</h3>
+          <h3>ShowHoverValue is false</h3>
           <Picker<Moment>
             {...sharedProps}
             locale={enUS}
             onKeyDown={keyDown}
-            showPreviewValue={false}
+            showHoverValue={false}
           />
         </div>
       </div>

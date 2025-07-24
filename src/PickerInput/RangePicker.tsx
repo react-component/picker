@@ -164,7 +164,7 @@ function RangePicker<DateType extends object = any>(
     styles: propStyles,
     classNames: propClassNames,
 
-    showPreviewValue = true,
+    showHoverValue = true,
     // Value
     defaultValue,
     value,
@@ -506,7 +506,7 @@ function RangePicker<DateType extends object = any>(
 
   // ======================== Panel =========================
   const onPanelHover = (date: DateType) => {
-    if (showPreviewValue) {
+    if (showHoverValue) {
       setInternalHoverValues(date ? fillCalendarValue(date, activeIndex) : null);
     }
     setHoverSource('cell');

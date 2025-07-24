@@ -425,7 +425,10 @@ export interface SharedPickerProps<DateType extends object = any>
    */
   preserveInvalidOnBlur?: boolean;
 
-  showPreviewValue?: boolean;
+  /**
+   * When the user selects the date hover option, the value of the input field undergoes a temporary change
+   */
+  showHoverValue?: boolean;
 
   // Motion
   transitionName?: string;

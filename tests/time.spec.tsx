@@ -70,14 +70,14 @@ describe('Picker.Time', () => {
     expect(container.querySelector('input')).toHaveValue('1990-09-03 12:00:00.000 PM');
   });
 
-  it('hover should not update preview value in input when showPreviewValue is false', async () => {
+  it('hover should not update preview value in input when showHoverValue is false', async () => {
     const { container } = render(
       <DayPicker
         showTime={{
           showMillisecond: true,
           use12Hours: true,
         }}
-        showPreviewValue={false}
+        showHoverValue={false}
         defaultValue={dayjs('1990-09-03 01:02:03')}
       />,
     );

@@ -128,7 +128,7 @@ function Picker<DateType extends object = any>(
     styles: propStyles,
     classNames: propClassNames,
 
-    showPreviewValue = true,
+    showHoverValue = true,
 
     // Value
     order,
@@ -435,7 +435,7 @@ function Picker<DateType extends object = any>(
 
   // ======================== Panel =========================
   const onPanelHover = (date: DateType | null) => {
-    if (showPreviewValue) {
+    if (showHoverValue) {
       setInternalHoverValue(date);
     }
     setHoverSource('cell');

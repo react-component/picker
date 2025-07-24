@@ -2121,14 +2121,14 @@ describe('Picker.Range', () => {
     expect(container.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
   });
 
-  it('should not update preview value in input when showPreviewValue is false', () => {
+  it('should not update preview value in input when showHoverValue is false', () => {
     const { container } = render(
       <DayRangePicker
         minDate={dayjs('2024')}
         open
         mode={['year', 'year']}
         showTime
-        showPreviewValue={false}
+        showHoverValue={false}
         needConfirm
         value={[dayjs('2024-01-01'), dayjs('2025-01-01')]}
       />,

@@ -54,12 +54,12 @@ export default () => {
         })}
       />
 
-      <h3>ShowPreviewValue is false</h3>
+      <h3>showHoverValue is false</h3>
       <RangePicker
         defaultValue={[defaultValue, defaultValue]}
         picker="time"
         locale={zhCN}
-        showPreviewValue={false}
+        showHoverValue={false}
         generateConfig={momentGenerateConfig}
         disabledTime={(now, type) => ({
           disabledHours: () => (type === 'start' ? [now.hours()] : [now.hours() - 5]),

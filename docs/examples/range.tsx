@@ -203,10 +203,10 @@ export default () => {
           />
         </div>
         <div style={{ margin: '0 8px' }}>
-          <h3>ShowPreviewValue is false</h3>
+          <h3>ShowHoverValue is false</h3>
           <RangePicker<Moment>
             {...sharedProps}
-            showPreviewValue={false}
+            showHoverValue={false}
             value={undefined}
             locale={zhCN}
             placeholder={['start...', 'end...']}
