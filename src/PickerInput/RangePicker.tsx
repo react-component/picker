@@ -488,7 +488,9 @@ function RangePicker<DateType extends object = any>(
   const presetList = usePresets(presets, ranges);
 
   const onPresetHover = (nextValues: RangeValueType<DateType> | null) => {
-    setInternalHoverValues(nextValues);
+    if (showHoverValue) {
+      setInternalHoverValues(nextValues);
+    }
     setHoverSource('preset');
   };
 

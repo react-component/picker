@@ -415,7 +415,9 @@ function Picker<DateType extends object = any>(
   const presetList = usePresets(presets);
 
   const onPresetHover = (nextValue: DateType | null) => {
-    setInternalHoverValue(nextValue);
+    if (showHoverValue) {
+      setInternalHoverValue(nextValue);
+    }
     setHoverSource('preset');
   };
 
