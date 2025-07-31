@@ -128,7 +128,7 @@ function Picker<DateType extends object = any>(
     styles: propStyles,
     classNames: propClassNames,
 
-    showHoverValue = true,
+    previewValue,
 
     // Value
     order,
@@ -415,7 +415,7 @@ function Picker<DateType extends object = any>(
   const presetList = usePresets(presets);
 
   const onPresetHover = (nextValue: DateType | null) => {
-    if (showHoverValue) {
+    if (previewValue === 'hover') {
       setInternalHoverValue(nextValue);
     }
     setHoverSource('preset');
@@ -437,7 +437,7 @@ function Picker<DateType extends object = any>(
 
   // ======================== Panel =========================
   const onPanelHover = (date: DateType | null) => {
-    if (showHoverValue) {
+    if (previewValue === 'hover') {
       setInternalHoverValue(date);
     }
     setHoverSource('cell');

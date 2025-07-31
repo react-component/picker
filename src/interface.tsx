@@ -313,6 +313,8 @@ export type LegacyOnKeyDown = (
 
 export type SemanticName = 'root' | 'prefix' | 'input' | 'suffix';
 
+export type PreviewValueType = 'hover';
+
 export type PanelSemanticName = 'root' | 'header' | 'body' | 'content' | 'item' | 'footer';
 
 export interface SharedPickerProps<DateType extends object = any>
@@ -426,9 +428,11 @@ export interface SharedPickerProps<DateType extends object = any>
   preserveInvalidOnBlur?: boolean;
 
   /**
-   * When the user selects the date hover option, the value of the input field undergoes a temporary change
+   * When the user selects the date hover option, the value of the input field undergoes a temporary change.
+   * `false` will not preview value.
+   * `hover` will preview value when hover.
    */
-  showHoverValue?: boolean;
+  previewValue?: false | PreviewValueType;
 
   // Motion
   transitionName?: string;
