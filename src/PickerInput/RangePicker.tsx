@@ -484,14 +484,19 @@ function RangePicker<DateType extends object = any>(
     [activeInputLeft: number, activeInputRight: number, selectorWidth: number]
   >([0, 0, 0]);
 
+  const onSetHover = (date: RangeValueType<DateType> | null, source: 'cell' | 'preset') => {
+    if (previewValue !== 'hover') {
+      return;
+    }
+    setInternalHoverValues(date);
+    setHoverSource(source);
+  };
+
   // ======================= Presets ========================
   const presetList = usePresets(presets, ranges);
 
   const onPresetHover = (nextValues: RangeValueType<DateType> | null) => {
-    if (previewValue === 'hover') {
-      setInternalHoverValues(nextValues);
-      setHoverSource('preset');
-    }
+    onSetHover(nextValues, 'preset');
   };
 
   const onPresetSubmit = (nextValues: RangeValueType<DateType>) => {
@@ -508,10 +513,7 @@ function RangePicker<DateType extends object = any>(
 
   // ======================== Panel =========================
   const onPanelHover = (date: DateType) => {
-    if (previewValue === 'hover') {
-      setInternalHoverValues(date ? fillCalendarValue(date, activeIndex) : null);
-      setHoverSource('cell');
-    }
+    onSetHover(date ? fillCalendarValue(date, activeIndex) : null, 'cell');
   };
 
   // >>> Focus
