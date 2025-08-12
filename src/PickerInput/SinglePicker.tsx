@@ -417,8 +417,8 @@ function Picker<DateType extends object = any>(
   const onPresetHover = (nextValue: DateType | null) => {
     if (previewValue === 'hover') {
       setInternalHoverValue(nextValue);
+      setHoverSource('preset');
     }
-    setHoverSource('preset');
   };
 
   // TODO: handle this
@@ -439,8 +439,8 @@ function Picker<DateType extends object = any>(
   const onPanelHover = (date: DateType | null) => {
     if (previewValue === 'hover') {
       setInternalHoverValue(date);
+      setHoverSource('cell');
     }
-    setHoverSource('cell');
   };
 
   // >>> Focus
