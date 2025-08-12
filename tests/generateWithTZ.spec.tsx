@@ -38,6 +38,16 @@ describe('dayjs: getNow', () => {
     const M_now = moment().tz(JP);
 
     expect(D_now.format()).toEqual(M_now.format());
-    expect(D_now.get('hour') - D_now.utc().get('hour')).toEqual(9);
+
+    const expectedOffset = M_now.utcOffset() / 60;
+    const actualOffset = D_now.get('hour') - D_now.utc().get('hour');
+
+    let normalizedOffset = actualOffset;
+    if (actualOffset > 12) {
+      normalizedOffset = actualOffset - 24;
+    } else if (actualOffset < -12) {
+      normalizedOffset = actualOffset + 24;
+    }
+    expect(normalizedOffset).toEqual(expectedOffset);
   });
 });
