@@ -38,6 +38,9 @@ describe('dayjs: getNow', () => {
     const M_now = moment().tz(JP);
 
     expect(D_now.format()).toEqual(M_now.format());
-    expect(D_now.get('hour') - D_now.utc().get('hour')).toEqual(9);
+
+    const expectedOffset = M_now.utcOffset();
+    const actualOffset = D_now.utcOffset();
+    expect(actualOffset).toEqual(expectedOffset);
   });
 });
