@@ -4,7 +4,7 @@ import * as React from 'react';
 import type { PickerProps } from '../../SinglePicker';
 
 export interface MultipleDatesProps<DateType extends object = any>
-  extends Pick<PickerProps, 'maxTagCount'> {
+  extends Pick<PickerProps, 'maxTagCount' | 'maxTagPlaceholder'> {
   prefixCls: string;
   value: DateType[];
   onRemove: (value: DateType) => void;
@@ -25,6 +25,7 @@ export default function MultipleDates<DateType extends object = any>(
     formatDate,
     disabled,
     maxTagCount,
+    maxTagPlaceholder,
     placeholder,
   } = props;
 
@@ -68,8 +69,13 @@ export default function MultipleDates<DateType extends object = any>(
 
   // ========================= Rest =========================
   function renderRest(omittedValues: DateType[]) {
-    const content = `+ ${omittedValues.length} ...`;
-
+    if (!value.length) {
+      return null;
+    }
+    const content =
+      typeof maxTagPlaceholder === 'function'
+        ? maxTagPlaceholder(omittedValues)
+        : maxTagPlaceholder;
     return renderSelector(content);
   }
 

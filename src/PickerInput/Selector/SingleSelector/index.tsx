@@ -12,7 +12,7 @@ import MultipleDates from './MultipleDates';
 
 export interface SingleSelectorProps<DateType extends object = any>
   extends SelectorProps<DateType>,
-    Pick<PickerProps, 'multiple' | 'maxTagCount'> {
+    Pick<PickerProps, 'multiple' | 'maxTagCount' | 'maxTagPlaceholder'> {
   id?: string;
 
   value?: DateType[];
@@ -75,6 +75,7 @@ function SingleSelector<DateType extends object = any>(
     onInputChange,
     multiple,
     maxTagCount,
+    maxTagPlaceholder = (omittedValues: string[]) => `+ ${omittedValues.length} ...`,
 
     // Valid
     format,
@@ -170,6 +171,7 @@ function SingleSelector<DateType extends object = any>(
         onRemove={onMultipleRemove}
         formatDate={getText}
         maxTagCount={maxTagCount}
+        maxTagPlaceholder={maxTagPlaceholder}
         disabled={disabled}
         removeIcon={removeIcon}
         placeholder={placeholder}
