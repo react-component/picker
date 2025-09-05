@@ -227,7 +227,7 @@ describe('Picker.Multiple', () => {
       );
 
       // Test maxTagCount = 0
-      const { container, rerender } = render(
+      const { container } = render(
         <DayPicker
           multiple
           maxTagCount={0}

@@ -69,9 +69,6 @@ export default function MultipleDates<DateType extends object = any>(
 
   // ========================= Rest =========================
   function renderRest(omittedValues: DateType[]) {
-    if (!value.length) {
-      return null;
-    }
     const content =
       typeof maxTagPlaceholder === 'function'
         ? maxTagPlaceholder(omittedValues)

@@ -75,7 +75,7 @@ function SingleSelector<DateType extends object = any>(
     onInputChange,
     multiple,
     maxTagCount,
-    maxTagPlaceholder = (omittedValues: string[]) => `+ ${omittedValues.length} ...`,
+    maxTagPlaceholder = (omittedValues: DateType[]) => `+ ${omittedValues.length} ...`,
 
     // Valid
     format,

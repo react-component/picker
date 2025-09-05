@@ -23,11 +23,11 @@ const sharedLocale = {
   style: { width: 300 },
 };
 
-const maxTagPlaceholder = (value: any[]) => {
+const maxTagPlaceholder = (value) => {
   return (
     <ul>
-      {value?.map((item) => {
-        return <li>{item?.format('YYYY-MM-DD')}</li>;
+      {value?.map((item, index) => {
+        return <li key={index}>{item?.format('YYYY-MM-DD')}</li>;
       })}
     </ul>
   );
