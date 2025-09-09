@@ -2120,4 +2120,32 @@ describe('Picker.Range', () => {
     openPicker(container, 1);
     expect(container.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
   });
+
+  it('should not update preview value in input when previewValue is false', () => {
+    const { container } = render(
+      <DayRangePicker
+        minDate={dayjs('2024')}
+        open
+        mode={['year', 'year']}
+        showTime
+        previewValue={false}
+        needConfirm
+        value={[dayjs('2024-01-01'), dayjs('2025-01-01')]}
+      />,
+    );
+
+    // 找到第一个输入框并保存初始值
+    const inputStart = container.querySelectorAll<HTMLInputElement>('.rc-picker-input input')[0];
+    const initialValueStart = inputStart.value;
+
+    // 打开第一个面板并 hover 一个新值（例如 2028 年）
+    const targetCell = document.querySelector('[title="2028"]') as HTMLElement;
+    expect(targetCell).toBeTruthy(); // 确保存在
+
+    // 2. 模拟鼠标移入（hover）
+    fireEvent.mouseEnter(targetCell);
+
+    // 确保值未更新（仍为原值）
+    expect(inputStart.value).toBe(initialValueStart);
+  });
 });

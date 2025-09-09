@@ -154,6 +154,10 @@ export default () => {
           <h3>Keyboard event with prevent default behaviors</h3>
           <Picker<Moment> {...sharedProps} locale={enUS} onKeyDown={keyDown} />
         </div>
+        <div style={{ margin: '0 8px' }}>
+          <h3>PreviewValue is false</h3>
+          <Picker<Moment> {...sharedProps} locale={enUS} onKeyDown={keyDown} previewValue={false} />
+        </div>
       </div>
     </div>
   );

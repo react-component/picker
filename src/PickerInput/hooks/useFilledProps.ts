@@ -33,6 +33,7 @@ type PickedProps<DateType extends object = any> = Pick<
   | 'minDate'
   | 'maxDate'
   | 'defaultOpenValue'
+  | 'previewValue'
 > & {
   multiple?: boolean;
   // RangePicker showTime definition is different with Picker
@@ -96,6 +97,7 @@ export default function useFilledProps<
     locale,
     picker = 'date',
     prefixCls = 'rc-picker',
+    previewValue = 'hover',
     styles = {},
     classNames = {},
     order = true,
@@ -161,6 +163,7 @@ export default function useFilledProps<
   const filledProps = React.useMemo(
     () => ({
       ...props,
+      previewValue,
       prefixCls,
       locale: mergedLocale,
       picker,

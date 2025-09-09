@@ -128,6 +128,8 @@ function Picker<DateType extends object = any>(
     styles: propStyles,
     classNames: propClassNames,
 
+    previewValue,
+
     // Value
     order,
     defaultValue,
@@ -406,6 +408,14 @@ function Picker<DateType extends object = any>(
     }
   }, [mergedOpen]);
 
+  const onSetHover = (date: DateType | null, source: 'cell' | 'preset') => {
+    if (previewValue !== 'hover') {
+      return;
+    }
+    setInternalHoverValue(date);
+    setHoverSource(source);
+  };
+
   // ========================================================
   // ==                       Panels                       ==
   // ========================================================
@@ -413,8 +423,7 @@ function Picker<DateType extends object = any>(
   const presetList = usePresets(presets);
 
   const onPresetHover = (nextValue: DateType | null) => {
-    setInternalHoverValue(nextValue);
-    setHoverSource('preset');
+    onSetHover(nextValue, 'preset');
   };
 
   // TODO: handle this
@@ -433,8 +442,7 @@ function Picker<DateType extends object = any>(
 
   // ======================== Panel =========================
   const onPanelHover = (date: DateType | null) => {
-    setInternalHoverValue(date);
-    setHoverSource('cell');
+    onSetHover(date, 'cell');
   };
 
   // >>> Focus

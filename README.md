@@ -54,6 +54,7 @@ render(<Picker />, mountNode);
 | autoFocus | boolean | false | whether auto focus |
 | showTime | boolean \| Object | [showTime options](#showTime-options) | to provide an additional time selection |
 | picker | time \| date \| week \| month \| year |  | control which kind of panel should be shown |
+| previewValue | false \| hover | hover | When the user selects the date hover option, the value of the input field undergoes a temporary change |
 | format | String \| String[] | depends on whether you set timePicker and your locale | use to format/parse date(without time) value to/from input. When an array is provided, all values are used for parsing and first value for display |
 | use12Hours | boolean | false | 12 hours display mode |
 | value | moment |  | current value like input's value |
@@ -102,7 +103,7 @@ render(<Picker />, mountNode);
 ### RangePicker
 
 | Property | Type | Default | Description |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 | prefixCls | String | rc-picker | prefixCls of this component |
 | className | String | '' | additional css class of root dom |
 | style | React.CSSProperties |  | additional style of root dom node |
@@ -112,6 +113,7 @@ render(<Picker />, mountNode);
 | defaultPickerValue | moment |  | Set default display picker view date |
 | separator | String | '~' | set separator between inputs |
 | picker | time \| date \| week \| month \| year |  | control which kind of panel |
+| previewValue | false \| hover | hover | When the user selects the date hover option, the value of the input field undergoes a temporary change |
 | placeholder | [String, String] |  | placeholder of date input |
 | showTime | boolean \| Object | [showTime options](#showTime-options) | to provide an additional time selection |
 | showTime.defaultValue | [moment, moment] |  | to set default time of selected date |
