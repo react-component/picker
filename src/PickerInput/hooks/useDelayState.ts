@@ -1,4 +1,4 @@
-import { useEvent, useMergedState } from '@rc-component/util';
+import { useEvent, useControlledState } from '@rc-component/util';
 import raf from '@rc-component/util/lib/raf';
 import React from 'react';
 
@@ -11,7 +11,7 @@ export default function useDelayState<T>(
   defaultValue?: T,
   onChange?: (next: T) => void,
 ): [state: T, setState: (nextState: T, immediately?: boolean) => void] {
-  const [state, setState] = useMergedState<T>(defaultValue, { value });
+  const [state, setState] = useControlledState<T>(defaultValue, value);
 
   const nextValueRef = React.useRef<T>(value);
 
