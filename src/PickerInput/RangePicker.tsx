@@ -1,4 +1,4 @@
-import { useEvent, useMergedState } from '@rc-component/util';
+import { useEvent, useControlledState } from '@rc-component/util';
 import cls from 'classnames';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import omit from '@rc-component/util/lib/omit';
@@ -310,9 +310,7 @@ function RangePicker<DateType extends object = any>(
   }, [showTime, activeIndex, calendarValue, activeIndexList]);
 
   // ========================= Mode =========================
-  const [modes, setModes] = useMergedState<[PanelMode, PanelMode]>([picker, picker], {
-    value: mode,
-  });
+  const [modes, setModes] = useControlledState<[PanelMode, PanelMode]>([picker, picker], mode);
 
   const mergedMode = modes[activeIndex] || picker;
 

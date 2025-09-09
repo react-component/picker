@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useEvent, useMergedState, warning } from '@rc-component/util';
+import { useEvent, useControlledState, warning } from '@rc-component/util';
 import * as React from 'react';
 import useLocale from '../hooks/useLocale';
 import { fillShowTimeConfig, getTimeProps } from '../hooks/useTimeConfig';
@@ -227,10 +227,7 @@ function PickerPanel<DateType extends object = any>(
   const now = generateConfig.getNow();
 
   // ========================== Mode ==========================
-  const [mergedMode, setMergedMode] = useMergedState<PanelMode>(picker, {
-    value: mode,
-    postState: (val) => val || 'date',
-  });
+  const [mergedMode, setMergedMode] = useControlledState<PanelMode>(picker || 'date', mode);
 
   const internalMode: InternalMode =
     mergedMode === 'date' && mergedShowTime ? 'datetime' : mergedMode;
@@ -241,9 +238,7 @@ function PickerPanel<DateType extends object = any>(
   // ========================= Value ==========================
   // >>> Real value
   // Interactive with `onChange` event which only trigger when the `mode` is `picker`
-  const [innerValue, setMergedValue] = useMergedState(defaultValue, {
-    value,
-  });
+  const [innerValue, setMergedValue] = useControlledState(defaultValue, value);
 
   const mergedValue = React.useMemo(() => {
     // Clean up `[null]`
@@ -282,11 +277,9 @@ function PickerPanel<DateType extends object = any>(
 
   // >>> PickerValue
   // PickerValue is used to control the current displaying panel
-  const [mergedPickerValue, setInternalPickerValue] = useMergedState(
+  const [mergedPickerValue, setInternalPickerValue] = useControlledState(
     defaultPickerValue || mergedValue[0] || now,
-    {
-      value: pickerValue,
-    },
+    pickerValue,
   );
 
   React.useEffect(() => {

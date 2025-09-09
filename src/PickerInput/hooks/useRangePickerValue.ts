@@ -1,4 +1,4 @@
-import { useMergedState } from '@rc-component/util';
+import { useControlledState } from '@rc-component/util';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
@@ -72,14 +72,15 @@ export default function useRangePickerValue<DateType extends object, ValueType e
   const [startPickerValue, endPickerValue] = pickerValue;
 
   // PickerValue state
-  const [mergedStartPickerValue, setStartPickerValue] = useMergedState(
-    () => getDefaultPickerValue(0),
-    { value: startPickerValue },
+  const [mergedStartPickerValue, setStartPickerValue] = useControlledState(
+    getDefaultPickerValue(0),
+    startPickerValue,
   );
 
-  const [mergedEndPickerValue, setEndPickerValue] = useMergedState(() => getDefaultPickerValue(1), {
-    value: endPickerValue,
-  });
+  const [mergedEndPickerValue, setEndPickerValue] = useControlledState(
+    getDefaultPickerValue(1),
+    endPickerValue,
+  );
 
   // Current PickerValue
   const currentPickerValue = React.useMemo(() => {
