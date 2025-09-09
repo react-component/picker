@@ -73,12 +73,12 @@ export default function useRangePickerValue<DateType extends object, ValueType e
 
   // PickerValue state
   const [mergedStartPickerValue, setStartPickerValue] = useControlledState(
-    getDefaultPickerValue(0),
+    () => getDefaultPickerValue(0),
     startPickerValue,
   );
 
   const [mergedEndPickerValue, setEndPickerValue] = useControlledState(
-    getDefaultPickerValue(1),
+    () => getDefaultPickerValue(1),
     endPickerValue,
   );
 
