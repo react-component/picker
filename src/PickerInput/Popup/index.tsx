@@ -34,8 +34,8 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   activeInfo?: [activeInputLeft: number, activeInputRight: number, selectorWidth: number];
   // Direction
   direction?: 'ltr' | 'rtl';
-  // focus index
-  index: number;
+  /** @internal: active input index for layout retry. Not part of public API. */
+  index?: number;
 
   // Fill
   /** TimePicker or showTime only */
