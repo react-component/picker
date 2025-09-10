@@ -1,4 +1,4 @@
-import { useEvent, useMergedState } from '@rc-component/util';
+import { useEvent, useControlledState } from '@rc-component/util';
 import cls from 'classnames';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import omit from '@rc-component/util/lib/omit';
@@ -261,9 +261,7 @@ function Picker<DateType extends object = any>(
   };
 
   // ========================= Mode =========================
-  const [mergedMode, setMode] = useMergedState(picker, {
-    value: mode,
-  });
+  const [mergedMode, setMode] = useControlledState(picker, mode);
 
   /** Extends from `mergedMode` to patch `datetime` mode */
   const internalMode: InternalMode = mergedMode === 'date' && showTime ? 'datetime' : mergedMode;
