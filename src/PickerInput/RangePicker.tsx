@@ -592,6 +592,7 @@ function RangePicker<DateType extends object = any>(
       range
       multiplePanel={multiplePanel}
       activeInfo={activeInfo}
+      index={activeIndex}
       // Disabled
       disabledDate={mergedDisabledDate}
       // Focus

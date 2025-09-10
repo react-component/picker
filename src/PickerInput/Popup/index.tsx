@@ -34,6 +34,8 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   activeInfo?: [activeInputLeft: number, activeInputRight: number, selectorWidth: number];
   // Direction
   direction?: 'ltr' | 'rtl';
+  // focus index
+  index: number;
 
   // Fill
   /** TimePicker or showTime only */
@@ -58,7 +60,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     range,
     multiple,
     activeInfo = [0, 0, 0],
-
+    index = 0,
     // Presets
     presets,
     onPresetHover,
@@ -80,7 +82,6 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     onOk,
     onSubmit,
   } = props;
-
   const { prefixCls } = React.useContext(PickerContext);
   const panelPrefixCls = `${prefixCls}-panel`;
 
@@ -118,7 +119,8 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
       // Arrow Offset
       const wrapperRect = wrapperRef.current.getBoundingClientRect();
       if (!wrapperRect.height || wrapperRect.right < 0) {
-        setRetryTimes((times) => Math.max(0, times - 1));
+        // Index is designed to be compatible with the bug of inconsistency between React 18 useEffect and React 19
+        setRetryTimes((times) => Math.max(0, times - index - 1));
         return;
       }
 
@@ -138,7 +140,16 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
         setContainerOffset(0);
       }
     }
-  }, [retryTimes, rtl, containerWidth, activeInputLeft, activeInputRight, selectorWidth, range]);
+  }, [
+    retryTimes,
+    rtl,
+    containerWidth,
+    activeInputLeft,
+    activeInputRight,
+    selectorWidth,
+    range,
+    index,
+  ]);
 
   // ======================== Custom ========================
   function filterEmpty<T>(list: T[]) {
