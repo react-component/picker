@@ -60,7 +60,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     range,
     multiple,
     activeInfo = [0, 0, 0],
-    index = 0,
+    index,
     // Presets
     presets,
     onPresetHover,
