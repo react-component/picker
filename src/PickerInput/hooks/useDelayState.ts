@@ -1,4 +1,4 @@
-import { useEvent, useControlledState } from '@rc-component/util';
+import { useEvent, useControlledState, useMergedState } from '@rc-component/util';
 import raf from '@rc-component/util/lib/raf';
 import React from 'react';
 
@@ -13,6 +13,14 @@ export default function useDelayState<T>(
 ): [state: T, setState: (nextState: T, immediately?: boolean) => void] {
   const [state, setState] = useControlledState<T>(defaultValue, value);
 
+  // Need force update to ensure React re-render
+  const [, forceUpdate] = React.useState({});
+
+  const triggerUpdate = useEvent((nextState: T) => {
+    setState(nextState);
+    forceUpdate({});
+  });
+
   const nextValueRef = React.useRef<T>(value);
 
   // ============================= Update =============================
@@ -22,7 +30,7 @@ export default function useDelayState<T>(
   };
 
   const doUpdate = useEvent(() => {
-    setState(nextValueRef.current);
+    triggerUpdate(nextValueRef.current);
 
     if (onChange && state !== nextValueRef.current) {
       onChange(nextValueRef.current);
