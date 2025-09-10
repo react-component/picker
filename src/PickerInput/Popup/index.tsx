@@ -119,7 +119,12 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
       // Arrow Offset
       const wrapperRect = wrapperRef.current.getBoundingClientRect();
       if (!wrapperRect.height || wrapperRect.right < 0) {
-        // Index is designed to be compatible with the bug of inconsistency between React 18 useEffect and React 19
+        // This is a workaround to bypass the inconsistent useEffect behavior in React 18.
+        // When wrapperRef.current.getBoundingClientRect() fails to calculate the position correctly, it enters the retry logic.
+        // Under normal circumstances, retryTimes - 1 should equal 9, and useEffect would re-execute the side effect if dependencies change.
+        // However, in React 18, the side effect is no longer re-executed in such cases.
+        // By subtracting the index of the currently active input field (index, which is either 0 or 1), we compensate for this additional execution.
+        // Related issue: https://github.com/ant-design/ant-design/issues/54885
         setRetryTimes((times) => Math.max(0, times - index - 1));
         return;
       }
