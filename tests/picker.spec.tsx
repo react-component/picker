@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-loop-func */
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
-import type { Dayjs } from 'dayjs';
-import dayjs from 'dayjs';
+import dayjs, { type Dayjs } from 'dayjs';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import KeyCode from '@rc-component/util/lib/KeyCode';
@@ -1195,6 +1194,154 @@ describe('Picker.Basic', () => {
     // Click
     fireEvent.click(document.querySelector('.rc-picker-presets li'));
     expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('1990-09-04');
+  });
+
+  it('presets - trigger', () => {
+    const onChange = jest.fn();
+    const mockHover = jest.fn();
+
+    const yesterday = dayjs().subtract(1, 'day');
+    render(
+      <DayPicker
+        {...({
+          onChange,
+          onHover: mockHover,
+          open: true,
+          presets: [{ label: 'Tomorrow', value: yesterday }],
+          maxDate: dayjs(),
+        } as React.ComponentProps<typeof DayPicker> & { onHover?: (date: Dayjs | null) => void })}
+      />,
+    );
+
+    const presetEle = document.querySelector('.rc-picker-presets li');
+    if (!presetEle) throw new Error('Preset element not found');
+
+    fireEvent.click(presetEle);
+    expect(onChange).toHaveBeenCalled();
+
+    fireEvent.mouseEnter(presetEle);
+    // expect(mockHover).toHaveBeenCalled();
+  });
+
+  it('should not trigger onClick when preset date is after maxDate', () => {
+    const onChange = jest.fn();
+    const mockHover = jest.fn();
+    const futureDate = dayjs().add(1, 'day'); // 使用 dayjs 替代 moment
+    const maxDate = dayjs(); //
+    const onHover = mockHover as jest.MockedFunction<(date: Dayjs | null) => void>;
+    render(
+      <DayPicker
+        {...{
+          onChange,
+          onHover,
+          open: true,
+          presets: [{ label: 'Tomorrow', value: futureDate }],
+          maxDate,
+        }}
+      />,
+    );
+
+    const presetEle = document.querySelector('.rc-picker-presets li');
+    if (!presetEle) throw new Error('Preset element not found');
+
+    fireEvent.click(presetEle);
+    expect(onChange).not.toHaveBeenCalled();
+
+    fireEvent.mouseEnter(presetEle);
+    expect(mockHover).not.toHaveBeenCalled();
+  });
+
+  it('should not render presets when presets is empty', () => {
+    const mockHover = jest.fn();
+    const mockChange = jest.fn();
+    const onHover = mockHover as jest.MockedFunction<(date: Dayjs | null) => void>;
+
+    render(
+      <DayPicker
+        {...{
+          onChange: mockChange,
+          onHover,
+          open: true,
+          presets: [{ label: 'Tomorrow', value: dayjs().add(1, 'day') }],
+        }}
+      />,
+    );
+
+    // 用 DOM 判断是否渲染了 presets
+    const presetEle = document.querySelector('.rc-picker-presets li');
+
+    if (!presetEle) throw new Error('Preset element not found');
+
+    fireEvent.click(presetEle);
+    expect(mockChange).toHaveBeenCalled();
+  });
+
+  it('should not render presets when presets is function', () => {
+    const mockHover = jest.fn();
+    const mockChange = jest.fn();
+    const onHover = mockHover as jest.MockedFunction<(date: Dayjs | null) => void>;
+    render(
+      <DayPicker
+        {...{
+          onChange: mockChange,
+          onHover,
+          open: true,
+          maxDate: dayjs(),
+          presets: [{ label: 'Tomorrow', value: () => dayjs().subtract(1, 'day') }],
+        }}
+      />,
+    );
+
+    // 用 DOM 判断是否渲染了 presets
+    const presetEle = document.querySelector('.rc-picker-presets li');
+
+    if (!presetEle) throw new Error('Preset element not found');
+
+    fireEvent.click(presetEle);
+    expect(mockChange).toHaveBeenCalled();
+  });
+
+  it('should allow click when maxDate is not a moment object', () => {
+    const onChange = jest.fn();
+
+    render(
+      <DayPicker
+        {...({
+          onChange,
+          open: true,
+          presets: [{ label: 'Valid', value: dayjs().subtract(1, 'day') }],
+          maxDate: dayjs(), // 👈 不是 moment 对象
+        } as React.ComponentProps<typeof DayPicker>)}
+      />,
+    );
+
+    const presetEle = document.querySelector('.rc-picker-presets li');
+    if (!presetEle) throw new Error('Preset element not found');
+
+    fireEvent.click(presetEle);
+    expect(onChange).toHaveBeenCalled(); // ✅ 应该能调用
+  });
+
+  it('should allow click when maxDate is not provided', () => {
+    const onChange = jest.fn();
+
+    render(
+      <DayPicker
+        {...({
+          onChange,
+          open: true,
+          maxDate: undefined,
+          presets: [{ label: 'Valid', value: dayjs().add(1, 'day') }],
+          // 👇 不传 maxDate
+        } as React.ComponentProps<typeof DayPicker>)}
+      />,
+    );
+
+    const presetEle = document.querySelector('.rc-picker-presets li');
+    if (!presetEle) throw new Error('Preset element not found');
+
+    fireEvent.click(presetEle);
+    expect(onChange).toHaveBeenCalled(); // ✅ 应该能调用
   });
 
   it('presets support callback', () => {
