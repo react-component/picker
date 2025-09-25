@@ -202,7 +202,7 @@ describe('Picker.Range', () => {
     expect(onChange).toHaveBeenCalledWith([expect.anything(), null], ['1990-09-11', '']);
 
     clearValue();
-    expect(onChange).toHaveBeenCalledWith(null, ['', '']);
+    expect(onChange).toHaveBeenCalledWith(null, null);
     onChange.mockReset();
 
     // Not allow empty with startDate
