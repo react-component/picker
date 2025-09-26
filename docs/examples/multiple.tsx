@@ -23,6 +23,16 @@ const sharedLocale = {
   style: { width: 300 },
 };
 
+const maxTagPlaceholder = (value) => {
+  return (
+    <ul>
+      {value?.map((item, index) => {
+        return <li key={index}>{item?.format('YYYY-MM-DD')}</li>;
+      })}
+    </ul>
+  );
+};
+
 export default () => {
   const singleRef = React.useRef<PickerRef>(null);
 
@@ -30,10 +40,20 @@ export default () => {
     <div>
       <SinglePicker {...sharedLocale} multiple ref={singleRef} onOpenChange={console.error} />
       <SinglePicker {...sharedLocale} multiple ref={singleRef} needConfirm />
-      <SinglePicker {...sharedLocale} multiple picker="week" defaultValue={[
-        dayjs('2021-01-01'),
-        dayjs('2021-01-08'),
-      ]} />
+      <SinglePicker
+        {...sharedLocale}
+        multiple
+        picker="week"
+        defaultValue={[dayjs('2021-01-01'), dayjs('2021-01-08')]}
+      />
+      <SinglePicker
+        maxTagCount={10}
+        {...sharedLocale}
+        multiple
+        ref={singleRef}
+        maxTagPlaceholder={maxTagPlaceholder}
+        defaultValue={[dayjs('2021-01-01'), dayjs('2021-01-08')]}
+      />
     </div>
   );
 };

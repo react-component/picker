@@ -157,6 +157,115 @@ describe('Picker.Multiple', () => {
       ).toBeFalsy();
     });
   });
+  describe('maxTagPlaceholder', () => {
+    it('should not show maxTagPlaceholder when items count is within maxTagCount', () => {
+      const maxTagPlaceholder = (omittedValues: any[]) => (
+        <span className="custom-max-tag-placeholder">+{omittedValues.length} more</span>
+      );
+
+      const { container } = render(
+        <DayPicker
+          multiple
+          maxTagCount={3}
+          maxTagPlaceholder={maxTagPlaceholder}
+          defaultValue={[getDay('2000-01-01'), getDay('2000-01-02')]}
+        />,
+      );
+
+      // Should show all items, no placeholder
+      expect(container.querySelectorAll('.rc-picker-selection-item')).toHaveLength(2);
+      expect(container.querySelector('.custom-max-tag-placeholder')).toBeFalsy();
+    });
+
+    it('should show maxTagPlaceholder when items count exceeds maxTagCount', () => {
+      const maxTagPlaceholder = (omittedValues: any[]) => (
+        <span className="custom-max-tag-placeholder">+{omittedValues.length} items</span>
+      );
+
+      const { container } = render(
+        <DayPicker
+          multiple
+          maxTagCount={2}
+          maxTagPlaceholder={maxTagPlaceholder}
+          defaultValue={[
+            getDay('2000-01-01'),
+            getDay('2000-01-02'),
+            getDay('2000-01-03'),
+            getDay('2000-01-04'),
+          ]}
+        />,
+      );
+
+      // Should show maxTagCount items + placeholder
+      expect(container.querySelectorAll('.rc-picker-selection-item')).toHaveLength(3);
+      expect(container.querySelector('.custom-max-tag-placeholder').textContent).toBe('+2 items');
+    });
+
+    it('should work with custom maxTagPlaceholder component', () => {
+      const CustomPlaceholder = ({ omittedValues }: { omittedValues: any[] }) => (
+        <div className="custom-placeholder-wrapper">
+          <span className="omitted-count">{omittedValues.length}</span>
+          <span className="omitted-text">hidden dates</span>
+        </div>
+      );
+
+      const { container } = render(
+        <DayPicker
+          multiple
+          maxTagCount={1}
+          maxTagPlaceholder={(omittedValues) => <CustomPlaceholder omittedValues={omittedValues} />}
+          defaultValue={[getDay('2000-01-01'), getDay('2000-01-02'), getDay('2000-01-03')]}
+        />,
+      );
+
+      expect(container.querySelector('.custom-placeholder-wrapper')).toBeTruthy();
+      expect(container.querySelector('.omitted-count').textContent).toBe('2');
+      expect(container.querySelector('.omitted-text').textContent).toBe('hidden dates');
+    });
+
+    it('should handle maxTagCount edge cases1', () => {
+      const maxTagPlaceholder = (omittedValues: any[]) => (
+        <span className="edge-case-placeholder">+{omittedValues.length}</span>
+      );
+
+      // Test maxTagCount = 0
+      const { container } = render(
+        <DayPicker
+          multiple
+          maxTagCount={0}
+          maxTagPlaceholder={maxTagPlaceholder}
+          defaultValue={[getDay('2000-01-01')]}
+        />,
+      );
+      expect(container.querySelectorAll('.rc-picker-selection-item')).toHaveLength(1);
+      expect(container.querySelector('.edge-case-placeholder')).toBeTruthy();
+      expect(container.querySelector('.edge-case-placeholder').textContent).toBe('+1');
+    });
+
+    it('should pass correct omittedValues to maxTagPlaceholder', () => {
+      const maxTagPlaceholder = jest.fn((omittedValues) => (
+        <span className="test-placeholder">+{omittedValues.length}</span>
+      ));
+
+      const values = [
+        getDay('2000-01-01'),
+        getDay('2000-01-02'),
+        getDay('2000-01-03'),
+        getDay('2000-01-04'),
+      ];
+
+      render(
+        <DayPicker
+          multiple
+          maxTagCount={2}
+          maxTagPlaceholder={maxTagPlaceholder}
+          defaultValue={values}
+        />,
+      );
+
+      expect(maxTagPlaceholder).toHaveBeenCalledWith([values[2], values[3]]);
+    });
+  });
 
   it('click year panel should not select', () => {
     const onChange = jest.fn();
