@@ -2,7 +2,7 @@
 import { fireEvent, render } from '@testing-library/react';
 import { resetWarned } from '@rc-component/util/lib/warning';
 import React from 'react';
-import { DayPicker, getDay, isOpen, openPicker, selectCell } from './util/commonUtil';
+import { clearValue, DayPicker, getDay, isOpen, openPicker, selectCell } from './util/commonUtil';
 
 const fakeTime = getDay('1990-09-03 00:00:00').valueOf();
 
@@ -57,6 +57,8 @@ describe('Picker.Multiple', () => {
     ]);
 
     expect(onChange.mock.calls[0][0]).toHaveLength(3);
+    clearValue();
+    expect(onChange).toHaveBeenCalledWith(null, null);
   });
 
   it('panel click to remove', () => {
