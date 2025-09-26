@@ -3,6 +3,9 @@ import type { Locale } from '../interface';
 
 const locale: Locale = {
   ...commonLocale,
+  fieldDateFormat: 'DD-MM-YYYY',
+  fieldDateTimeFormat: 'DD-MM-YYYY HH:mm:ss',
+  fieldMonthFormat: 'MM-YYYY',
   locale: 'mr_IN',
   today: 'आज',
   now: 'आता',
@@ -27,6 +30,21 @@ const locale: Locale = {
   nextDecade: 'पुढचे दशक',
   previousCentury: 'मागील शतक',
   nextCentury: 'पुढचे शतक',
+  shortWeekDays: ['रवि', 'सोम', 'मंगळ', 'बुध', 'गुरु', 'शुक्र', 'शनि'],
+  shortMonths: [
+    'जाने',
+    'फेब्रु',
+    'मार्च',
+    'एप्रिल',
+    'मे',
+    'जून',
+    'जुलै',
+    'ऑगस्ट',
+    'सप्टें',
+    'ऑक्टो',
+    'नोव्हें',
+    'डिसें',
+  ],
 };
 
 export default locale;
