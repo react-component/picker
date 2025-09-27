@@ -283,7 +283,7 @@ describe('Picker.Basic', () => {
         onChange.mockReset();
 
         clearValue();
-        expect(onChange).toHaveBeenCalledWith(null, '');
+        expect(onChange).toHaveBeenCalledWith(null, null);
         expect(isOpen()).toBeFalsy();
 
         openPicker(container);

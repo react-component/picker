@@ -283,10 +283,11 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
 
       // Trigger `onChange` if needed
       if (onChange && !isSameMergedDates) {
+        const everyEmpty = clone.every((val) => !val);
         onChange(
           // Return null directly if all date are empty
-          isNullValue && clone.every((val) => !val) ? null : clone,
-          getDateTexts(clone),
+          isNullValue && everyEmpty ? null : clone,
+          everyEmpty ? null : getDateTexts(clone),
         );
       }
     }
