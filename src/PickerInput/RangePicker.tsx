@@ -501,6 +501,7 @@ function RangePicker<DateType extends object = any>(
     const passed = triggerSubmitChange(nextValues);
 
     if (passed) {
+      lastOperation('preset-click');
       triggerOpen(false, { force: true });
     }
   };
