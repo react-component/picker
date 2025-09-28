@@ -1,4 +1,4 @@
-import cls from 'classnames';
+import { clsx } from 'clsx';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import useTimeInfo from '../../hooks/useTimeInfo';
@@ -76,7 +76,7 @@ export default function Footer(props: FooterProps) {
   const presetNode = showNow && (
     <li className={nowPrefixCls}>
       <a
-        className={cls(nowBtnPrefixCls, nowDisabled && `${nowBtnPrefixCls}-disabled`)}
+        className={clsx(nowBtnPrefixCls, nowDisabled && `${nowBtnPrefixCls}-disabled`)}
         aria-disabled={nowDisabled}
         onClick={onInternalNow}
       >
@@ -108,7 +108,7 @@ export default function Footer(props: FooterProps) {
 
   return (
     <div
-      className={cls(`${prefixCls}-footer`, classNames.popup.footer)}
+      className={clsx(`${prefixCls}-footer`, classNames.popup.footer)}
       style={styles.popup.footer}
     >
       {extraNode && <div className={`${prefixCls}-footer-extra`}>{extraNode}</div>}

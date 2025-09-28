@@ -1,4 +1,4 @@
-import cls from 'classnames';
+import { clsx } from 'clsx';
 import * as React from 'react';
 import type { DisabledDate } from '../interface';
 import { formatValue, isInRange, isSame } from '../utils/dateUtil';
@@ -125,7 +125,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
         <td
           key={col}
           title={title}
-          className={cls(cellPrefixCls, classNames.item, {
+          className={clsx(cellPrefixCls, classNames.item, {
             [`${cellPrefixCls}-disabled`]: disabled,
             [`${cellPrefixCls}-hover`]: (hoverValue || []).some((date) =>
               isSame(generateConfig, locale, currentDate, date, type),
@@ -184,8 +184,8 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
 
   // ============================== Render ==============================
   return (
-    <div className={cls(`${prefixCls}-body`, classNames.body)} style={styles.body}>
-      <table className={cls(`${prefixCls}-content`, classNames.content)} style={styles.content}>
+    <div className={clsx(`${prefixCls}-body`, classNames.body)} style={styles.body}>
+      <table className={clsx(`${prefixCls}-content`, classNames.content)} style={styles.content}>
         {headerCells && (
           <thead>
             <tr>{headerCells}</tr>

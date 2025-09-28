@@ -1,5 +1,5 @@
 import { useEvent, useControlledState } from '@rc-component/util';
-import cls from 'classnames';
+import { clsx } from 'clsx';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import omit from '@rc-component/util/lib/omit';
 import pickAttrs from '@rc-component/util/lib/pickAttrs';
@@ -777,7 +777,7 @@ function RangePicker<DateType extends object = any>(
         {...pickTriggerProps(filledProps)}
         popupElement={panel}
         popupStyle={mergedStyles.popup.root}
-        popupClassName={cls(rootClassName, mergedClassNames.popup.root)}
+        popupClassName={clsx(rootClassName, mergedClassNames.popup.root)}
         // Visible
         visible={mergedOpen}
         onClose={onPopupClose}
@@ -790,11 +790,8 @@ function RangePicker<DateType extends object = any>(
           // Ref
           ref={selectorRef}
           // Style
-          className={cls(filledProps.className, rootClassName, mergedClassNames.root)}
-          style={{
-            ...mergedStyles.root,
-            ...filledProps.style,
-          }}
+          className={clsx(filledProps.className, rootClassName, mergedClassNames.root)}
+          style={{ ...mergedStyles.root, ...filledProps.style }}
           // Icon
           suffixIcon={suffixIcon}
           // Active

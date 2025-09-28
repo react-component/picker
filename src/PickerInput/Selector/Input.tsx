@@ -1,4 +1,4 @@
-import cls from 'classnames';
+import { clsx } from 'clsx';
 import { useEvent } from '@rc-component/util';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import raf from '@rc-component/util/lib/raf';
@@ -95,8 +95,8 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   }, [value]);
 
   // ========================= Refs =========================
-  const holderRef = React.useRef<HTMLDivElement>();
-  const inputRef = React.useRef<HTMLInputElement>();
+  const holderRef = React.useRef<HTMLDivElement>(null);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: holderRef.current,
@@ -383,7 +383,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   return (
     <div
       ref={holderRef}
-      className={cls(
+      className={clsx(
         inputPrefixCls,
         {
           [`${inputPrefixCls}-active`]: active && showActiveCls,

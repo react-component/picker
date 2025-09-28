@@ -1,4 +1,4 @@
-import cls from 'classnames';
+import { clsx } from 'clsx';
 import ResizeObserver from '@rc-component/resize-observer';
 import { useEvent } from '@rc-component/util';
 import * as React from 'react';
@@ -211,7 +211,7 @@ function RangeSelector<DateType extends object = any>(
     <ResizeObserver onResize={syncActiveOffset}>
       <div
         {...rootProps}
-        className={cls(
+        className={clsx(
           prefixCls,
           `${prefixCls}-range`,
           {
@@ -239,7 +239,7 @@ function RangeSelector<DateType extends object = any>(
         }}
       >
         {prefix && (
-          <div className={cls(`${prefixCls}-prefix`, classNames.prefix)} style={styles.prefix}>
+          <div className={clsx(`${prefixCls}-prefix`, classNames.prefix)} style={styles.prefix}>
             {prefix}
           </div>
         )}

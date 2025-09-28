@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import { useEvent, useControlledState, warning } from '@rc-component/util';
 import * as React from 'react';
 import useLocale from '../hooks/useLocale';
@@ -424,9 +424,7 @@ function PickerPanel<DateType extends object = any>(
         <div
           ref={rootRef}
           tabIndex={tabIndex}
-          className={classNames(panelCls, {
-            [`${panelCls}-rtl`]: direction === 'rtl',
-          })}
+          className={clsx(panelCls, { [`${panelCls}-rtl`]: direction === 'rtl' })}
         >
           <PanelComponent
             {...panelProps}

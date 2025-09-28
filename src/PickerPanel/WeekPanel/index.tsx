@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import * as React from 'react';
 import type { SharedPanelProps } from '../../interface';
 import { isInRange, isSameWeek } from '../../utils/dateUtil';
@@ -37,13 +37,12 @@ export default function WeekPanel<DateType extends object = any>(
       );
     }
 
-    return classNames(
+    return clsx(
       rowPrefixCls,
       {
         [`${rowPrefixCls}-selected`]:
           !hoverRangeValue && isSameWeek(generateConfig, localeName, value, currentDate),
       },
-
       // Patch for hover range
       rangeCls,
     );

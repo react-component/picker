@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import Overflow from 'rc-overflow';
 import * as React from 'react';
 import type { PickerProps } from '../../SinglePicker';
@@ -36,7 +36,7 @@ export default function MultipleDates<DateType extends object = any>(
   function renderSelector(content: React.ReactNode, onClose?: React.MouseEventHandler) {
     return (
       <span
-        className={classNames(`${selectionCls}-item`)}
+        className={clsx(`${selectionCls}-item`)}
         title={typeof content === 'string' ? content : null}
       >
         <span className={`${selectionCls}-item-content`}>{content}</span>

@@ -4,7 +4,7 @@ import type { SharedPanelProps, SharedTimeProps } from '../../../interface';
 import { formatValue } from '../../../utils/dateUtil';
 import { PickerHackContext, usePanelContext } from '../../context';
 import TimeColumn, { type Unit } from './TimeColumn';
-import cls from 'classnames';
+import { clsx } from 'clsx';
 
 function isAM(hour: number) {
   return hour < 12;
@@ -271,7 +271,7 @@ export default function TimePanelBody<DateType extends object = any>(
   };
 
   return (
-    <div className={cls(`${prefixCls}-content`, classNames.content)} style={styles.content}>
+    <div className={clsx(`${prefixCls}-content`, classNames.content)} style={styles.content}>
       {showHour && (
         <TimeColumn
           units={hourUnits}
