@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import * as React from 'react';
 import type { SharedPanelProps } from '../../interface';
 import { formatValue } from '../../utils/dateUtil';
@@ -29,15 +29,9 @@ export default function TimePanel<DateType extends object = any>(props: TimePane
   // ========================= Render =========================
   return (
     <PanelContext.Provider value={info}>
-      <div className={classNames(panelPrefixCls)}>
+      <div className={clsx(panelPrefixCls)}>
         <PanelHeader>
-          {value
-            ? formatValue(value, {
-                locale,
-                format,
-                generateConfig,
-              })
-            : '\u00A0'}
+          {value ? formatValue(value, { locale, format, generateConfig }) : '\u00A0'}
         </PanelHeader>
         <TimePanelBody {...showTime} />
       </div>

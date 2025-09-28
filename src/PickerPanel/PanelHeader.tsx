@@ -1,4 +1,4 @@
-import cls from 'classnames';
+import { clsx } from 'clsx';
 import * as React from 'react';
 import { isSameOrAfter } from '../utils/dateUtil';
 import { PickerHackContext, usePanelContext } from './context';
@@ -120,14 +120,17 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
   const superNextBtnCls = `${headerPrefixCls}-super-next-btn`;
 
   return (
-    <div className={cls(headerPrefixCls, classNames.header)} style={styles.header}>
+    <div className={clsx(headerPrefixCls, classNames.header)} style={styles.header}>
       {superOffset && (
         <button
           type="button"
           aria-label={locale.previousYear}
           onClick={() => onSuperOffset(-1)}
           tabIndex={-1}
-          className={cls(superPrevBtnCls, disabledSuperOffsetPrev && `${superPrevBtnCls}-disabled`)}
+          className={clsx(
+            superPrevBtnCls,
+            disabledSuperOffsetPrev && `${superPrevBtnCls}-disabled`,
+          )}
           disabled={disabledSuperOffsetPrev}
           style={hidePrev ? HIDDEN_STYLE : {}}
         >
@@ -140,7 +143,7 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
           aria-label={locale.previousMonth}
           onClick={() => onOffset(-1)}
           tabIndex={-1}
-          className={cls(prevBtnCls, disabledOffsetPrev && `${prevBtnCls}-disabled`)}
+          className={clsx(prevBtnCls, disabledOffsetPrev && `${prevBtnCls}-disabled`)}
           disabled={disabledOffsetPrev}
           style={hidePrev ? HIDDEN_STYLE : {}}
         >
@@ -154,7 +157,7 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
           aria-label={locale.nextMonth}
           onClick={() => onOffset(1)}
           tabIndex={-1}
-          className={cls(nextBtnCls, disabledOffsetNext && `${nextBtnCls}-disabled`)}
+          className={clsx(nextBtnCls, disabledOffsetNext && `${nextBtnCls}-disabled`)}
           disabled={disabledOffsetNext}
           style={hideNext ? HIDDEN_STYLE : {}}
         >
@@ -167,7 +170,10 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
           aria-label={locale.nextYear}
           onClick={() => onSuperOffset(1)}
           tabIndex={-1}
-          className={cls(superNextBtnCls, disabledSuperOffsetNext && `${superNextBtnCls}-disabled`)}
+          className={clsx(
+            superNextBtnCls,
+            disabledSuperOffsetNext && `${superNextBtnCls}-disabled`,
+          )}
           disabled={disabledSuperOffsetNext}
           style={hideNext ? HIDDEN_STYLE : {}}
         >

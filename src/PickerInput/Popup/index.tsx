@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import ResizeObserver, { type ResizeObserverProps } from '@rc-component/resize-observer';
 import * as React from 'react';
 import type {
@@ -213,7 +213,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     <div
       onMouseDown={onPanelMouseDown}
       tabIndex={-1}
-      className={classNames(
+      className={clsx(
         containerPrefixCls,
         // Used for Today Button style, safe to remove if no need
         `${prefixCls}-${internalMode}-panel-container`,
@@ -238,7 +238,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
       <div
         onMouseDown={onPanelMouseDown}
         ref={wrapperRef}
-        className={classNames(`${prefixCls}-range-wrapper`, `${prefixCls}-${picker}-range-wrapper`)}
+        className={clsx(`${prefixCls}-range-wrapper`, `${prefixCls}-${picker}-range-wrapper`)}
       >
         <div ref={arrowRef} className={`${prefixCls}-range-arrow`} style={{ left: arrowOffset }} />
 

@@ -1,4 +1,4 @@
-import cls from 'classnames';
+import { clsx } from 'clsx';
 import * as React from 'react';
 import type { InternalMode, PickerRef, SelectorProps } from '../../../interface';
 import { isSame } from '../../../utils/dateUtil';
@@ -201,7 +201,7 @@ function SingleSelector<DateType extends object = any>(
   return (
     <div
       {...rootProps}
-      className={cls(
+      className={clsx(
         prefixCls,
         {
           [`${prefixCls}-multiple`]: multiple,
@@ -226,7 +226,7 @@ function SingleSelector<DateType extends object = any>(
       }}
     >
       {prefix && (
-        <div className={cls(`${prefixCls}-prefix`, classNames.prefix)} style={styles.prefix}>
+        <div className={clsx(`${prefixCls}-prefix`, classNames.prefix)} style={styles.prefix}>
           {prefix}
         </div>
       )}

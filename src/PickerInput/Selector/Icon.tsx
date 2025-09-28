@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PickerContext from '../context';
-import cls from 'classnames';
+import { clsx } from 'clsx';
 
 export interface IconProps extends React.HtmlHTMLAttributes<HTMLElement> {
   icon?: React.ReactNode;
@@ -13,7 +13,7 @@ export default function Icon(props: IconProps) {
 
   return icon ? (
     <span
-      className={cls(`${prefixCls}-${type}`, classNames.suffix)}
+      className={clsx(`${prefixCls}-${type}`, classNames.suffix)}
       style={styles.suffix}
       {...restProps}
     >

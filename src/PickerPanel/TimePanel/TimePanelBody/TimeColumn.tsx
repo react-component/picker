@@ -1,4 +1,4 @@
-import cls from 'classnames';
+import { clsx } from 'clsx';
 import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
 import { usePanelContext } from '../../context';
@@ -104,7 +104,7 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
           <li
             key={unitValue}
             style={styles.item}
-            className={cls(cellPrefixCls, classNames.item, {
+            className={clsx(cellPrefixCls, classNames.item, {
               [`${cellPrefixCls}-selected`]: value === unitValue,
               [`${cellPrefixCls}-disabled`]: disabled,
             })}
