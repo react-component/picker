@@ -227,7 +227,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
       style={{
         [rtl ? marginRight : marginLeft]: containerOffset,
         [rtl ? marginLeft : marginRight]: 'auto',
-        ...styles.popup?.container,
+        ...styles?.popup?.container,
       }}
       // Still wish not to lose focus on mouse down
       // onMouseDown={(e) => {
