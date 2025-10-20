@@ -1358,8 +1358,10 @@ describe('Picker.Basic', () => {
       content: 'custom-content',
       item: 'custom-item',
       footer: 'custom-footer',
+      container: 'custom-container',
     };
     const popupStyles = {
+      container: { backgroundColor: 'red' },
       root: { color: 'red' },
       header: { color: 'purple' },
       body: { color: 'green' },
@@ -1387,6 +1389,7 @@ describe('Picker.Basic', () => {
     const content = document.querySelector('.rc-picker-content');
     const item = document.querySelector('.rc-picker-cell');
     const footer = document.querySelector('.rc-picker-footer');
+    const container = document.querySelector('.rc-picker-panel-container');
 
     expect(header).toHaveClass(popupClassNames.header);
     expect(header).toHaveStyle(popupStyles.header);
@@ -1398,6 +1401,8 @@ describe('Picker.Basic', () => {
     expect(item).toHaveStyle(popupStyles.item);
     expect(footer).toHaveClass(popupClassNames.footer);
     expect(footer).toHaveStyle(popupStyles.footer);
+    expect(container).toHaveClass(popupClassNames.container);
+    expect(container).toHaveStyle(popupStyles.container);
   });
 
   it('support classNames and styles for panel', () => {

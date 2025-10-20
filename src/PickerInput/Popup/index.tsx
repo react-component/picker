@@ -45,6 +45,9 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   onOk: VoidFunction;
 
   onPanelMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+
+  classNames?: SharedPickerProps['classNames'];
+  styles?: SharedPickerProps['styles'];
 }
 
 export default function Popup<DateType extends object = any>(props: PopupProps<DateType>) {
@@ -79,6 +82,8 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     defaultOpenValue,
     onOk,
     onSubmit,
+    classNames,
+    styles,
   } = props;
 
   const { prefixCls } = React.useContext(PickerContext);
@@ -217,10 +222,12 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
         containerPrefixCls,
         // Used for Today Button style, safe to remove if no need
         `${prefixCls}-${internalMode}-panel-container`,
+        classNames?.popup?.container,
       )}
       style={{
         [rtl ? marginRight : marginLeft]: containerOffset,
         [rtl ? marginLeft : marginRight]: 'auto',
+        ...styles.popup?.container,
       }}
       // Still wish not to lose focus on mouse down
       // onMouseDown={(e) => {

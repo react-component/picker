@@ -315,7 +315,14 @@ export type SemanticName = 'root' | 'prefix' | 'input' | 'suffix';
 
 export type PreviewValueType = 'hover';
 
-export type PanelSemanticName = 'root' | 'header' | 'body' | 'content' | 'item' | 'footer';
+export type PanelSemanticName =
+  | 'root'
+  | 'header'
+  | 'body'
+  | 'content'
+  | 'item'
+  | 'footer'
+  | 'container';
 
 export interface SharedPickerProps<DateType extends object = any>
   extends SharedHTMLAttrs,
