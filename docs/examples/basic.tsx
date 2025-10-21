@@ -59,6 +59,17 @@ export default () => {
             className="little"
             classNames={{
               root: 'light',
+              popup: {
+                container: 'popup-c',
+              },
+            }}
+            open
+            styles={{
+              popup: {
+                container: {
+                  backgroundColor: 'red',
+                },
+              },
             }}
           />
           <Picker<Moment> {...sharedProps} locale={enUS} />

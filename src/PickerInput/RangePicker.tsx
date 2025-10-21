@@ -626,6 +626,9 @@ function RangePicker<DateType extends object = any>(
       onNow={onNow}
       // Render
       cellRender={onInternalCellRender}
+      // Styles
+      classNames={mergedClassNames}
+      styles={mergedStyles}
     />
   );
 
