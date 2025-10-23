@@ -46,6 +46,7 @@ export interface BasePickerProps<DateType extends object = any>
   removeIcon?: React.ReactNode;
   /** Only work when `multiple` is in used */
   maxTagCount?: number | 'responsive';
+  maxTagPlaceholder?: React.ReactNode | ((omittedValues: DateType[]) => React.ReactNode);
 
   // Value
   value?: DateType | DateType[] | null;
