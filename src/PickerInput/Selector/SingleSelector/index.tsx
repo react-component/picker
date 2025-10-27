@@ -131,7 +131,11 @@ function SingleSelector<DateType extends object = any>(
 
   // ======================== Change ========================
   const onSingleChange = (date: DateType) => {
-    onChange([date]);
+    if (date === null) {
+      onClear?.();
+    } else {
+      onChange([date]);
+    }
   };
 
   const onMultipleRemove = (date: DateType) => {

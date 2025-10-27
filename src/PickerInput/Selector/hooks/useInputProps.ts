@@ -185,8 +185,13 @@ export default function useInputProps<DateType extends object = any>(
           return;
         }
 
+        if (text === '') {
+          onInvalid(false, index);
+          onChange(null, index);
+          return;
+        }
+
         // Tell outer that the value typed is invalid.
-        // If text is empty, it means valid.
         onInvalid(!!text, index);
       },
       onHelp: () => {

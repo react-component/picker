@@ -213,6 +213,23 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
   // ======================= Keyboard =======================
   const onSharedKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    const { key } = event;
+
+    if ((key === 'Backspace' || key === 'Delete') && !format) {
+      const inputElement = inputRef.current;
+      if (
+        inputElement &&
+        inputElement.selectionStart === 0 &&
+        inputElement.selectionEnd === inputValue.length &&
+        inputValue.length > 0
+      ) {
+        onChange('');
+        setInputValue('');
+        event.preventDefault();
+        return;
+      }
+    }
+
     if (event.key === 'Enter' && validateFormat(inputValue)) {
       onSubmit();
     }
@@ -264,6 +281,18 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
       // =============== Remove ===============
       case 'Backspace':
       case 'Delete':
+        const inputElement = inputRef.current;
+        if (
+          inputElement &&
+          inputElement.selectionStart === 0 &&
+          inputElement.selectionEnd === inputValue.length &&
+          inputValue.length > 0
+        ) {
+          onChange('');
+          setInputValue('');
+          event.preventDefault();
+          return;
+        }
         nextCellText = '';
         nextFillText = cellFormat;
         break;
