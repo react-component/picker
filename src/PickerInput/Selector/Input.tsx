@@ -212,20 +212,32 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   });
 
   // ======================= Keyboard =======================
+  /**
+   * Handle manual clear when user selects all text and presses Delete/Backspace
+   * @returns true if input was cleared, false otherwise
+   */
+  const handleManualClear = (event: React.KeyboardEvent<HTMLInputElement>): boolean => {
+    const inputElement = inputRef.current;
+    if (
+      inputElement &&
+      inputElement.selectionStart === 0 &&
+      inputElement.selectionEnd === inputValue.length &&
+      inputValue.length > 0
+    ) {
+      onChange('');
+      setInputValue('');
+      // Prevent default browser behavior (e.g., navigation) after clearing
+      event.preventDefault();
+      return true;
+    }
+    return false;
+  };
+
   const onSharedKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     const { key } = event;
 
     if ((key === 'Backspace' || key === 'Delete') && !format) {
-      const inputElement = inputRef.current;
-      if (
-        inputElement &&
-        inputElement.selectionStart === 0 &&
-        inputElement.selectionEnd === inputValue.length &&
-        inputValue.length > 0
-      ) {
-        onChange('');
-        setInputValue('');
-        event.preventDefault();
+      if (handleManualClear(event)) {
         return;
       }
     }
@@ -281,22 +293,12 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
       // =============== Remove ===============
       case 'Backspace':
       case 'Delete':
-        const inputElement = inputRef.current;
-        if (
-          inputElement &&
-          inputElement.selectionStart === 0 &&
-          inputElement.selectionEnd === inputValue.length &&
-          inputValue.length > 0
-        ) {
-          onChange('');
-          setInputValue('');
-          event.preventDefault();
+        if (handleManualClear(event)) {
           return;
         }
         nextCellText = '';
         nextFillText = cellFormat;
         break;
-
       // =============== Arrows ===============
       // Left key
       case 'ArrowLeft':
