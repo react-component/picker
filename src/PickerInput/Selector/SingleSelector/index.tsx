@@ -130,7 +130,7 @@ function SingleSelector<DateType extends object = any>(
   const rootProps = useRootProps(restProps);
 
   // ======================== Change ========================
-  const handleSingleChange = (date: DateType) => {
+  const handleSingleChange = (date: DateType | null) => {
     if (date === null) {
       // When date is null (from manual clear), delegate to onClear handler
       // to properly trigger onChange and close the picker
