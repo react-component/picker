@@ -156,6 +156,30 @@ describe('Picker.ManualClear', () => {
       // Input should be empty
       expect(input.value).toBe('');
     });
+
+    it('should clear formatted input with mask format', async () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Picker
+          generateConfig={dayGenerateConfig}
+          value={getDay('2023-08-01')}
+          onChange={onChange}
+          locale={enUS}
+          format={{ type: 'mask', format: 'YYYY-MM-DD' }}
+        />,
+      );
+
+      const input = container.querySelector('input') as HTMLInputElement;
+
+      openPicker(container);
+      input.setSelectionRange(0, input.value.length);
+      fireEvent.keyDown(input, { key: 'Delete', code: 'Delete' });
+
+      await waitFakeTimer();
+
+      expect(onChange).toHaveBeenCalledWith(null, null);
+      expect(input.value).toBe('');
+    });
   });
 
   describe('Range Picker', () => {
