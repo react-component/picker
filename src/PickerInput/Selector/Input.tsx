@@ -142,10 +142,18 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
   // Directly trigger `onChange` if `format` is empty
   const onInternalChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    const text = event.target.value;
+
+    // Handle manual clear only when clearIcon is present (allowClear was enabled)
+    // If clearIcon is not set, reset back to previous valid date instead
+    if (text === '' && value !== '' && clearIcon) {
+      onChange('');
+      setInputValue('');
+      return;
+    }
+
     // Hack `onChange` with format to do nothing
     if (!format) {
-      const text = event.target.value;
-
       onModify(text);
       setInputValue(text);
       onChange(text);
@@ -212,36 +220,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   });
 
   // ======================= Keyboard =======================
-  /**
-   * Handle manual clear when user selects all text and presses Delete/Backspace
-   * @returns true if input was cleared, false otherwise
-   */
-  const handleManualClear = (event: React.KeyboardEvent<HTMLInputElement>): boolean => {
-    const inputElement = inputRef.current;
-    if (
-      inputElement &&
-      inputElement.selectionStart === 0 &&
-      inputElement.selectionEnd === inputValue.length &&
-      inputValue.length > 0
-    ) {
-      onChange('');
-      setInputValue('');
-      // Prevent default browser behavior (e.g., navigation) after clearing
-      event.preventDefault();
-      return true;
-    }
-    return false;
-  };
-
   const onSharedKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
-    const { key } = event;
-
-    if ((key === 'Backspace' || key === 'Delete') && !format) {
-      if (handleManualClear(event)) {
-        return;
-      }
-    }
-
     if (event.key === 'Enter' && validateFormat(inputValue)) {
       onSubmit();
     }
@@ -293,9 +272,6 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
       // =============== Remove ===============
       case 'Backspace':
       case 'Delete':
-        if (handleManualClear(event)) {
-          return;
-        }
         nextCellText = '';
         nextFillText = cellFormat;
         break;

@@ -130,14 +130,14 @@ function SingleSelector<DateType extends object = any>(
   const rootProps = useRootProps(restProps);
 
   // ======================== Change ========================
-  const handleSingleChange = (date: DateType | null) => {
-    if (date === null) {
-      // When date is null (from manual clear), delegate to onClear handler
-      // to properly trigger onChange and close the picker
+  const onSingleChange = (date: DateType | null) => {
+    if (date === null && clearIcon) {
+      // Only allow manual clear when clearIcon is present (allowClear was enabled)
       onClear?.();
-    } else {
+    } else if (date !== null) {
       onChange([date]);
     }
+    // If date is null but clearIcon is not set, do nothing - let it reset to previous value
   };
 
   const onMultipleRemove = (date: DateType) => {
@@ -156,7 +156,7 @@ function SingleSelector<DateType extends object = any>(
   const [getInputProps, getText] = useInputProps<DateType>(
     {
       ...props,
-      onChange: handleSingleChange,
+      onChange: onSingleChange,
     },
     ({ valueTexts }) => ({
       value: valueTexts[0] || '',

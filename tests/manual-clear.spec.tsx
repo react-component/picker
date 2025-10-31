@@ -16,7 +16,7 @@ describe('Picker.ManualClear', () => {
   });
 
   describe('Single Picker', () => {
-    it('should trigger onChange when manually clearing input (select all + delete)', async () => {
+    it('should trigger onChange when manually clearing input', async () => {
       const onChange = jest.fn();
       const { container } = render(
         <Picker
@@ -24,50 +24,7 @@ describe('Picker.ManualClear', () => {
           value={getDay('2023-08-01')}
           onChange={onChange}
           locale={enUS}
-        />,
-      );
-
-      const input = container.querySelector('input') as HTMLInputElement;
-
-      openPicker(container);
-      input.setSelectionRange(0, input.value.length);
-      fireEvent.keyDown(input, { key: 'Delete', code: 'Delete' });
-
-      await waitFakeTimer();
-
-      expect(onChange).toHaveBeenCalledWith(null, null);
-    });
-
-    it('should trigger onChange when manually clearing input (select all + backspace)', async () => {
-      const onChange = jest.fn();
-      const { container } = render(
-        <Picker
-          generateConfig={dayGenerateConfig}
-          value={getDay('2023-08-01')}
-          onChange={onChange}
-          locale={enUS}
-        />,
-      );
-
-      const input = container.querySelector('input') as HTMLInputElement;
-
-      openPicker(container);
-      input.setSelectionRange(0, input.value.length);
-      fireEvent.keyDown(input, { key: 'Backspace', code: 'Backspace' });
-
-      await waitFakeTimer();
-
-      expect(onChange).toHaveBeenCalledWith(null, null);
-    });
-
-    it('should trigger onChange when manually clearing via input change event', async () => {
-      const onChange = jest.fn();
-      const { container } = render(
-        <Picker
-          generateConfig={dayGenerateConfig}
-          value={getDay('2023-08-01')}
-          onChange={onChange}
-          locale={enUS}
+          allowClear
         />,
       );
 
@@ -79,6 +36,32 @@ describe('Picker.ManualClear', () => {
       await waitFakeTimer();
 
       expect(onChange).toHaveBeenCalledWith(null, null);
+    });
+
+    it('should NOT clear when allowClear is disabled - reset to previous value', async () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Picker
+          generateConfig={dayGenerateConfig}
+          value={getDay('2023-08-01')}
+          onChange={onChange}
+          locale={enUS}
+          allowClear={false}
+        />,
+      );
+
+      const input = container.querySelector('input') as HTMLInputElement;
+
+      expect(input.value).toBe('2023-08-01');
+
+      openPicker(container);
+      fireEvent.change(input, { target: { value: '' } });
+      fireEvent.blur(input);
+
+      await waitFakeTimer();
+
+      expect(onChange).not.toHaveBeenCalled();
+      expect(input.value).toBe('2023-08-01');
     });
 
     it('should reset invalid partial input on blur without triggering onChange', async () => {
@@ -115,14 +98,14 @@ describe('Picker.ManualClear', () => {
           onChange={onChange}
           locale={enUS}
           picker="month"
+          allowClear
         />,
       );
 
       const input = container.querySelector('input') as HTMLInputElement;
 
       openPicker(container);
-      input.setSelectionRange(0, input.value.length);
-      fireEvent.keyDown(input, { key: 'Delete', code: 'Delete' });
+      fireEvent.change(input, { target: { value: '' } });
 
       await waitFakeTimer();
 
@@ -137,6 +120,7 @@ describe('Picker.ManualClear', () => {
           value={getDay('2023-08-01')}
           onChange={onChange}
           locale={enUS}
+          allowClear
         />,
       );
 
@@ -144,16 +128,11 @@ describe('Picker.ManualClear', () => {
 
       expect(input.value).toBe('2023-08-01');
 
-      // Open picker
       openPicker(container);
-
-      // Simulate selecting all text and delete
-      input.setSelectionRange(0, input.value.length);
-      fireEvent.keyDown(input, { key: 'Delete', code: 'Delete' });
+      fireEvent.change(input, { target: { value: '' } });
 
       await waitFakeTimer();
 
-      // Input should be empty
       expect(input.value).toBe('');
     });
 
@@ -166,14 +145,14 @@ describe('Picker.ManualClear', () => {
           onChange={onChange}
           locale={enUS}
           format={{ type: 'mask', format: 'YYYY-MM-DD' }}
+          allowClear
         />,
       );
 
       const input = container.querySelector('input') as HTMLInputElement;
 
       openPicker(container);
-      input.setSelectionRange(0, input.value.length);
-      fireEvent.keyDown(input, { key: 'Delete', code: 'Delete' });
+      fireEvent.change(input, { target: { value: '' } });
 
       await waitFakeTimer();
 
@@ -192,14 +171,14 @@ describe('Picker.ManualClear', () => {
           onChange={onChange}
           locale={enUS}
           needConfirm={false}
+          allowClear
         />,
       );
 
       const startInput = container.querySelectorAll('input')[0] as HTMLInputElement;
 
       openPicker(container, 0);
-      startInput.setSelectionRange(0, startInput.value.length);
-      fireEvent.keyDown(startInput, { key: 'Delete', code: 'Delete' });
+      fireEvent.change(startInput, { target: { value: '' } });
       fireEvent.blur(startInput);
 
       await waitFakeTimer();
@@ -216,14 +195,14 @@ describe('Picker.ManualClear', () => {
           onChange={onChange}
           locale={enUS}
           needConfirm={false}
+          allowClear
         />,
       );
 
       const endInput = container.querySelectorAll('input')[1] as HTMLInputElement;
 
       openPicker(container, 1);
-      endInput.setSelectionRange(0, endInput.value.length);
-      fireEvent.keyDown(endInput, { key: 'Delete', code: 'Delete' });
+      fireEvent.change(endInput, { target: { value: '' } });
       fireEvent.blur(endInput);
 
       await waitFakeTimer();
@@ -240,6 +219,7 @@ describe('Picker.ManualClear', () => {
           onChange={onChange}
           locale={enUS}
           needConfirm={false}
+          allowClear
         />,
       );
 
@@ -247,14 +227,12 @@ describe('Picker.ManualClear', () => {
       const endInput = container.querySelectorAll('input')[1] as HTMLInputElement;
 
       openPicker(container, 0);
-      startInput.setSelectionRange(0, startInput.value.length);
-      fireEvent.keyDown(startInput, { key: 'Delete', code: 'Delete' });
+      fireEvent.change(startInput, { target: { value: '' } });
       fireEvent.blur(startInput);
       await waitFakeTimer();
 
       openPicker(container, 1);
-      endInput.setSelectionRange(0, endInput.value.length);
-      fireEvent.keyDown(endInput, { key: 'Delete', code: 'Delete' });
+      fireEvent.change(endInput, { target: { value: '' } });
       fireEvent.blur(endInput);
       await waitFakeTimer();
 
@@ -270,6 +248,7 @@ describe('Picker.ManualClear', () => {
           value={[getDay('2023-08-01'), getDay('2023-08-15')]}
           onChange={onChange}
           locale={enUS}
+          allowClear
         />,
       );
 
@@ -278,8 +257,7 @@ describe('Picker.ManualClear', () => {
       expect(startInput.value).toBe('2023-08-01');
 
       openPicker(container, 0);
-      startInput.setSelectionRange(0, startInput.value.length);
-      fireEvent.keyDown(startInput, { key: 'Delete', code: 'Delete' });
+      fireEvent.change(startInput, { target: { value: '' } });
 
       await waitFakeTimer();
 
@@ -304,8 +282,7 @@ describe('Picker.ManualClear', () => {
 
       const input1 = container1.querySelector('input') as HTMLInputElement;
       openPicker(container1);
-      input1.setSelectionRange(0, input1.value.length);
-      fireEvent.keyDown(input1, { key: 'Delete', code: 'Delete' });
+      fireEvent.change(input1, { target: { value: '' } });
       await waitFakeTimer();
 
       const { container: container2 } = render(
