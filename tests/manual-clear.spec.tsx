@@ -162,7 +162,7 @@ describe('Picker.ManualClear', () => {
   });
 
   describe('Range Picker', () => {
-    it('should trigger onChange when manually clearing start input', async () => {
+    it('should clear start input value when manually clearing', async () => {
       const onChange = jest.fn();
       const { container } = render(
         <RangePicker
@@ -186,7 +186,7 @@ describe('Picker.ManualClear', () => {
       expect(startInput.value).toBe('');
     });
 
-    it('should trigger onChange when manually clearing end input', async () => {
+    it('should clear end input value when manually clearing', async () => {
       const onChange = jest.fn();
       const { container } = render(
         <RangePicker
@@ -210,7 +210,7 @@ describe('Picker.ManualClear', () => {
       expect(endInput.value).toBe('');
     });
 
-    it('should trigger onChange when manually clearing both inputs', async () => {
+    it('should clear both input values when manually clearing', async () => {
       const onChange = jest.fn();
       const { container } = render(
         <RangePicker
