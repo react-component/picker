@@ -75,16 +75,12 @@ describe('Picker.ManualClear', () => {
           format="YYYY-MM-DD"
         />,
       );
-
       const input = container.querySelector('input') as HTMLInputElement;
-
       openPicker(container);
-
+      fireEvent.change(input, { target: { value: '2023-08' } });
       const initialOnChangeCallCount = onChange.mock.calls.length;
-
       fireEvent.blur(input);
       await waitFakeTimer();
-
       expect(onChange.mock.calls.length).toBe(initialOnChangeCallCount);
       expect(input.value).toBe('2023-08-01');
     });
