@@ -36,7 +36,6 @@ import { dateFnsGenerateConfig, dayjsGenerateConfig, luxonGenerateConfig, moment
 export {
   dateFnsGenerateConfig,
   dayjsGenerateConfig,
-  GenerateConfig,
   luxonGenerateConfig,
   momentGenerateConfig,
   Picker,
@@ -44,12 +43,13 @@ export {
   RangePicker,
 };
 export type {
-  RangePickerProps,
-  PickerProps,
-  PickerPanelProps,
-  PickerRef,
-  BasePickerProps,
   BasePickerPanelProps,
+  BasePickerProps,
+  GenerateConfig,
+  PickerPanelProps,
+  PickerProps,
+  PickerRef,
+  RangePickerProps,
   SharedTimeProps,
 };
 export default Picker;
