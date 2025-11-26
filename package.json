@@ -16,6 +16,7 @@
       "import": "./es/index.js",
       "require": "./lib/index.js"
     },
+    "./assets/*": "./assets/*",
     "./generate": {
       "types": "./es/generate/index.d.ts",
       "import": "./es/generate/index.js",
