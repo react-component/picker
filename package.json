@@ -9,6 +9,34 @@
   ],
   "main": "./lib/index",
   "module": "./es/index",
+  "types": "./es/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./es/index.d.ts",
+      "import": "./es/index.js",
+      "require": "./lib/index.js"
+    },
+    "./generate": {
+      "types": "./es/generate/index.d.ts",
+      "import": "./es/generate/index.js",
+      "require": "./lib/generate/index.js"
+    },
+    "./generate/*": {
+      "types": "./es/generate/*.d.ts",
+      "import": "./es/generate/*.js",
+      "require": "./lib/generate/*.js"
+    },
+    "./interface": {
+      "types": "./es/interface.d.ts",
+      "import": "./es/interface.js",
+      "require": "./lib/interface.js"
+    },
+    "./locale/*": {
+      "types": "./es/locale/*.d.ts",
+      "import": "./es/locale/*.js",
+      "require": "./lib/locale/*.js"
+    }
+  },
   "files": [
     "assets/*.css",
     "assets/*.less",
@@ -96,6 +124,6 @@
     }
   },
   "engines": {
-    "node": ">=8.x"
+    "node": ">=12.x"
   }
 }
