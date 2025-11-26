@@ -36,6 +36,46 @@
       "types": "./es/locale/*.d.ts",
       "import": "./es/locale/*.js",
       "require": "./lib/locale/*.js"
+    },
+    "./lib/generate": {
+      "types": "./es/generate/index.d.ts",
+      "import": "./es/generate/index.js",
+      "require": "./lib/generate/index.js"
+    },
+    "./lib/generate/*": {
+      "types": "./es/generate/*.d.ts",
+      "import": "./es/generate/*.js",
+      "require": "./lib/generate/*.js"
+    },
+    "./lib/interface": {
+      "types": "./es/interface.d.ts",
+      "import": "./es/interface.js",
+      "require": "./lib/interface.js"
+    },
+    "./lib/locale/*": {
+      "types": "./es/locale/*.d.ts",
+      "import": "./es/locale/*.js",
+      "require": "./lib/locale/*.js"
+    },
+    "./es/generate": {
+      "types": "./es/generate/index.d.ts",
+      "import": "./es/generate/index.js",
+      "require": "./lib/generate/index.js"
+    },
+    "./es/generate/*": {
+      "types": "./es/generate/*.d.ts",
+      "import": "./es/generate/*.js",
+      "require": "./lib/generate/*.js"
+    },
+    "./es/interface": {
+      "types": "./es/interface.d.ts",
+      "import": "./es/interface.js",
+      "require": "./lib/interface.js"
+    },
+    "./es/locale/*": {
+      "types": "./es/locale/*.d.ts",
+      "import": "./es/locale/*.js",
+      "require": "./lib/locale/*.js"
     }
   },
   "files": [
