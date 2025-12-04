@@ -1,21 +1,21 @@
-# rc-picker
+# @rc-component/picker
 
 [![NPM version][npm-image]][npm-url] [![build status][github-actions-image]][github-actions-url] [![Codecov][codecov-image]][codecov-url] [![npm download][download-image]][download-url] [![bundle size][bundlephobia-image]][bundlephobia-url]
 
-[npm-image]: http://img.shields.io/npm/v/rc-picker.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/rc-picker
-[github-actions-image]: https://github.com/react-component/picker/workflows/CI/badge.svg
-[github-actions-url]: https://github.com/react-component/picker/actions
+[npm-image]: http://img.shields.io/npm/v/@rc-component/picker.svg?style=flat-square
+[npm-url]: http://npmjs.org/package/@rc-component/picker
+[github-actions-image]: https://github.com/react-component/picker/actions/workflows/main.yml/badge.svg
+[github-actions-url]: https://github.com/react-component/picker/actions/workflows/main.yml
 [codecov-image]: https://img.shields.io/codecov/c/github/react-component/picker/master.svg?style=flat-square
 [codecov-url]: https://codecov.io/gh/react-component/picker/branch/master
 [david-url]: https://david-dm.org/react-component/picker
 [david-image]: https://david-dm.org/react-component/picker/status.svg?style=flat-square
 [david-dev-url]: https://david-dm.org/react-component/picker?type=dev
 [david-dev-image]: https://david-dm.org/react-component/picker/dev-status.svg?style=flat-square
-[download-image]: https://img.shields.io/npm/dm/rc-picker.svg?style=flat-square
-[download-url]: https://npmjs.org/package/rc-picker
-[bundlephobia-url]: https://bundlephobia.com/result?p=rc-picker
-[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/rc-picker
+[download-image]: https://img.shields.io/npm/dm/@rc-component/picker.svg?style=flat-square
+[download-url]: https://npmjs.org/package/@rc-component/picker
+[bundlephobia-url]: https://bundlephobia.com/result?p=@rc-component/picker
+[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/@rc-component/picker
 
 ## Live Demo
 
@@ -23,13 +23,13 @@ https://react-component.github.io/picker/
 
 ## Install
 
-[![rc-picker](https://nodei.co/npm/rc-picker.png)](https://npmjs.org/package/rc-picker)
+[![@rc-component/picker](https://nodei.co/npm/@rc-component/picker.png)](https://npmjs.org/package/@rc-component/picker)
 
 ## Usage
 
 ```js
-import Picker from 'rc-picker';
-import 'rc-picker/assets/index.css';
+import Picker from '@rc-component/picker';
+import '@rc-component/picker/assets/index.css';
 import { render } from 'react-dom';
 
 render(<Picker />, mountNode);
@@ -48,7 +48,7 @@ render(<Picker />, mountNode);
 | popupAlign | Object:alignConfig of [dom-align](https://github.com/yiminghe/dom-align) |  | value will be merged into placement's popupAlign config |
 | popupStyle | React.CSSProperties |  | customize popup style |
 | transitionName | String | '' | css class for animation |
-| locale | Object | import from 'rc-picker/lib/locale/en_US' | rc-picker locale |
+| locale | Object | import from '@rc-component/picker/lib/locale/en_US' | @rc-component/picker locale |
 | inputReadOnly | boolean | false | set input to read only |
 | allowClear | boolean \| { clearIcon?: ReactNode } | false | whether show clear button or customize clear button |
 | autoFocus | boolean | false | whether auto focus |
@@ -79,10 +79,10 @@ render(<Picker />, mountNode);
 
 | Property | Type | Default | Description |
 | --- | --- | --- | --- |
-| prefixCls | String | rc-picker | prefixCls of this component |
+| prefixCls | String | @rc-component/picker | prefixCls of this component |
 | className | String | '' | additional css class of root dom |
 | style | React.CSSProperties |  | additional style of root dom node |
-| locale | Object | import from 'rc-picker/lib/locale/en_US' | rc-picker locale |
+| locale | Object | import from '@rc-component/picker/lib/locale/en_US' | @rc-component/picker locale |
 | value | moment |  | current value like input's value |
 | defaultValue | moment |  | defaultValue like input's defaultValue |
 | defaultPickerValue | moment |  | Set default display picker view date |
@@ -107,7 +107,7 @@ render(<Picker />, mountNode);
 | prefixCls | String | rc-picker | prefixCls of this component |
 | className | String | '' | additional css class of root dom |
 | style | React.CSSProperties |  | additional style of root dom node |
-| locale | Object | import from 'rc-picker/lib/locale/en_US' | rc-picker locale |
+| locale | Object | import from '@rc-component/picker/lib/locale/en_US' | @rc-component/picker locale |
 | value | moment |  | current value like input's value |
 | defaultValue | moment |  | defaultValue like input's defaultValue |
 | defaultPickerValue | moment |  | Set default display picker view date |
@@ -153,4 +153,4 @@ npm start
 
 ## License
 
-rc-picker is released under the MIT license.
+@rc-component/picker is released under the MIT license.
