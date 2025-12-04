@@ -1,10 +1,13 @@
 import { clsx } from 'clsx';
-import Overflow from 'rc-overflow';
+import Overflow from '@rc-component/overflow';
 import * as React from 'react';
+import type { MouseEventHandler } from 'react';
 import type { PickerProps } from '../../SinglePicker';
 
-export interface MultipleDatesProps<DateType extends object = any>
-  extends Pick<PickerProps, 'maxTagCount'> {
+export interface MultipleDatesProps<DateType extends object = any> extends Pick<
+  PickerProps,
+  'maxTagCount'
+> {
   prefixCls: string;
   value: DateType[];
   onRemove: (value: DateType) => void;
@@ -33,7 +36,7 @@ export default function MultipleDates<DateType extends object = any>(
   const overflowCls = `${selectionCls}-overflow`;
 
   // ========================= Item =========================
-  function renderSelector(content: React.ReactNode, onClose?: React.MouseEventHandler) {
+  function renderSelector(content: React.ReactNode, onClose?: MouseEventHandler<HTMLSpanElement>) {
     return (
       <span
         className={clsx(`${selectionCls}-item`)}
