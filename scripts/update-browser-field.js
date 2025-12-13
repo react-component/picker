@@ -21,8 +21,9 @@ const addDirMappings = (dirPath, browserPrefix, targetPrefix) => {
     return;
   }
 
-  fs.readdirSync(dirPath)
-    .filter((file) => file.endsWith('.js'))
+  fs.readdirSync(dirPath, { withFileTypes: true })
+    .filter((dirent) => dirent.isFile() && dirent.name.endsWith('.js'))
+    .map((dirent) => dirent.name)
     .sort()
     .forEach((file) => {
       const name = path.basename(file, '.js');
