@@ -142,10 +142,18 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
   // Directly trigger `onChange` if `format` is empty
   const onInternalChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    const text = event.target.value;
+
+    // Handle manual clear only when clearIcon is present (allowClear was enabled)
+    // If clearIcon is not set, reset back to previous valid date instead
+    if (text === '' && value !== '' && clearIcon) {
+      onChange('');
+      setInputValue('');
+      return;
+    }
+
     // Hack `onChange` with format to do nothing
     if (!format) {
-      const text = event.target.value;
-
       onModify(text);
       setInputValue(text);
       onChange(text);
@@ -267,7 +275,6 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
         nextCellText = '';
         nextFillText = cellFormat;
         break;
-
       // =============== Arrows ===============
       // Left key
       case 'ArrowLeft':
