@@ -114,7 +114,7 @@ const getUDayjs = (value) => {
     return value;
   }
 
-  return dayjs(value.unix());
+  return dayjs(value.valueOf());
 };
 
 const generateConfig: GenerateConfig<Dayjs> = {
