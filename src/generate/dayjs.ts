@@ -1,5 +1,5 @@
 import type { Dayjs } from 'dayjs';
-import dayjs, { isDayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
@@ -110,7 +110,7 @@ const parseNoMatchNotice = () => {
 
 // Use internal dayjs instance to avoid implicit dependency on plugins extended by external dayjs versions
 const getUDayjs = (value) => {
-  if (!isDayjs(value) || value instanceof dayjs) {
+  if (!dayjs.isDayjs(value) || value instanceof dayjs) {
     return value;
   }
 
