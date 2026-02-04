@@ -308,6 +308,19 @@ describe('Generate:dayjs', () => {
     const dateb = dayjsGenerateConfig.locale.format('en_US', timeb, 'YYYY-MM-DD HH:mm');
     expect(dateb).toEqual('2022-11-23 13:05');
   });
+
+  it('should convert external dayjs instance via getUDayjs', () => {
+    // Mock an external dayjs object that passes isDayjs() but fails instanceof check
+    // This covers line 117: return dayjs(value.valueOf())
+    const mockExternalDayjs = {
+      $isDayjsObject: true,
+      valueOf: () => new Date('2023-06-20T00:00:00').getTime(),
+    };
+
+    expect(dayjsGenerateConfig.getYear(mockExternalDayjs as any)).toEqual(2023);
+    expect(dayjsGenerateConfig.getMonth(mockExternalDayjs as any)).toEqual(5);
+    expect(dayjsGenerateConfig.getDate(mockExternalDayjs as any)).toEqual(20);
+  });
 });
 
 describe('Generate:date-fns', () => {
