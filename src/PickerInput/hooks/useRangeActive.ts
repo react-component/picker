@@ -2,7 +2,7 @@ import * as React from 'react';
 import type { RangeValueType } from '../RangePicker';
 import useLockEffect from './useLockEffect';
 
-export type OperationType = 'input' | 'panel';
+export type OperationType = 'input' | 'panel' | 'preset-click';
 
 export type NextActive<DateType> = (nextValue: RangeValueType<DateType>) => number | null;
 
