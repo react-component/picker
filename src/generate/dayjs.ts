@@ -108,6 +108,15 @@ const parseNoMatchNotice = () => {
   // noteOnce(false, 'Not match any format. Please help to fire a issue about this.');
 };
 
+// Use internal dayjs instance to avoid implicit dependency on plugins extended by external dayjs versions
+const getUDayjs = (value) => {
+  if (!dayjs.isDayjs(value) || value instanceof dayjs) {
+    return value;
+  }
+
+  return dayjs(value.valueOf());
+};
+
 const generateConfig: GenerateConfig<Dayjs> = {
   // get
   getNow: () => {
@@ -119,42 +128,42 @@ const generateConfig: GenerateConfig<Dayjs> = {
     return now;
   },
   getFixedDate: (string) => dayjs(string, ['YYYY-M-DD', 'YYYY-MM-DD']),
-  getEndDate: (date) => date.endOf('month'),
+  getEndDate: (date) => getUDayjs(date).endOf('month'),
   getWeekDay: (date) => {
-    const clone = date.locale('en');
+    const clone = getUDayjs(date).locale('en');
     return clone.weekday() + clone.localeData().firstDayOfWeek();
   },
-  getYear: (date) => date.year(),
-  getMonth: (date) => date.month(),
-  getDate: (date) => date.date(),
-  getHour: (date) => date.hour(),
-  getMinute: (date) => date.minute(),
-  getSecond: (date) => date.second(),
-  getMillisecond: (date) => date.millisecond(),
+  getYear: (date) => getUDayjs(date).year(),
+  getMonth: (date) => getUDayjs(date).month(),
+  getDate: (date) => getUDayjs(date).date(),
+  getHour: (date) => getUDayjs(date).hour(),
+  getMinute: (date) => getUDayjs(date).minute(),
+  getSecond: (date) => getUDayjs(date).second(),
+  getMillisecond: (date) => getUDayjs(date).millisecond(),
 
   // set
-  addYear: (date, diff) => date.add(diff, 'year'),
-  addMonth: (date, diff) => date.add(diff, 'month'),
-  addDate: (date, diff) => date.add(diff, 'day'),
-  setYear: (date, year) => date.year(year),
-  setMonth: (date, month) => date.month(month),
-  setDate: (date, num) => date.date(num),
-  setHour: (date, hour) => date.hour(hour),
-  setMinute: (date, minute) => date.minute(minute),
-  setSecond: (date, second) => date.second(second),
-  setMillisecond: (date, milliseconds) => date.millisecond(milliseconds),
+  addYear: (date, diff) => getUDayjs(date).add(diff, 'year'),
+  addMonth: (date, diff) => getUDayjs(date).add(diff, 'month'),
+  addDate: (date, diff) => getUDayjs(date).add(diff, 'day'),
+  setYear: (date, year) => getUDayjs(date).year(year),
+  setMonth: (date, month) => getUDayjs(date).month(month),
+  setDate: (date, num) => getUDayjs(date).date(num),
+  setHour: (date, hour) => getUDayjs(date).hour(hour),
+  setMinute: (date, minute) => getUDayjs(date).minute(minute),
+  setSecond: (date, second) => getUDayjs(date).second(second),
+  setMillisecond: (date, milliseconds) => getUDayjs(date).millisecond(milliseconds),
 
   // Compare
-  isAfter: (date1, date2) => date1.isAfter(date2),
-  isValidate: (date) => date.isValid(),
+  isAfter: (date1, date2) => getUDayjs(date1).isAfter(getUDayjs(date2)),
+  isValidate: (date) => getUDayjs(date).isValid(),
 
   locale: {
     getWeekFirstDay: (locale) => dayjs().locale(parseLocale(locale)).localeData().firstDayOfWeek(),
-    getWeekFirstDate: (locale, date) => date.locale(parseLocale(locale)).weekday(0),
-    getWeek: (locale, date) => date.locale(parseLocale(locale)).week(),
+    getWeekFirstDate: (locale, date) => getUDayjs(date).locale(parseLocale(locale)).weekday(0),
+    getWeek: (locale, date) => getUDayjs(date).locale(parseLocale(locale)).week(),
     getShortWeekDays: (locale) => dayjs().locale(parseLocale(locale)).localeData().weekdaysMin(),
     getShortMonths: (locale) => dayjs().locale(parseLocale(locale)).localeData().monthsShort(),
-    format: (locale, date, format) => date.locale(parseLocale(locale)).format(format),
+    format: (locale, date, format) => getUDayjs(date).locale(parseLocale(locale)).format(format),
     parse: (locale, text, formats) => {
       const localeStr = parseLocale(locale);
       for (let i = 0; i < formats.length; i += 1) {
