@@ -333,39 +333,47 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   // ======================== Format ========================
   const rafRef = React.useRef<number>();
 
-  useLayoutEffect(() => {
-    if (!focused || !format || mouseDownRef.current) {
-      return;
-    }
+  useLayoutEffect(
+    function () {
+      if (!focused || !format) {
+        return;
+      }
 
-    // Reset with format if not match
-    if (!maskFormat.match(inputValue)) {
-      triggerInputChange(format);
-      return;
-    }
+      // Reset with format if not match (always apply when focused so mask works when focusing by mousedown)
+      if (!maskFormat.match(inputValue)) {
+        triggerInputChange(format);
+        return;
+      }
 
-    // Match the selection range
-    inputRef.current.setSelectionRange(selectionStart, selectionEnd);
+      // When mousedown get focus, defer selection to mouseUp so click position is used
+      if (mouseDownRef.current) {
+        return;
+      }
 
-    // Chrome has the bug anchor position looks not correct but actually correct
-    rafRef.current = raf(() => {
+      // Match the selection range
       inputRef.current.setSelectionRange(selectionStart, selectionEnd);
-    });
 
-    return () => {
-      raf.cancel(rafRef.current);
-    };
-  }, [
-    maskFormat,
-    format,
-    focused,
-    inputValue,
-    focusCellIndex,
-    selectionStart,
-    selectionEnd,
-    forceSelectionSyncMark,
-    triggerInputChange,
-  ]);
+      // Chrome has the bug anchor position looks not correct but actually correct
+      rafRef.current = raf(() => {
+        inputRef.current.setSelectionRange(selectionStart, selectionEnd);
+      });
+
+      return () => {
+        raf.cancel(rafRef.current);
+      };
+    },
+    [
+      maskFormat,
+      format,
+      focused,
+      inputValue,
+      focusCellIndex,
+      selectionStart,
+      selectionEnd,
+      forceSelectionSyncMark,
+      triggerInputChange,
+    ],
+  );
 
   // ======================== Render ========================
   // Input props for format
