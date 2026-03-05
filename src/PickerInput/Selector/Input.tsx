@@ -334,13 +334,18 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   const rafRef = React.useRef<number>();
 
   useLayoutEffect(() => {
-    if (!focused || !format || mouseDownRef.current) {
+    if (!focused || !format) {
       return;
     }
 
-    // Reset with format if not match
+    // Reset with format if not match (always apply when focused so mask works when focusing by mousedown)
     if (!maskFormat.match(inputValue)) {
       triggerInputChange(format);
+      return;
+    }
+
+    // When mousedown get focus, defer selection to mouseUp so click position is used
+    if (mouseDownRef.current) {
       return;
     }
 

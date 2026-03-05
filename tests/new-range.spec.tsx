@@ -1010,6 +1010,19 @@ describe('NewPicker.Range', () => {
       expect(startInput.selectionEnd).toEqual(6);
     });
 
+    it('focus by mousedown defers selection sync to mouseUp', () => {
+      const { container } = render(<Demo />);
+
+      const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+
+      fireEvent.mouseDown(startInput);
+      fireEvent.focus(startInput);
+
+      fireEvent.mouseUp(startInput);
+      expect(startInput.selectionStart).toBeDefined();
+      expect(startInput.selectionEnd).toBeDefined();
+    });
+
     it('blur to reset back text', async () => {
       const { container } = render(<Demo />);
 
