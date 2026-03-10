@@ -97,6 +97,8 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   // ========================= Refs =========================
   const holderRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  // When mousedown get focus, defer selection to mouseUp so click position is used
+  const mouseDownRef = React.useRef(false);
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: holderRef.current,
@@ -170,8 +172,6 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   // ======================== Mouse =========================
   // When `mouseDown` get focus, it's better to not to change the selection
   // Since the up position maybe not is the first cell
-  const mouseDownRef = React.useRef(false);
-
   const onFormatMouseDown: React.MouseEventHandler<HTMLInputElement> = () => {
     mouseDownRef.current = true;
   };
