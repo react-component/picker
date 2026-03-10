@@ -995,6 +995,35 @@ describe('NewPicker.Range', () => {
       expect(onChange).toHaveBeenCalledWith(expect.anything(), ['20200903', '20200905']);
     });
 
+    it('blocks paste while mouse is down', () => {
+      const onChange = jest.fn();
+      const { container } = render(<Demo onChange={onChange} />);
+
+      const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+
+      // Simulate focus gained by mousedown, then paste before mouse up.
+      fireEvent.mouseDown(startInput);
+      fireEvent.focus(startInput);
+
+      fireEvent.paste(startInput, {
+        clipboardData: {
+          getData: () => '20200903',
+        },
+      });
+
+      // Guard in Input should prevent paste from taking effect
+      expect(onChange).not.toHaveBeenCalled();
+
+      // After mouse up, normal paste works again
+      fireEvent.mouseUp(startInput);
+      fireEvent.paste(startInput, {
+        clipboardData: {
+          getData: () => '20200903',
+        },
+      });
+      expect(onChange).toHaveBeenCalled();
+    });
+
     it('click to change selection cell', () => {
       const { container } = render(<Demo />);
 
@@ -1008,6 +1037,30 @@ describe('NewPicker.Range', () => {
       fireEvent.mouseUp(startInput);
       expect(startInput.selectionStart).toEqual(4);
       expect(startInput.selectionEnd).toEqual(6);
+    });
+
+    it('blocks key input while mouse is down', () => {
+      const { container } = render(<Demo />);
+
+      const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+
+      // Simulate focus gained by mousedown, then key input before mouse up.
+      fireEvent.mouseDown(startInput);
+      fireEvent.focus(startInput);
+
+      fireEvent.keyDown(startInput, {
+        key: '1',
+      });
+
+      // Guard in Input should prevent any value change before mouse up
+      expect(startInput).toHaveValue('YYYYMMDD');
+
+      // After mouse up, key input should be allowed and update value
+      fireEvent.mouseUp(startInput);
+      fireEvent.keyDown(startInput, {
+        key: '1',
+      });
+      expect(startInput).not.toHaveValue('YYYYMMDD');
     });
 
     it('focus by mousedown defers selection sync to mouseUp', () => {
