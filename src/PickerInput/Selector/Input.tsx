@@ -227,28 +227,15 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   };
 
   const onFormatKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    // Block key input until selection is set (after mouseUp when focus was by mousedown)
+    if (mouseDownRef.current) {
+      event.preventDefault();
+      return;
+    }
+
     onSharedKeyDown(event);
 
     const { key } = event;
-
-    // Block mask editing until selection is set (after mouseUp when focus was by mousedown).
-    // Still allow shared handlers (onKeyDown, Enter submit) above to run.
-    if (mouseDownRef.current) {
-      const shouldBlock =
-        key.length === 1 ||
-        key === 'Backspace' ||
-        key === 'Delete' ||
-        key === 'ArrowLeft' ||
-        key === 'ArrowRight' ||
-        key === 'ArrowUp' ||
-        key === 'ArrowDown';
-
-      if (shouldBlock) {
-        event.preventDefault();
-      }
-
-      return;
-    }
 
     // Save the cache with cell text
     let nextCellText: string = null;
