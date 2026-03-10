@@ -153,6 +153,12 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   };
 
   const onFormatPaste: React.ClipboardEventHandler<HTMLInputElement> = (event) => {
+    // Block paste until selection is set (after mouseUp when focus was by mousedown)
+    if (mouseDownRef.current) {
+      event.preventDefault();
+      return;
+    }
+
     // Get paste text
     const pasteText = event.clipboardData.getData('text');
 
@@ -221,6 +227,12 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   };
 
   const onFormatKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    // Block key input until selection is set (after mouseUp when focus was by mousedown)
+    if (mouseDownRef.current) {
+      event.preventDefault();
+      return;
+    }
+
     onSharedKeyDown(event);
 
     const { key } = event;
