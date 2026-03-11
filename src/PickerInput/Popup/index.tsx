@@ -34,6 +34,8 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   activeInfo?: [activeInputLeft: number, activeInputRight: number, selectorWidth: number];
   // Direction
   direction?: 'ltr' | 'rtl';
+  /** @internal: active input index for layout retry. Not part of public API. */
+  index?: number;
 
   // Fill
   /** TimePicker or showTime only */
@@ -61,7 +63,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     range,
     multiple,
     activeInfo = [0, 0, 0],
-
+    index,
     // Presets
     presets,
     onPresetHover,
@@ -85,7 +87,6 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     classNames,
     styles,
   } = props;
-
   const { prefixCls } = React.useContext(PickerContext);
   const panelPrefixCls = `${prefixCls}-panel`;
 
@@ -123,7 +124,13 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
       // Arrow Offset
       const wrapperRect = wrapperRef.current.getBoundingClientRect();
       if (!wrapperRect.height || wrapperRect.right < 0) {
-        setRetryTimes((times) => Math.max(0, times - 1));
+        // This is a workaround to bypass the inconsistent useEffect behavior in React 18.
+        // When wrapperRef.current.getBoundingClientRect() fails to calculate the position correctly, it enters the retry logic.
+        // Under normal circumstances, retryTimes - 1 should equal 9, and useEffect would re-execute the side effect if dependencies change.
+        // However, in React 18, the side effect is no longer re-executed in such cases.
+        // By subtracting the index of the currently active input field (index, which is either 0 or 1), we compensate for this additional execution.
+        // Related issue: https://github.com/ant-design/ant-design/issues/54885
+        setRetryTimes((times) => Math.max(0, times - index - 1));
         return;
       }
 
@@ -143,7 +150,16 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
         setContainerOffset(0);
       }
     }
-  }, [retryTimes, rtl, containerWidth, activeInputLeft, activeInputRight, selectorWidth, range]);
+  }, [
+    retryTimes,
+    rtl,
+    containerWidth,
+    activeInputLeft,
+    activeInputRight,
+    selectorWidth,
+    range,
+    index,
+  ]);
 
   // ======================== Custom ========================
   function filterEmpty<T>(list: T[]) {
