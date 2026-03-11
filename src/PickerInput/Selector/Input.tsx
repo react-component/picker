@@ -346,7 +346,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   const rafRef = React.useRef<number>();
 
   useLayoutEffect(() => {
-    if (!focused || !format) {
+    if (!focused || !format || mouseDownRef.current) {
       return;
     }
 
