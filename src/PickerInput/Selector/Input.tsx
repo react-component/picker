@@ -350,14 +350,9 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
       return;
     }
 
-    // Reset with format if not match (always apply when focused so mask works when focusing by mousedown)
+    // Reset with format if not match
     if (!maskFormat.match(inputValue)) {
       triggerInputChange(format);
-      return;
-    }
-
-    // When mousedown get focus, defer selection to mouseUp so click position is used
-    if (mouseDownRef.current) {
       return;
     }
 
