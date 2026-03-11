@@ -1,5 +1,5 @@
 // In theory, all RangePicker test cases should be paired with SinglePicker
-import { act, fireEvent, render } from '@testing-library/react';
+import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import dayjs, { type Dayjs } from 'dayjs';
 import 'dayjs/locale/ar';
 import { spyElementPrototype } from '@rc-component/util/lib/test/domHook';
@@ -995,6 +995,27 @@ describe('NewPicker.Range', () => {
       expect(onChange).toHaveBeenCalledWith(expect.anything(), ['20200903', '20200905']);
     });
 
+    it('blocks paste while mouse is down', () => {
+      const { container } = render(<Demo />);
+
+      const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+
+      // Simulate focus gained by mousedown, then paste before mouse up.
+      fireEvent.mouseDown(startInput);
+      fireEvent.focus(startInput);
+
+      const pasteEvent = createEvent.paste(startInput, {
+        clipboardData: {
+          getData: () => '20200903',
+        },
+      });
+      pasteEvent.preventDefault = jest.fn();
+      fireEvent(startInput, pasteEvent);
+
+      // Guard in Input should prevent default while mouse is down
+      expect(pasteEvent.preventDefault).toHaveBeenCalled();
+    });
+
     it('click to change selection cell', () => {
       const { container } = render(<Demo />);
 
@@ -1008,6 +1029,38 @@ describe('NewPicker.Range', () => {
       fireEvent.mouseUp(startInput);
       expect(startInput.selectionStart).toEqual(4);
       expect(startInput.selectionEnd).toEqual(6);
+    });
+
+    it('blocks key input while mouse is down', () => {
+      const { container } = render(<Demo />);
+
+      const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+
+      // Simulate focus gained by mousedown, then key input before mouse up.
+      fireEvent.mouseDown(startInput);
+      fireEvent.focus(startInput);
+
+      const keyDownEvent = createEvent.keyDown(startInput, {
+        key: '1',
+      });
+      keyDownEvent.preventDefault = jest.fn();
+      fireEvent(startInput, keyDownEvent);
+
+      // Guard in Input should prevent default while mouse is down
+      expect(keyDownEvent.preventDefault).toHaveBeenCalled();
+    });
+
+    it('focus by mousedown defers selection sync to mouseUp', () => {
+      const { container } = render(<Demo />);
+
+      const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+
+      fireEvent.mouseDown(startInput);
+      fireEvent.focus(startInput);
+
+      fireEvent.mouseUp(startInput);
+      expect(startInput.selectionStart).toBeDefined();
+      expect(startInput.selectionEnd).toBeDefined();
     });
 
     it('blur to reset back text', async () => {
