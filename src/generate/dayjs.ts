@@ -189,7 +189,7 @@ const generateConfig: GenerateConfig<Dayjs> = {
         }
       }
 
-      if (text) {
+      if (!text) {
         parseNoMatchNotice();
       }
       return null;
