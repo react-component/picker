@@ -1,8 +1,9 @@
 import { clsx } from 'clsx';
 import * as React from 'react';
 import type { DisabledDate } from '../interface';
-import { formatValue, isInRange, isSame } from '../utils/dateUtil';
+import { formatValue, isInRange, isSame, isSameMonth } from '../utils/dateUtil';
 import { PickerHackContext, usePanelContext } from './context';
+import { offsetPanelDate } from '@/PickerInput/hooks/useRangePickerValue';
 
 export interface PanelBodyProps<DateType = any> {
   rowNum: number;
@@ -25,6 +26,7 @@ export interface PanelBodyProps<DateType = any> {
   prefixColumn?: (date: DateType) => React.ReactNode;
   rowClassName?: (date: DateType) => string;
   cellSelection?: boolean;
+  onChange?: (date: DateType) => void;
 }
 
 export default function PanelBody<DateType extends object = any>(props: PanelBodyProps<DateType>) {
@@ -41,6 +43,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
     headerCells,
     cellSelection = true,
     disabledDate,
+    onChange,
   } = props;
 
   const {
@@ -64,6 +67,10 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
 
   const cellPrefixCls = `${prefixCls}-cell`;
 
+  const [focusDateTime, setFocusDateTime] = React.useState(values?.[values.length - 1] ?? now);
+
+  const cellRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
+
   // ============================= Context ==============================
   const { onCellDblClick } = React.useContext(PickerHackContext);
 
@@ -72,6 +79,81 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
     values.some(
       (singleValue) => singleValue && isSame(generateConfig, locale, date, singleValue, type),
     );
+
+  // ============================== Event Handlers ===============================
+
+  const moveFocus = (offset: number) => {
+    const nextDate = generateConfig.addDate(focusDateTime, offset);
+    setFocusDateTime(nextDate);
+
+    const focusElement =
+      cellRefs.current[
+        formatValue(nextDate, {
+          locale,
+          format: 'YYYY-MM-DD',
+          generateConfig,
+        })
+      ];
+    if (focusElement) {
+      requestAnimationFrame(() => {
+        focusElement.focus();
+      });
+    }
+
+    if (type && !isSame(generateConfig, locale, focusDateTime, nextDate, type)) {
+      return onChange?.(nextDate);
+    }
+  };
+
+  const onKeyDown = React.useCallback(
+    (event) => {
+      switch (event.key) {
+        case 'ArrowRight':
+          moveFocus(1);
+          break;
+        case 'ArrowLeft':
+          moveFocus(-1);
+          break;
+        case 'ArrowDown':
+          moveFocus(7);
+          break;
+        case 'ArrowUp':
+          moveFocus(-7);
+          break;
+        case 'Enter':
+          onSelect(focusDateTime);
+          break;
+
+        case 'Esc':
+          break;
+
+        case 'Tab':
+          onChange?.(focusDateTime);
+
+        default:
+          return;
+      }
+
+      event.preventDefault();
+    },
+    [focusDateTime, generateConfig, onSelect],
+  );
+
+  React.useEffect(() => {
+    const focusElement =
+      cellRefs.current[
+        formatValue(focusDateTime, {
+          locale,
+          format: 'YYYY-MM-DD',
+          generateConfig,
+        })
+      ];
+    if (focusElement) {
+      requestAnimationFrame(() => {
+        focusElement.focus();
+      });
+    }
+  }, []);
 
   // =============================== Body ===============================
   const rows: React.ReactNode[] = [];
@@ -118,8 +200,27 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
           })
         : undefined;
 
+      const isCurrentDateFocused = isSame(generateConfig, locale, currentDate, focusDateTime, type);
+
       // Render
-      const inner = <div className={`${cellPrefixCls}-inner`}>{getCellText(currentDate)}</div>;
+      const inner = (
+        <div
+          tabIndex={isCurrentDateFocused ? 0 : -1}
+          onKeyDown={onKeyDown}
+          className={`${cellPrefixCls}-inner`}
+          ref={(element) => {
+            cellRefs.current[
+              formatValue(currentDate, {
+                locale,
+                format: 'YYYY-MM-DD',
+                generateConfig,
+              })
+            ] = element;
+          }}
+        >
+          {getCellText(currentDate)}
+        </div>
+      );
 
       rowNode.push(
         <td

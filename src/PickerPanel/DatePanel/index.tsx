@@ -215,6 +215,7 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
           getCellClassName={getCellClassName}
           prefixColumn={prefixColumn}
           cellSelection={!isWeek}
+          onChange={onPickerValueChange}
         />
       </div>
     </PanelContext.Provider>

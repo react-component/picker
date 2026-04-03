@@ -16,7 +16,7 @@ import type {
   SharedTimeProps,
   ValueDate,
 } from '../interface';
-import PickerTrigger from '../PickerTrigger';
+import PickerTrigger, { RefTriggerProps } from '../PickerTrigger';
 import { pickTriggerProps } from '../PickerTrigger/util';
 import { toArray } from '../utils/miscUtil';
 import PickerContext from './context';
@@ -195,6 +195,7 @@ function Picker<DateType extends object = any>(
 
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
+  const triggerRef = React.useRef<RefTriggerProps>(null);
 
   // ========================= Util =========================
   function pickerParam<T>(values: T | T[]) {
@@ -579,8 +580,22 @@ function Picker<DateType extends object = any>(
   };
 
   const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event, preventDefault) => {
-    if (event.key === 'Tab') {
+    if (event.key === 'Enter') {
+      triggerOpen(true);
+
+      return;
+    }
+
+    if (event.key === 'Esc') {
       triggerConfirm();
+
+      return;
+    }
+
+    if (event.key === 'Tab') {
+      if (mergedOpen) {
+        // event.preventDefault();
+      }
     }
 
     onKeyDown?.(event, preventDefault);
@@ -645,6 +660,7 @@ function Picker<DateType extends object = any>(
         // Visible
         visible={mergedOpen}
         onClose={onPopupClose}
+        ref={triggerRef}
       >
         <SingleSelector
           // Shared
