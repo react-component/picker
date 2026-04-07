@@ -520,6 +520,24 @@ describe('Picker.Basic', () => {
       expect(isSame(onOk.mock.calls[0][0], '1990-09-03 13:22:33', 'second')).toBeTruthy();
       expect(isSame(onChange.mock.calls[0][0], '1990-09-03 13:22:33', 'second')).toBeTruthy();
     });
+
+    it('should not submit on double click when confirmOnDoubleClick is false', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayPicker needConfirm={{ confirmOnDoubleClick: false }} onChange={onChange} />,
+      );
+
+      openPicker(container);
+      fireEvent.click(findCell(5));
+      fireEvent.doubleClick(findCell(5));
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(onChange).not.toHaveBeenCalled();
+      expect(isOpen()).toBeTruthy();
+    });
   });
 
   it('renderExtraFooter', () => {

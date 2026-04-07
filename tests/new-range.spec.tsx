@@ -753,7 +753,9 @@ describe('NewPicker.Range', () => {
     it('double click to confirm if needConfirm', () => {
       const onChange = jest.fn();
 
-      const { container } = render(<DayRangePicker showTime onChange={onChange} />);
+      const { container } = render(
+        <DayRangePicker showTime needConfirm={{}} onChange={onChange} />,
+      );
       openPicker(container);
 
       fireEvent.click(findCell(5));
@@ -771,6 +773,33 @@ describe('NewPicker.Range', () => {
         '1990-09-05 00:00:00',
         '1990-09-05 11:00:00',
       ]);
+    });
+
+    it('double click should not confirm if confirmOnDoubleClick is false', () => {
+      const onChange = jest.fn();
+
+      const { container } = render(
+        <DayRangePicker
+          picker="time"
+          needConfirm={{ confirmOnDoubleClick: false }}
+          onChange={onChange}
+        />,
+      );
+
+      openPicker(container);
+
+      const li = document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[11];
+      fireEvent.click(li);
+      fireEvent.doubleClick(li);
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(container.querySelectorAll('input')[0]).toHaveValue('11:00:00');
+      expect(container.querySelectorAll('input')[1]).toHaveValue('');
+      expect(onChange).not.toHaveBeenCalled();
+      expect(isOpen()).toBeTruthy();
     });
 
     it('double click should not take action if !needConfirm', () => {

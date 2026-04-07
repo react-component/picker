@@ -56,8 +56,10 @@ export type RangeValueType<DateType> = [
 /** Used for change event, it should always be not undefined */
 export type NoUndefinedRangeValueType<DateType> = [start: DateType | null, end: DateType | null];
 
-export interface BaseRangePickerProps<DateType extends object>
-  extends Omit<SharedPickerProps<DateType>, 'showTime' | 'id'> {
+export interface BaseRangePickerProps<DateType extends object> extends Omit<
+  SharedPickerProps<DateType>,
+  'showTime' | 'id'
+> {
   // Structure
   id?: SelectorIdType;
 
@@ -132,7 +134,8 @@ export interface BaseRangePickerProps<DateType extends object>
 }
 
 export interface RangePickerProps<DateType extends object>
-  extends BaseRangePickerProps<DateType>,
+  extends
+    BaseRangePickerProps<DateType>,
     Omit<RangeTimeProps<DateType>, 'format' | 'defaultValue' | 'defaultOpenValue'> {}
 
 function getActiveRange(activeIndex: number) {
@@ -169,6 +172,7 @@ function RangePicker<DateType extends object = any>(
     defaultValue,
     value,
     needConfirm,
+    confirmOnDoubleClick,
     onKeyDown,
 
     // Disabled
@@ -617,6 +621,7 @@ function RangePicker<DateType extends object = any>(
       onHover={onPanelHover}
       // Submit
       needConfirm={needConfirm}
+      confirmOnDoubleClick={confirmOnDoubleClick}
       onSubmit={triggerPartConfirm}
       onOk={triggerOk}
       // Preset

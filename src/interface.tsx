@@ -315,6 +315,12 @@ export type SemanticName = 'root' | 'prefix' | 'input' | 'suffix';
 
 export type PreviewValueType = 'hover';
 
+export type NeedConfirmConfig =
+  | boolean
+  | {
+      confirmOnDoubleClick?: boolean;
+    };
+
 export type PanelSemanticName =
   | 'root'
   | 'header'
@@ -325,7 +331,8 @@ export type PanelSemanticName =
   | 'container';
 
 export interface SharedPickerProps<DateType extends object = any>
-  extends SharedHTMLAttrs,
+  extends
+    SharedHTMLAttrs,
     Pick<
       SharedPanelProps<DateType>,
       // Icon
@@ -418,8 +425,9 @@ export interface SharedPickerProps<DateType extends object = any>
    * By default. Only `time` or `datetime` show the confirm button in panel.
    * `true` to make every picker need confirm.
    * `false` to trigger change on every time panel closed by the mode = picker.
+   * Config mode can customize how explicit confirm behaves.
    */
-  needConfirm?: boolean;
+  needConfirm?: NeedConfirmConfig;
 
   /**
    * @deprecated. This is removed and not work anymore.

@@ -50,6 +50,22 @@ type GetGeneric<T> = T extends PickedProps<infer U> ? U : never;
 
 type ToArrayType<T, DateType> = T extends any[] ? T : DateType[];
 
+type FilledProps<
+  InProps extends PickedProps,
+  DateType extends GetGeneric<InProps>,
+  UpdaterProps extends object,
+> = Omit<InProps, keyof UpdaterProps | 'showTime' | 'value' | 'defaultValue' | 'needConfirm'> &
+  UpdaterProps & {
+    picker: PickerMode;
+    showTime?: ExcludeBooleanType<InProps['showTime']>;
+    needConfirm: boolean;
+    confirmOnDoubleClick: boolean;
+    value?: ToArrayType<InProps['value'], DateType>;
+    defaultValue?: ToArrayType<InProps['value'], DateType>;
+    pickerValue?: ToArrayType<InProps['value'], DateType>;
+    defaultPickerValue?: ToArrayType<InProps['value'], DateType>;
+  };
+
 function useList<T>(value: T | T[], fillMode = false) {
   const values = React.useMemo(() => {
     const list = value ? toArray(value) : value;
@@ -77,15 +93,7 @@ export default function useFilledProps<
   props: InProps,
   updater?: () => UpdaterProps,
 ): [
-  filledProps: Omit<InProps, keyof UpdaterProps | 'showTime' | 'value' | 'defaultValue'> &
-    UpdaterProps & {
-      picker: PickerMode;
-      showTime?: ExcludeBooleanType<InProps['showTime']>;
-      value?: ToArrayType<InProps['value'], DateType>;
-      defaultValue?: ToArrayType<InProps['value'], DateType>;
-      pickerValue?: ToArrayType<InProps['value'], DateType>;
-      defaultPickerValue?: ToArrayType<InProps['value'], DateType>;
-    },
+  filledProps: FilledProps<InProps, DateType, UpdaterProps>,
   internalPicker: InternalMode,
   complexPicker: boolean,
   formatList: FormatType<DateType>[],
@@ -132,7 +140,10 @@ export default function useFilledProps<
   /** The picker is `datetime` or `time` */
   const multipleInteractivePicker = internalPicker === 'time' || internalPicker === 'datetime';
   const complexPicker = multipleInteractivePicker || multiple;
-  const mergedNeedConfirm = needConfirm ?? multipleInteractivePicker;
+  const needConfirmConfig =
+    typeof needConfirm === 'object' && needConfirm !== null ? needConfirm : null;
+  const mergedNeedConfirm = needConfirmConfig ? true : (needConfirm ?? multipleInteractivePicker);
+  const mergedConfirmOnDoubleClick = needConfirmConfig?.confirmOnDoubleClick ?? true;
 
   // ========================== Time ==========================
   // Auto `format` need to check `showTime.showXXX` first.
@@ -206,14 +217,22 @@ export default function useFilledProps<
   );
 
   // ======================== Merged ========================
-  const mergedProps = React.useMemo(
-    () => ({
-      ...filledProps,
-      needConfirm: mergedNeedConfirm,
-      inputReadOnly: mergedInputReadOnly,
-      disabledDate: disabledBoundaryDate,
-    }),
-    [filledProps, mergedNeedConfirm, mergedInputReadOnly, disabledBoundaryDate],
+  const mergedProps = React.useMemo<FilledProps<InProps, DateType, UpdaterProps>>(
+    () =>
+      ({
+        ...filledProps,
+        needConfirm: mergedNeedConfirm,
+        confirmOnDoubleClick: mergedConfirmOnDoubleClick,
+        inputReadOnly: mergedInputReadOnly,
+        disabledDate: disabledBoundaryDate,
+      }) as FilledProps<InProps, DateType, UpdaterProps>,
+    [
+      filledProps,
+      mergedNeedConfirm,
+      mergedConfirmOnDoubleClick,
+      mergedInputReadOnly,
+      disabledBoundaryDate,
+    ],
   );
 
   return [mergedProps, internalPicker, complexPicker, formatList, maskFormat, isInvalidateDate];

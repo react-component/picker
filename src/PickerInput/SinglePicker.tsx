@@ -36,8 +36,9 @@ import useSemantic from '../hooks/useSemantic';
 
 // TODO: isInvalidateDate with showTime.disabledTime should not provide `range` prop
 
-export interface BasePickerProps<DateType extends object = any>
-  extends SharedPickerProps<DateType> {
+export interface BasePickerProps<
+  DateType extends object = any,
+> extends SharedPickerProps<DateType> {
   // Structure
   id?: string;
 
@@ -100,8 +101,7 @@ export interface BasePickerProps<DateType extends object = any>
 }
 
 export interface PickerProps<DateType extends object = any>
-  extends BasePickerProps<DateType>,
-    Omit<SharedTimeProps<DateType>, 'format' | 'defaultValue'> {}
+  extends BasePickerProps<DateType>, Omit<SharedTimeProps<DateType>, 'format' | 'defaultValue'> {}
 
 /** Internal usage. For cross function get same aligned props */
 export type ReplacedPickerProps<DateType extends object = any> = {
@@ -135,6 +135,7 @@ function Picker<DateType extends object = any>(
     defaultValue,
     value,
     needConfirm,
+    confirmOnDoubleClick,
     onChange,
     onKeyDown,
 
@@ -531,6 +532,7 @@ function Picker<DateType extends object = any>(
       onHover={onPanelHover}
       // Submit
       needConfirm={needConfirm}
+      confirmOnDoubleClick={confirmOnDoubleClick}
       onSubmit={triggerConfirm}
       onOk={triggerOk}
       // Preset

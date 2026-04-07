@@ -14,6 +14,7 @@ export type PopupPanelProps<DateType extends object = any> = MustProp<DateType> 
   FooterProps<DateType> & {
     multiplePanel?: boolean;
     range?: boolean;
+    confirmOnDoubleClick: boolean;
 
     onPickerValueChange: (date: DateType) => void;
   };
@@ -27,6 +28,7 @@ export default function PopupPanel<DateType extends object = any>(
     pickerValue,
     onPickerValueChange,
     needConfirm,
+    confirmOnDoubleClick,
     onSubmit,
     range,
     hoverValue,
@@ -54,7 +56,7 @@ export default function PopupPanel<DateType extends object = any>(
   // ======================= Context ========================
   const sharedContext: PickerHackContextProps = {
     onCellDblClick: () => {
-      if (needConfirm) {
+      if (needConfirm && confirmOnDoubleClick) {
         onSubmit();
       }
     },
