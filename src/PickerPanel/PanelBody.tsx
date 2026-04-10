@@ -4,6 +4,7 @@ import type { DisabledDate } from '../interface';
 import { formatValue, isInRange, isSame, isSameMonth } from '../utils/dateUtil';
 import { PickerHackContext, usePanelContext } from './context';
 import { offsetPanelDate } from '@/PickerInput/hooks/useRangePickerValue';
+import { useEvent } from '@rc-component/util';
 
 export interface PanelBodyProps<DateType = any> {
   rowNum: number;
@@ -105,55 +106,30 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
     }
   };
 
-  const onKeyDown = React.useCallback(
-    (event) => {
-      switch (event.key) {
-        case 'ArrowRight':
-          moveFocus(1);
-          break;
-        case 'ArrowLeft':
-          moveFocus(-1);
-          break;
-        case 'ArrowDown':
-          moveFocus(7);
-          break;
-        case 'ArrowUp':
-          moveFocus(-7);
-          break;
-        case 'Enter':
-          onSelect(focusDateTime);
-          break;
+  const onKeyDown = useEvent((event) => {
+    switch (event.key) {
+      case 'ArrowRight':
+        moveFocus(1);
+        break;
+      case 'ArrowLeft':
+        moveFocus(-1);
+        break;
+      case 'ArrowDown':
+        moveFocus(7);
+        break;
+      case 'ArrowUp':
+        moveFocus(-7);
+        break;
+      case 'Enter':
+        onSelect(focusDateTime);
+        break;
+      case 'Tab':
+        onChange?.(focusDateTime);
 
-        case 'Esc':
-          break;
-
-        case 'Tab':
-          onChange?.(focusDateTime);
-
-        default:
-          return;
-      }
-
-      event.preventDefault();
-    },
-    [focusDateTime, generateConfig, onSelect],
-  );
-
-  React.useEffect(() => {
-    const focusElement =
-      cellRefs.current[
-        formatValue(focusDateTime, {
-          locale,
-          format: 'YYYY-MM-DD',
-          generateConfig,
-        })
-      ];
-    if (focusElement) {
-      requestAnimationFrame(() => {
-        focusElement.focus();
-      });
+      default:
+        return;
     }
-  }, []);
+  });
 
   // =============================== Body ===============================
   const rows: React.ReactNode[] = [];

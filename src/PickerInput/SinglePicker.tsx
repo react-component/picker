@@ -33,6 +33,7 @@ import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
 import SingleSelector from './Selector/SingleSelector';
 import useSemantic from '../hooks/useSemantic';
+import raf from '@rc-component/util/lib/raf';
 
 // TODO: isInvalidateDate with showTime.disabledTime should not provide `range` prop
 
@@ -477,6 +478,15 @@ function Picker<DateType extends object = any>(
     triggerOpen(false);
   };
 
+  const onPanelKeyDown = useEvent((event: React.KeyboardEvent) => {
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      triggerOpen(false, { force: true });
+      raf(() => {
+        selectorRef.current?.focus();
+      });
+    }
+  });
+
   // >>> cellRender
   const onInternalCellRender = useCellRender(cellRender, dateRender, monthCellRender);
 
@@ -532,6 +542,7 @@ function Picker<DateType extends object = any>(
       onHover={onPanelHover}
       // Submit
       needConfirm={needConfirm}
+      onPanelKeyDown={onPanelKeyDown}
       onSubmit={triggerConfirm}
       onOk={triggerOk}
       // Preset
@@ -581,23 +592,12 @@ function Picker<DateType extends object = any>(
 
   const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event, preventDefault) => {
     if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
       triggerOpen(true);
 
       return;
     }
-
-    if (event.key === 'Esc') {
-      triggerConfirm();
-
-      return;
-    }
-
-    if (event.key === 'Tab') {
-      if (mergedOpen) {
-        // event.preventDefault();
-      }
-    }
-
     onKeyDown?.(event, preventDefault);
   };
 
