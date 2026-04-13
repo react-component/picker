@@ -25,7 +25,7 @@ export default () => {
             locale={zhCN}
             allowClear
             defaultValue={defaultStartValue}
-            panelRender={(node) => (
+            panelRender={(node, { components: { Panel } }) => (
               <>
                 <button
                   type="button"
@@ -36,7 +36,7 @@ export default () => {
                 >
                   Change
                 </button>
-
+                <Panel picker="time" />
                 {customizeNode ? <span>My Panel</span> : node}
               </>
             )}

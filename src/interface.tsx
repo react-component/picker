@@ -1,7 +1,21 @@
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger';
+import type * as React from 'react';
 import type { GenerateConfig } from './generate';
+import type { PickerPanelProps, PickerPanelRef } from './PickerPanel';
 
 export type NullableDateType<DateType> = DateType | null | undefined;
+
+export type PanelRenderPanelProps<DateType extends object = any> = Partial<
+  PickerPanelProps<DateType>
+>;
+
+export interface PanelRenderExtra<DateType extends object = any> {
+  components: {
+    Panel: React.ComponentType<
+      PanelRenderPanelProps<DateType> & React.RefAttributes<PickerPanelRef>
+    >;
+  };
+}
 
 export type Locale = {
   locale: string;
@@ -460,7 +474,10 @@ export interface SharedPickerProps<DateType extends object = any>
   showNow?: boolean;
   /** @deprecated Please use `showNow` instead */
   showToday?: boolean;
-  panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
+  panelRender?: (
+    originPanel: React.ReactNode,
+    extra: PanelRenderExtra<DateType>,
+  ) => React.ReactNode;
   renderExtraFooter?: (mode: PanelMode) => React.ReactNode;
 }
 
