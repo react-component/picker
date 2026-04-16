@@ -94,8 +94,6 @@ function PickerTrigger(props: PickerTriggerProps, ref: React.ForwardedRef<RefTri
     getPopupElement: () => triggerPopupRef.current?.popupElement,
   }));
 
-  console.log('visible', visible);
-
   useLockFocus(visible, () => triggerPopupRef.current?.popupElement ?? null);
 
   return (
