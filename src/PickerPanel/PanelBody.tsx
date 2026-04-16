@@ -84,7 +84,14 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
   // ============================== Event Handlers ===============================
 
   const moveFocus = (offset: number) => {
-    const nextDate = generateConfig.addDate(focusDateTime, offset);
+    const nextDate = getCellDate(focusDateTime, offset);
+    const isNextDateDisabled = mergedDisabledDate?.(nextDate, { type });
+
+    // TODO: Handle Disabled Date feature
+    if (isNextDateDisabled) {
+      return;
+    }
+
     setFocusDateTime(nextDate);
 
     const focusElement =
@@ -101,12 +108,15 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
       });
     }
 
+    // Changes month when arrow hits last calendar day of that month
     if (type && !isSame(generateConfig, locale, focusDateTime, nextDate, type)) {
       return onChange?.(nextDate);
     }
   };
 
   const onKeyDown = useEvent((event) => {
+    const isFocusDateTimeDisabled = mergedDisabledDate?.(focusDateTime, { type });
+
     switch (event.key) {
       case 'ArrowRight':
         moveFocus(1);
@@ -121,7 +131,10 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
         moveFocus(-7);
         break;
       case 'Enter':
-        onSelect(focusDateTime);
+        if (!isFocusDateTimeDisabled) {
+          onSelect(focusDateTime);
+        }
+
         break;
       case 'Tab':
         onChange?.(focusDateTime);
@@ -181,7 +194,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
       // Render
       const inner = (
         <div
-          tabIndex={isCurrentDateFocused ? 0 : -1}
+          tabIndex={isCurrentDateFocused && !disabled ? 0 : -1}
           onKeyDown={onKeyDown}
           className={`${cellPrefixCls}-inner`}
           ref={(element) => {

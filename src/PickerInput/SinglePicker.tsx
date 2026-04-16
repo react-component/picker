@@ -360,6 +360,9 @@ function Picker<DateType extends object = any>(
    */
   const triggerConfirm = () => {
     triggerSubmitChange(getCalendarValue());
+    raf(() => {
+      selectorRef.current?.focus();
+    });
 
     triggerOpen(false, { force: true });
   };
@@ -595,9 +598,8 @@ function Picker<DateType extends object = any>(
       event.preventDefault();
       event.stopPropagation();
       triggerOpen(true);
-
-      return;
     }
+
     onKeyDown?.(event, preventDefault);
   };
 
