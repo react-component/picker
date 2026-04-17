@@ -423,8 +423,9 @@ function PickerPanel<DateType extends object = any>(
       <PickerHackContext.Provider value={pickerPanelContext}>
         <div
           ref={rootRef}
-          tabIndex={tabIndex}
           className={clsx(panelCls, { [`${panelCls}-rtl`]: direction === 'rtl' })}
+          role="dialog"
+          aria-modal
         >
           <PanelComponent
             {...panelProps}
