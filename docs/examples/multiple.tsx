@@ -29,7 +29,7 @@ export default () => {
   return (
     <div>
       <SinglePicker {...sharedLocale} multiple ref={singleRef} onOpenChange={console.error} />
-      <SinglePicker {...sharedLocale} multiple ref={singleRef} needConfirm />
+      <SinglePicker {...sharedLocale} multiple needConfirm />
       <SinglePicker
         {...sharedLocale}
         multiple
@@ -40,7 +40,7 @@ export default () => {
         {...sharedLocale}
         multiple
         defaultValue={[dayjs('2021-01-01'), dayjs('2021-01-08')]}
-        tagRender={({ label, value, onClose }) => {
+        tagRender={({ label, value, closable, onClose }) => {
           const locked = value.isBefore(dayjs('2021-01-05'), 'day');
 
           return (
@@ -56,10 +56,16 @@ export default () => {
               }}
             >
               <span>{label}</span>
-              {locked ? (
+              {!closable || locked ? (
                 <span>locked</span>
               ) : (
-                <button type="button" onClick={onClose}>
+                <button
+                  type="button"
+                  onMouseDown={(event) => {
+                    event.preventDefault();
+                  }}
+                  onClick={onClose}
+                >
                   remove
                 </button>
               )}

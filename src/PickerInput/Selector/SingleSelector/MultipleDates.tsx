@@ -65,7 +65,9 @@ export default function MultipleDates<DateType extends object = any>(
 
     const onClose: CustomTagProps<DateType>['onClose'] = (event) => {
       if (event) event.stopPropagation();
-      onRemove(date);
+      if (!disabled) {
+        onRemove(date);
+      }
     };
 
     if (tagRender) {

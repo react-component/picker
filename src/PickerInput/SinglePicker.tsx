@@ -53,9 +53,9 @@ export interface BasePickerProps<
   /** Not support `time` or `datetime` picker */
   multiple?: boolean;
   removeIcon?: React.ReactNode;
-  /** Only work when `multiple` is in used */
+  /** Only works when `multiple` is in use */
   maxTagCount?: number | 'responsive';
-  /** Only work when `multiple` is in used */
+  /** Only works when `multiple` is in use */
   tagRender?: (props: CustomTagProps<DateType>) => React.ReactNode;
 
   // Value
