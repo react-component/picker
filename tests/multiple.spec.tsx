@@ -140,6 +140,33 @@ describe('Picker.Multiple', () => {
     expect(container.querySelector('.custom-remove')).toBeTruthy();
   });
 
+  it('tagRender', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayPicker
+        multiple
+        onChange={onChange}
+        defaultValue={[getDay('2000-01-01'), getDay('2000-01-02')]}
+        tagRender={({ label, value, onClose }) => (
+          <span className="custom-tag">
+            <span className="custom-tag-label">{label}</span>
+            {value.date() !== 1 && (
+              <button type="button" className="custom-tag-close" onClick={onClose}>
+                x
+              </button>
+            )}
+          </span>
+        )}
+      />,
+    );
+
+    expect(container.querySelectorAll('.custom-tag')).toHaveLength(2);
+    expect(container.querySelectorAll('.custom-tag-close')).toHaveLength(1);
+
+    fireEvent.click(container.querySelector('.custom-tag-close'));
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), ['2000-01-01']);
+  });
+
   describe('placeholder', () => {
     it('show placeholder', () => {
       const { container } = render(<DayPicker multiple placeholder="bamboo" />);

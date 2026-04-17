@@ -2,11 +2,11 @@ import { clsx } from 'clsx';
 import Overflow from '@rc-component/overflow';
 import * as React from 'react';
 import type { MouseEventHandler } from 'react';
-import type { PickerProps } from '../../SinglePicker';
+import type { CustomTagProps, PickerProps } from '../../SinglePicker';
 
 export interface MultipleDatesProps<DateType extends object = any> extends Pick<
   PickerProps,
-  'maxTagCount'
+  'maxTagCount' | 'tagRender'
 > {
   prefixCls: string;
   value: DateType[];
@@ -28,6 +28,7 @@ export default function MultipleDates<DateType extends object = any>(
     formatDate,
     disabled,
     maxTagCount,
+    tagRender,
     placeholder,
   } = props;
 
@@ -60,11 +61,22 @@ export default function MultipleDates<DateType extends object = any>(
 
   function renderItem(date: DateType) {
     const displayLabel: React.ReactNode = formatDate(date);
+    const closable = !disabled;
 
-    const onClose = (event?: React.MouseEvent) => {
+    const onClose: CustomTagProps<DateType>['onClose'] = (event) => {
       if (event) event.stopPropagation();
       onRemove(date);
     };
+
+    if (tagRender) {
+      return tagRender({
+        label: displayLabel,
+        value: date,
+        disabled: !!disabled,
+        closable,
+        onClose,
+      });
+    }
 
     return renderSelector(displayLabel, onClose);
   }

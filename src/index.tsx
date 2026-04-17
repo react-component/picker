@@ -29,7 +29,11 @@
 
 import type { PickerRef, SharedTimeProps } from './interface';
 import RangePicker, { type RangePickerProps } from './PickerInput/RangePicker';
-import Picker, { type BasePickerProps, type PickerProps } from './PickerInput/SinglePicker';
+import Picker, {
+  type BasePickerProps,
+  type CustomTagProps,
+  type PickerProps,
+} from './PickerInput/SinglePicker';
 import PickerPanel, { type BasePickerPanelProps, type PickerPanelProps } from './PickerPanel';
 
 export { Picker, RangePicker, PickerPanel };
@@ -40,6 +44,7 @@ export type {
   PickerRef,
   BasePickerProps,
   BasePickerPanelProps,
+  CustomTagProps,
   SharedTimeProps,
 };
 export default Picker;
