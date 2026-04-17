@@ -29,11 +29,50 @@ export default () => {
   return (
     <div>
       <SinglePicker {...sharedLocale} multiple ref={singleRef} onOpenChange={console.error} />
-      <SinglePicker {...sharedLocale} multiple ref={singleRef} needConfirm />
-      <SinglePicker {...sharedLocale} multiple picker="week" defaultValue={[
-        dayjs('2021-01-01'),
-        dayjs('2021-01-08'),
-      ]} />
+      <SinglePicker {...sharedLocale} multiple needConfirm />
+      <SinglePicker
+        {...sharedLocale}
+        multiple
+        picker="week"
+        defaultValue={[dayjs('2021-01-01'), dayjs('2021-01-08')]}
+      />
+      <SinglePicker
+        {...sharedLocale}
+        multiple
+        defaultValue={[dayjs('2021-01-01'), dayjs('2021-01-08')]}
+        tagRender={({ label, value, closable, onClose }) => {
+          const locked = value.isBefore(dayjs('2021-01-05'), 'day');
+
+          return (
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                marginInlineEnd: 4,
+                padding: '0 6px',
+                border: '1px solid #1677ff',
+                borderRadius: 12,
+              }}
+            >
+              <span>{label}</span>
+              {!closable || locked ? (
+                <span>locked</span>
+              ) : (
+                <button
+                  type="button"
+                  onMouseDown={(event) => {
+                    event.preventDefault();
+                  }}
+                  onClick={onClose}
+                >
+                  remove
+                </button>
+              )}
+            </span>
+          );
+        }}
+      />
     </div>
   );
 };

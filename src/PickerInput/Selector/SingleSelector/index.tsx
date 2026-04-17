@@ -11,8 +11,7 @@ import useRootProps from '../hooks/useRootProps';
 import MultipleDates from './MultipleDates';
 
 export interface SingleSelectorProps<DateType extends object = any>
-  extends SelectorProps<DateType>,
-    Pick<PickerProps, 'multiple' | 'maxTagCount'> {
+  extends SelectorProps<DateType>, Pick<PickerProps, 'multiple' | 'maxTagCount' | 'tagRender'> {
   id?: string;
 
   value?: DateType[];
@@ -75,6 +74,7 @@ function SingleSelector<DateType extends object = any>(
     onInputChange,
     multiple,
     maxTagCount,
+    tagRender,
 
     // Valid
     format,
@@ -170,6 +170,7 @@ function SingleSelector<DateType extends object = any>(
         onRemove={onMultipleRemove}
         formatDate={getText}
         maxTagCount={maxTagCount}
+        tagRender={tagRender}
         disabled={disabled}
         removeIcon={removeIcon}
         placeholder={placeholder}

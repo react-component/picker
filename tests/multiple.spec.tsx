@@ -140,6 +140,63 @@ describe('Picker.Multiple', () => {
     expect(container.querySelector('.custom-remove')).toBeTruthy();
   });
 
+  it('tagRender', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayPicker
+        multiple
+        onChange={onChange}
+        defaultValue={[getDay('2000-01-01'), getDay('2000-01-02')]}
+        tagRender={({ label, value, onClose }) => (
+          <span className="custom-tag">
+            <span className="custom-tag-label">{label}</span>
+            {value.date() !== 1 && (
+              <button type="button" className="custom-tag-close" onClick={onClose}>
+                x
+              </button>
+            )}
+          </span>
+        )}
+      />,
+    );
+
+    expect(container.querySelectorAll('.custom-tag')).toHaveLength(2);
+    expect(container.querySelectorAll('.custom-tag-close')).toHaveLength(1);
+
+    fireEvent.click(container.querySelector('.custom-tag-close'));
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), ['2000-01-01']);
+  });
+
+  it('tagRender should not remove when disabled', () => {
+    const onChange = jest.fn();
+    const tagRender = jest.fn(({ label, onClose }) => (
+      <button type="button" className="custom-tag-close" onClick={onClose}>
+        {label}
+      </button>
+    ));
+
+    const { container } = render(
+      <DayPicker
+        multiple
+        disabled
+        onChange={onChange}
+        defaultValue={[getDay('2000-01-01')]}
+        tagRender={tagRender}
+      />,
+    );
+
+    expect(tagRender).toHaveBeenCalledWith(
+      expect.objectContaining({
+        disabled: true,
+        closable: false,
+      }),
+    );
+
+    fireEvent.click(container.querySelector('.custom-tag-close'));
+    expect(onChange).not.toHaveBeenCalled();
+    expect(container.querySelectorAll('.custom-tag-close')).toHaveLength(1);
+  });
+
   describe('placeholder', () => {
     it('show placeholder', () => {
       const { container } = render(<DayPicker multiple placeholder="bamboo" />);

@@ -36,16 +36,27 @@ import useSemantic from '../hooks/useSemantic';
 
 // TODO: isInvalidateDate with showTime.disabledTime should not provide `range` prop
 
-export interface BasePickerProps<DateType extends object = any>
-  extends SharedPickerProps<DateType> {
+export interface CustomTagProps<DateType extends object = any> {
+  label: React.ReactNode;
+  value: DateType;
+  disabled: boolean;
+  onClose: (event?: React.MouseEvent<HTMLElement>) => void;
+  closable: boolean;
+}
+
+export interface BasePickerProps<
+  DateType extends object = any,
+> extends SharedPickerProps<DateType> {
   // Structure
   id?: string;
 
   /** Not support `time` or `datetime` picker */
   multiple?: boolean;
   removeIcon?: React.ReactNode;
-  /** Only work when `multiple` is in used */
+  /** Only works when `multiple` is in use */
   maxTagCount?: number | 'responsive';
+  /** Only works when `multiple` is in use */
+  tagRender?: (props: CustomTagProps<DateType>) => React.ReactNode;
 
   // Value
   value?: DateType | DateType[] | null;
@@ -100,8 +111,7 @@ export interface BasePickerProps<DateType extends object = any>
 }
 
 export interface PickerProps<DateType extends object = any>
-  extends BasePickerProps<DateType>,
-    Omit<SharedTimeProps<DateType>, 'format' | 'defaultValue'> {}
+  extends BasePickerProps<DateType>, Omit<SharedTimeProps<DateType>, 'format' | 'defaultValue'> {}
 
 /** Internal usage. For cross function get same aligned props */
 export type ReplacedPickerProps<DateType extends object = any> = {
@@ -174,6 +184,7 @@ function Picker<DateType extends object = any>(
 
     suffixIcon,
     removeIcon,
+    tagRender,
 
     // Focus
     onFocus,
@@ -657,6 +668,7 @@ function Picker<DateType extends object = any>(
           // Icon
           suffixIcon={suffixIcon}
           removeIcon={removeIcon}
+          tagRender={tagRender}
           // Active
           activeHelp={!!internalHoverValue}
           allHelp={!!internalHoverValue && hoverSource === 'preset'}
