@@ -41,7 +41,8 @@ const localeParse = (format: string) => {
     .replace(/D/g, 'd')
     .replace(/gggg/, 'yyyy')
     .replace(/g/g, 'G')
-    .replace(/([Ww])o/g, 'wo');
+    .replace(/([Ww])o/g, 'wo')
+    .replace(/A/g, 'a');
 };
 
 const parse = (text: string, format: string, locale: string) => {
