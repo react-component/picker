@@ -335,4 +335,19 @@ describe('Generate:date-fns', () => {
     expect(dateFnsGenerateConfig.locale.getWeekFirstDay('it_IT')).toEqual(1);
     expect(dateFnsGenerateConfig.locale.getWeekFirstDay('fr_FR')).toEqual(1);
   });
+
+  it('format and parse with AM/PM (uppercase A)', () => {
+    const date = new Date(2000, 0, 1, 14, 30, 0);
+
+    // Format with uppercase A (moment-style) should produce lowercase am/pm output
+    const formatted = dateFnsGenerateConfig.locale.format('en_US', date, 'YYYY-MM-DD hh:mm:ss A');
+    expect(formatted).toEqual('2000-01-01 02:30:00 PM');
+
+    // Parse with uppercase A should also work without throwing
+    const parsed = dateFnsGenerateConfig.locale.parse('en_US', '2000-01-01 02:30:00 PM', [
+      'YYYY-MM-DD hh:mm:ss A',
+    ]);
+    expect(dateFnsGenerateConfig.getHour(parsed)).toEqual(14);
+    expect(dateFnsGenerateConfig.getMinute(parsed)).toEqual(30);
+  });
 });
