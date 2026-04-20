@@ -918,6 +918,32 @@ describe('Picker.Range', () => {
     matchValues(container, '', '');
   });
 
+  it('should not submit typed values on blur before confirm', () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+
+    const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+
+    startInput.focus();
+    fireEvent.change(startInput, {
+      target: {
+        value: '1990-09-11 00:00:00',
+      },
+    });
+
+    fireEvent.mouseDown(document.body);
+    startInput.blur();
+
+    for (let i = 0; i < 5; i += 1) {
+      act(() => {
+        jest.runAllTimers();
+      });
+    }
+
+    expect(onChange).not.toHaveBeenCalled();
+    matchValues(container, '', '');
+  });
+
   describe('viewDate', () => {
     function matchTitle(title: string) {
       expect(document.querySelector('.rc-picker-header-view').textContent).toEqual(title);

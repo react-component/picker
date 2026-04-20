@@ -744,7 +744,7 @@ function RangePicker<DateType extends object = any>(
     const lastOp = lastOperation();
 
     // Trade as confirm on field leave
-    if (!mergedOpen && lastOp === 'input') {
+    if (!mergedOpen && !needConfirm && lastOp === 'input') {
       triggerOpen(false);
       triggerPartConfirm(null, true);
     }
