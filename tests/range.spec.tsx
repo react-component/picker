@@ -895,6 +895,29 @@ describe('Picker.Range', () => {
     expect(document.querySelector('input').value).toEqual('');
   });
 
+  it('should not submit unconfirmed values on blur when allowEmpty lets fields switch', () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+
+    openPicker(container, 0);
+    selectCell(11);
+
+    openPicker(container, 1);
+    openPicker(container, 0);
+
+    fireEvent.mouseDown(document.body);
+    container.querySelectorAll('input')[0].blur();
+
+    for (let i = 0; i < 5; i += 1) {
+      act(() => {
+        jest.runAllTimers();
+      });
+    }
+
+    expect(onChange).not.toHaveBeenCalled();
+    matchValues(container, '', '');
+  });
+
   describe('viewDate', () => {
     function matchTitle(title: string) {
       expect(document.querySelector('.rc-picker-header-view').textContent).toEqual(title);
