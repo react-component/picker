@@ -897,10 +897,21 @@ describe('Picker.Range', () => {
 
   it('should not submit unconfirmed values on blur when allowEmpty lets fields switch', () => {
     const onChange = jest.fn();
-    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+    const onCalendarChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker
+        showTime
+        allowEmpty
+        onChange={onChange}
+        onCalendarChange={onCalendarChange}
+      />,
+    );
 
     openPicker(container, 0);
     selectCell(11);
+    expect(onCalendarChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-11 00:00:00', ''], {
+      range: 'start',
+    });
 
     openPicker(container, 1);
     openPicker(container, 0);

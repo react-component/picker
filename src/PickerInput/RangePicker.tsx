@@ -669,9 +669,7 @@ function RangePicker<DateType extends object = any>(
       return;
     }
 
-    if (!needConfirm) {
-      lastOperation('input');
-    }
+    lastOperation('input');
 
     triggerOpen(true, {
       inherit: true,
