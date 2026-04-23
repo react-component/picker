@@ -955,6 +955,126 @@ describe('Picker.Range', () => {
     matchValues(container, '', '');
   });
 
+  it('should submit typed values on blur after keyboard switch to next input', () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    startInput.focus();
+    fireEvent.change(startInput, {
+      target: {
+        value: '1990-09-11 00:00:00',
+      },
+    });
+    fireEvent.keyDown(startInput, {
+      key: 'Tab',
+    });
+
+    endInput.focus();
+    fireEvent.change(endInput, {
+      target: {
+        value: '1990-09-12 00:00:00',
+      },
+    });
+
+    fireEvent.mouseDown(document.body);
+    endInput.blur();
+
+    for (let i = 0; i < 5; i += 1) {
+      act(() => {
+        jest.runAllTimers();
+      });
+    }
+
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), [
+      '1990-09-11 00:00:00',
+      '1990-09-12 00:00:00',
+    ]);
+    matchValues(container, '1990-09-11 00:00:00', '1990-09-12 00:00:00');
+  });
+
+  it('should not confirm typed end value on blur after mouse switching to next input', () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    startInput.focus();
+    fireEvent.change(startInput, {
+      target: {
+        value: '1990-09-11 00:00:00',
+      },
+    });
+    fireEvent.keyDown(startInput, {
+      key: 'Tab',
+    });
+
+    fireEvent.mouseDown(endInput);
+    endInput.focus();
+    fireEvent.change(endInput, {
+      target: {
+        value: '1990-09-12 00:00:00',
+      },
+    });
+
+    fireEvent.mouseDown(document.body);
+    endInput.blur();
+
+    for (let i = 0; i < 5; i += 1) {
+      act(() => {
+        jest.runAllTimers();
+      });
+    }
+
+    expect(onChange).not.toHaveBeenCalledWith(expect.anything(), [
+      '1990-09-11 00:00:00',
+      '1990-09-12 00:00:00',
+    ]);
+    expect(onChange).toHaveBeenCalled();
+    matchValues(container, '1990-09-11 00:00:00', '');
+  });
+
+  it('should keep keyboard switch allowance when clicking inside the current input', () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    startInput.focus();
+    fireEvent.change(startInput, {
+      target: {
+        value: '1990-09-11 00:00:00',
+      },
+    });
+    fireEvent.keyDown(startInput, {
+      key: 'Tab',
+    });
+
+    endInput.focus();
+    fireEvent.change(endInput, {
+      target: {
+        value: '1990-09-12 00:00:00',
+      },
+    });
+
+    fireEvent.mouseDown(endInput);
+    fireEvent.mouseDown(document.body);
+    endInput.blur();
+
+    for (let i = 0; i < 5; i += 1) {
+      act(() => {
+        jest.runAllTimers();
+      });
+    }
+
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), [
+      '1990-09-11 00:00:00',
+      '1990-09-12 00:00:00',
+    ]);
+    matchValues(container, '1990-09-11 00:00:00', '1990-09-12 00:00:00');
+  });
+
   describe('viewDate', () => {
     function matchTitle(title: string) {
       expect(document.querySelector('.rc-picker-header-view').textContent).toEqual(title);

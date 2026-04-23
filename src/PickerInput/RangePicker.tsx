@@ -226,6 +226,7 @@ function RangePicker<DateType extends object = any>(
 
     // Native
     onClick,
+    onMouseDown,
   } = filledProps;
 
   // ========================= Refs =========================
@@ -272,6 +273,8 @@ function RangePicker<DateType extends object = any>(
     updateSubmitIndex,
     hasActiveSubmitValue,
   ] = useRangeActive(disabled, allowEmpty, mergedOpen);
+  const pendingKeyboardSwitchRef = React.useRef(false);
+  const keyboardSwitchInputRef = React.useRef(false);
 
   const onSharedFocus = (event: React.FocusEvent<HTMLElement>, index?: number) => {
     triggerFocus(true);
@@ -669,6 +672,9 @@ function RangePicker<DateType extends object = any>(
       return;
     }
 
+    keyboardSwitchInputRef.current = pendingKeyboardSwitchRef.current;
+    pendingKeyboardSwitchRef.current = false;
+
     lastOperation('input');
 
     triggerOpen(true, {
@@ -688,6 +694,14 @@ function RangePicker<DateType extends object = any>(
   };
 
   const onSelectorBlur: SelectorProps['onBlur'] = (event, index) => {
+    const relatedTarget = event.relatedTarget as Node | null;
+    if (
+      pendingKeyboardSwitchRef.current &&
+      !selectorRef.current.nativeElement.contains(relatedTarget)
+    ) {
+      pendingKeyboardSwitchRef.current = false;
+    }
+
     triggerOpen(false);
     if (!needConfirm && lastOperation() === 'input') {
       const nextIndex = nextActiveIndex(calendarValue);
@@ -697,8 +711,23 @@ function RangePicker<DateType extends object = any>(
     onSharedBlur(event, index);
   };
 
+  const onSelectorMouseDown: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    const target = event.target as HTMLElement;
+    const rootNode = target.getRootNode();
+    const activeElement =
+      (rootNode as Document | ShadowRoot).activeElement ?? document.activeElement;
+
+    if (target.tagName === 'INPUT' && target !== activeElement) {
+      pendingKeyboardSwitchRef.current = false;
+      keyboardSwitchInputRef.current = false;
+    }
+
+    onMouseDown?.(event);
+  };
+
   const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event, preventDefault) => {
     if (event.key === 'Tab') {
+      pendingKeyboardSwitchRef.current = true;
       triggerPartConfirm(null, true);
     }
 
@@ -742,7 +771,8 @@ function RangePicker<DateType extends object = any>(
     const lastOp = lastOperation();
 
     // Trade as confirm on field leave
-    if (!mergedOpen && !needConfirm && lastOp === 'input') {
+    if (!mergedOpen && lastOp === 'input' && (!needConfirm || keyboardSwitchInputRef.current)) {
+      keyboardSwitchInputRef.current = false;
       triggerOpen(false);
       triggerPartConfirm(null, true);
     }
@@ -825,6 +855,7 @@ function RangePicker<DateType extends object = any>(
           onOpenChange={triggerOpen}
           // Click
           onClick={onSelectorClick}
+          onMouseDown={onSelectorMouseDown}
           onClear={onSelectorClear}
           // Invalid
           invalid={submitInvalidates}
