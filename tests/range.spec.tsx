@@ -1035,6 +1035,50 @@ describe('Picker.Range', () => {
     matchValues(container, '1990-09-11 00:00:00', '');
   });
 
+  it('should clear pending keyboard switch when focus leaves picker before mouse switching', () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    startInput.focus();
+    fireEvent.change(startInput, {
+      target: {
+        value: '1990-09-11 00:00:00',
+      },
+    });
+    fireEvent.keyDown(startInput, {
+      key: 'Tab',
+    });
+
+    fireEvent.blur(startInput, {
+      relatedTarget: document.body,
+    });
+    fireEvent.mouseDown(endInput);
+    endInput.focus();
+    fireEvent.change(endInput, {
+      target: {
+        value: '1990-09-12 00:00:00',
+      },
+    });
+
+    fireEvent.mouseDown(document.body);
+    endInput.blur();
+
+    for (let i = 0; i < 5; i += 1) {
+      act(() => {
+        jest.runAllTimers();
+      });
+    }
+
+    expect(onChange).not.toHaveBeenCalledWith(expect.anything(), [
+      '1990-09-11 00:00:00',
+      '1990-09-12 00:00:00',
+    ]);
+    expect(onChange).toHaveBeenCalled();
+    matchValues(container, '1990-09-11 00:00:00', '');
+  });
+
   it('should keep keyboard switch allowance when clicking inside the current input', () => {
     const onChange = jest.fn();
     const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
