@@ -339,7 +339,7 @@ describe('Generate:date-fns', () => {
   it('format and parse with AM/PM (uppercase A)', () => {
     const date = new Date(2000, 0, 1, 14, 30, 0);
 
-    // Format with uppercase A (moment-style) should produce lowercase am/pm output
+    // Format with uppercase A (moment-style) should be normalized to date-fns `a`
     const formatted = dateFnsGenerateConfig.locale.format('en_US', date, 'YYYY-MM-DD hh:mm:ss A');
     expect(formatted).toEqual('2000-01-01 02:30:00 PM');
 
