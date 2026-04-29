@@ -895,6 +895,230 @@ describe('Picker.Range', () => {
     expect(document.querySelector('input').value).toEqual('');
   });
 
+  it('should not submit unconfirmed values on blur when allowEmpty lets fields switch', () => {
+    const onChange = jest.fn();
+    const onCalendarChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker
+        showTime
+        allowEmpty
+        onChange={onChange}
+        onCalendarChange={onCalendarChange}
+      />,
+    );
+
+    openPicker(container, 0);
+    selectCell(11);
+    expect(onCalendarChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-11 00:00:00', ''], {
+      range: 'start',
+    });
+
+    openPicker(container, 1);
+    openPicker(container, 0);
+
+    fireEvent.mouseDown(document.body);
+    container.querySelectorAll('input')[0].blur();
+
+    for (let i = 0; i < 5; i += 1) {
+      act(() => {
+        jest.runAllTimers();
+      });
+    }
+
+    expect(onChange).not.toHaveBeenCalled();
+    matchValues(container, '', '');
+  });
+
+  it('should not submit typed values on blur before confirm', () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+
+    const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
+
+    startInput.focus();
+    fireEvent.change(startInput, {
+      target: {
+        value: '1990-09-11 00:00:00',
+      },
+    });
+
+    fireEvent.mouseDown(document.body);
+    startInput.blur();
+
+    for (let i = 0; i < 5; i += 1) {
+      act(() => {
+        jest.runAllTimers();
+      });
+    }
+
+    expect(onChange).not.toHaveBeenCalled();
+    matchValues(container, '', '');
+  });
+
+  it('should submit typed values on blur after keyboard switch to next input', () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    startInput.focus();
+    fireEvent.change(startInput, {
+      target: {
+        value: '1990-09-11 00:00:00',
+      },
+    });
+    fireEvent.keyDown(startInput, {
+      key: 'Tab',
+    });
+
+    endInput.focus();
+    fireEvent.change(endInput, {
+      target: {
+        value: '1990-09-12 00:00:00',
+      },
+    });
+
+    fireEvent.mouseDown(document.body);
+    endInput.blur();
+
+    for (let i = 0; i < 5; i += 1) {
+      act(() => {
+        jest.runAllTimers();
+      });
+    }
+
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), [
+      '1990-09-11 00:00:00',
+      '1990-09-12 00:00:00',
+    ]);
+    matchValues(container, '1990-09-11 00:00:00', '1990-09-12 00:00:00');
+  });
+
+  it('should not confirm typed end value on blur after mouse switching to next input', () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    startInput.focus();
+    fireEvent.change(startInput, {
+      target: {
+        value: '1990-09-11 00:00:00',
+      },
+    });
+    fireEvent.keyDown(startInput, {
+      key: 'Tab',
+    });
+
+    fireEvent.mouseDown(endInput);
+    endInput.focus();
+    fireEvent.change(endInput, {
+      target: {
+        value: '1990-09-12 00:00:00',
+      },
+    });
+
+    fireEvent.mouseDown(document.body);
+    endInput.blur();
+
+    for (let i = 0; i < 5; i += 1) {
+      act(() => {
+        jest.runAllTimers();
+      });
+    }
+
+    expect(onChange).not.toHaveBeenCalledWith(expect.anything(), [
+      '1990-09-11 00:00:00',
+      '1990-09-12 00:00:00',
+    ]);
+    expect(onChange).toHaveBeenCalled();
+    matchValues(container, '1990-09-11 00:00:00', '');
+  });
+
+  it('should clear pending keyboard switch when focus leaves picker before mouse switching', () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    startInput.focus();
+    fireEvent.change(startInput, {
+      target: {
+        value: '1990-09-11 00:00:00',
+      },
+    });
+    fireEvent.keyDown(startInput, {
+      key: 'Tab',
+    });
+
+    fireEvent.blur(startInput, {
+      relatedTarget: document.body,
+    });
+    fireEvent.mouseDown(endInput);
+    endInput.focus();
+    fireEvent.change(endInput, {
+      target: {
+        value: '1990-09-12 00:00:00',
+      },
+    });
+
+    fireEvent.mouseDown(document.body);
+    endInput.blur();
+
+    for (let i = 0; i < 5; i += 1) {
+      act(() => {
+        jest.runAllTimers();
+      });
+    }
+
+    expect(onChange).not.toHaveBeenCalledWith(expect.anything(), [
+      '1990-09-11 00:00:00',
+      '1990-09-12 00:00:00',
+    ]);
+    expect(onChange).toHaveBeenCalled();
+    matchValues(container, '1990-09-11 00:00:00', '');
+  });
+
+  it('should keep keyboard switch allowance when clicking inside the current input', () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    startInput.focus();
+    fireEvent.change(startInput, {
+      target: {
+        value: '1990-09-11 00:00:00',
+      },
+    });
+    fireEvent.keyDown(startInput, {
+      key: 'Tab',
+    });
+
+    endInput.focus();
+    fireEvent.change(endInput, {
+      target: {
+        value: '1990-09-12 00:00:00',
+      },
+    });
+
+    fireEvent.mouseDown(endInput);
+    fireEvent.mouseDown(document.body);
+    endInput.blur();
+
+    for (let i = 0; i < 5; i += 1) {
+      act(() => {
+        jest.runAllTimers();
+      });
+    }
+
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), [
+      '1990-09-11 00:00:00',
+      '1990-09-12 00:00:00',
+    ]);
+    matchValues(container, '1990-09-11 00:00:00', '1990-09-12 00:00:00');
+  });
+
   describe('viewDate', () => {
     function matchTitle(title: string) {
       expect(document.querySelector('.rc-picker-header-view').textContent).toEqual(title);
