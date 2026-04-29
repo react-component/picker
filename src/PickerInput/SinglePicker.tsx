@@ -522,6 +522,7 @@ function Picker<DateType extends object = any>(
       // Focus
       onFocus={onPanelFocus}
       onBlur={onSharedBlur}
+      index={activeIndex}
       // Mode
       picker={picker}
       mode={mergedMode}
