@@ -3,6 +3,7 @@ import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
 import { usePanelContext } from '../../context';
 import useScrollTo from './useScrollTo';
+import { useEvent } from '@rc-component/util';
 
 const SCROLL_DELAY = 300;
 
@@ -39,6 +40,10 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
 
   // ========================== Refs ==========================
   const ulRef = React.useRef<HTMLUListElement>(null);
+  const cellRefs = React.useRef<Record<string, HTMLDivElement | null>>({});
+
+  // ========================== State ==========================
+  const [focusedValue, setFocusedValue] = React.useState(value);
 
   // ========================= Scroll =========================
   const checkDelayRef = React.useRef<any>();
@@ -92,13 +97,67 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
     }
   };
 
+  // ========================= Event Handlers =========================
+
+  const moveFocus = (offset: number) => {
+    const currentValueIndex = units.findIndex((unit) => unit.value === focusedValue);
+    const currentValueWithOffset = currentValueIndex + offset;
+    const nextValueIndex =
+      currentValueWithOffset < 0 ? units.length - 1 : currentValueWithOffset % units.length;
+    const nextValue = units[nextValueIndex].value;
+    const isNextValueDisabled = units[nextValueIndex].disabled;
+
+    if (isNextValueDisabled) {
+      return;
+    }
+
+    setFocusedValue(nextValue);
+
+    const focusElement = cellRefs.current[nextValue];
+    if (focusElement) {
+      requestAnimationFrame(() => {
+        focusElement.focus();
+      });
+    }
+  };
+
+  const onKeyDown = useEvent((event) => {
+    switch (event.key) {
+      case 'ArrowDown':
+        moveFocus(1);
+        break;
+      case 'ArrowUp':
+        moveFocus(-1);
+        break;
+      case 'Enter':
+        onChange(focusedValue);
+        break;
+
+      default:
+        return;
+    }
+  });
+
   // ========================= Render =========================
   const columnPrefixCls = `${panelPrefixCls}-column`;
 
   return (
     <ul className={columnPrefixCls} ref={ulRef} data-type={type} onScroll={onInternalScroll}>
       {units.map(({ label, value: unitValue, disabled }) => {
-        const inner = <div className={`${cellPrefixCls}-inner`}>{label}</div>;
+        const isValueFocused = focusedValue === unitValue;
+
+        const inner = (
+          <div
+            tabIndex={isValueFocused && !disabled ? 0 : -1}
+            className={`${cellPrefixCls}-inner`}
+            ref={(element) => {
+              cellRefs.current[unitValue] = element;
+            }}
+            onKeyDown={onKeyDown}
+          >
+            {label}
+          </div>
+        );
 
         return (
           <li

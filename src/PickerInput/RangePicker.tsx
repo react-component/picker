@@ -37,6 +37,7 @@ import useShowNow from './hooks/useShowNow';
 import Popup, { type PopupShowTimeConfig } from './Popup';
 import RangeSelector, { type SelectorIdType } from './Selector/RangeSelector';
 import useSemantic from '../hooks/useSemantic';
+import raf from '@rc-component/util/lib/raf';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
   const singleConfig = config ?? defaultConfig;
@@ -526,6 +527,15 @@ function RangePicker<DateType extends object = any>(
     lastOperation('panel');
   };
 
+  const onPanelKeyDown = useEvent((event: React.KeyboardEvent) => {
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      triggerOpen(false, { force: true });
+      raf(() => {
+        selectorRef.current?.focus();
+      });
+    }
+  });
+
   // >>> Calendar
   const onPanelSelect: PickerPanelProps<DateType>['onChange'] = (date: DateType) => {
     const clone: RangeValueType<DateType> = fillIndex(calendarValue, activeIndex, date);
@@ -597,6 +607,7 @@ function RangePicker<DateType extends object = any>(
       onFocus={onPanelFocus}
       onBlur={onSharedBlur}
       onPanelMouseDown={onPanelMouseDown}
+      onPanelKeyDown={onPanelKeyDown}
       // Mode
       picker={picker}
       mode={mergedMode}
