@@ -185,8 +185,14 @@ export default function useInputProps<DateType extends object = any>(
           return;
         }
 
+        // Handle intentional clearing: when text is empty, trigger onChange with null
+        if (text === '') {
+          onInvalid(false, index); // Reset invalid state before clearing the value
+          onChange(null, index);
+          return;
+        }
+
         // Tell outer that the value typed is invalid.
-        // If text is empty, it means valid.
         onInvalid(!!text, index);
       },
       onHelp: () => {
