@@ -213,6 +213,19 @@ export default () => {
             disabledDate={disabledDate}
           />
         </div>
+        <div>
+          <h3>needConfirm is false</h3>
+          <RangePicker<Moment>
+            {...sharedProps}
+            value={undefined}
+            locale={zhCN}
+            needConfirm={false}
+            picker="time"
+            ranges={{
+              test: [moment(), moment().add(1, 'hour')],
+            }}
+          />
+        </div>
       </div>
     </div>
   );
