@@ -1,3 +1,6 @@
+import { commonLocale } from './common';
+import type { Locale } from '../interface';
+
 const locale: Locale = {
   ...commonLocale,
   locale: 'tl_PH',
@@ -41,3 +44,5 @@ const locale: Locale = {
     'Dis',
   ],
 };
+
+export default locale;
