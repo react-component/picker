@@ -21,8 +21,8 @@ const locale: Locale = {
 
   previousMonth: 'Nakaraang buwan (PageUp)',
   nextMonth: 'Susunod na buwan (PageDown)',
-  previousYear: 'Nakaraang taon (Control + left)',
-  nextYear: 'Susunod na taon (Control + right)',
+  previousYear: 'Nakaraang taon (Control + Left)',
+  nextYear: 'Susunod na taon (Control + Right)',
   previousDecade: 'Nakaraang dekada',
   nextDecade: 'Susunod na dekada',
   previousCentury: 'Nakaraang siglo',
