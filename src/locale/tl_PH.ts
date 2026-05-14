@@ -1,6 +1,3 @@
-import { commonLocale } from './common';
-import type { Locale } from '../interface';
-
 const locale: Locale = {
   ...commonLocale,
   locale: 'tl_PH',
@@ -27,6 +24,20 @@ const locale: Locale = {
   nextDecade: 'Susunod na dekada',
   previousCentury: 'Nakaraang siglo',
   nextCentury: 'Susunod na siglo',
-};
 
-export default locale;
+  shortWeekDays: ['Lin', 'Lun', 'Mar', 'Miy', 'Huw', 'Biy', 'Sab'],
+  shortMonths: [
+    'Ene',
+    'Peb',
+    'Mar',
+    'Abr',
+    'May',
+    'Hun',
+    'Hul',
+    'Ago',
+    'Set',
+    'Okt',
+    'Nob',
+    'Dis',
+  ],
+};
