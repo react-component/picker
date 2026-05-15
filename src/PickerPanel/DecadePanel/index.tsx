@@ -117,6 +117,7 @@ export default function DecadePanel<DateType extends object = any>(
           getCellDate={getCellDate}
           getCellText={getCellText}
           getCellClassName={getCellClassName}
+          onChange={onPickerValueChange}
         />
       </div>
     </PanelContext.Provider>

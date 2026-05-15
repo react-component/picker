@@ -63,7 +63,7 @@ export default () => {
                 container: 'popup-c',
               },
             }}
-            open
+            open={false}
             styles={{
               popup: {
                 container: {

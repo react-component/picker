@@ -126,7 +126,7 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
           type="button"
           aria-label={locale.previousYear}
           onClick={() => onSuperOffset(-1)}
-          tabIndex={-1}
+          tabIndex={0}
           className={clsx(
             superPrevBtnCls,
             disabledSuperOffsetPrev && `${superPrevBtnCls}-disabled`,
@@ -142,7 +142,7 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
           type="button"
           aria-label={locale.previousMonth}
           onClick={() => onOffset(-1)}
-          tabIndex={-1}
+          tabIndex={0}
           className={clsx(prevBtnCls, disabledOffsetPrev && `${prevBtnCls}-disabled`)}
           disabled={disabledOffsetPrev}
           style={hidePrev ? HIDDEN_STYLE : {}}
@@ -156,7 +156,7 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
           type="button"
           aria-label={locale.nextMonth}
           onClick={() => onOffset(1)}
-          tabIndex={-1}
+          tabIndex={0}
           className={clsx(nextBtnCls, disabledOffsetNext && `${nextBtnCls}-disabled`)}
           disabled={disabledOffsetNext}
           style={hideNext ? HIDDEN_STYLE : {}}
@@ -169,7 +169,7 @@ function PanelHeader<DateType extends object>(props: HeaderProps<DateType>) {
           type="button"
           aria-label={locale.nextYear}
           onClick={() => onSuperOffset(1)}
-          tabIndex={-1}
+          tabIndex={0}
           className={clsx(
             superNextBtnCls,
             disabledSuperOffsetNext && `${superNextBtnCls}-disabled`,

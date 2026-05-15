@@ -113,6 +113,7 @@ export default function MonthPanel<DateType extends object = any>(
           getCellDate={getCellDate}
           getCellText={getCellText}
           getCellClassName={getCellClassName}
+          onChange={onPickerValueChange}
         />
       </div>
     </PanelContext.Provider>

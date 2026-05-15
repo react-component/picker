@@ -16,7 +16,7 @@ import type {
   SharedTimeProps,
   ValueDate,
 } from '../interface';
-import PickerTrigger from '../PickerTrigger';
+import PickerTrigger, { RefTriggerProps } from '../PickerTrigger';
 import { pickTriggerProps } from '../PickerTrigger/util';
 import { toArray } from '../utils/miscUtil';
 import PickerContext from './context';
@@ -33,6 +33,7 @@ import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
 import SingleSelector from './Selector/SingleSelector';
 import useSemantic from '../hooks/useSemantic';
+import raf from '@rc-component/util/lib/raf';
 
 // TODO: isInvalidateDate with showTime.disabledTime should not provide `range` prop
 
@@ -206,6 +207,7 @@ function Picker<DateType extends object = any>(
 
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
+  const triggerRef = React.useRef<RefTriggerProps>(null);
 
   // ========================= Util =========================
   function pickerParam<T>(values: T | T[]) {
@@ -369,6 +371,9 @@ function Picker<DateType extends object = any>(
    */
   const triggerConfirm = () => {
     triggerSubmitChange(getCalendarValue());
+    raf(() => {
+      selectorRef.current?.focus();
+    });
 
     triggerOpen(false, { force: true });
   };
@@ -487,6 +492,15 @@ function Picker<DateType extends object = any>(
     triggerOpen(false);
   };
 
+  const onPanelKeyDown = useEvent((event: React.KeyboardEvent) => {
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      triggerOpen(false, { force: true });
+      raf(() => {
+        selectorRef.current?.focus();
+      });
+    }
+  });
+
   // >>> cellRender
   const onInternalCellRender = useCellRender(cellRender, dateRender, monthCellRender);
 
@@ -542,6 +556,7 @@ function Picker<DateType extends object = any>(
       onHover={onPanelHover}
       // Submit
       needConfirm={needConfirm}
+      onPanelKeyDown={onPanelKeyDown}
       onSubmit={triggerConfirm}
       onOk={triggerOk}
       // Preset
@@ -590,8 +605,10 @@ function Picker<DateType extends object = any>(
   };
 
   const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event, preventDefault) => {
-    if (event.key === 'Tab') {
-      triggerConfirm();
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+      triggerOpen(true);
     }
 
     onKeyDown?.(event, preventDefault);
@@ -656,6 +673,7 @@ function Picker<DateType extends object = any>(
         // Visible
         visible={mergedOpen}
         onClose={onPopupClose}
+        ref={triggerRef}
       >
         <SingleSelector
           // Shared

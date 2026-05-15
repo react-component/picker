@@ -45,6 +45,7 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   onOk: VoidFunction;
 
   onPanelMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+  onPanelKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
 
   classNames?: SharedPickerProps['classNames'];
   styles?: SharedPickerProps['styles'];
@@ -71,6 +72,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     onFocus,
     onBlur,
     onPanelMouseDown,
+    onPanelKeyDown,
 
     // Direction
     direction,
@@ -217,6 +219,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   let renderNode = (
     <div
       onMouseDown={onPanelMouseDown}
+      onKeyDown={onPanelKeyDown}
       tabIndex={-1}
       className={clsx(
         containerPrefixCls,
