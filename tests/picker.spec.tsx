@@ -952,6 +952,31 @@ describe('Picker.Basic', () => {
     expect(document.querySelector('.rc-picker')).toMatchSnapshot();
   });
 
+  it('panelRender Panel uses popup context by default', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayPicker
+        open
+        onChange={onChange}
+        panelRender={(_, { components: { Panel } }) => <Panel />}
+      />,
+    );
+
+    selectCell(11);
+
+    expect(onChange).toHaveBeenCalled();
+    expect(isSame(onChange.mock.calls[0][0], '1990-09-11')).toBeTruthy();
+    expect(container.querySelector('input').value).toEqual('1990-09-11');
+  });
+
+  it('panelRender Panel allows picker override', () => {
+    render(
+      <DayPicker open panelRender={(_, { components: { Panel } }) => <Panel picker="time" />} />,
+    );
+
+    expect(document.querySelector('.rc-picker-time-panel')).toBeTruthy();
+  });
+
   it('change panel when `picker` changed', () => {
     const { rerender } = render(<DayPicker open picker="week" />);
     expect(document.querySelector('.rc-picker-week-panel')).toBeTruthy();
