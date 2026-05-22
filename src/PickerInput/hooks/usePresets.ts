@@ -1,5 +1,5 @@
 import * as React from 'react';
-import warning from '@rc-component/util/lib/warning';
+import { warning } from '@rc-component/util';
 import type { ValueDate } from '../../interface';
 
 export default function usePresets<DateType = any>(

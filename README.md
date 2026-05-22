@@ -48,7 +48,7 @@ render(<Picker />, mountNode);
 | popupAlign | Object:alignConfig of [dom-align](https://github.com/yiminghe/dom-align) |  | value will be merged into placement's popupAlign config |
 | popupStyle | React.CSSProperties |  | customize popup style |
 | transitionName | String | '' | css class for animation |
-| locale | Object | import from '@rc-component/picker/lib/locale/en_US' | @rc-component/picker locale |
+| locale | Object | import from '@rc-component/picker/locale/en_US' | @rc-component/picker locale |
 | inputReadOnly | boolean | false | set input to read only |
 | allowClear | boolean \| { clearIcon?: ReactNode } | false | whether show clear button or customize clear button |
 | autoFocus | boolean | false | whether auto focus |
@@ -82,7 +82,7 @@ render(<Picker />, mountNode);
 | prefixCls | String | @rc-component/picker | prefixCls of this component |
 | className | String | '' | additional css class of root dom |
 | style | React.CSSProperties |  | additional style of root dom node |
-| locale | Object | import from '@rc-component/picker/lib/locale/en_US' | @rc-component/picker locale |
+| locale | Object | import from '@rc-component/picker/locale/en_US' | @rc-component/picker locale |
 | value | moment |  | current value like input's value |
 | defaultValue | moment |  | defaultValue like input's defaultValue |
 | defaultPickerValue | moment |  | Set default display picker view date |
@@ -107,7 +107,7 @@ render(<Picker />, mountNode);
 | prefixCls | String | rc-picker | prefixCls of this component |
 | className | String | '' | additional css class of root dom |
 | style | React.CSSProperties |  | additional style of root dom node |
-| locale | Object | import from '@rc-component/picker/lib/locale/en_US' | @rc-component/picker locale |
+| locale | Object | import from '@rc-component/picker/locale/en_US' | @rc-component/picker locale |
 | value | moment |  | current value like input's value |
 | defaultValue | moment |  | defaultValue like input's defaultValue |
 | defaultPickerValue | moment |  | Set default display picker view date |

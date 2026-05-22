@@ -1,4 +1,4 @@
-import { useEvent, useControlledState } from '@rc-component/util';
+import { useControlledState, useEvent } from '@rc-component/util';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import useSyncState from '../../hooks/useSyncState';
