@@ -2,8 +2,7 @@
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import dayjs, { type Dayjs } from 'dayjs';
 import 'dayjs/locale/ar';
-import { spyElementPrototype } from '@rc-component/util/lib/test/domHook';
-import { resetWarned } from '@rc-component/util/lib/warning';
+import { resetWarned, spyElementPrototype } from '@rc-component/util';
 import React from 'react';
 import type { RangePickerProps } from '../src';
 import zh_CN from '../src/locale/zh_CN';

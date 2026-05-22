@@ -1,5 +1,4 @@
-import { useEvent, useControlledState } from '@rc-component/util';
-import raf from '@rc-component/util/lib/raf';
+import { raf, useControlledState, useEvent } from '@rc-component/util';
 import React from 'react';
 
 /**

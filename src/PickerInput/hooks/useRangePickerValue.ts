@@ -1,5 +1,4 @@
-import { useControlledState } from '@rc-component/util';
-import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
+import { useControlledState, useLayoutEffect } from '@rc-component/util';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import type { InternalMode, Locale, PanelMode } from '../../interface';

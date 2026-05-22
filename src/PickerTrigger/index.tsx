@@ -1,5 +1,4 @@
-import Trigger from '@rc-component/trigger';
-import type { AlignType, BuildInPlacements } from '@rc-component/trigger/lib/interface';
+import Trigger, { type AlignType, type BuildInPlacements } from '@rc-component/trigger';
 import { clsx } from 'clsx';
 import * as React from 'react';
 import { getRealPlacement } from '../utils/uiUtil';
