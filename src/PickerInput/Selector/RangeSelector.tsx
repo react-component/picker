@@ -6,7 +6,8 @@ import type { RangePickerRef, SelectorProps } from '../../interface';
 import PickerContext from '../context';
 import useInputProps from './hooks/useInputProps';
 import useRootProps from './hooks/useRootProps';
-import Icon, { ClearIcon } from './Icon';
+import Icon from './Icon';
+import ClearIcon from './ClearIcon';
 import Input, { type InputRef } from './Input';
 
 export type SelectorIdType =
@@ -261,7 +262,7 @@ function RangeSelector<DateType extends object = any>(
           date-range="end"
         />
         <div className={`${prefixCls}-active-bar`} style={activeBarStyle} />
-        <Icon type="suffix" icon={suffixIcon} />
+        <Icon icon={suffixIcon} />
         {showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
       </div>
     </ResizeObserver>

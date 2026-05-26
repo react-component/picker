@@ -419,7 +419,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
         className={classNames.input}
         style={styles.input}
       />
-      <Icon type="suffix" icon={suffixIcon} />
+      <Icon icon={suffixIcon} />
       {clearIcon}
     </div>
   );

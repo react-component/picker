@@ -388,6 +388,7 @@ function Picker<DateType extends object = any>(
   const onSelectorClear = () => {
     triggerSubmitChange(null);
     triggerOpen(false, { force: true });
+    selectorRef.current.focus();
   };
 
   // ======================== Hover =========================
