@@ -15,6 +15,7 @@ export interface PanelBodyProps<DateType = any> {
   getCellDate: (date: DateType, offset: number) => DateType;
   getCellText: (date: DateType) => React.ReactNode;
   getCellClassName: (date: DateType) => Record<string, any>;
+  getCellAttributes: (date: DateType) => React.TdHTMLAttributes<HTMLTableCellElement>;
 
   disabledDate?: DisabledDate<DateType>;
 
@@ -25,6 +26,7 @@ export interface PanelBodyProps<DateType = any> {
   prefixColumn?: (date: DateType) => React.ReactNode;
   rowClassName?: (date: DateType) => string;
   cellSelection?: boolean;
+  tableLabel?: string;
 }
 
 export default function PanelBody<DateType extends object = any>(props: PanelBodyProps<DateType>) {
@@ -38,9 +40,11 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
     titleFormat,
     getCellText,
     getCellClassName,
+    getCellAttributes,
     headerCells,
     cellSelection = true,
     disabledDate,
+    tableLabel,
   } = props;
 
   const {
@@ -120,11 +124,21 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
 
       // Render
       const inner = <div className={`${cellPrefixCls}-inner`}>{getCellText(currentDate)}</div>;
+      const isSelected =
+        !hoverRangeValue &&
+        // WeekPicker use row instead
+        type !== 'week' &&
+        matchValues(currentDate);
 
       rowNode.push(
         <td
           key={col}
           title={title}
+          role="gridcell"
+          aria-label={title}
+          aria-selected={isSelected}
+          aria-disabled={disabled}
+          {...getCellAttributes(currentDate)}
           className={clsx(cellPrefixCls, classNames.item, {
             [`${cellPrefixCls}-disabled`]: disabled,
             [`${cellPrefixCls}-hover`]: (hoverValue || []).some((date) =>
@@ -133,11 +147,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
             [`${cellPrefixCls}-in-range`]: inRange && !rangeStart && !rangeEnd,
             [`${cellPrefixCls}-range-start`]: rangeStart,
             [`${cellPrefixCls}-range-end`]: rangeEnd,
-            [`${prefixCls}-cell-selected`]:
-              !hoverRangeValue &&
-              // WeekPicker use row instead
-              type !== 'week' &&
-              matchValues(currentDate),
+            [`${prefixCls}-cell-selected`]: isSelected,
             ...getCellClassName(currentDate),
           })}
           style={styles.item}
@@ -176,7 +186,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
     }
 
     rows.push(
-      <tr key={row} className={rowClassName?.(rowStartDate!)}>
+      <tr key={row} role="row" className={rowClassName?.(rowStartDate!)}>
         {rowNode}
       </tr>,
     );
@@ -185,9 +195,14 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
   // ============================== Render ==============================
   return (
     <div className={clsx(`${prefixCls}-body`, classNames.body)} style={styles.body}>
-      <table className={clsx(`${prefixCls}-content`, classNames.content)} style={styles.content}>
+      <table
+        role="grid"
+        aria-label={tableLabel}
+        className={clsx(`${prefixCls}-content`, classNames.content)}
+        style={styles.content}
+      >
         {headerCells && (
-          <thead>
+          <thead aria-hidden="true">
             <tr>{headerCells}</tr>
           </thead>
         )}

@@ -392,7 +392,7 @@ describe('NewPicker.Range', () => {
       expect(onCalendarChange).toHaveBeenCalled();
 
       // Check button disabled
-      expect(document.querySelector('.rc-picker-ok button')).toBeDisabled();
+      expect(document.querySelector('.rc-picker-ok')).toBeDisabled();
     });
 
     it('not trigger on disabled all hours', () => {
@@ -414,7 +414,7 @@ describe('NewPicker.Range', () => {
       expect(onCalendarChange).toHaveBeenCalled();
 
       // Check button disabled
-      expect(document.querySelector('.rc-picker-ok button')).toBeDisabled();
+      expect(document.querySelector('.rc-picker-ok')).toBeDisabled();
     });
 
     it('not trigger onChange if presets is invalidate', () => {
@@ -435,7 +435,7 @@ describe('NewPicker.Range', () => {
       );
 
       openPicker(container);
-      fireEvent.click(document.querySelector('.rc-picker-presets li'));
+      fireEvent.click(document.querySelector('.rc-picker-presets button'));
 
       expect(onChange).not.toHaveBeenCalled();
       expect(onCalendarChange).toHaveBeenCalled();
@@ -455,10 +455,10 @@ describe('NewPicker.Range', () => {
       );
 
       openPicker(container);
-      fireEvent.click(document.querySelector('.rc-picker-now-btn'));
-      fireEvent.click(document.querySelector('.rc-picker-now-btn'));
+      fireEvent.click(document.querySelector('.rc-picker-now'));
+      fireEvent.click(document.querySelector('.rc-picker-now'));
 
-      expect(document.querySelector('.rc-picker-now-btn-disabled')).toBeTruthy();
+      expect(document.querySelector('.rc-picker-now')).toBeDisabled();
 
       expect(onChange).not.toHaveBeenCalled();
       expect(onCalendarChange).not.toHaveBeenCalled();
@@ -547,7 +547,7 @@ describe('NewPicker.Range', () => {
           value: '01:00:00',
         },
       });
-      expect(document.querySelector('.rc-picker-ok button')).not.toBeDisabled();
+      expect(document.querySelector('.rc-picker-ok')).not.toBeDisabled();
 
       // Disabled
       fireEvent.change(input, {
@@ -555,7 +555,7 @@ describe('NewPicker.Range', () => {
           value: '00:00:00',
         },
       });
-      expect(document.querySelector('.rc-picker-ok button')).toBeDisabled();
+      expect(document.querySelector('.rc-picker-ok')).toBeDisabled();
     });
 
     it('disabledDate provides info.type', () => {
@@ -603,7 +603,7 @@ describe('NewPicker.Range', () => {
     onCalendarChange.mockReset();
 
     // End field
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    fireEvent.click(document.querySelector('.rc-picker-ok'));
     selectCell(7);
     expect(onCalendarChange).toHaveBeenCalledWith(
       expect.anything(),
@@ -656,14 +656,14 @@ describe('NewPicker.Range', () => {
       // Changed by click OK
       openPicker(container);
       selectCell(10);
-      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      fireEvent.click(document.querySelector('.rc-picker-ok'));
 
       expect(container.querySelectorAll('input')[0]).toHaveValue('1990-09-10');
 
       // End time
       selectCell(15, 1);
       expect(onChange).not.toHaveBeenCalled();
-      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      fireEvent.click(document.querySelector('.rc-picker-ok'));
 
       expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-10', '1990-10-15']);
     });
@@ -722,10 +722,10 @@ describe('NewPicker.Range', () => {
       const { container } = render(<DayRangePicker onChange={onChange} showTime />);
       openPicker(container);
       selectCell(15);
-      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      fireEvent.click(document.querySelector('.rc-picker-ok'));
 
       selectCell(16);
-      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      fireEvent.click(document.querySelector('.rc-picker-ok'));
 
       expect(onChange).toHaveBeenCalledWith(expect.anything(), [
         '1990-09-15 00:00:00',
@@ -739,11 +739,11 @@ describe('NewPicker.Range', () => {
       expect(container.querySelectorAll('input')[0]).toHaveFocus();
       expect(container.querySelectorAll('input')[1]).not.toHaveFocus();
 
-      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      fireEvent.click(document.querySelector('.rc-picker-ok'));
       openPicker(container, 1);
       expect(container.querySelectorAll('input')[1]).toHaveFocus();
       selectCell(2);
-      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      fireEvent.click(document.querySelector('.rc-picker-ok'));
       expect(onChange).toHaveBeenCalledWith(expect.anything(), [
         '1990-09-01 00:00:00',
         '1990-09-02 00:00:00',
@@ -1382,8 +1382,8 @@ describe('NewPicker.Range', () => {
     const { container } = render(<DayRangePicker showNow onChange={onChange} />);
 
     openPicker(container);
-    fireEvent.click(document.querySelector('.rc-picker-now-btn'));
-    fireEvent.click(document.querySelector('.rc-picker-now-btn'));
+    fireEvent.click(document.querySelector('.rc-picker-now'));
+    fireEvent.click(document.querySelector('.rc-picker-now'));
 
     expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-03', '1990-09-03']);
   });
@@ -1413,12 +1413,12 @@ describe('NewPicker.Range', () => {
 
     // Start
     fireEvent.click(document.querySelectorAll('li.rc-picker-time-panel-cell')[2]);
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    fireEvent.click(document.querySelector('.rc-picker-ok'));
     await waitFakeTimer();
 
     // End
     fireEvent.click(document.querySelectorAll('li.rc-picker-time-panel-cell')[2]);
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    fireEvent.click(document.querySelector('.rc-picker-ok'));
     await waitFakeTimer();
 
     expect(onChange).toHaveBeenCalledWith(expect.anything(), [

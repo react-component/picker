@@ -31,6 +31,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   format?: string;
   validateFormat: (value: string) => boolean;
   active?: boolean;
+  open?: boolean;
   /** Used for single picker only */
   showActiveCls?: boolean;
   suffixIcon?: React.ReactNode;
@@ -54,6 +55,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   const {
     className,
     active,
+    open,
     showActiveCls = true,
     suffixIcon,
     format,
@@ -407,6 +409,8 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
       <Component
         ref={inputRef}
         aria-invalid={invalid}
+        aria-haspopup="dialog"
+        aria-expanded={open}
         autoComplete="off"
         {...restProps}
         onKeyDown={onSharedKeyDown}

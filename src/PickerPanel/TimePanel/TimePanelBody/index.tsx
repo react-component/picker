@@ -271,7 +271,11 @@ export default function TimePanelBody<DateType extends object = any>(
   };
 
   return (
-    <div className={clsx(`${prefixCls}-content`, classNames.content)} style={styles.content}>
+    <div
+      role="group"
+      className={clsx(`${prefixCls}-content`, classNames.content)}
+      style={styles.content}
+    >
       {showHour && (
         <TimeColumn
           units={hourUnits}

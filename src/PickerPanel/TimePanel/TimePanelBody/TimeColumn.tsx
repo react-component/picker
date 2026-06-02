@@ -3,20 +3,23 @@ import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
 import * as React from 'react';
 import { usePanelContext } from '../../context';
 import useScrollTo from './useScrollTo';
+import type { Locale } from '../../../interface';
 
 const SCROLL_DELAY = 300;
 
 export type Unit<ValueType = number | string> = {
-  label: React.ReactText;
+  label: string | number;
   value: ValueType;
   disabled?: boolean;
 };
+
+type TimeUnitType = 'hour' | 'minute' | 'second' | 'millisecond' | 'meridiem';
 
 export interface TimeUnitColumnProps {
   units: Unit[];
   value: number | string;
   optionalValue?: number | string;
-  type: 'hour' | 'minute' | 'second' | 'millisecond' | 'meridiem';
+  type: TimeUnitType;
   onChange: (value: number | string) => void;
   onHover: (value: number | string) => void;
   onDblClick?: VoidFunction;
@@ -26,6 +29,40 @@ export interface TimeUnitColumnProps {
 // Not use JSON.stringify to avoid dead loop
 function flattenUnits(units: Unit<string | number>[]) {
   return units.map(({ value, label, disabled }) => [value, label, disabled].join(',')).join(';');
+}
+
+function getListLabel(type: TimeUnitType, locale: Locale) {
+  switch (type) {
+    case 'hour':
+      return locale.hourSelect;
+    case 'minute':
+      return locale.minuteSelect;
+    case 'second':
+      return locale.secondSelect;
+    case 'millisecond':
+      return locale.millisecondSelect;
+    case 'meridiem':
+      return locale.meridiemSelect;
+    default:
+      return '';
+  }
+}
+
+function getListItemLabel(type: TimeUnitType, value: string | number, locale: Locale) {
+  switch (type) {
+    case 'hour':
+      return `${value} ${locale.hours}`;
+    case 'minute':
+      return `${value} ${locale.minutes}`;
+    case 'second':
+      return `${value} ${locale.seconds}`;
+    case 'millisecond':
+      return `${value} ${locale.milliseconds}`;
+    case 'meridiem':
+      return value.toString();
+    default:
+      return '';
+  }
 }
 
 export default function TimeColumn<DateType extends object>(props: TimeUnitColumnProps) {
@@ -96,16 +133,28 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
   const columnPrefixCls = `${panelPrefixCls}-column`;
 
   return (
-    <ul className={columnPrefixCls} ref={ulRef} data-type={type} onScroll={onInternalScroll}>
+    <ul
+      role="listbox"
+      aria-label={getListLabel(type, locale)}
+      className={columnPrefixCls}
+      ref={ulRef}
+      data-type={type}
+      onScroll={onInternalScroll}
+    >
       {units.map(({ label, value: unitValue, disabled }) => {
         const inner = <div className={`${cellPrefixCls}-inner`}>{label}</div>;
+        const isSelected = value === unitValue;
 
         return (
           <li
             key={unitValue}
+            aria-label={getListItemLabel(type, unitValue, locale)}
+            role="option"
+            aria-selected={isSelected}
+            aria-disabled={disabled}
             style={styles.item}
             className={clsx(cellPrefixCls, classNames.item, {
-              [`${cellPrefixCls}-selected`]: value === unitValue,
+              [`${cellPrefixCls}-selected`]: isSelected,
               [`${cellPrefixCls}-disabled`]: disabled,
             })}
             onClick={() => {

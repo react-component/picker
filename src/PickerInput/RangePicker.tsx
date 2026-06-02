@@ -56,8 +56,10 @@ export type RangeValueType<DateType> = [
 /** Used for change event, it should always be not undefined */
 export type NoUndefinedRangeValueType<DateType> = [start: DateType | null, end: DateType | null];
 
-export interface BaseRangePickerProps<DateType extends object>
-  extends Omit<SharedPickerProps<DateType>, 'showTime' | 'id'> {
+export interface BaseRangePickerProps<DateType extends object> extends Omit<
+  SharedPickerProps<DateType>,
+  'showTime' | 'id'
+> {
   // Structure
   id?: SelectorIdType;
 
@@ -132,7 +134,8 @@ export interface BaseRangePickerProps<DateType extends object>
 }
 
 export interface RangePickerProps<DateType extends object>
-  extends BaseRangePickerProps<DateType>,
+  extends
+    BaseRangePickerProps<DateType>,
     Omit<RangeTimeProps<DateType>, 'format' | 'defaultValue' | 'defaultOpenValue'> {}
 
 function getActiveRange(activeIndex: number) {
@@ -708,7 +711,8 @@ function RangePicker<DateType extends object = any>(
       prefixCls,
       locale,
       generateConfig,
-      button: components.button,
+      nowButton: components.nowButton,
+      okButton: components.okButton,
       input: components.input,
       classNames: mergedClassNames,
       styles: mergedStyles,
@@ -717,7 +721,8 @@ function RangePicker<DateType extends object = any>(
       prefixCls,
       locale,
       generateConfig,
-      components.button,
+      components.nowButton,
+      components.okButton,
       components.input,
       mergedClassNames,
       mergedStyles,
