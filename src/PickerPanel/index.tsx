@@ -20,7 +20,7 @@ import PickerContext from '../PickerInput/context';
 import useCellRender from '../PickerInput/hooks/useCellRender';
 import { isSame } from '../utils/dateUtil';
 import { pickProps, toArray } from '../utils/miscUtil';
-import { PickerHackContext, SharedPanelContext } from './context';
+import { PanelFocusContext, PickerHackContext, SharedPanelContext } from './context';
 import DatePanel from './DatePanel';
 import DateTimePanel from './DateTimePanel';
 import DecadePanel from './DecadePanel';
@@ -46,7 +46,8 @@ export interface PickerPanelRef {
 }
 
 export interface BasePickerPanelProps<DateType extends object = any>
-  extends Pick<
+  extends
+    Pick<
       SharedPanelProps<DateType>,
       // MISC
       | 'locale'
@@ -119,8 +120,9 @@ export interface BasePickerPanelProps<DateType extends object = any>
   hideHeader?: boolean;
 }
 
-export interface SinglePickerPanelProps<DateType extends object = any>
-  extends BasePickerPanelProps<DateType> {
+export interface SinglePickerPanelProps<
+  DateType extends object = any,
+> extends BasePickerPanelProps<DateType> {
   multiple?: false;
 
   defaultValue?: DateType | null;
@@ -190,11 +192,18 @@ function PickerPanel<DateType extends object = any>(
   } = props;
 
   // ======================== Context ========================
+  const pickerContext = React.useContext(PickerContext);
   const {
     prefixCls: contextPrefixCls,
     classNames: pickerClassNames,
     styles: pickerStyles,
-  } = React.useContext(PickerContext) || {};
+  } = pickerContext || {};
+
+  // When rendered inside a picker popup, the surrounding picker owns
+  // mode-change focus (see `usePopupFocus`), which correctly distinguishes a
+  // drill-down from a field switch. Only the standalone `<PickerPanel>` drives
+  // focus on mode change itself.
+  const standalone = !pickerContext;
 
   // ======================== prefixCls ========================
   const mergedPrefixCls = contextPrefixCls || prefixCls || 'rc-picker';
@@ -287,6 +296,50 @@ function PickerPanel<DateType extends object = any>(
       setInternalPickerValue(mergedValue[0]);
     }
   }, [mergedValue[0]]);
+
+  // ========================= Focus ==========================
+  const [focusedCellDate, setFocusedCellDate] = React.useState<DateType | null>(
+    () => mergedValue[0] || mergedPickerValue || now,
+  );
+
+  React.useEffect(() => {
+    if (mergedValue[0]) {
+      setFocusedCellDate(mergedValue[0]);
+    }
+  }, [mergedValue[0]]);
+
+  const onCellFocusedDateChange = useEvent((date: DateType) => {
+    setFocusedCellDate(date);
+    setInternalPickerValue(date);
+    onPickerValueChange?.(date);
+  });
+
+  // Bump this counter to tell PanelBody to programmatically focus its active cell.
+  const [focusTrigger, setFocusTrigger] = React.useState(0);
+
+  const prevModeRef = React.useRef<PanelMode | null>(null);
+  React.useLayoutEffect(() => {
+    if (prevModeRef.current !== null && prevModeRef.current !== mergedMode) {
+      // Sync the focused cell to the new panel's coordinate system so the
+      // correct cell gets tabIndex=0.
+      setFocusedCellDate(mergedPickerValue);
+
+      // Grab DOM focus only when standalone. Inside a picker popup the
+      // surrounding picker owns focus (see `usePopupFocus`), which correctly
+      // tells a drill-down apart from a field switch; bumping here would steal
+      // focus into the panel when the user merely switches fields.
+      if (standalone) {
+        setFocusTrigger((t) => t + 1);
+      }
+    }
+    prevModeRef.current = mergedMode;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mergedMode]);
+
+  const panelFocusContext = React.useMemo(
+    () => ({ focusedDate: focusedCellDate, onCellFocusedDateChange, focusTrigger }),
+    [focusedCellDate, onCellFocusedDateChange, focusTrigger],
+  );
 
   // Both trigger when manually pickerValue or mode change
   const triggerPanelChange = (viewDate?: DateType, nextMode?: PanelMode) => {
@@ -421,36 +474,39 @@ function PickerPanel<DateType extends object = any>(
   return (
     <SharedPanelContext.Provider value={sharedPanelContext}>
       <PickerHackContext.Provider value={pickerPanelContext}>
-        <div
-          ref={rootRef}
-          tabIndex={tabIndex}
-          className={clsx(panelCls, { [`${panelCls}-rtl`]: direction === 'rtl' })}
-        >
-          <PanelComponent
-            {...panelProps}
-            // Time
-            showTime={mergedShowTime}
-            // MISC
-            prefixCls={mergedPrefixCls}
-            locale={filledLocale}
-            generateConfig={generateConfig}
-            // Mode
-            onModeChange={triggerModeChange}
-            // Value
-            pickerValue={mergedPickerValue}
-            onPickerValueChange={(nextPickerValue) => {
-              setPickerValue(nextPickerValue, true);
-            }}
-            value={mergedValue[0]}
-            onSelect={onPanelValueSelect}
-            values={mergedValue}
-            // Render
-            cellRender={onInternalCellRender}
-            // Hover
-            hoverRangeValue={hoverRangeDate}
-            hoverValue={hoverValue}
-          />
-        </div>
+        <PanelFocusContext.Provider value={panelFocusContext}>
+          <div
+            ref={rootRef}
+            tabIndex={tabIndex}
+            className={clsx(panelCls, { [`${panelCls}-rtl`]: direction === 'rtl' })}
+          >
+            <PanelComponent
+              {...panelProps}
+              // Time
+              showTime={mergedShowTime}
+              // MISC
+              prefixCls={mergedPrefixCls}
+              locale={filledLocale}
+              generateConfig={generateConfig}
+              // Mode
+              onModeChange={triggerModeChange}
+              // Value
+              pickerValue={mergedPickerValue}
+              onPickerValueChange={(nextPickerValue) => {
+                setPickerValue(nextPickerValue, true);
+                setFocusedCellDate(nextPickerValue);
+              }}
+              value={mergedValue[0]}
+              onSelect={onPanelValueSelect}
+              values={mergedValue}
+              // Render
+              cellRender={onInternalCellRender}
+              // Hover
+              hoverRangeValue={hoverRangeDate}
+              hoverValue={hoverValue}
+            />
+          </div>
+        </PanelFocusContext.Provider>
       </PickerHackContext.Provider>
     </SharedPanelContext.Provider>
   );

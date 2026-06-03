@@ -129,9 +129,62 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
     }
   };
 
-  // ========================= Render =========================
   const columnPrefixCls = `${panelPrefixCls}-column`;
 
+  // ========================= Focus =========================
+  const activeValue = value ?? optionalValue;
+
+  // Tracks keyboard-navigation cursor separately from the committed value.
+  const [focusedValue, setFocusedValue] = React.useState<number | string | null>(null);
+
+  // Reset cursor when the committed value changes (e.g. click or external update).
+  React.useEffect(() => {
+    setFocusedValue(null);
+  }, [value]);
+
+  const tabFocusValue = focusedValue ?? activeValue;
+
+  // The active option registers its node via a callback ref; after keyboard
+  // navigation we move DOM focus to it without querying the DOM.
+  const focusedLiNodeRef = React.useRef<HTMLElement | null>(null);
+  const pendingFocusRef = React.useRef(false);
+
+  const registerFocusedLi = React.useCallback((node: HTMLElement | null) => {
+    focusedLiNodeRef.current = node;
+  }, []);
+
+  React.useEffect(() => {
+    if (pendingFocusRef.current) {
+      pendingFocusRef.current = false;
+      focusedLiNodeRef.current?.focus();
+    }
+  }, [focusedValue]);
+
+  // ========================= Keyboard =========================
+  const onCellKeyDown = (e: React.KeyboardEvent<HTMLLIElement>) => {
+    const enabledUnits = units.filter((u) => !u.disabled);
+    const currentIdx = enabledUnits.findIndex((u) => u.value === tabFocusValue);
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      pendingFocusRef.current = true;
+      const next = currentIdx < enabledUnits.length - 1 ? currentIdx + 1 : 0;
+      setFocusedValue(enabledUnits[next]?.value);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      pendingFocusRef.current = true;
+      const prev = currentIdx > 0 ? currentIdx - 1 : enabledUnits.length - 1;
+      setFocusedValue(enabledUnits[prev]?.value);
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      const target = enabledUnits.find((u) => u.value === tabFocusValue);
+      if (target) {
+        onChange(target.value);
+      }
+    }
+  };
+
+  // ========================= Render =========================
   return (
     <ul
       role="listbox"
@@ -140,6 +193,11 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
       ref={ulRef}
       data-type={type}
       onScroll={onInternalScroll}
+      onBlur={(e) => {
+        if (!ulRef.current?.contains(e.relatedTarget as Node)) {
+          setFocusedValue(null);
+        }
+      }}
     >
       {units.map(({ label, value: unitValue, disabled }) => {
         const inner = <div className={`${cellPrefixCls}-inner`}>{label}</div>;
@@ -148,7 +206,9 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
         return (
           <li
             key={unitValue}
+            ref={tabFocusValue === unitValue ? registerFocusedLi : undefined}
             aria-label={getListItemLabel(type, unitValue, locale)}
+            tabIndex={tabFocusValue === unitValue ? 0 : -1}
             role="option"
             aria-selected={isSelected}
             aria-disabled={disabled}
@@ -173,6 +233,7 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
             onMouseLeave={() => {
               onHover(null);
             }}
+            onKeyDown={onCellKeyDown}
             data-value={unitValue}
           >
             {cellRender

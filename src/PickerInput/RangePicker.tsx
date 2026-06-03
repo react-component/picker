@@ -28,6 +28,7 @@ import useFieldsInvalidate from './hooks/useFieldsInvalidate';
 import useFilledProps from './hooks/useFilledProps';
 import useOpen from './hooks/useOpen';
 import usePickerRef from './hooks/usePickerRef';
+import usePopupFocus, { focusPopupActiveCell } from './hooks/usePopupFocus';
 import usePresets from './hooks/usePresets';
 import useRangeActive from './hooks/useRangeActive';
 import useRangeDisabledDate from './hooks/useRangeDisabledDate';
@@ -230,6 +231,7 @@ function RangePicker<DateType extends object = any>(
 
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
+  const popupRef = React.useRef<HTMLDivElement>(null);
 
   // ======================= Semantic =======================
   const [mergedClassNames, mergedStyles] = useSemantic(propClassNames, propStyles);
@@ -243,6 +245,8 @@ function RangePicker<DateType extends object = any>(
       setMergeOpen(nextOpen, config);
     }
   };
+
+  const forceClose = () => triggerOpen(false, { force: true });
 
   // ======================== Values ========================
   const [mergedValue, setInnerValue, getCalendarValue, triggerCalendarChange, triggerOk] =
@@ -321,6 +325,15 @@ function RangePicker<DateType extends object = any>(
   /** Extends from `mergedMode` to patch `datetime` mode */
   const internalMode: InternalMode =
     mergedMode === 'date' && mergedShowTime ? 'datetime' : mergedMode;
+
+  // ===================== Keyboard Focus =====================
+  const { isFocusOpenSuppressed } = usePopupFocus(
+    mergedOpen,
+    mergedMode,
+    activeIndex,
+    popupRef,
+    () => selectorRef.current?.focus({ index: activeIndex ?? 0 }),
+  );
 
   // ====================== PanelCount ======================
   const multiplePanel = internalMode === picker && internalMode !== 'time';
@@ -429,7 +442,7 @@ function RangePicker<DateType extends object = any>(
     flushSubmit(activeIndex, nextIndex === null);
 
     if (nextIndex === null) {
-      triggerOpen(false, { force: true });
+      forceClose();
     } else if (!skipFocus) {
       selectorRef.current.focus({ index: nextIndex });
     }
@@ -457,7 +470,7 @@ function RangePicker<DateType extends object = any>(
 
   const onSelectorClear = () => {
     triggerSubmitChange(null);
-    triggerOpen(false, { force: true });
+    forceClose();
   };
 
   // ======================== Hover =========================
@@ -505,7 +518,7 @@ function RangePicker<DateType extends object = any>(
 
     if (passed) {
       lastOperation('preset-click');
-      triggerOpen(false, { force: true });
+      forceClose();
     }
   };
 
@@ -520,7 +533,11 @@ function RangePicker<DateType extends object = any>(
 
   // >>> Focus
   const onPanelFocus: React.FocusEventHandler<HTMLElement> = (event) => {
-    triggerOpen(true);
+    // A programmatic focus move into the panel (open / drill-down) must not
+    // reopen a popup that is in the middle of closing.
+    if (!isFocusOpenSuppressed()) {
+      triggerOpen(true);
+    }
     onSharedFocus(event);
   };
 
@@ -600,6 +617,8 @@ function RangePicker<DateType extends object = any>(
       onFocus={onPanelFocus}
       onBlur={onSharedBlur}
       onPanelMouseDown={onPanelMouseDown}
+      containerRef={popupRef}
+      onEscapeKeyDown={forceClose}
       // Mode
       picker={picker}
       mode={mergedMode}
@@ -671,9 +690,11 @@ function RangePicker<DateType extends object = any>(
 
     lastOperation('input');
 
-    triggerOpen(true, {
-      inherit: true,
-    });
+    if (!isFocusOpenSuppressed()) {
+      triggerOpen(true, {
+        inherit: true,
+      });
+    }
 
     // When click input to switch the field, it will not trigger close.
     // Which means it will lose the part confirm and we need fill back.
@@ -699,7 +720,16 @@ function RangePicker<DateType extends object = any>(
 
   const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event, preventDefault) => {
     if (event.key === 'Tab') {
-      triggerPartConfirm(null, true);
+      if (mergedOpen && !event.shiftKey) {
+        // Popup is open: move focus into the panel's active cell so keyboard
+        // users can navigate the calendar, rather than Tab jumping to the other
+        // field. The input blur this triggers would close the popup, but the
+        // panel's `onFocus` (→ `triggerOpen(true)`) keeps it open.
+        event.preventDefault();
+        focusPopupActiveCell(popupRef);
+      } else {
+        triggerPartConfirm(null, true);
+      }
     }
 
     onKeyDown?.(event, preventDefault);

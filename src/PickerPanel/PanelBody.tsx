@@ -1,8 +1,8 @@
 import { clsx } from 'clsx';
 import * as React from 'react';
 import type { DisabledDate } from '../interface';
-import { formatValue, isInRange, isSame } from '../utils/dateUtil';
-import { PickerHackContext, usePanelContext } from './context';
+import { formatValue, isInRange, isSame, isSameDate } from '../utils/dateUtil';
+import { PanelFocusContext, PickerHackContext, usePanelContext } from './context';
 
 export interface PanelBodyProps<DateType = any> {
   rowNum: number;
@@ -70,6 +70,38 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
 
   // ============================= Context ==============================
   const { onCellDblClick } = React.useContext(PickerHackContext);
+  const { focusedDate, onCellFocusedDateChange, focusTrigger } =
+    React.useContext(PanelFocusContext);
+
+  // ============================== Focus ===============================
+  // Roving tabindex: the active cell carries `tabIndex=0`. We move DOM focus to
+  // it imperatively after arrow-key navigation, and when a mode change requests
+  // focus via `focusTrigger`. The active cell registers its node via a callback
+  // ref, so the effect never needs to query the DOM — and it stays correct even
+  // when navigation re-bases the grid to a new month and the active date lands
+  // on the same cell position.
+  const focusedCellNodeRef = React.useRef<HTMLElement | null>(null);
+  const pendingFocusRef = React.useRef(false);
+
+  // A mode change bumps `focusTrigger` (after this panel has mounted). Detect it
+  // during render so focus is requested deterministically, regardless of how the
+  // mount and the trigger update interleave.
+  const lastFocusTriggerRef = React.useRef(focusTrigger);
+  if (focusTrigger !== lastFocusTriggerRef.current) {
+    lastFocusTriggerRef.current = focusTrigger;
+    pendingFocusRef.current = true;
+  }
+
+  const registerFocusedCell = React.useCallback((node: HTMLElement | null) => {
+    focusedCellNodeRef.current = node;
+  }, []);
+
+  React.useEffect(() => {
+    if (pendingFocusRef.current) {
+      pendingFocusRef.current = false;
+      focusedCellNodeRef.current?.focus();
+    }
+  }, [focusedDate, focusTrigger]);
 
   // ============================== Value ===============================
   const matchValues = (date: DateType) =>
@@ -124,6 +156,14 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
 
       // Render
       const inner = <div className={`${cellPrefixCls}-inner`}>{getCellText(currentDate)}</div>;
+
+      // Week panel uses isSameWeek which matches all 7 days in a row — use isSameDate
+      // so only the specific navigated cell gets tabIndex=0.
+      const isFocused =
+        !!focusedDate &&
+        (type === 'week'
+          ? isSameDate(generateConfig, currentDate, focusedDate)
+          : isSame(generateConfig, locale, currentDate, focusedDate, type));
       const isSelected =
         !hoverRangeValue &&
         // WeekPicker use row instead
@@ -133,12 +173,14 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
       rowNode.push(
         <td
           key={col}
+          ref={isFocused ? registerFocusedCell : undefined}
           title={title}
           role="gridcell"
           aria-label={title}
           aria-selected={isSelected}
           aria-disabled={disabled}
           {...getCellAttributes(currentDate)}
+          tabIndex={isFocused ? 0 : -1}
           className={clsx(cellPrefixCls, classNames.item, {
             [`${cellPrefixCls}-disabled`]: disabled,
             [`${cellPrefixCls}-hover`]: (hoverValue || []).some((date) =>
@@ -169,6 +211,37 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
           onMouseLeave={() => {
             if (!disabled) {
               onHover?.(null);
+            }
+          }}
+          onKeyDown={(e) => {
+            switch (e.key) {
+              case 'ArrowLeft':
+                e.preventDefault();
+                pendingFocusRef.current = true;
+                onCellFocusedDateChange(getCellDate(currentDate, -1));
+                break;
+              case 'ArrowRight':
+                e.preventDefault();
+                pendingFocusRef.current = true;
+                onCellFocusedDateChange(getCellDate(currentDate, 1));
+                break;
+              case 'ArrowUp':
+                e.preventDefault();
+                pendingFocusRef.current = true;
+                onCellFocusedDateChange(getCellDate(currentDate, -colNum));
+                break;
+              case 'ArrowDown':
+                e.preventDefault();
+                pendingFocusRef.current = true;
+                onCellFocusedDateChange(getCellDate(currentDate, colNum));
+                break;
+              case 'Enter':
+              case ' ':
+                e.preventDefault();
+                if (!disabled) {
+                  onSelect(currentDate);
+                }
+                break;
             }
           }}
         >

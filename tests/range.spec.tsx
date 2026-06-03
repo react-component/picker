@@ -1389,6 +1389,49 @@ describe('Picker.Range', () => {
     });
   });
 
+  describe('tab into open popup', () => {
+    it('moves focus into the panel instead of to the other field', () => {
+      jest.useFakeTimers();
+      const { container } = render(<DayRangePicker />);
+      openPicker(container, 0);
+      expect(isOpen()).toBeTruthy();
+
+      const tabEvent = fireEvent.keyDown(container.querySelectorAll('input')[0], {
+        key: 'Tab',
+      });
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      // Default Tab (which would move focus to the other field) is prevented
+      expect(tabEvent).toBeFalsy();
+      expect(isOpen()).toBeTruthy();
+      expect(document.activeElement).toBe(document.querySelector('td[tabindex="0"]'));
+      jest.useRealTimers();
+    });
+
+    it('selecting a cell that completes the range returns focus to the input', () => {
+      jest.useFakeTimers();
+      const { container } = render(<DayRangePicker />);
+
+      openPicker(container, 0);
+
+      // Start date: advances to the end field, popup stays open
+      selectCell(11);
+      expect(isOpen()).toBeTruthy();
+
+      // End date: completes the range, popup closes and focus returns to the input
+      selectCell(23);
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(isOpen()).toBeFalsy();
+      expect(document.activeElement).toBe(container.querySelectorAll('input')[1]);
+      jest.useRealTimers();
+    });
+  });
+
   it('panelRender', () => {
     render(<DayRangePicker open panelRender={() => <h1>Light</h1>} />);
     expect(document.body).toMatchSnapshot();
