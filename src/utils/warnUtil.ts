@@ -1,5 +1,5 @@
 import type { DisabledTimes, PickerMode } from '../interface';
-import warning from '@rc-component/util/lib/warning';
+import { warning } from '@rc-component/util';
 
 export interface WarningProps extends DisabledTimes {
   picker?: PickerMode;

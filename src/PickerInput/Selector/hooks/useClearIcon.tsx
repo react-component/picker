@@ -1,4 +1,4 @@
-import warning from '@rc-component/util/lib/warning';
+import { warning } from '@rc-component/util';
 import type { ReactNode } from 'react';
 import * as React from 'react';
 

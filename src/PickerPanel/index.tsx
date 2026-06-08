@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { useEvent, useControlledState, warning } from '@rc-component/util';
+import { useControlledState, useEvent, warning } from '@rc-component/util';
 import * as React from 'react';
 import useLocale from '../hooks/useLocale';
 import { fillShowTimeConfig, getTimeProps } from '../hooks/useTimeConfig';
@@ -46,7 +46,8 @@ export interface PickerPanelRef {
 }
 
 export interface BasePickerPanelProps<DateType extends object = any>
-  extends Pick<
+  extends
+    Pick<
       SharedPanelProps<DateType>,
       // MISC
       | 'locale'
@@ -119,8 +120,9 @@ export interface BasePickerPanelProps<DateType extends object = any>
   hideHeader?: boolean;
 }
 
-export interface SinglePickerPanelProps<DateType extends object = any>
-  extends BasePickerPanelProps<DateType> {
+export interface SinglePickerPanelProps<
+  DateType extends object = any,
+> extends BasePickerPanelProps<DateType> {
   multiple?: false;
 
   defaultValue?: DateType | null;
