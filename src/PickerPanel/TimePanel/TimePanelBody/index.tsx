@@ -114,8 +114,8 @@ export default function TimePanelBody<DateType extends object = any>(
     }
 
     const base = generateConfig.getNow();
-    const amDate = generateConfig.setHour(base, 6);
-    const pmDate = generateConfig.setHour(base, 18);
+    const amDate = generateConfig.setHour(base, 9);
+    const pmDate = generateConfig.setHour(base, 15);
 
     const formatMeridiem = (date: DateType, defaultLabel: string) => {
       const { cellMeridiemFormat } = locale;

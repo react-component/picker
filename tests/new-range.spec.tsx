@@ -333,11 +333,11 @@ describe('NewPicker.Range', () => {
       expect(
         document.querySelectorAll('[data-type="meridiem"] .rc-picker-time-panel-cell')[0]
           .textContent,
-      ).toEqual('早上');
+      ).toEqual('上午');
       expect(
         document.querySelectorAll('[data-type="meridiem"] .rc-picker-time-panel-cell')[1]
           .textContent,
-      ).toEqual('晚上');
+      ).toEqual('下午');
     });
   });
 
