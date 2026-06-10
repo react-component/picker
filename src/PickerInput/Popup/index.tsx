@@ -20,10 +20,12 @@ export type PopupShowTimeConfig<DateType extends object = any> = Omit<
   Pick<SharedTimeProps<DateType>, 'disabledTime'>;
 
 export interface PopupProps<DateType extends object = any, PresetValue = DateType>
-  extends Pick<React.InputHTMLAttributes<HTMLDivElement>, 'onFocus' | 'onBlur'>,
+  extends
+    Pick<React.InputHTMLAttributes<HTMLDivElement>, 'onFocus' | 'onBlur'>,
     FooterProps<DateType>,
     PopupPanelProps<DateType> {
   panelRender?: SharedPickerProps['panelRender'];
+  containerRef?: React.Ref<HTMLDivElement>;
 
   // Presets
   presets: ValueDate<DateType>[];
@@ -45,6 +47,7 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   onOk: VoidFunction;
 
   onPanelMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+  onEscapeKeyDown?: VoidFunction;
 
   classNames?: SharedPickerProps['classNames'];
   styles?: SharedPickerProps['styles'];
@@ -71,6 +74,8 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     onFocus,
     onBlur,
     onPanelMouseDown,
+    containerRef,
+    onEscapeKeyDown,
 
     // Direction
     direction,
@@ -213,11 +218,38 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   const marginLeft = 'marginLeft';
   const marginRight = 'marginRight';
 
+  const onContainerKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
+    if (e.key === 'Tab') {
+      const container = e.currentTarget;
+      const focusable = Array.from(
+        container.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), a:not([aria-disabled="true"]), td[tabindex="0"], li[tabindex="0"]',
+        ),
+      ).filter((el) => window.getComputedStyle(el).visibility !== 'hidden');
+
+      if (!focusable.length) return;
+
+      e.preventDefault();
+      const idx = focusable.indexOf(document.activeElement as HTMLElement);
+      const next = e.shiftKey
+        ? (idx - 1 + focusable.length) % focusable.length
+        : (idx + 1) % focusable.length;
+      focusable[next].focus();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      e.stopPropagation();
+      onEscapeKeyDown?.();
+    }
+  };
+
   // Container
   let renderNode = (
     <div
+      ref={containerRef}
       onMouseDown={onPanelMouseDown}
+      onKeyDown={onContainerKeyDown}
       tabIndex={-1}
+      role="dialog"
       className={clsx(
         containerPrefixCls,
         // Used for Today Button style, safe to remove if no need

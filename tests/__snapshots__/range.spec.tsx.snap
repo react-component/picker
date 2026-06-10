@@ -9,6 +9,8 @@ exports[`Picker.Range icon 1`] = `
       class="rc-picker-input rc-picker-input-start"
     >
       <input
+        aria-expanded="false"
+        aria-haspopup="dialog"
         aria-invalid="false"
         autocomplete="off"
         date-range="start"
@@ -25,6 +27,8 @@ exports[`Picker.Range icon 1`] = `
       class="rc-picker-input rc-picker-input-end"
     >
       <input
+        aria-expanded="false"
+        aria-haspopup="dialog"
         aria-invalid="false"
         autocomplete="off"
         date-range="end"
@@ -64,6 +68,8 @@ exports[`Picker.Range onPanelChange is array args should render correctly in pla
       class="rc-picker-input rc-picker-input-active rc-picker-input-start"
     >
       <input
+        aria-expanded="true"
+        aria-haspopup="dialog"
         aria-invalid="false"
         autocomplete="off"
         date-range="start"
@@ -80,6 +86,8 @@ exports[`Picker.Range onPanelChange is array args should render correctly in pla
       class="rc-picker-input rc-picker-input-end"
     >
       <input
+        aria-expanded="true"
+        aria-haspopup="dialog"
         aria-invalid="false"
         autocomplete="off"
         date-range="end"
@@ -104,6 +112,8 @@ exports[`Picker.Range onPanelChange is array args should render correctly in rtl
       class="rc-picker-input rc-picker-input-start"
     >
       <input
+        aria-expanded="false"
+        aria-haspopup="dialog"
         aria-invalid="false"
         autocomplete="off"
         date-range="start"
@@ -120,6 +130,8 @@ exports[`Picker.Range onPanelChange is array args should render correctly in rtl
       class="rc-picker-input rc-picker-input-end"
     >
       <input
+        aria-expanded="false"
+        aria-haspopup="dialog"
         aria-invalid="false"
         autocomplete="off"
         date-range="end"
@@ -145,6 +157,8 @@ exports[`Picker.Range panelRender 1`] = `
         class="rc-picker-input rc-picker-input-active rc-picker-input-start"
       >
         <input
+          aria-expanded="true"
+          aria-haspopup="dialog"
           aria-invalid="false"
           autocomplete="off"
           date-range="start"
@@ -161,6 +175,8 @@ exports[`Picker.Range panelRender 1`] = `
         class="rc-picker-input rc-picker-input-end"
       >
         <input
+          aria-expanded="true"
+          aria-haspopup="dialog"
           aria-invalid="false"
           autocomplete="off"
           date-range="end"
@@ -188,6 +204,7 @@ exports[`Picker.Range panelRender 1`] = `
         />
         <div
           class="rc-picker-panel-container rc-picker-date-panel-container"
+          role="dialog"
           style="margin-left: 0px; margin-right: auto;"
           tabindex="-1"
         >
@@ -211,6 +228,8 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
         class="rc-picker-input rc-picker-input-active rc-picker-input-start"
       >
         <input
+          aria-expanded="true"
+          aria-haspopup="dialog"
           aria-invalid="false"
           autocomplete="off"
           date-range="start"
@@ -227,6 +246,8 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
         class="rc-picker-input rc-picker-input-end"
       >
         <input
+          aria-expanded="true"
+          aria-haspopup="dialog"
           aria-invalid="false"
           autocomplete="off"
           date-range="end"
@@ -254,6 +275,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
         />
         <div
           class="rc-picker-panel-container rc-picker-date-panel-container"
+          role="dialog"
           style="margin-left: 0px; margin-right: auto;"
           tabindex="-1"
         >
@@ -277,7 +299,6 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                       <button
                         aria-label="上一年 (Control键加左方向键)"
                         class="rc-picker-header-super-prev-btn"
-                        tabindex="-1"
                         type="button"
                       >
                         «
@@ -285,7 +306,6 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                       <button
                         aria-label="上个月 (翻页上键)"
                         class="rc-picker-header-prev-btn"
-                        tabindex="-1"
                         type="button"
                       >
                         ‹
@@ -296,7 +316,6 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         <button
                           aria-label="选择年份"
                           class="rc-picker-year-btn"
-                          tabindex="-1"
                           type="button"
                         >
                           1990年
@@ -304,7 +323,6 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         <button
                           aria-label="选择月份"
                           class="rc-picker-month-btn"
-                          tabindex="-1"
                           type="button"
                         >
                           9月
@@ -314,7 +332,6 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         aria-label="下个月 (翻页下键)"
                         class="rc-picker-header-next-btn"
                         style="visibility: hidden;"
-                        tabindex="-1"
                         type="button"
                       >
                         ›
@@ -323,7 +340,6 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         aria-label="下一年 (Control键加右方向键)"
                         class="rc-picker-header-super-next-btn"
                         style="visibility: hidden;"
-                        tabindex="-1"
                         type="button"
                       >
                         »
@@ -333,9 +349,13 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                       class="rc-picker-body"
                     >
                       <table
+                        aria-label="9月 1990年"
                         class="rc-picker-content"
+                        role="grid"
                       >
-                        <thead>
+                        <thead
+                          aria-hidden="true"
+                        >
                           <tr>
                             <th>
                               一
@@ -361,9 +381,16 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-08-27"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-08-27"
                             >
                               <div>
@@ -372,7 +399,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-08-28"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-08-28"
                             >
                               <div>
@@ -381,7 +413,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-08-29"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-08-29"
                             >
                               <div>
@@ -390,7 +427,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-08-30"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-08-30"
                             >
                               <div>
@@ -399,7 +441,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-08-31"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-08-31"
                             >
                               <div>
@@ -408,7 +455,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-01"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-01"
                             >
                               <div>
@@ -417,7 +469,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-02"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-02"
                             >
                               <div>
@@ -426,9 +483,17 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-current="date"
+                              aria-disabled="false"
+                              aria-label="1990-09-03"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
+                              role="gridcell"
+                              tabindex="0"
                               title="1990-09-03"
                             >
                               <div>
@@ -437,7 +502,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-04"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-04"
                             >
                               <div>
@@ -446,7 +516,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-05"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-05"
                             >
                               <div>
@@ -455,7 +530,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-06"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-06"
                             >
                               <div>
@@ -464,7 +544,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-07"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-07"
                             >
                               <div>
@@ -473,7 +558,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-08"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-08"
                             >
                               <div>
@@ -482,7 +572,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-09"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-09"
                             >
                               <div>
@@ -491,9 +586,16 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-10"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-10"
                             >
                               <div>
@@ -502,7 +604,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-11"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-11"
                             >
                               <div>
@@ -511,7 +618,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-12"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-12"
                             >
                               <div>
@@ -520,7 +632,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-13"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-13"
                             >
                               <div>
@@ -529,7 +646,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-14"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-14"
                             >
                               <div>
@@ -538,7 +660,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-15"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-15"
                             >
                               <div>
@@ -547,7 +674,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-16"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-16"
                             >
                               <div>
@@ -556,9 +688,16 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-17"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-17"
                             >
                               <div>
@@ -567,7 +706,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-18"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-18"
                             >
                               <div>
@@ -576,7 +720,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-19"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-19"
                             >
                               <div>
@@ -585,7 +734,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-20"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-20"
                             >
                               <div>
@@ -594,7 +748,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-21"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-21"
                             >
                               <div>
@@ -603,7 +762,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-22"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-22"
                             >
                               <div>
@@ -612,7 +776,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-23"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-23"
                             >
                               <div>
@@ -621,9 +790,16 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-24"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-24"
                             >
                               <div>
@@ -632,7 +808,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-25"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-25"
                             >
                               <div>
@@ -641,7 +822,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-26"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-26"
                             >
                               <div>
@@ -650,7 +836,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-27"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-27"
                             >
                               <div>
@@ -659,7 +850,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-28"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-28"
                             >
                               <div>
@@ -668,7 +864,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-29"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-29"
                             >
                               <div>
@@ -677,7 +878,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-09-30"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-09-30"
                             >
                               <div>
@@ -686,9 +892,16 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-01"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-01"
                             >
                               <div>
@@ -697,7 +910,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-02"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-02"
                             >
                               <div>
@@ -706,7 +924,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-03"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-03"
                             >
                               <div>
@@ -715,7 +938,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-04"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-04"
                             >
                               <div>
@@ -724,7 +952,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-05"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-05"
                             >
                               <div>
@@ -733,7 +966,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-06"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-06"
                             >
                               <div>
@@ -742,7 +980,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-07"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-07"
                             >
                               <div>
@@ -770,7 +1013,6 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         aria-label="上一年 (Control键加左方向键)"
                         class="rc-picker-header-super-prev-btn"
                         style="visibility: hidden;"
-                        tabindex="-1"
                         type="button"
                       >
                         «
@@ -779,7 +1021,6 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         aria-label="上个月 (翻页上键)"
                         class="rc-picker-header-prev-btn"
                         style="visibility: hidden;"
-                        tabindex="-1"
                         type="button"
                       >
                         ‹
@@ -790,7 +1031,6 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         <button
                           aria-label="选择年份"
                           class="rc-picker-year-btn"
-                          tabindex="-1"
                           type="button"
                         >
                           1990年
@@ -798,7 +1038,6 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         <button
                           aria-label="选择月份"
                           class="rc-picker-month-btn"
-                          tabindex="-1"
                           type="button"
                         >
                           10月
@@ -807,7 +1046,6 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                       <button
                         aria-label="下个月 (翻页下键)"
                         class="rc-picker-header-next-btn"
-                        tabindex="-1"
                         type="button"
                       >
                         ›
@@ -815,7 +1053,6 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                       <button
                         aria-label="下一年 (Control键加右方向键)"
                         class="rc-picker-header-super-next-btn"
-                        tabindex="-1"
                         type="button"
                       >
                         »
@@ -825,9 +1062,13 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                       class="rc-picker-body"
                     >
                       <table
+                        aria-label="10月 1990年"
                         class="rc-picker-content"
+                        role="grid"
                       >
-                        <thead>
+                        <thead
+                          aria-hidden="true"
+                        >
                           <tr>
                             <th>
                               一
@@ -853,9 +1094,16 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-01"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-01"
                             >
                               <div>
@@ -864,7 +1112,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-02"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-02"
                             >
                               <div>
@@ -873,7 +1126,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-03"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="0"
                               title="1990-10-03"
                             >
                               <div>
@@ -882,7 +1140,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-04"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-04"
                             >
                               <div>
@@ -891,7 +1154,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-05"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-05"
                             >
                               <div>
@@ -900,7 +1168,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-06"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-06"
                             >
                               <div>
@@ -909,7 +1182,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-07"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-07"
                             >
                               <div>
@@ -918,9 +1196,16 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-08"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-08"
                             >
                               <div>
@@ -929,7 +1214,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-09"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-09"
                             >
                               <div>
@@ -938,7 +1228,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-10"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-10"
                             >
                               <div>
@@ -947,7 +1242,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-11"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-11"
                             >
                               <div>
@@ -956,7 +1256,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-12"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-12"
                             >
                               <div>
@@ -965,7 +1270,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-13"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-13"
                             >
                               <div>
@@ -974,7 +1284,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-14"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-14"
                             >
                               <div>
@@ -983,9 +1298,16 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-15"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-15"
                             >
                               <div>
@@ -994,7 +1316,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-16"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-16"
                             >
                               <div>
@@ -1003,7 +1330,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-17"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-17"
                             >
                               <div>
@@ -1012,7 +1344,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-18"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-18"
                             >
                               <div>
@@ -1021,7 +1358,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-19"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-19"
                             >
                               <div>
@@ -1030,7 +1372,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-20"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-20"
                             >
                               <div>
@@ -1039,7 +1386,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-21"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-21"
                             >
                               <div>
@@ -1048,9 +1400,16 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-22"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-22"
                             >
                               <div>
@@ -1059,7 +1418,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-23"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-23"
                             >
                               <div>
@@ -1068,7 +1432,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-24"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-24"
                             >
                               <div>
@@ -1077,7 +1446,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-25"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-25"
                             >
                               <div>
@@ -1086,7 +1460,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-26"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-26"
                             >
                               <div>
@@ -1095,7 +1474,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-27"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-27"
                             >
                               <div>
@@ -1104,7 +1488,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-28"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-28"
                             >
                               <div>
@@ -1113,9 +1502,16 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-29"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-29"
                             >
                               <div>
@@ -1124,7 +1520,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-30"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-30"
                             >
                               <div>
@@ -1133,7 +1534,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10-31"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10-31"
                             >
                               <div>
@@ -1142,7 +1548,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-11-01"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-11-01"
                             >
                               <div>
@@ -1151,7 +1562,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-11-02"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-11-02"
                             >
                               <div>
@@ -1160,7 +1576,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-11-03"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-11-03"
                             >
                               <div>
@@ -1169,7 +1590,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-11-04"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-11-04"
                             >
                               <div>
@@ -1178,9 +1604,16 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-11-05"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-11-05"
                             >
                               <div>
@@ -1189,7 +1622,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-11-06"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-11-06"
                             >
                               <div>
@@ -1198,7 +1636,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-11-07"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-11-07"
                             >
                               <div>
@@ -1207,7 +1650,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-11-08"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-11-08"
                             >
                               <div>
@@ -1216,7 +1664,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-11-09"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-11-09"
                             >
                               <div>
@@ -1225,7 +1678,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-11-10"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-11-10"
                             >
                               <div>
@@ -1234,7 +1692,12 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-11-11"
+                              aria-selected="false"
                               class="rc-picker-cell"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-11-11"
                             >
                               <div>
@@ -1268,6 +1731,8 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
         class="rc-picker-input rc-picker-input-active rc-picker-input-start"
       >
         <input
+          aria-expanded="true"
+          aria-haspopup="dialog"
           aria-invalid="false"
           autocomplete="off"
           date-range="start"
@@ -1284,6 +1749,8 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
         class="rc-picker-input rc-picker-input-end"
       >
         <input
+          aria-expanded="true"
+          aria-haspopup="dialog"
           aria-invalid="false"
           autocomplete="off"
           date-range="end"
@@ -1311,6 +1778,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
         />
         <div
           class="rc-picker-panel-container rc-picker-month-panel-container"
+          role="dialog"
           style="margin-left: 0px; margin-right: auto;"
           tabindex="-1"
         >
@@ -1334,7 +1802,6 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                       <button
                         aria-label="上一年 (Control键加左方向键)"
                         class="rc-picker-header-super-prev-btn"
-                        tabindex="-1"
                         type="button"
                       >
                         «
@@ -1345,7 +1812,6 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                         <button
                           aria-label="选择年份"
                           class="rc-picker-year-btn"
-                          tabindex="-1"
                           type="button"
                         >
                           1990年
@@ -1355,7 +1821,6 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                         aria-label="下一年 (Control键加右方向键)"
                         class="rc-picker-header-super-next-btn"
                         style="visibility: hidden;"
-                        tabindex="-1"
                         type="button"
                       >
                         »
@@ -1365,12 +1830,21 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                       class="rc-picker-body"
                     >
                       <table
+                        aria-label="1990年"
                         class="rc-picker-content"
+                        role="grid"
                       >
                         <tbody>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-01"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-01"
                             >
                               <div>
@@ -1379,7 +1853,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-02"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-02"
                             >
                               <div>
@@ -1388,7 +1867,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-03"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-03"
                             >
                               <div>
@@ -1397,9 +1881,16 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-04"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-04"
                             >
                               <div>
@@ -1408,7 +1899,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-05"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-05"
                             >
                               <div>
@@ -1417,7 +1913,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-06"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-06"
                             >
                               <div>
@@ -1426,9 +1927,16 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-07"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-07"
                             >
                               <div>
@@ -1437,7 +1945,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-08"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-08"
                             >
                               <div>
@@ -1446,7 +1959,13 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-current="date"
+                              aria-disabled="false"
+                              aria-label="1990-09"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="0"
                               title="1990-09"
                             >
                               <div>
@@ -1455,9 +1974,16 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-10"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-10"
                             >
                               <div>
@@ -1466,7 +1992,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-11"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-11"
                             >
                               <div>
@@ -1475,7 +2006,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1990-12"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1990-12"
                             >
                               <div>
@@ -1503,7 +2039,6 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                         aria-label="上一年 (Control键加左方向键)"
                         class="rc-picker-header-super-prev-btn"
                         style="visibility: hidden;"
-                        tabindex="-1"
                         type="button"
                       >
                         «
@@ -1514,7 +2049,6 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                         <button
                           aria-label="选择年份"
                           class="rc-picker-year-btn"
-                          tabindex="-1"
                           type="button"
                         >
                           1991年
@@ -1523,7 +2057,6 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                       <button
                         aria-label="下一年 (Control键加右方向键)"
                         class="rc-picker-header-super-next-btn"
-                        tabindex="-1"
                         type="button"
                       >
                         »
@@ -1533,12 +2066,21 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                       class="rc-picker-body"
                     >
                       <table
+                        aria-label="1991年"
                         class="rc-picker-content"
+                        role="grid"
                       >
                         <tbody>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1991-01"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1991-01"
                             >
                               <div>
@@ -1547,7 +2089,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1991-02"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1991-02"
                             >
                               <div>
@@ -1556,7 +2103,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1991-03"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1991-03"
                             >
                               <div>
@@ -1565,9 +2117,16 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1991-04"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1991-04"
                             >
                               <div>
@@ -1576,7 +2135,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1991-05"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1991-05"
                             >
                               <div>
@@ -1585,7 +2149,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1991-06"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1991-06"
                             >
                               <div>
@@ -1594,9 +2163,16 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1991-07"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1991-07"
                             >
                               <div>
@@ -1605,7 +2181,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1991-08"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1991-08"
                             >
                               <div>
@@ -1614,7 +2195,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1991-09"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="0"
                               title="1991-09"
                             >
                               <div>
@@ -1623,9 +2209,16 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                           </tr>
-                          <tr>
+                          <tr
+                            role="row"
+                          >
                             <td
+                              aria-disabled="false"
+                              aria-label="1991-10"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1991-10"
                             >
                               <div>
@@ -1634,7 +2227,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1991-11"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1991-11"
                             >
                               <div>
@@ -1643,7 +2241,12 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                               </div>
                             </td>
                             <td
+                              aria-disabled="false"
+                              aria-label="1991-12"
+                              aria-selected="false"
                               class="rc-picker-cell rc-picker-cell-in-view"
+                              role="gridcell"
+                              tabindex="-1"
                               title="1991-12"
                             >
                               <div>

@@ -96,6 +96,93 @@ describe('Picker.Keyboard', () => {
     });
   });
 
+  describe('tab into open popup', () => {
+    it('moves focus into the panel instead of leaving the picker', () => {
+      const { container } = render(<DayPicker />);
+
+      openPicker(container);
+      expect(isOpen()).toBeTruthy();
+
+      const tabEvent = fireEvent.keyDown(container.querySelector('input'), {
+        key: 'Tab',
+      });
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      // Default Tab (which would move focus out of the picker) is prevented
+      expect(tabEvent).toBeFalsy();
+      // Focus landed on the panel's active (roving-tabindex) cell
+      expect(isOpen()).toBeTruthy();
+      expect(document.activeElement).toBe(document.querySelector('td[tabindex="0"]'));
+    });
+
+    it('shift+tab still confirms and leaves the picker', () => {
+      const { container } = render(<DayPicker />);
+
+      openPicker(container);
+      fireEvent.keyDown(container.querySelector('input'), {
+        key: 'Tab',
+        shiftKey: true,
+      });
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(isOpen()).toBeFalsy();
+    });
+  });
+
+  describe('enter on a date cell', () => {
+    it('selects, closes and returns focus to the input', () => {
+      const onChange = jest.fn();
+      const { container } = render(<DayPicker onChange={onChange} />);
+
+      openPicker(container);
+
+      // Move focus into the panel, then Enter on the active cell
+      fireEvent.keyDown(container.querySelector('input'), { key: 'Tab' });
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      const activeCell = document.querySelector('td[tabindex="0"]');
+      fireEvent.keyDown(activeCell, { key: 'Enter' });
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(onChange).toHaveBeenCalled();
+      expect(isOpen()).toBeFalsy();
+      expect(document.activeElement).toBe(container.querySelector('input'));
+    });
+
+    it('escape from inside the panel closes and returns focus to the input', () => {
+      const { container } = render(<DayPicker />);
+
+      openPicker(container);
+
+      // Move focus into the panel, then Escape on the active cell
+      fireEvent.keyDown(container.querySelector('input'), { key: 'Tab' });
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      const activeCell = document.querySelector('td[tabindex="0"]');
+      fireEvent.keyDown(activeCell, { key: 'Escape' });
+
+      act(() => {
+        jest.runAllTimers();
+      });
+
+      expect(isOpen()).toBeFalsy();
+      expect(document.activeElement).toBe(container.querySelector('input'));
+    });
+  });
+
   describe('typing date with date-fns', () => {
     it('should not parse date if not matching format', () => {
       const { container } = render(<DateFnsSinglePicker format="dd/MM/YYYY" />);
