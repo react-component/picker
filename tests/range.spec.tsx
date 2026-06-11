@@ -275,6 +275,63 @@ describe('Picker.Range', () => {
       );
     });
 
+    it('does not block change when existing value is disabled by disabledDate', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          defaultValue={[getDay('1990-09-03'), getDay('1990-09-05')]}
+          disabledDate={(date) => date < getDay('1990-09-03').endOf('day')}
+          onChange={onChange}
+        />,
+      );
+
+      openPicker(container, 1);
+      selectCell(6);
+      closePicker(container, 1);
+
+      expect(onChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['1990-09-03', '1990-09-06'],
+      );
+    });
+
+    it('does not block start change when existing end value is disabled by disabledDate', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          defaultValue={[getDay('1990-09-01'), getDay('1990-09-03')]}
+          disabledDate={(date) => date.isSame(getDay('1990-09-03'), 'date')}
+          onChange={onChange}
+        />,
+      );
+
+      openPicker(container, 0);
+      selectCell(2);
+      closePicker(container, 1);
+
+      expect(onChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['1990-09-02', '1990-09-03'],
+      );
+    });
+
+    it('blocks change when existing end value becomes disabled by new start value', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          defaultValue={[getDay('1990-09-03'), getDay('1990-09-04')]}
+          disabledDate={(date: Dayjs, { from }) => !!from && date.isAfter(from.add(1, 'day'))}
+          onChange={onChange}
+        />,
+      );
+
+      openPicker(container, 0);
+      selectCell(2);
+      closePicker(container, 1);
+
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
     it('should close panel when finish first choose with showTime = true and disabled = [false, true]', () => {
       const { baseElement } = render(<DayRangePicker showTime disabled={[false, true]} />);
       expect(baseElement.querySelectorAll('.rc-picker-input')).toHaveLength(2);
