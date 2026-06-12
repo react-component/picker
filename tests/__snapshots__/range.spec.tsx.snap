@@ -43,14 +43,15 @@ exports[`Picker.Range icon 1`] = `
         class="suffix-icon"
       />
     </span>
-    <span
+    <button
+      aria-label="清除"
       class="rc-picker-clear"
-      role="button"
+      type="button"
     >
       <span
         class="suffix-icon"
       />
-    </span>
+    </button>
   </div>
 </div>
 `;
