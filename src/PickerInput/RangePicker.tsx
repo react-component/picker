@@ -175,6 +175,7 @@ function RangePicker<DateType extends object = any>(
     defaultValue,
     value,
     needConfirm,
+    onClear,
     onKeyDown,
 
     // Disabled
@@ -461,6 +462,7 @@ function RangePicker<DateType extends object = any>(
   const onSelectorClear = () => {
     triggerSubmitChange(null);
     triggerOpen(false, { force: true });
+    onClear?.();
   };
 
   // ======================== Hover =========================
@@ -576,6 +578,7 @@ function RangePicker<DateType extends object = any>(
       ...(Object.keys(domProps) as (keyof SharedHTMLAttrs)[]),
       'onChange',
       'onCalendarChange',
+      'onClear',
       'style',
       'className',
       'onPanelChange',

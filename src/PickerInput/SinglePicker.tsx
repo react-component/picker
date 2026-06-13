@@ -143,6 +143,7 @@ function Picker<DateType extends object = any>(
     value,
     needConfirm,
     onChange,
+    onClear,
     onKeyDown,
 
     // Disabled
@@ -386,6 +387,7 @@ function Picker<DateType extends object = any>(
     triggerSubmitChange(null);
     triggerOpen(false, { force: true });
     selectorRef.current.focus();
+    onClear?.();
   };
 
   // ======================== Hover =========================
@@ -496,6 +498,7 @@ function Picker<DateType extends object = any>(
       ...(Object.keys(domProps) as (keyof SharedHTMLAttrs)[]),
       'onChange',
       'onCalendarChange',
+      'onClear',
       'style',
       'className',
       'onPanelChange',
