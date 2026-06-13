@@ -77,7 +77,10 @@ function includesTimestamp<DateType extends object>(
   dates: DateType[],
   date: DateType,
 ) {
-  return dates.some((prevDate) => isSameTimestamp(generateConfig, prevDate, date));
+  return (
+    Array.isArray(dates) &&
+    dates.some((prevDate) => isSameTimestamp(generateConfig, prevDate, date))
+  );
 }
 
 /**
@@ -179,6 +182,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   setInnerValue: (nextValue: ValueType) => void,
   getCalendarValue: () => ValueType,
   triggerCalendarChange: TriggerCalendarChange<ValueType>,
+  rangeValue: boolean,
   disabled: ReplaceListType<Required<ValueType>, boolean>,
   formatList: FormatType[],
   focused: boolean,
@@ -205,7 +209,6 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   } = info;
 
   const orderOnChange = disabled.some((d) => d) ? false : order;
-  const isRangeValue = disabled.length > 0;
 
   // ============================= Util =============================
   const [getDateTexts, isSameDates] = useUtil<ValueType>(generateConfig, locale, formatList);
@@ -278,6 +281,9 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     const startChanged = !isSameTimestamp(generateConfig, prevStart, start || null);
     const endChanged = !isSameTimestamp(generateConfig, prevEnd, end || null);
 
+    // `validateDates` negates this helper: only a changed/new invalid date
+    // should block submission, while an unchanged value that was already
+    // invalid can remain without blocking another field update.
     const isInvalidateChangedDate = (
       date: DateType,
       prevDate: DateType,
@@ -290,7 +296,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
       return nextInvalidate && (changed || !prevDate || !isInvalidateDate(prevDate, prevInfo));
     };
 
-    const validateDates = isRangeValue
+    const validateDates = rangeValue
       ? // Validate range dates. Existing invalid values should not block other updates.
         (disabled[0] ||
           !start ||

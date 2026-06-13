@@ -315,6 +315,42 @@ describe('Picker.Range', () => {
       );
     });
 
+    it('blocks start change from disabled date to another disabled date', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          defaultValue={[getDay('1990-09-01'), getDay('1990-09-05')]}
+          disabledDate={(date) => date.isBefore(getDay('1990-09-03'), 'date')}
+          onChange={onChange}
+        />,
+      );
+
+      openPicker(container, 0);
+      inputValue('1990-09-02', 0);
+      keyDown(container, 0, KeyCode.ENTER);
+      closePicker(container, 0);
+
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
+    it('blocks end change from disabled date to another disabled date', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          defaultValue={[getDay('1990-09-01'), getDay('1990-09-03')]}
+          disabledDate={(date: Dayjs, { from }) => !!from && date.isAfter(from.add(1, 'day'))}
+          onChange={onChange}
+        />,
+      );
+
+      openPicker(container, 1);
+      inputValue('1990-09-04', 1);
+      keyDown(container, 1, KeyCode.ENTER);
+      closePicker(container, 1);
+
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
     it('blocks change when existing end value becomes disabled by new start value', () => {
       const onChange = jest.fn();
       const { container } = render(

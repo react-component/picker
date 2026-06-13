@@ -343,6 +343,7 @@ function RangePicker<DateType extends object = any>(
     setInnerValue,
     getCalendarValue,
     triggerCalendarChange,
+    true, // rangeValue
     disabled,
     formatList,
     focused,

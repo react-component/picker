@@ -298,7 +298,8 @@ function Picker<DateType extends object = any>(
     setInnerValue,
     getCalendarValue,
     triggerCalendarChange,
-    [], //disabled,
+    false, // rangeValue
+    [], // disabled
     formatList,
     focused,
     mergedOpen,
@@ -455,6 +456,7 @@ function Picker<DateType extends object = any>(
   const isPopupInvalidateDate = useEvent((date: DateType) => {
     if (
       multiple &&
+      Array.isArray(mergedValue) &&
       mergedValue.some((valueDate) => isSameTimestamp(generateConfig, valueDate, date))
     ) {
       return false;
