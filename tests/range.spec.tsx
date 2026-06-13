@@ -1953,6 +1953,22 @@ describe('Picker.Range', () => {
     expect(document.querySelector('input').value).toEqual('');
   });
 
+  it('trigger onClear when clear value', () => {
+    const onClear = jest.fn();
+
+    render(
+      <DayRangePicker
+        allowClear
+        defaultValue={[getDay('2000-09-03'), getDay('2000-09-03')]}
+        onClear={onClear}
+      />,
+    );
+
+    clearValue();
+    expect(onClear).toHaveBeenCalledTimes(1);
+    expect(document.querySelector('input').value).toEqual('');
+  });
+
   it('selected date when open is true should switch panel', () => {
     const { container } = render(<DayRangePicker open />);
 

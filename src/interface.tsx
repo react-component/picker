@@ -325,7 +325,8 @@ export type PanelSemanticName =
   | 'container';
 
 export interface SharedPickerProps<DateType extends object = any>
-  extends SharedHTMLAttrs,
+  extends
+    SharedHTMLAttrs,
     Pick<
       SharedPanelProps<DateType>,
       // Icon
@@ -379,6 +380,7 @@ export interface SharedPickerProps<DateType extends object = any>
     | {
         clearIcon?: React.ReactNode;
       };
+  onClear?: VoidFunction;
 
   /** @deprecated Please use `allowClear.clearIcon` instead */
   clearIcon?: React.ReactNode;
