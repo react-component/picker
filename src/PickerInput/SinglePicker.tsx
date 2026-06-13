@@ -30,6 +30,7 @@ import useShowNow from './hooks/useShowNow';
 import Popup from './Popup';
 import SingleSelector from './Selector/SingleSelector';
 import useSemantic from '../hooks/useSemantic';
+import { isSameTimestamp } from '../utils/dateUtil';
 
 // TODO: isInvalidateDate with showTime.disabledTime should not provide `range` prop
 
@@ -297,7 +298,8 @@ function Picker<DateType extends object = any>(
     setInnerValue,
     getCalendarValue,
     triggerCalendarChange,
-    [], //disabled,
+    false, // rangeValue
+    [], // disabled
     formatList,
     focused,
     mergedOpen,
@@ -452,6 +454,18 @@ function Picker<DateType extends object = any>(
     onSetHover(date, 'cell');
   };
 
+  const isPopupInvalidateDate = useEvent((date: DateType) => {
+    if (
+      multiple &&
+      Array.isArray(mergedValue) &&
+      mergedValue.some((valueDate) => isSameTimestamp(generateConfig, valueDate, date))
+    ) {
+      return false;
+    }
+
+    return isInvalidateDate(date, { activeIndex: 0 });
+  });
+
   // >>> Focus
   const onPanelFocus: React.FocusEventHandler<HTMLElement> = (event) => {
     triggerOpen(true);
@@ -528,7 +542,7 @@ function Picker<DateType extends object = any>(
       // Value
       format={maskFormat}
       value={calendarValue}
-      isInvalid={isInvalidateDate}
+      isInvalid={isPopupInvalidateDate}
       onChange={null}
       onSelect={onPanelSelect}
       // PickerValue

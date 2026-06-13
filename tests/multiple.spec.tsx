@@ -76,6 +76,44 @@ describe('Picker.Multiple', () => {
     expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-01', '1990-09-05']);
   });
 
+  it('does not block change when existing value is disabled by disabledDate', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayPicker
+        multiple
+        needConfirm
+        defaultValue={[getDay('1990-09-03')]}
+        disabledDate={(date) => date < getDay('1990-09-03').endOf('day')}
+        onChange={onChange}
+      />,
+    );
+
+    openPicker(container);
+    selectCell(5);
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-03', '1990-09-05']);
+  });
+
+  it('blocks adding a preset value disabled by disabledDate', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayPicker
+        multiple
+        needConfirm
+        defaultValue={[getDay('1990-09-03')]}
+        disabledDate={(date) => date.isSame(getDay('1990-09-05'), 'date')}
+        presets={[{ label: 'Disabled', value: getDay('1990-09-05') }]}
+        onChange={onChange}
+      />,
+    );
+
+    openPicker(container);
+    fireEvent.click(document.querySelector('.rc-picker-presets li'));
+
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
   it('selector remove', () => {
     const onChange = jest.fn();
     const { container } = render(

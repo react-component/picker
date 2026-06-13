@@ -72,6 +72,17 @@ function orderDates<DateType extends object, DatesType extends DateType[]>(
   return [...dates].sort((a, b) => (generateConfig.isAfter(a, b) ? 1 : -1)) as DatesType;
 }
 
+function includesTimestamp<DateType extends object>(
+  generateConfig: GenerateConfig<DateType>,
+  dates: DateType[],
+  date: DateType,
+) {
+  return (
+    Array.isArray(dates) &&
+    dates.some((prevDate) => isSameTimestamp(generateConfig, prevDate, date))
+  );
+}
+
 /**
  * Used for internal value management.
  * It should always use `mergedValue` in render logic
@@ -171,6 +182,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   setInnerValue: (nextValue: ValueType) => void,
   getCalendarValue: () => ValueType,
   triggerCalendarChange: TriggerCalendarChange<ValueType>,
+  rangeValue: boolean,
   disabled: ReplaceListType<Required<ValueType>, boolean>,
   formatList: FormatType[],
   focused: boolean,
@@ -263,11 +275,55 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
       generateConfig.isAfter(end, start);
 
     // >>> Invalid
-    const validateDates =
-      // Validate start
-      (disabled[0] || !start || !isInvalidateDate(start, { activeIndex: 0 })) &&
-      // Validate end
-      (disabled[1] || !end || !isInvalidateDate(end, { from: start, activeIndex: 1 }));
+    const prevStart = mergedValue[0] || null;
+    const prevEnd = mergedValue[1] || null;
+
+    const startChanged = !isSameTimestamp(generateConfig, prevStart, start || null);
+    const endChanged = !isSameTimestamp(generateConfig, prevEnd, end || null);
+
+    // `validateDates` negates this helper: only a changed/new invalid date
+    // should block submission, while an unchanged value that was already
+    // invalid can remain without blocking another field update.
+    const isInvalidateChangedDate = (
+      date: DateType,
+      prevDate: DateType,
+      changed: boolean,
+      prevInfo: { from?: DateType; activeIndex: number },
+      nextInfo: { from?: DateType; activeIndex: number },
+    ) => {
+      const nextInvalidate = isInvalidateDate(date, nextInfo);
+
+      return nextInvalidate && (changed || !prevDate || !isInvalidateDate(prevDate, prevInfo));
+    };
+
+    const validateDates = rangeValue
+      ? // Validate range dates. Existing invalid values should not block other updates.
+        (disabled[0] ||
+          !start ||
+          !isInvalidateChangedDate(
+            start,
+            prevStart,
+            startChanged,
+            { activeIndex: 0 },
+            { activeIndex: 0 },
+          )) &&
+        (disabled[1] ||
+          !end ||
+          !isInvalidateChangedDate(
+            end,
+            prevEnd,
+            endChanged,
+            { from: prevStart, activeIndex: 1 },
+            { from: start, activeIndex: 1 },
+          ))
+      : // Validate single or multiple dates. Existing values may be disabled by updated `disabledDate`.
+        clone.every(
+          (date) =>
+            !date ||
+            includesTimestamp(generateConfig, mergedValue, date) ||
+            !isInvalidateDate(date, { activeIndex: 0 }),
+        );
+
     // >>> Result
     const allPassed =
       // Null value is from clear button
