@@ -312,6 +312,8 @@
     "./locale/th_TH.js": "./es/locale/th_TH.js",
     "./locale/tk_TK": "./es/locale/tk_TK.js",
     "./locale/tk_TK.js": "./es/locale/tk_TK.js",
+    "./locale/tl_PH": "./es/locale/tl_PH.js",
+    "./locale/tl_PH.js": "./es/locale/tl_PH.js",
     "./locale/tr_TR": "./es/locale/tr_TR.js",
     "./locale/tr_TR.js": "./es/locale/tr_TR.js",
     "./locale/ug_CN": "./es/locale/ug_CN.js",
