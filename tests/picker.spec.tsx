@@ -945,6 +945,16 @@ describe('Picker.Basic', () => {
     expect(document.querySelector('input').value).toEqual('');
   });
 
+  it('trigger onClear when clear value', () => {
+    const onClear = jest.fn();
+
+    render(<DayPicker allowClear defaultValue={getDay('2020-09-17')} onClear={onClear} />);
+
+    clearValue();
+    expect(onClear).toHaveBeenCalledTimes(1);
+    expect(document.querySelector('input').value).toEqual('');
+  });
+
   it('panelRender', () => {
     render(<DayPicker open panelRender={() => <h1>Light</h1>} />);
     expect(document.querySelector('.rc-picker')).toMatchSnapshot();
