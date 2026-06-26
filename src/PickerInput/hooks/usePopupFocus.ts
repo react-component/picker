@@ -1,6 +1,5 @@
 import { useEvent } from '@rc-component/util';
-import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
-import raf from '@rc-component/util/lib/raf';
+import { raf, useLayoutEffect } from '@rc-component/util';
 import * as React from 'react';
 import type { PanelMode } from '../../interface';
 
