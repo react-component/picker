@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { useEvent, useControlledState, warning } from '@rc-component/util';
+import { useControlledState, useEvent, warning } from '@rc-component/util';
 import * as React from 'react';
 import useLocale from '../hooks/useLocale';
 import { fillShowTimeConfig, getTimeProps } from '../hooks/useTimeConfig';

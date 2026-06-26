@@ -1,7 +1,5 @@
 import { clsx } from 'clsx';
-import { useEvent } from '@rc-component/util';
-import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
-import raf from '@rc-component/util/lib/raf';
+import { raf, useEvent, useLayoutEffect } from '@rc-component/util';
 import * as React from 'react';
 import { leftPad } from '../../utils/miscUtil';
 import PickerContext from '../context';
@@ -423,7 +421,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
         className={classNames.input}
         style={styles.input}
       />
-      <Icon type="suffix" icon={suffixIcon} />
+      <Icon icon={suffixIcon} />
       {clearIcon}
     </div>
   );

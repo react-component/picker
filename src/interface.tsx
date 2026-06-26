@@ -390,6 +390,7 @@ export interface SharedPickerProps<DateType extends object = any>
     | {
         clearIcon?: React.ReactNode;
       };
+  onClear?: VoidFunction;
 
   /** @deprecated Please use `allowClear.clearIcon` instead */
   clearIcon?: React.ReactNode;

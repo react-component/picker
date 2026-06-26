@@ -4,9 +4,7 @@ import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-import KeyCode from '@rc-component/util/lib/KeyCode';
-import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
-import { resetWarned } from '@rc-component/util/lib/warning';
+import { KeyCode, resetWarned, spyElementPrototypes } from '@rc-component/util';
 import React from 'react';
 import Picker, { PickerPanel, type PickerRef } from '../src';
 import type { PanelMode, PickerMode } from '../src/interface';
@@ -942,6 +940,16 @@ describe('Picker.Basic', () => {
     // clear
     expect(document.querySelector('.custom-clear')).toBeTruthy();
     clearValue();
+    expect(document.querySelector('input').value).toEqual('');
+  });
+
+  it('trigger onClear when clear value', () => {
+    const onClear = jest.fn();
+
+    render(<DayPicker allowClear defaultValue={getDay('2020-09-17')} onClear={onClear} />);
+
+    clearValue();
+    expect(onClear).toHaveBeenCalledTimes(1);
     expect(document.querySelector('input').value).toEqual('');
   });
 

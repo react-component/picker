@@ -1,5 +1,4 @@
-import { warning } from '@rc-component/util';
-import pickAttrs from '@rc-component/util/lib/pickAttrs';
+import { pickAttrs, warning } from '@rc-component/util';
 import * as React from 'react';
 import type { SelectorProps } from '../../../interface';
 import { formatValue } from '../../../utils/dateUtil';

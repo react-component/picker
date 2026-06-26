@@ -4,7 +4,8 @@ import type { InternalMode, PickerRef, SelectorProps } from '../../../interface'
 import { isSame } from '../../../utils/dateUtil';
 import type { PickerProps } from '../../SinglePicker';
 import PickerContext from '../../context';
-import Icon, { ClearIcon } from '../Icon';
+import Icon from '../Icon';
+import ClearIcon from '../ClearIcon';
 import Input, { type InputRef } from '../Input';
 import useInputProps from '../hooks/useInputProps';
 import useRootProps from '../hooks/useRootProps';
@@ -183,7 +184,7 @@ function SingleSelector<DateType extends object = any>(
         autoFocus={autoFocus}
         tabIndex={tabIndex}
       />
-      <Icon type="suffix" icon={suffixIcon} />
+      <Icon icon={suffixIcon} />
       {showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
     </>
   ) : (

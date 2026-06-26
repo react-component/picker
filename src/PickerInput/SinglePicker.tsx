@@ -1,8 +1,5 @@
-import { useEvent, useControlledState } from '@rc-component/util';
+import { omit, pickAttrs, useControlledState, useEvent, useLayoutEffect } from '@rc-component/util';
 import { clsx } from 'clsx';
-import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
-import omit from '@rc-component/util/lib/omit';
-import pickAttrs from '@rc-component/util/lib/pickAttrs';
 import * as React from 'react';
 import useToggleDates from '../hooks/useToggleDates';
 import type {
@@ -147,6 +144,7 @@ function Picker<DateType extends object = any>(
     value,
     needConfirm,
     onChange,
+    onClear,
     onKeyDown,
 
     // Disabled
@@ -395,6 +393,7 @@ function Picker<DateType extends object = any>(
   const onSelectorClear = () => {
     triggerSubmitChange(null);
     forceClose();
+    onClear?.();
   };
 
   // ======================== Hover =========================
@@ -509,6 +508,7 @@ function Picker<DateType extends object = any>(
       ...(Object.keys(domProps) as (keyof SharedHTMLAttrs)[]),
       'onChange',
       'onCalendarChange',
+      'onClear',
       'style',
       'className',
       'onPanelChange',

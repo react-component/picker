@@ -48,9 +48,10 @@ render(<Picker />, mountNode);
 | popupAlign | Object:alignConfig of [dom-align](https://github.com/yiminghe/dom-align) |  | value will be merged into placement's popupAlign config |
 | popupStyle | React.CSSProperties |  | customize popup style |
 | transitionName | String | '' | css class for animation |
-| locale | Object | import from '@rc-component/picker/lib/locale/en_US' | @rc-component/picker locale |
+| locale | Object | import from '@rc-component/picker/locale/en_US' | @rc-component/picker locale |
 | inputReadOnly | boolean | false | set input to read only |
 | allowClear | boolean \| { clearIcon?: ReactNode } | false | whether show clear button or customize clear button |
+| onClear | () => void |  | a callback function, can be executed when the clear button is clicked |
 | autoFocus | boolean | false | whether auto focus |
 | showTime | boolean \| Object | [showTime options](#showTime-options) | to provide an additional time selection |
 | picker | time \| date \| week \| month \| year |  | control which kind of panel should be shown |
@@ -82,7 +83,7 @@ render(<Picker />, mountNode);
 | prefixCls | String | @rc-component/picker | prefixCls of this component |
 | className | String | '' | additional css class of root dom |
 | style | React.CSSProperties |  | additional style of root dom node |
-| locale | Object | import from '@rc-component/picker/lib/locale/en_US' | @rc-component/picker locale |
+| locale | Object | import from '@rc-component/picker/locale/en_US' | @rc-component/picker locale |
 | value | moment |  | current value like input's value |
 | defaultValue | moment |  | defaultValue like input's defaultValue |
 | defaultPickerValue | moment |  | Set default display picker view date |
@@ -107,7 +108,7 @@ render(<Picker />, mountNode);
 | prefixCls | String | rc-picker | prefixCls of this component |
 | className | String | '' | additional css class of root dom |
 | style | React.CSSProperties |  | additional style of root dom node |
-| locale | Object | import from '@rc-component/picker/lib/locale/en_US' | @rc-component/picker locale |
+| locale | Object | import from '@rc-component/picker/locale/en_US' | @rc-component/picker locale |
 | value | moment |  | current value like input's value |
 | defaultValue | moment |  | defaultValue like input's defaultValue |
 | defaultPickerValue | moment |  | Set default display picker view date |
@@ -126,6 +127,7 @@ render(<Picker />, mountNode);
 | disabled | boolean | false | whether the range picker is disabled |
 | onChange | Function(value:[moment], formatString: [string, string]) |  | a callback function, can be executed when the selected time is changing |
 | onCalendarChange | Function(value:[moment], formatString: [string, string], info: { range:'start'\|'end' }) |  | a callback function, can be executed when the start time or the end time of the range is changing |
+| onClear | () => void |  | a callback function, can be executed when the clear button is clicked |
 | direction | String: ltr or rtl |  | Layout direction of picker component, it supports RTL direction too. |
 | order | boolean | true | (TimeRangePicker only) `false` to disable auto order |
 

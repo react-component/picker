@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
+import { useLayoutEffect } from '@rc-component/util';
 import * as React from 'react';
 import { usePanelContext } from '../../context';
 import useScrollTo from './useScrollTo';

@@ -1,9 +1,12 @@
-import { useEvent, useControlledState } from '@rc-component/util';
+import {
+  omit,
+  pickAttrs,
+  useControlledState,
+  useEvent,
+  useLayoutEffect,
+  warning,
+} from '@rc-component/util';
 import { clsx } from 'clsx';
-import useLayoutEffect from '@rc-component/util/lib/hooks/useLayoutEffect';
-import omit from '@rc-component/util/lib/omit';
-import pickAttrs from '@rc-component/util/lib/pickAttrs';
-import warning from '@rc-component/util/lib/warning';
 import * as React from 'react';
 import type {
   BaseInfo,
@@ -173,6 +176,7 @@ function RangePicker<DateType extends object = any>(
     defaultValue,
     value,
     needConfirm,
+    onClear,
     onKeyDown,
 
     // Disabled
@@ -470,7 +474,8 @@ function RangePicker<DateType extends object = any>(
 
   const onSelectorClear = () => {
     triggerSubmitChange(null);
-    forceClose();
+    triggerOpen(false, { force: true });
+    onClear?.();
   };
 
   // ======================== Hover =========================
@@ -590,6 +595,7 @@ function RangePicker<DateType extends object = any>(
       ...(Object.keys(domProps) as (keyof SharedHTMLAttrs)[]),
       'onChange',
       'onCalendarChange',
+      'onClear',
       'style',
       'className',
       'onPanelChange',

@@ -19,14 +19,15 @@ exports[`Picker.Basic icon 1`] = `
       class="suffix-icon"
     />
   </span>
-  <span
+  <button
+    aria-label="Clear"
     class="rc-picker-clear"
-    role="button"
+    type="button"
   >
     <span
       class="suffix-icon"
     />
-  </span>
+  </button>
 </div>
 `;
 

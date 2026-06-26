@@ -4,9 +4,7 @@ import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import { createRoot } from 'react-dom/client';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
-import KeyCode from '@rc-component/util/lib/KeyCode';
-import { spyElementPrototypes } from '@rc-component/util/lib/test/domHook';
-import { resetWarned } from '@rc-component/util/lib/warning';
+import { KeyCode, resetWarned, spyElementPrototypes } from '@rc-component/util';
 import React from 'react';
 import type { PickerRef, RangePickerProps } from '../src';
 import type { PickerMode } from '../src/interface';
@@ -1995,6 +1993,22 @@ describe('Picker.Range', () => {
     // clear
     expect(document.querySelector('.custom-clear')).toBeTruthy();
     clearValue();
+    expect(document.querySelector('input').value).toEqual('');
+  });
+
+  it('trigger onClear when clear value', () => {
+    const onClear = jest.fn();
+
+    render(
+      <DayRangePicker
+        allowClear
+        defaultValue={[getDay('2000-09-03'), getDay('2000-09-03')]}
+        onClear={onClear}
+      />,
+    );
+
+    clearValue();
+    expect(onClear).toHaveBeenCalledTimes(1);
     expect(document.querySelector('input').value).toEqual('');
   });
 
