@@ -393,6 +393,7 @@ function Picker<DateType extends object = any>(
   const onSelectorClear = () => {
     triggerSubmitChange(null);
     forceClose();
+    selectorRef.current.focus();
     onClear?.();
   };
 
