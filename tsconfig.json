@@ -21,5 +21,6 @@
     "tests/**/*.ts",
     "tests/**/*.tsx",
     "typings.d.ts"
-  ]
+  ],
+  "exclude": ["node_modules", "lib", "es", "dist", "docs-dist", ".dumi"]
 }

@@ -95,18 +95,20 @@
   "license": "MIT",
   "scripts": {
     "start": "dumi dev",
-    "build": "dumi build",
+    "build": "npm run docs:build",
+    "docs:build": "dumi build",
+    "docs:deploy": "gh-pages -d docs-dist",
     "compile": "father build && lessc assets/index.less assets/index.css",
     "browser-field": "node scripts/update-browser-field.js",
-    "gh-pages": "npm run build && father doc deploy",
+    "gh-pages": "GH_PAGES=1 npm run docs:build && npm run docs:deploy",
     "prepublishOnly": "npm run compile && npm run browser-field && rc-np",
     "lint": "eslint src/ --ext .ts,.tsx,.jsx,.js,.md",
     "lint:tsc": "tsc -p tsconfig.json --noEmit",
-    "prettier": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "prettier": "prettier --write --ignore-unknown .",
     "test": "rc-test",
     "coverage": "father test --coverage",
-    "now-build": "npm run build",
-    "prepare": "npx husky"
+    "prepare": "npx husky",
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@rc-component/overflow": "^1.0.0",
@@ -129,6 +131,7 @@
     "dumi": "^2.1.15",
     "eslint": "^8.56.0",
     "father": "^4.0.0",
+    "gh-pages": "^6.1.0",
     "glob": "^10.4.1",
     "husky": "^9.0.11",
     "less": "^4.2.0",

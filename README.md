@@ -1,158 +1,237 @@
-# @rc-component/picker
+<div align="center">
+  <h1>@rc-component/picker</h1>
+  <p>📅 React date, time, range, and panel picker primitives with pluggable date-library generate configs.</p>
+</div>
 
-[![NPM version][npm-image]][npm-url] [![build status][github-actions-image]][github-actions-url] [![Codecov][codecov-image]][codecov-url] [![npm download][download-image]][download-url] [![bundle size][bundlephobia-image]][bundlephobia-url]
+<div align="center">
 
-[npm-image]: http://img.shields.io/npm/v/@rc-component/picker.svg?style=flat-square
-[npm-url]: http://npmjs.org/package/@rc-component/picker
-[github-actions-image]: https://github.com/react-component/picker/actions/workflows/main.yml/badge.svg
-[github-actions-url]: https://github.com/react-component/picker/actions/workflows/main.yml
-[codecov-image]: https://img.shields.io/codecov/c/github/react-component/picker/master.svg?style=flat-square
-[codecov-url]: https://codecov.io/gh/react-component/picker/branch/master
-[david-url]: https://david-dm.org/react-component/picker
-[david-image]: https://david-dm.org/react-component/picker/status.svg?style=flat-square
-[david-dev-url]: https://david-dm.org/react-component/picker?type=dev
-[david-dev-image]: https://david-dm.org/react-component/picker/dev-status.svg?style=flat-square
-[download-image]: https://img.shields.io/npm/dm/@rc-component/picker.svg?style=flat-square
-[download-url]: https://npmjs.org/package/@rc-component/picker
-[bundlephobia-url]: https://bundlephobia.com/result?p=@rc-component/picker
-[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/@rc-component/picker
+[![NPM version][npm-image]][npm-url] [![npm download][download-image]][download-url] [![build status][github-actions-image]][github-actions-url] [![Codecov][codecov-image]][codecov-url] [![bundle size][bundlephobia-image]][bundlephobia-url] [![dumi][dumi-image]][dumi-url]
 
-## Live Demo
+</div>
 
-https://react-component.github.io/picker/
+<div align="center">
+  <sub>
+    Part of the <a href="https://ant.design">Ant Design</a> ecosystem
+    <img
+      alt="Ant Design"
+      height="14"
+      src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"
+    />
+  </sub>
+</div>
+
+## Highlights
+
+- Single picker, range picker, and panel-only picker exports.
+- Date, time, week, month, quarter, and year modes.
+- Pluggable `generateConfig` adapters for date-fns, dayjs, luxon, and moment.
+- Locale packages exposed from `@rc-component/picker/locale/*`.
+- Controlled value, popup state, panel value, presets, disabled dates, semantic class names, and custom cell rendering.
+- TypeScript definitions for picker props, range values, locale, date-library adapters, and refs.
+- Used by Ant Design as the shared date and time picker foundation.
 
 ## Install
 
-[![@rc-component/picker](https://nodei.co/npm/@rc-component/picker.png)](https://npmjs.org/package/@rc-component/picker)
+```bash
+npm install @rc-component/picker
+```
+
+Install the date library you plan to use if it is not already in your project:
+
+```bash
+npm install dayjs
+```
 
 ## Usage
 
-```js
+```tsx | pure
+import type { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import Picker from '@rc-component/picker';
+import dayjsGenerateConfig from '@rc-component/picker/generate/dayjs';
+import enUS from '@rc-component/picker/locale/en_US';
 import '@rc-component/picker/assets/index.css';
-import { render } from 'react-dom';
+import React, { useState } from 'react';
 
-render(<Picker />, mountNode);
+export default () => {
+  const [value, setValue] = useState<Dayjs | null>(dayjs());
+
+  return (
+    <Picker<Dayjs>
+      generateConfig={dayjsGenerateConfig}
+      locale={enUS}
+      value={value}
+      onChange={setValue}
+    />
+  );
+};
 ```
 
-## API
+```tsx | pure
+import type { Dayjs } from 'dayjs';
+import { RangePicker } from '@rc-component/picker';
+import dayjsGenerateConfig from '@rc-component/picker/generate/dayjs';
+import enUS from '@rc-component/picker/locale/en_US';
+import React from 'react';
 
-### Picker
-
-| Property | Type | Default | Description |
-| --- | --- | --- | --- |
-| prefixCls | String | rc-picker | prefixCls of this component |
-| className | String | '' | additional css class of root dom node |
-| style | React.CSSProperties |  | additional style of root dom node |
-| dropdownClassName | String | '' | additional className applied to dropdown |
-| popupAlign | Object:alignConfig of [dom-align](https://github.com/yiminghe/dom-align) |  | value will be merged into placement's popupAlign config |
-| popupStyle | React.CSSProperties |  | customize popup style |
-| transitionName | String | '' | css class for animation |
-| locale | Object | import from '@rc-component/picker/locale/en_US' | @rc-component/picker locale |
-| inputReadOnly | boolean | false | set input to read only |
-| allowClear | boolean \| { clearIcon?: ReactNode } | false | whether show clear button or customize clear button |
-| onClear | () => void |  | a callback function, can be executed when the clear button is clicked |
-| autoFocus | boolean | false | whether auto focus |
-| showTime | boolean \| Object | [showTime options](#showTime-options) | to provide an additional time selection |
-| picker | time \| date \| week \| month \| year |  | control which kind of panel should be shown |
-| previewValue | false \| hover | hover | When the user selects the date hover option, the value of the input field undergoes a temporary change |
-| format | String \| String[] | depends on whether you set timePicker and your locale | use to format/parse date(without time) value to/from input. When an array is provided, all values are used for parsing and first value for display |
-| use12Hours | boolean | false | 12 hours display mode |
-| value | moment |  | current value like input's value |
-| defaultValue | moment |  | defaultValue like input's defaultValue |
-| open | boolean | false | current open state of picker. controlled prop |
-| suffixIcon | ReactNode |  | The custom suffix icon |
-| prevIcon | ReactNode |  | The custom prev icon |
-| nextIcon | ReactNode |  | The custom next icon |
-| superPrevIcon | ReactNode |  | The custom super prev icon |
-| superNextIcon | ReactNode |  | The custom super next icon |
-| disabled | boolean | false | whether the picker is disabled |
-| placeholder | String |  | picker input's placeholder |
-| getPopupContainer | function(trigger) |  | to set the container of the floating layer, while the default is to create a div element in body |
-| onChange | Function(date: moment, dateString: string) |  | a callback function, can be executed when the selected time is changing |
-| onOpenChange | Function(open:boolean) |  | called when open/close picker |
-| onFocus | (event:React.FocusEvent\<HTMLInputElement>) => void |  | called like input's on focus |
-| onBlur | (event:React.FocusEvent\<HTMLInputElement>) => void |  | called like input's on blur |
-| onKeyDown | (event:React.KeyboardEvent\<HTMLInputElement>, preventDefault: () => void) => void |  | input on keydown event |
-| direction | String: ltr or rtl |  | Layout direction of picker component, it supports RTL direction too. |
-
-### PickerPanel
-
-| Property | Type | Default | Description |
-| --- | --- | --- | --- |
-| prefixCls | String | @rc-component/picker | prefixCls of this component |
-| className | String | '' | additional css class of root dom |
-| style | React.CSSProperties |  | additional style of root dom node |
-| locale | Object | import from '@rc-component/picker/locale/en_US' | @rc-component/picker locale |
-| value | moment |  | current value like input's value |
-| defaultValue | moment |  | defaultValue like input's defaultValue |
-| defaultPickerValue | moment |  | Set default display picker view date |
-| mode | time \| datetime \| date \| week \| month \| year \| decade |  | control which kind of panel |
-| picker | time \| date \| week \| month \| year |  | control which kind of panel |
-| tabIndex | Number | 0 | view [tabIndex](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) |
-| showTime | boolean \| Object | [showTime options](#showTime-options) | to provide an additional time selection |
-| showToday | boolean | false | whether to show today button |
-| disabledDate | Function(date:moment) => boolean |  | whether to disable select of current date |
-| dateRender | Function(currentDate:moment, today:moment) => React.Node |  | custom rendering function for date cells |
-| monthCellRender | Function(currentDate:moment, locale:Locale) => React.Node |  | Custom month cell render method |
-| renderExtraFooter | (mode) => React.Node |  | extra footer |
-| onSelect | Function(date: moment) |  | a callback function, can be executed when the selected time |
-| onPanelChange | Function(value: moment, mode) |  | callback when picker panel mode is changed |
-| onMouseDown | (event:React.MouseEvent\<HTMLInputElement>) => void |  | callback when executed onMouseDown event |
-| direction | String: ltr or rtl |  | Layout direction of picker component, it supports RTL direction too. |
-
-### RangePicker
-
-| Property | Type | Default | Description |
-| --- | --- | --- | --- | --- |
-| prefixCls | String | rc-picker | prefixCls of this component |
-| className | String | '' | additional css class of root dom |
-| style | React.CSSProperties |  | additional style of root dom node |
-| locale | Object | import from '@rc-component/picker/locale/en_US' | @rc-component/picker locale |
-| value | moment |  | current value like input's value |
-| defaultValue | moment |  | defaultValue like input's defaultValue |
-| defaultPickerValue | moment |  | Set default display picker view date |
-| separator | String | '~' | set separator between inputs |
-| picker | time \| date \| week \| month \| year |  | control which kind of panel |
-| previewValue | false \| hover | hover | When the user selects the date hover option, the value of the input field undergoes a temporary change |
-| placeholder | [String, String] |  | placeholder of date input |
-| showTime | boolean \| Object | [showTime options](#showTime-options) | to provide an additional time selection |
-| showTime.defaultValue | [moment, moment] |  | to set default time of selected date |
-| use12Hours | boolean | false | 12 hours display mode |
-| disabledTime | Function(date: moment, type:'start'\|'end'):Object |  |  | to specify the time that cannot be selected |
-| ranges | { String \| [range: string]: moment[] } \| { [range: string]: () => moment[] } |  | preseted ranges for quick selection |
-| format | String \| String[] | depends on whether you set timePicker and your locale | use to format/parse date(without time) value to/from input. When an array is provided, all values are used for parsing and first value for display |
-| allowEmpty | [boolean, boolean] |  | allow range picker clearing text |
-| selectable | [boolean, boolean] |  | whether to selected picker |
-| disabled | boolean | false | whether the range picker is disabled |
-| onChange | Function(value:[moment], formatString: [string, string]) |  | a callback function, can be executed when the selected time is changing |
-| onCalendarChange | Function(value:[moment], formatString: [string, string], info: { range:'start'\|'end' }) |  | a callback function, can be executed when the start time or the end time of the range is changing |
-| onClear | () => void |  | a callback function, can be executed when the clear button is clicked |
-| direction | String: ltr or rtl |  | Layout direction of picker component, it supports RTL direction too. |
-| order | boolean | true | (TimeRangePicker only) `false` to disable auto order |
-
-### showTime-options
-
-| Property            | Type    | Default | Description                        |
-| ------------------- | ------- | ------- | ---------------------------------- |
-| format              | String  |         | moment format                      |
-| showHour            | boolean | true    | whether show hour                  |
-| showMinute          | boolean | true    | whether show minute                |
-| showSecond          | boolean | true    | whether show second                |
-| use12Hours          | boolean | false   | 12 hours display mode              |
-| hourStep            | Number  | 1       | interval between hours in picker   |
-| minuteStep          | Number  | 1       | interval between minutes in picker |
-| secondStep          | Number  | 1       | interval between seconds in picker |
-| hideDisabledOptions | boolean | false   | whether hide disabled options      |
-| defaultValue        | moment  | null    | default initial value              |
-
-## Development
-
+export default () => (
+  <RangePicker<Dayjs>
+    generateConfig={dayjsGenerateConfig}
+    locale={enUS}
+    showTime
+    presets={[
+      {
+        label: 'Today',
+        value: () => [dayjsGenerateConfig.getNow(), dayjsGenerateConfig.getNow()],
+      },
+    ]}
+  />
+);
 ```
+
+## Examples
+
+Run the examples locally:
+
+```bash
 npm install
 npm start
 ```
 
+Then open the dumi dev server in your browser.
+
+## API
+
+### Exports
+
+| Export        | Description                                                   |
+| ------------- | ------------------------------------------------------------- |
+| `Picker`      | Input picker for one date/time value or multiple values.      |
+| `RangePicker` | Input picker for start and end date/time values.              |
+| `PickerPanel` | Panel-only picker without the input trigger.                  |
+| `generate/*`  | Date-library adapters for date-fns, dayjs, luxon, and moment. |
+| `locale/*`    | Locale objects for picker UI text and formats.                |
+| `interface`   | Shared TypeScript types.                                      |
+
+### Shared Picker Props
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| allowClear | `boolean \| { clearIcon?: ReactNode }` | `false` | Show the clear button or customize it. |
+| cellRender | `CellRender<DateType>` | - | Customize date, time, and range cells. |
+| changeOnBlur | `boolean` | - | Commit typed values on blur when valid. |
+| className | `string` | - | Class name for the picker root. |
+| classNames | `SemanticClassNames` | - | Semantic class names for root and popup slots. |
+| components | `Components<DateType>` | - | Component overrides. |
+| defaultOpen | `boolean` | - | Initial popup open state. |
+| disabledDate | `DisabledDate<DateType>` | - | Disable selectable dates. |
+| format | `string \| string[] \| FormatType<DateType>[]` | locale dependent | Format and parse input values. |
+| generateConfig | `GenerateConfig<DateType>` | required | Date-library adapter. |
+| getPopupContainer | `(node: HTMLElement) => HTMLElement` | - | Popup container. |
+| inputReadOnly | `boolean` | - | Make input read-only. |
+| locale | `Locale` | required | Locale text and formats. |
+| maxDate | `DateType` | - | Latest selectable date. |
+| minDate | `DateType` | - | Earliest selectable date. |
+| needConfirm | `boolean` | - | Require OK confirmation before change. |
+| open | `boolean` | - | Controlled popup open state. |
+| picker | `'time' \| 'date' \| 'week' \| 'month' \| 'quarter' \| 'year'` | `date` | Picker mode. |
+| pickerValue | `DateType \| [DateType, DateType] \| null` | - | Controlled panel date. |
+| placeholder | `string \| [string, string]` | - | Input placeholder. |
+| popupClassName | `string` | - | Class name for popup. |
+| presets | `ValueDate<DateType>[]` | - | Preset values. |
+| previewValue | `false \| 'hover'` | `hover` | Preview hovered values in input. |
+| showNow | `boolean` | - | Show the "now" button. |
+| showTime | `boolean \| SharedTimeProps` | `false` | Enable time selection. |
+| showToday | `boolean` | - | Show the "today" button. |
+| styles | `SemanticStyles` | - | Semantic styles for root and popup slots. |
+| suffixIcon | `ReactNode` | - | Custom suffix icon. |
+| onOpenChange | `(open: boolean) => void` | - | Triggered when popup open state changes. |
+| onPanelChange | `(value, mode) => void` | - | Triggered when panel mode changes. |
+
+### Picker Props
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| defaultPickerValue | `DateType \| null` | - | Initial panel date whenever the popup opens. |
+| defaultValue | `DateType \| DateType[]` | - | Initial selected value. |
+| multiple | `boolean` | `false` | Enable multiple selection for supported modes. |
+| tagRender | `(props: CustomTagProps<DateType>) => ReactNode` | - | Customize multiple value tags. |
+| value | `DateType \| DateType[] \| null` | - | Controlled selected value. |
+| onCalendarChange | `(date, dateString, info) => void` | - | Triggered while calendar selection changes. |
+| onChange | `(date, dateString) => void` | - | Triggered when selected value changes. |
+| onOk | `(value) => void` | - | Triggered when OK is clicked. |
+
+### RangePicker Props
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| allowEmpty | `boolean \| [boolean, boolean]` | `false` | Allow empty start or end values. |
+| defaultPickerValue | `[DateType, DateType] \| DateType \| null` | - | Initial panel date whenever the popup opens. |
+| defaultValue | `[DateType \| null \| undefined, DateType \| null \| undefined]` | - | Initial selected range. |
+| disabled | `boolean \| [boolean, boolean]` | `false` | Disable the whole range or one side. |
+| order | `boolean` | `true` | Keep selected range ordered. |
+| ranges | `Record<string, RangeValue \| () => RangeValue>` | - | Deprecated preset API. Use `presets`. |
+| separator | `ReactNode` | - | Separator between range inputs. |
+| value | `[DateType \| null \| undefined, DateType \| null \| undefined] \| null` | - | Controlled selected range. |
+| onCalendarChange | `(dates, dateStrings, info) => void` | - | Triggered while range selection changes. |
+| onChange | `(dates, dateStrings) => void` | - | Triggered when selected range changes. |
+| onOk | `(values) => void` | - | Triggered when OK is clicked. |
+
+### Time Options
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| changeOnScroll | `boolean` | `false` | Change time values on scroll. |
+| defaultOpenValue | `DateType \| DateType[]` | - | Default time template when selection is empty. |
+| disabledTime | `(date, range?, info?) => DisabledTimes` | - | Disable hours, minutes, seconds, or milliseconds. |
+| format | `string` | - | Time format. |
+| hideDisabledOptions | `boolean` | `false` | Hide disabled time options. |
+| hourStep | `number` | `1` | Hour interval. |
+| millisecondStep | `number` | `1` | Millisecond interval. |
+| minuteStep | `number` | `1` | Minute interval. |
+| secondStep | `number` | `1` | Second interval. |
+| showHour | `boolean` | `true` | Show hour column. |
+| showMillisecond | `boolean` | `false` | Show millisecond column. |
+| showMinute | `boolean` | `true` | Show minute column. |
+| showNow | `boolean` | - | Show now shortcut. |
+| showSecond | `boolean` | `true` | Show second column. |
+| use12Hours | `boolean` | `false` | Use 12-hour display. |
+
+## Development
+
+```bash
+npm install
+npm start
+npm test
+npm run tsc
+npm run coverage
+npm run compile
+npm run build
+```
+
+## Release
+
+The package is published with [`@rc-component/np`](https://github.com/react-component/np):
+
+```bash
+npm run prepublishOnly
+```
+
+This runs the package build, refreshes the browser field, and then starts the release helper.
+
 ## License
 
-@rc-component/picker is released under the MIT license.
+`@rc-component/picker` is released under the MIT license.
+
+[npm-image]: https://img.shields.io/npm/v/@rc-component/picker.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/@rc-component/picker
+[github-actions-image]: https://github.com/react-component/picker/actions/workflows/react-component-ci.yml/badge.svg
+[github-actions-url]: https://github.com/react-component/picker/actions/workflows/react-component-ci.yml
+[codecov-image]: https://img.shields.io/codecov/c/github/react-component/picker/master.svg?style=flat-square
+[codecov-url]: https://app.codecov.io/gh/react-component/picker
+[download-image]: https://img.shields.io/npm/dm/@rc-component/picker.svg?style=flat-square
+[download-url]: https://npmjs.org/package/@rc-component/picker
+[bundlephobia-url]: https://bundlephobia.com/package/@rc-component/picker
+[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/@rc-component/picker
+[dumi-url]: https://github.com/umijs/dumi
+[dumi-image]: https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square
