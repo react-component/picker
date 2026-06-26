@@ -1,5 +1,6 @@
 <div align="center">
   <h1>@rc-component/picker</h1>
+  <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/bmw-prod/ae669a89-0c24-40ff-a91d-2b83497170f6.svg" />
   <p>📅 React date, time, range, and panel picker primitives with pluggable date-library generate configs.</p>
 </div>
 
