@@ -1,7 +1,6 @@
 <div align="center">
   <h1>@rc-component/picker</h1>
-  <p><sub>Ant Design 生态的一部分。</sub></p>
-  <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" />
+  <p><sub><img alt="Ant Design" height="14" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" style="vertical-align: -0.125em;" /> Ant Design 生态的一部分。</sub></p>
   <p>📅 React 日期与时间选择基础组件。</p>
 </div>
 
@@ -17,13 +16,13 @@
 
 ## 特性
 
-- Single picker, range picker, and panel-only picker exports.
-- Date, time, week, month, quarter, and year modes.
-- Pluggable `generateConfig` adapters for date-fns, dayjs, luxon, and moment.
-- Locale packages exposed from `@rc-component/picker/locale/*`.
-- Controlled value, popup state, panel value, presets, disabled dates, semantic class names, and custom cell rendering.
-- TypeScript definitions for picker props, range values, locale, date-library adapters, and refs.
-- 被 Ant Design 用作共享的 date and time picker 基础能力。
+- 单一拾取器、范围拾取器和仅面板拾取器导出。
+- 日期、时间、周、月、季度和年模式。
+- 适用于 date-fns、dayjs、luxon 和 moment 的可插拔 `generateConfig` 适配器。
+- 从 `@rc-component/picker/locale/*` 公开的语言环境包。
+- 受控值、弹层状态、面板值、预设、禁用日期、语义className称和自定义单元格渲染。
+- 选择器属性、范围值、区域设置、日期库适配器和引用的 TypeScript 定义。
+- 被 Ant Design 共享的日期和时间选择器基础能力。
 
 ## 安装
 
@@ -31,7 +30,7 @@
 npm install @rc-component/picker
 ```
 
-Install the date library you plan to use if it is not already in your project:
+如果项目尚未安装日期库，请先安装计划使用的日期库：
 
 ```bash
 npm install dayjs
@@ -92,95 +91,95 @@ npm start
 
 | Export        | 说明                                                   |
 | ------------- | ------------------------------------------------------------- |
-| `Picker`      | Input picker for one date/time value or multiple values.      |
-| `RangePicker` | Input picker for start and end date/time values.              |
-| `PickerPanel` | Panel-only picker without the input trigger.                  |
-| `generate/*`  | Date-library adapters for date-fns, dayjs, luxon, and moment. |
-| `locale/*`    | Locale objects for picker UI text and formats.                |
+| `Picker`      | 用于单个或多个日期/时间值的输入型选择器。      |
+| `RangePicker` | 用于开始和结束日期/时间值的输入型范围选择器。              |
+| `PickerPanel` | 仅面板选择器，没有输入触发器。                  |
+| `generate/*`  | 适用于 date-fns、dayjs、luxon 和 moment 的日期库适配器。 |
+| `locale/*`    | 选择器 UI 文本和格式的区域设置对象。                |
 | `interface`   | Shared TypeScript types.                                      |
 
 ### Shared Picker Props
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| allowClear | `boolean \| { clearIcon?: ReactNode }` | `false` | Show the clear button or customize it. |
-| cellRender | `CellRender<DateType>` | - | Customize date, time, and range cells. |
-| changeOnBlur | `boolean` | - | Commit typed values on blur when valid. |
-| className | `string` | - | Class name for the picker root. |
-| classNames | `SemanticClassNames` | - | Semantic class names for root and popup slots. |
+| allowClear | `boolean \| { clearIcon?: ReactNode }` | `false` | 显示清除按钮或自定义它。 |
+| cellRender | `CellRender<DateType>` | - | 自定义日期、时间和范围单元格。 |
+| changeOnBlur | `boolean` | - | 当有效时，提交关于模糊的键入值。 |
+| className | `string` | - | 选择器根的className称。 |
+| classNames | `SemanticClassNames` | - | 根槽和弹层槽的语义className称。 |
 | components | `Components<DateType>` | - | Component overrides. |
-| defaultOpen | `boolean` | - | Initial popup open state. |
-| disabledDate | `DisabledDate<DateType>` | - | Disable selectable dates. |
-| format | `string \| string[] \| FormatType<DateType>[]` | locale dependent | Format and parse input values. |
-| generateConfig | `GenerateConfig<DateType>` | required | Date-library adapter. |
-| getPopupContainer | `(node: HTMLElement) => HTMLElement` | - | Popup container. |
-| inputReadOnly | `boolean` | - | Make input read-only. |
-| locale | `Locale` | required | Locale text and formats. |
+| defaultOpen | `boolean` | - | 初始弹层打开状态。 |
+| disabledDate | `DisabledDate<DateType>` | - | 禁用可选择的日期。 |
+| format | `string \| string[] \| FormatType<DateType>[]` | 依赖于语言环境 | 格式化并解析输入值。 |
+| generateConfig | `GenerateConfig<DateType>` | 必需的 | Date-library adapter. |
+| getPopupContainer | `(node: HTMLElement) => HTMLElement` | - | 弹层容器。 |
+| inputReadOnly | `boolean` | - | 使输入只读。 |
+| 语言环境 | `Locale` | 必需的 | 区域设置文本和格式。 |
 | maxDate | `DateType` | - | Latest selectable date. |
 | minDate | `DateType` | - | Earliest selectable date. |
-| needConfirm | `boolean` | - | Require OK confirmation before change. |
-| open | `boolean` | - | Controlled popup open state. |
+| needConfirm | `boolean` | - | 更改前需要确定确认。 |
+| 打开 | `boolean` | - | 受控弹层打开状态。 |
 | picker | `'time' \| 'date' \| 'week' \| 'month' \| 'quarter' \| 'year'` | `date` | Picker mode. |
-| pickerValue | `DateType \| [DateType, DateType] \| null` | - | Controlled panel date. |
+| pickerValue | `DateType \| [DateType, DateType] \| null` | - | 受控面板日期。 |
 | placeholder | `string \| [string, string]` | - | Input placeholder. |
-| popupClassName | `string` | - | Class name for popup. |
-| presets | `ValueDate<DateType>[]` | - | Preset values. |
-| previewValue | `false \| 'hover'` | `hover` | Preview hovered values in input. |
-| showNow | `boolean` | - | Show the "now" button. |
-| showTime | `boolean \| SharedTimeProps` | `false` | Enable time selection. |
-| showToday | `boolean` | - | Show the "today" button. |
-| styles | `SemanticStyles` | - | Semantic styles for root and popup slots. |
-| suffixIcon | `ReactNode` | - | Custom suffix icon. |
-| onOpenChange | `(open: boolean) => void` | - | Triggered when popup open state changes. |
-| onPanelChange | `(value, mode) => void` | - | Triggered when panel mode changes. |
+| popupClassName | `string` | - | 弹层窗口的className。 |
+| presets | `ValueDate<DateType>[]` | - | 预设值。 |
+| previewValue | `false \| 'hover'` | `hover` | 预览输入中的悬停值。 |
+| showNow | `boolean` | - | 显示“现在”按钮。 |
+| showTime | `boolean \| SharedTimeProps` | `false` | 启用时间选择。 |
+| showToday | `boolean` | - | 显示“今天”按钮。 |
+| styles | `SemanticStyles` | - | 根槽和弹层槽的语义样式。 |
+| suffixIcon | `ReactNode` | - | 自定义后缀图标。 |
+| onOpenChange | `(open: boolean) => void` | - | 当弹层窗口打开状态改变时触发。 |
+| onPanelChange | `(value, mode) => void` | - | 当面板模式改变时触发。 |
 
 ### Picker Props
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| defaultPickerValue | `DateType \| null` | - | Initial panel date whenever the popup opens. |
-| defaultValue | `DateType \| DateType[]` | - | Initial selected value. |
-| multiple | `boolean` | `false` | Enable multiple selection for supported modes. |
-| tagRender | `(props: CustomTagProps<DateType>) => ReactNode` | - | Customize multiple value tags. |
-| value | `DateType \| DateType[] \| null` | - | Controlled selected value. |
-| onCalendarChange | `(date, dateString, info) => void` | - | Triggered while calendar selection changes. |
-| onChange | `(date, dateString) => void` | - | Triggered when selected value changes. |
-| onOk | `(value) => void` | - | Triggered when OK is clicked. |
+| defaultPickerValue | `DateType \| null` | - | 弹层窗口打开时的初始面板日期。 |
+| defaultValue | `DateType \| DateType[]` | - | 初始选中值。 |
+| multiple | `boolean` | `false` | 为支持的模式启用多重选择。 |
+| tagRender | `(props: CustomTagProps<DateType>) => ReactNode` | - | 自定义多个值标签。 |
+| 价值 | `DateType \| DateType[] \| null` | - | 受控选中值。 |
+| onCalendarChange | `(date, dateString, info) => void` | - | 日历选择更改时触发。 |
+| onChange | `(date, dateString) => void` | - | 当所选值更改时触发。 |
+| onOk | `(value) => void` | - | 单击“确定”时触发。 |
 
 ### RangePicker Props
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| allowEmpty | `boolean \| [boolean, boolean]` | `false` | Allow empty start or end values. |
-| defaultPickerValue | `[DateType, DateType] \| DateType \| null` | - | Initial panel date whenever the popup opens. |
-| defaultValue | `[DateType \| null \| undefined, DateType \| null \| undefined]` | - | Initial selected range. |
-| disabled | `boolean \| [boolean, boolean]` | `false` | Disable the whole range or one side. |
-| order | `boolean` | `true` | Keep selected range ordered. |
-| ranges | `Record<string, RangeValue \| () => RangeValue>` | - | Deprecated preset API. Use `presets`. |
-| separator | `ReactNode` | - | Separator between range inputs. |
-| value | `[DateType \| null \| undefined, DateType \| null \| undefined] \| null` | - | Controlled selected range. |
-| onCalendarChange | `(dates, dateStrings, info) => void` | - | Triggered while range selection changes. |
-| onChange | `(dates, dateStrings) => void` | - | Triggered when selected range changes. |
-| onOk | `(values) => void` | - | Triggered when OK is clicked. |
+| allowEmpty | `boolean \| [boolean, boolean]` | `false` | 允许空的开始值或结束值。 |
+| defaultPickerValue | `[DateType, DateType] \| DateType \| null` | - | 弹层窗口打开时的初始面板日期。 |
+| defaultValue | `[DateType \| null \| undefined, DateType \| null \| undefined]` | - | 初始选定范围。 |
+| disabled | `boolean \| [boolean, boolean]` | `false` | 禁用整个范围或一侧。 |
+| order | `boolean` | `true` | 保持选定范围的顺序。 |
+| ranges | `Record<string, RangeValue \| () => RangeValue>` | - | 已弃用预设 API。使用 `presets`。 |
+| separator | `ReactNode` | - | 范围输入之间的分隔符。 |
+| 价值 | `[DateType \| null \| undefined, DateType \| null \| undefined] \| null` | - | 受控选定范围。 |
+| onCalendarChange | `(dates, dateStrings, info) => void` | - | 当范围选择更改时触发。 |
+| onChange | `(dates, dateStrings) => void` | - | 当选定范围更改时触发。 |
+| onOk | `(values) => void` | - | 单击“确定”时触发。 |
 
 ### Time Options
 
 | 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| changeOnScroll | `boolean` | `false` | Change time values on scroll. |
-| defaultOpenValue | `DateType \| DateType[]` | - | Default time template when selection is empty. |
-| disabledTime | `(date, range?, info?) => DisabledTimes` | - | Disable hours, minutes, seconds, or milliseconds. |
+| changeOnScroll | `boolean` | `false` | 更改滚动上的时间值。 |
+| defaultOpenValue | `DateType \| DateType[]` | - | 选择为空时的默认时间模板。 |
+| disabledTime | `(date, range?, info?) => DisabledTimes` | - | 禁用小时、分钟、秒或毫秒。 |
 | format | `string` | - | Time format. |
-| hideDisabledOptions | `boolean` | `false` | Hide disabled time options. |
+| hideDisabledOptions | `boolean` | `false` | 隐藏禁用的时间选项。 |
 | hourStep | `number` | `1` | Hour interval. |
 | millisecondStep | `number` | `1` | Millisecond interval. |
 | minuteStep | `number` | `1` | Minute interval. |
 | secondStep | `number` | `1` | Second interval. |
-| showHour | `boolean` | `true` | Show hour column. |
-| showMillisecond | `boolean` | `false` | Show millisecond column. |
-| showMinute | `boolean` | `true` | Show minute column. |
-| showNow | `boolean` | - | Show now shortcut. |
-| showSecond | `boolean` | `true` | Show second column. |
+| showHour | `boolean` | `true` | 显示小时列。 |
+| showMillisecond | `boolean` | `false` | 显示毫秒列。 |
+| showMinute | `boolean` | `true` | 显示分钟栏。 |
+| showNow | `boolean` | - | 现在显示快捷方式。 |
+| showSecond | `boolean` | `true` | 显示第二列。 |
 | use12Hours | `boolean` | `false` | Use 12-hour display. |
 
 ## 本地开发
@@ -201,11 +200,11 @@ npm run build
 npm run prepublishOnly
 ```
 
-The release flow is handled by `@rc-component/np` through the `rc-np` command after the package build.
+包构建完成后，发布流程由 `@rc-component/np` 通过 `rc-np` 命令处理。
 
 ## 许可证
 
-@rc-component/picker is released under the [MIT](./LICENSE.md) license.
+@rc-component/picker 基于 [MIT](./LICENSE.md) 许可证发布。
 
 [npm-image]: https://img.shields.io/npm/v/@rc-component/picker.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/@rc-component/picker
