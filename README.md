@@ -1,17 +1,10 @@
 <div align="center">
   <h1>@rc-component/picker</h1>
+  <p><sub>Part of the Ant Design ecosystem.</sub></p>
   <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/bmw-prod/ae669a89-0c24-40ff-a91d-2b83497170f6.svg" />
   <p>📅 React date, time, range, and panel picker primitives with pluggable date-library generate configs.</p>
 </div>
 
-<p align="center">
-  <sub>
-    <a href="https://ant.design">
-      <img alt="Ant Design" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" height="16">
-    </a>
-    Part of the Ant Design ecosystem.
-  </sub>
-</p>
 
 <div align="center">
 
@@ -61,20 +54,13 @@ import Picker from '@rc-component/picker';
 import dayjsGenerateConfig from '@rc-component/picker/generate/dayjs';
 import enUS from '@rc-component/picker/locale/en_US';
 import '@rc-component/picker/assets/index.css';
-import React, { useState } from 'react';
-
-export default () => {
-  const [value, setValue] = useState<Dayjs | null>(dayjs());
-
-  return (
-    <Picker<Dayjs>
-      generateConfig={dayjsGenerateConfig}
-      locale={enUS}
-      value={value}
-      onChange={setValue}
-    />
-  );
-};
+export default () => (
+  <Picker<Dayjs>
+    generateConfig={dayjsGenerateConfig}
+    locale={enUS}
+    defaultValue={dayjs()}
+  />
+);
 ```
 
 ```tsx | pure
@@ -82,8 +68,6 @@ import type { Dayjs } from 'dayjs';
 import { RangePicker } from '@rc-component/picker';
 import dayjsGenerateConfig from '@rc-component/picker/generate/dayjs';
 import enUS from '@rc-component/picker/locale/en_US';
-import React from 'react';
-
 export default () => (
   <RangePicker<Dayjs>
     generateConfig={dayjsGenerateConfig}
