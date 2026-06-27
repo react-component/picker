@@ -1,11 +1,11 @@
 <div align="center">
   <h1>@rc-component/picker</h1>
-  <p><sub>Part of the Ant Design ecosystem.</sub></p>
+  <p><sub>Ant Design 生态的一部分。</sub></p>
   <img alt="Ant Design" height="32" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" />
-  <p>📅 React date, time, range, and panel picker primitives with pluggable date-library generate configs.</p>
+  <p>📅 React 日期与时间选择基础组件。</p>
 </div>
 
-<p align="center">English | <a href="./README.zh-CN.md">简体中文</a></p>
+<p align="center"><a href="./README.md">English</a> | 简体中文</p>
 
 
 <div align="center">
@@ -15,7 +15,7 @@
 </div>
 
 
-## Highlights
+## 特性
 
 - Single picker, range picker, and panel-only picker exports.
 - Date, time, week, month, quarter, and year modes.
@@ -23,9 +23,9 @@
 - Locale packages exposed from `@rc-component/picker/locale/*`.
 - Controlled value, popup state, panel value, presets, disabled dates, semantic class names, and custom cell rendering.
 - TypeScript definitions for picker props, range values, locale, date-library adapters, and refs.
-- Used by Ant Design as the shared date and time picker foundation.
+- 被 Ant Design 用作共享的 date and time picker 基础能力。
 
-## Install
+## 安装
 
 ```bash
 npm install @rc-component/picker
@@ -37,7 +37,7 @@ Install the date library you plan to use if it is not already in your project:
 npm install dayjs
 ```
 
-## Usage
+## 使用
 
 ```tsx | pure
 import type { Dayjs } from 'dayjs';
@@ -75,22 +75,22 @@ export default () => (
 );
 ```
 
-## Examples
+## 示例
 
-Run the examples locally:
+本地运行示例：
 
 ```bash
 npm install
 npm start
 ```
 
-Then open the dumi dev server in your browser.
+然后在浏览器中打开 dumi 开发服务地址。
 
 ## API
 
 ### Exports
 
-| Export        | Description                                                   |
+| Export        | 说明                                                   |
 | ------------- | ------------------------------------------------------------- |
 | `Picker`      | Input picker for one date/time value or multiple values.      |
 | `RangePicker` | Input picker for start and end date/time values.              |
@@ -101,7 +101,7 @@ Then open the dumi dev server in your browser.
 
 ### Shared Picker Props
 
-| Property | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | allowClear | `boolean \| { clearIcon?: ReactNode }` | `false` | Show the clear button or customize it. |
 | cellRender | `CellRender<DateType>` | - | Customize date, time, and range cells. |
@@ -136,7 +136,7 @@ Then open the dumi dev server in your browser.
 
 ### Picker Props
 
-| Property | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | defaultPickerValue | `DateType \| null` | - | Initial panel date whenever the popup opens. |
 | defaultValue | `DateType \| DateType[]` | - | Initial selected value. |
@@ -149,7 +149,7 @@ Then open the dumi dev server in your browser.
 
 ### RangePicker Props
 
-| Property | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | allowEmpty | `boolean \| [boolean, boolean]` | `false` | Allow empty start or end values. |
 | defaultPickerValue | `[DateType, DateType] \| DateType \| null` | - | Initial panel date whenever the popup opens. |
@@ -165,7 +165,7 @@ Then open the dumi dev server in your browser.
 
 ### Time Options
 
-| Property | Type | Default | Description |
+| 参数 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | changeOnScroll | `boolean` | `false` | Change time values on scroll. |
 | defaultOpenValue | `DateType \| DateType[]` | - | Default time template when selection is empty. |
@@ -183,7 +183,7 @@ Then open the dumi dev server in your browser.
 | showSecond | `boolean` | `true` | Show second column. |
 | use12Hours | `boolean` | `false` | Use 12-hour display. |
 
-## Development
+## 本地开发
 
 ```bash
 npm install
@@ -195,7 +195,7 @@ npm run compile
 npm run build
 ```
 
-## Release
+## 发布
 
 ```bash
 npm run prepublishOnly
@@ -203,7 +203,7 @@ npm run prepublishOnly
 
 The release flow is handled by `@rc-component/np` through the `rc-np` command after the package build.
 
-## License
+## 许可证
 
 @rc-component/picker is released under the [MIT](./LICENSE.md) license.
 
