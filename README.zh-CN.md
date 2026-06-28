@@ -8,7 +8,7 @@
     <a href="https://npmjs.org/package/@rc-component/picker"><img alt="npm downloads" src="https://img.shields.io/npm/dm/@rc-component/picker.svg?style=flat-square"></a>
     <a href="https://github.com/react-component/picker/actions/workflows/react-component-ci.yml"><img alt="build status" src="https://github.com/react-component/picker/actions/workflows/react-component-ci.yml/badge.svg"></a>
     <a href="https://app.codecov.io/gh/react-component/picker"><img alt="Codecov" src="https://img.shields.io/codecov/c/github/react-component/picker/master.svg?style=flat-square"></a>
-    <a href="https://bundlephobia.com/package/@rc-component/picker"><img alt="bundle size" src="https://badgen.net/bundlephobia/minzip/@rc-component/picker"></a>
+    <a href="https://bundlephobia.com/package/@rc-component/picker"><img alt="bundle size" src="https://img.shields.io/bundlephobia/minzip/@rc-component/picker?style=flat-square"></a>
     <a href="https://github.com/umijs/dumi"><img alt="dumi" src="https://img.shields.io/badge/docs%20by-dumi-blue?style=flat-square"></a>
   </p>
 </div>
