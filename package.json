@@ -107,7 +107,7 @@
     "prettier": "prettier --write --ignore-unknown .",
     "test": "rc-test",
     "coverage": "father test --coverage",
-    "prepare": "npx husky",
+    "prepare": "husky",
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
@@ -337,5 +337,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "lint-staged": {
+    "*": "prettier --write --ignore-unknown"
   }
 }
