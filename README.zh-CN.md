@@ -101,7 +101,7 @@ npm start
 | changeOnBlur | `boolean` | - | 当有效时，提交关于模糊的键入值。 |
 | className | `string` | - | 选择器根的 className。 |
 | classNames | `SemanticClassNames` | - | 根槽和弹层槽的语义 className。 |
-| components | `Components<DateType>` | - | Component overrides. |
+| components | `Components<DateType>` | - | 组件覆盖配置。 |
 | defaultOpen | `boolean` | - | 初始弹层打开状态。 |
 | disabledDate | `DisabledDate<DateType>` | - | 禁用可选择的日期。 |
 | format | `string \| string[] \| FormatType<DateType>[]` | 依赖于语言环境 | 格式化并解析输入值。 |
@@ -109,13 +109,13 @@ npm start
 | getPopupContainer | `(node: HTMLElement) => HTMLElement` | - | 弹层容器。 |
 | inputReadOnly | `boolean` | - | 使输入只读。 |
 | locale | `Locale` | 必需的 | 区域设置文本和格式。 |
-| maxDate | `DateType` | - | Latest selectable date. |
-| minDate | `DateType` | - | Earliest selectable date. |
+| maxDate | `DateType` | - | 最晚可选日期。 |
+| minDate | `DateType` | - | 最早可选日期。 |
 | needConfirm | `boolean` | - | 更改前需要确定确认。 |
 | open | `boolean` | - | 受控弹层打开状态。 |
 | picker | `'time' \| 'date' \| 'week' \| 'month' \| 'quarter' \| 'year'` | `date` | 选择器模式。 |
 | pickerValue | `DateType \| [DateType, DateType] \| null` | - | 受控面板日期。 |
-| placeholder | `string \| [string, string]` | - | Input placeholder. |
+| placeholder | `string \| [string, string]` | - | 输入框占位文本。 |
 | popupClassName | `string` | - | 弹层窗口的 className。 |
 | presets | `ValueDate<DateType>[]` | - | 预设值。 |
 | previewValue | `false \| 'hover'` | `hover` | 预览输入中的悬停值。 |
