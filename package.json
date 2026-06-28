@@ -87,10 +87,10 @@
   "homepage": "https://react-component.github.io/picker",
   "repository": {
     "type": "git",
-    "url": "git@github.com:react-component/picker.git"
+    "url": "https://github.com/react-component/picker.git"
   },
   "bugs": {
-    "url": "http://github.com/react-component/picker/issues"
+    "url": "https://github.com/react-component/picker/issues"
   },
   "license": "MIT",
   "scripts": {
@@ -334,5 +334,8 @@
     "./locale/zh_CN.js": "./es/locale/zh_CN.js",
     "./locale/zh_TW": "./es/locale/zh_TW.js",
     "./locale/zh_TW.js": "./es/locale/zh_TW.js"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
