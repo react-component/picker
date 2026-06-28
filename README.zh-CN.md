@@ -6,13 +6,11 @@
 
 <p align="center"><a href="./README.md">English</a> | 简体中文</p>
 
-
 <div align="center">
 
 [![NPM version][npm-image]][npm-url] [![npm download][download-image]][download-url] [![build status][github-actions-image]][github-actions-url] [![Codecov][codecov-image]][codecov-url] [![bundle size][bundlephobia-image]][bundlephobia-url] [![dumi][dumi-image]][dumi-url]
 
 </div>
-
 
 ## 特性
 
@@ -46,11 +44,7 @@ import dayjsGenerateConfig from '@rc-component/picker/generate/dayjs';
 import enUS from '@rc-component/picker/locale/en_US';
 import '@rc-component/picker/assets/index.css';
 export default () => (
-  <Picker<Dayjs>
-    generateConfig={dayjsGenerateConfig}
-    locale={enUS}
-    defaultValue={dayjs()}
-  />
+  <Picker<Dayjs> generateConfig={dayjsGenerateConfig} locale={enUS} defaultValue={dayjs()} />
 );
 ```
 
@@ -89,14 +83,14 @@ npm start
 
 ### Exports
 
-| Export        | 说明                                                   |
-| ------------- | ------------------------------------------------------------- |
-| `Picker`      | 用于单个或多个日期/时间值的输入型选择器。      |
-| `RangePicker` | 用于开始和结束日期/时间值的输入型范围选择器。              |
-| `PickerPanel` | 仅面板选择器，没有输入触发器。                  |
+| Export        | 说明                                                     |
+| ------------- | -------------------------------------------------------- |
+| `Picker`      | 用于单个或多个日期/时间值的输入型选择器。                |
+| `RangePicker` | 用于开始和结束日期/时间值的输入型范围选择器。            |
+| `PickerPanel` | 仅面板选择器，没有输入触发器。                           |
 | `generate/*`  | 适用于 date-fns、dayjs、luxon 和 moment 的日期库适配器。 |
-| `locale/*`    | 选择器 UI 文本和格式的区域设置对象。                |
-| `interface`   | Shared TypeScript types.                                      |
+| `locale/*`    | 选择器 UI 文本和格式的区域设置对象。                     |
+| `interface`   | Shared TypeScript types.                                 |
 
 ### Shared Picker Props
 
@@ -114,11 +108,11 @@ npm start
 | generateConfig | `GenerateConfig<DateType>` | 必需的 | Date-library adapter. |
 | getPopupContainer | `(node: HTMLElement) => HTMLElement` | - | 弹层容器。 |
 | inputReadOnly | `boolean` | - | 使输入只读。 |
-| 语言环境 | `Locale` | 必需的 | 区域设置文本和格式。 |
+| locale | `Locale` | 必需的 | 区域设置文本和格式。 |
 | maxDate | `DateType` | - | Latest selectable date. |
 | minDate | `DateType` | - | Earliest selectable date. |
 | needConfirm | `boolean` | - | 更改前需要确定确认。 |
-| 打开 | `boolean` | - | 受控弹层打开状态。 |
+| open | `boolean` | - | 受控弹层打开状态。 |
 | picker | `'time' \| 'date' \| 'week' \| 'month' \| 'quarter' \| 'year'` | `date` | Picker mode. |
 | pickerValue | `DateType \| [DateType, DateType] \| null` | - | 受控面板日期。 |
 | placeholder | `string \| [string, string]` | - | Input placeholder. |
@@ -141,7 +135,7 @@ npm start
 | defaultValue | `DateType \| DateType[]` | - | 初始选中值。 |
 | multiple | `boolean` | `false` | 为支持的模式启用多重选择。 |
 | tagRender | `(props: CustomTagProps<DateType>) => ReactNode` | - | 自定义多个值标签。 |
-| 价值 | `DateType \| DateType[] \| null` | - | 受控选中值。 |
+| value | `DateType \| DateType[] \| null` | - | 受控选中值。 |
 | onCalendarChange | `(date, dateString, info) => void` | - | 日历选择更改时触发。 |
 | onChange | `(date, dateString) => void` | - | 当所选值更改时触发。 |
 | onOk | `(value) => void` | - | 单击“确定”时触发。 |
@@ -157,7 +151,7 @@ npm start
 | order | `boolean` | `true` | 保持选定范围的顺序。 |
 | ranges | `Record<string, RangeValue \| () => RangeValue>` | - | 已弃用预设 API。使用 `presets`。 |
 | separator | `ReactNode` | - | 范围输入之间的分隔符。 |
-| 价值 | `[DateType \| null \| undefined, DateType \| null \| undefined] \| null` | - | 受控选定范围。 |
+| value | `[DateType \| null \| undefined, DateType \| null \| undefined] \| null` | - | 受控选定范围。 |
 | onCalendarChange | `(dates, dateStrings, info) => void` | - | 当范围选择更改时触发。 |
 | onChange | `(dates, dateStrings) => void` | - | 当选定范围更改时触发。 |
 | onOk | `(values) => void` | - | 单击“确定”时触发。 |
