@@ -90,7 +90,7 @@ npm start
 | `PickerPanel` | 仅面板选择器，没有输入触发器。                           |
 | `generate/*`  | 适用于 date-fns、dayjs、luxon 和 moment 的日期库适配器。 |
 | `locale/*`    | 选择器 UI 文本和格式的区域设置对象。                     |
-| `interface`   | Shared TypeScript types.                                 |
+| `interface`   | 共享 TypeScript 类型。                                   |
 
 ### Shared Picker Props
 
@@ -105,7 +105,7 @@ npm start
 | defaultOpen | `boolean` | - | 初始弹层打开状态。 |
 | disabledDate | `DisabledDate<DateType>` | - | 禁用可选择的日期。 |
 | format | `string \| string[] \| FormatType<DateType>[]` | 依赖于语言环境 | 格式化并解析输入值。 |
-| generateConfig | `GenerateConfig<DateType>` | 必需的 | Date-library adapter. |
+| generateConfig | `GenerateConfig<DateType>` | 必需的 | 日期库适配器。 |
 | getPopupContainer | `(node: HTMLElement) => HTMLElement` | - | 弹层容器。 |
 | inputReadOnly | `boolean` | - | 使输入只读。 |
 | locale | `Locale` | 必需的 | 区域设置文本和格式。 |
@@ -113,7 +113,7 @@ npm start
 | minDate | `DateType` | - | Earliest selectable date. |
 | needConfirm | `boolean` | - | 更改前需要确定确认。 |
 | open | `boolean` | - | 受控弹层打开状态。 |
-| picker | `'time' \| 'date' \| 'week' \| 'month' \| 'quarter' \| 'year'` | `date` | Picker mode. |
+| picker | `'time' \| 'date' \| 'week' \| 'month' \| 'quarter' \| 'year'` | `date` | 选择器模式。 |
 | pickerValue | `DateType \| [DateType, DateType] \| null` | - | 受控面板日期。 |
 | placeholder | `string \| [string, string]` | - | Input placeholder. |
 | popupClassName | `string` | - | 弹层窗口的className。 |
@@ -165,16 +165,16 @@ npm start
 | disabledTime | `(date, range?, info?) => DisabledTimes` | - | 禁用小时、分钟、秒或毫秒。 |
 | format | `string` | - | Time format. |
 | hideDisabledOptions | `boolean` | `false` | 隐藏禁用的时间选项。 |
-| hourStep | `number` | `1` | Hour interval. |
-| millisecondStep | `number` | `1` | Millisecond interval. |
-| minuteStep | `number` | `1` | Minute interval. |
-| secondStep | `number` | `1` | Second interval. |
+| hourStep | `number` | `1` | 小时间隔。 |
+| millisecondStep | `number` | `1` | 毫秒间隔。 |
+| minuteStep | `number` | `1` | 分钟间隔。 |
+| secondStep | `number` | `1` | 秒间隔。 |
 | showHour | `boolean` | `true` | 显示小时列。 |
 | showMillisecond | `boolean` | `false` | 显示毫秒列。 |
 | showMinute | `boolean` | `true` | 显示分钟栏。 |
 | showNow | `boolean` | - | 现在显示快捷方式。 |
 | showSecond | `boolean` | `true` | 显示第二列。 |
-| use12Hours | `boolean` | `false` | Use 12-hour display. |
+| use12Hours | `boolean` | `false` | 使用 12 小时制显示。 |
 
 ## 本地开发
 
