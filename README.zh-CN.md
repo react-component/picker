@@ -18,7 +18,7 @@
 - 日期、时间、周、月、季度和年模式。
 - 适用于 date-fns、dayjs、luxon 和 moment 的可插拔 `generateConfig` 适配器。
 - 从 `@rc-component/picker/locale/*` 公开的语言环境包。
-- 受控值、弹层状态、面板值、预设、禁用日期、语义className称和自定义单元格渲染。
+- 受控值、弹层状态、面板值、预设、禁用日期、语义 className 和自定义单元格渲染。
 - 选择器属性、范围值、区域设置、日期库适配器和引用的 TypeScript 定义。
 - 被 Ant Design 共享的日期和时间选择器基础能力。
 
@@ -99,8 +99,8 @@ npm start
 | allowClear | `boolean \| { clearIcon?: ReactNode }` | `false` | 显示清除按钮或自定义它。 |
 | cellRender | `CellRender<DateType>` | - | 自定义日期、时间和范围单元格。 |
 | changeOnBlur | `boolean` | - | 当有效时，提交关于模糊的键入值。 |
-| className | `string` | - | 选择器根的className称。 |
-| classNames | `SemanticClassNames` | - | 根槽和弹层槽的语义className称。 |
+| className | `string` | - | 选择器根的 className。 |
+| classNames | `SemanticClassNames` | - | 根槽和弹层槽的语义 className。 |
 | components | `Components<DateType>` | - | Component overrides. |
 | defaultOpen | `boolean` | - | 初始弹层打开状态。 |
 | disabledDate | `DisabledDate<DateType>` | - | 禁用可选择的日期。 |
@@ -116,7 +116,7 @@ npm start
 | picker | `'time' \| 'date' \| 'week' \| 'month' \| 'quarter' \| 'year'` | `date` | 选择器模式。 |
 | pickerValue | `DateType \| [DateType, DateType] \| null` | - | 受控面板日期。 |
 | placeholder | `string \| [string, string]` | - | Input placeholder. |
-| popupClassName | `string` | - | 弹层窗口的className。 |
+| popupClassName | `string` | - | 弹层窗口的 className。 |
 | presets | `ValueDate<DateType>[]` | - | 预设值。 |
 | previewValue | `false \| 'hover'` | `hover` | 预览输入中的悬停值。 |
 | showNow | `boolean` | - | 显示“现在”按钮。 |
