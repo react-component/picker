@@ -204,7 +204,7 @@ npm run prepublishOnly
 
 ## 许可证
 
-@rc-component/picker 基于 [MIT](./LICENSE.md) 许可证发布。
+@rc-component/picker 基于 [MIT](./LICENSE) 许可证发布。
 
 [npm-image]: https://img.shields.io/npm/v/@rc-component/picker.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/@rc-component/picker
