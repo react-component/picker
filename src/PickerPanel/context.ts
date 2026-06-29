@@ -9,31 +9,30 @@ export interface SharedPanelContextProps {
 
 export const SharedPanelContext = React.createContext<SharedPanelContextProps>(null!);
 
-export interface PanelContextProps<DateType extends object = any>
-  extends Pick<
-    SharedPanelProps<DateType>,
-    | 'prefixCls'
-    | 'cellRender'
-    | 'generateConfig'
-    | 'locale'
-    | 'onSelect'
-    | 'hoverValue'
-    | 'hoverRangeValue'
-    | 'onHover'
-    | 'values'
-    | 'pickerValue'
+export interface PanelContextProps<DateType extends object = any> extends Pick<
+  SharedPanelProps<DateType>,
+  | 'prefixCls'
+  | 'cellRender'
+  | 'generateConfig'
+  | 'locale'
+  | 'onSelect'
+  | 'hoverValue'
+  | 'hoverRangeValue'
+  | 'onHover'
+  | 'values'
+  | 'pickerValue'
 
-    // Limitation
-    | 'disabledDate'
-    | 'minDate'
-    | 'maxDate'
+  // Limitation
+  | 'disabledDate'
+  | 'minDate'
+  | 'maxDate'
 
-    // Icon
-    | 'prevIcon'
-    | 'nextIcon'
-    | 'superPrevIcon'
-    | 'superNextIcon'
-  > {
+  // Icon
+  | 'prevIcon'
+  | 'nextIcon'
+  | 'superPrevIcon'
+  | 'superNextIcon'
+> {
   /** Tell current panel type */
   panelType: PanelMode;
 
@@ -130,6 +129,20 @@ export interface PickerHackContextProps {
  * Internal usage for RangePicker to not to show the operation arrow
  */
 export const PickerHackContext = React.createContext<PickerHackContextProps>({});
+
+// ============================== Focus ==============================
+export interface PanelFocusContextProps<DateType extends object = any> {
+  focusedDate: DateType | null;
+  onCellFocusedDateChange: (date: DateType) => void;
+  /** Increments whenever the panel mode changes, telling PanelBody to focus its active cell */
+  focusTrigger: number;
+}
+
+export const PanelFocusContext = React.createContext<PanelFocusContextProps>({
+  focusedDate: null,
+  onCellFocusedDateChange: () => {},
+  focusTrigger: 0,
+});
 
 if (process.env.NODE_ENV !== 'production') {
   PickerHackContext.displayName = 'PickerHackContext';

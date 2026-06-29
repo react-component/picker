@@ -1,5 +1,5 @@
 import { commonLocale } from './common';
-import { Locale } from '../interface';
+import type { Locale } from '../interface';
 
 const locale: Locale = {
   ...commonLocale,
@@ -12,12 +12,21 @@ const locale: Locale = {
   week: 'კვირა',
   month: 'თვე',
   year: 'წელი',
+  hours: 'საათები',
+  minutes: 'წუთები',
+  seconds: 'წამები',
+  milliseconds: 'მილიწამები',
   timeSelect: 'დროის არჩევა',
   dateSelect: 'თარიღის არჩევა',
   weekSelect: 'კვირის არჩევა',
   monthSelect: 'თვის არჩევა',
   yearSelect: 'წლის არჩევა',
   decadeSelect: 'ათწლეულის არჩევა',
+  hourSelect: 'საათის არჩევა',
+  minuteSelect: 'წუთის არჩევა',
+  secondSelect: 'წამის არჩევა',
+  millisecondSelect: 'მილიწამის არჩევა',
+  meridiemSelect: 'მერიდიანის არჩევა',
 
   previousMonth: 'წინა თვე (PageUp)',
   nextMonth: 'მომდევნო თვე (PageDown)',
