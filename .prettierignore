@@ -12,3 +12,13 @@ _site
 .doc
 .umi-production
 .umi-test
+coverage
+docs-dist
+dist
+.dumi/tmp
+.dumi/tmp-production
+.vercel
+pnpm-lock.yaml
+yarn.lock
+bun.lockb
+*.log

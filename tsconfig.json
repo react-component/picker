@@ -11,15 +11,18 @@
       "@/*": ["src/*"],
       "@@/*": [".dumi/tmp/*"],
       "@rc-component/picker": ["src/index.tsx"]
-    }
+    },
+    "ignoreDeprecations": "5.0"
   },
   "include": [
     ".dumirc.ts",
+    ".fatherrc.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     "docs/examples/*.tsx",
     "tests/**/*.ts",
     "tests/**/*.tsx",
     "typings.d.ts"
-  ]
+  ],
+  "exclude": ["node_modules", "lib", "es", "dist", "docs-dist", ".dumi"]
 }
