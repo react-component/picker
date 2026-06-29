@@ -136,7 +136,7 @@
     "glob": "^13.0.6",
     "husky": "^9.1.7",
     "less": "^4.6.7",
-    "lint-staged": "^16.4.0",
+    "lint-staged": "^17.0.8",
     "luxon": "3.x",
     "mockdate": "^3.0.2",
     "moment": "^2.24.0",
