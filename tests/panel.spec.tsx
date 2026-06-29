@@ -593,10 +593,10 @@ describe('Picker.Panel', () => {
           picker={picker as any}
           cellRender={(current, info) =>
             React.cloneElement(
-              info.originNode,
+              info.originNode as React.ReactElement<any>,
               {
-                ...info.originNode.props,
-                className: `${info.originNode.props.className} customInner`,
+                ...(info.originNode as React.ReactElement<any>).props,
+                className: `${(info.originNode as React.ReactElement<any>).props.className} customInner`,
               },
               <div className="customWrapper">{getCurText(picker, current)}</div>,
             )
