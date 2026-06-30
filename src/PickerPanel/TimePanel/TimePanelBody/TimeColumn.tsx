@@ -31,39 +31,24 @@ function flattenUnits(units: Unit<string | number>[]) {
   return units.map(({ value, label, disabled }) => [value, label, disabled].join(',')).join(';');
 }
 
-function getListLabel(type: TimeUnitType, locale: Locale) {
-  switch (type) {
-    case 'hour':
-      return locale.hourSelect;
-    case 'minute':
-      return locale.minuteSelect;
-    case 'second':
-      return locale.secondSelect;
-    case 'millisecond':
-      return locale.millisecondSelect;
-    case 'meridiem':
-      return locale.meridiemSelect;
-    default:
-      return '';
-  }
-}
+const LIST_LABEL_MAP: Record<TimeUnitType, (locale: Locale) => string> = {
+  hour: (locale) => locale.hourSelect,
+  minute: (locale) => locale.minuteSelect,
+  second: (locale) => locale.secondSelect,
+  millisecond: (locale) => locale.millisecondSelect,
+  meridiem: (locale) => locale.meridiemSelect,
+};
 
-function getListItemLabel(type: TimeUnitType, value: string | number, locale: Locale) {
-  switch (type) {
-    case 'hour':
-      return `${value} ${locale.hours}`;
-    case 'minute':
-      return `${value} ${locale.minutes}`;
-    case 'second':
-      return `${value} ${locale.seconds}`;
-    case 'millisecond':
-      return `${value} ${locale.milliseconds}`;
-    case 'meridiem':
-      return value.toString();
-    default:
-      return '';
-  }
-}
+const LIST_ITEM_LABEL_MAP: Record<
+  TimeUnitType,
+  (value: string | number, locale: Locale) => string
+> = {
+  hour: (value, locale) => `${value} ${locale.hours}`,
+  minute: (value, locale) => `${value} ${locale.minutes}`,
+  second: (value, locale) => `${value} ${locale.seconds}`,
+  millisecond: (value, locale) => `${value} ${locale.milliseconds}`,
+  meridiem: (value) => value.toString(),
+};
 
 export default function TimeColumn<DateType extends object>(props: TimeUnitColumnProps) {
   const { units, value, optionalValue, type, onChange, onHover, onDblClick, changeOnScroll } =
@@ -135,7 +120,7 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
   return (
     <ul
       role="listbox"
-      aria-label={getListLabel(type, locale)}
+      aria-label={LIST_LABEL_MAP[type](locale)}
       className={columnPrefixCls}
       ref={ulRef}
       data-type={type}
@@ -148,7 +133,7 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
         return (
           <li
             key={unitValue}
-            aria-label={getListItemLabel(type, unitValue, locale)}
+            aria-label={LIST_ITEM_LABEL_MAP[type](unitValue, locale)}
             role="option"
             aria-selected={isSelected}
             aria-disabled={disabled}
