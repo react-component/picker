@@ -2,16 +2,74 @@ import { clsx } from 'clsx';
 import ResizeObserver, { type ResizeObserverProps } from '@rc-component/resize-observer';
 import * as React from 'react';
 import type {
+  PanelRenderPanelProps,
   RangeTimeProps,
   SharedPickerProps,
   SharedTimeProps,
   ValueDate,
 } from '../../interface';
+import PickerPanel, { type PickerPanelProps, type PickerPanelRef } from '../../PickerPanel';
+import { PickerHackContext, type PickerHackContextProps } from '../../PickerPanel/context';
 import { toArray } from '../../utils/miscUtil';
 import PickerContext from '../context';
 import Footer, { type FooterProps } from './Footer';
-import PopupPanel, { type PopupPanelProps } from './PopupPanel';
+import PopupPanel, {
+  getPopupPanelPickerProps,
+  getPopupPanelSharedContext,
+  type PopupPanelProps,
+} from './PopupPanel';
 import PresetPanel from './PresetPanel';
+
+interface PanelRenderContextProps<DateType extends object = any> {
+  pickerProps: PickerPanelProps<DateType>;
+  sharedContext: PickerHackContextProps;
+}
+
+const PanelRenderContext = React.createContext<PanelRenderContextProps>(null!);
+
+const InternalPanelRenderPanel = React.forwardRef(
+  <DateType extends object = any>(
+    props: PanelRenderPanelProps<DateType>,
+    ref: React.Ref<PickerPanelRef>,
+  ) => {
+    const context = React.useContext<PanelRenderContextProps<DateType>>(PanelRenderContext);
+
+    if (!context) {
+      return <PickerPanel ref={ref} {...(props as PickerPanelProps<DateType>)} />;
+    }
+
+    const { pickerProps, sharedContext } = context;
+    const mergedPicker = props.picker ?? pickerProps.picker;
+    const mergedProps = {
+      ...pickerProps,
+      ...props,
+      picker: mergedPicker,
+      mode: props.mode ?? (props.picker !== undefined ? mergedPicker : pickerProps.mode),
+      hideHeader: props.hideHeader ?? mergedPicker === 'time',
+      components: props.components
+        ? { ...pickerProps.components, ...props.components }
+        : pickerProps.components,
+      classNames: props.classNames
+        ? { ...pickerProps.classNames, ...props.classNames }
+        : pickerProps.classNames,
+      styles: props.styles ? { ...pickerProps.styles, ...props.styles } : pickerProps.styles,
+    } as PickerPanelProps<DateType>;
+
+    return (
+      <PickerHackContext.Provider value={sharedContext}>
+        <PickerPanel ref={ref} {...mergedProps} />
+      </PickerHackContext.Provider>
+    );
+  },
+);
+
+const PanelRenderPanel = InternalPanelRenderPanel as <DateType extends object = any>(
+  props: PanelRenderPanelProps<DateType> & React.RefAttributes<PickerPanelRef>,
+) => React.ReactElement<any>;
+
+if (process.env.NODE_ENV !== 'production') {
+  InternalPanelRenderPanel.displayName = 'PanelRenderPanel';
+}
 
 export type PopupShowTimeConfig<DateType extends object = any> = Omit<
   RangeTimeProps<DateType>,
@@ -78,6 +136,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     // Change
     value,
     onSelect,
+    needConfirm,
     isInvalid,
     defaultOpenValue,
     onOk,
@@ -182,6 +241,11 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     onSubmit();
   };
 
+  const panelRenderContext = {
+    pickerProps: getPopupPanelPickerProps({ ...props, value: popupPanelValue }),
+    sharedContext: getPopupPanelSharedContext(needConfirm, onSubmit),
+  };
+
   let mergedNodes: React.ReactNode = (
     <div className={`${prefixCls}-panel-layout`}>
       {/* `any` here since PresetPanel is reused for both Single & Range Picker which means return type is not stable */}
@@ -203,9 +267,15 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     </div>
   );
 
-  if (panelRender) {
-    mergedNodes = panelRender(mergedNodes);
+  if (typeof panelRender === 'function') {
+    mergedNodes = panelRender(mergedNodes, { components: { Panel: PanelRenderPanel } });
   }
+
+  mergedNodes = (
+    <PanelRenderContext.Provider value={panelRenderContext}>
+      {mergedNodes}
+    </PanelRenderContext.Provider>
+  );
 
   // ======================== Render ========================
   const containerPrefixCls = `${panelPrefixCls}-container`;
