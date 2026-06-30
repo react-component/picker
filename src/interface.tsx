@@ -66,11 +66,20 @@ export type Locale = {
   week: string;
   month: string;
   year: string;
+  hours: string;
+  minutes: string;
+  seconds: string;
+  milliseconds: string;
   previousMonth: string;
   nextMonth: string;
   monthSelect: string;
   yearSelect: string;
   decadeSelect: string;
+  hourSelect: string;
+  minuteSelect: string;
+  secondSelect: string;
+  millisecondSelect: string;
+  meridiemSelect: string;
 
   previousYear: string;
   nextYear: string;
@@ -316,13 +325,7 @@ export type SemanticName = 'root' | 'prefix' | 'input' | 'suffix';
 export type PreviewValueType = 'hover';
 
 export type PanelSemanticName =
-  | 'root'
-  | 'header'
-  | 'body'
-  | 'content'
-  | 'item'
-  | 'footer'
-  | 'container';
+  'root' | 'header' | 'body' | 'content' | 'item' | 'footer' | 'container';
 
 export interface SharedPickerProps<DateType extends object = any>
   extends
