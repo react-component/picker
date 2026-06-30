@@ -21,10 +21,10 @@ const locale: Locale = {
 
   dayFormat: 'DD',
 
-  previousMonth: 'Өмнөх сар (PageUp)',
-  nextMonth: 'Дараа сар (PageDown)',
-  previousYear: 'Өмнөх жил (Control + left)',
-  nextYear: 'Дараа жил (Control + right)',
+  previousMonth: 'Өмнөх сар',
+  nextMonth: 'Дараа сар',
+  previousYear: 'Өмнөх жил',
+  nextYear: 'Дараа жил',
   previousDecade: 'Өмнөх арван',
   nextDecade: 'Дараа арван',
   previousCentury: 'Өмнөх зуун',
