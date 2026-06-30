@@ -1,6 +1,5 @@
-import { createEvent, fireEvent } from '@testing-library/dom';
 /* eslint-disable @typescript-eslint/no-loop-func */
-import { act, render } from '@testing-library/react';
+import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import moment from 'moment';

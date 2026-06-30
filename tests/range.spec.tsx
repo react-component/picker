@@ -1,7 +1,6 @@
-import { createEvent, fireEvent } from '@testing-library/dom';
 // Note: zombieJ refactoring
 
-import { act, render } from '@testing-library/react';
+import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import { createRoot } from 'react-dom/client';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';

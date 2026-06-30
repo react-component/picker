@@ -1,5 +1,4 @@
-import { fireEvent } from '@testing-library/dom';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import dayjs, { type Dayjs } from 'dayjs';
 import { resetWarned } from '@rc-component/util';
 import React from 'react';

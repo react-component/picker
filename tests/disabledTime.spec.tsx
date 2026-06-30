@@ -1,5 +1,4 @@
-import { fireEvent } from '@testing-library/dom';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import type { Dayjs } from 'dayjs';
 import { resetWarned } from '@rc-component/util';
 import React from 'react';
@@ -11,6 +10,7 @@ import {
   isSame,
   openPicker,
   selectCell,
+  waitFakeTimer,
 } from './util/commonUtil';
 
 const fakeTime = getDay('1990-09-03 00:00:00').valueOf();
@@ -70,7 +70,7 @@ describe('Picker.DisabledTime', () => {
     ).toHaveLength(2);
   });
 
-  it('disabledTime', () => {
+  it('disabledTime', async () => {
     /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
     const disabledTime = jest.fn((_: Dayjs | null, __: 'start' | 'end') => {
       return {
@@ -94,16 +94,19 @@ describe('Picker.DisabledTime', () => {
     expect(isSame(disabledTime.mock.calls[0][0], '1989-11-28')).toBeTruthy();
     expect(disabledTime.mock.calls[0][1]).toEqual('start');
     closePicker(container);
+    await waitFakeTimer();
 
     // End
     disabledTime.mockClear();
     openPicker(container, 1);
+    await waitFakeTimer();
     expect(
       document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[11],
     ).toHaveClass('rc-picker-time-panel-cell-disabled');
 
-    expect(isSame(disabledTime.mock.calls[0][0], '1990-09-03')).toBeTruthy();
-    expect(disabledTime.mock.calls[0][1]).toEqual('end');
+    const endCall = disabledTime.mock.calls.find(([, type]) => type === 'end');
+    expect(isSame(endCall![0], '1990-09-03')).toBeTruthy();
+    expect(endCall![1]).toEqual('end');
     closePicker(container, 1);
   });
 
