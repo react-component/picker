@@ -1193,15 +1193,15 @@ describe('Picker.Basic', () => {
       />,
     );
 
-    const presetEle = document.querySelector('.rc-picker-presets li');
-    expect(document.querySelector('.rc-picker-presets li').textContent).toBe('Bamboo');
+    const presetEle = document.querySelector('.rc-picker-presets button');
+    expect(document.querySelector('.rc-picker-presets button').textContent).toBe('Bamboo');
 
     // Hover
     fireEvent.mouseEnter(presetEle);
     expect(findCell(4)).toHaveClass('rc-picker-cell-hover');
 
     // Click
-    fireEvent.click(document.querySelector('.rc-picker-presets li'));
+    fireEvent.click(document.querySelector('.rc-picker-presets button'));
     expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('1990-09-04');
   });
 
@@ -1222,7 +1222,7 @@ describe('Picker.Basic', () => {
       />,
     );
 
-    const firstPreset = document.querySelector('.rc-picker-presets li');
+    const firstPreset = document.querySelector('.rc-picker-presets button');
     expect(firstPreset.textContent).toBe('Bamboo');
 
     fireEvent.click(firstPreset);

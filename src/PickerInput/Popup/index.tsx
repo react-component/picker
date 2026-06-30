@@ -20,7 +20,8 @@ export type PopupShowTimeConfig<DateType extends object = any> = Omit<
   Pick<SharedTimeProps<DateType>, 'disabledTime'>;
 
 export interface PopupProps<DateType extends object = any, PresetValue = DateType>
-  extends Pick<React.InputHTMLAttributes<HTMLDivElement>, 'onFocus' | 'onBlur'>,
+  extends
+    Pick<React.InputHTMLAttributes<HTMLDivElement>, 'onFocus' | 'onBlur'>,
     FooterProps<DateType>,
     PopupPanelProps<DateType> {
   panelRender?: SharedPickerProps['panelRender'];
@@ -218,6 +219,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     <div
       onMouseDown={onPanelMouseDown}
       tabIndex={-1}
+      role="dialog"
       className={clsx(
         containerPrefixCls,
         // Used for Today Button style, safe to remove if no need
