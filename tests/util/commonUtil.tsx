@@ -1,5 +1,6 @@
+import { fireEvent } from '@testing-library/dom';
 import React from 'react';
-import { act, fireEvent } from '@testing-library/react';
+import { act } from '@testing-library/react';
 import dayjs, { isDayjs, type Dayjs } from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import buddhistEra from 'dayjs/plugin/buddhistEra';

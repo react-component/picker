@@ -1,5 +1,6 @@
+import { createEvent, fireEvent } from '@testing-library/dom';
 // In theory, all RangePicker test cases should be paired with SinglePicker
-import { act, createEvent, fireEvent, render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import dayjs, { type Dayjs } from 'dayjs';
 import 'dayjs/locale/ar';
 import { resetWarned, spyElementPrototype } from '@rc-component/util';
