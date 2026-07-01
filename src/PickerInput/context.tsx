@@ -8,7 +8,8 @@ export interface PickerContextProps<DateType = any> {
   locale: Locale;
   generateConfig: GenerateConfig<DateType>;
   /** Customize button component */
-  button?: Components['button'];
+  nowButton?: Components['nowButton'];
+  okButton?: Components['okButton'];
   input?: Components['input'];
   classNames: FilledClassNames;
   styles: FilledStyles;
