@@ -557,6 +557,29 @@ describe('NewPicker.Range', () => {
       expect(document.querySelector('.rc-picker-ok button')).toBeDisabled();
     });
 
+    it('disabledDate range should control ok button', () => {
+      const disabledDate = (date: Dayjs, info: { range?: 'start' | 'end' }) =>
+        info.range === 'end' && date.isBefore(dayjs('2024-11-20'), 'day');
+
+      const { container } = render(
+        <DayRangePicker
+          showTime
+          defaultValue={[getDay('2024-11-19 00:00:00'), getDay('2024-11-21 00:00:00')]}
+          disabledDate={disabledDate}
+        />,
+      );
+
+      openPicker(container, 1);
+      expect(document.querySelector('.rc-picker-ok button')).not.toBeDisabled();
+
+      fireEvent.change(container.querySelectorAll<HTMLInputElement>('input')[1], {
+        target: {
+          value: '2024-11-19 00:00:00',
+        },
+      });
+      expect(document.querySelector('.rc-picker-ok button')).toBeDisabled();
+    });
+
     it('disabledDate provides info.type', () => {
       const disabledDate = jest.fn(() => false);
 
@@ -567,6 +590,72 @@ describe('NewPicker.Range', () => {
         expect.objectContaining({
           type: 'year',
         }),
+      );
+    });
+
+    it('disabledDate provides info.range', () => {
+      const disabledDate = jest.fn(() => false);
+
+      const { container } = render(<DayRangePicker disabledDate={disabledDate} />);
+
+      openPicker(container);
+      expect(disabledDate).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          range: 'start',
+        }),
+      );
+
+      disabledDate.mockClear();
+      openPicker(container, 1);
+      expect(disabledDate).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          range: 'end',
+        }),
+      );
+    });
+
+    it('disabledDate keeps from info behavior', () => {
+      const disabledDate = jest.fn(
+        (_date: Dayjs, _info: { range?: 'start' | 'end'; from?: Dayjs }) => false,
+      );
+
+      const { container } = render(<DayRangePicker disabledDate={disabledDate} />);
+
+      openPicker(container);
+      selectCell(15);
+
+      const endCall = disabledDate.mock.calls.find(([, info]) => info.range === 'end' && info.from);
+
+      expect(endCall).toBeTruthy();
+      expect(isSame(endCall![1].from, '1990-09-15')).toBeTruthy();
+    });
+
+    it('disabledDate can apply to end field only', () => {
+      const onChange = jest.fn();
+      const disabledDate = (date: Dayjs, info: { range?: 'start' | 'end' }) =>
+        info.range === 'end' && date <= dayjs('2024-11-20').endOf('day');
+
+      const { container } = render(
+        <DayRangePicker
+          disabled={[true, false]}
+          defaultValue={[getDay('2024-10-28'), getDay('2024-11-20')]}
+          disabledDate={disabledDate}
+          onChange={onChange}
+        />,
+      );
+
+      openPicker(container, 1);
+
+      const disabledCell = selectCell('19', 1);
+      expect(disabledCell).toHaveClass('rc-picker-cell-disabled');
+      expect(onChange).not.toHaveBeenCalled();
+
+      selectCell('21', 1);
+      expect(onChange).toHaveBeenCalledWith(
+        [expect.anything(), expect.anything()],
+        ['2024-10-28', '2024-11-21'],
       );
     });
 
