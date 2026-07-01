@@ -3,6 +3,7 @@ import dayjs, { type Dayjs } from 'dayjs';
 import { resetWarned } from '@rc-component/util';
 import React from 'react';
 import type { PanelMode } from '../src/interface';
+import dayGenerateConfig from '../src/generate/dayjs';
 import enUS from '../src/locale/en_US';
 import zhCN from '../src/locale/zh_CN';
 import { clickButton, DayPickerPanel, getDay, isSame, selectCell } from './util/commonUtil';
@@ -160,6 +161,34 @@ describe('Picker.Panel', () => {
 
       clickButton('super-next');
       expect(document.querySelector('.rc-picker-header-view').textContent).toEqual('1900-1999');
+    });
+  });
+
+  describe('date panel month label', () => {
+    it('uses `locale.monthFormat` when provided', () => {
+      render(
+        <DayPickerPanel
+          defaultValue={getDay('1990-09-03')}
+          locale={{ ...enUS, monthFormat: 'MM' }}
+        />,
+      );
+
+      expect(document.querySelector('.rc-picker-month-btn').textContent).toEqual('09');
+    });
+
+    it('falls back to empty short months when `generateConfig` has no `getShortMonths`', () => {
+      render(
+        <DayPickerPanel
+          defaultValue={getDay('1990-09-03')}
+          generateConfig={{
+            ...dayGenerateConfig,
+            locale: { ...dayGenerateConfig.locale, getShortMonths: undefined },
+          }}
+        />,
+      );
+
+      // `monthsLocale` resolves to `[]`, so the month button has no label
+      expect(document.querySelector('.rc-picker-month-btn').textContent).toEqual('');
     });
   });
 

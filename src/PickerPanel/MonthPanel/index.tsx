@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { DisabledDate, SharedPanelProps } from '../../interface';
-import { formatValue } from '../../utils/dateUtil';
+import { formatValue, isSameMonth } from '../../utils/dateUtil';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
@@ -23,6 +23,11 @@ export default function MonthPanel<DateType extends object = any>(
   // ========================== Base ==========================
   const [info] = useInfo(props, 'month');
   const baseDate = generateConfig.setMonth(pickerValue, 0);
+  const yearLabel = formatValue(pickerValue, {
+    locale,
+    format: locale.yearFormat,
+    generateConfig,
+  });
 
   // ========================= Month ==========================
   const monthsLocale: string[] =
@@ -52,6 +57,13 @@ export default function MonthPanel<DateType extends object = any>(
     [`${prefixCls}-cell-in-view`]: true,
   });
 
+  const getCellAttributes = (date: DateType): React.TdHTMLAttributes<HTMLTableCellElement> => {
+    if (isSameMonth(generateConfig, date, generateConfig.getNow())) {
+      return { 'aria-current': 'date' };
+    }
+    return {};
+  };
+
   // ======================== Disabled ========================
   const mergedDisabledDate: DisabledDate<DateType> = disabledDate
     ? (currentDate, disabledInfo) => {
@@ -75,14 +87,9 @@ export default function MonthPanel<DateType extends object = any>(
       onClick={() => {
         onModeChange('year');
       }}
-      tabIndex={-1}
       className={`${prefixCls}-year-btn`}
     >
-      {formatValue(pickerValue, {
-        locale,
-        format: locale.yearFormat,
-        generateConfig,
-      })}
+      {yearLabel}
     </button>
   );
 
@@ -97,6 +104,7 @@ export default function MonthPanel<DateType extends object = any>(
           // Limitation
           getStart={(date) => generateConfig.setMonth(date, 0)}
           getEnd={(date) => generateConfig.setMonth(date, 11)}
+          labels={{ superPrev: locale.previousYear, superNext: locale.nextYear }}
         >
           {yearNode}
         </PanelHeader>
@@ -109,10 +117,12 @@ export default function MonthPanel<DateType extends object = any>(
           colNum={3}
           rowNum={4}
           baseDate={baseDate}
+          tableLabel={yearLabel}
           // Body
           getCellDate={getCellDate}
           getCellText={getCellText}
           getCellClassName={getCellClassName}
+          getCellAttributes={getCellAttributes}
         />
       </div>
     </PanelContext.Provider>
