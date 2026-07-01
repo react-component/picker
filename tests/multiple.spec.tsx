@@ -49,7 +49,7 @@ describe('Picker.Multiple', () => {
     expect(isOpen()).toBeTruthy();
 
     // Confirm
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    fireEvent.click(document.querySelector('.rc-picker-ok'));
     expect(onChange).toHaveBeenCalledWith(expect.anything(), [
       '1990-09-01',
       '1990-09-03',
@@ -72,7 +72,7 @@ describe('Picker.Multiple', () => {
     selectCell(3);
 
     // Confirm
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    fireEvent.click(document.querySelector('.rc-picker-ok'));
     expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-01', '1990-09-05']);
   });
 
@@ -112,7 +112,7 @@ describe('Picker.Multiple', () => {
     expect(container.querySelectorAll('.rc-picker-selection-item')).toHaveLength(1);
 
     // Confirm
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    fireEvent.click(document.querySelector('.rc-picker-ok'));
     expect(onChange).toHaveBeenCalledWith(expect.anything(), ['2000-01-28']);
   });
 
@@ -247,7 +247,7 @@ describe('Picker.Multiple', () => {
     );
 
     // Confirm
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    fireEvent.click(document.querySelector('.rc-picker-ok'));
     expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1998-10-23']);
   });
 });
