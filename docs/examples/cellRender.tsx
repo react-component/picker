@@ -15,6 +15,10 @@ function formatDate(date: Moment | null) {
   return date ? date.format('YYYY-MM-DD HH:mm:ss') : 'null';
 }
 
+function getOriginNode(node: React.ReactElement) {
+  return node as React.ReactElement<any>;
+}
+
 export default () => {
   const [value, setValue] = React.useState<Moment | null>(defaultValue);
   const [rangeValue, setRangeValue] = React.useState<[Moment | null, Moment | null] | null>([
@@ -69,9 +73,9 @@ export default () => {
             locale={zhCN}
             cellRender={(current: Moment, info) =>
               React.cloneElement(
-                info.originNode,
+                getOriginNode(info.originNode),
                 {
-                  ...info.originNode.props,
+                  ...getOriginNode(info.originNode).props,
                 },
                 <div style={{ background: 'orange' }}>{current.get('date')}</div>,
               )
@@ -82,9 +86,9 @@ export default () => {
             locale={zhCN}
             cellRender={(current: Moment, info) =>
               React.cloneElement(
-                info.originNode,
+                getOriginNode(info.originNode),
                 {
-                  className: `${info.originNode.props.className} testWrapper`,
+                  className: `${getOriginNode(info.originNode).props.className} testWrapper`,
                 },
                 <div style={{ background: 'orange' }}>{current.get('date')}</div>,
               )
@@ -96,9 +100,9 @@ export default () => {
             picker="week"
             cellRender={(current: Moment, info) =>
               React.cloneElement(
-                info.originNode,
+                getOriginNode(info.originNode),
                 {
-                  ...info.originNode.props,
+                  ...getOriginNode(info.originNode).props,
                 },
                 <div style={{ background: 'orange' }}>{current.get('week')}</div>,
               )
@@ -110,9 +114,9 @@ export default () => {
             picker="year"
             cellRender={(current: Moment, info) =>
               React.cloneElement(
-                info.originNode,
+                getOriginNode(info.originNode),
                 {
-                  ...info.originNode.props,
+                  ...getOriginNode(info.originNode).props,
                 },
                 <div style={{ background: 'orange' }}>{current.get('year')}</div>,
               )
@@ -124,9 +128,9 @@ export default () => {
             picker="month"
             cellRender={(current: Moment, info) =>
               React.cloneElement(
-                info.originNode,
+                getOriginNode(info.originNode),
                 {
-                  ...info.originNode.props,
+                  ...getOriginNode(info.originNode).props,
                 },
                 <div style={{ background: 'orange' }}>{current.get('month') + 1}</div>,
               )
@@ -138,9 +142,9 @@ export default () => {
             picker="quarter"
             cellRender={(current: Moment, info) =>
               React.cloneElement(
-                info.originNode,
+                getOriginNode(info.originNode),
                 {
-                  ...info.originNode.props,
+                  ...getOriginNode(info.originNode).props,
                 },
                 <div style={{ background: 'orange' }}>Q{current.get('quarter')}</div>,
               )
@@ -152,9 +156,9 @@ export default () => {
             picker="time"
             cellRender={(current: number | string, info) =>
               React.cloneElement(
-                info.originNode,
+                getOriginNode(info.originNode),
                 {
-                  ...info.originNode.props,
+                  ...getOriginNode(info.originNode).props,
                 },
                 <div style={{ background: 'orange' }}>{current}</div>,
               )

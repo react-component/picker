@@ -591,16 +591,18 @@ describe('Picker.Panel', () => {
       const App = () => (
         <DayPickerPanel
           picker={picker as any}
-          cellRender={(current, info) =>
-            React.cloneElement(
-              info.originNode,
+          cellRender={(current, info) => {
+            const originNode = info.originNode as React.ReactElement<any>;
+
+            return React.cloneElement(
+              originNode,
               {
-                ...info.originNode.props,
-                className: `${info.originNode.props.className} customInner`,
+                ...originNode.props,
+                className: `${originNode.props.className} customInner`,
               },
               <div className="customWrapper">{getCurText(picker, current)}</div>,
-            )
-          }
+            );
+          }}
         />
       );
 
