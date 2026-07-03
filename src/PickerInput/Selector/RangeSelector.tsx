@@ -136,9 +136,9 @@ function RangeSelector<DateType extends object = any>(
   }, [id]);
 
   // ========================= Refs =========================
-  const rootRef = React.useRef<HTMLDivElement>();
-  const inputStartRef = React.useRef<InputRef>();
-  const inputEndRef = React.useRef<InputRef>();
+  const rootRef = React.useRef<HTMLDivElement>(null);
+  const inputStartRef = React.useRef<InputRef>(null);
+  const inputEndRef = React.useRef<InputRef>(null);
 
   const getInput = (index: number) => [inputStartRef, inputEndRef][index]?.current;
 
