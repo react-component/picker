@@ -8,8 +8,6 @@ export function fillTimeFormat(
   showMillisecond: boolean,
   showMeridiem: boolean,
 ) {
-  let timeFormat = '';
-
   // Base HH:mm:ss
   const cells = [];
 
@@ -23,7 +21,7 @@ export function fillTimeFormat(
     cells.push('ss');
   }
 
-  timeFormat = cells.join(':');
+  let timeFormat = cells.join(':');
 
   // Millisecond
   if (showMillisecond) {
