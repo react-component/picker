@@ -7,6 +7,7 @@ import { formatValue, isSame, isSameTimestamp } from '../../utils/dateUtil';
 import { fillIndex } from '../../utils/miscUtil';
 import type { RangePickerProps } from '../RangePicker';
 import type { ReplacedPickerProps } from '../SinglePicker';
+import type { InvalidateDateInfo } from './useInvalidate';
 import useLockEffect from './useLockEffect';
 
 const EMPTY_VALUE: any[] = [];
@@ -175,7 +176,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   formatList: FormatType[],
   focused: boolean,
   open: boolean,
-  isInvalidateDate: (date: DateType, info?: { from?: DateType; activeIndex: number }) => boolean,
+  isInvalidateDate: (date: DateType, info?: InvalidateDateInfo<DateType>) => boolean,
 ): [
   /** Trigger `onChange` by check `disabledDate` */
   flushSubmit: (index: number, needTriggerChange: boolean) => void,

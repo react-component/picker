@@ -37,6 +37,7 @@ import useRangeDisabledDate from './hooks/useRangeDisabledDate';
 import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useShowNow from './hooks/useShowNow';
+import type { InvalidateDateInfo } from './hooks/useInvalidate';
 import Popup, { type PopupShowTimeConfig } from './Popup';
 import RangeSelector, { type SelectorIdType } from './Selector/RangeSelector';
 import useSemantic from '../hooks/useSemantic';
@@ -332,6 +333,17 @@ function RangePicker<DateType extends object = any>(
   // ======================= Show Now =======================
   const mergedShowNow = useShowNow(picker, mergedMode, showNow, showToday, true);
 
+  // ======================= Invalidate ======================
+  const isRangeInvalidateDate = useEvent((date: DateType, info?: InvalidateDateInfo<DateType>) => {
+    const infoActiveIndex = info?.activeIndex ?? activeIndex;
+
+    return isInvalidateDate(date, {
+      ...(info || {}),
+      activeIndex: infoActiveIndex,
+      range: getActiveRange(infoActiveIndex),
+    });
+  });
+
   // ======================== Value =========================
   const [
     /** Trigger `onChange` by check `disabledDate` */
@@ -348,13 +360,14 @@ function RangePicker<DateType extends object = any>(
     formatList,
     focused,
     mergedOpen,
-    isInvalidateDate,
+    isRangeInvalidateDate,
   );
 
   // ===================== DisabledDate =====================
   const mergedDisabledDate = useRangeDisabledDate(
     calendarValue,
     disabled,
+    activeIndex,
     activeIndexList,
     generateConfig,
     locale,
@@ -364,7 +377,7 @@ function RangePicker<DateType extends object = any>(
   // ======================= Validate =======================
   const [submitInvalidates, onSelectorInvalid] = useFieldsInvalidate(
     calendarValue,
-    isInvalidateDate,
+    isRangeInvalidateDate,
     allowEmpty,
   );
 
@@ -567,7 +580,7 @@ function RangePicker<DateType extends object = any>(
 
   // >>> invalid
   const isPopupInvalidateDate = useEvent((date: DateType) => {
-    return isInvalidateDate(date, {
+    return isRangeInvalidateDate(date, {
       activeIndex,
     });
   });
