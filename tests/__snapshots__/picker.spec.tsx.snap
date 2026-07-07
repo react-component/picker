@@ -5,6 +5,8 @@ exports[`Picker.Basic icon 1`] = `
   class="rc-picker-input"
 >
   <input
+    aria-expanded="false"
+    aria-haspopup="dialog"
     aria-invalid="false"
     autocomplete="off"
     size="12"
@@ -34,6 +36,8 @@ exports[`Picker.Basic inputRender 1`] = `
   class="rc-picker-input"
 >
   <input
+    aria-expanded="false"
+    aria-haspopup="dialog"
     aria-invalid="false"
     autocomplete="off"
     data-customize="yes"
@@ -51,6 +55,8 @@ exports[`Picker.Basic panelRender 1`] = `
     class="rc-picker-input"
   >
     <input
+      aria-expanded="true"
+      aria-haspopup="dialog"
       aria-invalid="false"
       autocomplete="off"
       size="12"
@@ -69,6 +75,8 @@ exports[`Picker.Basic pass data- & aria- & role 1`] = `
       class="rc-picker-input"
     >
       <input
+        aria-expanded="false"
+        aria-haspopup="dialog"
         aria-invalid="false"
         aria-label="3334"
         autocomplete="off"
@@ -91,6 +99,8 @@ exports[`Picker.Basic should render correctly in rtl 1`] = `
       class="rc-picker-input"
     >
       <input
+        aria-expanded="false"
+        aria-haspopup="dialog"
         aria-invalid="false"
         autocomplete="off"
         size="12"
