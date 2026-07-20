@@ -29,7 +29,7 @@ import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';
 import useFilledProps from './hooks/useFilledProps';
-import useFocusControl from './hooks/useFocusControl';
+import useFocusControl, { isPickerElement } from './hooks/useFocusControl';
 import useOpen from './hooks/useOpen';
 import usePickerRef from './hooks/usePickerRef';
 import usePresets from './hooks/usePresets';
@@ -236,6 +236,7 @@ function RangePicker<DateType extends object = any>(
 
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
+  const popupRef = React.useRef<HTMLDivElement>(null);
 
   // ======================= Semantic =======================
   const [mergedClassNames, mergedStyles] = useSemantic(propClassNames, propStyles);
@@ -346,15 +347,9 @@ function RangePicker<DateType extends object = any>(
     resetValue,
   );
 
-  const isPickerElement = useEvent((element: EventTarget | null) => {
-    const target = element as HTMLElement;
-
-    return (
-      !!target &&
-      (selectorRef.current.nativeElement.contains(target) ||
-        !!target.closest?.(`.${prefixCls}-panel-container`))
-    );
-  });
+  const isInternalPickerElement = useEvent((element: EventTarget | null) =>
+    isPickerElement(element, selectorRef.current.nativeElement, popupRef.current),
+  );
 
   const triggerFocusChange = useEvent((index: number, type: 'focus' | 'blur') => {
     const nextFocused = type === 'focus';
@@ -367,7 +362,7 @@ function RangePicker<DateType extends object = any>(
   });
 
   const [onFieldFocus, onFieldBlur] = useFocusControl(
-    isPickerElement,
+    isInternalPickerElement,
     triggerFocusChange,
     (index, event) => {
       onFocus?.(event, {
@@ -620,6 +615,7 @@ function RangePicker<DateType extends object = any>(
   // >>> Render
   const panel = (
     <Popup<any>
+      containerRef={popupRef}
       // MISC
       {...panelProps}
       showNow={mergedShowNow}

@@ -39,6 +39,21 @@ export type UseFocusControlReturn = [
   onFieldBlur: FieldBlurHandler,
 ];
 
+// ============================= Utils =============================
+/** Check whether the target is the container itself or inside it. / 判断目标是否为容器自身或其子元素。 */
+function containsElement(container: HTMLElement | null, target: EventTarget | null) {
+  return !!container && (container === target || container.contains(target as Node));
+}
+
+/** Check whether the target belongs to the selector or popup. / 判断目标是否属于输入区域或弹出区域。 */
+export function isPickerElement(
+  target: EventTarget | null,
+  selectorElement: HTMLElement | null,
+  popupElement: HTMLElement | null,
+) {
+  return containsElement(selectorElement, target) || containsElement(popupElement, target);
+}
+
 /**
  * Control field focus and blur events.
  * 控制 field 的聚焦与失焦事件。
