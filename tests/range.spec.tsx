@@ -594,7 +594,7 @@ describe('Picker.Range', () => {
   });
 
   it('mode is array', () => {
-    const { container } = render(<DayRangePicker mode={['year', 'month']} />);
+    const { container } = render(<DayRangePicker allowEmpty mode={['year', 'month']} />);
     openPicker(container);
     expect(document.querySelector('.rc-picker-year-panel')).toBeTruthy();
 
@@ -949,6 +949,7 @@ describe('Picker.Range', () => {
           it('defaultPickerValue', () => {
             const { container } = render(
               <DayRangePicker
+                allowEmpty
                 picker={picker as any}
                 defaultPickerValue={defaultPickerValue as any}
               />,
@@ -1603,7 +1604,7 @@ describe('Picker.Range', () => {
 
   // https://github.com/ant-design/ant-design/issues/26024
   it('panel should keep open when nextValue is empty', () => {
-    const { container } = render(<DayRangePicker placeholder={['Start', 'End']} />);
+    const { container } = render(<DayRangePicker allowEmpty placeholder={['Start', 'End']} />);
 
     openPicker(container, 0);
 
@@ -2076,7 +2077,9 @@ describe('Picker.Range', () => {
     selectCell(2, 0);
 
     // Click outside to blur
+    const focusedElement = document.activeElement;
     fireEvent.mouseDown(document.body);
+    fireEvent.blur(focusedElement);
     fireEvent.mouseUp(document.body);
     fireEvent.click(document.body);
 

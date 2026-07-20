@@ -45,7 +45,10 @@ describe('NewPicker.Range', () => {
   describe('PickerValue', () => {
     it('defaultPickerValue should reset every time when opened', () => {
       const { container } = render(
-        <DayRangePicker defaultPickerValue={[getDay('2000-01-01'), getDay('2023-09-03')]} />,
+        <DayRangePicker
+          allowEmpty
+          defaultPickerValue={[getDay('2000-01-01'), getDay('2023-09-03')]}
+        />,
       );
 
       // Left
@@ -79,6 +82,7 @@ describe('NewPicker.Range', () => {
 
       const { container } = render(
         <DayRangePicker
+          allowEmpty
           pickerValue={[getDay('1990-02-03'), getDay('1990-02-03')]}
           defaultPickerValue={[getDay('2000-01-01'), getDay('2023-09-03')]}
           onPickerValueChange={onPickerValueChange}
@@ -685,7 +689,9 @@ describe('NewPicker.Range', () => {
       });
 
       // Close panel to auto focus next end field
+      const startFocusedElement = document.activeElement;
       fireEvent.mouseDown(document.body);
+      fireEvent.blur(startFocusedElement);
       act(() => {
         jest.runAllTimers();
       });
@@ -706,7 +712,9 @@ describe('NewPicker.Range', () => {
       });
 
       // Close panel to auto focus next end field
+      const endFocusedElement = document.activeElement;
       fireEvent.mouseDown(document.body);
+      fireEvent.blur(endFocusedElement);
 
       act(() => {
         jest.runAllTimers();

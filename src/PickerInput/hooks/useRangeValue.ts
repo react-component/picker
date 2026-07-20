@@ -176,11 +176,14 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   focused: boolean,
   open: boolean,
   isInvalidateDate: (date: DateType, info?: { from?: DateType; activeIndex: number }) => boolean,
+  useEffectSubmit?: boolean,
 ): [
   /** Trigger `onChange` by check `disabledDate` */
   flushSubmit: (index: number, needTriggerChange: boolean) => void,
   /** Trigger `onChange` directly without check `disabledDate` */
   triggerSubmitChange: (value: ValueType) => boolean,
+  /** Reset calendar and submit values back to the committed value */
+  resetValue: (index?: number) => void,
 ] {
   const {
     // MISC
@@ -195,6 +198,8 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     allowEmpty,
     order,
   } = info;
+
+  const enableEffectSubmit = useEffectSubmit !== false;
 
   const orderOnChange = disabled.some((d) => d) ? false : order;
 
@@ -305,28 +310,34 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     }
   });
 
+  const resetValue = useEvent((index?: number) => {
+    if (index === undefined) {
+      triggerCalendarChange(mergedValue);
+      syncWithValue();
+      return;
+    }
+
+    triggerCalendarChange(fillIndex(getCalendarValue(), index, mergedValue[index]));
+    setSubmitValue(fillIndex(submitValue(), index, mergedValue[index]));
+  });
+
   // ============================ Effect ============================
   // All finished action trigger after 2 frames
   const interactiveFinished = !focused && !open;
 
   useLockEffect(
-    !interactiveFinished,
+    enableEffectSubmit && !interactiveFinished,
     () => {
-      if (interactiveFinished) {
+      if (enableEffectSubmit && interactiveFinished) {
         // Always try to trigger submit first
         triggerSubmit();
 
-        // Trigger calendar change since this is a effect reset
-        // https://github.com/ant-design/ant-design/issues/22351
-        triggerCalendarChange(mergedValue);
-
-        // Sync with value anyway
-        syncWithValue();
+        resetValue();
       }
     },
     2,
   );
 
   // ============================ Return ============================
-  return [flushSubmit, triggerSubmit];
+  return [flushSubmit, triggerSubmit, resetValue];
 }
