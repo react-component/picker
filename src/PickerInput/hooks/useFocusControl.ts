@@ -40,17 +40,14 @@ export type UseFocusControlReturn = [
 ];
 
 // ============================= Utils =============================
-/** Check whether the target is the container itself or inside it. / 判断目标是否为容器自身或其子元素。 */
-function containsElement(container: Element | null, target: EventTarget | null) {
-  return !!container && (container === target || container.contains(target as Node));
-}
-
 /** Check whether the target belongs to any container. / 判断目标是否属于任意一个容器。 */
 export function isTargetInContainers(
   target: EventTarget | null,
   containers: readonly (Element | null)[],
 ) {
-  return containers.some((container) => containsElement(container, target));
+  return containers.some(
+    (container) => !!container && (container === target || container.contains(target as Node)),
+  );
 }
 
 /**
