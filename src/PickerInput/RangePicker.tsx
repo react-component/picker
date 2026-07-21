@@ -327,19 +327,16 @@ function RangePicker<DateType extends object = any>(
   });
 
   const enabledFieldCount = disabled.filter((fieldDisabled) => !fieldDisabled).length;
-  const [rangeValueIndex, triggeredFields, triggerRangeValueChange] = useRangeValueChange(
-    enabledFieldCount,
-    needConfirm,
-    allowEmpty,
-    getCalendarValue,
-    triggerFieldCalendarChange,
-    flushFieldSubmit,
-    resetValue,
-  );
-
-  // Panel calculations always require a concrete index while the interaction
-  // state intentionally uses `null` between rounds.
-  const activeIndex = rangeValueIndex ?? 0;
+  const [rangeValueIndex, activeIndex, triggeredFields, triggerRangeValueChange] =
+    useRangeValueChange(
+      enabledFieldCount,
+      needConfirm,
+      allowEmpty,
+      getCalendarValue,
+      triggerFieldCalendarChange,
+      flushFieldSubmit,
+      resetValue,
+    );
 
   useFocusLock(rangeValueIndex, selectorRef, popupRef);
 

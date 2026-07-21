@@ -45,6 +45,7 @@ export type ResetValue = (index?: number) => void;
 
 export type UseRangeValueChangeReturn<DateType> = [
   currentIndex: number | null,
+  activeIndex: number,
   triggeredFields: number[],
   triggerChange: TriggerChange<DateType>,
 ];
@@ -94,6 +95,12 @@ export default function useRangeValueChange<DateType = unknown>(
   // 同时保存渲染值，以及供事件处理函数同步读取的 getter。
   const [getCurrentIndex, setCurrentIndex] = useSyncState<number | null>(null);
 
+  // Keep the latest accepted field for panel and selector rendering. Unlike
+  // `currentIndex`, this value remains unchanged after the round finishes.
+  // 保留最后一个被业务接受的 field，供 panel 和 selector 渲染使用；
+  // 与 `currentIndex` 不同，本轮结束后不会清空。
+  const [getActiveIndex, setActiveIndex] = useSyncState(0);
+
   // ============================= Record ============================
 
   // Keep fields unique while preserving their first-triggered order. The
@@ -122,7 +129,9 @@ export default function useRangeValueChange<DateType = unknown>(
       triggeredFieldsRef.current = [];
       setCurrentIndex(null);
     } else {
-      setCurrentIndex((index + 1) % fieldCount);
+      const nextIndex = (index + 1) % fieldCount;
+      setCurrentIndex(nextIndex);
+      setActiveIndex(nextIndex);
     }
 
     return allFieldsTriggered;
@@ -210,6 +219,7 @@ export default function useRangeValueChange<DateType = unknown>(
       if (currentIndex === null && source !== 'blur' && source !== 'esc') {
         currentIndex = index;
         setCurrentIndex(index);
+        setActiveIndex(index);
         recordTriggeredField(index);
       }
 
@@ -262,5 +272,5 @@ export default function useRangeValueChange<DateType = unknown>(
     },
   );
 
-  return [getCurrentIndex(), triggeredFieldsRef.current, triggerChange];
+  return [getCurrentIndex(), getActiveIndex(), triggeredFieldsRef.current, triggerChange];
 }
