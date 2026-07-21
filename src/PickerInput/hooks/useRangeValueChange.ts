@@ -95,11 +95,11 @@ export default function useRangeValueChange<DateType = unknown>(
   // 同时保存渲染值，以及供事件处理函数同步读取的 getter。
   const [getCurrentIndex, setCurrentIndex] = useSyncState<number | null>(null);
 
-  // Keep the latest accepted field for panel and selector rendering. Unlike
-  // `currentIndex`, this value remains unchanged after the round finishes.
+  // Keep the latest accepted field for panel and selector rendering. Changes
+  // to this ref always accompany a `currentIndex` update, so it needs no state.
   // 保留最后一个被业务接受的 field，供 panel 和 selector 渲染使用；
-  // 与 `currentIndex` 不同，本轮结束后不会清空。
-  const [getActiveIndex, setActiveIndex] = useSyncState(0);
+  // ref 的变更总是伴随 `currentIndex` 更新，因此不需要额外的 state。
+  const lastValidIndexRef = React.useRef<number | null>(null);
 
   // ============================= Record ============================
 
@@ -130,8 +130,8 @@ export default function useRangeValueChange<DateType = unknown>(
       setCurrentIndex(null);
     } else {
       const nextIndex = (index + 1) % fieldCount;
+      lastValidIndexRef.current = nextIndex;
       setCurrentIndex(nextIndex);
-      setActiveIndex(nextIndex);
     }
 
     return allFieldsTriggered;
@@ -218,8 +218,8 @@ export default function useRangeValueChange<DateType = unknown>(
       // 也不应因此创建 currentIndex。
       if (currentIndex === null && source !== 'blur' && source !== 'esc') {
         currentIndex = index;
+        lastValidIndexRef.current = index;
         setCurrentIndex(index);
-        setActiveIndex(index);
         recordTriggeredField(index);
       }
 
@@ -272,5 +272,8 @@ export default function useRangeValueChange<DateType = unknown>(
     },
   );
 
-  return [getCurrentIndex(), getActiveIndex(), triggeredFieldsRef.current, triggerChange];
+  const currentIndex = getCurrentIndex();
+  const activeIndex = currentIndex ?? lastValidIndexRef.current ?? 0;
+
+  return [currentIndex, activeIndex, triggeredFieldsRef.current, triggerChange];
 }
