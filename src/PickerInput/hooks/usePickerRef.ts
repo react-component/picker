@@ -5,8 +5,11 @@ type PickerRefType<OptionType> = Omit<PickerRef, 'focus'> & {
   focus: (options?: OptionType) => void;
 };
 
-export default function usePickerRef<OptionType>(ref: React.Ref<PickerRefType<OptionType>>) {
-  const selectorRef = React.useRef<PickerRefType<OptionType>>(null);
+export default function usePickerRef<
+  OptionType,
+  SelectorRefType extends PickerRefType<OptionType> = PickerRefType<OptionType>,
+>(ref: React.Ref<PickerRefType<OptionType>>) {
+  const selectorRef = React.useRef<SelectorRefType>(null);
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: selectorRef.current?.nativeElement,

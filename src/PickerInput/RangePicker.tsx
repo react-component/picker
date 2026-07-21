@@ -41,7 +41,10 @@ import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useRangeValueChange, { type RangeValueChangeSource } from './hooks/useRangeValueChange';
 import useShowNow from './hooks/useShowNow';
 import Popup, { type PopupShowTimeConfig } from './Popup';
-import RangeSelector, { type SelectorIdType } from './Selector/RangeSelector';
+import RangeSelector, {
+  type RangeSelectorRef,
+  type SelectorIdType,
+} from './Selector/RangeSelector';
 import useSemantic from '../hooks/useSemantic';
 
 function separateConfig<T>(config: T | [T, T] | null | undefined, defaultConfig: T): [T, T] {
@@ -236,10 +239,7 @@ function RangePicker<DateType extends object = any>(
   } = filledProps;
 
   // ========================= Refs =========================
-  const selectorRef = usePickerRef(ref);
-  const inputStartRef = React.useRef<HTMLInputElement>(null);
-  const inputEndRef = React.useRef<HTMLInputElement>(null);
-  const inputFieldRefs = [inputStartRef, inputEndRef];
+  const selectorRef = usePickerRef<Parameters<RangePickerRef['focus']>[0], RangeSelectorRef>(ref);
   const popupRef = React.useRef<HTMLDivElement>(null);
 
   // ======================= Semantic =======================
@@ -351,7 +351,7 @@ function RangePicker<DateType extends object = any>(
     resetValue,
   );
 
-  useFocusLock(rangeValueIndex, inputFieldRefs, popupRef);
+  useFocusLock(rangeValueIndex, selectorRef, popupRef);
 
   const isInternalPickerElement = useEvent((element: EventTarget | null) =>
     isTargetInContainers(element, [selectorRef.current.nativeElement, popupRef.current]),
@@ -785,7 +785,6 @@ function RangePicker<DateType extends object = any>(
           {...filledProps}
           // Ref
           ref={selectorRef}
-          inputRefs={inputFieldRefs}
           // Style
           className={clsx(filledProps.className, rootClassName, mergedClassNames.root)}
           style={{ ...mergedStyles.root, ...filledProps.style }}

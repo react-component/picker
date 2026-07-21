@@ -17,10 +17,13 @@ export type SelectorIdType =
       end?: string;
     };
 
+export interface RangeSelectorRef extends RangePickerRef {
+  startInput: HTMLInputElement;
+  endInput: HTMLInputElement;
+}
+
 export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateType> {
   id?: SelectorIdType;
-
-  inputRefs?: readonly React.Ref<HTMLInputElement>[];
 
   activeIndex: number | null;
 
@@ -51,11 +54,10 @@ export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateTy
 
 function RangeSelector<DateType extends object = any>(
   props: RangeSelectorProps<DateType>,
-  ref: React.Ref<RangePickerRef>,
+  ref: React.Ref<RangeSelectorRef>,
 ) {
   const {
     id,
-    inputRefs,
 
     prefix,
     clearIcon,
@@ -143,13 +145,12 @@ function RangeSelector<DateType extends object = any>(
   const inputStartRef = React.useRef<InputRef>(null);
   const inputEndRef = React.useRef<InputRef>(null);
 
-  React.useImperativeHandle(inputRefs?.[0], () => inputStartRef.current.inputElement);
-  React.useImperativeHandle(inputRefs?.[1], () => inputEndRef.current.inputElement);
-
   const getInput = (index: number) => [inputStartRef, inputEndRef][index]?.current;
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: rootRef.current,
+    startInput: inputStartRef.current.inputElement,
+    endInput: inputEndRef.current.inputElement,
     focus: (options) => {
       if (typeof options === 'object') {
         const { index = 0, ...rest } = options || {};

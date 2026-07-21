@@ -2,13 +2,18 @@ import { useLayoutEffect } from '@rc-component/util';
 import type * as React from 'react';
 import { isTargetInContainers } from './useFocusEvents';
 
+interface FocusLockSelectorRef {
+  startInput: HTMLElement;
+  endInput: HTMLElement;
+}
+
 /**
  * Keep focus on the specified input field while focus moves inside the Picker.
  * 当焦点在 Picker 内移动时，将其锁定在指定的输入框上。
  */
 export default function useFocusLock(
   index: number | null,
-  inputFieldRefs: readonly React.RefObject<HTMLElement | null>[],
+  selectorRef: React.RefObject<FocusLockSelectorRef | null>,
   popupRef: React.RefObject<HTMLElement | null>,
 ) {
   // DOM focus may change while `index` stays the same, so check after every commit.
@@ -19,18 +24,18 @@ export default function useFocusLock(
     }
 
     const activeElement = document.activeElement;
+    const inputFields = [selectorRef.current?.startInput, selectorRef.current?.endInput];
 
     if (isTargetInContainers(activeElement, [popupRef.current])) {
       return;
     }
 
-    const focusInOtherField = inputFieldRefs.some(
-      (fieldRef, fieldIndex) =>
-        fieldIndex !== index && isTargetInContainers(activeElement, [fieldRef.current]),
+    const focusInOtherField = inputFields.some(
+      (field, fieldIndex) => fieldIndex !== index && isTargetInContainers(activeElement, [field]),
     );
 
     if (focusInOtherField) {
-      inputFieldRefs[index]?.current?.focus();
+      inputFields[index]?.focus();
     }
   });
 }
