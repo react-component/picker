@@ -1,12 +1,9 @@
 import { useEvent } from '@rc-component/util';
-import type * as React from 'react';
+import * as React from 'react';
 
 // ============================= Types =============================
 /** Focus event source. / 焦点事件来源。 */
 export type FocusSource = 'input' | 'panel';
-
-/** Focus state change type. / 焦点状态变更类型。 */
-export type FocusChangeType = 'focus' | 'blur';
 
 /** React focus event used by Picker elements. / Picker 元素使用的 React 焦点事件。 */
 export type PickerFocusEvent = React.FocusEvent<HTMLElement>;
@@ -28,13 +25,14 @@ export type FieldBlurHandler = (
 /** Check whether an element belongs to the current focus scope. / 检查元素是否属于当前焦点范围。 */
 export type IsInternalElement = (element: EventTarget | null) => boolean;
 
-/** Notify the final focus state change. / 通知最终确认的焦点状态变更。 */
-export type TriggerFocusChange = (index: number, type: FocusChangeType) => void;
-
 /** Notify a Picker focus or blur event. / 通知 Picker 的聚焦或失焦事件。 */
 export type FocusEventHandler = (index: number, event: PickerFocusEvent) => void;
 
-export type UseFocusEventsReturn = [onFieldFocus: FieldFocusHandler, onFieldBlur: FieldBlurHandler];
+export type UseFocusEventsReturn = [
+  focused: boolean,
+  onFieldFocus: FieldFocusHandler,
+  onFieldBlur: FieldBlurHandler,
+];
 
 // ============================= Utils =============================
 /** Check whether the target belongs to any container. / 判断目标是否属于任意一个容器。 */
@@ -56,21 +54,26 @@ export function isTargetInContainers(
  */
 export default function useFocusEvents(
   isInternalElement: IsInternalElement,
-  triggerFocusChange: TriggerFocusChange,
   onFocus?: FocusEventHandler,
   onBlur?: FocusEventHandler,
 ): UseFocusEventsReturn {
+  // Keep the actual focused field so every field focus causes a render. This
+  // gives `useFocusLock` a commit in which it can correct an invalid switch.
+  // 记录实际获得焦点的 field，使每次 field focus 都会触发渲染；
+  // `useFocusLock` 因此可以在 commit 后纠正不允许的切换。
+  const [focusedIndex, setFocusedIndex] = React.useState<number | null>(null);
+
   const onFieldFocus = useEvent((index: number, _source: FocusSource, event: PickerFocusEvent) => {
-    triggerFocusChange(index, 'focus');
+    setFocusedIndex(index);
     onFocus?.(index, event);
   });
 
   const onFieldBlur = useEvent((index: number, _source: FocusSource, event: PickerFocusEvent) => {
     if (!isInternalElement(event.relatedTarget)) {
-      triggerFocusChange(index, 'blur');
+      setFocusedIndex(null);
       onBlur?.(index, event);
     }
   });
 
-  return [onFieldFocus, onFieldBlur];
+  return [focusedIndex !== null, onFieldFocus, onFieldBlur];
 }

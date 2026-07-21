@@ -45,6 +45,7 @@ export type ResetValue = (index?: number) => void;
 
 export type UseRangeValueChangeReturn<DateType> = [
   currentIndex: number | null,
+  triggeredFields: number[],
   triggerChange: TriggerChange<DateType>,
 ];
 
@@ -95,15 +96,14 @@ export default function useRangeValueChange<DateType = unknown>(
 
   // ============================= Record ============================
 
-  // Keep fields unique and move the latest field to the end, so the same list
-  // records both completed fields and the most recently changed field.
-  // field 保持唯一，并将最近触发的 field 移到末尾；同一份列表即可同时记录
-  // 已处理的 field 和最近发生变更的 field。
+  // Keep fields unique while preserving their first-triggered order. The
+  // current field is tracked separately by `currentIndex`.
+  // field 保持唯一，同时保留首次触发顺序；当前 field 由 `currentIndex`
+  // 单独记录。
   const recordTriggeredField = (index: number) => {
-    triggeredFieldsRef.current = [
-      ...triggeredFieldsRef.current.filter((fieldIndex) => fieldIndex !== index),
-      index,
-    ];
+    if (!triggeredFieldsRef.current.includes(index)) {
+      triggeredFieldsRef.current = [...triggeredFieldsRef.current, index];
+    }
   };
 
   // ============================= Submit ============================
@@ -124,6 +124,8 @@ export default function useRangeValueChange<DateType = unknown>(
     } else {
       setCurrentIndex((index + 1) % fieldCount);
     }
+
+    return allFieldsTriggered;
   };
 
   // ============================= Resolve ===========================
@@ -208,6 +210,7 @@ export default function useRangeValueChange<DateType = unknown>(
       if (currentIndex === null && source !== 'blur' && source !== 'esc') {
         currentIndex = index;
         setCurrentIndex(index);
+        recordTriggeredField(index);
       }
 
       const action = resolveAction(currentIndex, index, source, date);
@@ -225,7 +228,9 @@ export default function useRangeValueChange<DateType = unknown>(
           if (date !== undefined) {
             triggerCalendarChange(actionIndex, date);
           }
-          submitField(actionIndex);
+          if (!submitField(actionIndex) && source === 'field-switch') {
+            recordTriggeredField(index);
+          }
           break;
 
         case 'resetCurrent':
@@ -237,7 +242,9 @@ export default function useRangeValueChange<DateType = unknown>(
 
         case 'resetCurrentAndSwitchNext':
           resetValue(actionIndex);
-          submitField(actionIndex);
+          if (!submitField(actionIndex) && source === 'field-switch') {
+            recordTriggeredField(index);
+          }
           break;
 
         case 'resetAll':
@@ -247,10 +254,13 @@ export default function useRangeValueChange<DateType = unknown>(
           break;
 
         case 'abort':
+          if (source === 'field-switch' && index === actionIndex) {
+            recordTriggeredField(index);
+          }
           break;
       }
     },
   );
 
-  return [getCurrentIndex(), triggerChange];
+  return [getCurrentIndex(), triggeredFieldsRef.current, triggerChange];
 }

@@ -34,7 +34,6 @@ import useFocusLock from './hooks/useFocusLock';
 import useOpen from './hooks/useOpen';
 import usePickerRef from './hooks/usePickerRef';
 import usePresets from './hooks/usePresets';
-import useRangeActive from './hooks/useRangeActive';
 import useRangeDisabledDate from './hooks/useRangeDisabledDate';
 import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
@@ -271,48 +270,27 @@ function RangePicker<DateType extends object = any>(
 
   const calendarValue = getCalendarValue();
 
-  // ======================== Active ========================
-  const [focused, triggerFocus, activeIndex, setActiveIndex, nextActiveIndex, activeIndexList] =
-    useRangeActive(disabled, allowEmpty, mergedOpen);
+  // ======================== Focus =========================
+  const isInternalPickerElement = useEvent((element: EventTarget | null) =>
+    isTargetInContainers(element, [selectorRef.current.nativeElement, popupRef.current]),
+  );
 
-  // ======================= ShowTime =======================
-  /** Used for Popup panel */
-  const mergedShowTime = React.useMemo<
-    PopupShowTimeConfig<DateType> & Pick<RangeTimeProps<DateType>, 'defaultOpenValue'>
-  >(() => {
-    if (!showTime) {
-      return null;
-    }
+  const [focused, onFieldFocus, onFieldBlur] = useFocusEvents(
+    isInternalPickerElement,
+    (index, event) => {
+      onFocus?.(event, {
+        range: getActiveRange(index),
+      });
+    },
+    (index, event) => {
+      triggerRangeValueChange(index, 'blur');
+      triggerOpen(false);
 
-    const { disabledTime } = showTime;
-
-    const proxyDisabledTime = disabledTime
-      ? (date: DateType) => {
-          const range = getActiveRange(activeIndex);
-          const fromDate = getFromDate(calendarValue, activeIndexList, activeIndex);
-          return disabledTime(date, range, {
-            from: fromDate,
-          });
-        }
-      : undefined;
-
-    return { ...showTime, disabledTime: proxyDisabledTime };
-  }, [showTime, activeIndex, calendarValue, activeIndexList]);
-
-  // ========================= Mode =========================
-  const [modes, setModes] = useControlledState<[PanelMode, PanelMode]>([picker, picker], mode);
-
-  const mergedMode = modes[activeIndex] || picker;
-
-  /** Extends from `mergedMode` to patch `datetime` mode */
-  const internalMode: InternalMode =
-    mergedMode === 'date' && mergedShowTime ? 'datetime' : mergedMode;
-
-  // ====================== PanelCount ======================
-  const multiplePanel = internalMode === picker && internalMode !== 'time';
-
-  // ======================= Show Now =======================
-  const mergedShowNow = useShowNow(picker, mergedMode, showNow, showToday, true);
+      onBlur?.(event, {
+        range: getActiveRange(index),
+      });
+    },
+  );
 
   // ======================== Value =========================
   const [
@@ -340,53 +318,76 @@ function RangePicker<DateType extends object = any>(
     triggerCalendarChange(fillIndex(getCalendarValue(), index, date));
   });
 
+  const flushFieldSubmit = useEvent((index: number, needTriggerChange: boolean) => {
+    flushSubmit(index, needTriggerChange);
+
+    if (needTriggerChange) {
+      triggerOpen(false, { force: true });
+    }
+  });
+
   const enabledFieldCount = disabled.filter((fieldDisabled) => !fieldDisabled).length;
-  const [rangeValueIndex, triggerRangeValueChange] = useRangeValueChange(
+  const [rangeValueIndex, triggeredFields, triggerRangeValueChange] = useRangeValueChange(
     enabledFieldCount,
     needConfirm,
     allowEmpty,
     getCalendarValue,
     triggerFieldCalendarChange,
-    flushSubmit,
+    flushFieldSubmit,
     resetValue,
   );
 
+  // Panel calculations always require a concrete index while the interaction
+  // state intentionally uses `null` between rounds.
+  const activeIndex = rangeValueIndex ?? 0;
+
   useFocusLock(rangeValueIndex, selectorRef, popupRef);
 
-  const isInternalPickerElement = useEvent((element: EventTarget | null) =>
-    isTargetInContainers(element, [selectorRef.current.nativeElement, popupRef.current]),
-  );
-
-  const triggerFocusChange = useEvent((index: number, type: 'focus' | 'blur') => {
-    const nextFocused = type === 'focus';
-    triggerFocus(nextFocused);
-
-    if (!nextFocused) {
-      triggerRangeValueChange(index, 'blur');
-      triggerOpen(false);
+  // ======================= ShowTime =======================
+  /** Used for Popup panel */
+  const mergedShowTime = React.useMemo<
+    PopupShowTimeConfig<DateType> & Pick<RangeTimeProps<DateType>, 'defaultOpenValue'>
+  >(() => {
+    if (!showTime) {
+      return null;
     }
-  });
 
-  const [onFieldFocus, onFieldBlur] = useFocusEvents(
-    isInternalPickerElement,
-    triggerFocusChange,
-    (index, event) => {
-      onFocus?.(event, {
-        range: getActiveRange(index),
-      });
-    },
-    (index, event) => {
-      onBlur?.(event, {
-        range: getActiveRange(index),
-      });
-    },
-  );
+    const { disabledTime } = showTime;
+
+    const proxyDisabledTime = disabledTime
+      ? (date: DateType) => {
+          const range = getActiveRange(activeIndex);
+          const fromDate = getFromDate(calendarValue, triggeredFields, activeIndex);
+          return disabledTime(date, range, {
+            from: fromDate,
+          });
+        }
+      : undefined;
+
+    return { ...showTime, disabledTime: proxyDisabledTime };
+  }, [showTime, activeIndex, calendarValue, triggeredFields]);
+
+  // ========================= Mode =========================
+  const [modes, setModes] = useControlledState<[PanelMode, PanelMode]>([picker, picker], mode);
+
+  const mergedMode = modes[activeIndex] || picker;
+
+  /** Extends from `mergedMode` to patch `datetime` mode */
+  const internalMode: InternalMode =
+    mergedMode === 'date' && mergedShowTime ? 'datetime' : mergedMode;
+
+  // ====================== PanelCount ======================
+  const multiplePanel = internalMode === picker && internalMode !== 'time';
+
+  // ======================= Show Now =======================
+  const mergedShowNow = useShowNow(picker, mergedMode, showNow, showToday, true);
 
   // ===================== DisabledDate =====================
   const mergedDisabledDate = useRangeDisabledDate(
     calendarValue,
     disabled,
-    activeIndexList,
+    activeIndex,
+    triggeredFields,
     generateConfig,
     locale,
     disabledDate,
@@ -450,19 +451,7 @@ function RangePicker<DateType extends object = any>(
    * - Panel: OK button
    */
   const triggerPartConfirm = (date?: DateType, source: RangeValueChangeSource = 'confirm') => {
-    let nextValue = calendarValue;
-
-    if (date) {
-      nextValue = fillCalendarValue(date, activeIndex);
-    }
-    // Get next focus index
-    const nextIndex = nextActiveIndex(nextValue);
-
     triggerRangeValueChange(activeIndex, source, date ?? undefined);
-
-    if (nextIndex === null) {
-      triggerOpen(false, { force: true });
-    }
   };
 
   // ======================== Click =========================
@@ -556,7 +545,6 @@ function RangePicker<DateType extends object = any>(
 
   // >>> Calendar
   const onPanelSelect: PickerPanelProps<DateType>['onChange'] = (date: DateType) => {
-    const clone: RangeValueType<DateType> = fillIndex(calendarValue, activeIndex, date);
     const panelFinished = !complexPicker && internalPicker === internalMode;
 
     triggerRangeValueChange(
@@ -564,18 +552,6 @@ function RangePicker<DateType extends object = any>(
       panelFinished ? 'panel-final' : 'panel-intermediate',
       date,
     );
-
-    // >>> Trigger next active if !needConfirm
-    // Fully logic check `useRangeValue` hook
-    if (!needConfirm && panelFinished) {
-      const nextIndex = nextActiveIndex(clone);
-
-      if (nextIndex === null) {
-        triggerOpen(false, { force: true });
-      } else {
-        selectorRef.current.focus({ index: nextIndex });
-      }
-    }
   };
 
   // >>> Close
@@ -692,8 +668,6 @@ function RangePicker<DateType extends object = any>(
       inherit: true,
     });
 
-    setActiveIndex(index);
-
     onFieldFocus(index, 'input', event);
   };
 
@@ -706,6 +680,7 @@ function RangePicker<DateType extends object = any>(
       triggerPartConfirm(null, 'keyboard-submit');
     } else if (event.key === 'Escape') {
       triggerRangeValueChange(activeIndex, 'esc');
+      triggerOpen(false);
     }
 
     onKeyDown?.(event, preventDefault);
