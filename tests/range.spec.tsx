@@ -28,6 +28,8 @@ import {
   isSame,
   openPicker,
   selectCell,
+  triggerBlur,
+  triggerFocus,
   waitFakeTimer,
 } from './util/commonUtil';
 
@@ -555,10 +557,10 @@ describe('Picker.Range', () => {
         </div>,
       );
 
-      ref.current!.focus();
+      triggerFocus(ref.current!);
       expect(focused).toBeTruthy();
 
-      ref.current!.blur();
+      triggerBlur(ref.current!);
       expect(blurred).toBeTruthy();
     });
 
@@ -739,7 +741,7 @@ describe('Picker.Range', () => {
     selectCell(11);
     expect(isOpen()).toBeTruthy();
 
-    fireEvent.blur(container.querySelectorAll('input')[1]);
+    triggerBlur(container.querySelectorAll('input')[1]);
 
     act(() => {
       jest.runAllTimers();
@@ -814,8 +816,7 @@ describe('Picker.Range', () => {
 
     act(() => {
       fireEvent.mouseDown(container.querySelectorAll('input')[1]);
-      fireEvent.blur(container.querySelectorAll('input')[0]);
-      fireEvent.focus(container.querySelectorAll('input')[1]);
+      triggerFocus(container.querySelectorAll('input')[1]);
       jest.runAllTimers();
     });
 
@@ -1199,8 +1200,7 @@ describe('Picker.Range', () => {
       },
     });
 
-    // Force blur since fireEvent blur will not change document.activeElement
-    container.querySelectorAll('input')[1].blur();
+    triggerBlur(container.querySelectorAll('input')[1]);
     closePicker(container, 1);
 
     expect(document.querySelectorAll('input')[0].value).toEqual('19890903');
@@ -1604,7 +1604,7 @@ describe('Picker.Range', () => {
 
   // https://github.com/ant-design/ant-design/issues/26024
   it('panel should keep open when nextValue is empty', () => {
-    const { container } = render(<DayRangePicker allowEmpty placeholder={['Start', 'End']} />);
+    const { container } = render(<DayRangePicker placeholder={['Start', 'End']} />);
 
     openPicker(container, 0);
 
@@ -1614,7 +1614,7 @@ describe('Picker.Range', () => {
     // back to first panel and clear input value
     // `testing-lib` fire the `focus` event but not change the `document.activeElement`
     // We call `focus` manually here
-    document.querySelectorAll('input')[0].focus();
+    triggerFocus(document.querySelectorAll('input')[0]);
     inputValue('', 0);
 
     // reselect date
@@ -1685,7 +1685,7 @@ describe('Picker.Range', () => {
     const { container } = render(
       <DayRangePicker onCalendarChange={onCalendarChange} disabledDate={disabledDate} />,
     );
-    fireEvent.focus(document.querySelector('input'));
+    triggerFocus(document.querySelector('input'));
 
     function pickerKeyDown(keyCode: number) {
       fireEvent.keyDown(container.querySelector('.rc-picker'), {
@@ -1973,7 +1973,7 @@ describe('Picker.Range', () => {
   it('selected date when open is true should switch panel', () => {
     const { container } = render(<DayRangePicker open />);
 
-    fireEvent.focus(container.querySelector('input'));
+    triggerFocus(container.querySelector('input'));
     fireEvent.click(document.querySelector('.rc-picker-cell'));
 
     expect(document.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
@@ -2021,7 +2021,7 @@ describe('Picker.Range', () => {
     const onOpenChange = jest.fn();
 
     const { container } = render(<DayRangePicker open showTime onOpenChange={onOpenChange} />);
-    fireEvent.focus(container.querySelector('input'));
+    triggerFocus(container.querySelector('input'));
 
     for (let i = 0; i < 2; i++) {
       selectCell(24);
@@ -2037,15 +2037,13 @@ describe('Picker.Range', () => {
     const { container } = render(<DayRangePicker />);
 
     act(() => {
-      fireEvent.focus(container.querySelectorAll('input')[0]);
+      triggerFocus(container.querySelectorAll('input')[0]);
       fireEvent.change(container.querySelectorAll('input')[0], {
         target: {
           value: '2024-06-13',
         },
       });
-      fireEvent.blur(container.querySelectorAll('input')[0]);
-
-      fireEvent.focus(container.querySelectorAll('input')[1]);
+      triggerFocus(container.querySelectorAll('input')[1]);
       fireEvent.change(container.querySelectorAll('input')[1], {
         target: {
           value: '2024-06-15',
@@ -2079,7 +2077,7 @@ describe('Picker.Range', () => {
     // Click outside to blur
     const focusedElement = document.activeElement;
     fireEvent.mouseDown(document.body);
-    fireEvent.blur(focusedElement);
+    triggerBlur(focusedElement as HTMLElement);
     fireEvent.mouseUp(document.body);
     fireEvent.click(document.body);
 

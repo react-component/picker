@@ -1,5 +1,5 @@
-import { useLayoutEffect } from '@rc-component/util';
-import type * as React from 'react';
+import { useEvent, useLayoutEffect } from '@rc-component/util';
+import * as React from 'react';
 import { isTargetInContainers } from './useFocusEvents';
 
 interface FocusLockSelectorRef {
@@ -15,7 +15,20 @@ export default function useFocusLock(
   index: number | null,
   selectorRef: React.RefObject<FocusLockSelectorRef | null>,
   popupRef: React.RefObject<HTMLElement | null>,
+  triggerOpen: (open: boolean) => void,
 ) {
+  const openPicker = useEvent(() => {
+    triggerOpen(true);
+  });
+
+  // Open the Picker after the controlled field changes.
+  // 当受控 field 发生切换后，重新打开 Picker。
+  React.useEffect(() => {
+    if (index !== null) {
+      openPicker();
+    }
+  }, [index, openPicker]);
+
   // DOM focus may change while `index` stays the same, so check after every commit.
   // DOM 焦点变化时 `index` 可能保持不变，因此每次 commit 后都需要检查。
   useLayoutEffect(() => {

@@ -1,7 +1,14 @@
 import { act, fireEvent, render } from '@testing-library/react';
 import { resetWarned } from '@rc-component/util';
 import React from 'react';
-import { DateFnsSinglePicker, DayPicker, getMoment, isOpen, openPicker } from './util/commonUtil';
+import {
+  DateFnsSinglePicker,
+  DayPicker,
+  getMoment,
+  isOpen,
+  openPicker,
+  triggerFocus,
+} from './util/commonUtil';
 
 // TODO: New keyboard interactive
 describe('Picker.Keyboard', () => {
@@ -26,7 +33,7 @@ describe('Picker.Keyboard', () => {
     const inputEle = container.querySelector('input');
 
     // Focus
-    fireEvent.focus(inputEle);
+    triggerFocus(inputEle);
     expect(isOpen()).toBeFalsy();
 
     // Key to open

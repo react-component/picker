@@ -16,7 +16,13 @@ export type RangeValueChangeSource =
 
 /** Resolved operation for one field interaction. / 一次 field 交互最终执行的操作。 */
 export type RangeValueChangeAction =
-  'modify' | 'switchNext' | 'abort' | 'resetCurrent' | 'resetCurrentAndSwitchNext' | 'resetAll';
+  | 'modify'
+  | 'switchNext'
+  | 'switchPrevious'
+  | 'abort'
+  | 'resetCurrent'
+  | 'resetCurrentAndSwitchNext'
+  | 'resetAll';
 
 /** Receive a field interaction and its optional value. / 接收 field 交互及可选变更值。 */
 export type TriggerChange<FieldValue> = (
@@ -67,6 +73,9 @@ export type UseRangeValueChangeReturn<FieldValue> = [
  *   更新或记录当前 CalendarValue。
  * - `switchNext`: submit the current field and advance to the next field.
  *   提交当前 field 并推进到下一个 field。
+ * - `switchPrevious`: settle the current field and return to the previously
+ *   handled field without a final submit. / 处理当前 field 后返回上一个已处理
+ *   field，且不触发最终提交。
  * - `abort`: stop without changing any state.
  *   直接短路，不改变任何状态。
  * - `resetCurrent`: discard only the current field.
@@ -90,6 +99,12 @@ export default function useRangeValueChange<FieldValue = unknown>(
   // Record fields involved in the current interaction.
   // 记录当前一轮交互中触发过的 field。
   const triggeredFieldsRef = React.useRef<number[]>([]);
+
+  // Track the last explicitly confirmed field. `triggeredFields` also records
+  // focus, so it cannot tell confirmed and unconfirmed values apart.
+  // 记录最后一个明确确认过的 field。`triggeredFields` 同时记录 focus，
+  // 因此无法单独区分已确认值与未确认值。
+  const confirmedIndexRef = React.useRef<number | null>(null);
 
   // Keep a render value and a synchronous getter for event handlers.
   // 同时保存渲染值，以及供事件处理函数同步读取的 getter。
@@ -125,6 +140,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
 
     if (allFieldsTriggered) {
       triggeredFieldsRef.current = [];
+      confirmedIndexRef.current = null;
       setCurrentIndex(null);
     } else {
       const nextIndex = (index + 1) % fieldCount;
@@ -149,7 +165,10 @@ export default function useRangeValueChange<FieldValue = unknown>(
     }
 
     if (currentIndex === null) {
-      return 'abort';
+      // A blur after the interaction has completed still needs to discard any
+      // temporary CalendarValue left by a controlled value.
+      // 一轮交互结束后的 blur 仍需清理受控值留下的临时 CalendarValue。
+      return source === 'blur' ? 'resetAll' : 'abort';
     }
 
     const currentValue = value === undefined ? getCalendarValue()[currentIndex] : value;
@@ -161,12 +180,33 @@ export default function useRangeValueChange<FieldValue = unknown>(
         return 'abort';
       }
 
+      const previousIndex = (currentIndex - 1 + fieldCount) % fieldCount;
+      const isPreviousField = index === previousIndex && triggeredFieldsRef.current.includes(index);
+
+      if (isPreviousField) {
+        const currentUnconfirmed = !currentEmpty && confirmedIndexRef.current !== currentIndex;
+
+        // Keep the legacy needConfirm behavior: only an unconfirmed value locks
+        // the current field. Empty, confirmed or allowEmpty fields may go back.
+        // 保持旧版 needConfirm 行为：仅未确认值会锁定当前 field；当前为空、
+        // 已确认或允许空值时，都可以返回上一个 field。
+        if (needConfirm && currentUnconfirmed && !allowEmpty[currentIndex]) {
+          return 'abort';
+        }
+
+        return 'switchPrevious';
+      }
+
       const nextIndex = (currentIndex + 1) % fieldCount;
       if (index !== nextIndex) {
         return 'abort';
       }
 
       if (needConfirm) {
+        if (confirmedIndexRef.current === currentIndex) {
+          return 'switchNext';
+        }
+
         return currentEmpty && allowEmpty[currentIndex] ? 'resetCurrentAndSwitchNext' : 'abort';
       }
 
@@ -210,9 +250,9 @@ export default function useRangeValueChange<FieldValue = unknown>(
       let currentIndex = getCurrentIndex();
 
       // Start a new interaction from the first non-blur event. A standalone
-      // blur has no active field to finish and must not create one.
-      // 第一条非 blur 事件用于建立新一轮交互；单独的 blur 没有可结束的 field，
-      // 也不应因此创建 currentIndex。
+      // blur may clean temporary values but must not create an active field.
+      // 第一条非 blur 事件用于建立新一轮交互；单独的 blur 可以清理临时值，
+      // 但不应因此创建 currentIndex。
       if (currentIndex === null && source !== 'blur' && source !== 'esc') {
         currentIndex = index;
         setCurrentIndex(index);
@@ -225,6 +265,9 @@ export default function useRangeValueChange<FieldValue = unknown>(
       switch (action) {
         case 'modify':
           recordTriggeredField(actionIndex);
+          if (confirmedIndexRef.current === actionIndex) {
+            confirmedIndexRef.current = null;
+          }
           if (value !== undefined) {
             triggerCalendarChange(actionIndex, value);
           }
@@ -234,13 +277,47 @@ export default function useRangeValueChange<FieldValue = unknown>(
           if (value !== undefined) {
             triggerCalendarChange(actionIndex, value);
           }
-          if (!submitField(actionIndex) && source === 'field-switch') {
+          if (needConfirm && (source === 'keyboard-submit' || source === 'confirm')) {
+            confirmedIndexRef.current = actionIndex;
+          }
+          if (submitField(actionIndex) && source === 'field-switch') {
+            // The focus switch finishes the previous round and also starts a
+            // new round from its target field.
+            // 本次 focus 切换既结束上一轮，也以目标 field 开始新一轮。
+            setCurrentIndex(index);
+          }
+          if (source === 'field-switch') {
             recordTriggeredField(index);
           }
           break;
 
+        case 'switchPrevious': {
+          if (!needConfirm) {
+            const currentValue = getCalendarValue()[actionIndex];
+            const currentEmpty = currentValue === null || currentValue === undefined;
+
+            if (!currentEmpty || allowEmpty[actionIndex]) {
+              // Going back may part-submit the current field, but must never
+              // finish the whole round before the previous field is edited.
+              // 返回上一个 field 时可以局部提交当前 field，但不能在用户修改
+              // 上一个 field 前结束整轮提交。
+              flushSubmit(actionIndex, false);
+            } else {
+              resetValue(actionIndex);
+            }
+          }
+
+          const previousPosition = triggeredFieldsRef.current.indexOf(index);
+          triggeredFieldsRef.current = triggeredFieldsRef.current.slice(0, previousPosition + 1);
+          setCurrentIndex(index);
+          break;
+        }
+
         case 'resetCurrent':
           resetValue(actionIndex);
+          if (confirmedIndexRef.current === actionIndex) {
+            confirmedIndexRef.current = null;
+          }
           triggeredFieldsRef.current = triggeredFieldsRef.current.filter(
             (fieldIndex) => fieldIndex !== actionIndex,
           );
@@ -248,7 +325,16 @@ export default function useRangeValueChange<FieldValue = unknown>(
 
         case 'resetCurrentAndSwitchNext':
           resetValue(actionIndex);
-          if (!submitField(actionIndex) && source === 'field-switch') {
+          if (confirmedIndexRef.current === actionIndex) {
+            confirmedIndexRef.current = null;
+          }
+          if (submitField(actionIndex) && source === 'field-switch') {
+            // The target field belongs to the next round after the previous
+            // round is completed.
+            // 上一轮结束后，切换目标 field 应归入新一轮。
+            setCurrentIndex(index);
+          }
+          if (source === 'field-switch') {
             recordTriggeredField(index);
           }
           break;
@@ -256,6 +342,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
         case 'resetAll':
           resetValue();
           triggeredFieldsRef.current = [];
+          confirmedIndexRef.current = null;
           setCurrentIndex(null);
           break;
 

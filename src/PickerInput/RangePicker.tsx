@@ -338,7 +338,7 @@ function RangePicker<DateType extends object = any>(
       resetValue,
     );
 
-  useFocusLock(rangeValueIndex, selectorRef, popupRef);
+  useFocusLock(rangeValueIndex, selectorRef, popupRef, triggerOpen);
 
   // ======================= ShowTime =======================
   /** Used for Popup panel */

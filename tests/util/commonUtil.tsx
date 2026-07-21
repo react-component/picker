@@ -75,20 +75,48 @@ export async function waitFakeTimer() {
   });
 }
 
+interface FocusTarget {
+  focus: () => void;
+}
+
+interface BlurTarget {
+  blur: () => void;
+}
+
+/**
+ * Trigger native focus so jsdom updates `document.activeElement` and blurs the
+ * previous element with this target as `relatedTarget`.
+ */
+export function triggerFocus(target: FocusTarget) {
+  act(() => {
+    target.focus();
+  });
+}
+
+/**
+ * Trigger native blur so jsdom clears its internal focused element. Use this
+ * only for focus leaving without another focus target.
+ */
+export function triggerBlur(target: BlurTarget) {
+  act(() => {
+    target.blur();
+  });
+}
+
 export function openPicker(container: HTMLElement | ShadowRoot, index = 0) {
   const input = container.querySelectorAll('input')[index];
   fireEvent.mouseDown(input);
 
-  // Testing lib not trigger real focus
-  act(() => {
-    input.focus();
-  });
+  triggerFocus(input);
   fireEvent.click(input);
 }
 
 export function closePicker(container: HTMLElement | ShadowRoot, index = 0) {
   const input = container.querySelectorAll('input')[index];
-  fireEvent.blur(input);
+  const root = input.getRootNode() as Document | ShadowRoot;
+  const activeElement = root.activeElement || document.activeElement;
+
+  triggerBlur(activeElement as HTMLElement);
 
   // Loop to pass all the timer (includes raf)
   for (let i = 0; i < 5; i += 1) {
