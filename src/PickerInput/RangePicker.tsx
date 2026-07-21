@@ -704,6 +704,8 @@ function RangePicker<DateType extends object = any>(
   const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event, preventDefault) => {
     if (event.key === 'Tab') {
       triggerPartConfirm(null, 'keyboard-submit');
+    } else if (event.key === 'Escape') {
+      triggerRangeValueChange(activeIndex, 'esc');
     }
 
     onKeyDown?.(event, preventDefault);

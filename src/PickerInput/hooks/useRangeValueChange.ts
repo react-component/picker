@@ -5,6 +5,7 @@ import * as React from 'react';
 export type RangeValueChangeSource =
   | 'input'
   | 'keyboard-submit'
+  | 'esc'
   | 'panel-intermediate'
   | 'panel-final'
   | 'blur'
@@ -50,6 +51,9 @@ export type UseRangeValueChangeReturn<DateType> = [
  * 📝 update / 更新 · ✅ submit / 提交 · ↩️ reset / 回滚 · ⏸️ stay / 保持
  *
  * triggerChange(index, source, date)
+ *                 |
+ *                 +-- esc / 退出键
+ *                 |      `-- ↩️ reset all, end round / 全部重置并结束本轮
  *                 |
  *                 +-- currentIndex is null / currentIndex 为空
  *                 |      |-- blur / 失焦
@@ -163,6 +167,16 @@ export default function useRangeValueChange<DateType = unknown>(
   // 将所有交互统一收口，并判断应更新、重置、停留还是提交当前 field。
   const triggerChange = useEvent(
     (index: number, source: RangeValueChangeSource, date?: DateType) => {
+      // Escape always cancels the whole interaction without checking index or
+      // needConfirm.
+      // Escape 始终撤销整轮交互，不受 index 或 needConfirm 限制。
+      if (source === 'esc') {
+        resetValue();
+        triggeredFieldsRef.current = [];
+        setCurrentIndex(null);
+        return;
+      }
+
       let currentIndex = getCurrentIndex();
 
       // Start a new interaction from the first non-blur event. A standalone
