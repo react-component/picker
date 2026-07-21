@@ -1,4 +1,4 @@
-import { useEvent } from '@rc-component/util';
+import { useEvent, useSyncState } from '@rc-component/util';
 import * as React from 'react';
 
 /** Change source of a field. / Field 的变更来源。 */
@@ -91,14 +91,12 @@ export default function useRangeValueChange<DateType = unknown>(
   // Record fields involved in the current interaction.
   // 记录当前一轮交互中触发过的 field。
   const triggeredFieldsRef = React.useRef<number[]>([]);
-  const currentIndexRef = React.useRef<number | null>(null);
+  const [getCurrentIndex, setCurrentIndex] = useSyncState<number | null>(null);
   // Track whether the current field has received an input or panel change.
   // 记录当前 field 是否发生过输入或面板变更。
   const currentChangedRef = React.useRef(false);
-  const [currentIndex, setCurrentIndex] = React.useState<number | null>(null);
 
   const updateCurrentIndex = (index: number | null) => {
-    currentIndexRef.current = index;
     currentChangedRef.current = false;
     setCurrentIndex(index);
   };
@@ -129,7 +127,7 @@ export default function useRangeValueChange<DateType = unknown>(
       // pass the switch check before focus can move.
       // field-switch 的 `index` 表示目标 field；前一个 field 通过检查后才能移动焦点。
       if (source === 'field-switch') {
-        const previousIndex = currentIndexRef.current;
+        const previousIndex = getCurrentIndex();
 
         if (previousIndex === null) {
           updateCurrentIndex(index);
@@ -160,7 +158,7 @@ export default function useRangeValueChange<DateType = unknown>(
       // blur 会结束 Picker 交互，因此始终处理 hooks 记录的当前 field，而不是触发
       // DOM blur 的旧元素。
       if (source === 'blur') {
-        const blurIndex = currentIndexRef.current;
+        const blurIndex = getCurrentIndex();
 
         if (blurIndex === null) {
           return;
@@ -185,7 +183,7 @@ export default function useRangeValueChange<DateType = unknown>(
       // The first operation starts from its field. Other operations do not
       // change currentIndex until the source completes the current field.
       // 第一次操作从对应 field 开始；后续操作只有完成当前 field 时才推进 currentIndex。
-      if (currentIndexRef.current === null) {
+      if (getCurrentIndex() === null) {
         updateCurrentIndex(index);
       }
 
@@ -211,5 +209,5 @@ export default function useRangeValueChange<DateType = unknown>(
     },
   );
 
-  return [currentIndex, triggerChange];
+  return [getCurrentIndex(), triggerChange];
 }
