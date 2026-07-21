@@ -51,22 +51,43 @@ export type UseRangeValueChangeReturn<DateType> = [
  *
  * triggerChange(index, source, date)
  *                 |
- *                 +-- 📝 date exists / 存在 date
- *                 |      `-- update CalendarValue[index]
+ *                 +-- currentIndex is null / currentIndex 为空
+ *                 |      |-- blur / 失焦
+ *                 |      |      `-- ⏸️ ignore / 忽略
+ *                 |      `-- other sources / 其他来源
+ *                 |             `-- set currentIndex = index, continue
+ *                 |                 建立 currentIndex，继续处理
  *                 |
  *                 +-- field-switch / 切换 field
- *                 |      |-- first focus / 首次聚焦
- *                 |      |      `-- use target index / 使用目标 index
- *                 |      |-- can process field / 可以处理当前 field
- *                 |      |      `-- ✅ record field and switch / 记录 field 并切换
- *                 |      `-- cannot process field / 无法处理当前 field
+ *                 |      |-- target is current / 目标就是当前 field
+ *                 |      |      `-- ⏸️ stay / 保持
+ *                 |      |-- no needConfirm and value is valid
+ *                 |      |   无需确认且值有效
+ *                 |      |      `-- ✅ submit current, switch / 提交并切换
+ *                 |      |-- needConfirm and empty is allowed
+ *                 |      |   需要确认且允许空值
+ *                 |      |      `-- ↩️ reset, submit, switch / 重置、提交并切换
+ *                 |      `-- otherwise / 其他情况
  *                 |             `-- ⏸️ keep current index / 保持当前 index
  *                 |
  *                 +-- index differs from current / 与当前 index 不一致
  *                 |      `-- ⏸️ ignore until current field completes
  *                 |          等待当前 field 完成，忽略本次操作
  *                 |
- *                 +-- panel-intermediate / 面板中间操作
+ *                 +-- blur / 失焦
+ *                 |      |-- no needConfirm and current field was not changed
+ *                 |      |   无需确认且当前 field 未发生变更
+ *                 |      |      `-- ⏸️ end round / 结束本轮
+ *                 |      |-- needConfirm or invalid empty value
+ *                 |      |   需要确认或空值无效
+ *                 |      |      `-- ↩️ reset all, end round / 全部重置并结束
+ *                 |      `-- otherwise / 其他情况
+ *                 |             `-- ✅ submit current field / 提交当前 field
+ *                 |
+ *                 +-- 📝 date exists / 存在 date
+ *                 |      `-- update CalendarValue[index]
+ *                 |
+ *                 +-- input or panel-intermediate / 输入或面板中间操作
  *                 |      `-- ⏸️ update only / 仅更新 CalendarValue
  *                 |
  *                 +-- panel-final / 面板最终操作
@@ -75,19 +96,14 @@ export type UseRangeValueChangeReturn<DateType> = [
  *                 |      `-- no needConfirm / 无需确认
  *                 |             `-- ✅ submit current field / 提交当前 field
  *                 |
- *                 +-- ✅ other sources can submit / 其他来源可以提交
- *                 |      |-- flush current field / 提交当前 field
- *                 |      |-- all fields completed / 所有 field 已完成
- *                 |      |      `-- final submit, clear round / 最终提交并结束本轮
- *                 |      `-- fields remain / 仍有 field 未完成
- *                 |             `-- move to next index / 推进到下一个 index
+ *                 +-- keyboard-submit or confirm / 键盘提交或确认按钮
+ *                 |      `-- ✅ submit current field / 提交当前 field
  *                 |
- *                 +-- ↩️ blur without submit / 失焦但不能提交
- *                 |      `-- reset all CalendarValue, end round
- *                 |          回滚全部 CalendarValue，结束本轮
- *                 |
- *                 `-- ⏸️ other sources / 其他来源
- *                        `-- keep current field / 停留在当前 field
+ *                 `-- after submit / 提交后
+ *                        |-- all fields completed / 所有 field 已完成
+ *                        |      `-- final submit, clear round / 最终提交并结束本轮
+ *                        `-- fields remain / 仍有 field 未完成
+ *                               `-- move to next index / 推进到下一个 index
  *
  * Explicit submit sources are `keyboard-submit` and `confirm`. A
  * `panel-final` operation submits only when `needConfirm` is false.
@@ -145,21 +161,30 @@ export default function useRangeValueChange<DateType = unknown>(
   // 将所有交互统一收口，并判断应更新、重置、停留还是提交当前 field。
   const triggerChange = useEvent(
     (index: number, source: RangeValueChangeSource, date?: DateType) => {
+      let currentIndex = getCurrentIndex();
+
+      // Start a new interaction from the first non-blur event. A standalone
+      // blur has no active field to finish and must not create one.
+      // 第一条非 blur 事件用于建立新一轮交互；单独的 blur 没有可结束的 field，
+      // 也不应因此创建 currentIndex。
+      if (currentIndex === null) {
+        if (source === 'blur') {
+          return;
+        }
+
+        currentIndex = index;
+        setCurrentIndex(index);
+      }
+
       // For field switch, `index` is the target field. The previous field must
       // pass the switch check before focus can move.
       // field-switch 的 `index` 表示目标 field；前一个 field 通过检查后才能移动焦点。
       if (source === 'field-switch') {
-        const previousIndex = getCurrentIndex();
-
-        if (previousIndex === null) {
-          setCurrentIndex(index);
+        if (currentIndex === index) {
           return;
         }
 
-        if (previousIndex === index) {
-          return;
-        }
-
+        const previousIndex = currentIndex;
         const previousValue = getCalendarValue()[previousIndex];
         const previousEmpty = previousValue === null || previousValue === undefined;
 
@@ -175,14 +200,12 @@ export default function useRangeValueChange<DateType = unknown>(
         return;
       }
 
-      const currentIndex = getCurrentIndex();
-
       // Only the current field may receive changes. A different field becomes
       // valid only after submitField completes the previous one and advances
       // currentIndex.
       // 只有当前 field 可以接收变更。必须由 submitField 完成前一个 field 并推进
       // currentIndex 后，另一个 field 的事件才会生效。
-      if (currentIndex !== null && currentIndex !== index) {
+      if (currentIndex !== index) {
         return;
       }
 
@@ -191,10 +214,6 @@ export default function useRangeValueChange<DateType = unknown>(
       // blur 只能结束当前 field；其他 field 的过期 blur 已由上方 index 门禁忽略。
       if (source === 'blur') {
         const blurIndex = currentIndex;
-
-        if (blurIndex === null) {
-          return;
-        }
 
         const blurValue = getCalendarValue()[blurIndex];
         const blurEmpty = blurValue === null || blurValue === undefined;
@@ -213,13 +232,6 @@ export default function useRangeValueChange<DateType = unknown>(
         }
 
         return;
-      }
-
-      // The first operation starts from its field. Other operations do not
-      // change currentIndex until the source completes the current field.
-      // 第一次操作从对应 field 开始；后续操作只有完成当前 field 时才推进 currentIndex。
-      if (currentIndex === null) {
-        setCurrentIndex(index);
       }
 
       if (source === 'input' || source === 'panel-intermediate' || source === 'panel-final') {
