@@ -19,17 +19,17 @@ export type RangeValueChangeAction =
   'modify' | 'switchNext' | 'abort' | 'resetCurrent' | 'resetCurrentAndSwitchNext' | 'resetAll';
 
 /** Receive a field interaction and its optional value. / 接收 field 交互及可选变更值。 */
-export type TriggerChange<DateType> = (
+export type TriggerChange<FieldValue> = (
   index: number,
   source: RangeValueChangeSource,
-  date?: DateType,
+  value?: FieldValue,
 ) => void;
 
 /** Read the latest temporary CalendarValue. / 读取最新的临时 CalendarValue。 */
-export type GetCalendarValue<DateType> = () => readonly (DateType | null | undefined)[];
+export type GetCalendarValue<FieldValue> = () => readonly (FieldValue | null | undefined)[];
 
 /** Update one field in CalendarValue. / 更新 CalendarValue 中的一个 field。 */
-export type TriggerCalendarChange<DateType> = (index: number, date: DateType) => void;
+export type TriggerCalendarChange<FieldValue> = (index: number, value: FieldValue) => void;
 
 /**
  * Flush one field and optionally emit the final change.
@@ -43,11 +43,11 @@ export type FlushSubmit = (index: number, needTriggerChange: boolean) => void;
  */
 export type ResetValue = (index?: number) => void;
 
-export type UseRangeValueChangeReturn<DateType> = [
+export type UseRangeValueChangeReturn<FieldValue> = [
   currentIndex: number | null,
   activeIndex: number,
   triggeredFields: number[],
-  triggerChange: TriggerChange<DateType>,
+  triggerChange: TriggerChange<FieldValue>,
 ];
 
 // ============================== Hook ==============================
@@ -76,15 +76,15 @@ export type UseRangeValueChangeReturn<DateType> = [
  * - `resetAll`: discard all temporary values and end the interaction.
  *   撤销全部临时值并结束本轮交互。
  */
-export default function useRangeValueChange<DateType = unknown>(
+export default function useRangeValueChange<FieldValue = unknown>(
   fieldCount: number,
   needConfirm: boolean,
   allowEmpty: readonly boolean[],
-  getCalendarValue: GetCalendarValue<DateType>,
-  triggerCalendarChange: TriggerCalendarChange<DateType>,
+  getCalendarValue: GetCalendarValue<FieldValue>,
+  triggerCalendarChange: TriggerCalendarChange<FieldValue>,
   flushSubmit: FlushSubmit,
   resetValue: ResetValue,
-): UseRangeValueChangeReturn<DateType> {
+): UseRangeValueChangeReturn<FieldValue> {
   // ============================= State =============================
 
   // Record fields involved in the current interaction.
@@ -142,7 +142,7 @@ export default function useRangeValueChange<DateType = unknown>(
     currentIndex: number | null,
     index: number,
     source: RangeValueChangeSource,
-    date?: DateType,
+    value?: FieldValue,
   ): RangeValueChangeAction => {
     if (source === 'esc') {
       return 'resetAll';
@@ -152,7 +152,7 @@ export default function useRangeValueChange<DateType = unknown>(
       return 'abort';
     }
 
-    const currentValue = date === undefined ? getCalendarValue()[currentIndex] : date;
+    const currentValue = value === undefined ? getCalendarValue()[currentIndex] : value;
     const currentEmpty = currentValue === null || currentValue === undefined;
     const canSwitch = !currentEmpty || allowEmpty[currentIndex];
 
@@ -206,7 +206,7 @@ export default function useRangeValueChange<DateType = unknown>(
   // resolved action in one place.
   // 所有交互先统一解析 action，再在一个位置执行对应操作。
   const triggerChange = useEvent(
-    (index: number, source: RangeValueChangeSource, date?: DateType) => {
+    (index: number, source: RangeValueChangeSource, value?: FieldValue) => {
       let currentIndex = getCurrentIndex();
 
       // Start a new interaction from the first non-blur event. A standalone
@@ -219,20 +219,20 @@ export default function useRangeValueChange<DateType = unknown>(
         recordTriggeredField(index);
       }
 
-      const action = resolveAction(currentIndex, index, source, date);
+      const action = resolveAction(currentIndex, index, source, value);
       const actionIndex = currentIndex ?? index;
 
       switch (action) {
         case 'modify':
           recordTriggeredField(actionIndex);
-          if (date !== undefined) {
-            triggerCalendarChange(actionIndex, date);
+          if (value !== undefined) {
+            triggerCalendarChange(actionIndex, value);
           }
           break;
 
         case 'switchNext':
-          if (date !== undefined) {
-            triggerCalendarChange(actionIndex, date);
+          if (value !== undefined) {
+            triggerCalendarChange(actionIndex, value);
           }
           if (!submitField(actionIndex) && source === 'field-switch') {
             recordTriggeredField(index);
