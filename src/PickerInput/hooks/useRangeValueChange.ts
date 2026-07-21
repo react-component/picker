@@ -1,6 +1,8 @@
 import { useEvent, useSyncState } from '@rc-component/util';
 import * as React from 'react';
 
+// ============================= Types =============================
+
 /** Change source of a field. / Field 的变更来源。 */
 export type RangeValueChangeSource =
   | 'input'
@@ -46,6 +48,8 @@ export type UseRangeValueChangeReturn<DateType> = [
   triggerChange: TriggerChange<DateType>,
 ];
 
+// ============================== Hook ==============================
+
 /**
  * Coordinate CalendarValue updates, part submits and final submits for any
  * number of fields.
@@ -79,6 +83,8 @@ export default function useRangeValueChange<DateType = unknown>(
   flushSubmit: FlushSubmit,
   resetValue: ResetValue,
 ): UseRangeValueChangeReturn<DateType> {
+  // ============================= State =============================
+
   // Record fields involved in the current interaction.
   // 记录当前一轮交互中触发过的 field。
   const triggeredFieldsRef = React.useRef<number[]>([]);
@@ -86,6 +92,8 @@ export default function useRangeValueChange<DateType = unknown>(
   // Keep a render value and a synchronous getter for event handlers.
   // 同时保存渲染值，以及供事件处理函数同步读取的 getter。
   const [getCurrentIndex, setCurrentIndex] = useSyncState<number | null>(null);
+
+  // ============================= Record ============================
 
   // Keep fields unique and move the latest field to the end, so the same list
   // records both completed fields and the most recently changed field.
@@ -97,6 +105,8 @@ export default function useRangeValueChange<DateType = unknown>(
       index,
     ];
   };
+
+  // ============================= Submit ============================
 
   // Flush the current field, then finish the round or advance to the next one.
   // 提交当前 field，随后结束本轮或推进到下一个 field。
@@ -115,6 +125,8 @@ export default function useRangeValueChange<DateType = unknown>(
       setCurrentIndex((index + 1) % fieldCount);
     }
   };
+
+  // ============================= Resolve ===========================
 
   // Resolve an interaction to one action without changing any state.
   // 仅根据当前状态解析 action，不在判断过程中修改任何状态。
@@ -179,6 +191,8 @@ export default function useRangeValueChange<DateType = unknown>(
 
     return 'abort';
   };
+
+  // ============================= Trigger ===========================
 
   // Route every interaction through action resolution, then execute the
   // resolved action in one place.
