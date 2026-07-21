@@ -12,6 +12,10 @@ export type RangeValueChangeSource =
   | 'field-switch'
   | 'confirm';
 
+/** Resolved operation for one field interaction. / 一次 field 交互最终执行的操作。 */
+export type RangeValueChangeAction =
+  'modify' | 'switchNext' | 'abort' | 'resetCurrent' | 'resetCurrentAndSwitchNext' | 'resetAll';
+
 /** Receive a field interaction and its optional value. / 接收 field 交互及可选变更值。 */
 export type TriggerChange<DateType> = (
   index: number,
@@ -48,73 +52,23 @@ export type UseRangeValueChangeReturn<DateType> = [
  * 统一管理任意数量 field 的 CalendarValue 更新、局部提交与最终提交。
  *
  * Flow / 流程：
- * 📝 update / 更新 · ✅ submit / 提交 · ↩️ reset / 回滚 · ⏸️ stay / 保持
+ * First resolve `source`, `needConfirm`, `allowEmpty` and the field indexes to
+ * one action, then execute that action in a single switch statement.
+ * 先根据 `source`、`needConfirm`、`allowEmpty` 与 field index 得到唯一 action，
+ * 再通过统一的 switch 执行 action。
  *
- * triggerChange(index, source, date)
- *                 |
- *                 +-- esc / 退出键
- *                 |      `-- ↩️ reset all, end round / 全部重置并结束本轮
- *                 |
- *                 +-- currentIndex is null / currentIndex 为空
- *                 |      |-- blur / 失焦
- *                 |      |      `-- ⏸️ ignore / 忽略
- *                 |      `-- other sources / 其他来源
- *                 |             `-- set currentIndex = index, continue
- *                 |                 建立 currentIndex，继续处理
- *                 |
- *                 +-- index is current / 是当前 index
- *                 |      |-- field-switch / 切换到当前 field
- *                 |      |      `-- ⏸️ stay / 保持
- *                 |      `-- other sources / 其他来源
- *                 |             `-- continue / 继续处理
- *                 |
- *                 +-- index differs from current / 与当前 index 不一致
- *                 |      |-- not field-switch / 非 field-switch
- *                 |      |      `-- ⏸️ ignore / 忽略
- *                 |      |-- no needConfirm and value is valid
- *                 |      |   无需确认且值有效
- *                 |      |      `-- ✅ submit current, switch / 提交并切换
- *                 |      |-- needConfirm and empty is allowed
- *                 |      |   需要确认且允许空值
- *                 |      |      `-- ↩️ reset, submit, switch / 重置、提交并切换
- *                 |      `-- otherwise / 其他情况
- *                 |             `-- ⏸️ keep current index / 保持当前 index
- *                 |
- *                 +-- blur / 失焦
- *                 |      |-- no needConfirm and current field was not changed
- *                 |      |   无需确认且当前 field 未发生变更
- *                 |      |      `-- ⏸️ end round / 结束本轮
- *                 |      |-- needConfirm or invalid empty value
- *                 |      |   需要确认或空值无效
- *                 |      |      `-- ↩️ reset all, end round / 全部重置并结束
- *                 |      `-- otherwise / 其他情况
- *                 |             `-- ✅ submit current field / 提交当前 field
- *                 |
- *                 +-- 📝 date exists / 存在 date
- *                 |      `-- update CalendarValue[index]
- *                 |
- *                 +-- input or panel-intermediate / 输入或面板中间操作
- *                 |      `-- ⏸️ update only / 仅更新 CalendarValue
- *                 |
- *                 +-- panel-final / 面板最终操作
- *                 |      |-- needConfirm / 需要确认
- *                 |      |      `-- ⏸️ update only / 仅更新 CalendarValue
- *                 |      `-- no needConfirm / 无需确认
- *                 |             `-- ✅ submit current field / 提交当前 field
- *                 |
- *                 +-- keyboard-submit or confirm / 键盘提交或确认按钮
- *                 |      `-- ✅ submit current field / 提交当前 field
- *                 |
- *                 `-- after submit / 提交后
- *                        |-- all fields completed / 所有 field 已完成
- *                        |      `-- final submit, clear round / 最终提交并结束本轮
- *                        `-- fields remain / 仍有 field 未完成
- *                               `-- move to next index / 推进到下一个 index
- *
- * Explicit submit sources are `keyboard-submit` and `confirm`. A
- * `panel-final` operation submits only when `needConfirm` is false.
- * 显式提交来源为 `keyboard-submit` 和 `confirm`；仅在无需确认时，
- * `panel-final` 操作才会提交。
+ * - `modify`: update or record the current CalendarValue.
+ *   更新或记录当前 CalendarValue。
+ * - `switchNext`: submit the current field and advance to the next field.
+ *   提交当前 field 并推进到下一个 field。
+ * - `abort`: stop without changing any state.
+ *   直接短路，不改变任何状态。
+ * - `resetCurrent`: discard only the current field.
+ *   仅撤销当前 field。
+ * - `resetCurrentAndSwitchNext`: discard the current temporary value, mark the
+ *   field as handled, then advance. / 撤销当前临时值，将 field 标记为已处理后推进。
+ * - `resetAll`: discard all temporary values and end the interaction.
+ *   撤销全部临时值并结束本轮交互。
  */
 export default function useRangeValueChange<DateType = unknown>(
   fieldCount: number,
@@ -146,7 +100,7 @@ export default function useRangeValueChange<DateType = unknown>(
 
   // Flush the current field, then finish the round or advance to the next one.
   // 提交当前 field，随后结束本轮或推进到下一个 field。
-  const submitField = (index: number, nextIndex?: number) => {
+  const submitField = (index: number) => {
     recordTriggeredField(index);
 
     // Trigger final change after every field has participated once.
@@ -156,116 +110,130 @@ export default function useRangeValueChange<DateType = unknown>(
 
     if (allFieldsTriggered) {
       triggeredFieldsRef.current = [];
-      setCurrentIndex(nextIndex ?? null);
+      setCurrentIndex(null);
     } else {
-      setCurrentIndex(nextIndex ?? (index + 1) % fieldCount);
+      setCurrentIndex((index + 1) % fieldCount);
     }
   };
 
-  // Route every interaction through the same event entry and decide whether
-  // to update, reset, stay on the current field, or submit it.
-  // 将所有交互统一收口，并判断应更新、重置、停留还是提交当前 field。
-  const triggerChange = useEvent(
-    (index: number, source: RangeValueChangeSource, date?: DateType) => {
-      // Escape always cancels the whole interaction without checking index or
-      // needConfirm.
-      // Escape 始终撤销整轮交互，不受 index 或 needConfirm 限制。
-      if (source === 'esc') {
-        resetValue();
-        triggeredFieldsRef.current = [];
-        setCurrentIndex(null);
-        return;
+  // Resolve an interaction to one action without changing any state.
+  // 仅根据当前状态解析 action，不在判断过程中修改任何状态。
+  const resolveAction = (
+    currentIndex: number | null,
+    index: number,
+    source: RangeValueChangeSource,
+    date?: DateType,
+  ): RangeValueChangeAction => {
+    if (source === 'esc') {
+      return 'resetAll';
+    }
+
+    if (currentIndex === null) {
+      return 'abort';
+    }
+
+    const currentValue = date === undefined ? getCalendarValue()[currentIndex] : date;
+    const currentEmpty = currentValue === null || currentValue === undefined;
+    const canSwitch = !currentEmpty || allowEmpty[currentIndex];
+
+    if (source === 'field-switch') {
+      if (index === currentIndex) {
+        return 'abort';
       }
 
+      const nextIndex = (currentIndex + 1) % fieldCount;
+      if (index !== nextIndex) {
+        return 'abort';
+      }
+
+      if (needConfirm) {
+        return currentEmpty && allowEmpty[currentIndex] ? 'resetCurrentAndSwitchNext' : 'abort';
+      }
+
+      return canSwitch ? 'switchNext' : 'resetCurrent';
+    }
+
+    if (index !== currentIndex) {
+      return 'abort';
+    }
+
+    if (source === 'blur') {
+      if (needConfirm || !canSwitch) {
+        return 'resetAll';
+      }
+
+      return 'switchNext';
+    }
+
+    if (source === 'input' || source === 'panel-intermediate') {
+      return 'modify';
+    }
+
+    if (source === 'panel-final') {
+      return needConfirm ? 'modify' : 'switchNext';
+    }
+
+    if (source === 'keyboard-submit' || source === 'confirm') {
+      return canSwitch ? 'switchNext' : 'abort';
+    }
+
+    return 'abort';
+  };
+
+  // Route every interaction through action resolution, then execute the
+  // resolved action in one place.
+  // 所有交互先统一解析 action，再在一个位置执行对应操作。
+  const triggerChange = useEvent(
+    (index: number, source: RangeValueChangeSource, date?: DateType) => {
       let currentIndex = getCurrentIndex();
 
       // Start a new interaction from the first non-blur event. A standalone
       // blur has no active field to finish and must not create one.
       // 第一条非 blur 事件用于建立新一轮交互；单独的 blur 没有可结束的 field，
       // 也不应因此创建 currentIndex。
-      if (currentIndex === null) {
-        if (source === 'blur') {
-          return;
-        }
-
+      if (currentIndex === null && source !== 'blur' && source !== 'esc') {
         currentIndex = index;
         setCurrentIndex(index);
       }
 
-      // A different field can be reached only through field-switch. The current
-      // field must pass the switch check before currentIndex can move.
-      // 只有 field-switch 可以进入其他 field；当前 field 通过切换检查后，
-      // currentIndex 才能移动。
-      if (currentIndex !== index) {
-        if (source !== 'field-switch') {
-          return;
-        }
+      const action = resolveAction(currentIndex, index, source, date);
+      const actionIndex = currentIndex ?? index;
 
-        const previousIndex = currentIndex;
-        const previousValue = getCalendarValue()[previousIndex];
-        const previousEmpty = previousValue === null || previousValue === undefined;
+      switch (action) {
+        case 'modify':
+          recordTriggeredField(actionIndex);
+          if (date !== undefined) {
+            triggerCalendarChange(actionIndex, date);
+          }
+          break;
 
-        if (!needConfirm && (!previousEmpty || allowEmpty[previousIndex])) {
-          submitField(previousIndex, index);
-        } else if (needConfirm && previousEmpty && allowEmpty[previousIndex]) {
-          resetValue(previousIndex);
-          submitField(previousIndex, index);
-        } else if (!needConfirm) {
-          resetValue(previousIndex);
-        }
+        case 'switchNext':
+          if (date !== undefined) {
+            triggerCalendarChange(actionIndex, date);
+          }
+          submitField(actionIndex);
+          break;
 
-        return;
-      }
+        case 'resetCurrent':
+          resetValue(actionIndex);
+          triggeredFieldsRef.current = triggeredFieldsRef.current.filter(
+            (fieldIndex) => fieldIndex !== actionIndex,
+          );
+          break;
 
-      // Focusing the current field does not change its value or submit state.
-      // 聚焦当前 field 不会改变它的值或提交状态。
-      if (source === 'field-switch') {
-        return;
-      }
+        case 'resetCurrentAndSwitchNext':
+          resetValue(actionIndex);
+          submitField(actionIndex);
+          break;
 
-      // Blur can end only the current field. A stale blur from another field
-      // has already been ignored by the index guard above.
-      // blur 只能结束当前 field；其他 field 的过期 blur 已由上方 index 门禁忽略。
-      if (source === 'blur') {
-        const blurIndex = currentIndex;
-
-        const blurValue = getCalendarValue()[blurIndex];
-        const blurEmpty = blurValue === null || blurValue === undefined;
-        const triggeredFields = triggeredFieldsRef.current;
-        const lastTriggeredIndex = triggeredFields[triggeredFields.length - 1];
-
-        if (!needConfirm && lastTriggeredIndex !== blurIndex) {
-          triggeredFieldsRef.current = [];
-          setCurrentIndex(null);
-        } else if (needConfirm || (blurEmpty && !allowEmpty[blurIndex])) {
+        case 'resetAll':
           resetValue();
           triggeredFieldsRef.current = [];
           setCurrentIndex(null);
-        } else {
-          submitField(blurIndex);
-        }
+          break;
 
-        return;
-      }
-
-      if (source === 'input' || source === 'panel-intermediate' || source === 'panel-final') {
-        recordTriggeredField(index);
-      }
-
-      // A provided date updates the temporary CalendarValue.
-      // 传入 date 时更新临时 CalendarValue。
-      if (date !== undefined) {
-        triggerCalendarChange(index, date);
-      }
-
-      // Explicit operations always submit. Final panel operations submit
-      // automatically only when explicit confirmation is not required.
-      // 显式操作始终提交；无需确认时，panel-final 也会自动提交。
-      const isExplicitSubmit = source === 'keyboard-submit' || source === 'confirm';
-      const isAutoSubmit = !needConfirm && source === 'panel-final';
-
-      if (isExplicitSubmit || isAutoSubmit) {
-        submitField(index);
+        case 'abort':
+          break;
       }
     },
   );
