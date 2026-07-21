@@ -29,7 +29,7 @@ import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';
 import useFilledProps from './hooks/useFilledProps';
-import useFocusControl, { isPickerElement } from './hooks/useFocusControl';
+import useFocusControl, { isTargetInContainers } from './hooks/useFocusControl';
 import useOpen from './hooks/useOpen';
 import usePickerRef from './hooks/usePickerRef';
 import usePresets from './hooks/usePresets';
@@ -348,7 +348,7 @@ function RangePicker<DateType extends object = any>(
   );
 
   const isInternalPickerElement = useEvent((element: EventTarget | null) =>
-    isPickerElement(element, selectorRef.current.nativeElement, popupRef.current),
+    isTargetInContainers(element, [selectorRef.current.nativeElement, popupRef.current]),
   );
 
   const triggerFocusChange = useEvent((index: number, type: 'focus' | 'blur') => {
