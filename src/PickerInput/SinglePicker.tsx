@@ -255,7 +255,12 @@ function Picker<DateType extends object = any>(
 
   // ======================== Active ========================
   // In SinglePicker, we will always get `activeIndex` is 0.
-  const [focused, triggerFocus, lastOperation, activeIndex] = useRangeActive([disabled]);
+  const [
+    focused,
+    triggerFocus,
+    // lastOperation,
+    activeIndex,
+  ] = useRangeActive([disabled]);
 
   const onSharedFocus = (event: React.FocusEvent<HTMLElement>) => {
     triggerFocus(true);
@@ -462,7 +467,7 @@ function Picker<DateType extends object = any>(
 
   // >>> Calendar
   const onPanelSelect = (date: DateType) => {
-    lastOperation('panel');
+    // lastOperation('panel');
 
     // Not change values if multiple and current panel is to match with picker
     if (multiple && internalMode !== picker) {
@@ -568,12 +573,12 @@ function Picker<DateType extends object = any>(
   };
 
   const onSelectorInputChange = () => {
-    lastOperation('input');
+    // lastOperation('input');
   };
 
   // ======================= Selector =======================
   const onSelectorFocus: SelectorProps['onFocus'] = (event) => {
-    lastOperation('input');
+    // lastOperation('input');
 
     triggerOpen(true, {
       inherit: true,
@@ -630,21 +635,23 @@ function Picker<DateType extends object = any>(
     }
   }, [mergedOpen, activeIndex, picker]);
 
+  // TODO: Keep the legacy last-operation submit flow for reference during refactor.
+  // TODO: 重构期间暂时保留基于 lastOperation 的旧提交逻辑作为参考。
   // >>> For complex picker, we need check if need to focus next one
-  useLayoutEffect(() => {
-    const lastOp = lastOperation();
-
-    // Trade as confirm on field leave
-    if (!mergedOpen && lastOp === 'input') {
-      triggerOpen(false);
-      triggerConfirm();
-    }
-
-    // Submit with complex picker
-    if (!mergedOpen && complexPicker && !needConfirm && lastOp === 'panel') {
-      triggerConfirm();
-    }
-  }, [mergedOpen]);
+  // useLayoutEffect(() => {
+  //   const lastOp = lastOperation();
+  //
+  //   // Trade as confirm on field leave
+  //   if (!mergedOpen && lastOp === 'input') {
+  //     triggerOpen(false);
+  //     triggerConfirm();
+  //   }
+  //
+  //   // Submit with complex picker
+  //   if (!mergedOpen && complexPicker && !needConfirm && lastOp === 'panel') {
+  //     triggerConfirm();
+  //   }
+  // }, [mergedOpen]);
 
   // ======================== Render ========================
   return (

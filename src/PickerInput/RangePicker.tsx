@@ -272,7 +272,7 @@ function RangePicker<DateType extends object = any>(
   const calendarValue = getCalendarValue();
 
   // ======================== Active ========================
-  const [focused, triggerFocus, , activeIndex, setActiveIndex, nextActiveIndex, activeIndexList] =
+  const [focused, triggerFocus, activeIndex, setActiveIndex, nextActiveIndex, activeIndexList] =
     useRangeActive(disabled, allowEmpty, mergedOpen);
 
   // ======================= ShowTime =======================
