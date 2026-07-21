@@ -255,12 +255,7 @@ function Picker<DateType extends object = any>(
 
   // ======================== Active ========================
   // In SinglePicker, we will always get `activeIndex` is 0.
-  const [
-    focused,
-    triggerFocus,
-    // lastOperation,
-    activeIndex,
-  ] = useRangeActive([disabled]);
+  const [focused, triggerFocus, , activeIndex] = useRangeActive([disabled]);
 
   const onSharedFocus = (event: React.FocusEvent<HTMLElement>) => {
     triggerFocus(true);

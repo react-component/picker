@@ -2,7 +2,7 @@ import * as React from 'react';
 import type { RangeValueType } from '../RangePicker';
 import useLockEffect from './useLockEffect';
 
-// export type OperationType = 'input' | 'panel' | 'preset-click';
+export type OperationType = 'input' | 'panel' | 'preset-click';
 
 export type NextActive<DateType> = (nextValue: RangeValueType<DateType>) => number | null;
 
@@ -18,7 +18,7 @@ export default function useRangeActive<DateType>(
 ): [
   focused: boolean,
   triggerFocus: (focused: boolean) => void,
-  // lastOperation: (type?: OperationType) => OperationType,
+  lastOperation: (type?: OperationType) => OperationType,
   activeIndex: number,
   setActiveIndex: (index: number) => void,
   nextActiveIndex: NextActive<DateType>,
@@ -31,7 +31,7 @@ export default function useRangeActive<DateType>(
 
   const activeListRef = React.useRef<number[]>([]);
   const submitIndexRef = React.useRef<number | null>(null);
-  // const lastOperationRef = React.useRef<OperationType>(null);
+  const lastOperationRef = React.useRef<OperationType>(null);
 
   const updateSubmitIndex = (index: number | null) => {
     submitIndexRef.current = index;
@@ -46,12 +46,12 @@ export default function useRangeActive<DateType>(
   };
 
   // ============================= Record =============================
-  // const lastOperation = (type?: OperationType) => {
-  //   if (type) {
-  //     lastOperationRef.current = type;
-  //   }
-  //   return lastOperationRef.current;
-  // };
+  const lastOperation = (type?: OperationType) => {
+    if (type) {
+      lastOperationRef.current = type;
+    }
+    return lastOperationRef.current;
+  };
 
   // ============================ Strategy ============================
   // Trigger when input enter or input blur or panel close
@@ -85,7 +85,7 @@ export default function useRangeActive<DateType>(
   return [
     focused,
     triggerFocus,
-    // lastOperation,
+    lastOperation,
     activeIndex,
     setActiveIndex,
     nextActiveIndex,
