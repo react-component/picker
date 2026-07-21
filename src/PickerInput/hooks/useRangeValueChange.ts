@@ -11,18 +11,29 @@ export type RangeValueChangeSource =
   | 'field-switch'
   | 'confirm';
 
+/** Receive a field interaction and its optional value. / 接收 field 交互及可选变更值。 */
 export type TriggerChange<DateType> = (
   index: number,
   source: RangeValueChangeSource,
   date?: DateType,
 ) => void;
 
+/** Read the latest temporary CalendarValue. / 读取最新的临时 CalendarValue。 */
 export type GetCalendarValue<DateType> = () => readonly (DateType | null | undefined)[];
 
+/** Update one field in CalendarValue. / 更新 CalendarValue 中的一个 field。 */
 export type TriggerCalendarChange<DateType> = (index: number, date: DateType) => void;
 
+/**
+ * Flush one field and optionally emit the final change.
+ * 提交一个 field，并按需触发最终 change。
+ */
 export type FlushSubmit = (index: number, needTriggerChange: boolean) => void;
 
+/**
+ * Reset one field, or all fields when index is omitted.
+ * 重置指定 field；未传 index 时重置全部 field。
+ */
 export type ResetValue = (index?: number) => void;
 
 export type UseRangeValueChangeReturn<DateType> = [
@@ -91,6 +102,9 @@ export default function useRangeValueChange<DateType = unknown>(
   // Record fields involved in the current interaction.
   // 记录当前一轮交互中触发过的 field。
   const triggeredFieldsRef = React.useRef<number[]>([]);
+
+  // Keep a render value and a synchronous getter for event handlers.
+  // 同时保存渲染值，以及供事件处理函数同步读取的 getter。
   const [getCurrentIndex, setCurrentIndex] = useSyncState<number | null>(null);
 
   // Keep fields unique and move the latest field to the end, so the same list
@@ -104,6 +118,8 @@ export default function useRangeValueChange<DateType = unknown>(
     ];
   };
 
+  // Flush the current field, then finish the round or advance to the next one.
+  // 提交当前 field，随后结束本轮或推进到下一个 field。
   const submitField = (index: number, nextIndex?: number) => {
     recordTriggeredField(index);
 
@@ -120,6 +136,9 @@ export default function useRangeValueChange<DateType = unknown>(
     }
   };
 
+  // Route every interaction through the same event entry and decide whether
+  // to update, reset, stay on the current field, or submit it.
+  // 将所有交互统一收口，并判断应更新、重置、停留还是提交当前 field。
   const triggerChange = useEvent(
     (index: number, source: RangeValueChangeSource, date?: DateType) => {
       // For field switch, `index` is the target field. The previous field must
