@@ -92,21 +92,20 @@ export default function useRangeValueChange<DateType = unknown>(
   // 记录当前一轮交互中触发过的 field。
   const triggeredFieldsRef = React.useRef<number[]>([]);
   const [getCurrentIndex, setCurrentIndex] = useSyncState<number | null>(null);
-  // Track whether the current field has received an input or panel change.
-  // 记录当前 field 是否发生过输入或面板变更。
-  const currentChangedRef = React.useRef(false);
 
-  const updateCurrentIndex = (index: number | null) => {
-    currentChangedRef.current = false;
-    setCurrentIndex(index);
+  // Keep fields unique and move the latest field to the end, so the same list
+  // records both completed fields and the most recently changed field.
+  // field 保持唯一，并将最近触发的 field 移到末尾；同一份列表即可同时记录
+  // 已处理的 field 和最近发生变更的 field。
+  const recordTriggeredField = (index: number) => {
+    triggeredFieldsRef.current = [
+      ...triggeredFieldsRef.current.filter((fieldIndex) => fieldIndex !== index),
+      index,
+    ];
   };
 
   const submitField = (index: number, nextIndex?: number) => {
-    // Record a field only after it completes part submit.
-    // 仅在 field 完成 part submit 后记录。
-    if (!triggeredFieldsRef.current.includes(index)) {
-      triggeredFieldsRef.current.push(index);
-    }
+    recordTriggeredField(index);
 
     // Trigger final change after every field has participated once.
     // 所有 field 都参与过一次后，触发最终 change。
@@ -115,9 +114,9 @@ export default function useRangeValueChange<DateType = unknown>(
 
     if (allFieldsTriggered) {
       triggeredFieldsRef.current = [];
-      updateCurrentIndex(nextIndex ?? null);
+      setCurrentIndex(nextIndex ?? null);
     } else {
-      updateCurrentIndex(nextIndex ?? (index + 1) % fieldCount);
+      setCurrentIndex(nextIndex ?? (index + 1) % fieldCount);
     }
   };
 
@@ -130,7 +129,7 @@ export default function useRangeValueChange<DateType = unknown>(
         const previousIndex = getCurrentIndex();
 
         if (previousIndex === null) {
-          updateCurrentIndex(index);
+          setCurrentIndex(index);
           return;
         }
 
@@ -166,13 +165,16 @@ export default function useRangeValueChange<DateType = unknown>(
 
         const blurValue = getCalendarValue()[blurIndex];
         const blurEmpty = blurValue === null || blurValue === undefined;
+        const triggeredFields = triggeredFieldsRef.current;
+        const lastTriggeredIndex = triggeredFields[triggeredFields.length - 1];
 
-        if (!needConfirm && !currentChangedRef.current && !triggeredFieldsRef.current.length) {
-          updateCurrentIndex(null);
+        if (!needConfirm && lastTriggeredIndex !== blurIndex) {
+          triggeredFieldsRef.current = [];
+          setCurrentIndex(null);
         } else if (needConfirm || (blurEmpty && !allowEmpty[blurIndex])) {
           resetValue();
           triggeredFieldsRef.current = [];
-          updateCurrentIndex(null);
+          setCurrentIndex(null);
         } else {
           submitField(blurIndex);
         }
@@ -184,11 +186,11 @@ export default function useRangeValueChange<DateType = unknown>(
       // change currentIndex until the source completes the current field.
       // 第一次操作从对应 field 开始；后续操作只有完成当前 field 时才推进 currentIndex。
       if (getCurrentIndex() === null) {
-        updateCurrentIndex(index);
+        setCurrentIndex(index);
       }
 
       if (source === 'input' || source === 'panel-intermediate' || source === 'panel-final') {
-        currentChangedRef.current = true;
+        recordTriggeredField(index);
       }
 
       // A provided date updates the temporary CalendarValue.
