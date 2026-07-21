@@ -7,7 +7,7 @@ import { formatValue, isSame, isSameTimestamp } from '../../utils/dateUtil';
 import { fillIndex } from '../../utils/miscUtil';
 import type { RangePickerProps } from '../RangePicker';
 import type { ReplacedPickerProps } from '../SinglePicker';
-import useLockEffect from './useLockEffect';
+// import useLockEffect from './useLockEffect';
 
 const EMPTY_VALUE: any[] = [];
 
@@ -176,7 +176,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   focused: boolean,
   open: boolean,
   isInvalidateDate: (date: DateType, info?: { from?: DateType; activeIndex: number }) => boolean,
-  useEffectSubmit?: boolean,
+  // useEffectSubmit?: boolean,
 ): [
   /** Trigger `onChange` by check `disabledDate` */
   flushSubmit: (index: number, needTriggerChange: boolean) => void,
@@ -199,7 +199,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     order,
   } = info;
 
-  const enableEffectSubmit = useEffectSubmit !== false;
+  // const enableEffectSubmit = useEffectSubmit !== false;
 
   const orderOnChange = disabled.some((d) => d) ? false : order;
 
@@ -322,21 +322,22 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   });
 
   // ============================ Effect ============================
-  // All finished action trigger after 2 frames
-  const interactiveFinished = !focused && !open;
-
-  useLockEffect(
-    enableEffectSubmit && !interactiveFinished,
-    () => {
-      if (enableEffectSubmit && interactiveFinished) {
-        // Always try to trigger submit first
-        triggerSubmit();
-
-        resetValue();
-      }
-    },
-    2,
-  );
+  // TODO: Keep the legacy effect submit flow for reference during the event-driven refactor.
+  // TODO: 事件驱动提交重构期间，暂时保留旧 effect 提交流程作为参考。
+  // const interactiveFinished = !focused && !open;
+  //
+  // useLockEffect(
+  //   enableEffectSubmit && !interactiveFinished,
+  //   () => {
+  //     if (enableEffectSubmit && interactiveFinished) {
+  //       // Always try to trigger submit first
+  //       triggerSubmit();
+  //
+  //       resetValue();
+  //     }
+  //   },
+  //   2,
+  // );
 
   // ============================ Return ============================
   return [flushSubmit, triggerSubmit, resetValue];
