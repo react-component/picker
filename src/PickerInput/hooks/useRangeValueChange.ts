@@ -62,6 +62,10 @@ export type UseRangeValueChangeReturn<DateType> = [
  *                 |      `-- cannot process field / 无法处理当前 field
  *                 |             `-- ⏸️ keep current index / 保持当前 index
  *                 |
+ *                 +-- index differs from current / 与当前 index 不一致
+ *                 |      `-- ⏸️ ignore until current field completes
+ *                 |          等待当前 field 完成，忽略本次操作
+ *                 |
  *                 +-- panel-intermediate / 面板中间操作
  *                 |      `-- ⏸️ update only / 仅更新 CalendarValue
  *                 |
@@ -171,12 +175,22 @@ export default function useRangeValueChange<DateType = unknown>(
         return;
       }
 
-      // Blur ends the Picker interaction, so always handle the field tracked by
-      // this hook instead of the DOM element that happened to emit blur.
-      // blur 会结束 Picker 交互，因此始终处理 hooks 记录的当前 field，而不是触发
-      // DOM blur 的旧元素。
+      const currentIndex = getCurrentIndex();
+
+      // Only the current field may receive changes. A different field becomes
+      // valid only after submitField completes the previous one and advances
+      // currentIndex.
+      // 只有当前 field 可以接收变更。必须由 submitField 完成前一个 field 并推进
+      // currentIndex 后，另一个 field 的事件才会生效。
+      if (currentIndex !== null && currentIndex !== index) {
+        return;
+      }
+
+      // Blur can end only the current field. A stale blur from another field
+      // has already been ignored by the index guard above.
+      // blur 只能结束当前 field；其他 field 的过期 blur 已由上方 index 门禁忽略。
       if (source === 'blur') {
-        const blurIndex = getCurrentIndex();
+        const blurIndex = currentIndex;
 
         if (blurIndex === null) {
           return;
@@ -204,7 +218,7 @@ export default function useRangeValueChange<DateType = unknown>(
       // The first operation starts from its field. Other operations do not
       // change currentIndex until the source completes the current field.
       // 第一次操作从对应 field 开始；后续操作只有完成当前 field 时才推进 currentIndex。
-      if (getCurrentIndex() === null) {
+      if (currentIndex === null) {
         setCurrentIndex(index);
       }
 
