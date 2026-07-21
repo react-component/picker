@@ -1,0 +1,36 @@
+import { useLayoutEffect } from '@rc-component/util';
+import type * as React from 'react';
+import { isTargetInContainers } from './useFocusEvents';
+
+/**
+ * Keep focus on the specified input field while focus moves inside the Picker.
+ * 当焦点在 Picker 内移动时，将其锁定在指定的输入框上。
+ */
+export default function useFocusLock(
+  index: number | null,
+  inputFieldRefs: readonly React.RefObject<HTMLElement | null>[],
+  popupRef: React.RefObject<HTMLElement | null>,
+) {
+  // DOM focus may change while `index` stays the same, so check after every commit.
+  // DOM 焦点变化时 `index` 可能保持不变，因此每次 commit 后都需要检查。
+  useLayoutEffect(() => {
+    if (index === null) {
+      return;
+    }
+
+    const activeElement = document.activeElement;
+
+    if (isTargetInContainers(activeElement, [popupRef.current])) {
+      return;
+    }
+
+    const focusInOtherField = inputFieldRefs.some(
+      (fieldRef, fieldIndex) =>
+        fieldIndex !== index && isTargetInContainers(activeElement, [fieldRef.current]),
+    );
+
+    if (focusInOtherField) {
+      inputFieldRefs[index]?.current?.focus();
+    }
+  });
+}

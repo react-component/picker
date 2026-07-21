@@ -34,10 +34,7 @@ export type TriggerFocusChange = (index: number, type: FocusChangeType) => void;
 /** Notify a Picker focus or blur event. / 通知 Picker 的聚焦或失焦事件。 */
 export type FocusEventHandler = (index: number, event: PickerFocusEvent) => void;
 
-export type UseFocusControlReturn = [
-  onFieldFocus: FieldFocusHandler,
-  onFieldBlur: FieldBlurHandler,
-];
+export type UseFocusEventsReturn = [onFieldFocus: FieldFocusHandler, onFieldBlur: FieldBlurHandler];
 
 // ============================= Utils =============================
 /** Check whether the target belongs to any container. / 判断目标是否属于任意一个容器。 */
@@ -51,18 +48,18 @@ export function isTargetInContainers(
 }
 
 /**
- * Control field focus and blur events.
- * 控制 field 的聚焦与失焦事件。
+ * Handle field focus and blur events.
+ * 处理 field 的聚焦与失焦事件。
  *
  * Ignore blur when `relatedTarget` still belongs to the Picker.
  * 当 `relatedTarget` 仍属于 Picker 时，忽略本次 blur。
  */
-export default function useFocusControl(
+export default function useFocusEvents(
   isInternalElement: IsInternalElement,
   triggerFocusChange: TriggerFocusChange,
   onFocus?: FocusEventHandler,
   onBlur?: FocusEventHandler,
-): UseFocusControlReturn {
+): UseFocusEventsReturn {
   const onFieldFocus = useEvent((index: number, _source: FocusSource, event: PickerFocusEvent) => {
     triggerFocusChange(index, 'focus');
     onFocus?.(index, event);

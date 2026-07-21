@@ -29,7 +29,8 @@ import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
 import useFieldsInvalidate from './hooks/useFieldsInvalidate';
 import useFilledProps from './hooks/useFilledProps';
-import useFocusControl, { isTargetInContainers } from './hooks/useFocusControl';
+import useFocusEvents, { isTargetInContainers } from './hooks/useFocusEvents';
+import useFocusLock from './hooks/useFocusLock';
 import useOpen from './hooks/useOpen';
 import usePickerRef from './hooks/usePickerRef';
 import usePresets from './hooks/usePresets';
@@ -236,6 +237,9 @@ function RangePicker<DateType extends object = any>(
 
   // ========================= Refs =========================
   const selectorRef = usePickerRef(ref);
+  const inputStartRef = React.useRef<HTMLInputElement>(null);
+  const inputEndRef = React.useRef<HTMLInputElement>(null);
+  const inputFieldRefs = [inputStartRef, inputEndRef];
   const popupRef = React.useRef<HTMLDivElement>(null);
 
   // ======================= Semantic =======================
@@ -347,6 +351,8 @@ function RangePicker<DateType extends object = any>(
     resetValue,
   );
 
+  useFocusLock(rangeValueIndex, inputFieldRefs, popupRef);
+
   const isInternalPickerElement = useEvent((element: EventTarget | null) =>
     isTargetInContainers(element, [selectorRef.current.nativeElement, popupRef.current]),
   );
@@ -361,7 +367,7 @@ function RangePicker<DateType extends object = any>(
     }
   });
 
-  const [onFieldFocus, onFieldBlur] = useFocusControl(
+  const [onFieldFocus, onFieldBlur] = useFocusEvents(
     isInternalPickerElement,
     triggerFocusChange,
     (index, event) => {
@@ -735,14 +741,6 @@ function RangePicker<DateType extends object = any>(
     }
   }, [mergedOpen, activeIndex, picker]);
 
-  // Keep focus on the field selected by the value flow. Field switch itself
-  // stays event-driven; this effect only restores DOM focus after React commits.
-  useLayoutEffect(() => {
-    if (rangeValueIndex !== null && activeIndex !== rangeValueIndex) {
-      selectorRef.current.focus({ index: rangeValueIndex });
-    }
-  }, [rangeValueIndex, activeIndex]);
-
   // ====================== DevWarning ======================
   if (process.env.NODE_ENV !== 'production') {
     const isIndexEmpty = (index: number) => {
@@ -785,6 +783,7 @@ function RangePicker<DateType extends object = any>(
           {...filledProps}
           // Ref
           ref={selectorRef}
+          inputRefs={inputFieldRefs}
           // Style
           className={clsx(filledProps.className, rootClassName, mergedClassNames.root)}
           style={{ ...mergedStyles.root, ...filledProps.style }}

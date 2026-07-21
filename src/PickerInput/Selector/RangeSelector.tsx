@@ -20,6 +20,8 @@ export type SelectorIdType =
 export interface RangeSelectorProps<DateType = any> extends SelectorProps<DateType> {
   id?: SelectorIdType;
 
+  inputRefs?: readonly React.Ref<HTMLInputElement>[];
+
   activeIndex: number | null;
 
   separator?: React.ReactNode;
@@ -53,6 +55,7 @@ function RangeSelector<DateType extends object = any>(
 ) {
   const {
     id,
+    inputRefs,
 
     prefix,
     clearIcon,
@@ -139,6 +142,9 @@ function RangeSelector<DateType extends object = any>(
   const rootRef = React.useRef<HTMLDivElement>(null);
   const inputStartRef = React.useRef<InputRef>(null);
   const inputEndRef = React.useRef<InputRef>(null);
+
+  React.useImperativeHandle(inputRefs?.[0], () => inputStartRef.current.inputElement);
+  React.useImperativeHandle(inputRefs?.[1], () => inputEndRef.current.inputElement);
 
   const getInput = (index: number) => [inputStartRef, inputEndRef][index]?.current;
 
