@@ -58,9 +58,15 @@ export type UseRangeValueChangeReturn<DateType> = [
  *                 |             `-- set currentIndex = index, continue
  *                 |                 建立 currentIndex，继续处理
  *                 |
- *                 +-- field-switch / 切换 field
- *                 |      |-- target is current / 目标就是当前 field
+ *                 +-- index is current / 是当前 index
+ *                 |      |-- field-switch / 切换到当前 field
  *                 |      |      `-- ⏸️ stay / 保持
+ *                 |      `-- other sources / 其他来源
+ *                 |             `-- continue / 继续处理
+ *                 |
+ *                 +-- index differs from current / 与当前 index 不一致
+ *                 |      |-- not field-switch / 非 field-switch
+ *                 |      |      `-- ⏸️ ignore / 忽略
  *                 |      |-- no needConfirm and value is valid
  *                 |      |   无需确认且值有效
  *                 |      |      `-- ✅ submit current, switch / 提交并切换
@@ -69,10 +75,6 @@ export type UseRangeValueChangeReturn<DateType> = [
  *                 |      |      `-- ↩️ reset, submit, switch / 重置、提交并切换
  *                 |      `-- otherwise / 其他情况
  *                 |             `-- ⏸️ keep current index / 保持当前 index
- *                 |
- *                 +-- index differs from current / 与当前 index 不一致
- *                 |      `-- ⏸️ ignore until current field completes
- *                 |          等待当前 field 完成，忽略本次操作
  *                 |
  *                 +-- blur / 失焦
  *                 |      |-- no needConfirm and current field was not changed
@@ -176,11 +178,12 @@ export default function useRangeValueChange<DateType = unknown>(
         setCurrentIndex(index);
       }
 
-      // For field switch, `index` is the target field. The previous field must
-      // pass the switch check before focus can move.
-      // field-switch 的 `index` 表示目标 field；前一个 field 通过检查后才能移动焦点。
-      if (source === 'field-switch') {
-        if (currentIndex === index) {
+      // A different field can be reached only through field-switch. The current
+      // field must pass the switch check before currentIndex can move.
+      // 只有 field-switch 可以进入其他 field；当前 field 通过切换检查后，
+      // currentIndex 才能移动。
+      if (currentIndex !== index) {
+        if (source !== 'field-switch') {
           return;
         }
 
@@ -200,12 +203,9 @@ export default function useRangeValueChange<DateType = unknown>(
         return;
       }
 
-      // Only the current field may receive changes. A different field becomes
-      // valid only after submitField completes the previous one and advances
-      // currentIndex.
-      // 只有当前 field 可以接收变更。必须由 submitField 完成前一个 field 并推进
-      // currentIndex 后，另一个 field 的事件才会生效。
-      if (currentIndex !== index) {
+      // Focusing the current field does not change its value or submit state.
+      // 聚焦当前 field 不会改变它的值或提交状态。
+      if (source === 'field-switch') {
         return;
       }
 
