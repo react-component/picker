@@ -152,7 +152,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
 
   // Keep the latest accepted field for panel and selector rendering.
   // 保留最后一个被业务接受的 field，供 panel 和 selector 渲染使用；
-  const lastValidIndexRef = React.useRef(0);
+  const lastValidIndexRef = React.useRef<number | undefined>(undefined);
 
   // ============================= Record ============================
 
@@ -448,20 +448,11 @@ export default function useRangeValueChange<FieldValue = unknown>(
           }
           break;
       }
-
-      // Remember the accepted field after the event has finished. Updating the
-      // ref here keeps render pure while preserving the last index after the
-      // interaction resets `currentIndex` to null.
-      // 事件处理完成后记录已接受的 field。这样既能保持 render 纯净，也能在
-      // 本轮交互将 `currentIndex` 重置为 null 后继续保留最后一个 index。
-      const nextCurrentIndex = getCurrentIndex();
-      if (nextCurrentIndex !== null) {
-        lastValidIndexRef.current = nextCurrentIndex;
-      }
     },
   );
 
   const currentIndex = getCurrentIndex();
+  lastValidIndexRef.current = currentIndex ?? lastValidIndexRef.current ?? 0;
 
   const triggeredFields = triggeredFieldsRef.current.map((field) => field.index);
 
