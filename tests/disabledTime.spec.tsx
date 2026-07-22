@@ -47,6 +47,7 @@ describe('Picker.DisabledTime', () => {
   it('disabledTime on TimeRangePicker', () => {
     const { container } = render(
       <DayRangePicker
+        allowEmpty
         picker="time"
         disabledTime={(_, type) => ({
           disabledHours: () => (type === 'start' ? [1, 3, 5] : [2, 4]),

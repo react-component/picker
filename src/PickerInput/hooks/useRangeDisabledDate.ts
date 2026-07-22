@@ -11,19 +11,18 @@ import { getFromDate } from '../../utils/miscUtil';
 export default function useRangeDisabledDate<DateType extends object = any>(
   values: RangeValueType<DateType>,
   disabled: [boolean, boolean],
-  activeIndexList: number[],
+  activeIndex: number,
+  triggeredFields: number[],
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
   disabledDate?: DisabledDate<DateType>,
 ) {
-  const activeIndex = activeIndexList[activeIndexList.length - 1];
-
   const rangeDisabledDate: DisabledDate<DateType> = (date, info) => {
     const [start, end] = values;
 
     const mergedInfo = {
       ...info,
-      from: getFromDate(values, activeIndexList),
+      from: getFromDate(values, triggeredFields, activeIndex),
     };
 
     // ============================ Disabled ============================
