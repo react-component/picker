@@ -249,7 +249,29 @@ export default function useRangeValueChange<FieldValue = unknown>(
         return 'finish';
       }
 
-      if (needConfirm || !canSwitch) {
+      if (needConfirm) {
+        const currentModified =
+          triggeredFieldsRef.current.find((field) => field.index === currentIndex)?.modified ??
+          false;
+        const allFieldsTriggered = triggeredFieldsRef.current.length >= fieldCount;
+
+        // Blur ends the interaction instead of advancing to an unvisited field.
+        // When the current field allows empty, discard its unconfirmed value
+        // before finishing the round.
+        // blur 用于结束交互，不应继续推进到尚未访问的 field。当前 field
+        // 允许为空时，先丢弃未确认值，再结束本轮。
+        if (!allFieldsTriggered || !canSwitch) {
+          return 'resetAll';
+        }
+
+        if (currentModified) {
+          return allowEmpty[currentIndex] ? 'resetCurrentAndSwitchNext' : 'resetAll';
+        }
+
+        return 'switchNext';
+      }
+
+      if (!canSwitch) {
         return 'resetAll';
       }
 

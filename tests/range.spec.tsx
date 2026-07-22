@@ -2173,6 +2173,28 @@ describe('Picker.Range', () => {
     expect(isOpen()).toBeFalsy();
   });
 
+  it('should submit confirmed start when allowEmpty end blurs', async () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+    const [, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    openPicker(container);
+    selectCell(5);
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+
+    expect(document.activeElement).toBe(endInput);
+    expect(container.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
+
+    fireEvent.mouseDown(document.body);
+    triggerBlur(endInput);
+    await waitFakeTimer(0, 2);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange.mock.calls[0][0][0]).toBeTruthy();
+    expect(onChange.mock.calls[0][0][1]).toBeNull();
+    expect(isOpen()).toBeFalsy();
+  });
+
   it('should not update preview value in input when previewValue is false', () => {
     const { container } = render(
       <DayRangePicker
