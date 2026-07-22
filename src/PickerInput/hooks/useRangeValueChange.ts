@@ -18,7 +18,6 @@ export type RangeValueChangeSource =
 export type RangeValueChangeAction =
   | 'modify'
   | 'switchNext'
-  | 'switchPrevious'
   | 'finish'
   | 'abort'
   | 'resetCurrent'
@@ -84,11 +83,11 @@ interface TriggeredField {
  *   other non-cancel event starts a new interaction from its field.
  *   没有当前 field 时，独立的 `blur` 解析为 `resetAll`；其余非撤销事件从
  *   对应 field 开始新一轮交互。
- * - `field-switch` may return to an already visited previous field or advance
- *   exactly one field. `needConfirm` locks an unconfirmed non-empty field unless
- *   it allows empty; an allow-empty field is reset before advancing.
- *   `field-switch` 只允许返回已访问的上一个 field，或向后推进一个 field。
- *   `needConfirm` 会锁定未确认且非空的 field；允许空值时先重置再推进。
+ * - `field-switch` advances exactly one field in circular order. `needConfirm`
+ *   locks an unconfirmed non-empty field unless it allows empty; an allow-empty
+ *   field is reset before advancing.
+ *   `field-switch` 只允许按循环顺序推进一个 field。`needConfirm` 会锁定未确认
+ *   且非空的 field；允许空值时先重置再推进。
  * - Other sources must target the current field. `input` and
  *   `panel-intermediate` modify it; `panel-final` advances only without
  *   confirmation; `keyboard-submit` and `confirm` advance only when the field
@@ -110,17 +109,15 @@ interface TriggeredField {
  *   更新或记录当前 CalendarValue。
  * - `switchNext`: submit the current field and advance to the next field.
  *   提交当前 field 并推进到下一个 field。
- * - `switchPrevious`: settle the current field and return to the previously
- *   handled field without a final submit. / 处理当前 field 后返回上一个已处理
- *   field，且不触发最终提交。
  * - `finish`: end an interaction in which no field was modified without
  *   resetting values. / 结束所有 field 均未修改的交互，不重置任何值。
  * - `abort`: stop without changing any state.
  *   直接短路，不改变任何状态。
  * - `resetCurrent`: discard only the current field.
  *   仅撤销当前 field。
- * - `resetCurrentAndSwitchNext`: discard the current temporary value, mark the
- *   field as handled, then advance. / 撤销当前临时值，将 field 标记为已处理后推进。
+ * - `resetCurrentAndSwitchNext`: discard the current temporary value and
+ *   advance without submitting. Revisiting a field starts a new round.
+ *   撤销当前临时值并直接推进，不触发提交；再次进入已访问 field 时开启新一轮。
  * - `resetAll`: discard all temporary values and end the interaction.
  *   撤销全部临时值并结束本轮交互。
  */
@@ -230,29 +227,14 @@ export default function useRangeValueChange<FieldValue = unknown>(
         return 'abort';
       }
 
-      const previousIndex = (currentIndex - 1 + fieldCount) % fieldCount;
-      const isPreviousField =
-        index === previousIndex &&
-        triggeredFieldsRef.current.some((field) => field.index === index);
-
-      if (isPreviousField) {
-        const currentUnconfirmed = !currentEmpty && confirmedIndexRef.current !== currentIndex;
-
-        // Keep the legacy needConfirm behavior: only an unconfirmed value locks
-        // the current field. Empty, confirmed or allowEmpty fields may go back.
-        // 保持旧版 needConfirm 行为：仅未确认值会锁定当前 field；当前为空、
-        // 已确认或允许空值时，都可以返回上一个 field。
-        if (needConfirm && currentUnconfirmed && !allowEmpty[currentIndex]) {
-          return 'abort';
-        }
-
-        return 'switchPrevious';
-      }
-
       const nextIndex = (currentIndex + 1) % fieldCount;
       if (index !== nextIndex) {
         return 'abort';
       }
+
+      const nextFieldTriggered = triggeredFieldsRef.current.some(
+        (field) => field.index === nextIndex,
+      );
 
       if (needConfirm) {
         if (confirmedIndexRef.current === currentIndex) {
@@ -266,7 +248,15 @@ export default function useRangeValueChange<FieldValue = unknown>(
         return allowEmpty[currentIndex] ? 'resetCurrentAndSwitchNext' : 'abort';
       }
 
-      return canSwitch ? 'switchNext' : 'resetCurrent';
+      if (canSwitch) {
+        return 'switchNext';
+      }
+
+      // Revisiting the next field starts another circular round. Discard the
+      // invalid current field and finish the old round before entering it.
+      // 再次进入已触发的 next field 表示开始新一轮循环。进入前先丢弃当前
+      // 无效 field，并结束旧的一轮。
+      return nextFieldTriggered ? 'resetCurrentAndSwitchNext' : 'resetCurrent';
     }
 
     if (index !== currentIndex) {
@@ -378,31 +368,6 @@ export default function useRangeValueChange<FieldValue = unknown>(
           }
           break;
 
-        case 'switchPrevious': {
-          if (!needConfirm) {
-            const currentValue = getCalendarValue()[actionIndex];
-            const currentEmpty = currentValue === null || currentValue === undefined;
-
-            if (!currentEmpty || allowEmpty[actionIndex]) {
-              // Going back may part-submit the current field, but must never
-              // finish the whole round before the previous field is edited.
-              // 返回上一个 field 时可以局部提交当前 field，但不能在用户修改
-              // 上一个 field 前结束整轮提交。
-              flushSubmit(actionIndex, false);
-            } else {
-              resetValue(actionIndex);
-            }
-          }
-
-          const previousPosition = triggeredFieldsRef.current.findIndex(
-            (field) => field.index === index,
-          );
-          triggeredFieldsRef.current = triggeredFieldsRef.current.slice(0, previousPosition + 1);
-          recordTriggeredField(index, false);
-          setCurrentIndex(index);
-          break;
-        }
-
         case 'finish':
           triggeredFieldsRef.current = [];
           confirmedIndexRef.current = null;
@@ -419,21 +384,38 @@ export default function useRangeValueChange<FieldValue = unknown>(
           );
           break;
 
-        case 'resetCurrentAndSwitchNext':
+        case 'resetCurrentAndSwitchNext': {
           resetValue(actionIndex);
           if (confirmedIndexRef.current === actionIndex) {
             confirmedIndexRef.current = null;
           }
-          if (submitField(actionIndex) && source === 'field-switch') {
-            // The target field belongs to the next round after the previous
-            // round is completed.
-            // 上一轮结束后，切换目标 field 应归入新一轮。
-            setCurrentIndex(index);
-          }
+
           if (source === 'field-switch') {
+            const nextFieldTriggered = triggeredFieldsRef.current.some(
+              (field) => field.index === index,
+            );
+
+            // A reset never submits or checks whether all fields were handled.
+            // Revisiting the target discards the old round before starting the
+            // next one from that target.
+            // reset 不触发提交，也不判断所有 field 是否已处理。再次进入目标
+            // field 时丢弃旧一轮记录，并从该 field 开启新一轮。
+            if (nextFieldTriggered) {
+              triggeredFieldsRef.current = [];
+            }
+
+            setCurrentIndex(index);
             recordTriggeredField(index, false);
+          } else {
+            // Blur leaves the whole Picker, so it ends the interaction instead
+            // of focusing the next field.
+            // blur 表示离开整个 Picker，因此结束交互，不再聚焦下一个 field。
+            triggeredFieldsRef.current = [];
+            confirmedIndexRef.current = null;
+            setCurrentIndex(null);
           }
           break;
+        }
 
         case 'resetAll':
           resetValue();

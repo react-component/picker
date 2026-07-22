@@ -2173,6 +2173,33 @@ describe('Picker.Range', () => {
     expect(isOpen()).toBeFalsy();
   });
 
+  it('should reset unconfirmed end after switching back and blurring', async () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    // Confirm the start date. / 确认开始日期。
+    openPicker(container);
+    selectCell(5);
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+
+    // Select an end date without confirming it. / 选择结束日期，但不确认。
+    selectCell(10);
+    expect(endInput).not.toHaveValue('');
+
+    // Switch back to the start field and then leave the whole Picker.
+    // 切回开始 field，然后离开整个 Picker。
+    openPicker(container);
+    expect(document.activeElement).toBe(startInput);
+
+    fireEvent.mouseDown(document.body);
+    triggerBlur(startInput);
+    await waitFakeTimer(0, 2);
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(endInput).toHaveValue('');
+  });
+
   it('should submit confirmed start when allowEmpty end blurs', async () => {
     const onChange = jest.fn();
     const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);

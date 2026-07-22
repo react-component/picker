@@ -16,11 +16,11 @@ export default () => {
     <div>
       <input defaultValue="2000-01-01" />
 
-      <h3>Issue #57728: showTime with allowEmpty</h3>
+      <h3>Reset unconfirmed end after switching back</h3>
       <p>
-        Select a start date without confirming, switch to the end field, switch back to the start
-        field, then click the input above. Both fields should reset and the change count should stay
-        at 0.
+        Select and confirm a start date. Select an end date without confirming, switch back to the
+        start field, then click the input above. Switching back should reset the unconfirmed end and
+        should not submit the range. The following blur should also keep the change count at 0.
       </p>
       <div>Change count: {changeCount}</div>
 
