@@ -2144,9 +2144,23 @@ describe('Picker.Range', () => {
 
     // Select start without confirming, then switch to end and back to start.
     openPicker(container);
+    expect(document.activeElement).toBe(startInput);
+    expect(container.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
+    expect(isOpen()).toBeTruthy();
+
     selectCell(5);
     openPicker(container, 1);
+
+    expect(document.activeElement).toBe(endInput);
+    expect(container.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
+    expect(isOpen()).toBeTruthy();
+    expect(startInput).toHaveValue('');
+
     openPicker(container);
+
+    expect(document.activeElement).toBe(startInput);
+    expect(container.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
+    expect(isOpen()).toBeTruthy();
 
     // Blur the whole Picker without clicking OK.
     fireEvent.mouseDown(document.body);
@@ -2156,6 +2170,7 @@ describe('Picker.Range', () => {
     expect(onChange).not.toHaveBeenCalled();
     expect(startInput).toHaveValue('');
     expect(endInput).toHaveValue('');
+    expect(isOpen()).toBeFalsy();
   });
 
   it('should not update preview value in input when previewValue is false', () => {

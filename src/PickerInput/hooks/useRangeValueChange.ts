@@ -228,7 +228,11 @@ export default function useRangeValueChange<FieldValue = unknown>(
           return 'switchNext';
         }
 
-        return currentEmpty && allowEmpty[currentIndex] ? 'resetCurrentAndSwitchNext' : 'abort';
+        // An allowEmpty field may be left without confirmation. Discard any
+        // unconfirmed CalendarValue before moving to the next field.
+        // allowEmpty field 可以在未确认时离开；切换前需要丢弃未确认的
+        // CalendarValue，再进入下一个 field。
+        return allowEmpty[currentIndex] ? 'resetCurrentAndSwitchNext' : 'abort';
       }
 
       return canSwitch ? 'switchNext' : 'resetCurrent';
