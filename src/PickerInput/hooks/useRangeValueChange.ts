@@ -70,10 +70,41 @@ interface TriggeredField {
  * 统一管理任意数量 field 的 CalendarValue 更新、局部提交与最终提交。
  *
  * Flow / 流程：
- * First resolve `source`, `needConfirm`, `allowEmpty` and the field indexes to
- * one action, then execute that action in a single switch statement.
- * 先根据 `source`、`needConfirm`、`allowEmpty` 与 field index 得到唯一 action，
- * 再通过统一的 switch 执行 action。
+ * Every event is first resolved from `source`, `needConfirm`, `allowEmpty` and
+ * the field indexes to one action. State changes only happen while executing
+ * that action, so event sources never submit or reset values on their own.
+ * 每个事件先根据 `source`、`needConfirm`、`allowEmpty` 与 field index 得到唯一
+ * action。状态只在执行 action 时改变，事件来源本身不直接提交或重置值。
+ *
+ * Source resolution / 事件解析：
+ *
+ * - `esc` always resolves to `resetAll`.
+ *   `esc` 始终解析为 `resetAll`。
+ * - With no current field, a standalone `blur` resolves to `resetAll`; any
+ *   other non-cancel event starts a new interaction from its field.
+ *   没有当前 field 时，独立的 `blur` 解析为 `resetAll`；其余非撤销事件从
+ *   对应 field 开始新一轮交互。
+ * - `field-switch` may return to an already visited previous field or advance
+ *   exactly one field. `needConfirm` locks an unconfirmed non-empty field unless
+ *   it allows empty; an allow-empty field is reset before advancing.
+ *   `field-switch` 只允许返回已访问的上一个 field，或向后推进一个 field。
+ *   `needConfirm` 会锁定未确认且非空的 field；允许空值时先重置再推进。
+ * - Other sources must target the current field. `input` and
+ *   `panel-intermediate` modify it; `panel-final` advances only without
+ *   confirmation; `keyboard-submit` and `confirm` advance only when the field
+ *   has a value or allows empty.
+ *   其余来源必须指向当前 field。`input` 与 `panel-intermediate` 只修改；
+ *   `panel-final` 仅在无需确认时推进；`keyboard-submit` 与 `confirm` 仅在有值
+ *   或允许空值时推进。
+ * - `blur` finishes an untouched interaction. Without confirmation it submits
+ *   a valid field; with confirmation it submits only after every field has
+ *   participated, otherwise it resets all temporary values. A modified
+ *   allow-empty field is reset before the final submit.
+ *   `blur` 会直接结束未修改的交互。无需确认时提交有效 field；需要确认时仅在
+ *   所有 field 都参与过后提交，否则重置全部临时值。当前 field 已修改且允许
+ *   为空时，会先重置当前值再完成提交。
+ *
+ * Action execution / Action 执行：
  *
  * - `modify`: update or record the current CalendarValue.
  *   更新或记录当前 CalendarValue。
