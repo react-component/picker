@@ -2144,6 +2144,24 @@ describe('Picker.Range', () => {
     );
   });
 
+  it('should lock unconfirmed start focus in shadow dom', () => {
+    const shadowRoot = renderShadow({ showTime: true, needConfirm: true });
+    const [startInput, endInput] = shadowRoot.querySelectorAll<HTMLInputElement>('input');
+
+    // Select a start date without confirming it.
+    // 选择开始日期，但不进行确认。
+    openPicker(shadowRoot);
+    selectCell(11);
+    expect(shadowRoot.activeElement).toBe(startInput);
+
+    // An unconfirmed field cannot switch, so focus should return to start.
+    // 未确认的 field 不允许切换，因此焦点应回到开始输入框。
+    openPicker(shadowRoot, 1);
+
+    expect(shadowRoot.activeElement).not.toBe(endInput);
+    expect(shadowRoot.activeElement).toBe(startInput);
+  });
+
   it('should not click to focus on next field if first field is not confirm', () => {
     const onCalendarChange = jest.fn();
     const { container } = render(

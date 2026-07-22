@@ -38,8 +38,14 @@ export default function useFocusLock(
       return;
     }
 
-    const activeElement = document.activeElement;
     const inputFields = [selectorRef.current?.startInput, selectorRef.current?.endInput];
+    const inputRoot = inputFields[index]?.getRootNode() as Document | ShadowRoot | undefined;
+
+    // `document.activeElement` stops at the shadow host. Read from the input's
+    // own root first so focus locking can identify the actual field.
+    // `document.activeElement` 在 Shadow DOM 中只会返回 host。优先读取 input
+    // 所属 root，才能识别实际聚焦的 field。
+    const activeElement = inputRoot?.activeElement ?? document.activeElement;
 
     if (isTargetInContainers(activeElement, [popupRef.current])) {
       return;
