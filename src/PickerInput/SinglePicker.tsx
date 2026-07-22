@@ -374,6 +374,7 @@ function Picker<DateType extends object = any>(
     calendarValue,
     [mergedMode],
     mergedOpen,
+    false,
     activeIndex,
     internalPicker,
     false, // multiplePanel,

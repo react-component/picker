@@ -5,6 +5,7 @@ import { isTargetInContainers } from './useFocusEvents';
 interface FocusLockSelectorRef {
   startInput: HTMLElement;
   endInput: HTMLElement;
+  focus: (index?: number) => void;
 }
 
 /**
@@ -21,11 +22,12 @@ export default function useFocusLock(
     triggerOpen(true);
   });
 
-  // Open the Picker after the controlled field changes.
-  // 当受控 field 发生切换后，重新打开 Picker。
+  // Open the Picker and focus the controlled field after it changes.
+  // 当受控 field 发生切换后，重新打开 Picker 并聚焦对应的 field。
   React.useEffect(() => {
     if (index !== null) {
       openPicker();
+      selectorRef.current?.focus(index);
     }
   }, [index, openPicker]);
 

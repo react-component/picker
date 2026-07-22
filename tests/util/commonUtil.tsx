@@ -68,11 +68,20 @@ export function isSame(date: Moment | Dayjs | null, dateStr: string, type: any =
 }
 
 // ====================================== UTIL ======================================
-export async function waitFakeTimer() {
-  await act(async () => {
-    jest.runAllTimers();
-    await Promise.resolve();
-  });
+export async function waitFakeTimer(advanceTime = 0, times = 1) {
+  for (let i = 0; i < times; i += 1) {
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    await act(async () => {
+      if (advanceTime > 0) {
+        jest.advanceTimersByTime(advanceTime);
+      } else {
+        jest.runAllTimers();
+      }
+    });
+  }
 }
 
 interface FocusTarget {

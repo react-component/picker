@@ -404,6 +404,7 @@ function RangePicker<DateType extends object = any>(
     calendarValue,
     modes,
     mergedOpen,
+    focused,
     activeIndex,
     internalPicker,
     multiplePanel,

@@ -2136,6 +2136,28 @@ describe('Picker.Range', () => {
     expect(container.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
   });
 
+  // https://github.com/ant-design/ant-design/issues/57728
+  it('should not submit unconfirmed allowEmpty value on blur', async () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    // Select start without confirming, then switch to end and back to start.
+    openPicker(container);
+    selectCell(5);
+    openPicker(container, 1);
+    openPicker(container);
+
+    // Blur the whole Picker without clicking OK.
+    fireEvent.mouseDown(document.body);
+    triggerBlur(document.activeElement as HTMLElement);
+    await waitFakeTimer(0, 2);
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(startInput).toHaveValue('');
+    expect(endInput).toHaveValue('');
+  });
+
   it('should not update preview value in input when previewValue is false', () => {
     const { container } = render(
       <DayRangePicker

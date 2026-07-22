@@ -1081,7 +1081,7 @@ describe('NewPicker.Range', () => {
       expect(firstInput).toHaveValue('YYYYMMDD');
 
       triggerBlur(firstInput);
-      await waitFakeTimer();
+      await waitFakeTimer(0, 2);
       expect(firstInput).toHaveValue('');
     });
 

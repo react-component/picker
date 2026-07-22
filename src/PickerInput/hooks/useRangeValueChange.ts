@@ -19,6 +19,7 @@ export type RangeValueChangeAction =
   | 'modify'
   | 'switchNext'
   | 'switchPrevious'
+  | 'finish'
   | 'abort'
   | 'resetCurrent'
   | 'resetCurrentAndSwitchNext'
@@ -56,6 +57,11 @@ export type UseRangeValueChangeReturn<FieldValue> = [
   triggerChange: TriggerChange<FieldValue>,
 ];
 
+interface TriggeredField {
+  index: number;
+  modified: boolean;
+}
+
 // ============================== Hook ==============================
 
 /**
@@ -76,6 +82,8 @@ export type UseRangeValueChangeReturn<FieldValue> = [
  * - `switchPrevious`: settle the current field and return to the previously
  *   handled field without a final submit. / 处理当前 field 后返回上一个已处理
  *   field，且不触发最终提交。
+ * - `finish`: end an interaction in which no field was modified without
+ *   resetting values. / 结束所有 field 均未修改的交互，不重置任何值。
  * - `abort`: stop without changing any state.
  *   直接短路，不改变任何状态。
  * - `resetCurrent`: discard only the current field.
@@ -96,9 +104,10 @@ export default function useRangeValueChange<FieldValue = unknown>(
 ): UseRangeValueChangeReturn<FieldValue> {
   // ============================= State =============================
 
-  // Record fields involved in the current interaction.
-  // 记录当前一轮交互中触发过的 field。
-  const triggeredFieldsRef = React.useRef<number[]>([]);
+  // Record fields involved in the current interaction and whether each field
+  // has been modified since it became active.
+  // 记录当前一轮交互中触发过的 field，以及它从本次激活后是否发生过修改。
+  const triggeredFieldsRef = React.useRef<TriggeredField[]>([]);
 
   // Track the last explicitly confirmed field. `triggeredFields` also records
   // focus, so it cannot tell confirmed and unconfirmed values apart.
@@ -116,13 +125,23 @@ export default function useRangeValueChange<FieldValue = unknown>(
 
   // ============================= Record ============================
 
-  // Keep fields unique while preserving their first-triggered order. The
-  // current field is tracked separately by `currentIndex`.
-  // field 保持唯一，同时保留首次触发顺序；当前 field 由 `currentIndex`
-  // 单独记录。
-  const recordTriggeredField = (index: number) => {
-    if (!triggeredFieldsRef.current.includes(index)) {
-      triggeredFieldsRef.current = [...triggeredFieldsRef.current, index];
+  // Keep fields unique while preserving their first-triggered order. Omit
+  // `modified` to keep the existing state, or pass it to start a new field
+  // visit and record a modification.
+  // field 保持唯一并保留首次触发顺序。省略 `modified` 时保留原状态；传入时
+  // 用于开始一次新的 field 访问，或记录本次修改。
+  const recordTriggeredField = (index: number, modified?: boolean) => {
+    const field = triggeredFieldsRef.current.find((item) => item.index === index);
+
+    if (field) {
+      if (modified !== undefined) {
+        field.modified = modified;
+      }
+    } else {
+      triggeredFieldsRef.current = [
+        ...triggeredFieldsRef.current,
+        { index, modified: modified ?? false },
+      ];
     }
   };
 
@@ -181,7 +200,9 @@ export default function useRangeValueChange<FieldValue = unknown>(
       }
 
       const previousIndex = (currentIndex - 1 + fieldCount) % fieldCount;
-      const isPreviousField = index === previousIndex && triggeredFieldsRef.current.includes(index);
+      const isPreviousField =
+        index === previousIndex &&
+        triggeredFieldsRef.current.some((field) => field.index === index);
 
       if (isPreviousField) {
         const currentUnconfirmed = !currentEmpty && confirmedIndexRef.current !== currentIndex;
@@ -218,6 +239,12 @@ export default function useRangeValueChange<FieldValue = unknown>(
     }
 
     if (source === 'blur') {
+      const interactionModified = triggeredFieldsRef.current.some((field) => field.modified);
+
+      if (!interactionModified) {
+        return 'finish';
+      }
+
       if (needConfirm || !canSwitch) {
         return 'resetAll';
       }
@@ -256,7 +283,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
       if (currentIndex === null && source !== 'blur' && source !== 'esc') {
         currentIndex = index;
         setCurrentIndex(index);
-        recordTriggeredField(index);
+        recordTriggeredField(index, false);
       }
 
       const action = resolveAction(currentIndex, index, source, value);
@@ -264,7 +291,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
 
       switch (action) {
         case 'modify':
-          recordTriggeredField(actionIndex);
+          recordTriggeredField(actionIndex, true);
           if (confirmedIndexRef.current === actionIndex) {
             confirmedIndexRef.current = null;
           }
@@ -274,6 +301,9 @@ export default function useRangeValueChange<FieldValue = unknown>(
           break;
 
         case 'switchNext':
+          if (source === 'panel-final' || value !== undefined) {
+            recordTriggeredField(actionIndex, true);
+          }
           if (value !== undefined) {
             triggerCalendarChange(actionIndex, value);
           }
@@ -287,7 +317,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
             setCurrentIndex(index);
           }
           if (source === 'field-switch') {
-            recordTriggeredField(index);
+            recordTriggeredField(index, false);
           }
           break;
 
@@ -307,11 +337,20 @@ export default function useRangeValueChange<FieldValue = unknown>(
             }
           }
 
-          const previousPosition = triggeredFieldsRef.current.indexOf(index);
+          const previousPosition = triggeredFieldsRef.current.findIndex(
+            (field) => field.index === index,
+          );
           triggeredFieldsRef.current = triggeredFieldsRef.current.slice(0, previousPosition + 1);
+          recordTriggeredField(index, false);
           setCurrentIndex(index);
           break;
         }
+
+        case 'finish':
+          triggeredFieldsRef.current = [];
+          confirmedIndexRef.current = null;
+          setCurrentIndex(null);
+          break;
 
         case 'resetCurrent':
           resetValue(actionIndex);
@@ -319,7 +358,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
             confirmedIndexRef.current = null;
           }
           triggeredFieldsRef.current = triggeredFieldsRef.current.filter(
-            (fieldIndex) => fieldIndex !== actionIndex,
+            (field) => field.index !== actionIndex,
           );
           break;
 
@@ -335,7 +374,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
             setCurrentIndex(index);
           }
           if (source === 'field-switch') {
-            recordTriggeredField(index);
+            recordTriggeredField(index, false);
           }
           break;
 
@@ -358,5 +397,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
   const currentIndex = getCurrentIndex();
   lastValidIndexRef.current = currentIndex ?? lastValidIndexRef.current ?? 0;
 
-  return [currentIndex, lastValidIndexRef.current, triggeredFieldsRef.current, triggerChange];
+  const triggeredFields = triggeredFieldsRef.current.map((field) => field.index);
+
+  return [currentIndex, lastValidIndexRef.current, triggeredFields, triggerChange];
 }

@@ -39,6 +39,7 @@ export default function useRangePickerValue<DateType extends object, ValueType e
   calendarValue: ValueType,
   modes: PanelMode[],
   open: boolean,
+  preserveOnFieldChange: boolean,
   activeIndex: number,
   pickerMode: InternalMode,
   multiplePanel: boolean,
@@ -56,6 +57,9 @@ export default function useRangePickerValue<DateType extends object, ValueType e
   // ======================== Active ========================
   // `activeIndex` must be valid to avoid getting empty `pickerValue`
   const mergedActiveIndex = activeIndex || 0;
+  const [startCalendarValue, endCalendarValue] = calendarValue;
+  const activeCalendarValue = mergedActiveIndex === 0 ? startCalendarValue : endCalendarValue;
+  const inactiveCalendarValue = mergedActiveIndex === 0 ? endCalendarValue : startCalendarValue;
 
   // ===================== Picker Value =====================
   const getDefaultPickerValue = (index: number) => {
@@ -64,7 +68,8 @@ export default function useRangePickerValue<DateType extends object, ValueType e
       now = fillTime(generateConfig, now);
     }
 
-    return defaultPickerValue[index] || calendarValue[index] || now;
+    const calendarDate = index === 0 ? startCalendarValue : endCalendarValue;
+    return defaultPickerValue[index] || calendarDate || now;
   };
 
   // Align `pickerValue` with `showTime.defaultValue`
@@ -122,38 +127,33 @@ export default function useRangePickerValue<DateType extends object, ValueType e
   };
 
   // ======================== Effect ========================
-  /**
-   * EndDate pickerValue is little different. It should be:
-   * - If date picker (without time), endDate is not same year & month as startDate
-   *   - pickerValue minus one month
-   * - Else pass directly
-   */
-  const getEndDatePickerValue = (startDate: DateType, endDate: DateType) => {
-    if (multiplePanel) {
-      // Basic offset
-      const SAME_CHECKER: Partial<Record<InternalMode, PanelMode>> = {
-        date: 'month',
-        week: 'month',
-        month: 'year',
-        quarter: 'year',
-      };
-
-      const mode = SAME_CHECKER[pickerMode];
-      if (mode && !isSame(generateConfig, locale, startDate, endDate, mode)) {
-        return offsetPanelDate(generateConfig, pickerMode, endDate, -1);
-      }
-
-      // Year offset
-      if (pickerMode === 'year' && startDate) {
-        const srcYear = Math.floor(generateConfig.getYear(startDate) / 10);
-        const tgtYear = Math.floor(generateConfig.getYear(endDate) / 10);
-        if (srcYear !== tgtYear) {
-          return offsetPanelDate(generateConfig, pickerMode, endDate, -1);
-        }
-      }
+  // Check whether two dates belong to the same panel.
+  // 判断两个日期是否属于同一个面板。
+  const isSamePanel = (date1: DateType, date2: DateType) => {
+    if (pickerMode === 'year') {
+      return (
+        Math.floor(generateConfig.getYear(date1) / 10) ===
+        Math.floor(generateConfig.getYear(date2) / 10)
+      );
     }
 
-    return endDate;
+    const panelMode: PanelMode =
+      pickerMode === 'month' || pickerMode === 'quarter' ? 'year' : 'month';
+    return isSame(generateConfig, locale, date1, date2, panelMode);
+  };
+
+  // Keep both values in the two visible panels when possible. Otherwise put
+  // the end value in the second panel.
+  // 尽量在双面板内同时展示两个值；无法容纳时，将 end 值放在右侧面板。
+  const getEndDatePickerValue = (startDate: DateType, endDate: DateType) => {
+    if (!multiplePanel || !startDate) {
+      return endDate;
+    }
+
+    const nextPanelDate = offsetPanelDate(generateConfig, pickerMode, startDate, 1);
+    const endInPanels = isSamePanel(startDate, endDate) || isSamePanel(nextPanelDate, endDate);
+
+    return endInPanels ? startDate : offsetPanelDate(generateConfig, pickerMode, endDate, -1);
   };
 
   // >>> When switch field, reset the picker value as prev field picker value
@@ -164,30 +164,30 @@ export default function useRangePickerValue<DateType extends object, ValueType e
         let nextPickerValue: DateType = isTimePicker ? null : generateConfig.getNow();
 
         /**
-         * 1. If has prevActiveIndex, use it to avoid panel jump
-         * 2. If current field has value
-         *    - If `activeIndex` is 1 and `calendarValue[0]` is not same panel as `calendarValue[1]`,
-         *      offset `calendarValue[1]` and set it
-         *    - Else use `calendarValue[activeIndex]`
+         * 1. If focus switches inside the open Picker, keep the current panels
+         * 2. If current field has value, sync it to the panels
+         *    - Start: use the start value
+         *    - End: keep start when both values fit, otherwise put end on the second panel
          * 3. If current field has no value but another field has value, use another field value
          * 4. Else use now (not any `calendarValue` can ref)
          */
 
         if (
+          preserveOnFieldChange &&
           prevActiveIndexRef.current !== null &&
           prevActiveIndexRef.current !== mergedActiveIndex
         ) {
           // If from another field, not jump picker value
           nextPickerValue = [mergedStartPickerValue, mergedEndPickerValue][mergedActiveIndex ^ 1];
-        } else if (calendarValue[mergedActiveIndex]) {
+        } else if (activeCalendarValue) {
           // Current field has value
           nextPickerValue =
             mergedActiveIndex === 0
-              ? calendarValue[0]
-              : getEndDatePickerValue(calendarValue[0], calendarValue[1]);
-        } else if (calendarValue[mergedActiveIndex ^ 1]) {
+              ? startCalendarValue
+              : getEndDatePickerValue(startCalendarValue, endCalendarValue);
+        } else if (inactiveCalendarValue) {
           // Current field has no value but another field has value
-          nextPickerValue = calendarValue[mergedActiveIndex ^ 1];
+          nextPickerValue = inactiveCalendarValue;
         }
 
         // Only sync when has value, this will sync in the `min-max` logic
@@ -211,16 +211,16 @@ export default function useRangePickerValue<DateType extends object, ValueType e
         }
       }
     }
-  }, [open, mergedActiveIndex, calendarValue[mergedActiveIndex]]);
+  }, [open, preserveOnFieldChange, mergedActiveIndex, startCalendarValue, endCalendarValue]);
 
-  // >>> Reset prevActiveIndex when panel closed
+  // >>> Track previous field only during one continuous Picker focus session
   React.useEffect(() => {
-    if (open) {
+    if (open && preserveOnFieldChange) {
       prevActiveIndexRef.current = mergedActiveIndex;
     } else {
       prevActiveIndexRef.current = null;
     }
-  }, [open, mergedActiveIndex]);
+  }, [open, preserveOnFieldChange, mergedActiveIndex]);
 
   // >>> defaultPickerValue: Resync to `defaultPickerValue` for each panel focused
   useLayoutEffect(() => {
