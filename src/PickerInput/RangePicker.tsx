@@ -308,10 +308,7 @@ function RangePicker<DateType extends object = any>(
     triggerCalendarChange,
     disabled,
     formatList,
-    focused,
-    mergedOpen,
     isInvalidateDate,
-    // false,
   );
 
   const triggerFieldCalendarChange = useEvent((index: number, date: DateType) => {

@@ -7,7 +7,6 @@ import { formatValue, isSame, isSameTimestamp } from '../../utils/dateUtil';
 import { fillIndex } from '../../utils/miscUtil';
 import type { RangePickerProps } from '../RangePicker';
 import type { ReplacedPickerProps } from '../SinglePicker';
-// import useLockEffect from './useLockEffect';
 
 const EMPTY_VALUE: any[] = [];
 
@@ -93,7 +92,7 @@ function useCalendarValue<MergedValueType extends object[]>(mergedValue: MergedV
 
 /**
  * Control the internal `value` align with prop `value` and provide a temp `calendarValue` for ui.
- * `calendarValue` will be reset when blur & focus & open.
+ * The caller controls the temporary `calendarValue` lifecycle through event handlers.
  */
 export function useInnerValue<ValueType extends DateType[], DateType extends object = any>(
   generateConfig: GenerateConfig<DateType>,
@@ -173,10 +172,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   triggerCalendarChange: TriggerCalendarChange<ValueType>,
   disabled: ReplaceListType<Required<ValueType>, boolean>,
   formatList: FormatType[],
-  focused: boolean,
-  open: boolean,
   isInvalidateDate: (date: DateType, info?: { from?: DateType; activeIndex: number }) => boolean,
-  // useEffectSubmit?: boolean,
 ): [
   /** Trigger `onChange` by check `disabledDate` */
   flushSubmit: (index: number, needTriggerChange: boolean) => void,
@@ -198,8 +194,6 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     allowEmpty,
     order,
   } = info;
-
-  // const enableEffectSubmit = useEffectSubmit !== false;
 
   const orderOnChange = disabled.some((d) => d) ? false : order;
 
@@ -320,24 +314,6 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     triggerCalendarChange(fillIndex(getCalendarValue(), index, mergedValue[index]));
     setSubmitValue(fillIndex(submitValue(), index, mergedValue[index]));
   });
-
-  // ============================ Effect ============================
-  // TODO: Keep the legacy effect submit flow for reference during the event-driven refactor.
-  // TODO: 事件驱动提交重构期间，暂时保留旧 effect 提交流程作为参考。
-  // const interactiveFinished = !focused && !open;
-  //
-  // useLockEffect(
-  //   enableEffectSubmit && !interactiveFinished,
-  //   () => {
-  //     if (enableEffectSubmit && interactiveFinished) {
-  //       // Always try to trigger submit first
-  //       triggerSubmit();
-  //
-  //       resetValue();
-  //     }
-  //   },
-  //   2,
-  // );
 
   // ============================ Return ============================
   return [flushSubmit, triggerSubmit, resetValue];
