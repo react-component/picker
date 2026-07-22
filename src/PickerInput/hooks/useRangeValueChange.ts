@@ -54,6 +54,7 @@ export type UseRangeValueChangeReturn<FieldValue> = [
   activeIndex: number,
   triggeredFields: number[],
   triggerChange: TriggerChange<FieldValue>,
+  reset: VoidFunction,
 ];
 
 interface TriggeredField {
@@ -151,6 +152,19 @@ export default function useRangeValueChange<FieldValue = unknown>(
   // 保留最后一个被业务接受的 field，供 panel 和 selector 渲染使用；
   const lastValidIndexRef = React.useRef<number | undefined>(undefined);
 
+  // ============================= Reset =============================
+
+  // End the current interaction without changing CalendarValue or the
+  // committed value. External events such as Clear can reset bookkeeping and
+  // handle their own value update separately.
+  // 结束当前交互，但不修改 CalendarValue 或已提交值。Clear 等外部事件可先
+  // 重置交互记录，再独立处理自身的值变更。
+  const reset = useEvent(() => {
+    triggeredFieldsRef.current = [];
+    confirmedIndexRef.current = null;
+    setCurrentIndex(null);
+  });
+
   // ============================= Record ============================
 
   // Keep fields unique while preserving their first-triggered order. Omit
@@ -186,9 +200,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
     flushSubmit(index, allFieldsTriggered);
 
     if (allFieldsTriggered) {
-      triggeredFieldsRef.current = [];
-      confirmedIndexRef.current = null;
-      setCurrentIndex(null);
+      reset();
     } else {
       const nextIndex = (index + 1) % fieldCount;
       setCurrentIndex(nextIndex);
@@ -369,9 +381,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
           break;
 
         case 'finish':
-          triggeredFieldsRef.current = [];
-          confirmedIndexRef.current = null;
-          setCurrentIndex(null);
+          reset();
           break;
 
         case 'resetCurrent':
@@ -410,18 +420,14 @@ export default function useRangeValueChange<FieldValue = unknown>(
             // Blur leaves the whole Picker, so it ends the interaction instead
             // of focusing the next field.
             // blur 表示离开整个 Picker，因此结束交互，不再聚焦下一个 field。
-            triggeredFieldsRef.current = [];
-            confirmedIndexRef.current = null;
-            setCurrentIndex(null);
+            reset();
           }
           break;
         }
 
         case 'resetAll':
           resetValue();
-          triggeredFieldsRef.current = [];
-          confirmedIndexRef.current = null;
-          setCurrentIndex(null);
+          reset();
           break;
 
         case 'abort':
@@ -438,5 +444,5 @@ export default function useRangeValueChange<FieldValue = unknown>(
 
   const triggeredFields = triggeredFieldsRef.current.map((field) => field.index);
 
-  return [currentIndex, lastValidIndexRef.current, triggeredFields, triggerChange];
+  return [currentIndex, lastValidIndexRef.current, triggeredFields, triggerChange, reset];
 }

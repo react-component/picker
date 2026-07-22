@@ -324,16 +324,21 @@ function RangePicker<DateType extends object = any>(
   });
 
   const enabledFieldCount = disabled.filter((fieldDisabled) => !fieldDisabled).length;
-  const [rangeValueIndex, activeIndex, triggeredFields, triggerRangeValueChange] =
-    useRangeValueChange(
-      enabledFieldCount,
-      needConfirm,
-      allowEmpty,
-      getCalendarValue,
-      triggerFieldCalendarChange,
-      flushFieldSubmit,
-      resetValue,
-    );
+  const [
+    rangeValueIndex,
+    activeIndex,
+    triggeredFields,
+    triggerRangeValueChange,
+    resetRangeValueChange,
+  ] = useRangeValueChange(
+    enabledFieldCount,
+    needConfirm,
+    allowEmpty,
+    getCalendarValue,
+    triggerFieldCalendarChange,
+    flushFieldSubmit,
+    resetValue,
+  );
 
   useFocusLock(rangeValueIndex, selectorRef, popupRef, triggerOpen);
 
@@ -470,6 +475,7 @@ function RangePicker<DateType extends object = any>(
   };
 
   const onSelectorClear = () => {
+    resetRangeValueChange();
     triggerSubmitChange(null);
     triggerOpen(false, { force: true });
     onClear?.();

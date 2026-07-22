@@ -332,7 +332,9 @@ function Picker<DateType extends object = any>(
     resetValue();
   });
 
-  const [, activeIndex, , triggerSingleValueChange] = useRangeValueChange<DateType[]>(
+  const [, activeIndex, , triggerSingleValueChange, resetSingleValueChange] = useRangeValueChange<
+    DateType[]
+  >(
     1,
     needConfirm,
     [false],
@@ -420,6 +422,7 @@ function Picker<DateType extends object = any>(
   };
 
   const onSelectorClear = () => {
+    resetSingleValueChange();
     triggerSubmitChange(null);
     triggerOpen(false, { force: true });
     selectorRef.current.focus();

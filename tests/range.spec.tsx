@@ -1970,6 +1970,30 @@ describe('Picker.Range', () => {
     expect(document.querySelector('input').value).toEqual('');
   });
 
+  it('should reset interaction state after clear', () => {
+    const { container } = render(<DayRangePicker allowClear />);
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    // Select a start date, then clear the whole range.
+    // 选择开始日期，然后清空整个范围。
+    openPicker(container);
+    selectCell(5);
+    clearValue();
+
+    expect(startInput).toHaveValue('');
+    expect(endInput).toHaveValue('');
+
+    // Select the end date after clearing. The Picker should stay open and
+    // switch back to the missing start field.
+    // 清空后选择结束日期。Picker 应保持打开，并切回缺失的开始 field。
+    openPicker(container, 1);
+    selectCell(10);
+
+    expect(endInput).toHaveValue('1990-09-10');
+    expect(isOpen()).toBeTruthy();
+    expect(container.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
+  });
+
   it('selected date when open is true should switch panel', () => {
     const { container } = render(<DayRangePicker open />);
 
