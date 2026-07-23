@@ -265,10 +265,12 @@ function Picker<DateType extends object = any>(
     (_index, event) => {
       onFocus?.(event, {});
     },
-    (index, event) => {
+    (_index, event) => {
+      onBlur?.(event, {});
+    },
+    (index) => {
       triggerSingleValueChange(index, 'blur');
       triggerOpen(false);
-      onBlur?.(event, {});
     },
   );
 

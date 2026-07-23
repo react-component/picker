@@ -283,12 +283,13 @@ function RangePicker<DateType extends object = any>(
       });
     },
     (index, event) => {
-      triggerRangeValueChange(index, 'blur');
-      triggerOpen(false);
-
       onBlur?.(event, {
         range: getActiveRange(index),
       });
+    },
+    (index) => {
+      triggerRangeValueChange(index, 'blur');
+      triggerOpen(false);
     },
   );
 

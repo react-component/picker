@@ -49,13 +49,16 @@ export function isTargetInContainers(
  * Handle field focus and blur events.
  * 处理 field 的聚焦与失焦事件。
  *
- * Ignore blur when `relatedTarget` still belongs to the Picker.
- * 当 `relatedTarget` 仍属于 Picker 时，忽略本次 blur。
+ * Always forward the actual element focus events. Only the internal Picker
+ * blur is skipped when `relatedTarget` still belongs to the Picker.
+ * 始终转发元素实际发生的焦点事件。仅当 `relatedTarget` 仍属于 Picker 时，
+ * 跳过 Picker 内部的整体失焦逻辑。
  */
 export default function useFocusEvents(
   isInternalElement: IsInternalElement,
   onFocus?: FocusEventHandler,
   onBlur?: FocusEventHandler,
+  onConfirmedBlur?: FocusEventHandler,
 ): UseFocusEventsReturn {
   // Keep the actual focused field so every field focus causes a render. This
   // gives `useFocusLock` a commit in which it can correct an invalid switch.
@@ -71,8 +74,10 @@ export default function useFocusEvents(
   const onFieldBlur = useEvent((index: number, _source: FocusSource, event: PickerFocusEvent) => {
     if (!isInternalElement(event.relatedTarget)) {
       setFocusedIndex(null);
-      onBlur?.(index, event);
+      onConfirmedBlur?.(index, event);
     }
+
+    onBlur?.(index, event);
   });
 
   return [focusedIndex !== null, onFieldFocus, onFieldBlur];

@@ -823,6 +823,28 @@ describe('Picker.Range', () => {
     expect(onOpenChange).not.toHaveBeenCalled();
   });
 
+  it('should trigger blur and focus events when switching fields', () => {
+    const onFocus = jest.fn();
+    const onBlur = jest.fn();
+    const { container } = render(<DayRangePicker allowEmpty onFocus={onFocus} onBlur={onBlur} />);
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    triggerFocus(startInput);
+    onFocus.mockClear();
+
+    triggerFocus(endInput);
+
+    expect(onBlur).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({ range: 'start' }),
+    );
+    expect(onFocus).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({ range: 'end' }),
+    );
+    expect(onBlur.mock.invocationCallOrder[0]).toBeLessThan(onFocus.mock.invocationCallOrder[0]);
+  });
+
   it('fixed open need repeat trigger onOpenChange', () => {
     const onOpenChange = jest.fn();
     render(<DayRangePicker onOpenChange={onOpenChange} open />);
