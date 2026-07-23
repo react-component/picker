@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Picker.Range icon 1`] = `
 <div>
@@ -298,14 +298,14 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                       class="rc-picker-header"
                     >
                       <button
-                        aria-label="上一年 (Control键加左方向键)"
+                        aria-label="上一年"
                         class="rc-picker-header-super-prev-btn"
                         type="button"
                       >
                         «
                       </button>
                       <button
-                        aria-label="上个月 (翻页上键)"
+                        aria-label="上个月"
                         class="rc-picker-header-prev-btn"
                         type="button"
                       >
@@ -330,7 +330,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         </button>
                       </div>
                       <button
-                        aria-label="下个月 (翻页下键)"
+                        aria-label="下个月"
                         class="rc-picker-header-next-btn"
                         style="visibility: hidden;"
                         type="button"
@@ -338,7 +338,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         ›
                       </button>
                       <button
-                        aria-label="下一年 (Control键加右方向键)"
+                        aria-label="下一年"
                         class="rc-picker-header-super-next-btn"
                         style="visibility: hidden;"
                         type="button"
@@ -969,7 +969,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                       class="rc-picker-header"
                     >
                       <button
-                        aria-label="上一年 (Control键加左方向键)"
+                        aria-label="上一年"
                         class="rc-picker-header-super-prev-btn"
                         style="visibility: hidden;"
                         type="button"
@@ -977,7 +977,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         «
                       </button>
                       <button
-                        aria-label="上个月 (翻页上键)"
+                        aria-label="上个月"
                         class="rc-picker-header-prev-btn"
                         style="visibility: hidden;"
                         type="button"
@@ -1003,14 +1003,14 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         </button>
                       </div>
                       <button
-                        aria-label="下个月 (翻页下键)"
+                        aria-label="下个月"
                         class="rc-picker-header-next-btn"
                         type="button"
                       >
                         ›
                       </button>
                       <button
-                        aria-label="下一年 (Control键加右方向键)"
+                        aria-label="下一年"
                         class="rc-picker-header-super-next-btn"
                         type="button"
                       >
@@ -1717,7 +1717,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                       class="rc-picker-header"
                     >
                       <button
-                        aria-label="上一年 (Control键加左方向键)"
+                        aria-label="上一年"
                         class="rc-picker-header-super-prev-btn"
                         type="button"
                       >
@@ -1735,7 +1735,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                         </button>
                       </div>
                       <button
-                        aria-label="下一年 (Control键加右方向键)"
+                        aria-label="下一年"
                         class="rc-picker-header-super-next-btn"
                         style="visibility: hidden;"
                         type="button"
@@ -1941,7 +1941,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                       class="rc-picker-header"
                     >
                       <button
-                        aria-label="上一年 (Control键加左方向键)"
+                        aria-label="上一年"
                         class="rc-picker-header-super-prev-btn"
                         style="visibility: hidden;"
                         type="button"
@@ -1960,7 +1960,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
                         </button>
                       </div>
                       <button
-                        aria-label="下一年 (Control键加右方向键)"
+                        aria-label="下一年"
                         class="rc-picker-header-super-next-btn"
                         type="button"
                       >

@@ -20,10 +20,10 @@ const locale: Locale = {
 
   dayFormat: 'DD', // 'D',
 
-  previousMonth: 'Előző hónap (PageUp)', // 'Previous month (PageUp)',
-  nextMonth: 'Következő hónap (PageDown)', // 'Next month (PageDown)',
-  previousYear: 'Múlt év (Control + left)', // 'Last year (Control + left)',
-  nextYear: 'Jövő év (Control + right)', // 'Next year (Control + right)',
+  previousMonth: 'Előző hónap', // 'Previous month',
+  nextMonth: 'Következő hónap', // 'Next month',
+  previousYear: 'Múlt év', // 'Last year',
+  nextYear: 'Jövő év', // 'Next year',
   previousDecade: 'Előző évtized', // 'Last decade',
   nextDecade: 'Következő évtized', // 'Next decade',
   previousCentury: 'Múlt évszázad', // 'Last century',

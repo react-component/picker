@@ -24,7 +24,9 @@ import {
   setYear,
   startOfWeek,
   getMilliseconds,
+  type Day,
   type Locale,
+  type Month,
 } from 'date-fns';
 import * as locales from 'date-fns/locale';
 import type { GenerateConfig } from '.';
@@ -47,7 +49,7 @@ const localeParse = (format: string) => {
 
 const parse = (text: string, format: string, locale: string) => {
   return parseDate(text, localeParse(format), new Date(), { locale: getLocale(locale) });
-}
+};
 
 /**
  * Check if the text is a valid date considering the format and locale
@@ -67,7 +69,7 @@ const isStrictValidDate = (text: string, format: string, locale: string) => {
   }
   const formattedDate = formatDate(date, format, { locale: getLocale(locale) });
   return text === formattedDate;
-}
+};
 
 const generateConfig: GenerateConfig<Date> = {
   // get
@@ -112,12 +114,14 @@ const generateConfig: GenerateConfig<Date> = {
     },
     getShortWeekDays: (locale) => {
       const clone = getLocale(locale);
-      return Array.from({ length: 7 }).map((_, i) => clone.localize.day(i, { width: 'short' }));
+      return Array.from({ length: 7 }).map((_, i) =>
+        clone.localize.day(i as Day, { width: 'short' }),
+      );
     },
     getShortMonths: (locale) => {
       const clone = getLocale(locale);
       return Array.from({ length: 12 }).map((_, i) =>
-        clone.localize.month(i, { width: 'abbreviated' }),
+        clone.localize.month(i as Month, { width: 'abbreviated' }),
       );
     },
     format: (locale, date, format) => {
