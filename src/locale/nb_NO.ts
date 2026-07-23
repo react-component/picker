@@ -21,10 +21,10 @@ const locale: Locale = {
 
   dayFormat: 'DD',
 
-  previousMonth: 'Forrige måned (PageUp)',
-  nextMonth: 'Neste måned (PageDown)',
-  previousYear: 'Forrige år (Control + venstre)',
-  nextYear: 'Neste år (Control + høyre)',
+  previousMonth: 'Forrige måned',
+  nextMonth: 'Neste måned',
+  previousYear: 'Forrige år',
+  nextYear: 'Neste år',
   previousDecade: 'Forrige tiår',
   nextDecade: 'Neste tiår',
   previousCentury: 'Forrige århundre',

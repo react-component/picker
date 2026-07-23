@@ -19,7 +19,7 @@ export default function useScrollTo(
     scrollingRef.current = false;
   };
 
-  const scrollRafTimesRef = React.useRef<number>();
+  const scrollRafTimesRef = React.useRef<number | undefined>(undefined);
 
   const startScroll = () => {
     const ul = ulRef.current;
