@@ -268,8 +268,7 @@ function Picker<DateType extends object = any>(
     (_index, event) => {
       onBlur?.(event, {});
     },
-    (index) => {
-      triggerSingleValueChange(index, 'blur');
+    () => {
       triggerOpen(false);
     },
   );
@@ -344,6 +343,17 @@ function Picker<DateType extends object = any>(
     triggerFieldCalendarChange,
     flushFieldSubmit,
     resetFieldValue,
+  );
+
+  // Finalize the current interaction only after the popup is actually closed.
+  // 仅在 popup 实际关闭后，统一收口当前交互。
+  useLayoutEffect(
+    (firstMount) => {
+      if (!firstMount && !mergedOpen) {
+        triggerSingleValueChange(0, 'popupClose');
+      }
+    },
+    [mergedOpen],
   );
 
   // ======================= Validate =======================

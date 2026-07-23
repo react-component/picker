@@ -287,8 +287,7 @@ function RangePicker<DateType extends object = any>(
         range: getActiveRange(index),
       });
     },
-    (index) => {
-      triggerRangeValueChange(index, 'blur');
+    () => {
       triggerOpen(false);
     },
   );
@@ -342,6 +341,17 @@ function RangePicker<DateType extends object = any>(
   );
 
   useFocusLock(rangeValueIndex, selectorRef, popupRef, triggerOpen);
+
+  // Finalize the current interaction only after the popup is actually closed.
+  // 仅在 popup 实际关闭后，统一收口当前交互。
+  useLayoutEffect(
+    (firstMount) => {
+      if (!firstMount && !mergedOpen) {
+        triggerRangeValueChange(rangeValueIndex ?? activeIndex, 'popupClose');
+      }
+    },
+    [mergedOpen],
+  );
 
   // ======================= ShowTime =======================
   /** Used for Popup panel */

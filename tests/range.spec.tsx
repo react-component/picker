@@ -2286,6 +2286,30 @@ describe('Picker.Range', () => {
     expect(isOpen()).toBeFalsy();
   });
 
+  it('should reset unconfirmed value when controlled open becomes false', async () => {
+    const onChange = jest.fn();
+    const { container, rerender } = render(
+      <DayRangePicker open showTime allowEmpty onChange={onChange} />,
+    );
+    const [startInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    // Select a temporary start value without confirming it.
+    // 选择临时开始值，但不进行确认。
+    openPicker(container);
+    selectCell(5);
+    expect(startInput).not.toHaveValue('');
+    expect(onChange).not.toHaveBeenCalled();
+
+    // Simulate the parent controlling the Picker to close.
+    // 模拟父组件通过受控属性关闭 Picker。
+    rerender(<DayRangePicker open={false} showTime allowEmpty onChange={onChange} />);
+    await waitFakeTimer(0, 2);
+
+    expect(startInput).toHaveValue('');
+    expect(onChange).not.toHaveBeenCalled();
+    expect(isOpen()).toBeFalsy();
+  });
+
   it('should not update preview value in input when previewValue is false', () => {
     const { container } = render(
       <DayRangePicker

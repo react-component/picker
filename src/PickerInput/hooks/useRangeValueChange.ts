@@ -10,7 +10,7 @@ export type RangeValueChangeSource =
   | 'esc'
   | 'panel-intermediate'
   | 'panel-final'
-  | 'blur'
+  | 'popupClose'
   | 'field-switch'
   | 'confirm';
 
@@ -80,9 +80,9 @@ interface TriggeredField {
  *
  * - `esc` always resolves to `resetAll`.
  *   `esc` 始终解析为 `resetAll`。
- * - With no current field, a standalone `blur` resolves to `resetAll`; any
- *   other non-cancel event starts a new interaction from its field.
- *   没有当前 field 时，独立的 `blur` 解析为 `resetAll`；其余非撤销事件从
+ * - With no current field, `popupClose` resolves to `resetAll`; any other
+ *   non-cancel event starts a new interaction from its field.
+ *   没有当前 field 时，`popupClose` 解析为 `resetAll`；其余非撤销事件从
  *   对应 field 开始新一轮交互。
  * - `field-switch` advances exactly one field in circular order. `needConfirm`
  *   locks an unconfirmed non-empty field unless it allows empty; an allow-empty
@@ -96,13 +96,13 @@ interface TriggeredField {
  *   其余来源必须指向当前 field。`input` 与 `panel-intermediate` 只修改；
  *   `panel-final` 仅在无需确认时推进；`keyboard-submit` 与 `confirm` 仅在有值
  *   或允许空值时推进。
- * - `blur` finishes an untouched interaction. Without confirmation it submits
- *   a valid field; with confirmation it submits only after every field has
- *   participated, otherwise it resets all temporary values. A modified
+ * - `popupClose` finishes an untouched interaction. Without confirmation it
+ *   submits a valid field; with confirmation it submits only after every field
+ *   has participated, otherwise it resets all temporary values. A modified
  *   allow-empty field is reset before the final submit.
- *   `blur` 会直接结束未修改的交互。无需确认时提交有效 field；需要确认时仅在
- *   所有 field 都参与过后提交，否则重置全部临时值。当前 field 已修改且允许
- *   为空时，会先重置当前值再完成提交。
+ *   `popupClose` 会直接结束未修改的交互。无需确认时提交有效 field；需要确认时
+ *   仅在所有 field 都参与过后提交，否则重置全部临时值。当前 field 已修改且
+ *   允许为空时，会先重置当前值再完成提交。
  *
  * Action execution / Action 执行：
  *
@@ -224,10 +224,10 @@ export default function useRangeValueChange<FieldValue = unknown>(
     }
 
     if (currentIndex === null) {
-      // A blur after the interaction has completed still needs to discard any
-      // temporary CalendarValue left by a controlled value.
-      // 一轮交互结束后的 blur 仍需清理受控值留下的临时 CalendarValue。
-      return source === 'blur' ? 'resetAll' : 'abort';
+      // Closing the popup after the interaction has completed still needs to
+      // discard any temporary CalendarValue left by a controlled value.
+      // 一轮交互结束后关闭 popup，仍需清理受控值留下的临时 CalendarValue。
+      return source === 'popupClose' ? 'resetAll' : 'abort';
     }
 
     const currentValue = value === undefined ? getCalendarValue()[currentIndex] : value;
@@ -275,7 +275,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
       return 'abort';
     }
 
-    if (source === 'blur') {
+    if (source === 'popupClose') {
       const interactionModified = triggeredFieldsRef.current.some((field) => field.modified);
 
       if (!interactionModified) {
@@ -288,11 +288,11 @@ export default function useRangeValueChange<FieldValue = unknown>(
           false;
         const allFieldsTriggered = triggeredFieldsRef.current.length >= fieldCount;
 
-        // Blur ends the interaction instead of advancing to an unvisited field.
-        // When the current field allows empty, discard its unconfirmed value
-        // before finishing the round.
-        // blur 用于结束交互，不应继续推进到尚未访问的 field。当前 field
-        // 允许为空时，先丢弃未确认值，再结束本轮。
+        // Closing the popup ends the interaction instead of advancing to an
+        // unvisited field. When the current field allows empty, discard its
+        // unconfirmed value before finishing the round.
+        // 关闭 popup 用于结束交互，不应继续推进到尚未访问的 field。当前
+        // field 允许为空时，先丢弃未确认值，再结束本轮。
         if (!allFieldsTriggered || !canSwitch) {
           return 'resetAll';
         }
@@ -335,11 +335,11 @@ export default function useRangeValueChange<FieldValue = unknown>(
     (index: number, source: RangeValueChangeSource, value?: FieldValue) => {
       let currentIndex = getCurrentIndex();
 
-      // Start a new interaction from the first non-blur event. A standalone
-      // blur may clean temporary values but must not create an active field.
-      // 第一条非 blur 事件用于建立新一轮交互；单独的 blur 可以清理临时值，
+      // Start a new interaction from the first non-close event. Closing the
+      // popup may clean temporary values but must not create an active field.
+      // 第一条非关闭事件用于建立新一轮交互；关闭 popup 可以清理临时值，
       // 但不应因此创建 currentIndex。
-      if (currentIndex === null && source !== 'blur' && source !== 'esc') {
+      if (currentIndex === null && source !== 'popupClose' && source !== 'esc') {
         currentIndex = index;
         setCurrentIndex(index);
         recordTriggeredField(index, false);
@@ -417,9 +417,9 @@ export default function useRangeValueChange<FieldValue = unknown>(
             setCurrentIndex(index);
             recordTriggeredField(index, false);
           } else {
-            // Blur leaves the whole Picker, so it ends the interaction instead
-            // of focusing the next field.
-            // blur 表示离开整个 Picker，因此结束交互，不再聚焦下一个 field。
+            // Closing the popup ends the whole Picker interaction instead of
+            // focusing the next field.
+            // 关闭 popup 表示结束整个 Picker 交互，因此不再聚焦下一个 field。
             reset();
           }
           break;
