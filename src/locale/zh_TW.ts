@@ -20,8 +20,8 @@ const locale: Locale = {
   minutes: '分',
   seconds: '秒',
   milliseconds: '毫秒',
-  previousMonth: '上個月 (翻頁上鍵)',
-  nextMonth: '下個月 (翻頁下鍵)',
+  previousMonth: '上個月',
+  nextMonth: '下個月',
   monthSelect: '選擇月份',
   yearSelect: '選擇年份',
   decadeSelect: '選擇年代',
@@ -33,8 +33,8 @@ const locale: Locale = {
 
   yearFormat: 'YYYY年',
 
-  previousYear: '上一年 (Control鍵加左方向鍵)',
-  nextYear: '下一年 (Control鍵加右方向鍵)',
+  previousYear: '上一年',
+  nextYear: '下一年',
   previousDecade: '上一年代',
   nextDecade: '下一年代',
   previousCentury: '上一世紀',

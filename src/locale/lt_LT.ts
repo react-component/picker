@@ -30,10 +30,10 @@ const locale: Locale = {
 
   dayFormat: 'DD',
 
-  previousMonth: 'Buvęs mėnesis (PageUp)',
-  nextMonth: 'Kitas mėnesis (PageDown)',
-  previousYear: 'Buvę metai (Control + left)',
-  nextYear: 'Kiti metai (Control + right)',
+  previousMonth: 'Buvęs mėnesis',
+  nextMonth: 'Kitas mėnesis',
+  previousYear: 'Buvę metai',
+  nextYear: 'Kiti metai',
   previousDecade: 'Buvęs dešimtmetis',
   nextDecade: 'Kitas dešimtmetis',
   previousCentury: 'Buvęs amžius',

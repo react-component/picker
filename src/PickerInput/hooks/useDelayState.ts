@@ -23,7 +23,7 @@ export default function useDelayState<T>(
   const nextValueRef = React.useRef<T>(value);
 
   // ============================= Update =============================
-  const rafRef = React.useRef<number>();
+  const rafRef = React.useRef<number | undefined>(undefined);
   const cancelRaf = () => {
     raf.cancel(rafRef.current);
   };

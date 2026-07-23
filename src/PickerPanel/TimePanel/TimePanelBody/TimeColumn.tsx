@@ -63,7 +63,7 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
   const ulRef = React.useRef<HTMLUListElement>(null);
 
   // ========================= Scroll =========================
-  const checkDelayRef = React.useRef<any>();
+  const checkDelayRef = React.useRef<any>(undefined);
 
   const clearDelayCheck = () => {
     clearTimeout(checkDelayRef.current);

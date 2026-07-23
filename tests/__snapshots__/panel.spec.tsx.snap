@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Picker.Panel append cell with cellRender in date 1`] = `
 <div>
@@ -13,7 +13,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
         class="rc-picker-header"
       >
         <button
-          aria-label="Last year (Control + left)"
+          aria-label="Last year"
           class="rc-picker-header-super-prev-btn"
           tabindex="-1"
           type="button"
@@ -21,7 +21,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
           «
         </button>
         <button
-          aria-label="Previous month (PageUp)"
+          aria-label="Previous month"
           class="rc-picker-header-prev-btn"
           tabindex="-1"
           type="button"
@@ -49,7 +49,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
           </button>
         </div>
         <button
-          aria-label="Next month (PageDown)"
+          aria-label="Next month"
           class="rc-picker-header-next-btn"
           tabindex="-1"
           type="button"
@@ -57,7 +57,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
           ›
         </button>
         <button
-          aria-label="Next year (Control + right)"
+          aria-label="Next year"
           class="rc-picker-header-super-next-btn"
           tabindex="-1"
           type="button"
@@ -718,7 +718,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
         class="rc-picker-header"
       >
         <button
-          aria-label="Last year (Control + left)"
+          aria-label="Last year"
           class="rc-picker-header-super-prev-btn"
           tabindex="-1"
           type="button"
@@ -731,7 +731,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
           1900-1999
         </div>
         <button
-          aria-label="Next year (Control + right)"
+          aria-label="Next year"
           class="rc-picker-header-super-next-btn"
           tabindex="-1"
           type="button"
@@ -931,7 +931,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
         class="rc-picker-header"
       >
         <button
-          aria-label="Last year (Control + left)"
+          aria-label="Last year"
           class="rc-picker-header-super-prev-btn"
           tabindex="-1"
           type="button"
@@ -951,7 +951,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
           </button>
         </div>
         <button
-          aria-label="Next year (Control + right)"
+          aria-label="Next year"
           class="rc-picker-header-super-next-btn"
           tabindex="-1"
           type="button"
@@ -1163,7 +1163,7 @@ exports[`Picker.Panel append cell with cellRender in quarter 1`] = `
         class="rc-picker-header"
       >
         <button
-          aria-label="Last year (Control + left)"
+          aria-label="Last year"
           class="rc-picker-header-super-prev-btn"
           tabindex="-1"
           type="button"
@@ -1183,7 +1183,7 @@ exports[`Picker.Panel append cell with cellRender in quarter 1`] = `
           </button>
         </div>
         <button
-          aria-label="Next year (Control + right)"
+          aria-label="Next year"
           class="rc-picker-header-super-next-btn"
           tabindex="-1"
           type="button"
@@ -3918,7 +3918,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
         class="rc-picker-header"
       >
         <button
-          aria-label="Last year (Control + left)"
+          aria-label="Last year"
           class="rc-picker-header-super-prev-btn"
           tabindex="-1"
           type="button"
@@ -3926,7 +3926,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
           «
         </button>
         <button
-          aria-label="Previous month (PageUp)"
+          aria-label="Previous month"
           class="rc-picker-header-prev-btn"
           tabindex="-1"
           type="button"
@@ -3954,7 +3954,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
           </button>
         </div>
         <button
-          aria-label="Next month (PageDown)"
+          aria-label="Next month"
           class="rc-picker-header-next-btn"
           tabindex="-1"
           type="button"
@@ -3962,7 +3962,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
           ›
         </button>
         <button
-          aria-label="Next year (Control + right)"
+          aria-label="Next year"
           class="rc-picker-header-super-next-btn"
           tabindex="-1"
           type="button"
@@ -4696,7 +4696,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
         class="rc-picker-header"
       >
         <button
-          aria-label="Last year (Control + left)"
+          aria-label="Last year"
           class="rc-picker-header-super-prev-btn"
           tabindex="-1"
           type="button"
@@ -4718,7 +4718,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
           </button>
         </div>
         <button
-          aria-label="Next year (Control + right)"
+          aria-label="Next year"
           class="rc-picker-header-super-next-btn"
           tabindex="-1"
           type="button"
@@ -5015,7 +5015,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
         class="rc-picker-header"
       >
         <button
-          aria-label="Last year (Control + left)"
+          aria-label="Last year"
           class="rc-picker-header-super-prev-btn"
           tabindex="-1"
           type="button"
@@ -5023,7 +5023,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
           «
         </button>
         <button
-          aria-label="Previous month (PageUp)"
+          aria-label="Previous month"
           class="rc-picker-header-prev-btn"
           tabindex="-1"
           type="button"
@@ -5051,7 +5051,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
           </button>
         </div>
         <button
-          aria-label="Next month (PageDown)"
+          aria-label="Next month"
           class="rc-picker-header-next-btn"
           tabindex="-1"
           type="button"
@@ -5059,7 +5059,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
           ›
         </button>
         <button
-          aria-label="Next year (Control + right)"
+          aria-label="Next year"
           class="rc-picker-header-super-next-btn"
           tabindex="-1"
           type="button"
@@ -5552,7 +5552,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
         class="rc-picker-header"
       >
         <button
-          aria-label="Last year (Control + left)"
+          aria-label="Last year"
           class="rc-picker-header-super-prev-btn"
           tabindex="-1"
           type="button"
@@ -5565,7 +5565,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
           1900-1999
         </div>
         <button
-          aria-label="Next year (Control + right)"
+          aria-label="Next year"
           class="rc-picker-header-super-next-btn"
           tabindex="-1"
           type="button"
@@ -5717,7 +5717,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
         class="rc-picker-header"
       >
         <button
-          aria-label="Last year (Control + left)"
+          aria-label="Last year"
           class="rc-picker-header-super-prev-btn"
           tabindex="-1"
           type="button"
@@ -5737,7 +5737,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
           </button>
         </div>
         <button
-          aria-label="Next year (Control + right)"
+          aria-label="Next year"
           class="rc-picker-header-super-next-btn"
           tabindex="-1"
           type="button"
@@ -5901,7 +5901,7 @@ exports[`Picker.Panel override cell with cellRender in quarter 1`] = `
         class="rc-picker-header"
       >
         <button
-          aria-label="Last year (Control + left)"
+          aria-label="Last year"
           class="rc-picker-header-super-prev-btn"
           tabindex="-1"
           type="button"
@@ -5921,7 +5921,7 @@ exports[`Picker.Panel override cell with cellRender in quarter 1`] = `
           </button>
         </div>
         <button
-          aria-label="Next year (Control + right)"
+          aria-label="Next year"
           class="rc-picker-header-super-next-btn"
           tabindex="-1"
           type="button"
@@ -8064,7 +8064,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
         class="rc-picker-header"
       >
         <button
-          aria-label="Last year (Control + left)"
+          aria-label="Last year"
           class="rc-picker-header-super-prev-btn"
           tabindex="-1"
           type="button"
@@ -8072,7 +8072,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
           «
         </button>
         <button
-          aria-label="Previous month (PageUp)"
+          aria-label="Previous month"
           class="rc-picker-header-prev-btn"
           tabindex="-1"
           type="button"
@@ -8100,7 +8100,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
           </button>
         </div>
         <button
-          aria-label="Next month (PageDown)"
+          aria-label="Next month"
           class="rc-picker-header-next-btn"
           tabindex="-1"
           type="button"
@@ -8108,7 +8108,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
           ›
         </button>
         <button
-          aria-label="Next year (Control + right)"
+          aria-label="Next year"
           class="rc-picker-header-super-next-btn"
           tabindex="-1"
           type="button"
@@ -8674,7 +8674,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
         class="rc-picker-header"
       >
         <button
-          aria-label="Last year (Control + left)"
+          aria-label="Last year"
           class="rc-picker-header-super-prev-btn"
           tabindex="-1"
           type="button"
@@ -8696,7 +8696,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
           </button>
         </div>
         <button
-          aria-label="Next year (Control + right)"
+          aria-label="Next year"
           class="rc-picker-header-super-next-btn"
           tabindex="-1"
           type="button"
@@ -8863,7 +8863,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
           class="rc-picker-header"
         >
           <button
-            aria-label="Last year (Control + left)"
+            aria-label="Last year"
             class="rc-picker-header-super-prev-btn"
             tabindex="-1"
             type="button"
@@ -8871,7 +8871,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             «
           </button>
           <button
-            aria-label="Previous month (PageUp)"
+            aria-label="Previous month"
             class="rc-picker-header-prev-btn"
             tabindex="-1"
             type="button"
@@ -8899,7 +8899,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </button>
           </div>
           <button
-            aria-label="Next month (PageDown)"
+            aria-label="Next month"
             class="rc-picker-header-next-btn"
             tabindex="-1"
             type="button"
@@ -8907,7 +8907,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             ›
           </button>
           <button
-            aria-label="Next year (Control + right)"
+            aria-label="Next year"
             class="rc-picker-header-super-next-btn"
             tabindex="-1"
             type="button"
@@ -11589,7 +11589,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
         class="rc-picker-header"
       >
         <button
-          aria-label="Last year (Control + left)"
+          aria-label="Last year"
           class="rc-picker-header-super-prev-btn"
           tabindex="-1"
           type="button"
@@ -11597,7 +11597,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
           «
         </button>
         <button
-          aria-label="Previous month (PageUp)"
+          aria-label="Previous month"
           class="rc-picker-header-prev-btn"
           tabindex="-1"
           type="button"
@@ -11625,7 +11625,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
           </button>
         </div>
         <button
-          aria-label="Next month (PageDown)"
+          aria-label="Next month"
           class="rc-picker-header-next-btn"
           tabindex="-1"
           type="button"
@@ -11633,7 +11633,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
           ›
         </button>
         <button
-          aria-label="Next year (Control + right)"
+          aria-label="Next year"
           class="rc-picker-header-super-next-btn"
           tabindex="-1"
           type="button"

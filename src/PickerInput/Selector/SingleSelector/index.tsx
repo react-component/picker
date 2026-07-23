@@ -114,8 +114,8 @@ function SingleSelector<DateType extends object = any>(
   const { prefixCls, classNames, styles } = React.useContext(PickerContext);
 
   // ========================= Refs =========================
-  const rootRef = React.useRef<HTMLDivElement>();
-  const inputRef = React.useRef<InputRef>();
+  const rootRef = React.useRef<HTMLDivElement>(null);
+  const inputRef = React.useRef<InputRef>(null);
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: rootRef.current,
