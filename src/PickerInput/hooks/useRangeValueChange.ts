@@ -7,6 +7,7 @@ import * as React from 'react';
 export type RangeValueChangeSource =
   | 'input'
   | 'keyboard-submit'
+  | 'keyboard-submit-weak'
   | 'esc'
   | 'panel-intermediate'
   | 'panel-final'
@@ -17,6 +18,7 @@ export type RangeValueChangeSource =
 /** Resolved operation for one field interaction. / 一次 field 交互最终执行的操作。 */
 export type RangeValueChangeAction =
   | 'modify'
+  | 'submitCurrent'
   | 'switchNext'
   | 'finish'
   | 'abort'
@@ -91,11 +93,12 @@ interface TriggeredField {
  *   且非空的 field；允许空值时先重置再推进。
  * - Other sources must target the current field. `input` and
  *   `panel-intermediate` modify it; `panel-final` advances only without
- *   confirmation; `keyboard-submit` and `confirm` advance only when the field
- *   has a value or allows empty.
+ *   confirmation; `keyboard-submit-weak` part-submits without advancing;
+ *   `keyboard-submit` and `confirm` advance only when the field has a value or
+ *   allows empty.
  *   其余来源必须指向当前 field。`input` 与 `panel-intermediate` 只修改；
- *   `panel-final` 仅在无需确认时推进；`keyboard-submit` 与 `confirm` 仅在有值
- *   或允许空值时推进。
+ *   `panel-final` 仅在无需确认时推进；`keyboard-submit-weak` 只做局部提交而
+ *   不推进；`keyboard-submit` 与 `confirm` 仅在有值或允许空值时推进。
  * - `popupClose` finishes an untouched interaction. Without confirmation it
  *   submits a valid field; with confirmation it submits only after every field
  *   has participated, otherwise it resets all temporary values. A modified
@@ -108,6 +111,8 @@ interface TriggeredField {
  *
  * - `modify`: update or record the current CalendarValue.
  *   更新或记录当前 CalendarValue。
+ * - `submitCurrent`: part-submit the current field without advancing.
+ *   局部提交当前 field，但不推进。
  * - `switchNext`: submit the current field and advance to the next field.
  *   提交当前 field 并推进到下一个 field。
  * - `finish`: end an interaction in which no field was modified without
@@ -189,9 +194,10 @@ export default function useRangeValueChange<FieldValue = unknown>(
 
   // ============================= Submit ============================
 
-  // Flush the current field, then finish the round or advance to the next one.
-  // 提交当前 field，随后结束本轮或推进到下一个 field。
-  const submitField = (index: number) => {
+  // Flush the current field, then finish the round or optionally advance to
+  // the next one.
+  // 提交当前 field，随后结束本轮，或按需推进到下一个 field。
+  const submitField = (index: number, advance = true) => {
     recordTriggeredField(index);
 
     // Trigger final change after every field has participated once.
@@ -201,7 +207,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
 
     if (allFieldsTriggered) {
       reset();
-    } else {
+    } else if (advance) {
       const nextIndex = (index + 1) % fieldCount;
       setCurrentIndex(nextIndex);
     }
@@ -319,6 +325,10 @@ export default function useRangeValueChange<FieldValue = unknown>(
       return needConfirm ? 'modify' : 'switchNext';
     }
 
+    if (source === 'keyboard-submit-weak') {
+      return canSwitch ? 'submitCurrent' : 'abort';
+    }
+
     if (source === 'keyboard-submit' || source === 'confirm') {
       return canSwitch ? 'switchNext' : 'abort';
     }
@@ -357,6 +367,13 @@ export default function useRangeValueChange<FieldValue = unknown>(
           if (value !== undefined) {
             triggerCalendarChange(actionIndex, value);
           }
+          break;
+
+        case 'submitCurrent':
+          if (needConfirm) {
+            confirmedIndexRef.current = actionIndex;
+          }
+          submitField(actionIndex, false);
           break;
 
         case 'switchNext':

@@ -632,7 +632,7 @@ function Picker<DateType extends object = any>(
 
   const onSelectorKeyDown: SelectorProps['onKeyDown'] = (event, preventDefault) => {
     if (event.key === 'Tab') {
-      triggerConfirm('keyboard-submit');
+      triggerConfirm('keyboard-submit-weak');
     } else if (event.key === 'Escape') {
       triggerSingleValueChange(0, 'esc');
       triggerOpen(false);
