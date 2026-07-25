@@ -333,7 +333,7 @@ function Picker<DateType extends object = any>(
     resetValue();
   });
 
-  const [, activeIndex, , triggerSingleValueChange, resetSingleValueChange] = useRangeValueChange<
+  const [, activeIndex, , , triggerSingleValueChange, resetSingleValueChange] = useRangeValueChange<
     DateType[]
   >(
     1,

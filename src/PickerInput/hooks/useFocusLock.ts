@@ -14,6 +14,7 @@ interface FocusLockSelectorRef {
  */
 export default function useFocusLock(
   index: number | null,
+  forceFocus: boolean,
   selectorRef: React.RefObject<FocusLockSelectorRef | null>,
   popupRef: React.RefObject<HTMLElement | null>,
   triggerOpen: (open: boolean) => void,
@@ -22,14 +23,16 @@ export default function useFocusLock(
     triggerOpen(true);
   });
 
-  // Open the Picker and focus the controlled field after it changes.
-  // 当受控 field 发生切换后，重新打开 Picker 并聚焦对应的 field。
+  // Only a strong transition actively opens the Picker and moves DOM focus.
+  // Weak transitions keep the expected index without stealing external focus.
+  // 仅强切换会主动打开 Picker 并移动 DOM 焦点；弱切换只保留预期 index，
+  // 不抢占外部元素的焦点。
   React.useEffect(() => {
-    if (index !== null) {
+    if (index !== null && forceFocus) {
       openPicker();
       selectorRef.current?.focus(index);
     }
-  }, [index, openPicker]);
+  }, [index, forceFocus, openPicker]);
 
   // DOM focus may change while `index` stays the same, so check after every commit.
   // DOM 焦点变化时 `index` 可能保持不变，因此每次 commit 后都需要检查。

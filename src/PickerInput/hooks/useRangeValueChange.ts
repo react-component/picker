@@ -54,6 +54,7 @@ export type ResetValue = (index?: number) => void;
 export type UseRangeValueChangeReturn<FieldValue> = [
   currentIndex: number | null,
   activeIndex: number,
+  forceFocus: boolean,
   triggeredFields: number[],
   triggerChange: TriggerChange<FieldValue>,
   reset: VoidFunction,
@@ -77,6 +78,14 @@ interface TriggeredField {
  * that action, so event sources never submit or reset values on their own.
  * 每个事件先根据 `source`、`needConfirm`、`allowEmpty` 与 field index 得到唯一
  * action。状态只在执行 action 时改变，事件来源本身不直接提交或重置值。
+ *
+ * Index transitions also expose whether focus must follow the next field.
+ * Confirm-like operations and a popup close following a panel operation
+ * switch focus strongly. A popup close following input, Tab and an actual
+ * field focus switch only update the expected index.
+ * index 切换还会同步给出是否必须跟随聚焦下一个 field。确认类操作，以及面板
+ * 操作后的 popup 关闭使用强切换；input 后的 popup 关闭、Tab 与真实 field
+ * 聚焦切换只更新预期 index。
  *
  * Source resolution / 事件解析：
  *
@@ -149,9 +158,17 @@ export default function useRangeValueChange<FieldValue = unknown>(
   // 因此无法单独区分已确认值与未确认值。
   const confirmedIndexRef = React.useRef<number | null>(null);
 
+  // Mark whether the latest value update came from the input.
+  // 标记最近一次值更新是否来自 input。
+  const isLastInputRef = React.useRef(false);
+
   // Keep a render value and a synchronous getter for event handlers.
   // 同时保存渲染值，以及供事件处理函数同步读取的 getter。
   const [getCurrentIndex, setCurrentIndex] = useSyncState<number | null>(null);
+
+  // Record whether the latest index transition must actively move DOM focus.
+  // 记录最近一次 index 切换是否需要主动移动 DOM 焦点。
+  const [getForceFocus, setForceFocus] = useSyncState(false);
 
   // Keep the latest accepted field for panel and selector rendering.
   // 保留最后一个被业务接受的 field，供 panel 和 selector 渲染使用；
@@ -167,7 +184,9 @@ export default function useRangeValueChange<FieldValue = unknown>(
   const reset = useEvent(() => {
     triggeredFieldsRef.current = [];
     confirmedIndexRef.current = null;
+    isLastInputRef.current = false;
     setCurrentIndex(null);
+    setForceFocus(false);
   });
 
   // ============================= Record ============================
@@ -194,10 +213,11 @@ export default function useRangeValueChange<FieldValue = unknown>(
 
   // ============================= Submit ============================
 
-  // Flush the current field, then finish the round or optionally advance to
-  // the next one.
-  // 提交当前 field，随后结束本轮，或按需推进到下一个 field。
-  const submitField = (index: number, advance = true) => {
+  // Flush the current field and report whether the whole round is complete.
+  // Index and focus transitions are handled by the resolved action.
+  // 提交当前 field，并返回本轮是否已经完成。index 与焦点切换由解析后的
+  // action 负责。
+  const submitField = (index: number) => {
     recordTriggeredField(index);
 
     // Trigger final change after every field has participated once.
@@ -207,9 +227,6 @@ export default function useRangeValueChange<FieldValue = unknown>(
 
     if (allFieldsTriggered) {
       reset();
-    } else if (advance) {
-      const nextIndex = (index + 1) % fieldCount;
-      setCurrentIndex(nextIndex);
     }
 
     return allFieldsTriggered;
@@ -345,6 +362,12 @@ export default function useRangeValueChange<FieldValue = unknown>(
     (index: number, source: RangeValueChangeSource, value?: FieldValue) => {
       let currentIndex = getCurrentIndex();
 
+      // Popup close consumes the previous update type instead of replacing it.
+      // popup 关闭消费上一次更新类型，自身不覆盖该标记。
+      if (source !== 'popupClose') {
+        isLastInputRef.current = source === 'input';
+      }
+
       // Start a new interaction from the first non-close event. Closing the
       // popup may clean temporary values but must not create an active field.
       // 第一条非关闭事件用于建立新一轮交互；关闭 popup 可以清理临时值，
@@ -352,6 +375,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
       if (currentIndex === null && source !== 'popupClose' && source !== 'esc') {
         currentIndex = index;
         setCurrentIndex(index);
+        setForceFocus(false);
         recordTriggeredField(index, false);
       }
 
@@ -373,10 +397,10 @@ export default function useRangeValueChange<FieldValue = unknown>(
           if (needConfirm) {
             confirmedIndexRef.current = actionIndex;
           }
-          submitField(actionIndex, false);
+          submitField(actionIndex);
           break;
 
-        case 'switchNext':
+        case 'switchNext': {
           if (source === 'panel-final' || value !== undefined) {
             recordTriggeredField(actionIndex, true);
           }
@@ -386,16 +410,36 @@ export default function useRangeValueChange<FieldValue = unknown>(
           if (needConfirm && (source === 'keyboard-submit' || source === 'confirm')) {
             confirmedIndexRef.current = actionIndex;
           }
-          if (submitField(actionIndex) && source === 'field-switch') {
+
+          // Confirm-like operations and panel-originated popup closes must
+          // move focus to the next field. Input-originated closes remain weak.
+          // 确认类操作和面板操作后的 popup 关闭必须主动聚焦下一个 field；
+          // input 操作后的关闭仍保持弱切换。
+          const forceFocus =
+            source === 'confirm' ||
+            source === 'keyboard-submit' ||
+            source === 'panel-final' ||
+            (source === 'popupClose' && !isLastInputRef.current);
+
+          const allFieldsTriggered = submitField(actionIndex);
+
+          if (allFieldsTriggered && source === 'field-switch') {
             // The focus switch finishes the previous round and also starts a
             // new round from its target field.
             // 本次 focus 切换既结束上一轮，也以目标 field 开始新一轮。
             setCurrentIndex(index);
+            setForceFocus(false);
+          } else if (!allFieldsTriggered) {
+            const nextIndex = (actionIndex + 1) % fieldCount;
+            setCurrentIndex(nextIndex);
+            setForceFocus(forceFocus);
           }
+
           if (source === 'field-switch') {
             recordTriggeredField(index, false);
           }
           break;
+        }
 
         case 'finish':
           reset();
@@ -432,6 +476,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
             }
 
             setCurrentIndex(index);
+            setForceFocus(false);
             recordTriggeredField(index, false);
           } else {
             // Closing the popup ends the whole Picker interaction instead of
@@ -461,5 +506,12 @@ export default function useRangeValueChange<FieldValue = unknown>(
 
   const triggeredFields = triggeredFieldsRef.current.map((field) => field.index);
 
-  return [currentIndex, lastValidIndexRef.current, triggeredFields, triggerChange, reset];
+  return [
+    currentIndex,
+    lastValidIndexRef.current,
+    getForceFocus(),
+    triggeredFields,
+    triggerChange,
+    reset,
+  ];
 }

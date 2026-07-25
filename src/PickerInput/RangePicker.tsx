@@ -327,6 +327,7 @@ function RangePicker<DateType extends object = any>(
   const [
     rangeValueIndex,
     activeIndex,
+    forceFocus,
     triggeredFields,
     triggerRangeValueChange,
     resetRangeValueChange,
@@ -340,7 +341,7 @@ function RangePicker<DateType extends object = any>(
     resetValue,
   );
 
-  useFocusLock(rangeValueIndex, selectorRef, popupRef, triggerOpen);
+  useFocusLock(rangeValueIndex, forceFocus, selectorRef, popupRef, triggerOpen);
 
   // Finalize the current interaction only after the popup is actually closed.
   // 仅在 popup 实际关闭后，统一收口当前交互。

@@ -845,6 +845,33 @@ describe('Picker.Range', () => {
     expect(onBlur.mock.invocationCallOrder[0]).toBeLessThan(onFocus.mock.invocationCallOrder[0]);
   });
 
+  it('should keep focus outside after editing the start field', async () => {
+    const { container, getByRole } = render(
+      <>
+        <DayRangePicker />
+        <button type="button">Outside</button>
+      </>,
+    );
+    const [startInput] = container.querySelectorAll<HTMLInputElement>('input');
+    const outsideButton = getByRole('button', { name: 'Outside' });
+
+    // Enter a valid start value without completing the range.
+    // 输入有效的开始值，但不完成整个范围。
+    openPicker(container);
+    inputValue('1990-09-05');
+    expect(document.activeElement).toBe(startInput);
+
+    // Move focus outside and wait for the popup close flow to finish.
+    // 将焦点移到外部，并等待 popup 关闭流程结束。
+    fireEvent.mouseDown(outsideButton);
+    triggerFocus(outsideButton);
+    fireEvent.mouseUp(outsideButton);
+    fireEvent.click(outsideButton);
+    await waitFakeTimer(0, 2);
+
+    expect(document.activeElement).toBe(outsideButton);
+  });
+
   it('fixed open need repeat trigger onOpenChange', () => {
     const onOpenChange = jest.fn();
     render(<DayRangePicker onOpenChange={onOpenChange} open />);
