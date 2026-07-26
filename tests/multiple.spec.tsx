@@ -76,6 +76,34 @@ describe('Picker.Multiple', () => {
     expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-01', '1990-09-05']);
   });
 
+  it('should keep panel month when selecting dates across months', () => {
+    const onCalendarChange = jest.fn();
+    const { container } = render(
+      <DayPicker multiple needConfirm onCalendarChange={onCalendarChange} />,
+    );
+
+    // Select one date in September.
+    // 在九月选择一个日期。
+    openPicker(container);
+    selectCell(5);
+
+    // Navigate to November without confirming the September value.
+    // 不确认九月的值，直接将面板切换到十一月。
+    fireEvent.click(document.querySelector('.rc-picker-header-next-btn'));
+    fireEvent.click(document.querySelector('.rc-picker-header-next-btn'));
+    expect(document.querySelector('.rc-picker-header-view')).toHaveTextContent('Nov1990');
+
+    // Selecting in November should not move the panel back to September.
+    // 在十一月继续选择时，面板不应跳回九月。
+    selectCell(10);
+    expect(onCalendarChange).toHaveBeenLastCalledWith(
+      expect.anything(),
+      ['1990-09-05', '1990-11-10'],
+      expect.anything(),
+    );
+    expect(document.querySelector('.rc-picker-header-view')).toHaveTextContent('Nov1990');
+  });
+
   it('selector remove', () => {
     const onChange = jest.fn();
     const { container } = render(

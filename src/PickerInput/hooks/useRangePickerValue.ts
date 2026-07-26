@@ -211,7 +211,7 @@ export default function useRangePickerValue<DateType extends object, ValueType e
         }
       }
     }
-  }, [open, preserveOnFieldChange, mergedActiveIndex, startCalendarValue, endCalendarValue]);
+  }, [open, preserveOnFieldChange, mergedActiveIndex, calendarValue[mergedActiveIndex]]);
 
   // >>> Track previous field only during one continuous Picker focus session
   React.useEffect(() => {
