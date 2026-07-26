@@ -121,6 +121,24 @@ describe('Picker.Multiple', () => {
     expect(onChange).toHaveBeenCalledWith(expect.anything(), ['2000-01-28']);
   });
 
+  it('should trigger onChange when removing the last tag while closed', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayPicker multiple onChange={onChange} defaultValue={[getDay('2000-01-01')]} />,
+    );
+
+    // Remove the only tag while the popup remains closed.
+    // 在 popup 保持关闭时，删除唯一的标签。
+    expect(container.querySelectorAll('.rc-picker-selection-item')).toHaveLength(1);
+    const removeElement = container.querySelector('.rc-picker-selection-item-remove');
+    fireEvent.mouseDown(removeElement);
+    fireEvent.click(removeElement);
+
+    expect(isOpen()).toBeFalsy();
+    expect(container.querySelectorAll('.rc-picker-selection-item')).toHaveLength(0);
+    expect(onChange).toHaveBeenCalledWith([], null);
+  });
+
   it('open to remove selector should not trigger onChange', () => {
     const onChange = jest.fn();
     const { container } = render(

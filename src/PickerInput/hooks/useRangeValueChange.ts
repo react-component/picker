@@ -6,6 +6,7 @@ import * as React from 'react';
 /** Change source of a field. / Field 的变更来源。 */
 export type RangeValueChangeSource =
   | 'input'
+  | 'remove'
   | 'keyboard-submit'
   | 'keyboard-submit-weak'
   | 'esc'
@@ -101,13 +102,15 @@ interface TriggeredField {
  *   `field-switch` 只允许按循环顺序推进一个 field。`needConfirm` 会锁定未确认
  *   且非空的 field；允许空值时先重置再推进。
  * - Other sources must target the current field. `input` and
- *   `panel-intermediate` modify it; `panel-final` advances only without
- *   confirmation; `keyboard-submit-weak` part-submits without advancing;
- *   `keyboard-submit` and `confirm` advance only when the field has a value or
- *   allows empty.
+ *   `panel-intermediate` modify it; `remove` explicitly submits the removed
+ *   value even when the field does not allow empty. `panel-final` advances only
+ *   without confirmation; `keyboard-submit-weak` part-submits without
+ *   advancing; `keyboard-submit` and `confirm` advance only when the field has
+ *   a value or allows empty.
  *   其余来源必须指向当前 field。`input` 与 `panel-intermediate` 只修改；
- *   `panel-final` 仅在无需确认时推进；`keyboard-submit-weak` 只做局部提交而
- *   不推进；`keyboard-submit` 与 `confirm` 仅在有值或允许空值时推进。
+ *   `remove` 会明确提交删除后的值，即使 field 不允许为空；`panel-final`
+ *   仅在无需确认时推进；`keyboard-submit-weak` 只做局部提交而不推进；
+ *   `keyboard-submit` 与 `confirm` 仅在有值或允许空值时推进。
  * - `popupClose` finishes an untouched interaction. Without confirmation it
  *   submits a valid field; with confirmation it submits only after every field
  *   has participated, otherwise it resets all temporary values. A modified
@@ -256,6 +259,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
     const currentValue = value === undefined ? getCalendarValue()[currentIndex] : value;
     const currentEmpty = currentValue === null || currentValue === undefined;
     const canSwitch = !currentEmpty || allowEmpty[currentIndex];
+    const canSubmit = source === 'remove' || canSwitch;
 
     if (source === 'field-switch') {
       if (index === currentIndex) {
@@ -327,7 +331,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
         return 'switchNext';
       }
 
-      if (!canSwitch) {
+      if (!canSubmit) {
         return 'resetAll';
       }
 
@@ -343,11 +347,11 @@ export default function useRangeValueChange<FieldValue = unknown>(
     }
 
     if (source === 'keyboard-submit-weak') {
-      return canSwitch ? 'submitCurrent' : 'abort';
+      return canSubmit ? 'submitCurrent' : 'abort';
     }
 
-    if (source === 'keyboard-submit' || source === 'confirm') {
-      return canSwitch ? 'switchNext' : 'abort';
+    if (source === 'keyboard-submit' || source === 'confirm' || source === 'remove') {
+      return canSubmit ? 'switchNext' : 'abort';
     }
 
     return 'abort';

@@ -607,8 +607,8 @@ function Picker<DateType extends object = any>(
   // ========================================================
 
   // ======================== Change ========================
-  const onSelectorChange = (date: DateType[]) => {
-    triggerSingleValueChange(0, 'input', date);
+  const onSelectorChange = (date: DateType[], source: 'input' | 'remove' = 'input') => {
+    triggerSingleValueChange(0, source, date);
   };
 
   const onSelectorInputChange = () => {
