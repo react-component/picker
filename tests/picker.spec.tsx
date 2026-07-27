@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-loop-func */
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
+import { Temporal as TemporalPolyfill } from '@js-temporal/polyfill';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import moment from 'moment';
@@ -9,6 +10,7 @@ import React from 'react';
 import Picker, { PickerPanel, type PickerRef } from '../src';
 import type { PanelMode, PickerMode } from '../src/interface';
 import momentGenerateConfig from '../src/generate/moment';
+import temporalGenerateConfig from '../src/generate/temporal';
 import enUS from '../src/locale/en_US';
 import zhCN from '../src/locale/zh_CN';
 import {
@@ -38,6 +40,7 @@ jest.mock('@rc-component/util/lib/Dom/isVisible', () => {
 describe('Picker.Basic', () => {
   let errorSpy;
   beforeEach(() => {
+    globalThis.Temporal = TemporalPolyfill as typeof globalThis.Temporal;
     jest.useFakeTimers().setSystemTime(fakeTime);
   });
 
@@ -193,6 +196,29 @@ describe('Picker.Basic', () => {
   });
 
   describe('value', () => {
+    it('supports Temporal generateConfig', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Picker<TemporalPolyfill.PlainDateTime>
+          generateConfig={temporalGenerateConfig}
+          locale={enUS}
+          defaultValue={TemporalPolyfill.PlainDateTime.from('1989-11-28T00:00:00')}
+          onChange={onChange}
+        />,
+      );
+
+      expect(container.querySelector('input').value).toEqual('1989-11-28');
+
+      openPicker(container);
+      selectCell(11);
+      closePicker(container);
+
+      expect(onChange).toHaveBeenCalled();
+      expect(onChange.mock.calls[0][0].toString()).toEqual('1989-11-11T00:00:00');
+      expect(onChange.mock.calls[0][1]).toEqual('1989-11-11');
+      expect(container.querySelector('input').value).toEqual('1989-11-11');
+    });
+
     it('defaultValue', () => {
       const { container } = render(<DayPicker defaultValue={getDay('1989-11-28')} />);
       expect(container.querySelector('input').value).toEqual('1989-11-28');

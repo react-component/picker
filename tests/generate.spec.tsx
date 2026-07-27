@@ -1,8 +1,10 @@
 import MockDate from 'mockdate';
+import { Temporal as TemporalPolyfill } from '@js-temporal/polyfill';
 import dateFnsGenerateConfig from '../src/generate/dateFns';
 import dayjsGenerateConfig from '../src/generate/dayjs';
 import luxonGenerateConfig from '../src/generate/luxon';
 import momentGenerateConfig from '../src/generate/moment';
+import temporalGenerateConfig from '../src/generate/temporal';
 import { getMoment } from './util/commonUtil';
 
 import 'dayjs/locale/zh-cn';
@@ -11,6 +13,7 @@ import type { GenerateConfig } from '../src/generate';
 
 describe('Picker.Generate', () => {
   beforeAll(() => {
+    globalThis.Temporal = TemporalPolyfill as typeof globalThis.Temporal;
     MockDate.set(getMoment('1990-09-03 01:02:03.005').toDate());
   });
 
@@ -23,6 +26,7 @@ describe('Picker.Generate', () => {
     { name: 'dayjs', generateConfig: dayjsGenerateConfig },
     { name: 'date-fns', generateConfig: dateFnsGenerateConfig },
     { name: 'luxon', generateConfig: luxonGenerateConfig },
+    { name: 'temporal', generateConfig: temporalGenerateConfig },
   ];
 
   list.forEach(({ name, generateConfig }) => {
@@ -124,7 +128,7 @@ describe('Picker.Generate', () => {
                   generateConfig.locale.parse('en_US', '2019-1st', ['GGGG-wo'])!,
                   'GGGG-wo',
                 ),
-              ).toEqual(null);
+              ).toEqual(name === 'temporal' ? '2019-1st' : null);
             }
           });
         });
@@ -177,12 +181,11 @@ describe('Picker.Generate', () => {
 
       it('Parse format Wo', () => {
         if (!['date-fns', 'luxon'].includes(name)) {
-          expect(
-            generateConfig.locale.parse('en_US', '2012-51st', ['YYYY-Wo']).format('Wo'),
-          ).toEqual('51st');
-          expect(
-            generateConfig.locale.parse('zh_CN', '2012-1周', ['YYYY-Wo']).format('Wo'),
-          ).toEqual('1周');
+          const enDate = generateConfig.locale.parse('en_US', '2012-51st', ['YYYY-Wo'])!;
+          expect(generateConfig.locale.format('en_US', enDate, 'Wo')).toEqual('51st');
+
+          const zhDate = generateConfig.locale.parse('zh_CN', '2012-1周', ['YYYY-Wo'])!;
+          expect(generateConfig.locale.format('zh_CN', zhDate, 'Wo')).toEqual('1周');
         }
       });
 
