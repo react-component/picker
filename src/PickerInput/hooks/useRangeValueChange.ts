@@ -310,9 +310,9 @@ export default function useRangeValueChange<FieldValue = unknown>(
       }
 
       if (needConfirm) {
-        const currentModified =
-          triggeredFieldsRef.current.find((field) => field.index === currentIndex)?.modified ??
-          false;
+        const currentModified = triggeredFieldsRef.current.some(
+          (field) => field.index === currentIndex && field.modified,
+        );
         const allFieldsTriggered = triggeredFieldsRef.current.length >= fieldCount;
 
         // Closing the popup ends the interaction instead of advancing to an

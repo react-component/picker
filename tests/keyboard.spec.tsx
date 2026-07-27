@@ -106,6 +106,14 @@ describe('Picker.Keyboard', () => {
     expect(input).toHaveValue(temporaryValue);
     expect(onChange).not.toHaveBeenCalled();
     expect(isOpen()).toBeTruthy();
+
+    // Returning focus to the input is also an internal focus transition.
+    // 焦点回到 input 同样属于 Picker 内部切换。
+    triggerFocus(input);
+    expect(document.activeElement).toBe(input);
+    expect(input).toHaveValue(temporaryValue);
+    expect(onChange).not.toHaveBeenCalled();
+    expect(isOpen()).toBeTruthy();
   });
 
   it('warning for legacy preventDefault', () => {
