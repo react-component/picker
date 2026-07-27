@@ -602,7 +602,7 @@ describe('NewPicker.Range', () => {
     it('disabledDate provides info.range', () => {
       const disabledDate = jest.fn(() => false);
 
-      const { container } = render(<DayRangePicker disabledDate={disabledDate} />);
+      const { container } = render(<DayRangePicker allowEmpty disabledDate={disabledDate} />);
 
       openPicker(container);
       expect(disabledDate).toHaveBeenCalledWith(
