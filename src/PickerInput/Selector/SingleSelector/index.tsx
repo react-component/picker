@@ -16,7 +16,7 @@ export interface SingleSelectorProps<DateType extends object = any>
   id?: string;
 
   value?: DateType[];
-  onChange: (date: DateType[]) => void;
+  onChange: (date: DateType[], source?: 'input' | 'remove') => void;
 
   internalPicker: InternalMode;
 
@@ -114,8 +114,8 @@ function SingleSelector<DateType extends object = any>(
   const { prefixCls, classNames, styles } = React.useContext(PickerContext);
 
   // ========================= Refs =========================
-  const rootRef = React.useRef<HTMLDivElement>();
-  const inputRef = React.useRef<InputRef>();
+  const rootRef = React.useRef<HTMLDivElement>(null);
+  const inputRef = React.useRef<InputRef>(null);
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: rootRef.current,
@@ -132,19 +132,18 @@ function SingleSelector<DateType extends object = any>(
 
   // ======================== Change ========================
   const onSingleChange = (date: DateType) => {
-    onChange([date]);
+    onChange([date], 'input');
   };
 
   const onMultipleRemove = (date: DateType) => {
     const nextValues = value.filter(
       (oriDate) => oriDate && !isSame(generateConfig, locale, oriDate, date, internalPicker),
     );
-    onChange(nextValues);
-
-    // When `open`, it means user is operating the
-    if (!open) {
-      onSubmit();
-    }
+    // An open popup keeps removal temporary until confirmation. Removing while
+    // closed is final and submits through the explicit `remove` source.
+    // popup 打开时仅保留临时删除值并等待确认；关闭时删除是最终操作，通过
+    // 明确的 `remove` 来源提交。
+    onChange(nextValues, open ? 'input' : 'remove');
   };
 
   // ======================== Inputs ========================

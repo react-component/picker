@@ -202,7 +202,7 @@ function PickerPanel<DateType extends object = any>(
   const mergedPrefixCls = contextPrefixCls || prefixCls || 'rc-picker';
 
   // ========================== Refs ==========================
-  const rootRef = React.useRef<HTMLDivElement>();
+  const rootRef = React.useRef<HTMLDivElement>(null);
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: rootRef.current,

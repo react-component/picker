@@ -7,7 +7,7 @@ import useScrollTo from './useScrollTo';
 const SCROLL_DELAY = 300;
 
 export type Unit<ValueType = number | string> = {
-  label: React.ReactText;
+  label: string | number;
   value: ValueType;
   disabled?: boolean;
 };
@@ -41,7 +41,7 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
   const ulRef = React.useRef<HTMLUListElement>(null);
 
   // ========================= Scroll =========================
-  const checkDelayRef = React.useRef<any>();
+  const checkDelayRef = React.useRef<any>(undefined);
 
   const clearDelayCheck = () => {
     clearTimeout(checkDelayRef.current);

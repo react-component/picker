@@ -20,10 +20,10 @@ const locale: Locale = {
 
   dayFormat: 'DD',
 
-  previousMonth: 'Mois précédent (PageUp)',
-  nextMonth: 'Mois suivant (PageDown)',
-  previousYear: 'Année précédente (Ctrl + gauche)',
-  nextYear: 'Année prochaine (Ctrl + droite)',
+  previousMonth: 'Mois précédent',
+  nextMonth: 'Mois suivant',
+  previousYear: 'Année précédente',
+  nextYear: 'Année prochaine',
   previousDecade: 'Décennie précédente',
   nextDecade: 'Décennie suivante',
   previousCentury: 'Siècle précédent',

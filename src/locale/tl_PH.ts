@@ -19,30 +19,17 @@ const locale: Locale = {
   yearSelect: 'Pumili ng taon',
   decadeSelect: 'Pumili ng dekada',
 
-  previousMonth: 'Nakaraang buwan (PageUp)',
-  nextMonth: 'Susunod na buwan (PageDown)',
-  previousYear: 'Nakaraang taon (Control + left)',
-  nextYear: 'Susunod na taon (Control + right)',
+  previousMonth: 'Nakaraang buwan',
+  nextMonth: 'Susunod na buwan',
+  previousYear: 'Nakaraang taon',
+  nextYear: 'Susunod na taon',
   previousDecade: 'Nakaraang dekada',
   nextDecade: 'Susunod na dekada',
   previousCentury: 'Nakaraang siglo',
   nextCentury: 'Susunod na siglo',
 
   shortWeekDays: ['Lin', 'Lun', 'Mar', 'Miy', 'Huw', 'Biy', 'Sab'],
-  shortMonths: [
-    'Ene',
-    'Peb',
-    'Mar',
-    'Abr',
-    'May',
-    'Hun',
-    'Hul',
-    'Ago',
-    'Set',
-    'Okt',
-    'Nob',
-    'Dis',
-  ],
+  shortMonths: ['Ene', 'Peb', 'Mar', 'Abr', 'May', 'Hun', 'Hul', 'Ago', 'Set', 'Okt', 'Nob', 'Dis'],
 };
 
 export default locale;

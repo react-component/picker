@@ -1,6 +1,6 @@
 // Note: zombieJ refactoring
 
-import { act, createEvent, fireEvent, render } from '@testing-library/react';
+import { act, createEvent, fireEvent, render, renderHook } from '@testing-library/react';
 import { createRoot } from 'react-dom/client';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
@@ -8,6 +8,7 @@ import { KeyCode, resetWarned, spyElementPrototypes } from '@rc-component/util';
 import React from 'react';
 import type { PickerRef, RangePickerProps } from '../src';
 import type { PickerMode } from '../src/interface';
+import useRangeValueChange from '../src/PickerInput/hooks/useRangeValueChange';
 import { _rs } from '@rc-component/resize-observer';
 
 const triggerResize = (target: Element) => {
@@ -28,10 +29,46 @@ import {
   isSame,
   openPicker,
   selectCell,
+  triggerBlur,
+  triggerFocus,
   waitFakeTimer,
 } from './util/commonUtil';
 
 global.error = console.error;
+
+describe('useRangeValueChange', () => {
+  // Coverage case: replace this test if a clearer interaction can cover the
+  // same behavior. / 覆盖率用例：若有更清晰的交互覆盖相同行为，可直接替换。
+  it('should not skip fields when fieldCount is greater than two', () => {
+    const triggerCalendarChange = jest.fn();
+    const flushSubmit = jest.fn();
+    const resetValue = jest.fn();
+    const { result } = renderHook(() =>
+      useRangeValueChange(
+        3,
+        false,
+        [true, true, true],
+        () => [null, null, null],
+        triggerCalendarChange,
+        flushSubmit,
+        resetValue,
+      ),
+    );
+
+    // Start from field 0, then try to skip field 1 and jump to field 2.
+    // 从 field 0 开始，然后尝试跳过 field 1，直接进入 field 2。
+    act(() => {
+      result.current[4](0, 'field-switch');
+      result.current[4](2, 'field-switch');
+    });
+
+    expect(result.current[0]).toBe(0);
+    expect(result.current[3]).toEqual([0]);
+    expect(triggerCalendarChange).not.toHaveBeenCalled();
+    expect(flushSubmit).not.toHaveBeenCalled();
+    expect(resetValue).not.toHaveBeenCalled();
+  });
+});
 
 describe('Picker.Range', () => {
   let errorSpy;
@@ -555,10 +592,10 @@ describe('Picker.Range', () => {
         </div>,
       );
 
-      ref.current!.focus();
+      triggerFocus(ref.current!);
       expect(focused).toBeTruthy();
 
-      ref.current!.blur();
+      triggerBlur(ref.current!);
       expect(blurred).toBeTruthy();
     });
 
@@ -594,7 +631,7 @@ describe('Picker.Range', () => {
   });
 
   it('mode is array', () => {
-    const { container } = render(<DayRangePicker mode={['year', 'month']} />);
+    const { container } = render(<DayRangePicker allowEmpty mode={['year', 'month']} />);
     openPicker(container);
     expect(document.querySelector('.rc-picker-year-panel')).toBeTruthy();
 
@@ -739,7 +776,7 @@ describe('Picker.Range', () => {
     selectCell(11);
     expect(isOpen()).toBeTruthy();
 
-    fireEvent.blur(container.querySelectorAll('input')[1]);
+    triggerBlur(container.querySelectorAll('input')[1]);
 
     act(() => {
       jest.runAllTimers();
@@ -814,12 +851,60 @@ describe('Picker.Range', () => {
 
     act(() => {
       fireEvent.mouseDown(container.querySelectorAll('input')[1]);
-      fireEvent.blur(container.querySelectorAll('input')[0]);
-      fireEvent.focus(container.querySelectorAll('input')[1]);
+      triggerFocus(container.querySelectorAll('input')[1]);
       jest.runAllTimers();
     });
 
     expect(onOpenChange).not.toHaveBeenCalled();
+  });
+
+  it('should trigger blur and focus events when switching fields', () => {
+    const onFocus = jest.fn();
+    const onBlur = jest.fn();
+    const { container } = render(<DayRangePicker allowEmpty onFocus={onFocus} onBlur={onBlur} />);
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    triggerFocus(startInput);
+    onFocus.mockClear();
+
+    triggerFocus(endInput);
+
+    expect(onBlur).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({ range: 'start' }),
+    );
+    expect(onFocus).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({ range: 'end' }),
+    );
+    expect(onBlur.mock.invocationCallOrder[0]).toBeLessThan(onFocus.mock.invocationCallOrder[0]);
+  });
+
+  it('should keep focus outside after editing the start field', async () => {
+    const { container, getByRole } = render(
+      <>
+        <DayRangePicker />
+        <button type="button">Outside</button>
+      </>,
+    );
+    const [startInput] = container.querySelectorAll<HTMLInputElement>('input');
+    const outsideButton = getByRole('button', { name: 'Outside' });
+
+    // Enter a valid start value without completing the range.
+    // 输入有效的开始值，但不完成整个范围。
+    openPicker(container);
+    inputValue('1990-09-05');
+    expect(document.activeElement).toBe(startInput);
+
+    // Move focus outside and wait for the popup close flow to finish.
+    // 将焦点移到外部，并等待 popup 关闭流程结束。
+    fireEvent.mouseDown(outsideButton);
+    triggerFocus(outsideButton);
+    fireEvent.mouseUp(outsideButton);
+    fireEvent.click(outsideButton);
+    await waitFakeTimer(0, 2);
+
+    expect(document.activeElement).toBe(outsideButton);
   });
 
   it('fixed open need repeat trigger onOpenChange', () => {
@@ -949,6 +1034,7 @@ describe('Picker.Range', () => {
           it('defaultPickerValue', () => {
             const { container } = render(
               <DayRangePicker
+                allowEmpty
                 picker={picker as any}
                 defaultPickerValue={defaultPickerValue as any}
               />,
@@ -1198,8 +1284,7 @@ describe('Picker.Range', () => {
       },
     });
 
-    // Force blur since fireEvent blur will not change document.activeElement
-    container.querySelectorAll('input')[1].blur();
+    triggerBlur(container.querySelectorAll('input')[1]);
     closePicker(container, 1);
 
     expect(document.querySelectorAll('input')[0].value).toEqual('19890903');
@@ -1613,7 +1698,7 @@ describe('Picker.Range', () => {
     // back to first panel and clear input value
     // `testing-lib` fire the `focus` event but not change the `document.activeElement`
     // We call `focus` manually here
-    document.querySelectorAll('input')[0].focus();
+    triggerFocus(document.querySelectorAll('input')[0]);
     inputValue('', 0);
 
     // reselect date
@@ -1684,7 +1769,7 @@ describe('Picker.Range', () => {
     const { container } = render(
       <DayRangePicker onCalendarChange={onCalendarChange} disabledDate={disabledDate} />,
     );
-    fireEvent.focus(document.querySelector('input'));
+    triggerFocus(document.querySelector('input'));
 
     function pickerKeyDown(keyCode: number) {
       fireEvent.keyDown(container.querySelector('.rc-picker'), {
@@ -1969,10 +2054,34 @@ describe('Picker.Range', () => {
     expect(document.querySelector('input').value).toEqual('');
   });
 
+  it('should reset interaction state after clear', () => {
+    const { container } = render(<DayRangePicker allowClear />);
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    // Select a start date, then clear the whole range.
+    // 选择开始日期，然后清空整个范围。
+    openPicker(container);
+    selectCell(5);
+    clearValue();
+
+    expect(startInput).toHaveValue('');
+    expect(endInput).toHaveValue('');
+
+    // Select the end date after clearing. The Picker should stay open and
+    // switch back to the missing start field.
+    // 清空后选择结束日期。Picker 应保持打开，并切回缺失的开始 field。
+    openPicker(container, 1);
+    selectCell(10);
+
+    expect(endInput).toHaveValue('1990-09-10');
+    expect(isOpen()).toBeTruthy();
+    expect(container.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
+  });
+
   it('selected date when open is true should switch panel', () => {
     const { container } = render(<DayRangePicker open />);
 
-    fireEvent.focus(container.querySelector('input'));
+    triggerFocus(container.querySelector('input'));
     fireEvent.click(document.querySelector('.rc-picker-cell'));
 
     expect(document.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
@@ -2020,7 +2129,7 @@ describe('Picker.Range', () => {
     const onOpenChange = jest.fn();
 
     const { container } = render(<DayRangePicker open showTime onOpenChange={onOpenChange} />);
-    fireEvent.focus(container.querySelector('input'));
+    triggerFocus(container.querySelector('input'));
 
     for (let i = 0; i < 2; i++) {
       selectCell(24);
@@ -2036,15 +2145,13 @@ describe('Picker.Range', () => {
     const { container } = render(<DayRangePicker />);
 
     act(() => {
-      fireEvent.focus(container.querySelectorAll('input')[0]);
+      triggerFocus(container.querySelectorAll('input')[0]);
       fireEvent.change(container.querySelectorAll('input')[0], {
         target: {
           value: '2024-06-13',
         },
       });
-      fireEvent.blur(container.querySelectorAll('input')[0]);
-
-      fireEvent.focus(container.querySelectorAll('input')[1]);
+      triggerFocus(container.querySelectorAll('input')[1]);
       fireEvent.change(container.querySelectorAll('input')[1], {
         target: {
           value: '2024-06-15',
@@ -2076,7 +2183,9 @@ describe('Picker.Range', () => {
     selectCell(2, 0);
 
     // Click outside to blur
+    const focusedElement = document.activeElement;
     fireEvent.mouseDown(document.body);
+    triggerBlur(focusedElement as HTMLElement);
     fireEvent.mouseUp(document.body);
     fireEvent.click(document.body);
 
@@ -2119,6 +2228,62 @@ describe('Picker.Range', () => {
     );
   });
 
+  it('should lock unconfirmed start focus in shadow dom', () => {
+    const shadowRoot = renderShadow({ showTime: true, needConfirm: true });
+    const [startInput, endInput] = shadowRoot.querySelectorAll<HTMLInputElement>('input');
+
+    // Select a start date without confirming it.
+    // 选择开始日期，但不进行确认。
+    openPicker(shadowRoot);
+    selectCell(11);
+    expect(shadowRoot.activeElement).toBe(startInput);
+
+    // An unconfirmed field cannot switch, so focus should return to start.
+    // 未确认的 field 不允许切换，因此焦点应回到开始输入框。
+    openPicker(shadowRoot, 1);
+
+    expect(shadowRoot.activeElement).not.toBe(endInput);
+    expect(shadowRoot.activeElement).toBe(startInput);
+  });
+
+  it('should keep unconfirmed value when focus moves between shadow input and popup', async () => {
+    const onChange = jest.fn();
+    const shadowRoot = renderShadow({
+      showTime: true,
+      needConfirm: true,
+      allowEmpty: true,
+      onChange,
+    });
+    const [startInput] = shadowRoot.querySelectorAll<HTMLInputElement>('input');
+
+    // Select a temporary start value without confirming it.
+    // 选择临时开始值，但不进行确认。
+    openPicker(shadowRoot);
+    selectCell(5);
+    const temporaryValue = startInput.value;
+    expect(temporaryValue).not.toBe('');
+    expect(onChange).not.toHaveBeenCalled();
+
+    // Move focus from the Shadow DOM input to the document-level Portal popup,
+    // then move it back to the same input.
+    // 焦点从 Shadow DOM 内的 input 移到 document 下的 Portal popup，
+    // 再回到同一个 input。
+    const panel = document.querySelector<HTMLElement>('.rc-picker-panel');
+    triggerFocus(panel);
+    expect(document.activeElement).toBe(panel);
+    await waitFakeTimer(0, 2);
+    expect(startInput).toHaveValue(temporaryValue);
+    expect(isOpen()).toBeTruthy();
+
+    triggerFocus(startInput);
+    expect(shadowRoot.activeElement).toBe(startInput);
+    await waitFakeTimer(0, 2);
+
+    expect(startInput).toHaveValue(temporaryValue);
+    expect(onChange).not.toHaveBeenCalled();
+    expect(isOpen()).toBeTruthy();
+  });
+
   it('should not click to focus on next field if first field is not confirm', () => {
     const onCalendarChange = jest.fn();
     const { container } = render(
@@ -2133,6 +2298,167 @@ describe('Picker.Range', () => {
     // Not click confirm and click next field
     openPicker(container, 1);
     expect(container.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
+  });
+
+  // https://github.com/ant-design/ant-design/issues/57728
+  it('should not submit unconfirmed allowEmpty value on blur', async () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    // Select start without confirming, then switch to end and back to start.
+    openPicker(container);
+    expect(document.activeElement).toBe(startInput);
+    expect(container.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
+    expect(isOpen()).toBeTruthy();
+
+    selectCell(5);
+    openPicker(container, 1);
+
+    expect(document.activeElement).toBe(endInput);
+    expect(container.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
+    expect(isOpen()).toBeTruthy();
+    expect(startInput).toHaveValue('');
+
+    openPicker(container);
+
+    expect(document.activeElement).toBe(startInput);
+    expect(container.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
+    expect(isOpen()).toBeTruthy();
+
+    // Blur the whole Picker without clicking OK.
+    fireEvent.mouseDown(document.body);
+    triggerBlur(document.activeElement as HTMLElement);
+    await waitFakeTimer(0, 2);
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(startInput).toHaveValue('');
+    expect(endInput).toHaveValue('');
+    expect(isOpen()).toBeFalsy();
+  });
+
+  it('should reset unconfirmed end after switching back and blurring', async () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    // Confirm the start date. / 确认开始日期。
+    openPicker(container);
+    selectCell(5);
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+
+    // Select an end date without confirming it. / 选择结束日期，但不确认。
+    selectCell(10);
+    expect(endInput).not.toHaveValue('');
+
+    // Switch back to the start field and then leave the whole Picker.
+    // 切回开始 field，然后离开整个 Picker。
+    openPicker(container);
+    expect(document.activeElement).toBe(startInput);
+
+    fireEvent.mouseDown(document.body);
+    triggerBlur(startInput);
+    await waitFakeTimer(0, 2);
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(endInput).toHaveValue('');
+  });
+
+  // Coverage case: replace these tests if a clearer interaction can cover the
+  // same behavior. / 覆盖率用例：若有更清晰的交互覆盖相同行为，可直接替换。
+  it('should reset unconfirmed end when popup closes directly', async () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+    const [, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    // Confirm start, then leave a modified end value unconfirmed.
+    // 确认 start，然后保留一个已修改但未确认的 end 值。
+    openPicker(container);
+    selectCell(5);
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    selectCell(10);
+    expect(endInput).not.toHaveValue('');
+
+    // Closing directly must discard the temporary end without submitting the
+    // round. / 直接关闭时必须丢弃临时 end，且不能提交本轮数据。
+    fireEvent.mouseDown(document.body);
+    triggerBlur(endInput);
+    await waitFakeTimer(0, 2);
+
+    expect(endInput).toHaveValue('');
+    expect(onChange).not.toHaveBeenCalled();
+    expect(isOpen()).toBeFalsy();
+  });
+
+  it('should require confirmation again after editing a confirmed field', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker showTime allowEmpty={[false, true]} onChange={onChange} />,
+    );
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    // Confirm start, use the empty end to switch back, then edit start again.
+    // 确认 start，借助允许为空的 end 切回，再次修改 start。
+    openPicker(container);
+    selectCell(5);
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    openPicker(container);
+    selectCell(10);
+
+    // The edited start is no longer confirmed, so end cannot take focus.
+    // start 修改后不再是已确认状态，因此不能切换焦点到 end。
+    openPicker(container, 1);
+
+    expect(startInput).toHaveFocus();
+    expect(endInput).not.toHaveFocus();
+    expect(container.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('should submit confirmed start when allowEmpty end blurs', async () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+    const [, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    openPicker(container);
+    selectCell(5);
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+
+    expect(document.activeElement).toBe(endInput);
+    expect(container.querySelectorAll('.rc-picker-input')[1]).toHaveClass('rc-picker-input-active');
+
+    fireEvent.mouseDown(document.body);
+    triggerBlur(endInput);
+    await waitFakeTimer(0, 2);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange.mock.calls[0][0][0]).toBeTruthy();
+    expect(onChange.mock.calls[0][0][1]).toBeNull();
+    expect(isOpen()).toBeFalsy();
+  });
+
+  it('should reset unconfirmed value when controlled open becomes false', async () => {
+    const onChange = jest.fn();
+    const { container, rerender } = render(
+      <DayRangePicker open showTime allowEmpty onChange={onChange} />,
+    );
+    const [startInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    // Select a temporary start value without confirming it.
+    // 选择临时开始值，但不进行确认。
+    openPicker(container);
+    selectCell(5);
+    expect(startInput).not.toHaveValue('');
+    expect(onChange).not.toHaveBeenCalled();
+
+    // Simulate the parent controlling the Picker to close.
+    // 模拟父组件通过受控属性关闭 Picker。
+    rerender(<DayRangePicker open={false} showTime allowEmpty onChange={onChange} />);
+    await waitFakeTimer(0, 2);
+
+    expect(startInput).toHaveValue('');
+    expect(onChange).not.toHaveBeenCalled();
+    expect(isOpen()).toBeFalsy();
   });
 
   it('should not update preview value in input when previewValue is false', () => {

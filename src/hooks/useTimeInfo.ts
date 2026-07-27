@@ -6,7 +6,7 @@ import { findValidateTime } from '../PickerPanel/TimePanel/TimePanelBody/util';
 import { leftPad } from '../utils/miscUtil';
 
 export type Unit<ValueType = number | string> = {
-  label: React.ReactText;
+  label: string | number;
   value: ValueType;
   disabled?: boolean;
 };

@@ -12,27 +12,25 @@ export default function useRangeDisabledDate<DateType extends object = any>(
   values: RangeValueType<DateType>,
   disabled: [boolean, boolean],
   activeIndex: number,
-  activeIndexList: number[],
+  triggeredFields: number[],
   generateConfig: GenerateConfig<DateType>,
   locale: Locale,
   disabledDate?: DisabledDate<DateType>,
 ) {
-  const activeListIndex = activeIndexList[activeIndexList.length - 1];
-
   const rangeDisabledDate: DisabledDate<DateType> = (date, info) => {
     const [start, end] = values;
     const range: 'start' | 'end' = activeIndex === 1 ? 'end' : 'start';
 
     const mergedInfo = {
       ...info,
-      from: getFromDate(values, activeIndexList),
+      from: getFromDate(values, triggeredFields, activeIndex),
       range,
     };
 
     // ============================ Disabled ============================
     // Should not select days before the start date
     if (
-      activeListIndex === 1 &&
+      activeIndex === 1 &&
       disabled[0] &&
       start &&
       // Same date isOK
@@ -45,7 +43,7 @@ export default function useRangeDisabledDate<DateType extends object = any>(
 
     // Should not select days after the end date
     if (
-      activeListIndex === 0 &&
+      activeIndex === 0 &&
       disabled[1] &&
       end &&
       // Same date isOK

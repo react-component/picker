@@ -76,6 +76,34 @@ describe('Picker.Multiple', () => {
     expect(onChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-01', '1990-09-05']);
   });
 
+  it('should keep panel month when selecting dates across months', () => {
+    const onCalendarChange = jest.fn();
+    const { container } = render(
+      <DayPicker multiple needConfirm onCalendarChange={onCalendarChange} />,
+    );
+
+    // Select one date in September.
+    // 在九月选择一个日期。
+    openPicker(container);
+    selectCell(5);
+
+    // Navigate to November without confirming the September value.
+    // 不确认九月的值，直接将面板切换到十一月。
+    fireEvent.click(document.querySelector('.rc-picker-header-next-btn'));
+    fireEvent.click(document.querySelector('.rc-picker-header-next-btn'));
+    expect(document.querySelector('.rc-picker-header-view')).toHaveTextContent('Nov1990');
+
+    // Selecting in November should not move the panel back to September.
+    // 在十一月继续选择时，面板不应跳回九月。
+    selectCell(10);
+    expect(onCalendarChange).toHaveBeenLastCalledWith(
+      expect.anything(),
+      ['1990-09-05', '1990-11-10'],
+      expect.anything(),
+    );
+    expect(document.querySelector('.rc-picker-header-view')).toHaveTextContent('Nov1990');
+  });
+
   it('selector remove', () => {
     const onChange = jest.fn();
     const { container } = render(
@@ -91,6 +119,24 @@ describe('Picker.Multiple', () => {
     fireEvent.mouseDown(removeEle);
     fireEvent.click(removeEle);
     expect(onChange).toHaveBeenCalledWith(expect.anything(), ['2000-01-28']);
+  });
+
+  it('should trigger onChange when removing the last tag while closed', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayPicker multiple onChange={onChange} defaultValue={[getDay('2000-01-01')]} />,
+    );
+
+    // Remove the only tag while the popup remains closed.
+    // 在 popup 保持关闭时，删除唯一的标签。
+    expect(container.querySelectorAll('.rc-picker-selection-item')).toHaveLength(1);
+    const removeElement = container.querySelector('.rc-picker-selection-item-remove');
+    fireEvent.mouseDown(removeElement);
+    fireEvent.click(removeElement);
+
+    expect(isOpen()).toBeFalsy();
+    expect(container.querySelectorAll('.rc-picker-selection-item')).toHaveLength(0);
+    expect(onChange).toHaveBeenCalledWith([], null);
   });
 
   it('open to remove selector should not trigger onChange', () => {

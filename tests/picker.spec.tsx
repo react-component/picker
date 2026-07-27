@@ -24,6 +24,8 @@ import {
   isSame,
   openPicker,
   selectCell,
+  triggerBlur,
+  triggerFocus,
   waitFakeTimer,
 } from './util/commonUtil';
 
@@ -256,7 +258,7 @@ describe('Picker.Basic', () => {
           <DayPicker onChange={onChange} picker={picker as any} allowClear />,
         );
         openPicker(container);
-        fireEvent.focus(container.querySelector('input'));
+        triggerFocus(container.querySelector('input'));
 
         // Invalidate value
         fireEvent.change(container.querySelector('input'), {
@@ -293,7 +295,7 @@ describe('Picker.Basic', () => {
     it('should not throw errow when input end year first', () => {
       const { container } = render(<DayRangePicker picker="year" />);
       openPicker(container);
-      fireEvent.focus(container.querySelectorAll('input')[1]);
+      triggerFocus(container.querySelectorAll('input')[1]);
       expect(() => {
         fireEvent.change(container.querySelectorAll('input')[1], {
           target: {
@@ -311,11 +313,17 @@ describe('Picker.Basic', () => {
 
     beforeAll(() => {
       domMock = spyElementPrototypes(HTMLElement, {
-        focus: () => {
+        focus(oriDesc: any, ...rest: any[]) {
           focused = true;
+
+          // Call origin
+          oriDesc.value.call(this, ...rest);
         },
-        blur: () => {
+        blur(oriDesc: any, ...rest: any[]) {
           blurred = true;
+
+          // Call origin
+          oriDesc.value.call(this, ...rest);
         },
       });
     });
@@ -337,10 +345,10 @@ describe('Picker.Basic', () => {
         </div>,
       );
 
-      ref.current!.focus();
+      triggerFocus(ref.current!);
       expect(focused).toBeTruthy();
 
-      ref.current!.blur();
+      triggerBlur(ref.current!);
       expect(blurred).toBeTruthy();
     });
 
@@ -354,11 +362,11 @@ describe('Picker.Basic', () => {
         </div>,
       );
 
-      fireEvent.focus(container.querySelector('input'));
+      triggerFocus(container.querySelector('input'));
       expect(onFocus).toHaveBeenCalled();
       expect(document.querySelector('.rc-picker-focused')).toBeTruthy();
 
-      fireEvent.blur(container.querySelector('input'));
+      triggerBlur(container.querySelector('input'));
       expect(onBlur).toHaveBeenCalled();
       expect(document.querySelector('.rc-picker-focused')).toBeFalsy();
     });
@@ -394,7 +402,7 @@ describe('Picker.Basic', () => {
     const $input = container.querySelector('input');
 
     openPicker(container);
-    $input.focus();
+    triggerFocus($input);
     keyDown(KeyCode.ESC);
 
     expect(document.activeElement).toBe($input);
