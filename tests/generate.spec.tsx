@@ -397,9 +397,28 @@ describe('Generate:temporal', () => {
         temporalGenerateConfig.getFixedDate('2011-11-11'),
         'Wo',
       ),
-    ).toEqual('46周');
+    ).toEqual('45周');
     expect(temporalGenerateConfig.getFixedDate('2020-1-5').toString()).toEqual(
       '2020-01-05T00:00:00',
+    );
+  });
+
+  it('distinguishes ISO and locale week tokens', () => {
+    const date = temporalGenerateConfig.getFixedDate('2021-01-01');
+
+    expect(temporalGenerateConfig.locale.format('en_US', date, 'GGGG-WW')).toEqual('2020-53');
+    expect(temporalGenerateConfig.locale.format('en_US', date, 'gggg-ww')).toEqual('2021-01');
+
+    const isoParsed = temporalGenerateConfig.locale.parse('en_US', '2020-53', ['GGGG-WW']);
+    const localeParsed = temporalGenerateConfig.locale.parse('en_US', '2021-01', ['gggg-ww']);
+
+    expect(isoParsed).toBeTruthy();
+    expect(localeParsed).toBeTruthy();
+    expect(temporalGenerateConfig.locale.format('en_US', isoParsed!, 'YYYY-MM-DD')).toEqual(
+      '2020-12-28',
+    );
+    expect(temporalGenerateConfig.locale.format('en_US', localeParsed!, 'YYYY-MM-DD')).toEqual(
+      '2020-12-27',
     );
   });
 

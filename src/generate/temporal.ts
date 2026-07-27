@@ -47,6 +47,11 @@ type LocaleWeekInfoSource = {
   minimalDays: number;
 };
 
+const ISO_WEEK_INFO: LocaleWeekInfo = {
+  firstDay: 1,
+  minimalDays: 4,
+};
+
 const weekDayFormatLocaleMap: Record<string, 'narrow' | 'short'> = {
   'zh-CN': 'narrow',
   'zh-TW': 'narrow',
@@ -282,8 +287,15 @@ const getWeekYearStart = (year: number, weekInfo: LocaleWeekInfo) => {
   return firstWeekDays >= weekInfo.minimalDays ? weekStart : weekStart.add({ days: 7 });
 };
 
-const getWeekInfoForDate = (locale: string, date: TemporalDateTime): ParsedWeek => {
-  const weekInfo = getWeekInfo(locale);
+const getTokenWeekInfo = (locale: string, weekType: 'locale' | 'iso') =>
+  weekType === 'iso' ? ISO_WEEK_INFO : getWeekInfo(locale);
+
+const getWeekInfoForDate = (
+  locale: string,
+  date: TemporalDateTime,
+  weekType: 'locale' | 'iso' = 'locale',
+): ParsedWeek => {
+  const weekInfo = getTokenWeekInfo(locale, weekType);
   const currentWeekStart = getWeekStart(date, weekInfo.firstDay);
 
   let weekYear = date.year;
@@ -399,8 +411,19 @@ const parseFormatParts = (format: string): FormatPart[] => {
 };
 
 const formatToken = (locale: string, date: TemporalDateTime, token: Token) => {
-  const weekData = getWeekInfoForDate(locale, date);
   const dayPeriods = getLocaleDayPeriods(locale);
+  let localeWeekData: ParsedWeek | undefined;
+  let isoWeekData: ParsedWeek | undefined;
+
+  const getWeekData = (weekType: 'locale' | 'iso') => {
+    if (weekType === 'iso') {
+      isoWeekData ||= getWeekInfoForDate(locale, date, 'iso');
+      return isoWeekData;
+    }
+
+    localeWeekData ||= getWeekInfoForDate(locale, date, 'locale');
+    return localeWeekData;
+  };
 
   switch (token) {
     case 'YYYY':
@@ -408,8 +431,9 @@ const formatToken = (locale: string, date: TemporalDateTime, token: Token) => {
     case 'YY':
       return padStart(date.year % 100, 2);
     case 'GGGG':
+      return padStart(getWeekData('iso').weekYear, 4);
     case 'gggg':
-      return padStart(weekData.weekYear, 4);
+      return padStart(getWeekData('locale').weekYear, 4);
     case 'dddd':
     case 'ddd':
     case 'dd':
@@ -450,15 +474,18 @@ const formatToken = (locale: string, date: TemporalDateTime, token: Token) => {
       return padStart(date.millisecond, 3);
     case 'Q':
       return String(getQuarter(date));
-    case 'ww':
     case 'WW':
-      return padStart(weekData.week);
-    case 'w':
+      return padStart(getWeekData('iso').week);
+    case 'ww':
+      return padStart(getWeekData('locale').week);
     case 'W':
-      return String(weekData.week);
+      return String(getWeekData('iso').week);
+    case 'w':
+      return String(getWeekData('locale').week);
     case 'Wo':
+      return getWeekOrdinal(locale, getWeekData('iso').week);
     case 'wo':
-      return getWeekOrdinal(locale, weekData.week);
+      return getWeekOrdinal(locale, getWeekData('locale').week);
     case 'A':
       return date.hour < 12 ? dayPeriods.am : dayPeriods.pm;
     case 'a':
@@ -596,15 +623,20 @@ const parseWeekOrdinal = (value: string) => {
   return matched ? Number(matched[0]) : null;
 };
 
-const parseDateByWeek = (locale: string, weekYear: number, week: number) => {
+const parseDateByWeek = (
+  locale: string,
+  weekYear: number,
+  week: number,
+  weekType: 'locale' | 'iso' = 'locale',
+) => {
   if (week < 1 || week > 53) {
     return null;
   }
 
-  const weekInfo = getWeekInfo(locale);
+  const weekInfo = getTokenWeekInfo(locale, weekType);
   const weekYearStart = getWeekYearStart(weekYear, weekInfo);
   const result = weekYearStart.add({ days: (week - 1) * 7 });
-  const parsedWeekInfo = getWeekInfoForDate(locale, result);
+  const parsedWeekInfo = getWeekInfoForDate(locale, result, weekType);
 
   if (parsedWeekInfo.weekYear !== weekYear || parsedWeekInfo.week !== week) {
     return null;
@@ -760,6 +792,10 @@ const parseFromFormat = (locale: string, text: string, format: string): Temporal
         usedDateToken = true;
         break;
       case 'Wo':
+        parsedWeek = parseWeekOrdinal(value) ?? undefined;
+        parsedWeekType = 'iso';
+        usedDateToken = true;
+        break;
       case 'wo':
         parsedWeek = parseWeekOrdinal(value) ?? undefined;
         parsedWeekType = 'locale';
@@ -797,7 +833,7 @@ const parseFromFormat = (locale: string, text: string, format: string): Temporal
 
   try {
     if (parsedWeek !== undefined && (parsedWeekYear !== undefined || year !== undefined)) {
-      result = parseDateByWeek(locale, parsedWeekYear ?? year!, parsedWeek);
+      result = parseDateByWeek(locale, parsedWeekYear ?? year!, parsedWeek, parsedWeekType);
     } else if (
       year !== undefined ||
       month !== undefined ||
