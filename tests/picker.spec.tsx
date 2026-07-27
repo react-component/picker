@@ -39,6 +39,8 @@ jest.mock('@rc-component/util/lib/Dom/isVisible', () => {
 
 describe('Picker.Basic', () => {
   let errorSpy;
+  const originalTemporal = globalThis.Temporal;
+
   beforeEach(() => {
     globalThis.Temporal = TemporalPolyfill as typeof globalThis.Temporal;
     jest.useFakeTimers().setSystemTime(fakeTime);
@@ -53,6 +55,11 @@ describe('Picker.Basic', () => {
     resetWarned();
   });
   afterAll(() => {
+    if (originalTemporal) {
+      globalThis.Temporal = originalTemporal;
+    } else {
+      delete (globalThis as typeof globalThis & { Temporal?: typeof globalThis.Temporal }).Temporal;
+    }
     jest.clearAllTimers();
     jest.useRealTimers();
   });

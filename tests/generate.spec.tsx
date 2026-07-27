@@ -12,12 +12,19 @@ import 'dayjs/locale/ko';
 import type { GenerateConfig } from '../src/generate';
 
 describe('Picker.Generate', () => {
+  const originalTemporal = globalThis.Temporal;
+
   beforeAll(() => {
     globalThis.Temporal = TemporalPolyfill as typeof globalThis.Temporal;
     MockDate.set(getMoment('1990-09-03 01:02:03.005').toDate());
   });
 
   afterAll(() => {
+    if (originalTemporal) {
+      globalThis.Temporal = originalTemporal;
+    } else {
+      delete (globalThis as typeof globalThis & { Temporal?: typeof globalThis.Temporal }).Temporal;
+    }
     MockDate.reset();
   });
 
@@ -121,14 +128,18 @@ describe('Picker.Generate', () => {
                   'gggg-wo',
                 ),
               ).toEqual('2019-45周');
-            } else {
+            }
+
+            if (name === 'temporal') {
+              expect(generateConfig.locale.parse('en_US', '2019-1st', ['GGGG-wo'])).toEqual(null);
+            } else if (['date-fns', 'luxon'].includes(name)) {
               expect(
                 generateConfig.locale.format(
                   'en_US',
                   generateConfig.locale.parse('en_US', '2019-1st', ['GGGG-wo'])!,
                   'GGGG-wo',
                 ),
-              ).toEqual(name === 'temporal' ? '2019-1st' : null);
+              ).toEqual(null);
             }
           });
         });
@@ -181,11 +192,13 @@ describe('Picker.Generate', () => {
 
       it('Parse format Wo', () => {
         if (!['date-fns', 'luxon'].includes(name)) {
-          const enDate = generateConfig.locale.parse('en_US', '2012-51st', ['YYYY-Wo'])!;
-          expect(generateConfig.locale.format('en_US', enDate, 'Wo')).toEqual('51st');
+          const enDate = generateConfig.locale.parse('en_US', '2012-51st', ['YYYY-Wo']);
+          expect(enDate).toBeTruthy();
+          expect(generateConfig.locale.format('en_US', enDate!, 'Wo')).toEqual('51st');
 
-          const zhDate = generateConfig.locale.parse('zh_CN', '2012-1周', ['YYYY-Wo'])!;
-          expect(generateConfig.locale.format('zh_CN', zhDate, 'Wo')).toEqual('1周');
+          const zhDate = generateConfig.locale.parse('zh_CN', '2012-1周', ['YYYY-Wo']);
+          expect(zhDate).toBeTruthy();
+          expect(generateConfig.locale.format('zh_CN', zhDate!, 'Wo')).toEqual('1周');
         }
       });
 
@@ -323,6 +336,78 @@ describe('Generate:dayjs', () => {
     expect(dayjsGenerateConfig.getYear(mockExternalDayjs as any)).toEqual(2023);
     expect(dayjsGenerateConfig.getMonth(mockExternalDayjs as any)).toEqual(5);
     expect(dayjsGenerateConfig.getDate(mockExternalDayjs as any)).toEqual(20);
+  });
+});
+
+describe('Generate:temporal', () => {
+  const originalTemporal = globalThis.Temporal;
+
+  beforeAll(() => {
+    globalThis.Temporal = TemporalPolyfill as typeof globalThis.Temporal;
+  });
+
+  afterAll(() => {
+    if (originalTemporal) {
+      globalThis.Temporal = originalTemporal;
+    } else {
+      delete (globalThis as typeof globalThis & { Temporal?: typeof globalThis.Temporal }).Temporal;
+    }
+  });
+
+  it('formats weekday and ordinal day tokens', () => {
+    const date = temporalGenerateConfig.getFixedDate('2011-11-11');
+
+    expect(temporalGenerateConfig.locale.format('en_US', date, 'dddd')).toEqual('Friday');
+    expect(temporalGenerateConfig.locale.format('en_US', date, 'ddd')).toEqual('Fri');
+    expect(temporalGenerateConfig.locale.format('en_US', date, 'dd')).toEqual('Fr');
+    expect(temporalGenerateConfig.locale.format('en_US', date, 'Do')).toEqual('11th');
+  });
+
+  it('parses locale meridiem and two-digit years', () => {
+    const zhDate = temporalGenerateConfig.locale.parse('zh_CN', '2020-01-01 下午 3:00', [
+      'YYYY-MM-DD A h:mm',
+    ]);
+    expect(zhDate).toBeTruthy();
+    expect(temporalGenerateConfig.getHour(zhDate!)).toEqual(15);
+
+    const year99 = temporalGenerateConfig.locale.parse('en_US', '99-01-02', ['YY-MM-DD']);
+    const year68 = temporalGenerateConfig.locale.parse('en_US', '68-01-02', ['YY-MM-DD']);
+
+    expect(temporalGenerateConfig.locale.format('en_US', year99!, 'YYYY-MM-DD')).toEqual(
+      '1999-01-02',
+    );
+    expect(temporalGenerateConfig.locale.format('en_US', year68!, 'YYYY-MM-DD')).toEqual(
+      '2068-01-02',
+    );
+  });
+
+  it('normalizes locale keys and fixed dates', () => {
+    expect(temporalGenerateConfig.locale.getShortWeekDays!('zh-CN')).toEqual([
+      '日',
+      '一',
+      '二',
+      '三',
+      '四',
+      '五',
+      '六',
+    ]);
+    expect(
+      temporalGenerateConfig.locale.format(
+        'zh-CN',
+        temporalGenerateConfig.getFixedDate('2011-11-11'),
+        'Wo',
+      ),
+    ).toEqual('46周');
+    expect(temporalGenerateConfig.getFixedDate('2020-1-5').toString()).toEqual(
+      '2020-01-05T00:00:00',
+    );
+  });
+
+  it('returns null for invalid localized month names', () => {
+    expect(temporalGenerateConfig.locale.parse('en_US', 'Foo 10 2020', ['MMM DD YYYY'])).toBeNull();
+    expect(
+      temporalGenerateConfig.locale.parse('en_US', 'NotAMonth 10 2020', ['MMMM DD YYYY']),
+    ).toBeNull();
   });
 });
 
