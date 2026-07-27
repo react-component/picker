@@ -1,6 +1,6 @@
 // Note: zombieJ refactoring
 
-import { act, createEvent, fireEvent, render } from '@testing-library/react';
+import { act, createEvent, fireEvent, render, renderHook } from '@testing-library/react';
 import { createRoot } from 'react-dom/client';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
@@ -8,6 +8,7 @@ import { KeyCode, resetWarned, spyElementPrototypes } from '@rc-component/util';
 import React from 'react';
 import type { PickerRef, RangePickerProps } from '../src';
 import type { PickerMode } from '../src/interface';
+import useRangeValueChange from '../src/PickerInput/hooks/useRangeValueChange';
 import { _rs } from '@rc-component/resize-observer';
 
 const triggerResize = (target: Element) => {
@@ -34,6 +35,40 @@ import {
 } from './util/commonUtil';
 
 global.error = console.error;
+
+describe('useRangeValueChange', () => {
+  // Coverage case: replace this test if a clearer interaction can cover the
+  // same behavior. / 覆盖率用例：若有更清晰的交互覆盖相同行为，可直接替换。
+  it('should not skip fields when fieldCount is greater than two', () => {
+    const triggerCalendarChange = jest.fn();
+    const flushSubmit = jest.fn();
+    const resetValue = jest.fn();
+    const { result } = renderHook(() =>
+      useRangeValueChange(
+        3,
+        false,
+        [true, true, true],
+        () => [null, null, null],
+        triggerCalendarChange,
+        flushSubmit,
+        resetValue,
+      ),
+    );
+
+    // Start from field 0, then try to skip field 1 and jump to field 2.
+    // 从 field 0 开始，然后尝试跳过 field 1，直接进入 field 2。
+    act(() => {
+      result.current[4](0, 'field-switch');
+      result.current[4](2, 'field-switch');
+    });
+
+    expect(result.current[0]).toBe(0);
+    expect(result.current[3]).toEqual([0]);
+    expect(triggerCalendarChange).not.toHaveBeenCalled();
+    expect(flushSubmit).not.toHaveBeenCalled();
+    expect(resetValue).not.toHaveBeenCalled();
+  });
+});
 
 describe('Picker.Range', () => {
   let errorSpy;
@@ -2327,6 +2362,57 @@ describe('Picker.Range', () => {
 
     expect(onChange).not.toHaveBeenCalled();
     expect(endInput).toHaveValue('');
+  });
+
+  // Coverage case: replace these tests if a clearer interaction can cover the
+  // same behavior. / 覆盖率用例：若有更清晰的交互覆盖相同行为，可直接替换。
+  it('should reset unconfirmed end when popup closes directly', async () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker showTime allowEmpty onChange={onChange} />);
+    const [, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    // Confirm start, then leave a modified end value unconfirmed.
+    // 确认 start，然后保留一个已修改但未确认的 end 值。
+    openPicker(container);
+    selectCell(5);
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    selectCell(10);
+    expect(endInput).not.toHaveValue('');
+
+    // Closing directly must discard the temporary end without submitting the
+    // round. / 直接关闭时必须丢弃临时 end，且不能提交本轮数据。
+    fireEvent.mouseDown(document.body);
+    triggerBlur(endInput);
+    await waitFakeTimer(0, 2);
+
+    expect(endInput).toHaveValue('');
+    expect(onChange).not.toHaveBeenCalled();
+    expect(isOpen()).toBeFalsy();
+  });
+
+  it('should require confirmation again after editing a confirmed field', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker showTime allowEmpty={[false, true]} onChange={onChange} />,
+    );
+    const [startInput, endInput] = container.querySelectorAll<HTMLInputElement>('input');
+
+    // Confirm start, use the empty end to switch back, then edit start again.
+    // 确认 start，借助允许为空的 end 切回，再次修改 start。
+    openPicker(container);
+    selectCell(5);
+    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    openPicker(container);
+    selectCell(10);
+
+    // The edited start is no longer confirmed, so end cannot take focus.
+    // start 修改后不再是已确认状态，因此不能切换焦点到 end。
+    openPicker(container, 1);
+
+    expect(startInput).toHaveFocus();
+    expect(endInput).not.toHaveFocus();
+    expect(container.querySelectorAll('.rc-picker-input')[0]).toHaveClass('rc-picker-input-active');
+    expect(onChange).not.toHaveBeenCalled();
   });
 
   it('should submit confirmed start when allowEmpty end blurs', async () => {
