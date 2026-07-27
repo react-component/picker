@@ -2211,6 +2211,44 @@ describe('Picker.Range', () => {
     expect(shadowRoot.activeElement).toBe(startInput);
   });
 
+  it('should keep unconfirmed value when focus moves between shadow input and popup', async () => {
+    const onChange = jest.fn();
+    const shadowRoot = renderShadow({
+      showTime: true,
+      needConfirm: true,
+      allowEmpty: true,
+      onChange,
+    });
+    const [startInput] = shadowRoot.querySelectorAll<HTMLInputElement>('input');
+
+    // Select a temporary start value without confirming it.
+    // 选择临时开始值，但不进行确认。
+    openPicker(shadowRoot);
+    selectCell(5);
+    const temporaryValue = startInput.value;
+    expect(temporaryValue).not.toBe('');
+    expect(onChange).not.toHaveBeenCalled();
+
+    // Move focus from the Shadow DOM input to the document-level Portal popup,
+    // then move it back to the same input.
+    // 焦点从 Shadow DOM 内的 input 移到 document 下的 Portal popup，
+    // 再回到同一个 input。
+    const panel = document.querySelector<HTMLElement>('.rc-picker-panel');
+    triggerFocus(panel);
+    expect(document.activeElement).toBe(panel);
+    await waitFakeTimer(0, 2);
+    expect(startInput).toHaveValue(temporaryValue);
+    expect(isOpen()).toBeTruthy();
+
+    triggerFocus(startInput);
+    expect(shadowRoot.activeElement).toBe(startInput);
+    await waitFakeTimer(0, 2);
+
+    expect(startInput).toHaveValue(temporaryValue);
+    expect(onChange).not.toHaveBeenCalled();
+    expect(isOpen()).toBeTruthy();
+  });
+
   it('should not click to focus on next field if first field is not confirm', () => {
     const onCalendarChange = jest.fn();
     const { container } = render(
