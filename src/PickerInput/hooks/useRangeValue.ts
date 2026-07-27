@@ -7,7 +7,6 @@ import { formatValue, isSame, isSameTimestamp } from '../../utils/dateUtil';
 import { fillIndex } from '../../utils/miscUtil';
 import type { RangePickerProps } from '../RangePicker';
 import type { ReplacedPickerProps } from '../SinglePicker';
-import useLockEffect from './useLockEffect';
 
 const EMPTY_VALUE: any[] = [];
 
@@ -93,7 +92,7 @@ function useCalendarValue<MergedValueType extends object[]>(mergedValue: MergedV
 
 /**
  * Control the internal `value` align with prop `value` and provide a temp `calendarValue` for ui.
- * `calendarValue` will be reset when blur & focus & open.
+ * The caller controls the temporary `calendarValue` lifecycle through event handlers.
  */
 export function useInnerValue<ValueType extends DateType[], DateType extends object = any>(
   generateConfig: GenerateConfig<DateType>,
@@ -173,14 +172,14 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   triggerCalendarChange: TriggerCalendarChange<ValueType>,
   disabled: ReplaceListType<Required<ValueType>, boolean>,
   formatList: FormatType[],
-  focused: boolean,
-  open: boolean,
   isInvalidateDate: (date: DateType, info?: { from?: DateType; activeIndex: number }) => boolean,
 ): [
   /** Trigger `onChange` by check `disabledDate` */
   flushSubmit: (index: number, needTriggerChange: boolean) => void,
   /** Trigger `onChange` directly without check `disabledDate` */
   triggerSubmitChange: (value: ValueType) => boolean,
+  /** Reset calendar and submit values back to the committed value */
+  resetValue: (index?: number) => void,
 ] {
   const {
     // MISC
@@ -305,28 +304,17 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     }
   });
 
-  // ============================ Effect ============================
-  // All finished action trigger after 2 frames
-  const interactiveFinished = !focused && !open;
+  const resetValue = useEvent((index?: number) => {
+    if (index === undefined) {
+      triggerCalendarChange(mergedValue);
+      syncWithValue();
+      return;
+    }
 
-  useLockEffect(
-    !interactiveFinished,
-    () => {
-      if (interactiveFinished) {
-        // Always try to trigger submit first
-        triggerSubmit();
-
-        // Trigger calendar change since this is a effect reset
-        // https://github.com/ant-design/ant-design/issues/22351
-        triggerCalendarChange(mergedValue);
-
-        // Sync with value anyway
-        syncWithValue();
-      }
-    },
-    2,
-  );
+    triggerCalendarChange(fillIndex(getCalendarValue(), index, mergedValue[index]));
+    setSubmitValue(fillIndex(submitValue(), index, mergedValue[index]));
+  });
 
   // ============================ Return ============================
-  return [flushSubmit, triggerSubmit];
+  return [flushSubmit, triggerSubmit, resetValue];
 }
