@@ -768,7 +768,7 @@ const parseFromFormat = (locale: string, text: string, format: string): Temporal
   let parsedWeekYear: number | undefined;
   let parsedWeekType: 'locale' | 'iso' | undefined;
   let parsedWeekYearType: 'locale' | 'iso' | undefined;
-  let parsedWeekDays: Array<{ token: 'dddd' | 'ddd' | 'dd'; value: string }> = [];
+  const parsedWeekDays: Array<{ token: 'dddd' | 'ddd' | 'dd'; value: string }> = [];
   let usedTimeToken = false;
   let usedTwelveHourToken = false;
   let usedDateToken = false;
@@ -941,7 +941,7 @@ const parseFromFormat = (locale: string, text: string, format: string): Temporal
       quarter !== undefined
     ) {
       const parsedYear = year ?? getNow().year;
-      const parsedMonth = month ?? (quarter ? (quarter - 1) * 3 + 1 : 1);
+      const parsedMonth = month ?? (quarter !== undefined ? (quarter - 1) * 3 + 1 : 1);
       const parsedDay = day ?? 1;
       result = createDateTime(parsedYear, parsedMonth, parsedDay, 0, 0, 0, 0, 'reject');
     } else if (usedTimeToken) {
@@ -1067,7 +1067,7 @@ const generateConfig: GenerateConfig<TemporalDateTime> = {
     getShortMonths: (locale) => getLocaleMonthNames(locale, 'short'),
     format: (locale, date, format) => {
       if (!date || !generateConfig.isValidate(date)) {
-        return null;
+        return '';
       }
 
       return parseFormatParts(format)

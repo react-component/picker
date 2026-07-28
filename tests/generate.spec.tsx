@@ -514,6 +514,7 @@ describe('Generate:temporal', () => {
   it('rejects invalid dates and times instead of constraining them', () => {
     expect(temporalGenerateConfig.locale.parse('en_US', '2023-02-31', ['YYYY-MM-DD'])).toBeNull();
     expect(temporalGenerateConfig.locale.parse('en_US', '2023-13-01', ['YYYY-MM-DD'])).toBeNull();
+    expect(temporalGenerateConfig.locale.parse('en_US', '2023-0', ['YYYY-Q'])).toBeNull();
     expect(temporalGenerateConfig.locale.parse('en_US', '2023-5', ['YYYY-Q'])).toBeNull();
     expect(temporalGenerateConfig.locale.parse('en_US', '25:99', ['HH:mm'])).toBeNull();
     expect(() => temporalGenerateConfig.getFixedDate('2023-13-40')).toThrow();
@@ -560,7 +561,7 @@ describe('Generate:temporal', () => {
         toPlainDate: () => null,
       } as any),
     ).toBe(false);
-    expect(temporalGenerateConfig.locale.format('en_US', null as any, 'YYYY-MM-DD')).toBeNull();
+    expect(temporalGenerateConfig.locale.format('en_US', null as any, 'YYYY-MM-DD')).toEqual('');
 
     delete (globalThis as typeof globalThis & { Temporal?: typeof globalThis.Temporal }).Temporal;
     try {
