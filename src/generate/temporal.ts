@@ -47,6 +47,8 @@ type LocaleWeekInfoSource = {
   minimalDays: number;
 };
 
+type OverflowMode = 'constrain' | 'reject';
+
 const ISO_WEEK_INFO: LocaleWeekInfo = {
   firstDay: 1,
   minimalDays: 4,
@@ -62,8 +64,29 @@ const weekDayTruncateLengthMap: Record<string, number> = {
   'en-GB': 2,
 };
 
-const TEMPORAL_MISSING_ERROR =
+export const TEMPORAL_MISSING_ERROR =
   'Temporal API is not available. Please use a runtime with native Temporal support or attach @js-temporal/polyfill to globalThis.Temporal before using @rc-component/picker/generate/temporal.';
+
+const localeWeekInfoFallbackMap: Record<string, LocaleWeekInfo> = {
+  ar: { firstDay: 6, minimalDays: 1 },
+  'ar-EG': { firstDay: 0, minimalDays: 1 },
+  'ar-MA': { firstDay: 1, minimalDays: 1 },
+  en: { firstDay: 0, minimalDays: 1 },
+  'en-US': { firstDay: 0, minimalDays: 1 },
+  fr: { firstDay: 1, minimalDays: 4 },
+  'fr-FR': { firstDay: 1, minimalDays: 4 },
+  it: { firstDay: 1, minimalDays: 4 },
+  'it-IT': { firstDay: 1, minimalDays: 4 },
+  ko: { firstDay: 0, minimalDays: 1 },
+  'ko-KR': { firstDay: 0, minimalDays: 1 },
+  zh: { firstDay: 1, minimalDays: 4 },
+  'zh-CN': { firstDay: 1, minimalDays: 4 },
+};
+
+const localeMonthNamesCache = new Map<string, string[]>();
+const localeWeekDaysCache = new Map<string, string[]>();
+const localeShortWeekDaysCache = new Map<string, string[]>();
+const localeDayPeriodsCache = new Map<string, { am: string; pm: string }>();
 
 const padStart = (value: number, length = 2) => String(value).padStart(length, '0');
 
@@ -126,6 +149,7 @@ const createDateTime = (
   minute = 0,
   second = 0,
   millisecond = 0,
+  overflow: OverflowMode = 'constrain',
 ) =>
   getTemporal().PlainDateTime.from(
     {
@@ -137,7 +161,7 @@ const createDateTime = (
       second,
       millisecond,
     },
-    { overflow: 'constrain' },
+    { overflow },
   );
 
 const isTemporalDateTime = (value: unknown): value is TemporalDateTime => {
@@ -161,6 +185,7 @@ const isTemporalDateTime = (value: unknown): value is TemporalDateTime => {
 
 const getWeekInfo = (locale: string): LocaleWeekInfo => {
   const normalized = normalizeLocale(locale);
+  const language = getLocaleLanguage(locale);
 
   if (typeof Intl?.Locale === 'function') {
     try {
@@ -182,37 +207,68 @@ const getWeekInfo = (locale: string): LocaleWeekInfo => {
     }
   }
 
-  if (normalized === 'en-US') {
-    return {
-      firstDay: 0,
-      minimalDays: 1,
-    };
+  if (localeWeekInfoFallbackMap[normalized]) {
+    return localeWeekInfoFallbackMap[normalized];
   }
 
-  return {
-    firstDay: 1,
-    minimalDays: 4,
-  };
+  if (localeWeekInfoFallbackMap[language]) {
+    return localeWeekInfoFallbackMap[language];
+  }
+
+  return ISO_WEEK_INFO;
 };
 
-const getLocaleMonthNames = (locale: string, width: 'short' | 'long') =>
-  Array.from({ length: 12 }, (_, index) =>
-    new Intl.DateTimeFormat(normalizeLocale(locale), {
-      month: width,
-      timeZone: 'UTC',
-    }).format(new Date(Date.UTC(2020, index, 1))),
+const getLocaleMonthNames = (locale: string, width: 'short' | 'long') => {
+  const normalized = normalizeLocale(locale);
+  const cacheKey = `${normalized}:${width}`;
+  const cached = localeMonthNamesCache.get(cacheKey);
+
+  if (cached) {
+    return cached;
+  }
+
+  const formatter = new Intl.DateTimeFormat(normalized, {
+    month: width,
+    timeZone: 'UTC',
+  });
+  const monthNames = Array.from({ length: 12 }, (_, index) =>
+    formatter.format(new Date(Date.UTC(2020, index, 1))),
   );
 
-const getLocaleWeekDays = (locale: string, width: 'long' | 'short') =>
-  Array.from({ length: 7 }, (_, index) =>
-    new Intl.DateTimeFormat(normalizeLocale(locale), {
-      weekday: width,
-      timeZone: 'UTC',
-    }).format(new Date(Date.UTC(2024, 0, 7 + index))),
+  localeMonthNamesCache.set(cacheKey, monthNames);
+  return monthNames;
+};
+
+const getLocaleWeekDays = (locale: string, width: 'long' | 'short') => {
+  const normalized = normalizeLocale(locale);
+  const cacheKey = `${normalized}:${width}`;
+  const cached = localeWeekDaysCache.get(cacheKey);
+
+  if (cached) {
+    return cached;
+  }
+
+  const formatter = new Intl.DateTimeFormat(normalized, {
+    weekday: width,
+    timeZone: 'UTC',
+  });
+  const weekDays = Array.from({ length: 7 }, (_, index) =>
+    formatter.format(new Date(Date.UTC(2024, 0, 7 + index))),
   );
+
+  localeWeekDaysCache.set(cacheKey, weekDays);
+  return weekDays;
+};
 
 const getLocaleDayPeriods = (locale: string) => {
-  const formatter = new Intl.DateTimeFormat(normalizeLocale(locale), {
+  const normalized = normalizeLocale(locale);
+  const cached = localeDayPeriodsCache.get(normalized);
+
+  if (cached) {
+    return cached;
+  }
+
+  const formatter = new Intl.DateTimeFormat(normalized, {
     hour: 'numeric',
     hour12: true,
     timeZone: 'UTC',
@@ -223,28 +279,37 @@ const getLocaleDayPeriods = (locale: string) => {
     return parts.find((part) => part.type === 'dayPeriod')?.value;
   };
 
-  const am = getPeriod(1) || 'AM';
-  const pm = getPeriod(13) || 'PM';
-
-  return {
-    am,
-    pm,
+  const dayPeriods = {
+    am: getPeriod(1) || 'AM',
+    pm: getPeriod(13) || 'PM',
   };
+
+  localeDayPeriodsCache.set(normalized, dayPeriods);
+  return dayPeriods;
 };
 
 const getShortWeekDays = (locale: string) => {
   const normalized = normalizeLocale(locale);
+  const cached = localeShortWeekDaysCache.get(normalized);
+
+  if (cached) {
+    return cached;
+  }
+
   const format = weekDayFormatLocaleMap[normalized] || 'short';
   const sliceLength = weekDayTruncateLengthMap[normalized];
-
-  return Array.from({ length: 7 }, (_, index) => {
-    const weekday = new Intl.DateTimeFormat(normalized, {
-      weekday: format,
-      timeZone: 'UTC',
-    }).format(new Date(Date.UTC(2024, 0, 7 + index)));
+  const formatter = new Intl.DateTimeFormat(normalized, {
+    weekday: format,
+    timeZone: 'UTC',
+  });
+  const shortWeekDays = Array.from({ length: 7 }, (_, index) => {
+    const weekday = formatter.format(new Date(Date.UTC(2024, 0, 7 + index)));
 
     return sliceLength ? weekday.slice(0, sliceLength) : weekday;
   });
+
+  localeShortWeekDaysCache.set(normalized, shortWeekDays);
+  return shortWeekDays;
 };
 
 const getDayOfWeekName = (
@@ -411,7 +476,6 @@ const parseFormatParts = (format: string): FormatPart[] => {
 };
 
 const formatToken = (locale: string, date: TemporalDateTime, token: Token) => {
-  const dayPeriods = getLocaleDayPeriods(locale);
   let localeWeekData: ParsedWeek | undefined;
   let isoWeekData: ParsedWeek | undefined;
 
@@ -486,10 +550,14 @@ const formatToken = (locale: string, date: TemporalDateTime, token: Token) => {
       return getWeekOrdinal(locale, getWeekData('iso').week);
     case 'wo':
       return getWeekOrdinal(locale, getWeekData('locale').week);
-    case 'A':
+    case 'A': {
+      const dayPeriods = getLocaleDayPeriods(locale);
       return date.hour < 12 ? dayPeriods.am : dayPeriods.pm;
-    case 'a':
+    }
+    case 'a': {
+      const dayPeriods = getLocaleDayPeriods(locale);
       return (date.hour < 12 ? dayPeriods.am : dayPeriods.pm).toLowerCase();
+    }
     default:
       return token;
   }
@@ -547,12 +615,18 @@ const getDayPeriodMatcher = (locale: string) => {
 };
 
 const buildParseMatcher = (locale: string, parts: FormatPart[]) => {
-  const monthShort = getMonthNameMatcher(locale, 'short');
-  const monthLong = getMonthNameMatcher(locale, 'long');
-  const weekDayLong = getWeekDayMatcher(locale, 'long');
-  const weekDayShort = getWeekDayMatcher(locale, 'short');
-  const weekDayMin = getWeekDayMatcher(locale, 'min');
-  const meridiemMatcher = getDayPeriodMatcher(locale);
+  const hasToken = (tokens: Token[]) =>
+    parts.some((part) => part.type === 'token' && tokens.includes(part.value));
+  const emptyMonthMatcher = {
+    matcher: '',
+    monthNames: [] as string[],
+  };
+  const monthShort = hasToken(['MMM']) ? getMonthNameMatcher(locale, 'short') : emptyMonthMatcher;
+  const monthLong = hasToken(['MMMM']) ? getMonthNameMatcher(locale, 'long') : emptyMonthMatcher;
+  const weekDayLong = hasToken(['dddd']) ? getWeekDayMatcher(locale, 'long') : null;
+  const weekDayShort = hasToken(['ddd']) ? getWeekDayMatcher(locale, 'short') : null;
+  const weekDayMin = hasToken(['dd']) ? getWeekDayMatcher(locale, 'min') : null;
+  const meridiemMatcher = hasToken(['A', 'a']) ? getDayPeriodMatcher(locale) : '';
 
   const regexParts = parts.map((part, index) => {
     if (part.type === 'literal') {
@@ -569,9 +643,9 @@ const buildParseMatcher = (locale: string, parts: FormatPart[]) => {
       case 'YY':
         return `(?<${key}>\\d{2})`;
       case 'dddd':
-        return `(?<${key}>${weekDayLong.matcher})`;
+        return `(?<${key}>${weekDayLong!.matcher})`;
       case 'ddd':
-        return `(?<${key}>${weekDayShort.matcher})`;
+        return `(?<${key}>${weekDayShort!.matcher})`;
       case 'MMMM':
         return `(?<${key}>${monthLong.matcher})`;
       case 'MMM':
@@ -598,7 +672,7 @@ const buildParseMatcher = (locale: string, parts: FormatPart[]) => {
       case 'SSS':
         return `(?<${key}>\\d{1,3})`;
       case 'dd':
-        return `(?<${key}>${weekDayMin.matcher})`;
+        return `(?<${key}>${weekDayMin!.matcher})`;
       case 'Wo':
       case 'Do':
       case 'wo':
@@ -655,6 +729,9 @@ const isMeridiemValue = (value: string, candidate: string) =>
   value.localeCompare(candidate, undefined, { sensitivity: 'accent' }) === 0 ||
   value.localeCompare(candidate, undefined, { sensitivity: 'base' }) === 0;
 
+const isWeekDayValue = (value: string, candidate: string) =>
+  value.localeCompare(candidate, undefined, { sensitivity: 'base' }) === 0;
+
 const isPmMeridiem = (locale: string, meridiem: string) => {
   const periods = getLocaleDayPeriods(locale);
 
@@ -691,7 +768,9 @@ const parseFromFormat = (locale: string, text: string, format: string): Temporal
   let parsedWeekYear: number | undefined;
   let parsedWeekType: 'locale' | 'iso' | undefined;
   let parsedWeekYearType: 'locale' | 'iso' | undefined;
+  let parsedWeekDays: Array<{ token: 'dddd' | 'ddd' | 'dd'; value: string }> = [];
   let usedTimeToken = false;
+  let usedTwelveHourToken = false;
   let usedDateToken = false;
 
   parts.forEach((part, index) => {
@@ -737,6 +816,15 @@ const parseFromFormat = (locale: string, text: string, format: string): Temporal
         month = month === -1 ? Number.NaN : month + 1;
         usedDateToken = true;
         break;
+      case 'dddd':
+      case 'ddd':
+      case 'dd':
+        parsedWeekDays.push({
+          token: part.value,
+          value,
+        });
+        usedDateToken = true;
+        break;
       case 'MM':
       case 'M':
         month = Number(value);
@@ -758,8 +846,9 @@ const parseFromFormat = (locale: string, text: string, format: string): Temporal
         break;
       case 'hh':
       case 'h':
-        hour = Number(value) % 12;
+        hour = Number(value);
         usedTimeToken = true;
+        usedTwelveHourToken = true;
         break;
       case 'mm':
       case 'm':
@@ -819,6 +908,10 @@ const parseFromFormat = (locale: string, text: string, format: string): Temporal
     return null;
   }
 
+  if (usedTwelveHourToken && hour !== undefined && (hour < 1 || hour > 12)) {
+    return null;
+  }
+
   if (
     parsedWeek !== undefined &&
     parsedWeekType &&
@@ -828,24 +921,32 @@ const parseFromFormat = (locale: string, text: string, format: string): Temporal
     return null;
   }
 
-  const now = generateConfig.getNow();
+  let now: TemporalDateTime | undefined;
+  const getNow = () => {
+    now ||= generateConfig.getNow();
+    return now;
+  };
   let result: TemporalDateTime;
 
   try {
     if (parsedWeek !== undefined && (parsedWeekYear !== undefined || year !== undefined)) {
       result = parseDateByWeek(locale, parsedWeekYear ?? year!, parsedWeek, parsedWeekType);
+      if (!result) {
+        return null;
+      }
     } else if (
       year !== undefined ||
       month !== undefined ||
       day !== undefined ||
       quarter !== undefined
     ) {
-      const parsedYear = year ?? now.year;
+      const parsedYear = year ?? getNow().year;
       const parsedMonth = month ?? (quarter ? (quarter - 1) * 3 + 1 : 1);
       const parsedDay = day ?? 1;
-      result = createDateTime(parsedYear, parsedMonth, parsedDay);
+      result = createDateTime(parsedYear, parsedMonth, parsedDay, 0, 0, 0, 0, 'reject');
     } else if (usedTimeToken) {
-      result = createDateTime(now.year, now.month, now.day);
+      const current = getNow();
+      result = createDateTime(current.year, current.month, current.day, 0, 0, 0, 0, 'reject');
     } else {
       return null;
     }
@@ -858,10 +959,14 @@ const parseFromFormat = (locale: string, text: string, format: string): Temporal
     ) {
       let parsedHour = hour ?? 0;
 
-      if (meridiem && isPmMeridiem(locale, meridiem) && parsedHour < 12) {
-        parsedHour += 12;
-      } else if (meridiem && isAmMeridiem(locale, meridiem) && parsedHour === 12) {
-        parsedHour = 0;
+      if (usedTwelveHourToken) {
+        if (meridiem && isPmMeridiem(locale, meridiem)) {
+          if (parsedHour < 12) {
+            parsedHour += 12;
+          }
+        } else if (meridiem && isAmMeridiem(locale, meridiem) && parsedHour === 12) {
+          parsedHour = 0;
+        }
       }
 
       result = result.with(
@@ -871,7 +976,7 @@ const parseFromFormat = (locale: string, text: string, format: string): Temporal
           second: second ?? 0,
           millisecond: millisecond ?? 0,
         },
-        { overflow: 'constrain' },
+        { overflow: 'reject' },
       );
     } else if (usedDateToken) {
       result = result.with(
@@ -888,6 +993,14 @@ const parseFromFormat = (locale: string, text: string, format: string): Temporal
     return null;
   }
 
+  if (
+    parsedWeekDays.some(
+      ({ token, value }) => !isWeekDayValue(value, getDayOfWeekName(locale, result, token)),
+    )
+  ) {
+    return null;
+  }
+
   return generateConfig.isValidate(result) ? result : null;
 };
 
@@ -900,7 +1013,16 @@ const generateConfig: GenerateConfig<TemporalDateTime> = {
       throw new Error(`Invalid fixed date value: ${value}`);
     }
 
-    return createDateTime(Number(matched[1]), Number(matched[2]), Number(matched[3]));
+    return createDateTime(
+      Number(matched[1]),
+      Number(matched[2]),
+      Number(matched[3]),
+      0,
+      0,
+      0,
+      0,
+      'reject',
+    );
   },
   getEndDate: (date) => date.with({ day: date.daysInMonth }, { overflow: 'constrain' }),
   getWeekDay: (date) => getWeekDayIndex(date),

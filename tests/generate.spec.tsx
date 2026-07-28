@@ -511,6 +511,34 @@ describe('Generate:temporal', () => {
     expect(temporalGenerateConfig.locale.parse('en_US', 'Friday', ['dddd'])).toBeNull();
   });
 
+  it('rejects invalid dates and times instead of constraining them', () => {
+    expect(temporalGenerateConfig.locale.parse('en_US', '2023-02-31', ['YYYY-MM-DD'])).toBeNull();
+    expect(temporalGenerateConfig.locale.parse('en_US', '2023-13-01', ['YYYY-MM-DD'])).toBeNull();
+    expect(temporalGenerateConfig.locale.parse('en_US', '2023-5', ['YYYY-Q'])).toBeNull();
+    expect(temporalGenerateConfig.locale.parse('en_US', '25:99', ['HH:mm'])).toBeNull();
+    expect(() => temporalGenerateConfig.getFixedDate('2023-13-40')).toThrow();
+  });
+
+  it('parses 12-hour tokens strictly', () => {
+    const noMeridiemNoon = temporalGenerateConfig.locale.parse('en_US', '12:30', ['hh:mm']);
+    const noon = temporalGenerateConfig.locale.parse('en_US', '12:30 PM', ['hh:mm A']);
+    const midnight = temporalGenerateConfig.locale.parse('en_US', '12:30 AM', ['hh:mm A']);
+
+    expect(noMeridiemNoon).toBeTruthy();
+    expect(temporalGenerateConfig.locale.format('en_US', noMeridiemNoon!, 'HH:mm')).toEqual(
+      '12:30',
+    );
+
+    expect(noon).toBeTruthy();
+    expect(temporalGenerateConfig.locale.format('en_US', noon!, 'HH:mm')).toEqual('12:30');
+
+    expect(midnight).toBeTruthy();
+    expect(temporalGenerateConfig.locale.format('en_US', midnight!, 'HH:mm')).toEqual('00:30');
+
+    expect(temporalGenerateConfig.locale.parse('en_US', '15:30 PM', ['hh:mm A'])).toBeNull();
+    expect(temporalGenerateConfig.locale.parse('en_US', '00:30 AM', ['hh:mm A'])).toBeNull();
+  });
+
   it('guards invalid fixed dates, missing Temporal, and invalid values', () => {
     expect(() => temporalGenerateConfig.getFixedDate('2020/01/05')).toThrow(
       'Invalid fixed date value: 2020/01/05',
@@ -578,6 +606,116 @@ describe('Generate:temporal', () => {
     Object.keys(entry.b).forEach((id) => {
       entry.b[id] = entry.b[id].map((count) => (count === 0 ? 1 : count));
     });
+  });
+
+  it('falls back to locale week settings when Intl.Locale weekInfo is unavailable', () => {
+    try {
+      Object.defineProperty(Intl, 'Locale', {
+        configurable: true,
+        value: undefined,
+        writable: true,
+      });
+
+      expect(temporalGenerateConfig.locale.getWeekFirstDay('en_US')).toEqual(0);
+      expect(temporalGenerateConfig.locale.getWeekFirstDay('zh_CN')).toEqual(1);
+      expect(temporalGenerateConfig.locale.getWeekFirstDay('ko_KR')).toEqual(0);
+      expect(temporalGenerateConfig.locale.getWeekFirstDay('ar_EG')).toEqual(0);
+      expect(temporalGenerateConfig.locale.getWeekFirstDay('ar_MA')).toEqual(1);
+      expect(temporalGenerateConfig.locale.getWeekFirstDay('ar')).toEqual(6);
+      expect(temporalGenerateConfig.locale.getWeekFirstDay('fr_FR')).toEqual(1);
+    } finally {
+      Object.defineProperty(Intl, 'Locale', {
+        configurable: true,
+        value: originalIntlLocale,
+        writable: true,
+      });
+    }
+  });
+
+  it('rejects mismatched parsed weekday names', () => {
+    const sunday = temporalGenerateConfig.locale.parse('en_US', '2023-01-01 Sunday', [
+      'YYYY-MM-DD dddd',
+    ]);
+    const shortSunday = temporalGenerateConfig.locale.parse('en_US', '2023-01-01 Sun', [
+      'YYYY-MM-DD ddd',
+    ]);
+
+    expect(sunday).toBeTruthy();
+    expect(shortSunday).toBeTruthy();
+
+    expect(
+      temporalGenerateConfig.locale.parse('en_US', '2023-01-01 Monday', ['YYYY-MM-DD dddd']),
+    ).toBeNull();
+    expect(
+      temporalGenerateConfig.locale.parse('en_US', '2023-01-01 Mo', ['YYYY-MM-DD dd']),
+    ).toBeNull();
+  });
+
+  it('does not construct unused locale formatters for numeric-only formats', () => {
+    temporalGenerateConfig.getNow();
+
+    const originalDateTimeFormat = Intl.DateTimeFormat;
+    let dateTimeFormatCalls = 0;
+
+    Object.defineProperty(Intl, 'DateTimeFormat', {
+      configurable: true,
+      value: function MockDateTimeFormat(
+        ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
+      ) {
+        dateTimeFormatCalls += 1;
+        return new originalDateTimeFormat(...args);
+      },
+      writable: true,
+    });
+
+    try {
+      const parsed = temporalGenerateConfig.locale.parse('en_US', '2023-01-02', ['YYYY-MM-DD']);
+
+      expect(parsed).toBeTruthy();
+      expect(dateTimeFormatCalls).toEqual(0);
+      expect(temporalGenerateConfig.locale.format('en_US', parsed!, 'YYYY-MM-DD')).toEqual(
+        '2023-01-02',
+      );
+      expect(dateTimeFormatCalls).toEqual(0);
+    } finally {
+      Object.defineProperty(Intl, 'DateTimeFormat', {
+        configurable: true,
+        value: originalDateTimeFormat,
+        writable: true,
+      });
+    }
+  });
+
+  it('reuses locale formatter caches across repeated localized calls', () => {
+    const originalDateTimeFormat = Intl.DateTimeFormat;
+    let dateTimeFormatCalls = 0;
+
+    Object.defineProperty(Intl, 'DateTimeFormat', {
+      configurable: true,
+      value: function MockDateTimeFormat(
+        ...args: ConstructorParameters<typeof Intl.DateTimeFormat>
+      ) {
+        dateTimeFormatCalls += 1;
+        return new originalDateTimeFormat(...args);
+      },
+      writable: true,
+    });
+
+    try {
+      const date = temporalGenerateConfig.getFixedDate('2023-01-02');
+
+      expect(temporalGenerateConfig.locale.format('de_DE', date, 'MMMM dddd A')).toBeTruthy();
+      expect(dateTimeFormatCalls).toEqual(3);
+
+      expect(temporalGenerateConfig.locale.format('de_DE', date, 'MMMM dddd A')).toBeTruthy();
+      expect(dateTimeFormatCalls).toEqual(3);
+    } finally {
+      Object.defineProperty(Intl, 'DateTimeFormat', {
+        configurable: true,
+        value: originalDateTimeFormat,
+        writable: true,
+      });
+    }
   });
 });
 
