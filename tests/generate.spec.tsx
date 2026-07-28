@@ -353,12 +353,6 @@ describe('Generate:temporal', () => {
     } else {
       delete (globalThis as typeof globalThis & { Temporal?: typeof globalThis.Temporal }).Temporal;
     }
-
-    Object.defineProperty(Intl, 'Locale', {
-      configurable: true,
-      value: originalIntlLocale,
-      writable: true,
-    });
   });
 
   it('formats weekday and ordinal day tokens', () => {
@@ -455,6 +449,7 @@ describe('Generate:temporal', () => {
   });
 
   it('parses additional public tokens and meridiem boundaries', () => {
+    const today = temporalGenerateConfig.getNow().toPlainDate().toString();
     const weekdayDate = temporalGenerateConfig.locale.parse('en_US', 'Fri Fr 2011-11-11', [
       'ddd dd YYYY-MM-DD',
     ]);
@@ -464,7 +459,7 @@ describe('Generate:temporal', () => {
     const millisecondDate = temporalGenerateConfig.locale.parse('en_US', '2020-01-02 003', [
       'YYYY-MM-DD SSS',
     ]);
-    const midnightDate = temporalGenerateConfig.locale.parse('en_US', '12:05 AM', ['H:mm A']);
+    const midnightDate = temporalGenerateConfig.locale.parse('en_US', '12:05 AM', ['h:mm A']);
 
     expect(weekdayDate).toBeTruthy();
     expect(temporalGenerateConfig.locale.format('en_US', weekdayDate!, 'YYYY-MM-DD')).toEqual(
@@ -484,22 +479,30 @@ describe('Generate:temporal', () => {
     expect(midnightDate).toBeTruthy();
     expect(
       temporalGenerateConfig.locale.format('en_US', midnightDate!, 'YYYY-MM-DD HH:mm'),
-    ).toEqual(`${temporalGenerateConfig.getNow().toPlainDate().toString()} 00:05`);
+    ).toEqual(`${today} 00:05`);
   });
 
   it('falls back when Intl.Locale metadata is unavailable or invalid', () => {
-    Object.defineProperty(Intl, 'Locale', {
-      configurable: true,
-      value: class BrokenLocale {
-        constructor() {
-          throw new RangeError('invalid locale');
-        }
-      },
-      writable: true,
-    });
+    try {
+      Object.defineProperty(Intl, 'Locale', {
+        configurable: true,
+        value: class BrokenLocale {
+          constructor() {
+            throw new RangeError('invalid locale');
+          }
+        },
+        writable: true,
+      });
 
-    expect(temporalGenerateConfig.locale.getWeekFirstDay('en_US')).toEqual(0);
-    expect(temporalGenerateConfig.locale.getWeekFirstDay('fr_FR')).toEqual(1);
+      expect(temporalGenerateConfig.locale.getWeekFirstDay('en_US')).toEqual(0);
+      expect(temporalGenerateConfig.locale.getWeekFirstDay('fr_FR')).toEqual(1);
+    } finally {
+      Object.defineProperty(Intl, 'Locale', {
+        configurable: true,
+        value: originalIntlLocale,
+        writable: true,
+      });
+    }
   });
 
   it('rejects invalid week values and mismatched week years', () => {
@@ -532,11 +535,13 @@ describe('Generate:temporal', () => {
     expect(temporalGenerateConfig.locale.format('en_US', null as any, 'YYYY-MM-DD')).toBeNull();
 
     delete (globalThis as typeof globalThis & { Temporal?: typeof globalThis.Temporal }).Temporal;
-    expect(() => temporalGenerateConfig.getNow()).toThrow(
-      'Temporal API is not available. Please use a runtime with native Temporal support or attach @js-temporal/polyfill to globalThis.Temporal before using @rc-component/picker/generate/temporal.',
-    );
-
-    globalThis.Temporal = TemporalPolyfill as typeof globalThis.Temporal;
+    try {
+      expect(() => temporalGenerateConfig.getNow()).toThrow(
+        'Temporal API is not available. Please use a runtime with native Temporal support or attach @js-temporal/polyfill to globalThis.Temporal before using @rc-component/picker/generate/temporal.',
+      );
+    } finally {
+      globalThis.Temporal = TemporalPolyfill as typeof globalThis.Temporal;
+    }
   });
 
   it('normalizes defensive branch coverage in coverage mode', () => {
