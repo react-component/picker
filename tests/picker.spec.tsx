@@ -226,6 +226,60 @@ describe('Picker.Basic', () => {
       expect(container.querySelector('input').value).toEqual('1989-11-11');
     });
 
+    it('supports Temporal generateConfig with week picker', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Picker<TemporalPolyfill.PlainDateTime>
+          generateConfig={temporalGenerateConfig}
+          locale={enUS}
+          picker="week"
+          defaultValue={TemporalPolyfill.PlainDateTime.from('2020-01-10T00:00:00')}
+          onChange={onChange}
+        />,
+      );
+
+      expect(container.querySelector('input').value).toEqual('2020-2nd');
+
+      openPicker(container);
+      selectCell(20);
+      closePicker(container);
+
+      expect(onChange).toHaveBeenCalled();
+      expect(onChange.mock.calls[0][0].toString()).toEqual('2020-01-20T00:00:00');
+      expect(onChange.mock.calls[0][1]).toEqual('2020-4th');
+      expect(container.querySelector('input').value).toEqual('2020-4th');
+    });
+
+    it('supports Temporal generateConfig with 12-hour showTime input', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Picker<TemporalPolyfill.PlainDateTime>
+          generateConfig={temporalGenerateConfig}
+          locale={enUS}
+          showTime={{ use12Hours: true }}
+          format="YYYY-MM-DD hh:mm A"
+          defaultValue={TemporalPolyfill.PlainDateTime.from('1989-11-28T15:05:00')}
+          onChange={onChange}
+        />,
+      );
+
+      expect(container.querySelector('input').value).toEqual('1989-11-28 03:05 PM');
+
+      openPicker(container);
+      triggerFocus(container.querySelector('input'));
+      fireEvent.change(container.querySelector('input'), {
+        target: {
+          value: '1989-11-11 04:15 PM',
+        },
+      });
+      keyDown(KeyCode.ENTER);
+
+      expect(onChange).toHaveBeenCalled();
+      expect(onChange.mock.calls[0][0].toString()).toEqual('1989-11-11T16:15:00');
+      expect(onChange.mock.calls[0][1]).toEqual('1989-11-11 04:15 PM');
+      expect(container.querySelector('input').value).toEqual('1989-11-11 04:15 PM');
+    });
+
     it('defaultValue', () => {
       const { container } = render(<DayPicker defaultValue={getDay('1989-11-28')} />);
       expect(container.querySelector('input').value).toEqual('1989-11-28');
