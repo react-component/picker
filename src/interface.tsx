@@ -89,9 +89,14 @@ export type InternalMode = PanelMode | 'datetime';
 
 export type PickerMode = Exclude<PanelMode, 'datetime' | 'decade'>;
 
+export interface BaseInfo {
+  /** Only work in RangePicker. Tell the related start or end field. */
+  range?: 'start' | 'end';
+}
+
 export type DisabledDate<DateType = any> = (
   date: DateType,
-  info: {
+  info: BaseInfo & {
     type: PanelMode;
     /**
      * Only work in RangePicker.
@@ -101,10 +106,6 @@ export type DisabledDate<DateType = any> = (
     from?: DateType;
   },
 ) => boolean;
-
-export interface BaseInfo {
-  range?: 'start' | 'end';
-}
 
 export interface CellRenderInfo<DateType> extends BaseInfo {
   prefixCls: string;
