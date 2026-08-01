@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-loop-func */
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
+import { Temporal as TemporalPolyfill } from '@js-temporal/polyfill';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import moment from 'moment';
@@ -9,6 +10,7 @@ import React from 'react';
 import Picker, { PickerPanel, type PickerRef } from '../src';
 import type { PanelMode, PickerMode } from '../src/interface';
 import momentGenerateConfig from '../src/generate/moment';
+import temporalGenerateConfig from '../src/generate/temporal';
 import enUS from '../src/locale/en_US';
 import zhCN from '../src/locale/zh_CN';
 import {
@@ -37,7 +39,10 @@ jest.mock('@rc-component/util/lib/Dom/isVisible', () => {
 
 describe('Picker.Basic', () => {
   let errorSpy;
+  const originalTemporal = globalThis.Temporal;
+
   beforeEach(() => {
+    globalThis.Temporal = TemporalPolyfill as typeof globalThis.Temporal;
     jest.useFakeTimers().setSystemTime(fakeTime);
   });
 
@@ -50,6 +55,11 @@ describe('Picker.Basic', () => {
     resetWarned();
   });
   afterAll(() => {
+    if (originalTemporal) {
+      globalThis.Temporal = originalTemporal;
+    } else {
+      delete (globalThis as typeof globalThis & { Temporal?: typeof globalThis.Temporal }).Temporal;
+    }
     jest.clearAllTimers();
     jest.useRealTimers();
   });
@@ -193,6 +203,83 @@ describe('Picker.Basic', () => {
   });
 
   describe('value', () => {
+    it('supports Temporal generateConfig', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Picker<TemporalPolyfill.PlainDateTime>
+          generateConfig={temporalGenerateConfig}
+          locale={enUS}
+          defaultValue={TemporalPolyfill.PlainDateTime.from('1989-11-28T00:00:00')}
+          onChange={onChange}
+        />,
+      );
+
+      expect(container.querySelector('input').value).toEqual('1989-11-28');
+
+      openPicker(container);
+      selectCell(11);
+      closePicker(container);
+
+      expect(onChange).toHaveBeenCalled();
+      expect(onChange.mock.calls[0][0].toString()).toEqual('1989-11-11T00:00:00');
+      expect(onChange.mock.calls[0][1]).toEqual('1989-11-11');
+      expect(container.querySelector('input').value).toEqual('1989-11-11');
+    });
+
+    it('supports Temporal generateConfig with week picker', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Picker<TemporalPolyfill.PlainDateTime>
+          generateConfig={temporalGenerateConfig}
+          locale={enUS}
+          picker="week"
+          defaultValue={TemporalPolyfill.PlainDateTime.from('2020-01-10T00:00:00')}
+          onChange={onChange}
+        />,
+      );
+
+      expect(container.querySelector('input').value).toEqual('2020-2nd');
+
+      openPicker(container);
+      selectCell(20);
+      closePicker(container);
+
+      expect(onChange).toHaveBeenCalled();
+      expect(onChange.mock.calls[0][0].toString()).toEqual('2020-01-20T00:00:00');
+      expect(onChange.mock.calls[0][1]).toEqual('2020-4th');
+      expect(container.querySelector('input').value).toEqual('2020-4th');
+    });
+
+    it('supports Temporal generateConfig with 12-hour showTime input', () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <Picker<TemporalPolyfill.PlainDateTime>
+          generateConfig={temporalGenerateConfig}
+          locale={enUS}
+          showTime={{ use12Hours: true }}
+          format="YYYY-MM-DD hh:mm A"
+          defaultValue={TemporalPolyfill.PlainDateTime.from('1989-11-28T15:05:00')}
+          onChange={onChange}
+        />,
+      );
+
+      expect(container.querySelector('input').value).toEqual('1989-11-28 03:05 PM');
+
+      openPicker(container);
+      triggerFocus(container.querySelector('input'));
+      fireEvent.change(container.querySelector('input'), {
+        target: {
+          value: '1989-11-11 04:15 PM',
+        },
+      });
+      keyDown(KeyCode.ENTER);
+
+      expect(onChange).toHaveBeenCalled();
+      expect(onChange.mock.calls[0][0].toString()).toEqual('1989-11-11T16:15:00');
+      expect(onChange.mock.calls[0][1]).toEqual('1989-11-11 04:15 PM');
+      expect(container.querySelector('input').value).toEqual('1989-11-11 04:15 PM');
+    });
+
     it('defaultValue', () => {
       const { container } = render(<DayPicker defaultValue={getDay('1989-11-28')} />);
       expect(container.querySelector('input').value).toEqual('1989-11-28');
