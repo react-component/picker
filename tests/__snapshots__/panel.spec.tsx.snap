@@ -1284,14 +1284,21 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
       </div>
       <div
         class="rc-picker-content"
+        role="group"
       >
         <ul
+          aria-label="Select an hour"
           class="rc-picker-time-panel-column"
           data-type="hour"
+          role="listbox"
         >
           <li
+            aria-disabled="false"
+            aria-label="0 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="0"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1304,8 +1311,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="1 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="1"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1318,8 +1329,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="2 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="2"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1332,8 +1347,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="3 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="3"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1346,8 +1365,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="4 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="4"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1360,8 +1383,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="5 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="5"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1374,8 +1401,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="6 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="6"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1388,8 +1419,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="7 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="7"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1402,8 +1437,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="8 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="8"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1416,8 +1455,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="9 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="9"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1430,8 +1473,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="10 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="10"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1444,8 +1491,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="11 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="11"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1458,8 +1509,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="12 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="12"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1472,8 +1527,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="13 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="13"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1486,8 +1545,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="14 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="14"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1500,8 +1563,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="15 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="15"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1514,8 +1581,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="16 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="16"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1528,8 +1599,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="17 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="17"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1542,8 +1617,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="18 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="18"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1556,8 +1635,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="19 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="19"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1570,8 +1653,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="20 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="20"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1584,8 +1671,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="21 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="21"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1598,8 +1689,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="22 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="22"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1612,8 +1707,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="23 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="23"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1627,12 +1726,18 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
         </ul>
         <ul
+          aria-label="Select a minute"
           class="rc-picker-time-panel-column"
           data-type="minute"
+          role="listbox"
         >
           <li
+            aria-disabled="false"
+            aria-label="0 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="0"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1645,8 +1750,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="1 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="1"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1659,8 +1768,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="2 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="2"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1673,8 +1786,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="3 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="3"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1687,8 +1804,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="4 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="4"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1701,8 +1822,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="5 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="5"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1715,8 +1840,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="6 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="6"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1729,8 +1858,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="7 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="7"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1743,8 +1876,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="8 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="8"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1757,8 +1894,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="9 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="9"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1771,8 +1912,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="10 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="10"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1785,8 +1930,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="11 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="11"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1799,8 +1948,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="12 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="12"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1813,8 +1966,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="13 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="13"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1827,8 +1984,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="14 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="14"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1841,8 +2002,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="15 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="15"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1855,8 +2020,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="16 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="16"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1869,8 +2038,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="17 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="17"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1883,8 +2056,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="18 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="18"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1897,8 +2074,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="19 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="19"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1911,8 +2092,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="20 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="20"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1925,8 +2110,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="21 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="21"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1939,8 +2128,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="22 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="22"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1953,8 +2146,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="23 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="23"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1967,8 +2164,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="24 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="24"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1981,8 +2182,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="25 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="25"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -1995,8 +2200,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="26 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="26"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2009,8 +2218,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="27 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="27"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2023,8 +2236,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="28 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="28"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2037,8 +2254,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="29 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="29"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2051,8 +2272,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="30 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="30"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2065,8 +2290,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="31 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="31"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2079,8 +2308,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="32 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="32"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2093,8 +2326,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="33 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="33"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2107,8 +2344,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="34 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="34"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2121,8 +2362,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="35 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="35"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2135,8 +2380,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="36 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="36"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2149,8 +2398,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="37 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="37"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2163,8 +2416,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="38 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="38"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2177,8 +2434,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="39 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="39"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2191,8 +2452,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="40 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="40"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2205,8 +2470,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="41 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="41"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2219,8 +2488,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="42 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="42"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2233,8 +2506,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="43 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="43"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2247,8 +2524,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="44 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="44"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2261,8 +2542,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="45 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="45"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2275,8 +2560,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="46 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="46"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2289,8 +2578,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="47 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="47"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2303,8 +2596,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="48 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="48"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2317,8 +2614,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="49 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="49"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2331,8 +2632,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="50 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="50"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2345,8 +2650,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="51 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="51"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2359,8 +2668,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="52 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="52"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2373,8 +2686,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="53 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="53"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2387,8 +2704,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="54 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="54"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2401,8 +2722,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="55 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="55"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2415,8 +2740,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="56 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="56"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2429,8 +2758,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="57 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="57"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2443,8 +2776,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="58 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="58"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2457,8 +2794,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="59 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="59"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2472,12 +2813,18 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
           </li>
         </ul>
         <ul
+          aria-label="Select a second"
           class="rc-picker-time-panel-column"
           data-type="second"
+          role="listbox"
         >
           <li
+            aria-disabled="false"
+            aria-label="0 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="0"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2490,8 +2837,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="1 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="1"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2504,8 +2855,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="2 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="2"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2518,8 +2873,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="3 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="3"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2532,8 +2891,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="4 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="4"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2546,8 +2909,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="5 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="5"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2560,8 +2927,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="6 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="6"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2574,8 +2945,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="7 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="7"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2588,8 +2963,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="8 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="8"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2602,8 +2981,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="9 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="9"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2616,8 +2999,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="10 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="10"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2630,8 +3017,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="11 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="11"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2644,8 +3035,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="12 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="12"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2658,8 +3053,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="13 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="13"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2672,8 +3071,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="14 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="14"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2686,8 +3089,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="15 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="15"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2700,8 +3107,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="16 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="16"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2714,8 +3125,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="17 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="17"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2728,8 +3143,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="18 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="18"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2742,8 +3161,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="19 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="19"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2756,8 +3179,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="20 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="20"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2770,8 +3197,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="21 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="21"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2784,8 +3215,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="22 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="22"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2798,8 +3233,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="23 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="23"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2812,8 +3251,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="24 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="24"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2826,8 +3269,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="25 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="25"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2840,8 +3287,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="26 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="26"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2854,8 +3305,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="27 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="27"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2868,8 +3323,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="28 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="28"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2882,8 +3341,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="29 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="29"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2896,8 +3359,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="30 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="30"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2910,8 +3377,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="31 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="31"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2924,8 +3395,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="32 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="32"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2938,8 +3413,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="33 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="33"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2952,8 +3431,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="34 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="34"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2966,8 +3449,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="35 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="35"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2980,8 +3467,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="36 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="36"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -2994,8 +3485,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="37 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="37"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3008,8 +3503,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="38 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="38"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3022,8 +3521,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="39 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="39"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3036,8 +3539,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="40 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="40"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3050,8 +3557,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="41 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="41"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3064,8 +3575,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="42 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="42"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3078,8 +3593,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="43 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="43"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3092,8 +3611,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="44 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="44"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3106,8 +3629,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="45 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="45"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3120,8 +3647,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="46 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="46"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3134,8 +3665,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="47 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="47"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3148,8 +3683,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="48 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="48"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3162,8 +3701,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="49 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="49"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3176,8 +3719,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="50 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="50"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3190,8 +3737,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="51 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="51"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3204,8 +3755,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="52 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="52"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3218,8 +3773,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="53 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="53"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3232,8 +3791,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="54 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="54"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3246,8 +3809,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="55 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="55"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3260,8 +3827,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="56 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="56"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3274,8 +3845,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="57 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="57"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3288,8 +3863,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="58 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="58"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -3302,8 +3881,12 @@ exports[`Picker.Panel append cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="59 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="59"
+            role="option"
           >
             <div
               class="rc-picker-time-panel-cell-inner customInner"
@@ -5423,14 +6006,21 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
       </div>
       <div
         class="rc-picker-content"
+        role="group"
       >
         <ul
+          aria-label="Select an hour"
           class="rc-picker-time-panel-column"
           data-type="hour"
+          role="listbox"
         >
           <li
+            aria-disabled="false"
+            aria-label="0 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="0"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5439,8 +6029,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="1 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="1"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5449,8 +6043,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="2 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="2"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5459,8 +6057,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="3 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="3"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5469,8 +6071,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="4 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="4"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5479,8 +6085,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="5 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="5"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5489,8 +6099,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="6 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="6"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5499,8 +6113,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="7 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="7"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5509,8 +6127,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="8 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="8"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5519,8 +6141,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="9 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="9"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5529,8 +6155,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="10 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="10"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5539,8 +6169,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="11 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="11"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5549,8 +6183,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="12 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="12"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5559,8 +6197,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="13 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="13"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5569,8 +6211,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="14 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="14"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5579,8 +6225,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="15 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="15"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5589,8 +6239,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="16 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="16"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5599,8 +6253,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="17 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="17"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5609,8 +6267,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="18 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="18"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5619,8 +6281,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="19 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="19"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5629,8 +6295,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="20 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="20"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5639,8 +6309,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="21 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="21"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5649,8 +6323,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="22 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="22"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5659,8 +6337,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="23 Hours"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="23"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5670,12 +6352,18 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
         </ul>
         <ul
+          aria-label="Select a minute"
           class="rc-picker-time-panel-column"
           data-type="minute"
+          role="listbox"
         >
           <li
+            aria-disabled="false"
+            aria-label="0 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="0"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5684,8 +6372,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="1 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="1"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5694,8 +6386,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="2 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="2"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5704,8 +6400,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="3 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="3"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5714,8 +6414,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="4 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="4"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5724,8 +6428,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="5 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="5"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5734,8 +6442,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="6 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="6"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5744,8 +6456,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="7 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="7"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5754,8 +6470,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="8 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="8"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5764,8 +6484,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="9 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="9"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5774,8 +6498,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="10 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="10"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5784,8 +6512,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="11 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="11"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5794,8 +6526,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="12 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="12"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5804,8 +6540,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="13 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="13"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5814,8 +6554,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="14 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="14"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5824,8 +6568,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="15 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="15"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5834,8 +6582,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="16 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="16"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5844,8 +6596,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="17 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="17"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5854,8 +6610,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="18 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="18"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5864,8 +6624,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="19 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="19"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5874,8 +6638,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="20 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="20"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5884,8 +6652,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="21 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="21"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5894,8 +6666,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="22 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="22"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5904,8 +6680,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="23 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="23"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5914,8 +6694,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="24 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="24"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5924,8 +6708,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="25 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="25"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5934,8 +6722,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="26 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="26"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5944,8 +6736,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="27 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="27"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5954,8 +6750,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="28 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="28"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5964,8 +6764,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="29 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="29"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5974,8 +6778,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="30 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="30"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5984,8 +6792,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="31 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="31"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -5994,8 +6806,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="32 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="32"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6004,8 +6820,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="33 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="33"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6014,8 +6834,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="34 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="34"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6024,8 +6848,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="35 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="35"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6034,8 +6862,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="36 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="36"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6044,8 +6876,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="37 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="37"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6054,8 +6890,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="38 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="38"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6064,8 +6904,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="39 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="39"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6074,8 +6918,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="40 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="40"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6084,8 +6932,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="41 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="41"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6094,8 +6946,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="42 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="42"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6104,8 +6960,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="43 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="43"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6114,8 +6974,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="44 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="44"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6124,8 +6988,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="45 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="45"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6134,8 +7002,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="46 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="46"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6144,8 +7016,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="47 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="47"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6154,8 +7030,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="48 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="48"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6164,8 +7044,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="49 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="49"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6174,8 +7058,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="50 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="50"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6184,8 +7072,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="51 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="51"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6194,8 +7086,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="52 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="52"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6204,8 +7100,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="53 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="53"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6214,8 +7114,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="54 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="54"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6224,8 +7128,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="55 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="55"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6234,8 +7142,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="56 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="56"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6244,8 +7156,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="57 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="57"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6254,8 +7170,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="58 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="58"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6264,8 +7184,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="59 Minutes"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="59"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6275,12 +7199,18 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
           </li>
         </ul>
         <ul
+          aria-label="Select a second"
           class="rc-picker-time-panel-column"
           data-type="second"
+          role="listbox"
         >
           <li
+            aria-disabled="false"
+            aria-label="0 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="0"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6289,8 +7219,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="1 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="1"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6299,8 +7233,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="2 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="2"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6309,8 +7247,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="3 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="3"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6319,8 +7261,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="4 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="4"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6329,8 +7275,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="5 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="5"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6339,8 +7289,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="6 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="6"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6349,8 +7303,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="7 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="7"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6359,8 +7317,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="8 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="8"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6369,8 +7331,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="9 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="9"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6379,8 +7345,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="10 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="10"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6389,8 +7359,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="11 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="11"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6399,8 +7373,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="12 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="12"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6409,8 +7387,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="13 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="13"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6419,8 +7401,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="14 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="14"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6429,8 +7415,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="15 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="15"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6439,8 +7429,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="16 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="16"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6449,8 +7443,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="17 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="17"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6459,8 +7457,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="18 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="18"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6469,8 +7471,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="19 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="19"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6479,8 +7485,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="20 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="20"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6489,8 +7499,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="21 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="21"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6499,8 +7513,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="22 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="22"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6509,8 +7527,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="23 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="23"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6519,8 +7541,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="24 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="24"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6529,8 +7555,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="25 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="25"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6539,8 +7569,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="26 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="26"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6549,8 +7583,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="27 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="27"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6559,8 +7597,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="28 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="28"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6569,8 +7611,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="29 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="29"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6579,8 +7625,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="30 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="30"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6589,8 +7639,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="31 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="31"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6599,8 +7653,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="32 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="32"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6609,8 +7667,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="33 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="33"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6619,8 +7681,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="34 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="34"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6629,8 +7695,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="35 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="35"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6639,8 +7709,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="36 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="36"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6649,8 +7723,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="37 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="37"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6659,8 +7737,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="38 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="38"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6669,8 +7751,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="39 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="39"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6679,8 +7765,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="40 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="40"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6689,8 +7779,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="41 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="41"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6699,8 +7793,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="42 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="42"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6709,8 +7807,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="43 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="43"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6719,8 +7821,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="44 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="44"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6729,8 +7835,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="45 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="45"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6739,8 +7849,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="46 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="46"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6749,8 +7863,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="47 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="47"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6759,8 +7877,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="48 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="48"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6769,8 +7891,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="49 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="49"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6779,8 +7905,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="50 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="50"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6789,8 +7919,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="51 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="51"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6799,8 +7933,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="52 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="52"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6809,8 +7947,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="53 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="53"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6819,8 +7961,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="54 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="54"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6829,8 +7975,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="55 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="55"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6839,8 +7989,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="56 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="56"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6849,8 +8003,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="57 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="57"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6859,8 +8017,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="58 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="58"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -6869,8 +8031,12 @@ exports[`Picker.Panel override cell with cellRender in time 1`] = `
             </div>
           </li>
           <li
+            aria-disabled="false"
+            aria-label="59 Seconds"
+            aria-selected="false"
             class="rc-picker-time-panel-cell"
             data-value="59"
+            role="option"
           >
             <div
               class="customWrapper"
@@ -8231,14 +9397,21 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
         </div>
         <div
           class="rc-picker-content"
+          role="group"
         >
           <ul
+            aria-label="Select an hour"
             class="rc-picker-time-panel-column"
             data-type="hour"
+            role="listbox"
           >
             <li
+              aria-disabled="false"
+              aria-label="0 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="0"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8247,8 +9420,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="1 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="1"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8257,8 +9434,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="2 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="2"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8267,8 +9448,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="3 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="3"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8277,8 +9462,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="4 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="4"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8287,8 +9476,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="5 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="5"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8297,8 +9490,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="6 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="6"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8307,8 +9504,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="7 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="7"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8317,8 +9518,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="8 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="8"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8327,8 +9532,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="9 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="9"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8337,8 +9546,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="10 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="10"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8347,8 +9560,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="11 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="11"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8357,8 +9574,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="12 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="12"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8367,8 +9588,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="13 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="13"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8377,8 +9602,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="14 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="14"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8387,8 +9616,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="15 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="15"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8397,8 +9630,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="16 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="16"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8407,8 +9644,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="17 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="17"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8417,8 +9658,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="18 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="18"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8427,8 +9672,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="19 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="19"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8437,8 +9686,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="20 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="20"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8447,8 +9700,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="21 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="21"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8457,8 +9714,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="22 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="22"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8467,8 +9728,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="23 Hours"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="23"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8478,12 +9743,18 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
           </ul>
           <ul
+            aria-label="Select a minute"
             class="rc-picker-time-panel-column"
             data-type="minute"
+            role="listbox"
           >
             <li
+              aria-disabled="false"
+              aria-label="0 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="0"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8492,8 +9763,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="1 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="1"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8502,8 +9777,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="2 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="2"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8512,8 +9791,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="3 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="3"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8522,8 +9805,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="4 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="4"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8532,8 +9819,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="5 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="5"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8542,8 +9833,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="6 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="6"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8552,8 +9847,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="7 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="7"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8562,8 +9861,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="8 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="8"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8572,8 +9875,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="9 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="9"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8582,8 +9889,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="10 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="10"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8592,8 +9903,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="11 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="11"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8602,8 +9917,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="12 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="12"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8612,8 +9931,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="13 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="13"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8622,8 +9945,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="14 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="14"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8632,8 +9959,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="15 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="15"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8642,8 +9973,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="16 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="16"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8652,8 +9987,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="17 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="17"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8662,8 +10001,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="18 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="18"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8672,8 +10015,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="19 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="19"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8682,8 +10029,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="20 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="20"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8692,8 +10043,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="21 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="21"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8702,8 +10057,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="22 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="22"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8712,8 +10071,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="23 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="23"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8722,8 +10085,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="24 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="24"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8732,8 +10099,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="25 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="25"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8742,8 +10113,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="26 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="26"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8752,8 +10127,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="27 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="27"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8762,8 +10141,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="28 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="28"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8772,8 +10155,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="29 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="29"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8782,8 +10169,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="30 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="30"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8792,8 +10183,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="31 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="31"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8802,8 +10197,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="32 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="32"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8812,8 +10211,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="33 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="33"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8822,8 +10225,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="34 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="34"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8832,8 +10239,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="35 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="35"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8842,8 +10253,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="36 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="36"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8852,8 +10267,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="37 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="37"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8862,8 +10281,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="38 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="38"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8872,8 +10295,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="39 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="39"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8882,8 +10309,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="40 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="40"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8892,8 +10323,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="41 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="41"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8902,8 +10337,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="42 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="42"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8912,8 +10351,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="43 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="43"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8922,8 +10365,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="44 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="44"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8932,8 +10379,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="45 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="45"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8942,8 +10393,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="46 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="46"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8952,8 +10407,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="47 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="47"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8962,8 +10421,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="48 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="48"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8972,8 +10435,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="49 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="49"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8982,8 +10449,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="50 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="50"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -8992,8 +10463,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="51 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="51"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9002,8 +10477,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="52 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="52"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9012,8 +10491,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="53 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="53"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9022,8 +10505,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="54 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="54"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9032,8 +10519,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="55 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="55"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9042,8 +10533,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="56 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="56"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9052,8 +10547,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="57 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="57"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9062,8 +10561,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="58 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="58"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9072,8 +10575,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="59 Minutes"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="59"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9083,12 +10590,18 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             </li>
           </ul>
           <ul
+            aria-label="Select a second"
             class="rc-picker-time-panel-column"
             data-type="second"
+            role="listbox"
           >
             <li
+              aria-disabled="false"
+              aria-label="0 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="0"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9097,8 +10610,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="1 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="1"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9107,8 +10624,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="2 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="2"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9117,8 +10638,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="3 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="3"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9127,8 +10652,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="4 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="4"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9137,8 +10666,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="5 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="5"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9147,8 +10680,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="6 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="6"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9157,8 +10694,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="7 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="7"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9167,8 +10708,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="8 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="8"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9177,8 +10722,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="9 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="9"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9187,8 +10736,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="10 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="10"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9197,8 +10750,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="11 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="11"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9207,8 +10764,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="12 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="12"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9217,8 +10778,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="13 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="13"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9227,8 +10792,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="14 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="14"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9237,8 +10806,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="15 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="15"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9247,8 +10820,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="16 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="16"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9257,8 +10834,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="17 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="17"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9267,8 +10848,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="18 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="18"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9277,8 +10862,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="19 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="19"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9287,8 +10876,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="20 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="20"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9297,8 +10890,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="21 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="21"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9307,8 +10904,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="22 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="22"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9317,8 +10918,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="23 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="23"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9327,8 +10932,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="24 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="24"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9337,8 +10946,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="25 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="25"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9347,8 +10960,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="26 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="26"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9357,8 +10974,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="27 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="27"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9367,8 +10988,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="28 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="28"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9377,8 +11002,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="29 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="29"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9387,8 +11016,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="30 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="30"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9397,8 +11030,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="31 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="31"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9407,8 +11044,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="32 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="32"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9417,8 +11058,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="33 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="33"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9427,8 +11072,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="34 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="34"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9437,8 +11086,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="35 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="35"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9447,8 +11100,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="36 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="36"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9457,8 +11114,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="37 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="37"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9467,8 +11128,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="38 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="38"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9477,8 +11142,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="39 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="39"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9487,8 +11156,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="40 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="40"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9497,8 +11170,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="41 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="41"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9507,8 +11184,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="42 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="42"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9517,8 +11198,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="43 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="43"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9527,8 +11212,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="44 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="44"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9537,8 +11226,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="45 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="45"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9547,8 +11240,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="46 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="46"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9557,8 +11254,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="47 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="47"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9567,8 +11268,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="48 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="48"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9577,8 +11282,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="49 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="49"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9587,8 +11296,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="50 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="50"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9597,8 +11310,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="51 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="51"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9607,8 +11324,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="52 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="52"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9617,8 +11338,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="53 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="53"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9627,8 +11352,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="54 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="54"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9637,8 +11366,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="55 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="55"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9647,8 +11380,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="56 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="56"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9657,8 +11394,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="57 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="57"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9667,8 +11408,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="58 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="58"
+              role="option"
             >
               <div
                 class="customWrapper"
@@ -9677,8 +11422,12 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
               </div>
             </li>
             <li
+              aria-disabled="false"
+              aria-label="59 Seconds"
+              aria-selected="false"
               class="rc-picker-time-panel-cell"
               data-value="59"
+              role="option"
             >
               <div
                 class="customWrapper"
