@@ -275,7 +275,8 @@ export interface SharedPanelProps<DateType extends object = any> {
 
 export type Components<DateType extends object = any> = Partial<
   Record<InternalMode, React.ComponentType<SharedPanelProps<DateType>>> & {
-    button?: React.ComponentType<any> | string;
+    nowButton?: React.ComponentType<any> | string;
+    okButton?: React.ComponentType<any> | string;
     input?: React.ComponentType<any> | string;
   }
 >;
@@ -316,13 +317,7 @@ export type SemanticName = 'root' | 'prefix' | 'input' | 'suffix';
 export type PreviewValueType = 'hover';
 
 export type PanelSemanticName =
-  | 'root'
-  | 'header'
-  | 'body'
-  | 'content'
-  | 'item'
-  | 'footer'
-  | 'container';
+  'root' | 'header' | 'body' | 'content' | 'item' | 'footer' | 'container';
 
 export interface SharedPickerProps<DateType extends object = any>
   extends

@@ -45,7 +45,8 @@ export default function Footer(props: FooterProps) {
   const {
     prefixCls,
     locale,
-    button: Button = 'button',
+    nowButton: NowButton = 'button',
+    okButton: OkButton = 'button',
     classNames,
     styles,
   } = React.useContext(PickerContext);
@@ -70,35 +71,29 @@ export default function Footer(props: FooterProps) {
     }
   };
 
-  const nowPrefixCls = `${prefixCls}-now`;
-  const nowBtnPrefixCls = `${nowPrefixCls}-btn`;
-
   const presetNode = showNow && (
-    <li className={nowPrefixCls}>
-      <a
-        className={clsx(nowBtnPrefixCls, nowDisabled && `${nowBtnPrefixCls}-disabled`)}
-        aria-disabled={nowDisabled}
-        onClick={onInternalNow}
-      >
-        {internalMode === 'date' ? locale.today : locale.now}
-      </a>
-    </li>
+    <NowButton
+      type="button"
+      className={`${prefixCls}-now`}
+      disabled={nowDisabled}
+      onClick={onInternalNow}
+    >
+      {internalMode === 'date' ? locale.today : locale.now}
+    </NowButton>
   );
 
   // >>> OK
   const okNode = needConfirm && (
-    <li className={`${prefixCls}-ok`}>
-      <Button disabled={invalid} onClick={onSubmit}>
-        {locale.ok}
-      </Button>
-    </li>
+    <OkButton type="button" disabled={invalid} className={`${prefixCls}-ok`} onClick={onSubmit}>
+      {locale.ok}
+    </OkButton>
   );
 
   const rangeNode = (presetNode || okNode) && (
-    <ul className={`${prefixCls}-ranges`}>
+    <div className={`${prefixCls}-ranges`}>
       {presetNode}
       {okNode}
-    </ul>
+    </div>
   );
 
   // ======================== Render ========================

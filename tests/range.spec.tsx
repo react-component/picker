@@ -318,7 +318,7 @@ describe('Picker.Range', () => {
       fireEvent.click(baseElement.querySelectorAll('.rc-picker-input')[0]);
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
       fireEvent.click(baseElement.querySelector('.rc-picker-cell-inner'));
-      fireEvent.click(baseElement.querySelector('.rc-picker-ok button'));
+      fireEvent.click(baseElement.querySelector('.rc-picker-ok'));
 
       act(() => {
         jest.runAllTimers();
@@ -333,7 +333,7 @@ describe('Picker.Range', () => {
       fireEvent.click(baseElement.querySelectorAll('.rc-picker-input')[1]);
       expect(baseElement.querySelector('.rc-picker-dropdown-hidden')).toBeFalsy();
       selectCell(11);
-      fireEvent.click(baseElement.querySelector('.rc-picker-ok button'));
+      fireEvent.click(baseElement.querySelector('.rc-picker-ok'));
 
       act(() => {
         jest.runAllTimers();
@@ -613,7 +613,7 @@ describe('Picker.Range', () => {
 
       openPicker(container);
       selectCell(13);
-      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      fireEvent.click(document.querySelector('.rc-picker-ok'));
       selectCell(23);
 
       matchValues(container, '1990-09-13 01:02:03', '1990-09-23 05:06:07');
@@ -935,7 +935,7 @@ describe('Picker.Range', () => {
     openPicker(container);
 
     // Not trigger when not value
-    expect(document.querySelector<HTMLButtonElement>('.rc-picker-ok button').disabled).toBeTruthy();
+    expect(document.querySelector<HTMLButtonElement>('.rc-picker-ok').disabled).toBeTruthy();
     expect(onCalendarChange).not.toHaveBeenCalled();
 
     // Trigger when start Ok'd
@@ -944,7 +944,7 @@ describe('Picker.Range', () => {
     expect(onCalendarChange).toHaveBeenCalledWith(expect.anything(), ['1990-09-11 00:00:00', ''], {
       range: 'start',
     });
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    fireEvent.click(document.querySelector('.rc-picker-ok'));
     expect(onCalendarChange).toHaveBeenCalledWith(
       [expect.anything(), null],
       ['1990-09-11 00:00:00', ''],
@@ -961,7 +961,7 @@ describe('Picker.Range', () => {
       ['1990-09-11 00:00:00', '1990-09-23 00:00:00'],
       { range: 'end' },
     );
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    fireEvent.click(document.querySelector('.rc-picker-ok'));
     expect(onOk).toHaveBeenCalledWith([expect.anything(), expect.anything()]);
   });
 
@@ -1117,11 +1117,11 @@ describe('Picker.Range', () => {
       openPicker(container);
       selectCell(15);
       fireEvent.click(findLast(document.querySelector('ul'), 'li'));
-      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      fireEvent.click(document.querySelector('.rc-picker-ok'));
 
       selectCell(15);
       fireEvent.click(document.querySelector('ul').querySelector('li'));
-      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      fireEvent.click(document.querySelector('.rc-picker-ok'));
 
       expect(onChange).toHaveBeenCalledWith(expect.anything(), [
         '1990-09-15 00:00:00',
@@ -1141,10 +1141,10 @@ describe('Picker.Range', () => {
         );
         openPicker(container);
         fireEvent.click(findLast(document.querySelector('ul'), 'li'));
-        fireEvent.click(document.querySelector('.rc-picker-ok button'));
+        fireEvent.click(document.querySelector('.rc-picker-ok'));
 
         fireEvent.click(document.querySelector('ul').querySelectorAll('li')[2]);
-        fireEvent.click(document.querySelector('.rc-picker-ok button'));
+        fireEvent.click(document.querySelector('.rc-picker-ok'));
 
         expect(onChange).toHaveBeenCalledWith(expect.anything(), [start, end]);
 
@@ -1676,14 +1676,14 @@ describe('Picker.Range', () => {
 
     openPicker(container);
 
-    expect(document.querySelector<HTMLButtonElement>('.rc-picker-ok button').disabled).toBeTruthy();
+    expect(document.querySelector<HTMLButtonElement>('.rc-picker-ok').disabled).toBeTruthy();
 
     fireEvent.click(
       document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[6],
     );
 
     expect(document.querySelectorAll('input')[0].value).toEqual('2020-07-24 06:00:00');
-    expect(document.querySelector<HTMLButtonElement>('.rc-picker-ok button').disabled).toBeTruthy();
+    expect(document.querySelector<HTMLButtonElement>('.rc-picker-ok').disabled).toBeTruthy();
   });
 
   // https://github.com/ant-design/ant-design/issues/26024
@@ -1724,10 +1724,10 @@ describe('Picker.Range', () => {
     openPicker(container);
 
     selectCell(24);
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    fireEvent.click(document.querySelector('.rc-picker-ok'));
 
     fireEvent.click(document.querySelector('ul').querySelector('li'));
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    fireEvent.click(document.querySelector('.rc-picker-ok'));
 
     matchValues(container, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
   });
@@ -1737,10 +1737,10 @@ describe('Picker.Range', () => {
     openPicker(container, 1);
 
     selectCell(24);
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    fireEvent.click(document.querySelector('.rc-picker-ok'));
 
     fireEvent.click(document.querySelector('ul').querySelector('li'));
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    fireEvent.click(document.querySelector('.rc-picker-ok'));
 
     matchValues(container, '1990-09-24 00:00:00', '1990-09-24 00:00:00');
   });
@@ -2133,7 +2133,7 @@ describe('Picker.Range', () => {
 
     for (let i = 0; i < 2; i++) {
       selectCell(24);
-      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      fireEvent.click(document.querySelector('.rc-picker-ok'));
 
       await waitFakeTimer();
     }

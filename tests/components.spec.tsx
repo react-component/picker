@@ -26,7 +26,7 @@ describe('Picker.Components', () => {
             good: [null, null],
           }}
           components={{
-            button: Button,
+            okButton: Button,
           }}
           picker="time"
           open
