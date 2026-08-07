@@ -445,7 +445,7 @@ describe('Picker.Range', () => {
 
       // Basic
       openPicker(container);
-      testNode = document.querySelector('.rc-picker-presets li');
+      testNode = document.querySelector('.rc-picker-presets li button');
       expect(testNode.textContent).toEqual('test');
       // testNode.simulate('click');
       fireEvent.click(testNode);
@@ -457,7 +457,7 @@ describe('Picker.Range', () => {
 
       // Function
       openPicker(container);
-      testNode = document.querySelector('.rc-picker-presets li:last-child');
+      testNode = document.querySelector('.rc-picker-presets li:last-child button');
       expect(testNode.textContent).toEqual('func');
       // testNode.simulate('click');
       fireEvent.click(testNode);
@@ -478,12 +478,12 @@ describe('Picker.Range', () => {
       );
 
       openPicker(container);
-      fireEvent.mouseEnter(document.querySelector('.rc-picker-presets li'));
+      fireEvent.mouseEnter(document.querySelector('.rc-picker-presets button'));
       expect(findCell(11)).toHaveClass('rc-picker-cell-range-start');
       expect(findCell(12)).toHaveClass('rc-picker-cell-in-range');
       expect(findCell(13)).toHaveClass('rc-picker-cell-range-end');
 
-      fireEvent.mouseLeave(document.querySelector('.rc-picker-presets li'));
+      fireEvent.mouseLeave(document.querySelector('.rc-picker-presets button'));
       expect(findCell(11)).not.toHaveClass('rc-picker-cell-range-start');
       expect(findCell(12)).not.toHaveClass('rc-picker-cell-in-range');
       expect(findCell(13)).not.toHaveClass('rc-picker-cell-range-end');

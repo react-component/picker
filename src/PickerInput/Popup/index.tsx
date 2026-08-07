@@ -222,6 +222,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
       ref={containerRef}
       onMouseDown={onPanelMouseDown}
       tabIndex={-1}
+      role="dialog"
       className={clsx(
         containerPrefixCls,
         // Used for Today Button style, safe to remove if no need
