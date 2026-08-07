@@ -9,6 +9,7 @@ exports[`Picker.Basic icon 1`] = `
     aria-haspopup="dialog"
     aria-invalid="false"
     autocomplete="off"
+    role="combobox"
     size="12"
     value="1990-09-03"
   />
@@ -41,6 +42,7 @@ exports[`Picker.Basic inputRender 1`] = `
     aria-invalid="false"
     autocomplete="off"
     data-customize="yes"
+    role="combobox"
     size="12"
     value=""
   />
@@ -59,6 +61,7 @@ exports[`Picker.Basic panelRender 1`] = `
       aria-haspopup="dialog"
       aria-invalid="false"
       autocomplete="off"
+      role="combobox"
       size="12"
       value=""
     />
@@ -103,6 +106,7 @@ exports[`Picker.Basic should render correctly in rtl 1`] = `
         aria-haspopup="dialog"
         aria-invalid="false"
         autocomplete="off"
+        role="combobox"
         size="12"
         value=""
       />

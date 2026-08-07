@@ -14,6 +14,7 @@ exports[`Picker.Range icon 1`] = `
         aria-invalid="false"
         autocomplete="off"
         date-range="start"
+        role="combobox"
         size="12"
         value="1990-09-03"
       />
@@ -32,6 +33,7 @@ exports[`Picker.Range icon 1`] = `
         aria-invalid="false"
         autocomplete="off"
         date-range="end"
+        role="combobox"
         size="12"
         value="1990-09-03"
       />
@@ -74,6 +76,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in pla
         aria-invalid="false"
         autocomplete="off"
         date-range="start"
+        role="combobox"
         size="12"
         value=""
       />
@@ -92,6 +95,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in pla
         aria-invalid="false"
         autocomplete="off"
         date-range="end"
+        role="combobox"
         size="12"
         value=""
       />
@@ -118,6 +122,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in rtl
         aria-invalid="false"
         autocomplete="off"
         date-range="start"
+        role="combobox"
         size="12"
         value=""
       />
@@ -136,6 +141,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in rtl
         aria-invalid="false"
         autocomplete="off"
         date-range="end"
+        role="combobox"
         size="12"
         value=""
       />
@@ -163,6 +169,7 @@ exports[`Picker.Range panelRender 1`] = `
           aria-invalid="false"
           autocomplete="off"
           date-range="start"
+          role="combobox"
           size="12"
           value=""
         />
@@ -181,6 +188,7 @@ exports[`Picker.Range panelRender 1`] = `
           aria-invalid="false"
           autocomplete="off"
           date-range="end"
+          role="combobox"
           size="12"
           value=""
         />
@@ -234,6 +242,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
           aria-invalid="false"
           autocomplete="off"
           date-range="start"
+          role="combobox"
           size="12"
           value=""
         />
@@ -252,6 +261,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
           aria-invalid="false"
           autocomplete="off"
           date-range="end"
+          role="combobox"
           size="12"
           value=""
         />
@@ -1653,6 +1663,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
           aria-invalid="false"
           autocomplete="off"
           date-range="start"
+          role="combobox"
           size="12"
           value=""
         />
@@ -1671,6 +1682,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
           aria-invalid="false"
           autocomplete="off"
           date-range="end"
+          role="combobox"
           size="12"
           value=""
         />

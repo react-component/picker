@@ -445,7 +445,7 @@ describe('Picker.Range', () => {
 
       // Basic
       openPicker(container);
-      testNode = document.querySelector('.rc-picker-presets button');
+      testNode = document.querySelector('.rc-picker-presets li button');
       expect(testNode.textContent).toEqual('test');
       // testNode.simulate('click');
       fireEvent.click(testNode);
@@ -457,7 +457,7 @@ describe('Picker.Range', () => {
 
       // Function
       openPicker(container);
-      testNode = document.querySelector('.rc-picker-presets button:last-child');
+      testNode = document.querySelector('.rc-picker-presets li:last-child button');
       expect(testNode.textContent).toEqual('func');
       // testNode.simulate('click');
       fireEvent.click(testNode);

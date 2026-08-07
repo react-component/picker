@@ -23,23 +23,26 @@ export default function PresetPanel<DateType extends object = any>(
 
   return (
     <div className={`${prefixCls}-presets`}>
-      {presets.map(({ label, value }, index) => (
-        <button
-          key={index}
-          type="button"
-          onClick={() => {
-            onClick(executeValue(value));
-          }}
-          onMouseEnter={() => {
-            onHover(executeValue(value));
-          }}
-          onMouseLeave={() => {
-            onHover(null);
-          }}
-        >
-          {label}
-        </button>
-      ))}
+      <ul role="list">
+        {presets.map(({ label, value }, index) => (
+          <li key={index}>
+            <button
+              type="button"
+              onClick={() => {
+                onClick(executeValue(value));
+              }}
+              onMouseEnter={() => {
+                onHover(executeValue(value));
+              }}
+              onMouseLeave={() => {
+                onHover(null);
+              }}
+            >
+              {label}
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

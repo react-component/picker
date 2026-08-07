@@ -406,6 +406,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     >
       <Component
         ref={inputRef}
+        role="combobox"
         aria-invalid={invalid}
         aria-haspopup="dialog"
         aria-expanded={open}
