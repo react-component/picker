@@ -24,6 +24,7 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
     Pick<React.InputHTMLAttributes<HTMLDivElement>, 'onFocus' | 'onBlur'>,
     FooterProps<DateType>,
     PopupPanelProps<DateType> {
+  containerRef?: React.Ref<HTMLDivElement>;
   panelRender?: SharedPickerProps['panelRender'];
 
   // Presets
@@ -53,6 +54,7 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
 
 export default function Popup<DateType extends object = any>(props: PopupProps<DateType>) {
   const {
+    containerRef,
     panelRender,
     internalMode,
     picker,
@@ -217,6 +219,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   // Container
   let renderNode = (
     <div
+      ref={containerRef}
       onMouseDown={onPanelMouseDown}
       tabIndex={-1}
       role="dialog"

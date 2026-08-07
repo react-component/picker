@@ -16,6 +16,8 @@ import {
   isSame,
   openPicker,
   selectCell,
+  triggerBlur,
+  triggerFocus,
   waitFakeTimer,
 } from './util/commonUtil';
 
@@ -45,7 +47,10 @@ describe('NewPicker.Range', () => {
   describe('PickerValue', () => {
     it('defaultPickerValue should reset every time when opened', () => {
       const { container } = render(
-        <DayRangePicker defaultPickerValue={[getDay('2000-01-01'), getDay('2023-09-03')]} />,
+        <DayRangePicker
+          allowEmpty
+          defaultPickerValue={[getDay('2000-01-01'), getDay('2023-09-03')]}
+        />,
       );
 
       // Left
@@ -79,6 +84,7 @@ describe('NewPicker.Range', () => {
 
       const { container } = render(
         <DayRangePicker
+          allowEmpty
           pickerValue={[getDay('1990-02-03'), getDay('1990-02-03')]}
           defaultPickerValue={[getDay('2000-01-01'), getDay('2023-09-03')]}
           onPickerValueChange={onPickerValueChange}
@@ -505,7 +511,7 @@ describe('NewPicker.Range', () => {
       const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
       const endInput = container.querySelectorAll<HTMLInputElement>('input')[1];
 
-      fireEvent.focus(startInput);
+      triggerFocus(startInput);
       fireEvent.change(startInput, {
         target: {
           value: '00:00:00',
@@ -650,7 +656,7 @@ describe('NewPicker.Range', () => {
         jest.runAllTimers();
       });
 
-      container.querySelector<HTMLButtonElement>('.focus').focus();
+      triggerFocus(container.querySelector<HTMLButtonElement>('.focus'));
 
       // Changed by click OK
       openPicker(container);
@@ -673,19 +679,21 @@ describe('NewPicker.Range', () => {
         <DayRangePicker needConfirm={false} picker="time" onChange={onChange} />,
       );
 
-      // Change start time (manually focus since fireEvent.focus not change activeElement)
+      // Change start time
       openPicker(container);
       const li6 = document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li')[6];
       fireEvent.mouseDown(li6);
       fireEvent.click(li6);
-      document.querySelector<HTMLDivElement>('.rc-picker-panel-container').focus();
+      triggerFocus(document.querySelector<HTMLDivElement>('.rc-picker-panel-container'));
 
       act(() => {
         jest.runAllTimers();
       });
 
       // Close panel to auto focus next end field
+      const startFocusedElement = document.activeElement;
       fireEvent.mouseDown(document.body);
+      triggerBlur(startFocusedElement as HTMLElement);
       act(() => {
         jest.runAllTimers();
       });
@@ -706,7 +714,9 @@ describe('NewPicker.Range', () => {
       });
 
       // Close panel to auto focus next end field
+      const endFocusedElement = document.activeElement;
       fireEvent.mouseDown(document.body);
+      triggerBlur(endFocusedElement as HTMLElement);
 
       act(() => {
         jest.runAllTimers();
@@ -822,7 +832,7 @@ describe('NewPicker.Range', () => {
       const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
       const endInput = container.querySelectorAll<HTMLInputElement>('input')[1];
 
-      startInput.focus();
+      triggerFocus(startInput);
       fireEvent.change(startInput, {
         target: {
           value: '00:00:00',
@@ -832,7 +842,7 @@ describe('NewPicker.Range', () => {
         key: 'Tab',
       });
 
-      endInput.focus();
+      triggerFocus(endInput);
       fireEvent.change(endInput, {
         target: {
           value: '02:00:00',
@@ -852,7 +862,7 @@ describe('NewPicker.Range', () => {
       const { rerender } = render(renderDemo(true));
       await waitFakeTimer();
 
-      fireEvent.focus(document.querySelector('.rc-picker-panel-container'));
+      triggerFocus(document.querySelector<HTMLElement>('.rc-picker-panel-container'));
       selectCell(5);
       selectCell(10);
 
@@ -861,14 +871,14 @@ describe('NewPicker.Range', () => {
 
       // Force close and open again
       rerender(renderDemo(false));
-      fireEvent.blur(document.querySelector('.rc-picker-panel-container'));
+      triggerBlur(document.querySelector<HTMLElement>('.rc-picker-panel-container'));
       await waitFakeTimer();
 
       rerender(renderDemo(true));
-      fireEvent.blur(document.querySelector('.rc-picker-panel-container'));
+      triggerBlur(document.querySelector<HTMLElement>('.rc-picker-panel-container'));
       await waitFakeTimer();
 
-      fireEvent.focus(document.querySelector('.rc-picker-panel-container'));
+      triggerFocus(document.querySelector<HTMLElement>('.rc-picker-panel-container'));
       selectCell(7);
       selectCell(11);
 
@@ -882,7 +892,7 @@ describe('NewPicker.Range', () => {
 
       await waitFakeTimer();
 
-      fireEvent.focus(document.querySelector('.rc-picker-panel-container'));
+      triggerFocus(document.querySelector<HTMLElement>('.rc-picker-panel-container'));
       selectCell(5);
       selectCell(10);
 
@@ -940,7 +950,7 @@ describe('NewPicker.Range', () => {
       const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
 
       // Year selection
-      fireEvent.focus(startInput);
+      triggerFocus(startInput);
 
       expect(startInput.selectionStart).toEqual(0);
       expect(startInput.selectionEnd).toEqual(4);
@@ -969,7 +979,7 @@ describe('NewPicker.Range', () => {
       const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
       const endInput = container.querySelectorAll<HTMLInputElement>('input')[1];
 
-      fireEvent.focus(startInput);
+      triggerFocus(startInput);
       fireEvent.paste(startInput, {
         clipboardData: {
           getData: () => '20200903',
@@ -981,7 +991,7 @@ describe('NewPicker.Range', () => {
 
       // End field
       await waitFakeTimer();
-      fireEvent.focus(endInput);
+      triggerFocus(endInput);
       fireEvent.paste(endInput, {
         clipboardData: {
           getData: () => '20200905',
@@ -1001,7 +1011,7 @@ describe('NewPicker.Range', () => {
 
       // Simulate focus gained by mousedown, then paste before mouse up.
       fireEvent.mouseDown(startInput);
-      fireEvent.focus(startInput);
+      triggerFocus(startInput);
 
       const pasteEvent = createEvent.paste(startInput, {
         clipboardData: {
@@ -1021,7 +1031,7 @@ describe('NewPicker.Range', () => {
       const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
 
       // Year selection
-      fireEvent.focus(startInput);
+      triggerFocus(startInput);
 
       fireEvent.mouseDown(startInput);
       startInput.selectionStart = 5;
@@ -1037,7 +1047,7 @@ describe('NewPicker.Range', () => {
 
       // Simulate focus gained by mousedown, then key input before mouse up.
       fireEvent.mouseDown(startInput);
-      fireEvent.focus(startInput);
+      triggerFocus(startInput);
 
       const keyDownEvent = createEvent.keyDown(startInput, {
         key: '1',
@@ -1055,7 +1065,7 @@ describe('NewPicker.Range', () => {
       const startInput = container.querySelectorAll<HTMLInputElement>('input')[0];
 
       fireEvent.mouseDown(startInput);
-      fireEvent.focus(startInput);
+      triggerFocus(startInput);
 
       fireEvent.mouseUp(startInput);
       expect(startInput.selectionStart).toBeDefined();
@@ -1067,11 +1077,11 @@ describe('NewPicker.Range', () => {
 
       const firstInput = container.querySelectorAll<HTMLInputElement>('input')[0];
 
-      fireEvent.focus(firstInput);
+      triggerFocus(firstInput);
       expect(firstInput).toHaveValue('YYYYMMDD');
 
-      fireEvent.blur(firstInput);
-      await waitFakeTimer();
+      triggerBlur(firstInput);
+      await waitFakeTimer(0, 2);
       expect(firstInput).toHaveValue('');
     });
 
@@ -1081,7 +1091,7 @@ describe('NewPicker.Range', () => {
       );
 
       const firstInput = container.querySelectorAll<HTMLInputElement>('input')[0];
-      fireEvent.focus(firstInput);
+      triggerFocus(firstInput);
 
       fireEvent.keyDown(firstInput, {
         key: 'Backspace',
@@ -1094,7 +1104,7 @@ describe('NewPicker.Range', () => {
       const { container } = render(<Demo />);
 
       const firstInput = container.querySelectorAll<HTMLInputElement>('input')[0];
-      fireEvent.focus(firstInput);
+      triggerFocus(firstInput);
 
       fireEvent.keyDown(firstInput, {
         key: 'ArrowUp',
@@ -1111,7 +1121,7 @@ describe('NewPicker.Range', () => {
       const { container } = render(<Demo />);
 
       const firstInput = container.querySelectorAll<HTMLInputElement>('input')[0];
-      fireEvent.focus(firstInput);
+      triggerFocus(firstInput);
 
       const fullText = '20000309';
 
@@ -1142,7 +1152,7 @@ describe('NewPicker.Range', () => {
 
     openPicker(container);
 
-    fireEvent.focus(document.querySelector('.bamboo'));
+    triggerFocus(document.querySelector<HTMLInputElement>('.bamboo'));
 
     expect(onOpenChange).not.toHaveBeenCalledWith(false);
   });
@@ -1252,7 +1262,7 @@ describe('NewPicker.Range', () => {
       const endInput = container.querySelectorAll<HTMLInputElement>('input')[1];
 
       // Start
-      fireEvent.focus(startInput);
+      triggerFocus(startInput);
       fireEvent.change(startInput, {
         target: {
           value: '2000-01-07',
@@ -1263,7 +1273,7 @@ describe('NewPicker.Range', () => {
       });
 
       // End
-      fireEvent.focus(endInput);
+      triggerFocus(endInput);
       fireEvent.change(endInput, {
         target: {
           value: '2000-01-14',
@@ -1284,7 +1294,7 @@ describe('NewPicker.Range', () => {
       const endInput = container.querySelectorAll<HTMLInputElement>('input')[1];
 
       // Start
-      fireEvent.focus(startInput);
+      triggerFocus(startInput);
       fireEvent.change(startInput, {
         target: {
           value: '2000-01-07',
@@ -1295,7 +1305,7 @@ describe('NewPicker.Range', () => {
       });
 
       // End
-      fireEvent.focus(endInput);
+      triggerFocus(endInput);
       fireEvent.change(endInput, {
         target: {
           value: '2001-01-08',
