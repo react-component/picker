@@ -57,6 +57,7 @@ exports[`Picker.Basic panelRender 1`] = `
     class="rc-picker-input"
   >
     <input
+      aria-controls="test-id-panel"
       aria-expanded="true"
       aria-haspopup="dialog"
       aria-invalid="false"

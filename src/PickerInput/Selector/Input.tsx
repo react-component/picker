@@ -77,6 +77,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     input: Component = 'input',
     classNames,
     styles,
+    popupId,
   } = React.useContext(PickerContext);
   const inputPrefixCls = `${prefixCls}-input`;
 
@@ -409,7 +410,9 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
         role="combobox"
         aria-invalid={invalid}
         aria-haspopup="dialog"
-        aria-expanded={open}
+        aria-expanded={!!open}
+        // Only reference the popup once it's rendered to avoid a dangling IDREF
+        aria-controls={open ? popupId : undefined}
         autoComplete="off"
         {...restProps}
         onKeyDown={onSharedKeyDown}

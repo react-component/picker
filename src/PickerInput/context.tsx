@@ -12,6 +12,8 @@ export interface PickerContextProps<DateType = any> {
   input?: Components['input'];
   classNames: FilledClassNames;
   styles: FilledStyles;
+  /** Id of the popup panel. Used by the input `aria-controls` to reference the popup */
+  popupId: string;
 }
 
 const PickerContext = React.createContext<PickerContextProps>(null!);

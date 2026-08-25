@@ -3,6 +3,7 @@ import {
   pickAttrs,
   useControlledState,
   useEvent,
+  useId,
   useLayoutEffect,
   warning,
 } from '@rc-component/util';
@@ -700,6 +701,8 @@ function RangePicker<DateType extends object = any>(
   };
 
   // ======================= Context ========================
+  const popupId = `${useId()}-panel`;
+
   const context = React.useMemo(
     () => ({
       prefixCls,
@@ -709,6 +712,7 @@ function RangePicker<DateType extends object = any>(
       input: components.input,
       classNames: mergedClassNames,
       styles: mergedStyles,
+      popupId,
     }),
     [
       prefixCls,
@@ -718,6 +722,7 @@ function RangePicker<DateType extends object = any>(
       components.input,
       mergedClassNames,
       mergedStyles,
+      popupId,
     ],
   );
 

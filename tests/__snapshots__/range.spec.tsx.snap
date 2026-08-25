@@ -71,6 +71,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in pla
       class="rc-picker-input rc-picker-input-active rc-picker-input-start"
     >
       <input
+        aria-controls="test-id-panel"
         aria-expanded="true"
         aria-haspopup="dialog"
         aria-invalid="false"
@@ -90,6 +91,7 @@ exports[`Picker.Range onPanelChange is array args should render correctly in pla
       class="rc-picker-input rc-picker-input-end"
     >
       <input
+        aria-controls="test-id-panel"
         aria-expanded="true"
         aria-haspopup="dialog"
         aria-invalid="false"
@@ -164,6 +166,7 @@ exports[`Picker.Range panelRender 1`] = `
         class="rc-picker-input rc-picker-input-active rc-picker-input-start"
       >
         <input
+          aria-controls="test-id-panel"
           aria-expanded="true"
           aria-haspopup="dialog"
           aria-invalid="false"
@@ -183,6 +186,7 @@ exports[`Picker.Range panelRender 1`] = `
         class="rc-picker-input rc-picker-input-end"
       >
         <input
+          aria-controls="test-id-panel"
           aria-expanded="true"
           aria-haspopup="dialog"
           aria-invalid="false"
@@ -213,6 +217,7 @@ exports[`Picker.Range panelRender 1`] = `
         />
         <div
           class="rc-picker-panel-container rc-picker-date-panel-container"
+          id="test-id-panel"
           role="dialog"
           style="margin-left: 0px; margin-right: auto;"
           tabindex="-1"
@@ -237,6 +242,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
         class="rc-picker-input rc-picker-input-active rc-picker-input-start"
       >
         <input
+          aria-controls="test-id-panel"
           aria-expanded="true"
           aria-haspopup="dialog"
           aria-invalid="false"
@@ -256,6 +262,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
         class="rc-picker-input rc-picker-input-end"
       >
         <input
+          aria-controls="test-id-panel"
           aria-expanded="true"
           aria-haspopup="dialog"
           aria-invalid="false"
@@ -286,6 +293,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
         />
         <div
           class="rc-picker-panel-container rc-picker-date-panel-container"
+          id="test-id-panel"
           role="dialog"
           style="margin-left: 0px; margin-right: auto;"
           tabindex="-1"
@@ -1658,6 +1666,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
         class="rc-picker-input rc-picker-input-active rc-picker-input-start"
       >
         <input
+          aria-controls="test-id-panel"
           aria-expanded="true"
           aria-haspopup="dialog"
           aria-invalid="false"
@@ -1677,6 +1686,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
         class="rc-picker-input rc-picker-input-end"
       >
         <input
+          aria-controls="test-id-panel"
           aria-expanded="true"
           aria-haspopup="dialog"
           aria-invalid="false"
@@ -1707,6 +1717,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
         />
         <div
           class="rc-picker-panel-container rc-picker-month-panel-container"
+          id="test-id-panel"
           role="dialog"
           style="margin-left: 0px; margin-right: auto;"
           tabindex="-1"

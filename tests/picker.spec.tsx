@@ -780,6 +780,25 @@ describe('Picker.Basic', () => {
     expect(container.querySelector('input')).toHaveAttribute('autoComplete', 'on');
   });
 
+  it('input is a combobox referencing the popup panel', () => {
+    const { container } = render(<DayPicker />);
+    const input = container.querySelector('input');
+
+    expect(input).toHaveAttribute('role', 'combobox');
+    expect(input).toHaveAttribute('aria-haspopup', 'dialog');
+    expect(input).toHaveAttribute('aria-expanded', 'false');
+    // Popup is not rendered yet, so there is nothing to reference
+    expect(input).not.toHaveAttribute('aria-controls');
+
+    openPicker(container);
+
+    expect(input).toHaveAttribute('aria-expanded', 'true');
+    expect(document.getElementById(input.getAttribute('aria-controls'))).toHaveAttribute(
+      'role',
+      'dialog',
+    );
+  });
+
   it('blur should reset invalidate text', async () => {
     const { container } = render(<DayPicker />);
     openPicker(container);

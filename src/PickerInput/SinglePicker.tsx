@@ -1,4 +1,11 @@
-import { omit, pickAttrs, useControlledState, useEvent, useLayoutEffect } from '@rc-component/util';
+import {
+  omit,
+  pickAttrs,
+  useControlledState,
+  useEvent,
+  useId,
+  useLayoutEffect,
+} from '@rc-component/util';
 import { clsx } from 'clsx';
 import * as React from 'react';
 import useToggleDates from '../hooks/useToggleDates';
@@ -642,6 +649,8 @@ function Picker<DateType extends object = any>(
   };
 
   // ======================= Context ========================
+  const popupId = `${useId()}-panel`;
+
   const context = React.useMemo(
     () => ({
       prefixCls,
@@ -651,6 +660,7 @@ function Picker<DateType extends object = any>(
       input: components.input,
       classNames: mergedClassNames,
       styles: mergedStyles,
+      popupId,
     }),
     [
       prefixCls,
@@ -660,6 +670,7 @@ function Picker<DateType extends object = any>(
       components.input,
       mergedClassNames,
       mergedStyles,
+      popupId,
     ],
   );
 

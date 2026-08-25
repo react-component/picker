@@ -89,7 +89,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     styles,
   } = props;
 
-  const { prefixCls } = React.useContext(PickerContext);
+  const { prefixCls, popupId } = React.useContext(PickerContext);
   const panelPrefixCls = `${prefixCls}-panel`;
 
   const rtl = direction === 'rtl';
@@ -220,6 +220,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   let renderNode = (
     <div
       ref={containerRef}
+      id={popupId}
       onMouseDown={onPanelMouseDown}
       tabIndex={-1}
       role="dialog"

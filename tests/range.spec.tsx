@@ -2461,6 +2461,18 @@ describe('Picker.Range', () => {
     expect(isOpen()).toBeFalsy();
   });
 
+  it('both inputs are comboboxes referencing the same popup panel', () => {
+    const { container } = render(<DayRangePicker />);
+    const [startInput, endInput] = Array.from(container.querySelectorAll('input'));
+
+    openPicker(container);
+
+    const popupId = startInput.getAttribute('aria-controls');
+    expect(document.getElementById(popupId)).toHaveAttribute('role', 'dialog');
+    expect(endInput).toHaveAttribute('aria-controls', popupId);
+    expect(endInput).toHaveAttribute('role', 'combobox');
+  });
+
   it('should not update preview value in input when previewValue is false', () => {
     const { container } = render(
       <DayRangePicker
