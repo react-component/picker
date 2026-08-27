@@ -920,6 +920,39 @@ describe('Picker.Basic', () => {
     expect(document.querySelector('input').value).toEqual('20000101');
   });
 
+  it('allows typing a four-digit year when a shorter format also matches', () => {
+    const onChange = jest.fn();
+    const { container, rerender } = render(
+      <DayPicker format={['DD-MM-YYYY', 'DD-MM-YY']} onChange={onChange} />,
+    );
+    const input = container.querySelector('input');
+
+    openPicker(container);
+    const text = '01-12-2024';
+    for (let index = 1; index <= text.length; index += 1) {
+      fireEvent.change(input, { target: { value: text.slice(0, index) } });
+
+      if (index === '01-12-20'.length) {
+        expect(input).toHaveValue('01-12-20');
+      }
+    }
+
+    expect(input).toHaveValue('01-12-2024');
+    fireEvent.keyDown(input, { key: 'Enter' });
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), '01-12-2024');
+
+    triggerFocus(input);
+    fireEvent.change(input, { target: { value: '01-12-20' } });
+    rerender(
+      <DayPicker
+        format={['DD-MM-YYYY', 'DD-MM-YY']}
+        value={getDay('1999-09-09')}
+        onChange={onChange}
+      />,
+    );
+    expect(input).toHaveValue('09-09-1999');
+  });
+
   it('custom format', () => {
     const { container } = render(
       <DayPicker
