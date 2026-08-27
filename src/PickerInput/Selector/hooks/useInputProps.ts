@@ -27,6 +27,7 @@ export default function useInputProps<DateType extends object = any>(
     | 'autoComplete'
     | 'open'
     | 'picker'
+    | 'clearIcon'
   > & {
     id?: string | string[];
     value?: DateType[];
@@ -73,6 +74,7 @@ export default function useInputProps<DateType extends object = any>(
     allHelp,
 
     picker,
+    clearIcon,
   } = props;
 
   // ======================== Parser ========================
@@ -161,6 +163,8 @@ export default function useInputProps<DateType extends object = any>(
 
       disabled: getProp(disabled),
 
+      clearable: !!clearIcon,
+
       onFocus: (event) => {
         onFocus(event, index);
       },
@@ -181,6 +185,12 @@ export default function useInputProps<DateType extends object = any>(
         if (parsed) {
           onInvalid(false, index);
           onChange(parsed, index);
+          return;
+        }
+
+        if (!text && clearIcon) {
+          onInvalid(false, index);
+          onChange(null, index);
           return;
         }
 

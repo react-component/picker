@@ -247,6 +247,48 @@ describe('Picker.Range', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
+  it('clears the range when an input value is manually removed', () => {
+    const onChange = jest.fn();
+    const onClear = jest.fn();
+    const { container } = render(
+      <DayRangePicker
+        defaultValue={[getDay('1990-09-11'), getDay('1990-09-23')]}
+        onChange={onChange}
+        onClear={onClear}
+      />,
+    );
+
+    openPicker(container);
+    fireEvent.change(container.querySelectorAll('input')[0], { target: { value: '' } });
+
+    expect(onChange).toHaveBeenCalledWith(null, null);
+    expect(onClear).toHaveBeenCalledTimes(1);
+    matchValues(container, '', '');
+    expect(isOpen()).toBeFalsy();
+  });
+
+  it('keeps the other range value when the cleared field allows empty', () => {
+    const onChange = jest.fn();
+    const onClear = jest.fn();
+    const end = getDay('1990-09-23');
+    const { container } = render(
+      <DayRangePicker
+        defaultValue={[getDay('1990-09-11'), end]}
+        allowEmpty={[true, false]}
+        onChange={onChange}
+        onClear={onClear}
+      />,
+    );
+
+    openPicker(container);
+    fireEvent.change(container.querySelectorAll('input')[0], { target: { value: '' } });
+
+    expect(onChange).toHaveBeenCalledWith([null, end], ['', '1990-09-23']);
+    expect(onClear).toHaveBeenCalledTimes(1);
+    matchValues(container, '', '1990-09-23');
+    expect(isOpen()).toBeFalsy();
+  });
+
   describe('disabled', () => {
     it('should no panel open with disabled', () => {
       const { baseElement } = render(<DayRangePicker disabled />);

@@ -291,6 +291,43 @@ describe('Picker.Basic', () => {
       });
     });
 
+    it('clears a selected value when the input text is removed', () => {
+      const onChange = jest.fn();
+      const onClear = jest.fn();
+      const { container } = render(
+        <DayPicker
+          defaultValue={getDay('2000-11-11')}
+          format={{ format: 'YYYY-MM-DD', type: 'mask' }}
+          onChange={onChange}
+          onClear={onClear}
+        />,
+      );
+
+      openPicker(container);
+      fireEvent.change(container.querySelector('input'), { target: { value: '' } });
+
+      expect(onChange).toHaveBeenCalledWith(null, null);
+      expect(onClear).toHaveBeenCalledTimes(1);
+      expect(container.querySelector('input')).toHaveValue('');
+      expect(isOpen()).toBeFalsy();
+    });
+
+    it('does not manually clear when allowClear is false', async () => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayPicker defaultValue={getDay('2000-11-11')} onChange={onChange} allowClear={false} />,
+      );
+      const input = container.querySelector('input');
+
+      openPicker(container);
+      fireEvent.change(input, { target: { value: '' } });
+      fireEvent.blur(input);
+      await waitFakeTimer();
+
+      expect(onChange).not.toHaveBeenCalled();
+      expect(input).toHaveValue('2000-11-11');
+    });
+
     // https://github.com/ant-design/ant-design/issues/49400
     it('should not throw errow when input end year first', () => {
       const { container } = render(<DayRangePicker picker="year" />);
