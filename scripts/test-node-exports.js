@@ -22,6 +22,22 @@ async function testNodeExports() {
 
   assert.equal(commonJSModules.length, entryPoints.length);
   assert.equal(esModules.length, entryPoints.length);
+
+  const publicKeys = (module) =>
+    Object.keys(module)
+      .filter((key) => key !== '__esModule' && key !== 'module.exports')
+      .sort();
+
+  commonJSModules.forEach((commonJSModule, index) => {
+    assert.deepEqual(publicKeys(esModules[index]), publicKeys(commonJSModule));
+  });
+
+  assert.equal(esModules[0].default, esModules[0].Picker);
+  assert.equal(commonJSModules[0].default, commonJSModules[0].Picker);
+  assert.equal(typeof esModules[2].default.getNow, 'function');
+  assert.equal(typeof commonJSModules[2].default.getNow, 'function');
+  assert.equal(esModules[4].default.locale, 'en_US');
+  assert.equal(commonJSModules[4].default.locale, 'en_US');
 }
 
 testNodeExports().catch((error) => {
