@@ -2,19 +2,22 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const esDirectory = path.resolve(__dirname, '../es');
-const moduleSpecifierPattern = /(\b(?:from|import)\s*(?:\(\s*)?)(['"])(\.\.?\/[^'"]+)\2(\s*\)?)/g;
+const moduleSpecifierPattern =
+  /(\b(?:from|import)\s*(?:\(\s*)?)(['"])(\.\.?\/[^'"]+|\.\.?)\2(\s*\)?)/g;
 
 fs.writeFileSync(path.join(esDirectory, 'package.json'), '{\n  "type": "module"\n}\n');
 
-function collectJavaScriptFiles(directory) {
+function collectModuleFiles(directory) {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const entryPath = path.join(directory, entry.name);
 
     if (entry.isDirectory()) {
-      return collectJavaScriptFiles(entryPath);
+      return collectModuleFiles(entryPath);
     }
 
-    return entry.isFile() && entry.name.endsWith('.js') ? [entryPath] : [];
+    return entry.isFile() && (entry.name.endsWith('.js') || entry.name.endsWith('.d.ts'))
+      ? [entryPath]
+      : [];
   });
 }
 
@@ -36,7 +39,7 @@ function resolveModuleSpecifier(filePath, specifier) {
 
 let rewriteCount = 0;
 
-collectJavaScriptFiles(esDirectory).forEach((filePath) => {
+collectModuleFiles(esDirectory).forEach((filePath) => {
   const source = fs.readFileSync(filePath, 'utf8');
   const rewrittenSource = source.replace(
     moduleSpecifierPattern,
