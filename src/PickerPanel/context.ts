@@ -9,30 +9,31 @@ export interface SharedPanelContextProps {
 
 export const SharedPanelContext = React.createContext<SharedPanelContextProps>(null!);
 
-export interface PanelContextProps<DateType extends object = any> extends Pick<
-  SharedPanelProps<DateType>,
-  | 'prefixCls'
-  | 'cellRender'
-  | 'generateConfig'
-  | 'locale'
-  | 'onSelect'
-  | 'hoverValue'
-  | 'hoverRangeValue'
-  | 'onHover'
-  | 'values'
-  | 'pickerValue'
+export interface PanelContextProps<DateType extends object = any>
+  extends Pick<
+    SharedPanelProps<DateType>,
+    | 'prefixCls'
+    | 'cellRender'
+    | 'generateConfig'
+    | 'locale'
+    | 'onSelect'
+    | 'hoverValue'
+    | 'hoverRangeValue'
+    | 'onHover'
+    | 'values'
+    | 'pickerValue'
 
-  // Limitation
-  | 'disabledDate'
-  | 'minDate'
-  | 'maxDate'
+    // Limitation
+    | 'disabledDate'
+    | 'minDate'
+    | 'maxDate'
 
-  // Icon
-  | 'prevIcon'
-  | 'nextIcon'
-  | 'superPrevIcon'
-  | 'superNextIcon'
-> {
+    // Icon
+    | 'prevIcon'
+    | 'nextIcon'
+    | 'superPrevIcon'
+    | 'superNextIcon'
+  > {
   /** Tell current panel type */
   panelType: PanelMode;
 
