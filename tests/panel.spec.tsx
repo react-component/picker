@@ -6,7 +6,14 @@ import type { PanelMode } from '../src/interface';
 import dayGenerateConfig from '../src/generate/dayjs';
 import enUS from '../src/locale/en_US';
 import zhCN from '../src/locale/zh_CN';
-import { clickButton, DayPickerPanel, getDay, isSame, selectCell } from './util/commonUtil';
+import {
+  clickButton,
+  DayPickerPanel,
+  findCell,
+  getDay,
+  isSame,
+  selectCell,
+} from './util/commonUtil';
 
 jest.mock('../src/utils/uiUtil', () => {
   const origin = jest.requireActual('../src/utils/uiUtil');
@@ -161,6 +168,136 @@ describe('Picker.Panel', () => {
 
       clickButton('super-next');
       expect(document.querySelector('.rc-picker-header-view').textContent).toEqual('1900-1999');
+    });
+  });
+
+  describe('cell keyboard navigation', () => {
+    // Roving tabindex: exactly one cell may be tabbable, and it has to sit
+    // inside the visible grid. If it does not, Tab walks straight out of the
+    // panel — jsdom cannot simulate Tab, so this is the assertion that stands
+    // in for it.
+    function expectActiveCell(text: string | number) {
+      const activeCells = document.querySelectorAll('td[tabindex="0"]');
+      expect(activeCells).toHaveLength(1);
+      expect(activeCells[0]).toBe(findCell(text));
+
+      return activeCells[0] as HTMLElement;
+    }
+
+    function pressKey(key: string) {
+      fireEvent.keyDown(document.querySelector('td[tabindex="0"]'), { key });
+    }
+
+    function headerText() {
+      return document.querySelector('.rc-picker-header-view').textContent;
+    }
+
+    it('arrow keys move the active cell', () => {
+      render(<DayPickerPanel defaultValue={getDay('1990-09-03')} />);
+      expectActiveCell(3);
+
+      pressKey('ArrowRight');
+      expect(expectActiveCell(4)).toHaveFocus();
+
+      pressKey('ArrowLeft');
+      expect(expectActiveCell(3)).toHaveFocus();
+
+      pressKey('ArrowDown');
+      expect(expectActiveCell(10)).toHaveFocus();
+
+      pressKey('ArrowUp');
+      expect(expectActiveCell(3)).toHaveFocus();
+    });
+
+    it('arrow keys re-base the grid when crossing a month boundary', () => {
+      render(<DayPickerPanel defaultValue={getDay('1990-09-30')} />);
+      expectActiveCell(30);
+
+      pressKey('ArrowRight');
+      expect(headerText()).toEqual('Oct1990');
+      expect(expectActiveCell(1)).toHaveFocus();
+    });
+
+    it('header navigation keeps the active cell inside the new view', () => {
+      render(<DayPickerPanel defaultValue={getDay('1990-09-03')} />);
+
+      // A single `prev` press does not catch a stale focused date: Sep 3 still
+      // renders as a trailing day of the August grid. Two presses put it out of
+      // the grid entirely, leaving no cell tabbable.
+      clickButton('prev');
+      clickButton('prev');
+      expect(headerText()).toEqual('Jul1990');
+      expectActiveCell(3);
+
+      clickButton('next');
+      expect(headerText()).toEqual('Aug1990');
+      expectActiveCell(3);
+
+      // Super nav moves a whole year, so the focused date is always out of view
+      // unless it follows along.
+      clickButton('super-prev');
+      expect(headerText()).toEqual('Aug1989');
+      expectActiveCell(3);
+
+      clickButton('super-next');
+      expect(headerText()).toEqual('Aug1990');
+      expectActiveCell(3);
+    });
+
+    it('switching mode focuses the active cell of the new panel', () => {
+      render(<DayPickerPanel defaultValue={getDay('1990-09-03')} />);
+
+      fireEvent.click(document.querySelector('.rc-picker-month-btn'));
+      expect(expectActiveCell('Sep')).toHaveFocus();
+
+      fireEvent.click(document.querySelector('.rc-picker-year-btn'));
+      expect(expectActiveCell('1990')).toHaveFocus();
+    });
+
+    it('week panel only marks the navigated cell as tabbable', () => {
+      render(<DayPickerPanel picker="week" defaultValue={getDay('1990-09-03')} />);
+
+      // `isSameWeek` matches all 7 days of the row, so a plain `isSame` check
+      // would hand tabIndex=0 to the whole week.
+      expectActiveCell(3);
+
+      pressKey('ArrowRight');
+      expect(expectActiveCell(4)).toHaveFocus();
+    });
+
+    it('Enter and Space select the active cell', () => {
+      const onChange = jest.fn();
+      render(<DayPickerPanel defaultValue={getDay('1990-09-03')} onChange={onChange} />);
+
+      // Re-selecting the current value is a no-op for `onChange`, so move the
+      // active cell before confirming it.
+      pressKey('ArrowRight');
+      pressKey('Enter');
+      expect(isSame(onChange.mock.calls[0][0], '1990-09-04')).toBeTruthy();
+      expectActiveCell(4);
+
+      onChange.mockClear();
+
+      pressKey('ArrowDown');
+      pressKey(' ');
+      expect(isSame(onChange.mock.calls[0][0], '1990-09-11')).toBeTruthy();
+      expectActiveCell(11);
+    });
+
+    it('does not select a disabled cell', () => {
+      const onChange = jest.fn();
+      render(
+        <DayPickerPanel
+          defaultValue={getDay('1990-09-03')}
+          disabledDate={(date) => date.date() === 4}
+        />,
+      );
+
+      pressKey('ArrowRight');
+      expectActiveCell(4);
+
+      pressKey('Enter');
+      expect(onChange).not.toHaveBeenCalled();
     });
   });
 

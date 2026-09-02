@@ -103,6 +103,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-26"
               >
                 <div
@@ -120,6 +121,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-27"
               >
                 <div
@@ -137,6 +139,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-28"
               >
                 <div
@@ -154,6 +157,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-29"
               >
                 <div
@@ -171,6 +175,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-30"
               >
                 <div
@@ -188,6 +193,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-31"
               >
                 <div
@@ -205,6 +211,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-01"
               >
                 <div
@@ -226,6 +233,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-02"
               >
                 <div
@@ -244,6 +252,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
                 role="gridcell"
+                tabindex="0"
                 title="1990-09-03"
               >
                 <div
@@ -261,6 +270,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-04"
               >
                 <div
@@ -278,6 +288,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-05"
               >
                 <div
@@ -295,6 +306,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-06"
               >
                 <div
@@ -312,6 +324,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-07"
               >
                 <div
@@ -329,6 +342,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-08"
               >
                 <div
@@ -350,6 +364,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-09"
               >
                 <div
@@ -367,6 +382,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-10"
               >
                 <div
@@ -384,6 +400,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-11"
               >
                 <div
@@ -401,6 +418,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-12"
               >
                 <div
@@ -418,6 +436,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-13"
               >
                 <div
@@ -435,6 +454,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-14"
               >
                 <div
@@ -452,6 +472,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-15"
               >
                 <div
@@ -473,6 +494,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-16"
               >
                 <div
@@ -490,6 +512,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-17"
               >
                 <div
@@ -507,6 +530,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-18"
               >
                 <div
@@ -524,6 +548,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-19"
               >
                 <div
@@ -541,6 +566,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-20"
               >
                 <div
@@ -558,6 +584,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-21"
               >
                 <div
@@ -575,6 +602,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-22"
               >
                 <div
@@ -596,6 +624,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-23"
               >
                 <div
@@ -613,6 +642,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-24"
               >
                 <div
@@ -630,6 +660,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-25"
               >
                 <div
@@ -647,6 +678,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-26"
               >
                 <div
@@ -664,6 +696,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-27"
               >
                 <div
@@ -681,6 +714,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-28"
               >
                 <div
@@ -698,6 +732,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-29"
               >
                 <div
@@ -719,6 +754,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-30"
               >
                 <div
@@ -736,6 +772,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-01"
               >
                 <div
@@ -753,6 +790,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-02"
               >
                 <div
@@ -770,6 +808,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-03"
               >
                 <div
@@ -787,6 +826,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-04"
               >
                 <div
@@ -804,6 +844,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-05"
               >
                 <div
@@ -821,6 +862,7 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-06"
               >
                 <div
@@ -890,6 +932,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="rc-picker-cell-inner customInner"
@@ -905,6 +948,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="rc-picker-cell-inner customInner"
@@ -920,6 +964,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="rc-picker-cell-inner customInner"
@@ -939,6 +984,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="rc-picker-cell-inner customInner"
@@ -954,6 +1000,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="rc-picker-cell-inner customInner"
@@ -969,6 +1016,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="rc-picker-cell-inner customInner"
@@ -988,6 +1036,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="rc-picker-cell-inner customInner"
@@ -1003,6 +1052,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="rc-picker-cell-inner customInner"
@@ -1018,6 +1068,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="rc-picker-cell-inner customInner"
@@ -1037,6 +1088,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="rc-picker-cell-inner customInner"
@@ -1053,6 +1105,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="0"
               >
                 <div
                   class="rc-picker-cell-inner customInner"
@@ -1068,6 +1121,7 @@ exports[`Picker.Panel append cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="rc-picker-cell-inner customInner"
@@ -1143,6 +1197,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-01"
               >
                 <div
@@ -1160,6 +1215,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-02"
               >
                 <div
@@ -1177,6 +1233,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-03"
               >
                 <div
@@ -1198,6 +1255,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-04"
               >
                 <div
@@ -1215,6 +1273,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-05"
               >
                 <div
@@ -1232,6 +1291,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-06"
               >
                 <div
@@ -1253,6 +1313,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-07"
               >
                 <div
@@ -1270,6 +1331,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08"
               >
                 <div
@@ -1288,6 +1350,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="0"
                 title="1990-09"
               >
                 <div
@@ -1309,6 +1372,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10"
               >
                 <div
@@ -1326,6 +1390,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-11"
               >
                 <div
@@ -1343,6 +1408,7 @@ exports[`Picker.Panel append cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-12"
               >
                 <div
@@ -1419,6 +1485,7 @@ exports[`Picker.Panel append cell with cellRender in quarter 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-Q1"
               >
                 <div
@@ -1436,6 +1503,7 @@ exports[`Picker.Panel append cell with cellRender in quarter 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-Q2"
               >
                 <div
@@ -1454,6 +1522,7 @@ exports[`Picker.Panel append cell with cellRender in quarter 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="0"
                 title="1990-Q3"
               >
                 <div
@@ -1471,6 +1540,7 @@ exports[`Picker.Panel append cell with cellRender in quarter 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-Q4"
               >
                 <div
@@ -3672,6 +3742,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-26"
               >
                 <div
@@ -3689,6 +3760,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-27"
               >
                 <div
@@ -3706,6 +3778,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-28"
               >
                 <div
@@ -3723,6 +3796,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-29"
               >
                 <div
@@ -3740,6 +3814,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-30"
               >
                 <div
@@ -3757,6 +3832,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-31"
               >
                 <div
@@ -3774,6 +3850,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-01"
               >
                 <div
@@ -3807,6 +3884,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-02"
               >
                 <div
@@ -3825,6 +3903,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
                 role="gridcell"
+                tabindex="0"
                 title="1990-09-03"
               >
                 <div
@@ -3842,6 +3921,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-04"
               >
                 <div
@@ -3859,6 +3939,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-05"
               >
                 <div
@@ -3876,6 +3957,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-06"
               >
                 <div
@@ -3893,6 +3975,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-07"
               >
                 <div
@@ -3910,6 +3993,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-08"
               >
                 <div
@@ -3943,6 +4027,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-09"
               >
                 <div
@@ -3960,6 +4045,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-10"
               >
                 <div
@@ -3977,6 +4063,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-11"
               >
                 <div
@@ -3994,6 +4081,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-12"
               >
                 <div
@@ -4011,6 +4099,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-13"
               >
                 <div
@@ -4028,6 +4117,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-14"
               >
                 <div
@@ -4045,6 +4135,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-15"
               >
                 <div
@@ -4078,6 +4169,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-16"
               >
                 <div
@@ -4095,6 +4187,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-17"
               >
                 <div
@@ -4112,6 +4205,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-18"
               >
                 <div
@@ -4129,6 +4223,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-19"
               >
                 <div
@@ -4146,6 +4241,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-20"
               >
                 <div
@@ -4163,6 +4259,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-21"
               >
                 <div
@@ -4180,6 +4277,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-22"
               >
                 <div
@@ -4213,6 +4311,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-23"
               >
                 <div
@@ -4230,6 +4329,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-24"
               >
                 <div
@@ -4247,6 +4347,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-25"
               >
                 <div
@@ -4264,6 +4365,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-26"
               >
                 <div
@@ -4281,6 +4383,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-27"
               >
                 <div
@@ -4298,6 +4401,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-28"
               >
                 <div
@@ -4315,6 +4419,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-29"
               >
                 <div
@@ -4348,6 +4453,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-30"
               >
                 <div
@@ -4365,6 +4471,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-01"
               >
                 <div
@@ -4382,6 +4489,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-02"
               >
                 <div
@@ -4399,6 +4507,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-03"
               >
                 <div
@@ -4416,6 +4525,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-04"
               >
                 <div
@@ -4433,6 +4543,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-05"
               >
                 <div
@@ -4450,6 +4561,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-06"
               >
                 <div
@@ -4526,6 +4638,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1989"
               >
                 <div
@@ -4544,6 +4657,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="0"
                 title="1990"
               >
                 <div
@@ -4561,6 +4675,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1991"
               >
                 <div
@@ -4582,6 +4697,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1992"
               >
                 <div
@@ -4599,6 +4715,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1993"
               >
                 <div
@@ -4616,6 +4733,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1994"
               >
                 <div
@@ -4637,6 +4755,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1995"
               >
                 <div
@@ -4654,6 +4773,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1996"
               >
                 <div
@@ -4671,6 +4791,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1997"
               >
                 <div
@@ -4692,6 +4813,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1998"
               >
                 <div
@@ -4709,6 +4831,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1999"
               >
                 <div
@@ -4726,6 +4849,7 @@ exports[`Picker.Panel append cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="2000"
               >
                 <div
@@ -4757,6 +4881,7 @@ exports[`Picker.Panel monthCellRender 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-01"
     >
       1990-01
@@ -4766,6 +4891,7 @@ exports[`Picker.Panel monthCellRender 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-02"
     >
       1990-02
@@ -4775,6 +4901,7 @@ exports[`Picker.Panel monthCellRender 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-03"
     >
       1990-03
@@ -4788,6 +4915,7 @@ exports[`Picker.Panel monthCellRender 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-04"
     >
       1990-04
@@ -4797,6 +4925,7 @@ exports[`Picker.Panel monthCellRender 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-05"
     >
       1990-05
@@ -4806,6 +4935,7 @@ exports[`Picker.Panel monthCellRender 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-06"
     >
       1990-06
@@ -4819,6 +4949,7 @@ exports[`Picker.Panel monthCellRender 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-07"
     >
       1990-07
@@ -4828,6 +4959,7 @@ exports[`Picker.Panel monthCellRender 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-08"
     >
       1990-08
@@ -4838,6 +4970,7 @@ exports[`Picker.Panel monthCellRender 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="0"
       title="1990-09"
     >
       1990-09
@@ -4851,6 +4984,7 @@ exports[`Picker.Panel monthCellRender 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-10"
     >
       1990-10
@@ -4860,6 +4994,7 @@ exports[`Picker.Panel monthCellRender 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-11"
     >
       1990-11
@@ -4869,6 +5004,7 @@ exports[`Picker.Panel monthCellRender 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-12"
     >
       1990-12
@@ -4980,6 +5116,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-26"
               >
                 <div
@@ -4993,6 +5130,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-27"
               >
                 <div
@@ -5006,6 +5144,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-28"
               >
                 <div
@@ -5019,6 +5158,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-29"
               >
                 <div
@@ -5032,6 +5172,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-30"
               >
                 <div
@@ -5045,6 +5186,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-31"
               >
                 <div
@@ -5058,6 +5200,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-01"
               >
                 <div
@@ -5075,6 +5218,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-02"
               >
                 <div
@@ -5089,6 +5233,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
                 role="gridcell"
+                tabindex="0"
                 title="1990-09-03"
               >
                 <div
@@ -5102,6 +5247,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-04"
               >
                 <div
@@ -5115,6 +5261,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-05"
               >
                 <div
@@ -5128,6 +5275,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-06"
               >
                 <div
@@ -5141,6 +5289,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-07"
               >
                 <div
@@ -5154,6 +5303,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-08"
               >
                 <div
@@ -5171,6 +5321,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-09"
               >
                 <div
@@ -5184,6 +5335,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-10"
               >
                 <div
@@ -5197,6 +5349,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-11"
               >
                 <div
@@ -5210,6 +5363,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-12"
               >
                 <div
@@ -5223,6 +5377,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-13"
               >
                 <div
@@ -5236,6 +5391,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-14"
               >
                 <div
@@ -5249,6 +5405,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-15"
               >
                 <div
@@ -5266,6 +5423,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-16"
               >
                 <div
@@ -5279,6 +5437,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-17"
               >
                 <div
@@ -5292,6 +5451,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-18"
               >
                 <div
@@ -5305,6 +5465,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-19"
               >
                 <div
@@ -5318,6 +5479,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-20"
               >
                 <div
@@ -5331,6 +5493,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-21"
               >
                 <div
@@ -5344,6 +5507,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-22"
               >
                 <div
@@ -5361,6 +5525,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-23"
               >
                 <div
@@ -5374,6 +5539,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-24"
               >
                 <div
@@ -5387,6 +5553,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-25"
               >
                 <div
@@ -5400,6 +5567,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-26"
               >
                 <div
@@ -5413,6 +5581,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-27"
               >
                 <div
@@ -5426,6 +5595,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-28"
               >
                 <div
@@ -5439,6 +5609,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-29"
               >
                 <div
@@ -5456,6 +5627,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-30"
               >
                 <div
@@ -5469,6 +5641,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-01"
               >
                 <div
@@ -5482,6 +5655,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-02"
               >
                 <div
@@ -5495,6 +5669,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-03"
               >
                 <div
@@ -5508,6 +5683,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-04"
               >
                 <div
@@ -5521,6 +5697,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-05"
               >
                 <div
@@ -5534,6 +5711,7 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-06"
               >
                 <div
@@ -5599,6 +5777,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="customWrapper"
@@ -5610,6 +5789,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="customWrapper"
@@ -5621,6 +5801,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="customWrapper"
@@ -5636,6 +5817,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="customWrapper"
@@ -5647,6 +5829,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="customWrapper"
@@ -5658,6 +5841,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="customWrapper"
@@ -5673,6 +5857,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="customWrapper"
@@ -5684,6 +5869,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="customWrapper"
@@ -5695,6 +5881,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="customWrapper"
@@ -5710,6 +5897,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="customWrapper"
@@ -5722,6 +5910,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="0"
               >
                 <div
                   class="customWrapper"
@@ -5733,6 +5922,7 @@ exports[`Picker.Panel override cell with cellRender in decade 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
               >
                 <div
                   class="customWrapper"
@@ -5804,6 +5994,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-01"
               >
                 <div
@@ -5817,6 +6008,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-02"
               >
                 <div
@@ -5830,6 +6022,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-03"
               >
                 <div
@@ -5847,6 +6040,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-04"
               >
                 <div
@@ -5860,6 +6054,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-05"
               >
                 <div
@@ -5873,6 +6068,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-06"
               >
                 <div
@@ -5890,6 +6086,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-07"
               >
                 <div
@@ -5903,6 +6100,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08"
               >
                 <div
@@ -5917,6 +6115,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="0"
                 title="1990-09"
               >
                 <div
@@ -5934,6 +6133,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10"
               >
                 <div
@@ -5947,6 +6147,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-11"
               >
                 <div
@@ -5960,6 +6161,7 @@ exports[`Picker.Panel override cell with cellRender in month 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-12"
               >
                 <div
@@ -6032,6 +6234,7 @@ exports[`Picker.Panel override cell with cellRender in quarter 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-Q1"
               >
                 <div
@@ -6045,6 +6248,7 @@ exports[`Picker.Panel override cell with cellRender in quarter 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-Q2"
               >
                 <div
@@ -6059,6 +6263,7 @@ exports[`Picker.Panel override cell with cellRender in quarter 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="0"
                 title="1990-Q3"
               >
                 <div
@@ -6072,6 +6277,7 @@ exports[`Picker.Panel override cell with cellRender in quarter 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-Q4"
               >
                 <div
@@ -7693,6 +7899,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-26"
               >
                 <div
@@ -7706,6 +7913,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-27"
               >
                 <div
@@ -7719,6 +7927,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-28"
               >
                 <div
@@ -7732,6 +7941,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-29"
               >
                 <div
@@ -7745,6 +7955,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-30"
               >
                 <div
@@ -7758,6 +7969,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-31"
               >
                 <div
@@ -7771,6 +7983,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-01"
               >
                 <div
@@ -7800,6 +8013,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-02"
               >
                 <div
@@ -7814,6 +8028,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
                 role="gridcell"
+                tabindex="0"
                 title="1990-09-03"
               >
                 <div
@@ -7827,6 +8042,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-04"
               >
                 <div
@@ -7840,6 +8056,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-05"
               >
                 <div
@@ -7853,6 +8070,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-06"
               >
                 <div
@@ -7866,6 +8084,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-07"
               >
                 <div
@@ -7879,6 +8098,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-08"
               >
                 <div
@@ -7908,6 +8128,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-09"
               >
                 <div
@@ -7921,6 +8142,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-10"
               >
                 <div
@@ -7934,6 +8156,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-11"
               >
                 <div
@@ -7947,6 +8170,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-12"
               >
                 <div
@@ -7960,6 +8184,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-13"
               >
                 <div
@@ -7973,6 +8198,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-14"
               >
                 <div
@@ -7986,6 +8212,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-15"
               >
                 <div
@@ -8015,6 +8242,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-16"
               >
                 <div
@@ -8028,6 +8256,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-17"
               >
                 <div
@@ -8041,6 +8270,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-18"
               >
                 <div
@@ -8054,6 +8284,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-19"
               >
                 <div
@@ -8067,6 +8298,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-20"
               >
                 <div
@@ -8080,6 +8312,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-21"
               >
                 <div
@@ -8093,6 +8326,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-22"
               >
                 <div
@@ -8122,6 +8356,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-23"
               >
                 <div
@@ -8135,6 +8370,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-24"
               >
                 <div
@@ -8148,6 +8384,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-25"
               >
                 <div
@@ -8161,6 +8398,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-26"
               >
                 <div
@@ -8174,6 +8412,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-27"
               >
                 <div
@@ -8187,6 +8426,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-28"
               >
                 <div
@@ -8200,6 +8440,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-29"
               >
                 <div
@@ -8229,6 +8470,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-30"
               >
                 <div
@@ -8242,6 +8484,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-01"
               >
                 <div
@@ -8255,6 +8498,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-02"
               >
                 <div
@@ -8268,6 +8512,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-03"
               >
                 <div
@@ -8281,6 +8526,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-04"
               >
                 <div
@@ -8294,6 +8540,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-05"
               >
                 <div
@@ -8307,6 +8554,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-06"
               >
                 <div
@@ -8379,6 +8627,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1989"
               >
                 <div
@@ -8393,6 +8642,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="0"
                 title="1990"
               >
                 <div
@@ -8406,6 +8656,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1991"
               >
                 <div
@@ -8423,6 +8674,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1992"
               >
                 <div
@@ -8436,6 +8688,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1993"
               >
                 <div
@@ -8449,6 +8702,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1994"
               >
                 <div
@@ -8466,6 +8720,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1995"
               >
                 <div
@@ -8479,6 +8734,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1996"
               >
                 <div
@@ -8492,6 +8748,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1997"
               >
                 <div
@@ -8509,6 +8766,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1998"
               >
                 <div
@@ -8522,6 +8780,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1999"
               >
                 <div
@@ -8535,6 +8794,7 @@ exports[`Picker.Panel override cell with cellRender in year 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="2000"
               >
                 <div
@@ -8658,6 +8918,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-08-26"
                 >
                   <div
@@ -8671,6 +8932,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-08-27"
                 >
                   <div
@@ -8684,6 +8946,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-08-28"
                 >
                   <div
@@ -8697,6 +8960,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-08-29"
                 >
                   <div
@@ -8710,6 +8974,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-08-30"
                 >
                   <div
@@ -8723,6 +8988,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-08-31"
                 >
                   <div
@@ -8736,6 +9002,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-01"
                 >
                   <div
@@ -8753,6 +9020,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-02"
                 >
                   <div
@@ -8767,6 +9035,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
                   role="gridcell"
+                  tabindex="0"
                   title="1990-09-03"
                 >
                   <div
@@ -8780,6 +9049,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-04"
                 >
                   <div
@@ -8793,6 +9063,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-05"
                 >
                   <div
@@ -8806,6 +9077,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-06"
                 >
                   <div
@@ -8819,6 +9091,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-07"
                 >
                   <div
@@ -8832,6 +9105,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-08"
                 >
                   <div
@@ -8849,6 +9123,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-09"
                 >
                   <div
@@ -8862,6 +9137,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-10"
                 >
                   <div
@@ -8875,6 +9151,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-11"
                 >
                   <div
@@ -8888,6 +9165,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-12"
                 >
                   <div
@@ -8901,6 +9179,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-13"
                 >
                   <div
@@ -8914,6 +9193,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-14"
                 >
                   <div
@@ -8927,6 +9207,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-15"
                 >
                   <div
@@ -8944,6 +9225,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-16"
                 >
                   <div
@@ -8957,6 +9239,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-17"
                 >
                   <div
@@ -8970,6 +9253,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-18"
                 >
                   <div
@@ -8983,6 +9267,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-19"
                 >
                   <div
@@ -8996,6 +9281,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-20"
                 >
                   <div
@@ -9009,6 +9295,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-21"
                 >
                   <div
@@ -9022,6 +9309,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-22"
                 >
                   <div
@@ -9039,6 +9327,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-23"
                 >
                   <div
@@ -9052,6 +9341,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-24"
                 >
                   <div
@@ -9065,6 +9355,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-25"
                 >
                   <div
@@ -9078,6 +9369,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-26"
                 >
                   <div
@@ -9091,6 +9383,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-27"
                 >
                   <div
@@ -9104,6 +9397,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-28"
                 >
                   <div
@@ -9117,6 +9411,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-29"
                 >
                   <div
@@ -9134,6 +9429,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell rc-picker-cell-in-view"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-09-30"
                 >
                   <div
@@ -9147,6 +9443,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-10-01"
                 >
                   <div
@@ -9160,6 +9457,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-10-02"
                 >
                   <div
@@ -9173,6 +9471,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-10-03"
                 >
                   <div
@@ -9186,6 +9485,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-10-04"
                 >
                   <div
@@ -9199,6 +9499,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-10-05"
                 >
                   <div
@@ -9212,6 +9513,7 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
                   aria-selected="false"
                   class="rc-picker-cell"
                   role="gridcell"
+                  tabindex="-1"
                   title="1990-10-06"
                 >
                   <div
@@ -10712,6 +11014,7 @@ exports[`Picker.Panel pass dateRender when picker is month 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-01"
     >
       <div
@@ -10725,6 +11028,7 @@ exports[`Picker.Panel pass dateRender when picker is month 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-02"
     >
       <div
@@ -10738,6 +11042,7 @@ exports[`Picker.Panel pass dateRender when picker is month 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-03"
     >
       <div
@@ -10755,6 +11060,7 @@ exports[`Picker.Panel pass dateRender when picker is month 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-04"
     >
       <div
@@ -10768,6 +11074,7 @@ exports[`Picker.Panel pass dateRender when picker is month 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-05"
     >
       <div
@@ -10781,6 +11088,7 @@ exports[`Picker.Panel pass dateRender when picker is month 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-06"
     >
       <div
@@ -10798,6 +11106,7 @@ exports[`Picker.Panel pass dateRender when picker is month 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-07"
     >
       <div
@@ -10811,6 +11120,7 @@ exports[`Picker.Panel pass dateRender when picker is month 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-08"
     >
       <div
@@ -10825,6 +11135,7 @@ exports[`Picker.Panel pass dateRender when picker is month 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="0"
       title="1990-09"
     >
       <div
@@ -10842,6 +11153,7 @@ exports[`Picker.Panel pass dateRender when picker is month 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-10"
     >
       <div
@@ -10855,6 +11167,7 @@ exports[`Picker.Panel pass dateRender when picker is month 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-11"
     >
       <div
@@ -10868,6 +11181,7 @@ exports[`Picker.Panel pass dateRender when picker is month 1`] = `
       aria-selected="false"
       class="rc-picker-cell rc-picker-cell-in-view"
       role="gridcell"
+      tabindex="-1"
       title="1990-12"
     >
       <div
@@ -10983,6 +11297,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-26"
               >
                 <div
@@ -10996,6 +11311,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-27"
               >
                 <div
@@ -11009,6 +11325,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-28"
               >
                 <div
@@ -11022,6 +11339,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-29"
               >
                 <div
@@ -11035,6 +11353,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-30"
               >
                 <div
@@ -11048,6 +11367,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-08-31"
               >
                 <div
@@ -11061,6 +11381,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-01"
               >
                 <div
@@ -11078,6 +11399,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-02"
               >
                 <div
@@ -11092,6 +11414,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view rc-picker-cell-today"
                 role="gridcell"
+                tabindex="0"
                 title="1990-09-03"
               >
                 <div
@@ -11105,6 +11428,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-04"
               >
                 <div
@@ -11118,6 +11442,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-05"
               >
                 <div
@@ -11131,6 +11456,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-06"
               >
                 <div
@@ -11144,6 +11470,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-07"
               >
                 <div
@@ -11157,6 +11484,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-08"
               >
                 <div
@@ -11174,6 +11502,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-09"
               >
                 <div
@@ -11187,6 +11516,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-10"
               >
                 <div
@@ -11200,6 +11530,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-11"
               >
                 <div
@@ -11213,6 +11544,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-12"
               >
                 <div
@@ -11226,6 +11558,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-13"
               >
                 <div
@@ -11239,6 +11572,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-14"
               >
                 <div
@@ -11252,6 +11586,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-15"
               >
                 <div
@@ -11269,6 +11604,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-16"
               >
                 <div
@@ -11282,6 +11618,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-17"
               >
                 <div
@@ -11295,6 +11632,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-18"
               >
                 <div
@@ -11308,6 +11646,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-19"
               >
                 <div
@@ -11321,6 +11660,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-20"
               >
                 <div
@@ -11334,6 +11674,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-21"
               >
                 <div
@@ -11347,6 +11688,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-22"
               >
                 <div
@@ -11364,6 +11706,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-23"
               >
                 <div
@@ -11377,6 +11720,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-24"
               >
                 <div
@@ -11390,6 +11734,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-25"
               >
                 <div
@@ -11403,6 +11748,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-26"
               >
                 <div
@@ -11416,6 +11762,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-27"
               >
                 <div
@@ -11429,6 +11776,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-28"
               >
                 <div
@@ -11442,6 +11790,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-29"
               >
                 <div
@@ -11459,6 +11808,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell rc-picker-cell-in-view"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-09-30"
               >
                 <div
@@ -11472,6 +11822,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-01"
               >
                 <div
@@ -11485,6 +11836,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-02"
               >
                 <div
@@ -11498,6 +11850,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-03"
               >
                 <div
@@ -11511,6 +11864,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-04"
               >
                 <div
@@ -11524,6 +11878,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-05"
               >
                 <div
@@ -11537,6 +11892,7 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
                 aria-selected="false"
                 class="rc-picker-cell"
                 role="gridcell"
+                tabindex="-1"
                 title="1990-10-06"
               >
                 <div
