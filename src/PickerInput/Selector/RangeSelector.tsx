@@ -1,6 +1,6 @@
 import { clsx } from 'clsx';
 import ResizeObserver from '@rc-component/resize-observer';
-import { useEvent } from '@rc-component/util';
+import { isReactRenderable, useEvent } from '@rc-component/util';
 import * as React from 'react';
 import type { RangePickerRef, SelectorProps } from '../../interface';
 import PickerContext from '../context';
@@ -208,7 +208,8 @@ function RangeSelector<DateType extends object = any>(
   }, [activeIndex]);
 
   // ======================== Clear =========================
-  const showClear = clearIcon && ((value[0] && !disabled[0]) || (value[1] && !disabled[1]));
+  const showClear =
+    isReactRenderable(clearIcon) && ((value[0] && !disabled[0]) || (value[1] && !disabled[1]));
 
   // ======================= Disabled =======================
   const startAutoFocus = autoFocus && !disabled[0];
@@ -246,7 +247,7 @@ function RangeSelector<DateType extends object = any>(
           onMouseDown?.(e);
         }}
       >
-        {prefix && (
+        {isReactRenderable(prefix) && (
           <div className={clsx(`${prefixCls}-prefix`, classNames.prefix)} style={styles.prefix}>
             {prefix}
           </div>
