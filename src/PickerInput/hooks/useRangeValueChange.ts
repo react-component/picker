@@ -59,6 +59,7 @@ export type UseRangeValueChangeReturn<FieldValue> = [
   triggeredFields: number[],
   triggerChange: TriggerChange<FieldValue>,
   reset: VoidFunction,
+  currentFieldModified: boolean,
 ];
 
 interface TriggeredField {
@@ -509,6 +510,9 @@ export default function useRangeValueChange<FieldValue = unknown>(
   lastValidIndexRef.current = currentIndex ?? lastValidIndexRef.current ?? 0;
 
   const triggeredFields = triggeredFieldsRef.current.map((field) => field.index);
+  const currentFieldModified = triggeredFieldsRef.current.some(
+    (field) => field.index === currentIndex && field.modified,
+  );
 
   return [
     currentIndex,
@@ -517,5 +521,6 @@ export default function useRangeValueChange<FieldValue = unknown>(
     triggeredFields,
     triggerChange,
     reset,
+    currentFieldModified,
   ];
 }

@@ -331,6 +331,7 @@ function RangePicker<DateType extends object = any>(
     triggeredFields,
     triggerRangeValueChange,
     resetRangeValueChange,
+    currentFieldModified,
   ] = useRangeValueChange(
     enabledFieldCount,
     needConfirm,
@@ -502,6 +503,10 @@ function RangePicker<DateType extends object = any>(
     return internalHoverValues || calendarValue;
   }, [calendarValue, internalHoverValues]);
 
+  const keepCurrentSelection = needConfirm && currentFieldModified && hoverSource === 'cell';
+  const panelHoverValues = keepCurrentSelection ? calendarValue : hoverValues;
+  const activeHoverValue = internalHoverValues?.[activeIndex];
+
   // Clean up `internalHoverValues` when closed
   React.useEffect(() => {
     if (!mergedOpen) {
@@ -640,7 +645,8 @@ function RangePicker<DateType extends object = any>(
       defaultOpenValue={toArray(showTime?.defaultOpenValue)[activeIndex]}
       onPickerValueChange={setCurrentPickerValue}
       // Hover
-      hoverValue={hoverValues}
+      hoverValue={panelHoverValues}
+      cellHoverValue={keepCurrentSelection && activeHoverValue ? [activeHoverValue] : null}
       onHover={onPanelHover}
       // Submit
       needConfirm={needConfirm}

@@ -768,6 +768,22 @@ describe('Picker.Range', () => {
         expect(findCell(end)).not.toHaveClass('rc-picker-cell-range-end');
       });
     });
+
+    it('should keep the pending selection when hovering with confirmation', async () => {
+      const { container } = render(<DayRangePicker showTime />);
+      openPicker(container);
+      selectCell(11);
+
+      expect(findCell(11)).toHaveClass('rc-picker-cell-range-start');
+
+      fireEvent.mouseEnter(findCell(22));
+      await waitFakeTimer();
+
+      expect(container.querySelectorAll('input')[0]).toHaveValue('1990-09-22 00:00:00');
+      expect(findCell(11)).toHaveClass('rc-picker-cell-range-start');
+      expect(findCell(22)).toHaveClass('rc-picker-cell-hover');
+      expect(findCell(22)).not.toHaveClass('rc-picker-cell-range-start');
+    });
   });
 
   it('should close when user focus out', () => {
