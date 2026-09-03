@@ -369,14 +369,16 @@ function RangePicker<DateType extends object = any>(
       ? (date: DateType) => {
           const range = getActiveRange(activeIndex);
           const fromDate = getFromDate(calendarValue, triggeredFields, activeIndex);
-          return disabledTime(date, range, {
+          const targetDate = picker === 'time' ? generateConfig.getNow() : date;
+
+          return disabledTime(targetDate, range, {
             from: fromDate,
           });
         }
       : undefined;
 
     return { ...showTime, disabledTime: proxyDisabledTime };
-  }, [showTime, activeIndex, calendarValue, triggeredFields]);
+  }, [showTime, activeIndex, calendarValue, triggeredFields, picker, generateConfig]);
 
   // ========================= Mode =========================
   const [modes, setModes] = useControlledState<[PanelMode, PanelMode]>([picker, picker], mode);

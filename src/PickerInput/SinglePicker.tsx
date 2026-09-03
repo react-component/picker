@@ -356,6 +356,21 @@ function Picker<DateType extends object = any>(
     [mergedOpen],
   );
 
+  // ======================= ShowTime =======================
+  /** Used for Popup panel */
+  const mergedShowTime = React.useMemo<SharedTimeProps<DateType>>(() => {
+    if (!showTime) {
+      return null;
+    }
+
+    const { disabledTime } = showTime;
+    const proxyDisabledTime = disabledTime
+      ? (date: DateType) => disabledTime(picker === 'time' ? generateConfig.getNow() : date)
+      : undefined;
+
+    return { ...showTime, disabledTime: proxyDisabledTime };
+  }, [showTime, picker, generateConfig]);
+
   // ======================= Validate =======================
   const [submitInvalidates, onSelectorInvalid] = useFieldsInvalidate(
     calendarValue,
@@ -561,7 +576,7 @@ function Picker<DateType extends object = any>(
       // MISC
       {...panelProps}
       showNow={mergedShowNow}
-      showTime={showTime}
+      showTime={mergedShowTime}
       // Disabled
       disabledDate={disabledDate}
       // Focus
