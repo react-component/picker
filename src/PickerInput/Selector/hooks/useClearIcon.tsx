@@ -1,4 +1,4 @@
-import { warning } from '@rc-component/util';
+import { isReactRenderable, warning } from '@rc-component/util';
 import type { ReactNode } from 'react';
 import * as React from 'react';
 
@@ -10,7 +10,7 @@ export function fillClearIcon(
   allowClear?: boolean | { clearIcon?: ReactNode },
   clearIcon?: ReactNode,
 ) {
-  if (process.env.NODE_ENV !== 'production' && clearIcon) {
+  if (process.env.NODE_ENV !== 'production' && isReactRenderable(clearIcon)) {
     warning(false, '`clearIcon` will be removed in future. Please use `allowClear` instead.');
   }
 
@@ -20,5 +20,9 @@ export function fillClearIcon(
 
   const config = allowClear && typeof allowClear === 'object' ? allowClear : {};
 
-  return config.clearIcon || clearIcon || <span className={`${prefixCls}-clear-btn`} />;
+  if (isReactRenderable(config.clearIcon)) {
+    return config.clearIcon;
+  }
+
+  return isReactRenderable(clearIcon) ? clearIcon : <span className={`${prefixCls}-clear-btn`} />;
 }

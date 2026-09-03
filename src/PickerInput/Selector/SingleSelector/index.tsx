@@ -1,4 +1,5 @@
 import { clsx } from 'clsx';
+import { isReactRenderable } from '@rc-component/util';
 import * as React from 'react';
 import type { InternalMode, PickerRef, SelectorProps } from '../../../interface';
 import { isSame } from '../../../utils/dateUtil';
@@ -159,7 +160,7 @@ function SingleSelector<DateType extends object = any>(
   );
 
   // ======================== Clear =========================
-  const showClear = !!(clearIcon && value.length && !disabled);
+  const showClear = isReactRenderable(clearIcon) && Boolean(value.length) && !disabled;
 
   // ======================= Multiple =======================
   const selectorNode = multiple ? (
@@ -226,7 +227,7 @@ function SingleSelector<DateType extends object = any>(
         onMouseDown?.(e);
       }}
     >
-      {prefix && (
+      {isReactRenderable(prefix) && (
         <div className={clsx(`${prefixCls}-prefix`, classNames.prefix)} style={styles.prefix}>
           {prefix}
         </div>

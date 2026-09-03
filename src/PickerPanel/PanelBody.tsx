@@ -1,4 +1,5 @@
 import { clsx } from 'clsx';
+import { isNonNullable } from '@rc-component/util';
 import * as React from 'react';
 import type { DisabledDate } from '../interface';
 import { formatValue, isInRange, isSame } from '../utils/dateUtil';
@@ -186,7 +187,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
   return (
     <div className={clsx(`${prefixCls}-body`, classNames.body)} style={styles.body}>
       <table className={clsx(`${prefixCls}-content`, classNames.content)} style={styles.content}>
-        {headerCells && (
+        {isNonNullable(headerCells) && (
           <thead>
             <tr>{headerCells}</tr>
           </thead>

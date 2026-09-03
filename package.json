@@ -114,7 +114,7 @@
     "@rc-component/overflow": "^1.0.0",
     "@rc-component/resize-observer": "^1.0.0",
     "@rc-component/trigger": "^3.6.15",
-    "@rc-component/util": "^1.11.1",
+    "@rc-component/util": "^1.13.0",
     "clsx": "^2.1.1"
   },
   "devDependencies": {

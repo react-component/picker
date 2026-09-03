@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { isReactRenderable } from '@rc-component/util';
 import PickerContext from '../context';
 import { clsx } from 'clsx';
 
@@ -9,7 +10,7 @@ export interface IconProps extends React.HtmlHTMLAttributes<HTMLElement> {
 export default function Icon({ icon, ...restProps }: IconProps) {
   const { prefixCls, classNames, styles } = React.useContext(PickerContext);
 
-  return icon ? (
+  return isReactRenderable(icon) ? (
     <span
       className={clsx(`${prefixCls}-suffix`, classNames.suffix)}
       style={styles.suffix}
