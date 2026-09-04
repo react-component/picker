@@ -18,19 +18,44 @@ export type PopupPanelProps<DateType extends object = any> = MustProp<DateType> 
     onPickerValueChange: (date: DateType) => void;
   };
 
+export function getPopupPanelSharedContext(
+  needConfirm: boolean,
+  onSubmit: VoidFunction,
+): PickerHackContextProps {
+  return {
+    onCellDblClick: () => {
+      if (needConfirm) {
+        onSubmit();
+      }
+    },
+  };
+}
+
+export function getPopupPanelPickerProps<DateType extends object = any>(
+  props: PopupPanelProps<DateType>,
+): PickerPanelProps<DateType> {
+  const { picker, hoverValue, range } = props;
+
+  const pickerProps = {
+    ...props,
+    hoverValue: null,
+    hoverRangeValue: null,
+    hideHeader: picker === 'time',
+  } as PickerPanelProps<DateType>;
+
+  if (range) {
+    pickerProps.hoverRangeValue = hoverValue as PickerPanelProps<DateType>['hoverRangeValue'];
+  } else {
+    pickerProps.hoverValue = hoverValue as PickerPanelProps<DateType>['hoverValue'];
+  }
+
+  return pickerProps;
+}
+
 export default function PopupPanel<DateType extends object = any>(
   props: PopupPanelProps<DateType>,
 ) {
-  const {
-    picker,
-    multiplePanel,
-    pickerValue,
-    onPickerValueChange,
-    needConfirm,
-    onSubmit,
-    range,
-    hoverValue,
-  } = props;
+  const { picker, multiplePanel, pickerValue, onPickerValueChange, needConfirm, onSubmit } = props;
   const { prefixCls, generateConfig } = React.useContext(PickerContext);
 
   // ======================== Offset ========================
@@ -52,29 +77,10 @@ export default function PopupPanel<DateType extends object = any>(
   };
 
   // ======================= Context ========================
-  const sharedContext: PickerHackContextProps = {
-    onCellDblClick: () => {
-      if (needConfirm) {
-        onSubmit();
-      }
-    },
-  };
-
-  const hideHeader = picker === 'time';
+  const sharedContext = getPopupPanelSharedContext(needConfirm, onSubmit);
 
   // ======================== Props =========================
-  const pickerProps = {
-    ...props,
-    hoverValue: null,
-    hoverRangeValue: null,
-    hideHeader,
-  };
-
-  if (range) {
-    pickerProps.hoverRangeValue = hoverValue;
-  } else {
-    pickerProps.hoverValue = hoverValue;
-  }
+  const pickerProps = getPopupPanelPickerProps(props);
 
   // ======================== Render ========================
   // Multiple
