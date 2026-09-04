@@ -14,7 +14,6 @@ export type PopupPanelProps<DateType extends object = any> = MustProp<DateType> 
   FooterProps<DateType> & {
     multiplePanel?: boolean;
     range?: boolean;
-    cellHoverValue?: DateType[];
 
     onPickerValueChange: (date: DateType) => void;
   };
@@ -22,17 +21,7 @@ export type PopupPanelProps<DateType extends object = any> = MustProp<DateType> 
 export default function PopupPanel<DateType extends object = any>(
   props: PopupPanelProps<DateType>,
 ) {
-  const {
-    picker,
-    multiplePanel,
-    pickerValue,
-    onPickerValueChange,
-    needConfirm,
-    onSubmit,
-    range,
-    hoverValue,
-    cellHoverValue,
-  } = props;
+  const { picker, multiplePanel, pickerValue, onPickerValueChange, needConfirm, onSubmit } = props;
   const { prefixCls, generateConfig } = React.useContext(PickerContext);
 
   // ======================== Offset ========================
@@ -67,17 +56,8 @@ export default function PopupPanel<DateType extends object = any>(
   // ======================== Props =========================
   const pickerProps = {
     ...props,
-    hoverValue: null,
-    hoverRangeValue: null,
     hideHeader,
   };
-
-  if (range) {
-    pickerProps.hoverRangeValue = hoverValue;
-    pickerProps.hoverValue = cellHoverValue;
-  } else {
-    pickerProps.hoverValue = hoverValue;
-  }
 
   // ======================== Render ========================
   // Multiple

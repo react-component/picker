@@ -780,7 +780,8 @@ describe('Picker.Range', () => {
       await waitFakeTimer();
 
       expect(container.querySelectorAll('input')[0]).toHaveValue('1990-09-22 00:00:00');
-      expect(findCell(11)).toHaveClass('rc-picker-cell-range-start');
+      expect(findCell(11)).toHaveClass('rc-picker-cell-selected');
+      expect(findCell(11)).not.toHaveClass('rc-picker-cell-range-start');
       expect(findCell(22)).toHaveClass('rc-picker-cell-hover');
       expect(findCell(22)).not.toHaveClass('rc-picker-cell-range-start');
     });

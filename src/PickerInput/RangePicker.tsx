@@ -504,7 +504,6 @@ function RangePicker<DateType extends object = any>(
   }, [calendarValue, internalHoverValues]);
 
   const keepCurrentSelection = needConfirm && currentFieldModified && hoverSource === 'cell';
-  const panelHoverValues = keepCurrentSelection ? calendarValue : hoverValues;
   const activeHoverValue = internalHoverValues?.[activeIndex];
 
   // Clean up `internalHoverValues` when closed
@@ -645,8 +644,8 @@ function RangePicker<DateType extends object = any>(
       defaultOpenValue={toArray(showTime?.defaultOpenValue)[activeIndex]}
       onPickerValueChange={setCurrentPickerValue}
       // Hover
-      hoverValue={panelHoverValues}
-      cellHoverValue={keepCurrentSelection && activeHoverValue ? [activeHoverValue] : null}
+      hoverValue={keepCurrentSelection && activeHoverValue ? [activeHoverValue] : null}
+      hoverRangeValue={keepCurrentSelection ? null : hoverValues}
       onHover={onPanelHover}
       // Submit
       needConfirm={needConfirm}
