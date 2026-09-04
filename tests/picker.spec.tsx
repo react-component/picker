@@ -1690,6 +1690,33 @@ describe('Picker.Basic', () => {
     testPropsName('defaultOpenValue');
   });
 
+  it('keeps open when a disabled navigation button blurs', async () => {
+    const onBlur = jest.fn();
+    const { container } = render(
+      <DayPicker
+        defaultPickerValue={dayjs('2019-09-03')}
+        minDate={dayjs('2019-08-01')}
+        onBlur={onBlur}
+      />,
+    );
+
+    openPicker(container);
+
+    const prevButton = document.querySelector<HTMLButtonElement>('.rc-picker-header-prev-btn');
+    const panelContainer = document.querySelector<HTMLElement>('.rc-picker-panel-container');
+
+    triggerFocus(prevButton);
+    fireEvent.click(prevButton);
+    expect(prevButton).toBeDisabled();
+
+    fireEvent.blur(prevButton, { relatedTarget: null });
+    await waitFakeTimer();
+
+    expect(onBlur).toHaveBeenCalled();
+    expect(document.activeElement).toBe(panelContainer);
+    expect(isOpen()).toBeTruthy();
+  });
+
   it('auto switch pickerValue - maxDate', () => {
     const { container } = render(<DayPicker maxDate={dayjs('1989-01-01')} />);
 
