@@ -30,6 +30,7 @@ export default function PopupPanel<DateType extends object = any>(
     onSubmit,
     range,
     hoverValue,
+    hoverRangeValue,
   } = props;
   const { prefixCls, generateConfig } = React.useContext(PickerContext);
 
@@ -70,10 +71,9 @@ export default function PopupPanel<DateType extends object = any>(
     hideHeader,
   };
 
+  pickerProps.hoverValue = hoverValue;
   if (range) {
-    pickerProps.hoverRangeValue = hoverValue;
-  } else {
-    pickerProps.hoverValue = hoverValue;
+    pickerProps.hoverRangeValue = hoverRangeValue;
   }
 
   // ======================== Render ========================
