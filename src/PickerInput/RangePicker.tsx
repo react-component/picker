@@ -24,6 +24,7 @@ import type {
 import type { PickerPanelProps } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import { pickTriggerProps } from '../PickerTrigger/util';
+import { isSameTimestamp } from '../utils/dateUtil';
 import { fillIndex, getFromDate, toArray } from '../utils/miscUtil';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
@@ -331,7 +332,6 @@ function RangePicker<DateType extends object = any>(
     triggeredFields,
     triggerRangeValueChange,
     resetRangeValueChange,
-    currentFieldModified,
   ] = useRangeValueChange(
     enabledFieldCount,
     needConfirm,
@@ -503,7 +503,10 @@ function RangePicker<DateType extends object = any>(
     return internalHoverValues || calendarValue;
   }, [calendarValue, internalHoverValues]);
 
-  const keepCurrentSelection = needConfirm && currentFieldModified && hoverSource === 'cell';
+  const keepCurrentSelection =
+    needConfirm &&
+    hoverSource === 'cell' &&
+    !isSameTimestamp(generateConfig, calendarValue[activeIndex], mergedValue[activeIndex]);
   const activeHoverValue = internalHoverValues?.[activeIndex];
 
   // Clean up `internalHoverValues` when closed

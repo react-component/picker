@@ -21,7 +21,17 @@ export type PopupPanelProps<DateType extends object = any> = MustProp<DateType> 
 export default function PopupPanel<DateType extends object = any>(
   props: PopupPanelProps<DateType>,
 ) {
-  const { picker, multiplePanel, pickerValue, onPickerValueChange, needConfirm, onSubmit } = props;
+  const {
+    picker,
+    multiplePanel,
+    pickerValue,
+    onPickerValueChange,
+    needConfirm,
+    onSubmit,
+    range,
+    hoverValue,
+    hoverRangeValue,
+  } = props;
   const { prefixCls, generateConfig } = React.useContext(PickerContext);
 
   // ======================== Offset ========================
@@ -56,8 +66,15 @@ export default function PopupPanel<DateType extends object = any>(
   // ======================== Props =========================
   const pickerProps = {
     ...props,
+    hoverValue: null,
+    hoverRangeValue: null,
     hideHeader,
   };
+
+  pickerProps.hoverValue = hoverValue;
+  if (range) {
+    pickerProps.hoverRangeValue = hoverRangeValue;
+  }
 
   // ======================== Render ========================
   // Multiple
