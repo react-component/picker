@@ -503,17 +503,16 @@ function RangePicker<DateType extends object = any>(
     return internalHoverValues || calendarValue;
   }, [calendarValue, internalHoverValues]);
 
-  const otherFieldValue = calendarValue[(activeIndex + 1) % 2];
-  const currentFieldChanged = !isSameTimestamp(
-    generateConfig,
-    calendarValue[activeIndex],
-    mergedValue[activeIndex],
-  );
-
-  // Keep the pending date as a single selected cell only while choosing the first value.
-  // Once the other field has a value, the range hover takes precedence.
+  // Keep the pending date as a single selected cell only when choosing the first value.
   const keepCurrentSelection =
-    needConfirm && hoverSource === 'cell' && !otherFieldValue && currentFieldChanged;
+    // Confirmation mode keeps the clicked date pending.
+    needConfirm &&
+    // Preset hover always previews the whole range.
+    hoverSource === 'cell' &&
+    // Once the other field has a value, range hover takes precedence.
+    !calendarValue[(activeIndex + 1) % 2] &&
+    // Only a changed active value needs to remain selected.
+    !isSameTimestamp(generateConfig, calendarValue[activeIndex], mergedValue[activeIndex]);
   const activeHoverValue = internalHoverValues?.[activeIndex];
 
   // Clean up `internalHoverValues` when closed
