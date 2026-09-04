@@ -769,22 +769,25 @@ describe('Picker.Range', () => {
       });
     });
 
-    it('should keep the pending selection when hovering with confirmation', async () => {
-      const { container } = render(<DayRangePicker showTime />);
-      openPicker(container);
-      selectCell(11);
+    it.each([true, false])(
+      'should keep the pending selection when hovering with needConfirm=%s',
+      async (needConfirm) => {
+        const { container } = render(<DayRangePicker showTime needConfirm={needConfirm} />);
+        openPicker(container);
+        selectCell(11);
 
-      expect(findCell(11)).toHaveClass('rc-picker-cell-range-start');
+        expect(findCell(11)).toHaveClass('rc-picker-cell-range-start');
 
-      fireEvent.mouseEnter(findCell(22));
-      await waitFakeTimer();
+        fireEvent.mouseEnter(findCell(22));
+        await waitFakeTimer();
 
-      expect(container.querySelectorAll('input')[0]).toHaveValue('1990-09-22 00:00:00');
-      expect(findCell(11)).toHaveClass('rc-picker-cell-selected');
-      expect(findCell(11)).not.toHaveClass('rc-picker-cell-range-start');
-      expect(findCell(22)).toHaveClass('rc-picker-cell-hover');
-      expect(findCell(22)).not.toHaveClass('rc-picker-cell-range-start');
-    });
+        expect(container.querySelectorAll('input')[0]).toHaveValue('1990-09-22 00:00:00');
+        expect(findCell(11)).toHaveClass('rc-picker-cell-selected');
+        expect(findCell(11)).not.toHaveClass('rc-picker-cell-range-start');
+        expect(findCell(22)).toHaveClass('rc-picker-cell-hover');
+        expect(findCell(22)).not.toHaveClass('rc-picker-cell-range-start');
+      },
+    );
 
     it('should keep range hover after the first field is confirmed', async () => {
       const { container } = render(<DayRangePicker showTime />);

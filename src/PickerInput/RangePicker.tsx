@@ -505,8 +505,6 @@ function RangePicker<DateType extends object = any>(
 
   // Keep the pending date as a single selected cell only when choosing the first value.
   const keepCurrentSelection =
-    // Confirmation mode keeps the clicked date pending.
-    needConfirm &&
     // Preset hover always previews the whole range.
     hoverSource === 'cell' &&
     // Once the other field has a value, range hover takes precedence.
