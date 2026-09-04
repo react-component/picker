@@ -503,13 +503,14 @@ function RangePicker<DateType extends object = any>(
     return internalHoverValues || calendarValue;
   }, [calendarValue, internalHoverValues]);
 
-  // Keep the pending date as a single selected cell only when choosing the first value.
-  const keepCurrentSelection =
+  // "Weak" hover only highlights the hovered cell instead of composing a range.
+  // Use it while choosing the first value so the pending selection remains selected.
+  const showWeakHover =
     // Preset hover always previews the whole range.
     hoverSource === 'cell' &&
     // Once the other field has a value, range hover takes precedence.
     !calendarValue[(activeIndex + 1) % 2] &&
-    // Only a changed active value needs to remain selected.
+    // Only a changed active value needs weak hover.
     !isSameTimestamp(generateConfig, calendarValue[activeIndex], mergedValue[activeIndex]);
   const activeHoverValue = internalHoverValues?.[activeIndex];
 
@@ -651,8 +652,8 @@ function RangePicker<DateType extends object = any>(
       defaultOpenValue={toArray(showTime?.defaultOpenValue)[activeIndex]}
       onPickerValueChange={setCurrentPickerValue}
       // Hover
-      hoverValue={keepCurrentSelection && activeHoverValue ? [activeHoverValue] : null}
-      hoverRangeValue={keepCurrentSelection ? null : hoverValues}
+      hoverValue={showWeakHover && activeHoverValue ? [activeHoverValue] : null}
+      hoverRangeValue={showWeakHover ? null : hoverValues}
       onHover={onPanelHover}
       // Submit
       needConfirm={needConfirm}
