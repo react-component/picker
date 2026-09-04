@@ -785,6 +785,21 @@ describe('Picker.Range', () => {
       expect(findCell(22)).toHaveClass('rc-picker-cell-hover');
       expect(findCell(22)).not.toHaveClass('rc-picker-cell-range-start');
     });
+
+    it('should keep range hover after the first field is confirmed', async () => {
+      const { container } = render(<DayRangePicker showTime />);
+      openPicker(container);
+      selectCell(11);
+      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      selectCell(22);
+
+      fireEvent.mouseEnter(findCell(25));
+      await waitFakeTimer();
+
+      expect(findCell(11)).toHaveClass('rc-picker-cell-range-start');
+      expect(findCell(15)).toHaveClass('rc-picker-cell-in-range');
+      expect(findCell(25)).toHaveClass('rc-picker-cell-range-end');
+    });
   });
 
   it('should close when user focus out', () => {
