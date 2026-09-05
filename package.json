@@ -118,8 +118,9 @@
     "clsx": "^2.1.1"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
     "@eslint/compat": "^2.1.0",
+    "@eslint/js": "^10.0.1",
+    "@js-temporal/polyfill": "^0.5.1",
     "@rc-component/father-plugin": "^2.2.0",
     "@rc-component/np": "^1.0.4",
     "@testing-library/dom": "^10.4.1",
@@ -158,6 +159,7 @@
     "typescript-eslint": "^8.62.1"
   },
   "peerDependencies": {
+    "@js-temporal/polyfill": ">= 0.5.1",
     "date-fns": ">= 2.x",
     "dayjs": ">= 1.x",
     "luxon": ">= 3.x",
@@ -166,6 +168,9 @@
     "react-dom": ">=16.9.0"
   },
   "peerDependenciesMeta": {
+    "@js-temporal/polyfill": {
+      "optional": true
+    },
     "date-fns": {
       "optional": true
     },
@@ -193,6 +198,8 @@
     "./generate/luxon.js": "./es/generate/luxon.js",
     "./generate/moment": "./es/generate/moment.js",
     "./generate/moment.js": "./es/generate/moment.js",
+    "./generate/temporal": "./es/generate/temporal.js",
+    "./generate/temporal.js": "./es/generate/temporal.js",
     "./lib/index.js": "./es/index.js",
     "./locale/am_ET": "./es/locale/am_ET.js",
     "./locale/am_ET.js": "./es/locale/am_ET.js",
