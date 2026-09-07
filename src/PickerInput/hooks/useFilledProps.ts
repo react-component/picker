@@ -24,6 +24,8 @@ type PickedProps<DateType extends object = any> = Pick<
   | 'order'
   | 'components'
   | 'inputRender'
+  | 'suffix'
+  | 'suffixIcon'
   | 'clearIcon'
   | 'allowClear'
   | 'needConfirm'
@@ -103,6 +105,8 @@ export default function useFilledProps<
     order = true,
     components = {},
     inputRender,
+    suffix,
+    suffixIcon,
     allowClear,
     clearIcon,
     needConfirm,
@@ -171,6 +175,7 @@ export default function useFilledProps<
       classNames,
       order,
       components: { input: inputRender, ...components },
+      suffix: suffix ?? suffixIcon,
       clearIcon: fillClearIcon(prefixCls, allowClear, clearIcon),
       showTime: mergedShowTime,
       value: values,

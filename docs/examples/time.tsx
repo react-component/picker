@@ -33,7 +33,7 @@ export default () => {
       <Picker
         classNames={testClassNames}
         prefix="prefix"
-        suffixIcon="suffix"
+        suffix="suffix"
         defaultValue={defaultValue}
         picker="time"
         locale={zhCN}

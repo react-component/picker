@@ -316,13 +316,7 @@ export type SemanticName = 'root' | 'prefix' | 'input' | 'suffix';
 export type PreviewValueType = 'hover';
 
 export type PanelSemanticName =
-  | 'root'
-  | 'header'
-  | 'body'
-  | 'content'
-  | 'item'
-  | 'footer'
-  | 'container';
+  'root' | 'header' | 'body' | 'content' | 'item' | 'footer' | 'container';
 
 export interface SharedPickerProps<DateType extends object = any>
   extends
@@ -374,6 +368,8 @@ export interface SharedPickerProps<DateType extends object = any>
 
   // Icons
   prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
+  /** @deprecated Please use `suffix` instead. */
   suffixIcon?: React.ReactNode;
   allowClear?:
     | boolean
@@ -498,6 +494,8 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
 
   prefix?: React.ReactNode;
   clearIcon?: React.ReactNode;
+  suffix?: React.ReactNode;
+  /** @deprecated Please use `suffix` instead. */
   suffixIcon?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
