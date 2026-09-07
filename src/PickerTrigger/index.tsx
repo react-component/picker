@@ -1,11 +1,8 @@
-import TriggerModule, { type AlignType, type BuildInPlacements } from '@rc-component/trigger';
+import Trigger, { type AlignType, type BuildInPlacements } from '@rc-component/trigger';
 import { clsx } from 'clsx';
 import * as React from 'react';
 import { getRealPlacement } from '../utils/uiUtil';
 import PickerContext from '../PickerInput/context';
-import getDefaultExport from '../utils/getDefaultExport';
-
-const Trigger = getDefaultExport(TriggerModule);
 
 const BUILT_IN_PLACEMENTS = {
   bottomLeft: {

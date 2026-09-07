@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import ResizeObserverModule from '@rc-component/resize-observer';
+import ResizeObserver from '@rc-component/resize-observer';
 import { isReactRenderable, useEvent } from '@rc-component/util';
 import * as React from 'react';
 import type { RangePickerRef, SelectorProps } from '../../interface';
@@ -9,9 +9,6 @@ import useRootProps from './hooks/useRootProps';
 import Icon from './Icon';
 import ClearIcon from './ClearIcon';
 import Input, { type InputRef } from './Input';
-import getDefaultExport from '../../utils/getDefaultExport';
-
-const ResizeObserver = getDefaultExport(ResizeObserverModule);
 
 export type SelectorIdType =
   | string

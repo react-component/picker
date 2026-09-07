@@ -1,11 +1,8 @@
 import { clsx } from 'clsx';
-import OverflowModule from '@rc-component/overflow';
+import Overflow from '@rc-component/overflow';
 import * as React from 'react';
 import type { MouseEventHandler } from 'react';
 import type { CustomTagProps, PickerProps } from '../../SinglePicker';
-import getDefaultExport from '../../../utils/getDefaultExport';
-
-const Overflow = getDefaultExport(OverflowModule);
 
 export interface MultipleDatesProps<DateType extends object = any> extends Pick<
   PickerProps,

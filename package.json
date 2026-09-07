@@ -185,7 +185,7 @@
   "devDependencies": {
     "@eslint/compat": "^2.1.0",
     "@eslint/js": "^10.0.1",
-    "@rc-component/father-plugin": "^2.2.0",
+    "@rc-component/father-plugin": "^2.4.0",
     "@rc-component/np": "^1.0.4",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",

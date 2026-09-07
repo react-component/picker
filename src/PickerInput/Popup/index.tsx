@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import ResizeObserverModule, { type ResizeObserverProps } from '@rc-component/resize-observer';
+import ResizeObserver, { type ResizeObserverProps } from '@rc-component/resize-observer';
 import * as React from 'react';
 import type {
   RangeTimeProps,
@@ -12,9 +12,6 @@ import PickerContext from '../context';
 import Footer, { type FooterProps } from './Footer';
 import PopupPanel, { type PopupPanelProps } from './PopupPanel';
 import PresetPanel from './PresetPanel';
-import getDefaultExport from '../../utils/getDefaultExport';
-
-const ResizeObserver = getDefaultExport(ResizeObserverModule);
 
 export type PopupShowTimeConfig<DateType extends object = any> = Omit<
   RangeTimeProps<DateType>,
