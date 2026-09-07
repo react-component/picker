@@ -14,7 +14,7 @@ const addEntry = (from, to) => {
 };
 
 // Preserve previous behavior of preferring the ES build for the main entry.
-addEntry('./lib/index.js', './es/index.js');
+addEntry('./lib/index.js', './es/index.mjs');
 
 const addDirMappings = (dirPath, browserPrefix, targetPrefix) => {
   if (!fs.existsSync(dirPath)) {
@@ -22,11 +22,11 @@ const addDirMappings = (dirPath, browserPrefix, targetPrefix) => {
   }
 
   fs.readdirSync(dirPath, { withFileTypes: true })
-    .filter((dirent) => dirent.isFile() && dirent.name.endsWith('.js'))
+    .filter((dirent) => dirent.isFile() && dirent.name.endsWith('.mjs'))
     .map((dirent) => dirent.name)
     .sort()
     .forEach((file) => {
-      const name = path.basename(file, '.js');
+      const name = path.basename(file, '.mjs');
       const target = `${targetPrefix}/${file}`;
 
       addEntry(`${browserPrefix}/${name}`, target);
