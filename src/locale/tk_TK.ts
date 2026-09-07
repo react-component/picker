@@ -26,6 +26,37 @@ const locale: Locale = {
   nextDecade: 'Soňky on ýyl',
   previousCentury: 'Öňki asyr',
   nextCentury: 'Soňky asyr',
+  calendarFallback: {
+    months: [
+      'Ýanwar',
+      'Fewral',
+      'Mart',
+      'Aprel',
+      'Maý',
+      'Iýun',
+      'Iýul',
+      'Awgust',
+      'Sentýabr',
+      'Oktýabr',
+      'Noýabr',
+      'Dekabr',
+    ],
+    shortMonths: [
+      'Ýan',
+      'Few',
+      'Mar',
+      'Apr',
+      'Maý',
+      'Iýn',
+      'Iýl',
+      'Awg',
+      'Sen',
+      'Okt',
+      'Noý',
+      'Dek',
+    ],
+    shortWeekDays: ['Ýk', 'Dş', 'Sş', 'Çr', 'Pn', 'An', 'Şn'],
+  },
 };
 
 export default locale;

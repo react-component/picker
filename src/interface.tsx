@@ -81,6 +81,13 @@ export type Locale = {
 
   shortWeekDays?: string[];
   shortMonths?: string[];
+
+  /** Panel labels used only when the date library has not loaded this locale. */
+  calendarFallback?: {
+    months?: string[];
+    shortMonths: string[];
+    shortWeekDays: string[];
+  };
 };
 
 export type PanelMode = 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year' | 'decade';

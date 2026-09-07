@@ -336,6 +336,8 @@
     "./locale/uk_UA.js": "./es/locale/uk_UA.js",
     "./locale/ur_PK": "./es/locale/ur_PK.js",
     "./locale/ur_PK.js": "./es/locale/ur_PK.js",
+    "./locale/util": "./es/locale/util.js",
+    "./locale/util.js": "./es/locale/util.js",
     "./locale/uz_UZ": "./es/locale/uz_UZ.js",
     "./locale/uz_UZ.js": "./es/locale/uz_UZ.js",
     "./locale/vi_VN": "./es/locale/vi_VN.js",

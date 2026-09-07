@@ -27,6 +27,37 @@ const locale: Locale = {
   nextDecade: 'Dekade berikutnya',
   previousCentury: 'Abad terakhir',
   nextCentury: 'Abad berikutnya',
+  calendarFallback: {
+    months: [
+      'Januari',
+      'Februari',
+      'Maret',
+      'April',
+      'Mei',
+      'Juni',
+      'Juli',
+      'Agustus',
+      'September',
+      'Oktober',
+      'November',
+      'Desember',
+    ],
+    shortMonths: [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'Mei',
+      'Jun',
+      'Jul',
+      'Agt',
+      'Sep',
+      'Okt',
+      'Nov',
+      'Des',
+    ],
+    shortWeekDays: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb'],
+  },
 };
 
 export default locale;

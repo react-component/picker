@@ -26,6 +26,37 @@ const locale: Locale = {
   nextDecade: 'Növbəti onillik',
   previousCentury: 'Sonuncu əsr',
   nextCentury: 'Növbəti əsr',
+  calendarFallback: {
+    months: [
+      'yanvar',
+      'fevral',
+      'mart',
+      'aprel',
+      'may',
+      'iyun',
+      'iyul',
+      'avqust',
+      'sentyabr',
+      'oktyabr',
+      'noyabr',
+      'dekabr',
+    ],
+    shortMonths: [
+      'yan',
+      'fev',
+      'mar',
+      'apr',
+      'may',
+      'iyn',
+      'iyl',
+      'avq',
+      'sen',
+      'okt',
+      'noy',
+      'dek',
+    ],
+    shortWeekDays: ['Bz', 'BE', 'ÇA', 'Çə', 'CA', 'Cü', 'Şə'],
+  },
 };
 
 export default locale;

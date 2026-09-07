@@ -30,6 +30,37 @@ const locale: Locale = {
 
   shortWeekDays: ['Lin', 'Lun', 'Mar', 'Miy', 'Huw', 'Biy', 'Sab'],
   shortMonths: ['Ene', 'Peb', 'Mar', 'Abr', 'May', 'Hun', 'Hul', 'Ago', 'Set', 'Okt', 'Nob', 'Dis'],
+  calendarFallback: {
+    months: [
+      'Enero',
+      'Pebrero',
+      'Marso',
+      'Abril',
+      'Mayo',
+      'Hunyo',
+      'Hulyo',
+      'Agosto',
+      'Setyembre',
+      'Oktubre',
+      'Nobyembre',
+      'Disyembre',
+    ],
+    shortMonths: [
+      'Ene',
+      'Peb',
+      'Mar',
+      'Abr',
+      'May',
+      'Hun',
+      'Hul',
+      'Ago',
+      'Set',
+      'Okt',
+      'Nob',
+      'Dis',
+    ],
+    shortWeekDays: ['Li', 'Lu', 'Ma', 'Mi', 'Hu', 'Bi', 'Sab'],
+  },
 };
 
 export default locale;

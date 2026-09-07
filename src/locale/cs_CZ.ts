@@ -26,6 +26,37 @@ const locale: Locale = {
   nextDecade: 'Následující dekáda',
   previousCentury: 'Předchozí století',
   nextCentury: 'Následující století',
+  calendarFallback: {
+    months: [
+      'leden',
+      'únor',
+      'březen',
+      'duben',
+      'květen',
+      'červen',
+      'červenec',
+      'srpen',
+      'září',
+      'říjen',
+      'listopad',
+      'prosinec',
+    ],
+    shortMonths: [
+      'led',
+      'úno',
+      'bře',
+      'dub',
+      'kvě',
+      'čvn',
+      'čvc',
+      'srp',
+      'zář',
+      'říj',
+      'lis',
+      'pro',
+    ],
+    shortWeekDays: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
+  },
 };
 
 export default locale;

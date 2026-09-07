@@ -27,6 +27,37 @@ const locale: Locale = {
   nextDecade: 'Deich mbliana amach romhainn',
   previousCentury: 'An chéid seo caite',
   nextCentury: 'An chéad aois eile',
+  calendarFallback: {
+    months: [
+      'Eanáir',
+      'Feabhra',
+      'Márta',
+      'Aibreán',
+      'Bealtaine',
+      'Meitheamh',
+      'Iúil',
+      'Lúnasa',
+      'Meán Fómhair',
+      'Deireadh Fómhair',
+      'Samhain',
+      'Nollaig',
+    ],
+    shortMonths: [
+      'Ean',
+      'Fea',
+      'Már',
+      'Aib',
+      'Beal',
+      'Mei',
+      'Iúil',
+      'Lún',
+      'MFómh',
+      'DFómh',
+      'Samh',
+      'Noll',
+    ],
+    shortWeekDays: ['Do', 'Lu', 'Má', 'Cé', 'Dé', 'Ao', 'Sa'],
+  },
 };
 
 export default locale;

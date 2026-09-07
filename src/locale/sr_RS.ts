@@ -26,6 +26,37 @@ const locale: Locale = {
   nextDecade: 'Sledeća decenija',
   previousCentury: 'Prethodni vek',
   nextCentury: 'Sledeći vek',
+  calendarFallback: {
+    months: [
+      'Januar',
+      'Februar',
+      'Mart',
+      'April',
+      'Maj',
+      'Jun',
+      'Jul',
+      'Avgust',
+      'Septembar',
+      'Oktobar',
+      'Novembar',
+      'Decembar',
+    ],
+    shortMonths: [
+      'Jan.',
+      'Feb.',
+      'Mar.',
+      'Apr.',
+      'Maj',
+      'Jun',
+      'Jul',
+      'Avg.',
+      'Sep.',
+      'Okt.',
+      'Nov.',
+      'Dec.',
+    ],
+    shortWeekDays: ['ne', 'po', 'ut', 'sr', 'če', 'pe', 'su'],
+  },
 };
 
 export default locale;

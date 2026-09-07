@@ -29,6 +29,37 @@ const locale: Locale = {
   nextDecade: 'Kitas dešimtmetis',
   previousCentury: 'Buvęs amžius',
   nextCentury: 'Kitas amžius',
+  calendarFallback: {
+    months: [
+      'sausis',
+      'vasaris',
+      'kovas',
+      'balandis',
+      'gegužė',
+      'birželis',
+      'liepa',
+      'rugpjūtis',
+      'rugsėjis',
+      'spalis',
+      'lapkritis',
+      'gruodis',
+    ],
+    shortMonths: [
+      'sau',
+      'vas',
+      'kov',
+      'bal',
+      'geg',
+      'bir',
+      'lie',
+      'rgp',
+      'rgs',
+      'spa',
+      'lap',
+      'grd',
+    ],
+    shortWeekDays: ['s', 'p', 'a', 't', 'k', 'pn', 'š'],
+  },
 };
 
 export default locale;

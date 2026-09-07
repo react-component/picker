@@ -29,6 +29,37 @@ const locale: Locale = {
   nextDecade: 'Neste tiår',
   previousCentury: 'Forrige århundre',
   nextCentury: 'Neste århundre',
+  calendarFallback: {
+    months: [
+      'januar',
+      'februar',
+      'mars',
+      'april',
+      'mai',
+      'juni',
+      'juli',
+      'august',
+      'september',
+      'oktober',
+      'november',
+      'desember',
+    ],
+    shortMonths: [
+      'jan.',
+      'feb.',
+      'mars',
+      'april',
+      'mai',
+      'juni',
+      'juli',
+      'aug.',
+      'sep.',
+      'okt.',
+      'nov.',
+      'des.',
+    ],
+    shortWeekDays: ['sø', 'ma', 'ti', 'on', 'to', 'fr', 'lø'],
+  },
 };
 
 export default locale;

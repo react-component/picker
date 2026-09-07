@@ -158,6 +158,16 @@ const generateConfig: GenerateConfig<Dayjs> = {
   isValidate: (date) => getUDayjs(date).isValid(),
 
   locale: {
+    isLocaleAvailable: (locale) => {
+      const localeName = parseLocale(locale).toLowerCase();
+      const language = localeName.split('-')[0];
+
+      // Check the base language first: Day.js regional fallback can change its global locale.
+      return (
+        dayjs().locale(language).locale() === language ||
+        dayjs().locale(localeName).locale() === localeName
+      );
+    },
     getWeekFirstDay: (locale) => dayjs().locale(parseLocale(locale)).localeData().firstDayOfWeek(),
     getWeekFirstDate: (locale, date) => getUDayjs(date).locale(parseLocale(locale)).weekday(0),
     getWeek: (locale, date) => getUDayjs(date).locale(parseLocale(locale)).week(),

@@ -26,6 +26,37 @@ const locale: Locale = {
   nextDecade: 'Næsti áratugur',
   previousCentury: 'Fyrri öld',
   nextCentury: 'Næsta öld',
+  calendarFallback: {
+    months: [
+      'janúar',
+      'febrúar',
+      'mars',
+      'apríl',
+      'maí',
+      'júní',
+      'júlí',
+      'ágúst',
+      'september',
+      'október',
+      'nóvember',
+      'desember',
+    ],
+    shortMonths: [
+      'jan',
+      'feb',
+      'mar',
+      'apr',
+      'maí',
+      'jún',
+      'júl',
+      'ágú',
+      'sep',
+      'okt',
+      'nóv',
+      'des',
+    ],
+    shortWeekDays: ['Su', 'Má', 'Þr', 'Mi', 'Fi', 'Fö', 'La'],
+  },
 };
 
 export default locale;

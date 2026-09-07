@@ -29,6 +29,37 @@ const locale: Locale = {
   nextCentury: 'Abad depan',
 
   monthBeforeYear: false,
+  calendarFallback: {
+    months: [
+      'Januari',
+      'Februari',
+      'Mac',
+      'April',
+      'Mei',
+      'Jun',
+      'Julai',
+      'Ogos',
+      'September',
+      'Oktober',
+      'November',
+      'Disember',
+    ],
+    shortMonths: [
+      'Jan',
+      'Feb',
+      'Mac',
+      'Apr',
+      'Mei',
+      'Jun',
+      'Jul',
+      'Ogs',
+      'Sep',
+      'Okt',
+      'Nov',
+      'Dis',
+    ],
+    shortWeekDays: ['Ah', 'Is', 'Sl', 'Rb', 'Km', 'Jm', 'Sb'],
+  },
 };
 
 export default locale;
