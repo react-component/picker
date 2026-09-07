@@ -2,6 +2,7 @@
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
+import 'dayjs/locale/fr';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import { KeyCode, resetWarned, spyElementPrototypes } from '@rc-component/util';
@@ -10,6 +11,7 @@ import Picker, { PickerPanel, type PickerRef } from '../src';
 import type { PanelMode, PickerMode } from '../src/interface';
 import momentGenerateConfig from '../src/generate/moment';
 import enUS from '../src/locale/en_US';
+import frFR from '../src/locale/fr_FR';
 import zhCN from '../src/locale/zh_CN';
 import {
   // MomentPicker,
@@ -65,6 +67,36 @@ describe('Picker.Basic', () => {
   function selectColumn(colIndex: number, rowIndex: number) {
     fireEvent.click(document.querySelectorAll('ul')[colIndex].querySelectorAll('li')[rowIndex]);
   }
+
+  it('commits edited localized month text while the global locale stays English', () => {
+    const originalLocale = dayjs.locale();
+    dayjs.locale('en');
+
+    try {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayPicker
+          locale={frFR}
+          format="D MMM YYYY"
+          defaultValue={getDay('2026-08-24')}
+          onChange={onChange}
+        />,
+      );
+      const input = container.querySelector('input');
+      expect(input.value).toBe('24 août 2026');
+
+      fireEvent.change(input, { target: { value: '25 août 2026' } });
+      keyDown(KeyCode.ENTER);
+
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toBe('2026-08-25');
+      expect(onChange.mock.calls[0][1]).toBe('25 août 2026');
+      expect(input).not.toHaveAttribute('aria-invalid', 'true');
+      expect(dayjs.locale()).toBe('en');
+    } finally {
+      dayjs.locale(originalLocale);
+    }
+  });
 
   describe('mode', () => {
     const modeList: { mode: PanelMode; className: string }[] = [
