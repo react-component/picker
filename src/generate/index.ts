@@ -29,6 +29,9 @@ export type GenerateConfig<DateType> = {
   isValidate: (date: DateType) => boolean;
 
   locale: {
+    /** Whether the date library has loaded this locale (including supported fallbacks). */
+    isLocaleAvailable?: (locale: string) => boolean;
+
     getWeekFirstDay: (locale: string) => number;
     getWeekFirstDate: (locale: string, value: DateType) => DateType;
     getWeek: (locale: string, value: DateType) => number;

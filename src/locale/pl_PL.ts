@@ -26,6 +26,37 @@ const locale: Locale = {
   nextDecade: 'Następna dekada',
   previousCentury: 'Ostatni wiek',
   nextCentury: 'Następny wiek',
+  calendarFallback: {
+    months: [
+      'styczeń',
+      'luty',
+      'marzec',
+      'kwiecień',
+      'maj',
+      'czerwiec',
+      'lipiec',
+      'sierpień',
+      'wrzesień',
+      'październik',
+      'listopad',
+      'grudzień',
+    ],
+    shortMonths: [
+      'sty',
+      'lut',
+      'mar',
+      'kwi',
+      'maj',
+      'cze',
+      'lip',
+      'sie',
+      'wrz',
+      'paź',
+      'lis',
+      'gru',
+    ],
+    shortWeekDays: ['Nd', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So'],
+  },
 };
 
 export default locale;

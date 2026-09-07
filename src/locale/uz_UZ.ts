@@ -26,6 +26,37 @@ const locale: Locale = {
   nextDecade: "Keyingi o'n yil",
   previousCentury: "O'tgan asr",
   nextCentury: 'Keyingi asr',
+  calendarFallback: {
+    months: [
+      'Yanvar',
+      'Fevral',
+      'Mart',
+      'Aprel',
+      'May',
+      'Iyun',
+      'Iyul',
+      'Avgust',
+      'Sentabr',
+      'Oktabr',
+      'Noyabr',
+      'Dekabr',
+    ],
+    shortMonths: [
+      'Yan',
+      'Fev',
+      'Mar',
+      'Apr',
+      'May',
+      'Iyun',
+      'Iyul',
+      'Avg',
+      'Sen',
+      'Okt',
+      'Noy',
+      'Dek',
+    ],
+    shortWeekDays: ['Ya', 'Du', 'Se', 'Cho', 'Pa', 'Ju', 'Sha'],
+  },
 };
 
 export default locale;

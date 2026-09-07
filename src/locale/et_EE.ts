@@ -26,6 +26,37 @@ const locale: Locale = {
   nextDecade: 'Järgmine dekaad',
   previousCentury: 'Eelmine sajand',
   nextCentury: 'Järgmine sajand',
+  calendarFallback: {
+    months: [
+      'jaanuar',
+      'veebruar',
+      'märts',
+      'aprill',
+      'mai',
+      'juuni',
+      'juuli',
+      'august',
+      'september',
+      'oktoober',
+      'november',
+      'detsember',
+    ],
+    shortMonths: [
+      'jaan',
+      'veebr',
+      'märts',
+      'apr',
+      'mai',
+      'juuni',
+      'juuli',
+      'aug',
+      'sept',
+      'okt',
+      'nov',
+      'dets',
+    ],
+    shortWeekDays: ['P', 'E', 'T', 'K', 'N', 'R', 'L'],
+  },
 };
 
 export default locale;

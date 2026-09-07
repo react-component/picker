@@ -1,6 +1,7 @@
 import { clsx } from 'clsx';
 import * as React from 'react';
 import type { PanelMode, SharedPanelProps } from '../../interface';
+import { getMonthText, getShortWeekDays } from '../../locale/util';
 import {
   formatValue,
   getWeekStartDate,
@@ -48,7 +49,6 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale.locale);
   const monthStartDate = generateConfig.setDate(pickerValue, 1);
   const baseDate = getWeekStartDate(locale.locale, generateConfig, monthStartDate);
-  const month = generateConfig.getMonth(pickerValue);
 
   // =========================== PrefixColumn ===========================
   const showPrefixColumn = showWeek === undefined ? isWeek : showWeek;
@@ -91,11 +91,7 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   // ========================= Cells ==========================
   // >>> Header Cells
   const headerCells: React.ReactNode[] = [];
-  const weekDaysLocale: string[] =
-    locale.shortWeekDays ||
-    (generateConfig.locale.getShortWeekDays
-      ? generateConfig.locale.getShortWeekDays(locale.locale)
-      : []);
+  const weekDaysLocale = getShortWeekDays(locale, generateConfig);
 
   if (prefixColumn) {
     headerCells.push(
@@ -133,12 +129,6 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   };
 
   // ========================= Header =========================
-  const monthsLocale: string[] =
-    locale.shortMonths ||
-    (generateConfig.locale.getShortMonths
-      ? generateConfig.locale.getShortMonths(locale.locale)
-      : []);
-
   const yearNode: React.ReactNode = (
     <button
       type="button"
@@ -168,13 +158,7 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
       tabIndex={-1}
       className={`${prefixCls}-month-btn`}
     >
-      {locale.monthFormat
-        ? formatValue(pickerValue, {
-            locale,
-            format: locale.monthFormat,
-            generateConfig,
-          })
-        : monthsLocale[month]}
+      {getMonthText(locale, generateConfig, pickerValue)}
     </button>
   );
 

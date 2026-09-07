@@ -26,6 +26,37 @@ const locale: Locale = {
   nextDecade: 'Seuraava vuosikymmen',
   previousCentury: 'Edellinen vuosisata',
   nextCentury: 'Seuraava vuosisata',
+  calendarFallback: {
+    months: [
+      'tammikuu',
+      'helmikuu',
+      'maaliskuu',
+      'huhtikuu',
+      'toukokuu',
+      'kesäkuu',
+      'heinäkuu',
+      'elokuu',
+      'syyskuu',
+      'lokakuu',
+      'marraskuu',
+      'joulukuu',
+    ],
+    shortMonths: [
+      'tammi',
+      'helmi',
+      'maalis',
+      'huhti',
+      'touko',
+      'kesä',
+      'heinä',
+      'elo',
+      'syys',
+      'loka',
+      'marras',
+      'joulu',
+    ],
+    shortWeekDays: ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'],
+  },
 };
 
 export default locale;

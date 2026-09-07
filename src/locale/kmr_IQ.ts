@@ -26,6 +26,37 @@ const locale: Locale = {
   nextDecade: 'Dehsalen paş',
   previousCentury: 'Sedsalen peş',
   nextCentury: 'Sedsalen paş',
+  calendarFallback: {
+    months: [
+      'Rêbendan',
+      'Sibat',
+      'Adar',
+      'Nîsan',
+      'Gulan',
+      'Hezîran',
+      'Tîrmeh',
+      'Tebax',
+      'Îlon',
+      'Cotmeh',
+      'Mijdar',
+      'Berfanbar',
+    ],
+    shortMonths: [
+      'Rêb',
+      'Sib',
+      'Ada',
+      'Nîs',
+      'Gul',
+      'Hez',
+      'Tîr',
+      'Teb',
+      'Îlo',
+      'Cot',
+      'Mij',
+      'Ber',
+    ],
+    shortWeekDays: ['Ye', 'Du', 'Sê', 'Ça', 'Pê', 'În', 'Şe'],
+  },
 };
 
 export default locale;

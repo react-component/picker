@@ -1,5 +1,6 @@
 import * as React from 'react';
 import type { DisabledDate, SharedPanelProps } from '../../interface';
+import { getMonthText } from '../../locale/util';
 import { formatValue } from '../../utils/dateUtil';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
@@ -24,29 +25,12 @@ export default function MonthPanel<DateType extends object = any>(
   const [info] = useInfo(props, 'month');
   const baseDate = generateConfig.setMonth(pickerValue, 0);
 
-  // ========================= Month ==========================
-  const monthsLocale: string[] =
-    locale.shortMonths ||
-    (generateConfig.locale.getShortMonths
-      ? generateConfig.locale.getShortMonths(locale.locale)
-      : []);
-
   // ========================= Cells ==========================
   const getCellDate = (date: DateType, offset: number) => {
     return generateConfig.addMonth(date, offset);
   };
 
-  const getCellText = (date: DateType) => {
-    const month = generateConfig.getMonth(date);
-
-    return locale.monthFormat
-      ? formatValue(date, {
-          locale,
-          format: locale.monthFormat,
-          generateConfig,
-        })
-      : monthsLocale[month];
-  };
+  const getCellText = (date: DateType) => getMonthText(locale, generateConfig, date);
 
   const getCellClassName = () => ({
     [`${prefixCls}-cell-in-view`]: true,

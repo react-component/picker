@@ -25,6 +25,37 @@ const locale: Locale = {
   nextDecade: 'Dècada següent',
   previousCentury: 'Segle anterior',
   nextCentury: 'Segle següent',
+  calendarFallback: {
+    months: [
+      'Gener',
+      'Febrer',
+      'Març',
+      'Abril',
+      'Maig',
+      'Juny',
+      'Juliol',
+      'Agost',
+      'Setembre',
+      'Octubre',
+      'Novembre',
+      'Desembre',
+    ],
+    shortMonths: [
+      'Gen.',
+      'Febr.',
+      'Març',
+      'Abr.',
+      'Maig',
+      'Juny',
+      'Jul.',
+      'Ag.',
+      'Set.',
+      'Oct.',
+      'Nov.',
+      'Des.',
+    ],
+    shortWeekDays: ['Dg', 'Dl', 'Dt', 'Dc', 'Dj', 'Dv', 'Ds'],
+  },
 };
 
 export default locale;

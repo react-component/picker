@@ -26,6 +26,37 @@ const locale: Locale = {
   nextDecade: 'Nākamā desmitgade',
   previousCentury: 'Pagājušajā gadsimtā',
   nextCentury: 'Nākamajā gadsimtā',
+  calendarFallback: {
+    months: [
+      'janvāris',
+      'februāris',
+      'marts',
+      'aprīlis',
+      'maijs',
+      'jūnijs',
+      'jūlijs',
+      'augusts',
+      'septembris',
+      'oktobris',
+      'novembris',
+      'decembris',
+    ],
+    shortMonths: [
+      'jan',
+      'feb',
+      'mar',
+      'apr',
+      'mai',
+      'jūn',
+      'jūl',
+      'aug',
+      'sep',
+      'okt',
+      'nov',
+      'dec',
+    ],
+    shortWeekDays: ['Sv', 'P', 'O', 'T', 'C', 'Pk', 'S'],
+  },
 };
 
 export default locale;

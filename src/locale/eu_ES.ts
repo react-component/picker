@@ -27,6 +27,37 @@ const locale: Locale = {
   nextDecade: 'Urrengo hamarkada',
   previousCentury: 'Aurreko mendea',
   nextCentury: 'Urrengo mendea',
+  calendarFallback: {
+    months: [
+      'urtarrila',
+      'otsaila',
+      'martxoa',
+      'apirila',
+      'maiatza',
+      'ekaina',
+      'uztaila',
+      'abuztua',
+      'iraila',
+      'urria',
+      'azaroa',
+      'abendua',
+    ],
+    shortMonths: [
+      'urt.',
+      'ots.',
+      'mar.',
+      'api.',
+      'mai.',
+      'eka.',
+      'uzt.',
+      'abu.',
+      'ira.',
+      'urr.',
+      'aza.',
+      'abe.',
+    ],
+    shortWeekDays: ['ig', 'al', 'ar', 'az', 'og', 'ol', 'lr'],
+  },
 };
 
 export default locale;

@@ -28,6 +28,37 @@ const locale: Locale = {
   nextDecade: 'Következő évtized', // 'Next decade',
   previousCentury: 'Múlt évszázad', // 'Last century',
   nextCentury: 'Jövő évszázad', // 'Next century',
+  calendarFallback: {
+    months: [
+      'január',
+      'február',
+      'március',
+      'április',
+      'május',
+      'június',
+      'július',
+      'augusztus',
+      'szeptember',
+      'október',
+      'november',
+      'december',
+    ],
+    shortMonths: [
+      'jan',
+      'feb',
+      'márc',
+      'ápr',
+      'máj',
+      'jún',
+      'júl',
+      'aug',
+      'szept',
+      'okt',
+      'nov',
+      'dec',
+    ],
+    shortWeekDays: ['v', 'h', 'k', 'sze', 'cs', 'p', 'szo'],
+  },
 };
 
 export default locale;

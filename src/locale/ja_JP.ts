@@ -28,6 +28,24 @@ const locale: Locale = {
   previousCentury: '前の世紀',
   nextCentury: '次の世紀',
   monthBeforeYear: false,
+  calendarFallback: {
+    months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+    shortMonths: [
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月',
+    ],
+    shortWeekDays: ['日', '月', '火', '水', '木', '金', '土'],
+  },
 };
 
 export default locale;

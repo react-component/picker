@@ -27,6 +27,37 @@ const locale: Locale = {
   nextDecade: 'Deceniul următor',
   previousCentury: 'Secolul anterior',
   nextCentury: 'Secolul următor',
+  calendarFallback: {
+    months: [
+      'Ianuarie',
+      'Februarie',
+      'Martie',
+      'Aprilie',
+      'Mai',
+      'Iunie',
+      'Iulie',
+      'August',
+      'Septembrie',
+      'Octombrie',
+      'Noiembrie',
+      'Decembrie',
+    ],
+    shortMonths: [
+      'Ian.',
+      'Febr.',
+      'Mart.',
+      'Apr.',
+      'Mai',
+      'Iun.',
+      'Iul.',
+      'Aug.',
+      'Sept.',
+      'Oct.',
+      'Nov.',
+      'Dec.',
+    ],
+    shortWeekDays: ['Du', 'Lu', 'Ma', 'Mi', 'Jo', 'Vi', 'Sâ'],
+  },
 };
 
 export default locale;

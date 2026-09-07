@@ -95,6 +95,12 @@ Then open `http://localhost:8000`.
 | `locale/*`    | Locale objects for picker UI text and formats.                |
 | `interface`   | Shared TypeScript types.                                      |
 
+### Calendar locale fallback
+
+Built-in locales include `calendarFallback` with `months`, `shortMonths`, and `shortWeekDays` (Sunday first). The Day.js adapter uses these panel labels when the requested date-library locale is not loaded. Existing `shortMonths` and `shortWeekDays` overrides and loaded Day.js locale customizations keep their current precedence. Standalone `MMM` and `MMMM` month formats also support fallback labels; other formats, week rules, and input parsing still use the date library.
+
+Custom adapters can opt in with `generateConfig.locale.isLocaleAvailable`. Without this optional method, their behavior is unchanged. Calendar consumers can share the label resolution through `getShortMonths`, `getShortWeekDays`, and `getMonthText` from `@rc-component/picker/locale/util`.
+
 ### Shared Picker Props
 
 | Property | Type | Default | Description |
