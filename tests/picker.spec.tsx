@@ -396,7 +396,7 @@ describe('Picker.Basic', () => {
   it('not fire blur when click inside and is in focus', () => {
     const onBlur = jest.fn();
     const { container } = render(
-      <DayPicker onBlur={onBlur} suffixIcon={<div className="suffix-icon">X</div>} />,
+      <DayPicker onBlur={onBlur} suffix={<div className="suffix-icon">X</div>} />,
     );
 
     const $input = container.querySelector('input');
@@ -597,7 +597,7 @@ describe('Picker.Basic', () => {
     render(
       <DayPicker
         defaultValue={getDay('1990-09-03')}
-        suffixIcon={<span className="suffix-icon" />}
+        suffix={<span className="suffix-icon" />}
         clearIcon={<span className="suffix-icon" />}
         allowClear
       />,
@@ -606,6 +606,24 @@ describe('Picker.Basic', () => {
     expect(errorSpy).toHaveBeenCalledWith(
       'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.',
     );
+  });
+
+  it('supports legacy suffixIcon and prefers suffix', () => {
+    const { container, rerender } = render(
+      <DayPicker suffixIcon={<span className="legacy-suffix" />} />,
+    );
+
+    expect(container.querySelector('.legacy-suffix')).toBeInTheDocument();
+
+    rerender(
+      <DayPicker
+        suffix={<span className="new-suffix" />}
+        suffixIcon={<span className="legacy-suffix" />}
+      />,
+    );
+
+    expect(container.querySelector('.new-suffix')).toBeInTheDocument();
+    expect(container.querySelector('.legacy-suffix')).not.toBeInTheDocument();
   });
 
   it('inputRender', () => {
@@ -1483,7 +1501,7 @@ describe('Picker.Basic', () => {
           popup: testPopupStyles,
         }}
         prefix="prefix"
-        suffixIcon="suffix"
+        suffix="suffix"
         defaultValue={defaultValue}
         picker="time"
         locale={zhCN}

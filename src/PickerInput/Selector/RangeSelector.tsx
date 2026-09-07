@@ -61,7 +61,7 @@ function RangeSelector<DateType extends object = any>(
 
     prefix,
     clearIcon,
-    suffixIcon,
+    suffix,
     separator = '~',
     activeIndex,
     activeHelp,
@@ -270,7 +270,7 @@ function RangeSelector<DateType extends object = any>(
           date-range="end"
         />
         <div className={`${prefixCls}-active-bar`} style={activeBarStyle} />
-        <Icon icon={suffixIcon} />
+        <Icon icon={suffix} />
         {showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
       </div>
     </ResizeObserver>

@@ -218,7 +218,7 @@ function RangePicker<DateType extends object = any>(
     // Format
     inputReadOnly,
 
-    suffixIcon,
+    suffix,
 
     // Focus
     onFocus,
@@ -790,7 +790,7 @@ function RangePicker<DateType extends object = any>(
           className={clsx(filledProps.className, rootClassName, mergedClassNames.root)}
           style={{ ...mergedStyles.root, ...filledProps.style }}
           // Icon
-          suffixIcon={suffixIcon}
+          suffix={suffix}
           // Active
           activeIndex={focused || mergedOpen ? activeIndex : null}
           activeHelp={!!internalHoverValues}
