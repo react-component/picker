@@ -13,9 +13,10 @@ const addEntry = (from, to) => {
   browserEntries.push([from, to]);
 };
 
-// Preserve previous behavior of preferring the ES build for the main entry.
+// Redirect the resolved main file for legacy bundlers that do not use exports.
 addEntry('./lib/index.js', './es/index.mjs');
 
+/** Keep legacy browser request names while pointing them at the emitted ESM files. */
 const addDirMappings = (dirPath, browserPrefix, targetPrefix) => {
   if (!fs.existsSync(dirPath)) {
     return;
