@@ -64,7 +64,7 @@ export interface BasePickerPanelProps<DateType extends object = any>
       | 'superPrevIcon'
       | 'superNextIcon'
     >,
-    SharedTimeProps<DateType>,
+    Omit<SharedTimeProps<DateType>, 'defaultValue'>,
     Pick<React.HTMLAttributes<HTMLDivElement>, 'tabIndex'> {
   // Style
   prefixCls?: string;
