@@ -46,7 +46,7 @@ function SingleSelector<DateType extends object = any>(
 
     prefix,
     clearIcon,
-    suffixIcon,
+    suffix,
     activeHelp,
     allHelp,
 
@@ -184,7 +184,7 @@ function SingleSelector<DateType extends object = any>(
         autoFocus={autoFocus}
         tabIndex={tabIndex}
       />
-      <Icon icon={suffixIcon} />
+      <Icon icon={suffix} />
       {showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
     </>
   ) : (
@@ -193,7 +193,7 @@ function SingleSelector<DateType extends object = any>(
       {...getInputProps()}
       autoFocus={autoFocus}
       tabIndex={tabIndex}
-      suffixIcon={suffixIcon}
+      suffix={suffix}
       clearIcon={showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
       showActiveCls={false}
     />

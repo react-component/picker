@@ -829,7 +829,7 @@ describe('Picker.Range', () => {
     const { container } = render(
       <DayRangePicker
         defaultValue={[getDay('1990-09-03'), getDay('1990-09-03')]}
-        suffixIcon={<span className="suffix-icon" />}
+        suffix={<span className="suffix-icon" />}
         clearIcon={<span className="suffix-icon" />}
         allowClear
       />,
@@ -1870,7 +1870,7 @@ describe('Picker.Range', () => {
         allowClear
         defaultValue={[getDay('1990-09-03'), getDay('1989-11-28')]}
         clearIcon={<span>X</span>}
-        suffixIcon={<span>O</span>}
+        suffix={<span>O</span>}
       />,
     );
     openPicker(container, 1);
@@ -1906,7 +1906,7 @@ describe('Picker.Range', () => {
         allowClear
         defaultValue={[getDay('1990-09-03'), getDay('1989-11-28')]}
         clearIcon={<span>X</span>}
-        suffixIcon={<span>O</span>}
+        suffix={<span>O</span>}
       />,
     );
     openPicker(container, 1);
@@ -1969,7 +1969,7 @@ describe('Picker.Range', () => {
         allowClear
         defaultValue={[getDay('1990-09-03'), getDay('1989-11-28')]}
         clearIcon={<span>X</span>}
-        suffixIcon={<span>O</span>}
+        suffix={<span>O</span>}
       />,
     );
     openPicker(container, 1);
