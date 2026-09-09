@@ -152,8 +152,9 @@ export default function useFilledProps<
   );
 
   // ======================= Warning ========================
-  if (process.env.NODE_ENV !== 'production' && picker === 'time') {
+  if (process.env.NODE_ENV !== 'production') {
     if (
+      picker === 'time' &&
       ['disabledHours', 'disabledMinutes', 'disabledSeconds'].some((key) => (props as any)[key])
     ) {
       warning(
@@ -161,6 +162,11 @@ export default function useFilledProps<
         `'disabledHours', 'disabledMinutes', 'disabledSeconds' will be removed in the next major version, please use 'disabledTime' instead.`,
       );
     }
+
+    warning(
+      !components.button,
+      `'components.button' is deprecated. Please use 'components.nowButton' and 'components.okButton' instead.`,
+    );
   }
 
   // ======================== Props =========================

@@ -593,7 +593,7 @@ describe('Picker.Basic', () => {
       const onCalendarChange = jest.fn();
       const { container } = render(<DayPicker onCalendarChange={onCalendarChange} showToday />);
       openPicker(container);
-      fireEvent.click(document.querySelector('.rc-picker-now-btn'));
+      fireEvent.click(document.querySelector('.rc-picker-now'));
       expect(isSame(onCalendarChange.mock.calls[0][0], '1990-09-03')).toBeTruthy();
     });
 
@@ -603,10 +603,8 @@ describe('Picker.Basic', () => {
         <DayPicker onCalendarChange={onCalendarChange} disabledDate={() => true} showToday />,
       );
       openPicker(container);
-      expect(document.querySelector('.rc-picker-now-btn')).toHaveClass(
-        'rc-picker-now-btn-disabled',
-      );
-      fireEvent.click(document.querySelector('.rc-picker-now-btn'));
+      expect(document.querySelector('.rc-picker-now')).toBeDisabled();
+      fireEvent.click(document.querySelector('.rc-picker-now'));
       expect(onCalendarChange).not.toHaveBeenCalled();
     });
 
@@ -614,7 +612,7 @@ describe('Picker.Basic', () => {
       it(`not works on ${name}`, () => {
         const { container } = render(<DayPicker picker={name as any} showToday />);
         openPicker(container);
-        expect(document.querySelector('.rc-picker-now-btn')).toBeFalsy();
+        expect(document.querySelector('.rc-picker-now')).toBeFalsy();
       });
     });
   });
@@ -669,7 +667,7 @@ describe('Picker.Basic', () => {
       const onCalendarChange = jest.fn();
       const { container } = render(<DayPicker onCalendarChange={onCalendarChange} showTime />);
       openPicker(container);
-      fireEvent.click(document.querySelector('.rc-picker-now > a'));
+      fireEvent.click(document.querySelector('.rc-picker-now'));
 
       expect(
         isSame(onCalendarChange.mock.calls[0][0], '1990-09-03 00:00:00', 'second'),
@@ -682,7 +680,7 @@ describe('Picker.Basic', () => {
         <DayPicker onCalendarChange={onCalendarChange} showNow={false} />,
       );
       openPicker(container);
-      expect(document.querySelector('.rc-picker-now > a')).toBeFalsy();
+      expect(document.querySelector('.rc-picker-now')).toBeFalsy();
     });
 
     it('datetime close showNow', () => {
@@ -691,7 +689,7 @@ describe('Picker.Basic', () => {
         <DayPicker onCalendarChange={onCalendarChange} showTime showNow={false} />,
       );
       openPicker(container);
-      expect(document.querySelector('.rc-picker-now > a')).toBeFalsy();
+      expect(document.querySelector('.rc-picker-now')).toBeFalsy();
     });
 
     it('time should display now', () => {
@@ -701,7 +699,7 @@ describe('Picker.Basic', () => {
       openPicker(container);
       expect(document.querySelector('.rc-picker-header')).toBeFalsy();
 
-      fireEvent.click(document.querySelector('.rc-picker-now > a'));
+      fireEvent.click(document.querySelector('.rc-picker-now'));
 
       expect(
         isSame(onCalendarChange.mock.calls[0][0], '1990-09-03 00:00:00', 'second'),
@@ -714,7 +712,7 @@ describe('Picker.Basic', () => {
         <DayPicker onCalendarChange={onCalendarChange} picker="time" showNow={false} />,
       );
       openPicker(container);
-      expect(document.querySelector('.rc-picker-now > a')).toBeFalsy();
+      expect(document.querySelector('.rc-picker-now')).toBeFalsy();
     });
   });
 
@@ -727,7 +725,7 @@ describe('Picker.Basic', () => {
       );
 
       openPicker(container);
-      fireEvent.click(document.querySelector('.rc-picker-now > a'));
+      fireEvent.click(document.querySelector('.rc-picker-now'));
 
       expect(
         isSame(onCalendarChange.mock.calls[0][0], '1990-09-03 00:10:00', 'second'),
@@ -905,7 +903,7 @@ describe('Picker.Basic', () => {
     );
 
     openPicker(container);
-    fireEvent.click(document.querySelector('.rc-picker-ok button'));
+    fireEvent.click(document.querySelector('.rc-picker-ok'));
 
     expect(isSame(onChange.mock.calls[0][0], '2000-01-01 00:10:23')).toBeTruthy();
 
@@ -1692,7 +1690,7 @@ describe('Picker.Basic', () => {
       const onCalendarChange = jest.fn();
       render(<DayPicker picker="time" open showNow onCalendarChange={onCalendarChange} />);
 
-      const submitBtn = document.querySelector('.rc-picker-ok button');
+      const submitBtn = document.querySelector('.rc-picker-ok');
       expect(submitBtn).toHaveAttribute('disabled');
 
       selectCell('00');
@@ -1704,7 +1702,7 @@ describe('Picker.Basic', () => {
       );
       onCalendarChange.mockReset();
 
-      fireEvent.click(document.querySelector('.rc-picker-now-btn'));
+      fireEvent.click(document.querySelector('.rc-picker-now'));
       expect(submitBtn).not.toHaveAttribute('disabled');
       expect(onCalendarChange).toHaveBeenCalledWith(
         expect.anything(),
