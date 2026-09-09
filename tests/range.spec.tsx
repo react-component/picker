@@ -793,7 +793,7 @@ describe('Picker.Range', () => {
       const { container } = render(<DayRangePicker showTime />);
       openPicker(container);
       selectCell(11);
-      fireEvent.click(document.querySelector('.rc-picker-ok button'));
+      fireEvent.click(document.querySelector('.rc-picker-ok'));
       selectCell(22);
 
       fireEvent.mouseEnter(findCell(25));
