@@ -126,7 +126,7 @@ npm start
 | showTime | `boolean \| SharedTimeProps` | `false` | 启用时间选择。 |
 | showToday | `boolean` | - | 显示“今天”按钮。 |
 | styles | `SemanticStyles` | - | 根槽和弹层槽的语义样式。 |
-| suffixIcon | `ReactNode` | - | 自定义后缀图标。 |
+| suffix | `ReactNode` | - | 自定义后缀。 |
 | onOpenChange | `(open: boolean) => void` | - | 当弹层窗口打开状态改变时触发。 |
 | onPanelChange | `(value, mode) => void` | - | 当面板模式改变时触发。 |
 

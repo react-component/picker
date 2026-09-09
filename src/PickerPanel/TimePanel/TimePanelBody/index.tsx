@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { isNonNullable } from '@rc-component/util';
 import useTimeInfo from '../../../hooks/useTimeInfo';
 import type { SharedPanelProps, SharedTimeProps } from '../../../interface';
 import { formatValue } from '../../../utils/dateUtil';
@@ -157,19 +158,17 @@ export default function TimePanelBody<DateType extends object = any>(
   const triggerDateTmpl = React.useMemo(() => {
     let tmpl = value || pickerValue || generateConfig.getNow();
 
-    const isNotNull = (num: number) => num !== null && num !== undefined;
-
-    if (isNotNull(hour)) {
+    if (isNonNullable(hour)) {
       tmpl = generateConfig.setHour(tmpl, hour);
       tmpl = generateConfig.setMinute(tmpl, minute);
       tmpl = generateConfig.setSecond(tmpl, second);
       tmpl = generateConfig.setMillisecond(tmpl, millisecond);
-    } else if (isNotNull(pickerHour)) {
+    } else if (isNonNullable(pickerHour)) {
       tmpl = generateConfig.setHour(tmpl, pickerHour);
       tmpl = generateConfig.setMinute(tmpl, pickerMinute);
       tmpl = generateConfig.setSecond(tmpl, pickerSecond);
       tmpl = generateConfig.setMillisecond(tmpl, pickerMillisecond);
-    } else if (isNotNull(validHour)) {
+    } else if (isNonNullable(validHour)) {
       tmpl = generateConfig.setHour(tmpl, validHour);
       tmpl = generateConfig.setMinute(tmpl, validMinute);
       tmpl = generateConfig.setSecond(tmpl, validSecond);

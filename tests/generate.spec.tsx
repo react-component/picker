@@ -1,4 +1,5 @@
 import MockDate from 'mockdate';
+import dayjs from 'dayjs';
 import dateFnsGenerateConfig from '../src/generate/dateFns';
 import dayjsGenerateConfig from '../src/generate/dayjs';
 import luxonGenerateConfig from '../src/generate/luxon';
@@ -7,6 +8,7 @@ import { getMoment } from './util/commonUtil';
 
 import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/ko';
+import 'dayjs/locale/fr';
 import type { GenerateConfig } from '../src/generate';
 
 describe('Picker.Generate', () => {
@@ -289,6 +291,68 @@ describe('Generate:moment', () => {
 });
 
 describe('Generate:dayjs', () => {
+  describe('locale-aware parsing', () => {
+    let originalLocale: string;
+
+    beforeEach(() => {
+      originalLocale = dayjs.locale();
+      dayjs.locale('en');
+    });
+
+    afterEach(() => {
+      dayjs.locale(originalLocale);
+    });
+
+    it.each([
+      ['fr_FR', '25 août 2026', 'D MMM YYYY', '2026-08-25'],
+      ['fr_FR', '25 septembre 2026', 'D MMMM YYYY', '2026-09-25'],
+      ['fr_BE', '25 août 2026', 'D MMM YYYY', '2026-08-25'],
+    ])('parses %s text %s without changing the global locale', (locale, text, format, expected) => {
+      const date = dayjsGenerateConfig.locale.parse(locale, text, [format]);
+
+      expect(date?.format('YYYY-MM-DD')).toBe(expected);
+      expect(date?.locale()).toBe('fr');
+      expect(dayjs.locale()).toBe('en');
+    });
+
+    it('tries alternate formats with the requested locale', () => {
+      const date = dayjsGenerateConfig.locale.parse('fr_FR', '25 août 2026', [
+        'YYYY-MM-DD',
+        'D MMM YYYY',
+      ]);
+
+      expect(date?.format('YYYY-MM-DD')).toBe('2026-08-25');
+      expect(dayjs.locale()).toBe('en');
+    });
+
+    it('parses English text when the global locale is French', () => {
+      dayjs.locale('fr');
+      const date = dayjsGenerateConfig.locale.parse('en_US', '25 Aug 2026', ['D MMM YYYY']);
+
+      expect(date?.format('YYYY-MM-DD')).toBe('2026-08-25');
+      expect(date?.locale()).toBe('en');
+      expect(dayjs.locale()).toBe('fr');
+    });
+
+    it('keeps the global-locale fallback when locale data is not registered', () => {
+      const date = dayjsGenerateConfig.locale.parse('unregistered_LOCALE', '25 Aug 2026', [
+        'D MMM YYYY',
+      ]);
+
+      expect(date?.format('YYYY-MM-DD')).toBe('2026-08-25');
+      expect(date?.locale()).toBe('en');
+      expect(dayjs.locale()).toBe('en');
+    });
+
+    it.each(['31 février 2026', '25 août 2026 extra'])(
+      'keeps strict validation for localized input %s',
+      (text) => {
+        expect(dayjsGenerateConfig.locale.parse('fr_FR', text, ['D MMMM YYYY'])).toBeNull();
+        expect(dayjs.locale()).toBe('en');
+      },
+    );
+  });
+
   it('getFixedDate', () => {
     const timea = dayjsGenerateConfig.getFixedDate('2019-2-08');
     const timeb = dayjsGenerateConfig.getFixedDate('2019-02-08');

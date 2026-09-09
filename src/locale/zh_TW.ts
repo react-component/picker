@@ -11,7 +11,7 @@ const locale: Locale = {
   ok: '確定',
   timeSelect: '選擇時間',
   dateSelect: '選擇日期',
-  weekSelect: '選擇周',
+  weekSelect: '選擇週',
   clear: '清除',
   week: '週',
   month: '月',

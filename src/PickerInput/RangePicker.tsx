@@ -24,6 +24,7 @@ import type {
 import type { PickerPanelProps } from '../PickerPanel';
 import PickerTrigger from '../PickerTrigger';
 import { pickTriggerProps } from '../PickerTrigger/util';
+import { isSameTimestamp } from '../utils/dateUtil';
 import { fillIndex, getFromDate, toArray } from '../utils/miscUtil';
 import PickerContext from './context';
 import useCellRender from './hooks/useCellRender';
@@ -217,7 +218,7 @@ function RangePicker<DateType extends object = any>(
     // Format
     inputReadOnly,
 
-    suffixIcon,
+    suffix,
 
     // Focus
     onFocus,
@@ -502,6 +503,17 @@ function RangePicker<DateType extends object = any>(
     return internalHoverValues || calendarValue;
   }, [calendarValue, internalHoverValues]);
 
+  // "Weak" hover only highlights the hovered cell instead of composing a range.
+  // Use it while choosing the first value so the pending selection remains selected.
+  const showWeakHover =
+    // Preset hover always previews the whole range.
+    hoverSource === 'cell' &&
+    // Once the other field has a value, range hover takes precedence.
+    !calendarValue[(activeIndex + 1) % 2] &&
+    // Only a changed active value needs weak hover.
+    !isSameTimestamp(generateConfig, calendarValue[activeIndex], mergedValue[activeIndex]);
+  const activeHoverValue = internalHoverValues?.[activeIndex];
+
   // Clean up `internalHoverValues` when closed
   React.useEffect(() => {
     if (!mergedOpen) {
@@ -640,7 +652,8 @@ function RangePicker<DateType extends object = any>(
       defaultOpenValue={toArray(showTime?.defaultOpenValue)[activeIndex]}
       onPickerValueChange={setCurrentPickerValue}
       // Hover
-      hoverValue={hoverValues}
+      hoverValue={showWeakHover && activeHoverValue ? [activeHoverValue] : null}
+      hoverRangeValue={showWeakHover ? null : hoverValues}
       onHover={onPanelHover}
       // Submit
       needConfirm={needConfirm}
@@ -781,7 +794,7 @@ function RangePicker<DateType extends object = any>(
           className={clsx(filledProps.className, rootClassName, mergedClassNames.root)}
           style={{ ...mergedStyles.root, ...filledProps.style }}
           // Icon
-          suffixIcon={suffixIcon}
+          suffix={suffix}
           // Active
           activeIndex={focused || mergedOpen ? activeIndex : null}
           activeHelp={!!internalHoverValues}

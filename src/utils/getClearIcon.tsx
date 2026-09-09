@@ -1,15 +1,17 @@
-import type { ReactNode } from "react";
-import React from "react";
+import type { ReactNode } from 'react';
+import React from 'react';
+import { isReactRenderable } from '@rc-component/util';
 
 export function getClearIcon(
-    prefixCls: string,
-    allowClear?: boolean | { clearIcon?: ReactNode },
-    clearIcon?: ReactNode,
+  prefixCls: string,
+  allowClear?: boolean | { clearIcon?: ReactNode },
+  clearIcon?: ReactNode,
 ) {
+  const mergedClearIcon = typeof allowClear === 'object' ? allowClear.clearIcon : clearIcon;
 
-    const mergedClearIcon = typeof allowClear === "object" ? allowClear.clearIcon : clearIcon;
-
-    return (
-        mergedClearIcon || <span className={`${prefixCls}-clear-btn`} />
-    );
+  return isReactRenderable(mergedClearIcon) ? (
+    mergedClearIcon
+  ) : (
+    <span className={`${prefixCls}-clear-btn`} />
+  );
 }

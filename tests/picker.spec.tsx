@@ -2,6 +2,7 @@
 import { act, createEvent, fireEvent, render } from '@testing-library/react';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
+import 'dayjs/locale/fr';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import { KeyCode, resetWarned, spyElementPrototypes } from '@rc-component/util';
@@ -10,6 +11,7 @@ import Picker, { PickerPanel, type PickerRef } from '../src';
 import type { PanelMode, PickerMode } from '../src/interface';
 import momentGenerateConfig from '../src/generate/moment';
 import enUS from '../src/locale/en_US';
+import frFR from '../src/locale/fr_FR';
 import zhCN from '../src/locale/zh_CN';
 import {
   // MomentPicker,
@@ -65,6 +67,36 @@ describe('Picker.Basic', () => {
   function selectColumn(colIndex: number, rowIndex: number) {
     fireEvent.click(document.querySelectorAll('ul')[colIndex].querySelectorAll('li')[rowIndex]);
   }
+
+  it('commits edited localized month text while the global locale stays English', () => {
+    const originalLocale = dayjs.locale();
+    dayjs.locale('en');
+
+    try {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayPicker
+          locale={frFR}
+          format="D MMM YYYY"
+          defaultValue={getDay('2026-08-24')}
+          onChange={onChange}
+        />,
+      );
+      const input = container.querySelector('input');
+      expect(input.value).toBe('24 août 2026');
+
+      fireEvent.change(input, { target: { value: '25 août 2026' } });
+      keyDown(KeyCode.ENTER);
+
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toBe('2026-08-25');
+      expect(onChange.mock.calls[0][1]).toBe('25 août 2026');
+      expect(input).not.toHaveAttribute('aria-invalid', 'true');
+      expect(dayjs.locale()).toBe('en');
+    } finally {
+      dayjs.locale(originalLocale);
+    }
+  });
 
   describe('mode', () => {
     const modeList: { mode: PanelMode; className: string }[] = [
@@ -396,7 +428,7 @@ describe('Picker.Basic', () => {
   it('not fire blur when click inside and is in focus', () => {
     const onBlur = jest.fn();
     const { container } = render(
-      <DayPicker onBlur={onBlur} suffixIcon={<div className="suffix-icon">X</div>} />,
+      <DayPicker onBlur={onBlur} suffix={<div className="suffix-icon">X</div>} />,
     );
 
     const $input = container.querySelector('input');
@@ -595,7 +627,7 @@ describe('Picker.Basic', () => {
     render(
       <DayPicker
         defaultValue={getDay('1990-09-03')}
-        suffixIcon={<span className="suffix-icon" />}
+        suffix={<span className="suffix-icon" />}
         clearIcon={<span className="suffix-icon" />}
         allowClear
       />,
@@ -604,6 +636,24 @@ describe('Picker.Basic', () => {
     expect(errorSpy).toHaveBeenCalledWith(
       'Warning: `clearIcon` will be removed in future. Please use `allowClear` instead.',
     );
+  });
+
+  it('supports legacy suffixIcon and prefers suffix', () => {
+    const { container, rerender } = render(
+      <DayPicker suffixIcon={<span className="legacy-suffix" />} />,
+    );
+
+    expect(container.querySelector('.legacy-suffix')).toBeInTheDocument();
+
+    rerender(
+      <DayPicker
+        suffix={<span className="new-suffix" />}
+        suffixIcon={<span className="legacy-suffix" />}
+      />,
+    );
+
+    expect(container.querySelector('.new-suffix')).toBeInTheDocument();
+    expect(container.querySelector('.legacy-suffix')).not.toBeInTheDocument();
   });
 
   it('inputRender', () => {
@@ -1481,7 +1531,7 @@ describe('Picker.Basic', () => {
           popup: testPopupStyles,
         }}
         prefix="prefix"
-        suffixIcon="suffix"
+        suffix="suffix"
         defaultValue={defaultValue}
         picker="time"
         locale={zhCN}
@@ -1686,6 +1736,33 @@ describe('Picker.Basic', () => {
 
     testPropsName('defaultValue');
     testPropsName('defaultOpenValue');
+  });
+
+  it('keeps open when a disabled navigation button blurs', async () => {
+    const onBlur = jest.fn();
+    const { container } = render(
+      <DayPicker
+        defaultPickerValue={dayjs('2019-09-03')}
+        minDate={dayjs('2019-08-01')}
+        onBlur={onBlur}
+      />,
+    );
+
+    openPicker(container);
+
+    const prevButton = document.querySelector<HTMLButtonElement>('.rc-picker-header-prev-btn');
+    const panelContainer = document.querySelector<HTMLElement>('.rc-picker-panel-container');
+
+    triggerFocus(prevButton);
+    fireEvent.click(prevButton);
+    expect(prevButton).toBeDisabled();
+
+    fireEvent.blur(prevButton, { relatedTarget: null });
+    await waitFakeTimer();
+
+    expect(onBlur).toHaveBeenCalled();
+    expect(document.activeElement).toBe(panelContainer);
+    expect(isOpen()).toBeTruthy();
   });
 
   it('auto switch pickerValue - maxDate', () => {

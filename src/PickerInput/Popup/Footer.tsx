@@ -1,4 +1,5 @@
 import { clsx } from 'clsx';
+import { isReactRenderable } from '@rc-component/util';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import useTimeInfo from '../../hooks/useTimeInfo';
@@ -114,7 +115,7 @@ export default function Footer(props: FooterProps) {
   );
 
   // ======================== Render ========================
-  if (!extraNode && !rangeNode) {
+  if (!isReactRenderable(extraNode) && !isReactRenderable(rangeNode)) {
     return null;
   }
 
@@ -123,7 +124,9 @@ export default function Footer(props: FooterProps) {
       className={clsx(`${prefixCls}-footer`, classNames.popup.footer)}
       style={styles.popup.footer}
     >
-      {extraNode && <div className={`${prefixCls}-footer-extra`}>{extraNode}</div>}
+      {isReactRenderable(extraNode) && (
+        <div className={`${prefixCls}-footer-extra`}>{extraNode}</div>
+      )}
       {rangeNode}
     </div>
   );

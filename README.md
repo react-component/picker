@@ -126,7 +126,7 @@ Then open `http://localhost:8000`.
 | showTime | `boolean \| SharedTimeProps` | `false` | Enable time selection. |
 | showToday | `boolean` | - | Show the "today" button. |
 | styles | `SemanticStyles` | - | Semantic styles for root and popup slots. |
-| suffixIcon | `ReactNode` | - | Custom suffix icon. |
+| suffix | `ReactNode` | - | Custom suffix. |
 | onOpenChange | `(open: boolean) => void` | - | Triggered when popup open state changes. |
 | onPanelChange | `(value, mode) => void` | - | Triggered when panel mode changes. |
 
