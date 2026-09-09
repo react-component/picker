@@ -1,81 +1,146 @@
 {
   "name": "@rc-component/picker",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "React date & time picker",
   "keywords": [
     "react",
     "react-component",
     "react-picker"
   ],
-  "main": "./lib/index",
-  "module": "./es/index",
-  "types": "./es/index.d.ts",
+  "main": "./lib/index.js",
+  "module": "./es/index.mjs",
+  "types": "./lib/index.d.ts",
   "exports": {
     ".": {
-      "types": "./es/index.d.ts",
-      "import": "./es/index.js",
-      "require": "./lib/index.js"
+      "import": {
+        "types": "./es/index.d.mts",
+        "default": "./es/index.mjs"
+      },
+      "require": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.js"
+      }
     },
     "./assets/*": "./assets/*",
     "./generate": {
-      "types": "./es/generate/index.d.ts",
-      "import": "./es/generate/index.js",
-      "require": "./lib/generate/index.js"
+      "import": {
+        "types": "./es/generate/index.d.mts",
+        "default": "./es/generate/index.mjs"
+      },
+      "require": {
+        "types": "./lib/generate/index.d.ts",
+        "default": "./lib/generate/index.js"
+      }
     },
     "./generate/*": {
-      "types": "./es/generate/*.d.ts",
-      "import": "./es/generate/*.js",
-      "require": "./lib/generate/*.js"
+      "import": {
+        "types": "./es/generate/*.d.mts",
+        "default": "./es/generate/*.mjs"
+      },
+      "require": {
+        "types": "./lib/generate/*.d.ts",
+        "default": "./lib/generate/*.js"
+      }
     },
     "./interface": {
-      "types": "./es/interface.d.ts",
-      "import": "./es/interface.js",
-      "require": "./lib/interface.js"
+      "import": {
+        "types": "./es/interface.d.mts",
+        "default": "./es/interface.mjs"
+      },
+      "require": {
+        "types": "./lib/interface.d.ts",
+        "default": "./lib/interface.js"
+      }
     },
     "./locale/*": {
-      "types": "./es/locale/*.d.ts",
-      "import": "./es/locale/*.js",
-      "require": "./lib/locale/*.js"
+      "import": {
+        "types": "./es/locale/*.d.mts",
+        "default": "./es/locale/*.mjs"
+      },
+      "require": {
+        "types": "./lib/locale/*.d.ts",
+        "default": "./lib/locale/*.js"
+      }
     },
     "./lib/generate": {
-      "types": "./es/generate/index.d.ts",
-      "import": "./es/generate/index.js",
-      "require": "./lib/generate/index.js"
+      "import": {
+        "types": "./es/generate/index.d.mts",
+        "default": "./es/generate/index.mjs"
+      },
+      "require": {
+        "types": "./lib/generate/index.d.ts",
+        "default": "./lib/generate/index.js"
+      }
     },
     "./lib/generate/*": {
-      "types": "./es/generate/*.d.ts",
-      "import": "./es/generate/*.js",
-      "require": "./lib/generate/*.js"
+      "import": {
+        "types": "./es/generate/*.d.mts",
+        "default": "./es/generate/*.mjs"
+      },
+      "require": {
+        "types": "./lib/generate/*.d.ts",
+        "default": "./lib/generate/*.js"
+      }
     },
     "./lib/interface": {
-      "types": "./es/interface.d.ts",
-      "import": "./es/interface.js",
-      "require": "./lib/interface.js"
+      "import": {
+        "types": "./es/interface.d.mts",
+        "default": "./es/interface.mjs"
+      },
+      "require": {
+        "types": "./lib/interface.d.ts",
+        "default": "./lib/interface.js"
+      }
     },
     "./lib/locale/*": {
-      "types": "./es/locale/*.d.ts",
-      "import": "./es/locale/*.js",
-      "require": "./lib/locale/*.js"
+      "import": {
+        "types": "./es/locale/*.d.mts",
+        "default": "./es/locale/*.mjs"
+      },
+      "require": {
+        "types": "./lib/locale/*.d.ts",
+        "default": "./lib/locale/*.js"
+      }
     },
     "./es/generate": {
-      "types": "./es/generate/index.d.ts",
-      "import": "./es/generate/index.js",
-      "require": "./lib/generate/index.js"
+      "import": {
+        "types": "./es/generate/index.d.mts",
+        "default": "./es/generate/index.mjs"
+      },
+      "require": {
+        "types": "./lib/generate/index.d.ts",
+        "default": "./lib/generate/index.js"
+      }
     },
     "./es/generate/*": {
-      "types": "./es/generate/*.d.ts",
-      "import": "./es/generate/*.js",
-      "require": "./lib/generate/*.js"
+      "import": {
+        "types": "./es/generate/*.d.mts",
+        "default": "./es/generate/*.mjs"
+      },
+      "require": {
+        "types": "./lib/generate/*.d.ts",
+        "default": "./lib/generate/*.js"
+      }
     },
     "./es/interface": {
-      "types": "./es/interface.d.ts",
-      "import": "./es/interface.js",
-      "require": "./lib/interface.js"
+      "import": {
+        "types": "./es/interface.d.mts",
+        "default": "./es/interface.mjs"
+      },
+      "require": {
+        "types": "./lib/interface.d.ts",
+        "default": "./lib/interface.js"
+      }
     },
     "./es/locale/*": {
-      "types": "./es/locale/*.d.ts",
-      "import": "./es/locale/*.js",
-      "require": "./lib/locale/*.js"
+      "import": {
+        "types": "./es/locale/*.d.mts",
+        "default": "./es/locale/*.mjs"
+      },
+      "require": {
+        "types": "./lib/locale/*.d.ts",
+        "default": "./lib/locale/*.js"
+      }
     }
   },
   "files": [
@@ -118,9 +183,9 @@
     "clsx": "^2.1.1"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
     "@eslint/compat": "^2.1.0",
-    "@rc-component/father-plugin": "^2.2.0",
+    "@eslint/js": "^10.0.1",
+    "@rc-component/father-plugin": "^2.4.0",
     "@rc-component/np": "^1.0.4",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -139,7 +204,7 @@
     "eslint-plugin-jest": "^29.15.4",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "father": "^4.6.24",
+    "father": "^4.6.37",
     "gh-pages": "^6.3.0",
     "glob": "^13.0.6",
     "globals": "^17.7.0",
@@ -183,172 +248,173 @@
     "node": ">=12.x"
   },
   "browser": {
-    "./generate/dateFns": "./es/generate/dateFns.js",
-    "./generate/dateFns.js": "./es/generate/dateFns.js",
-    "./generate/dayjs": "./es/generate/dayjs.js",
-    "./generate/dayjs.js": "./es/generate/dayjs.js",
-    "./generate/index": "./es/generate/index.js",
-    "./generate/index.js": "./es/generate/index.js",
-    "./generate/luxon": "./es/generate/luxon.js",
-    "./generate/luxon.js": "./es/generate/luxon.js",
-    "./generate/moment": "./es/generate/moment.js",
-    "./generate/moment.js": "./es/generate/moment.js",
-    "./lib/index.js": "./es/index.js",
-    "./locale/am_ET": "./es/locale/am_ET.js",
-    "./locale/am_ET.js": "./es/locale/am_ET.js",
-    "./locale/ar_EG": "./es/locale/ar_EG.js",
-    "./locale/ar_EG.js": "./es/locale/ar_EG.js",
-    "./locale/az_AZ": "./es/locale/az_AZ.js",
-    "./locale/az_AZ.js": "./es/locale/az_AZ.js",
-    "./locale/bg_BG": "./es/locale/bg_BG.js",
-    "./locale/bg_BG.js": "./es/locale/bg_BG.js",
-    "./locale/bn_BD": "./es/locale/bn_BD.js",
-    "./locale/bn_BD.js": "./es/locale/bn_BD.js",
-    "./locale/by_BY": "./es/locale/by_BY.js",
-    "./locale/by_BY.js": "./es/locale/by_BY.js",
-    "./locale/ca_ES": "./es/locale/ca_ES.js",
-    "./locale/ca_ES.js": "./es/locale/ca_ES.js",
-    "./locale/common": "./es/locale/common.js",
-    "./locale/common.js": "./es/locale/common.js",
-    "./locale/cs_CZ": "./es/locale/cs_CZ.js",
-    "./locale/cs_CZ.js": "./es/locale/cs_CZ.js",
-    "./locale/da_DK": "./es/locale/da_DK.js",
-    "./locale/da_DK.js": "./es/locale/da_DK.js",
-    "./locale/de_DE": "./es/locale/de_DE.js",
-    "./locale/de_DE.js": "./es/locale/de_DE.js",
-    "./locale/el_GR": "./es/locale/el_GR.js",
-    "./locale/el_GR.js": "./es/locale/el_GR.js",
-    "./locale/en_GB": "./es/locale/en_GB.js",
-    "./locale/en_GB.js": "./es/locale/en_GB.js",
-    "./locale/en_US": "./es/locale/en_US.js",
-    "./locale/en_US.js": "./es/locale/en_US.js",
-    "./locale/es_ES": "./es/locale/es_ES.js",
-    "./locale/es_ES.js": "./es/locale/es_ES.js",
-    "./locale/es_MX": "./es/locale/es_MX.js",
-    "./locale/es_MX.js": "./es/locale/es_MX.js",
-    "./locale/et_EE": "./es/locale/et_EE.js",
-    "./locale/et_EE.js": "./es/locale/et_EE.js",
-    "./locale/eu_ES": "./es/locale/eu_ES.js",
-    "./locale/eu_ES.js": "./es/locale/eu_ES.js",
-    "./locale/fa_IR": "./es/locale/fa_IR.js",
-    "./locale/fa_IR.js": "./es/locale/fa_IR.js",
-    "./locale/fi_FI": "./es/locale/fi_FI.js",
-    "./locale/fi_FI.js": "./es/locale/fi_FI.js",
-    "./locale/fr_BE": "./es/locale/fr_BE.js",
-    "./locale/fr_BE.js": "./es/locale/fr_BE.js",
-    "./locale/fr_CA": "./es/locale/fr_CA.js",
-    "./locale/fr_CA.js": "./es/locale/fr_CA.js",
-    "./locale/fr_FR": "./es/locale/fr_FR.js",
-    "./locale/fr_FR.js": "./es/locale/fr_FR.js",
-    "./locale/ga_IE": "./es/locale/ga_IE.js",
-    "./locale/ga_IE.js": "./es/locale/ga_IE.js",
-    "./locale/gl_ES": "./es/locale/gl_ES.js",
-    "./locale/gl_ES.js": "./es/locale/gl_ES.js",
-    "./locale/he_IL": "./es/locale/he_IL.js",
-    "./locale/he_IL.js": "./es/locale/he_IL.js",
-    "./locale/hi_IN": "./es/locale/hi_IN.js",
-    "./locale/hi_IN.js": "./es/locale/hi_IN.js",
-    "./locale/hr_HR": "./es/locale/hr_HR.js",
-    "./locale/hr_HR.js": "./es/locale/hr_HR.js",
-    "./locale/hu_HU": "./es/locale/hu_HU.js",
-    "./locale/hu_HU.js": "./es/locale/hu_HU.js",
-    "./locale/id_ID": "./es/locale/id_ID.js",
-    "./locale/id_ID.js": "./es/locale/id_ID.js",
-    "./locale/is_IS": "./es/locale/is_IS.js",
-    "./locale/is_IS.js": "./es/locale/is_IS.js",
-    "./locale/it_IT": "./es/locale/it_IT.js",
-    "./locale/it_IT.js": "./es/locale/it_IT.js",
-    "./locale/ja_JP": "./es/locale/ja_JP.js",
-    "./locale/ja_JP.js": "./es/locale/ja_JP.js",
-    "./locale/ka_GE": "./es/locale/ka_GE.js",
-    "./locale/ka_GE.js": "./es/locale/ka_GE.js",
-    "./locale/kk_KZ": "./es/locale/kk_KZ.js",
-    "./locale/kk_KZ.js": "./es/locale/kk_KZ.js",
-    "./locale/km_KH": "./es/locale/km_KH.js",
-    "./locale/km_KH.js": "./es/locale/km_KH.js",
-    "./locale/kmr_IQ": "./es/locale/kmr_IQ.js",
-    "./locale/kmr_IQ.js": "./es/locale/kmr_IQ.js",
-    "./locale/kn_IN": "./es/locale/kn_IN.js",
-    "./locale/kn_IN.js": "./es/locale/kn_IN.js",
-    "./locale/ko_KR": "./es/locale/ko_KR.js",
-    "./locale/ko_KR.js": "./es/locale/ko_KR.js",
-    "./locale/lt_LT": "./es/locale/lt_LT.js",
-    "./locale/lt_LT.js": "./es/locale/lt_LT.js",
-    "./locale/lv_LV": "./es/locale/lv_LV.js",
-    "./locale/lv_LV.js": "./es/locale/lv_LV.js",
-    "./locale/mk_MK": "./es/locale/mk_MK.js",
-    "./locale/mk_MK.js": "./es/locale/mk_MK.js",
-    "./locale/ml_IN": "./es/locale/ml_IN.js",
-    "./locale/ml_IN.js": "./es/locale/ml_IN.js",
-    "./locale/mn_MN": "./es/locale/mn_MN.js",
-    "./locale/mn_MN.js": "./es/locale/mn_MN.js",
-    "./locale/mr_IN": "./es/locale/mr_IN.js",
-    "./locale/mr_IN.js": "./es/locale/mr_IN.js",
-    "./locale/ms_MY": "./es/locale/ms_MY.js",
-    "./locale/ms_MY.js": "./es/locale/ms_MY.js",
-    "./locale/my_MM": "./es/locale/my_MM.js",
-    "./locale/my_MM.js": "./es/locale/my_MM.js",
-    "./locale/nb_NO": "./es/locale/nb_NO.js",
-    "./locale/nb_NO.js": "./es/locale/nb_NO.js",
-    "./locale/ne_NP": "./es/locale/ne_NP.js",
-    "./locale/ne_NP.js": "./es/locale/ne_NP.js",
-    "./locale/nl_BE": "./es/locale/nl_BE.js",
-    "./locale/nl_BE.js": "./es/locale/nl_BE.js",
-    "./locale/nl_NL": "./es/locale/nl_NL.js",
-    "./locale/nl_NL.js": "./es/locale/nl_NL.js",
-    "./locale/pl_PL": "./es/locale/pl_PL.js",
-    "./locale/pl_PL.js": "./es/locale/pl_PL.js",
-    "./locale/pt_BR": "./es/locale/pt_BR.js",
-    "./locale/pt_BR.js": "./es/locale/pt_BR.js",
-    "./locale/pt_PT": "./es/locale/pt_PT.js",
-    "./locale/pt_PT.js": "./es/locale/pt_PT.js",
-    "./locale/ro_RO": "./es/locale/ro_RO.js",
-    "./locale/ro_RO.js": "./es/locale/ro_RO.js",
-    "./locale/ru_RU": "./es/locale/ru_RU.js",
-    "./locale/ru_RU.js": "./es/locale/ru_RU.js",
-    "./locale/si_LK": "./es/locale/si_LK.js",
-    "./locale/si_LK.js": "./es/locale/si_LK.js",
-    "./locale/sk_SK": "./es/locale/sk_SK.js",
-    "./locale/sk_SK.js": "./es/locale/sk_SK.js",
-    "./locale/sl_SI": "./es/locale/sl_SI.js",
-    "./locale/sl_SI.js": "./es/locale/sl_SI.js",
-    "./locale/sr_Cyrl_RS": "./es/locale/sr_Cyrl_RS.js",
-    "./locale/sr_Cyrl_RS.js": "./es/locale/sr_Cyrl_RS.js",
-    "./locale/sr_RS": "./es/locale/sr_RS.js",
-    "./locale/sr_RS.js": "./es/locale/sr_RS.js",
-    "./locale/sv_SE": "./es/locale/sv_SE.js",
-    "./locale/sv_SE.js": "./es/locale/sv_SE.js",
-    "./locale/ta_IN": "./es/locale/ta_IN.js",
-    "./locale/ta_IN.js": "./es/locale/ta_IN.js",
-    "./locale/te_IN": "./es/locale/te_IN.js",
-    "./locale/te_IN.js": "./es/locale/te_IN.js",
-    "./locale/th_TH": "./es/locale/th_TH.js",
-    "./locale/th_TH.js": "./es/locale/th_TH.js",
-    "./locale/tk_TK": "./es/locale/tk_TK.js",
-    "./locale/tk_TK.js": "./es/locale/tk_TK.js",
-    "./locale/tl_PH": "./es/locale/tl_PH.js",
-    "./locale/tl_PH.js": "./es/locale/tl_PH.js",
-    "./locale/tr_TR": "./es/locale/tr_TR.js",
-    "./locale/tr_TR.js": "./es/locale/tr_TR.js",
-    "./locale/ug_CN": "./es/locale/ug_CN.js",
-    "./locale/ug_CN.js": "./es/locale/ug_CN.js",
-    "./locale/uk_UA": "./es/locale/uk_UA.js",
-    "./locale/uk_UA.js": "./es/locale/uk_UA.js",
-    "./locale/ur_PK": "./es/locale/ur_PK.js",
-    "./locale/ur_PK.js": "./es/locale/ur_PK.js",
-    "./locale/uz_UZ": "./es/locale/uz_UZ.js",
-    "./locale/uz_UZ.js": "./es/locale/uz_UZ.js",
-    "./locale/vi_VN": "./es/locale/vi_VN.js",
-    "./locale/vi_VN.js": "./es/locale/vi_VN.js",
-    "./locale/zh_CN": "./es/locale/zh_CN.js",
-    "./locale/zh_CN.js": "./es/locale/zh_CN.js",
-    "./locale/zh_TW": "./es/locale/zh_TW.js",
-    "./locale/zh_TW.js": "./es/locale/zh_TW.js"
+    "./generate/dateFns": "./es/generate/dateFns.mjs",
+    "./generate/dateFns.js": "./es/generate/dateFns.mjs",
+    "./generate/dayjs": "./es/generate/dayjs.mjs",
+    "./generate/dayjs.js": "./es/generate/dayjs.mjs",
+    "./generate/index": "./es/generate/index.mjs",
+    "./generate/index.js": "./es/generate/index.mjs",
+    "./generate/luxon": "./es/generate/luxon.mjs",
+    "./generate/luxon.js": "./es/generate/luxon.mjs",
+    "./generate/moment": "./es/generate/moment.mjs",
+    "./generate/moment.js": "./es/generate/moment.mjs",
+    "./lib/index.js": "./es/index.mjs",
+    "./locale/am_ET": "./es/locale/am_ET.mjs",
+    "./locale/am_ET.js": "./es/locale/am_ET.mjs",
+    "./locale/ar_EG": "./es/locale/ar_EG.mjs",
+    "./locale/ar_EG.js": "./es/locale/ar_EG.mjs",
+    "./locale/az_AZ": "./es/locale/az_AZ.mjs",
+    "./locale/az_AZ.js": "./es/locale/az_AZ.mjs",
+    "./locale/bg_BG": "./es/locale/bg_BG.mjs",
+    "./locale/bg_BG.js": "./es/locale/bg_BG.mjs",
+    "./locale/bn_BD": "./es/locale/bn_BD.mjs",
+    "./locale/bn_BD.js": "./es/locale/bn_BD.mjs",
+    "./locale/by_BY": "./es/locale/by_BY.mjs",
+    "./locale/by_BY.js": "./es/locale/by_BY.mjs",
+    "./locale/ca_ES": "./es/locale/ca_ES.mjs",
+    "./locale/ca_ES.js": "./es/locale/ca_ES.mjs",
+    "./locale/common": "./es/locale/common.mjs",
+    "./locale/common.js": "./es/locale/common.mjs",
+    "./locale/cs_CZ": "./es/locale/cs_CZ.mjs",
+    "./locale/cs_CZ.js": "./es/locale/cs_CZ.mjs",
+    "./locale/da_DK": "./es/locale/da_DK.mjs",
+    "./locale/da_DK.js": "./es/locale/da_DK.mjs",
+    "./locale/de_DE": "./es/locale/de_DE.mjs",
+    "./locale/de_DE.js": "./es/locale/de_DE.mjs",
+    "./locale/el_GR": "./es/locale/el_GR.mjs",
+    "./locale/el_GR.js": "./es/locale/el_GR.mjs",
+    "./locale/en_GB": "./es/locale/en_GB.mjs",
+    "./locale/en_GB.js": "./es/locale/en_GB.mjs",
+    "./locale/en_US": "./es/locale/en_US.mjs",
+    "./locale/en_US.js": "./es/locale/en_US.mjs",
+    "./locale/es_ES": "./es/locale/es_ES.mjs",
+    "./locale/es_ES.js": "./es/locale/es_ES.mjs",
+    "./locale/es_MX": "./es/locale/es_MX.mjs",
+    "./locale/es_MX.js": "./es/locale/es_MX.mjs",
+    "./locale/et_EE": "./es/locale/et_EE.mjs",
+    "./locale/et_EE.js": "./es/locale/et_EE.mjs",
+    "./locale/eu_ES": "./es/locale/eu_ES.mjs",
+    "./locale/eu_ES.js": "./es/locale/eu_ES.mjs",
+    "./locale/fa_IR": "./es/locale/fa_IR.mjs",
+    "./locale/fa_IR.js": "./es/locale/fa_IR.mjs",
+    "./locale/fi_FI": "./es/locale/fi_FI.mjs",
+    "./locale/fi_FI.js": "./es/locale/fi_FI.mjs",
+    "./locale/fr_BE": "./es/locale/fr_BE.mjs",
+    "./locale/fr_BE.js": "./es/locale/fr_BE.mjs",
+    "./locale/fr_CA": "./es/locale/fr_CA.mjs",
+    "./locale/fr_CA.js": "./es/locale/fr_CA.mjs",
+    "./locale/fr_FR": "./es/locale/fr_FR.mjs",
+    "./locale/fr_FR.js": "./es/locale/fr_FR.mjs",
+    "./locale/ga_IE": "./es/locale/ga_IE.mjs",
+    "./locale/ga_IE.js": "./es/locale/ga_IE.mjs",
+    "./locale/gl_ES": "./es/locale/gl_ES.mjs",
+    "./locale/gl_ES.js": "./es/locale/gl_ES.mjs",
+    "./locale/he_IL": "./es/locale/he_IL.mjs",
+    "./locale/he_IL.js": "./es/locale/he_IL.mjs",
+    "./locale/hi_IN": "./es/locale/hi_IN.mjs",
+    "./locale/hi_IN.js": "./es/locale/hi_IN.mjs",
+    "./locale/hr_HR": "./es/locale/hr_HR.mjs",
+    "./locale/hr_HR.js": "./es/locale/hr_HR.mjs",
+    "./locale/hu_HU": "./es/locale/hu_HU.mjs",
+    "./locale/hu_HU.js": "./es/locale/hu_HU.mjs",
+    "./locale/id_ID": "./es/locale/id_ID.mjs",
+    "./locale/id_ID.js": "./es/locale/id_ID.mjs",
+    "./locale/is_IS": "./es/locale/is_IS.mjs",
+    "./locale/is_IS.js": "./es/locale/is_IS.mjs",
+    "./locale/it_IT": "./es/locale/it_IT.mjs",
+    "./locale/it_IT.js": "./es/locale/it_IT.mjs",
+    "./locale/ja_JP": "./es/locale/ja_JP.mjs",
+    "./locale/ja_JP.js": "./es/locale/ja_JP.mjs",
+    "./locale/ka_GE": "./es/locale/ka_GE.mjs",
+    "./locale/ka_GE.js": "./es/locale/ka_GE.mjs",
+    "./locale/kk_KZ": "./es/locale/kk_KZ.mjs",
+    "./locale/kk_KZ.js": "./es/locale/kk_KZ.mjs",
+    "./locale/km_KH": "./es/locale/km_KH.mjs",
+    "./locale/km_KH.js": "./es/locale/km_KH.mjs",
+    "./locale/kmr_IQ": "./es/locale/kmr_IQ.mjs",
+    "./locale/kmr_IQ.js": "./es/locale/kmr_IQ.mjs",
+    "./locale/kn_IN": "./es/locale/kn_IN.mjs",
+    "./locale/kn_IN.js": "./es/locale/kn_IN.mjs",
+    "./locale/ko_KR": "./es/locale/ko_KR.mjs",
+    "./locale/ko_KR.js": "./es/locale/ko_KR.mjs",
+    "./locale/lt_LT": "./es/locale/lt_LT.mjs",
+    "./locale/lt_LT.js": "./es/locale/lt_LT.mjs",
+    "./locale/lv_LV": "./es/locale/lv_LV.mjs",
+    "./locale/lv_LV.js": "./es/locale/lv_LV.mjs",
+    "./locale/mk_MK": "./es/locale/mk_MK.mjs",
+    "./locale/mk_MK.js": "./es/locale/mk_MK.mjs",
+    "./locale/ml_IN": "./es/locale/ml_IN.mjs",
+    "./locale/ml_IN.js": "./es/locale/ml_IN.mjs",
+    "./locale/mn_MN": "./es/locale/mn_MN.mjs",
+    "./locale/mn_MN.js": "./es/locale/mn_MN.mjs",
+    "./locale/mr_IN": "./es/locale/mr_IN.mjs",
+    "./locale/mr_IN.js": "./es/locale/mr_IN.mjs",
+    "./locale/ms_MY": "./es/locale/ms_MY.mjs",
+    "./locale/ms_MY.js": "./es/locale/ms_MY.mjs",
+    "./locale/my_MM": "./es/locale/my_MM.mjs",
+    "./locale/my_MM.js": "./es/locale/my_MM.mjs",
+    "./locale/nb_NO": "./es/locale/nb_NO.mjs",
+    "./locale/nb_NO.js": "./es/locale/nb_NO.mjs",
+    "./locale/ne_NP": "./es/locale/ne_NP.mjs",
+    "./locale/ne_NP.js": "./es/locale/ne_NP.mjs",
+    "./locale/nl_BE": "./es/locale/nl_BE.mjs",
+    "./locale/nl_BE.js": "./es/locale/nl_BE.mjs",
+    "./locale/nl_NL": "./es/locale/nl_NL.mjs",
+    "./locale/nl_NL.js": "./es/locale/nl_NL.mjs",
+    "./locale/pl_PL": "./es/locale/pl_PL.mjs",
+    "./locale/pl_PL.js": "./es/locale/pl_PL.mjs",
+    "./locale/pt_BR": "./es/locale/pt_BR.mjs",
+    "./locale/pt_BR.js": "./es/locale/pt_BR.mjs",
+    "./locale/pt_PT": "./es/locale/pt_PT.mjs",
+    "./locale/pt_PT.js": "./es/locale/pt_PT.mjs",
+    "./locale/ro_RO": "./es/locale/ro_RO.mjs",
+    "./locale/ro_RO.js": "./es/locale/ro_RO.mjs",
+    "./locale/ru_RU": "./es/locale/ru_RU.mjs",
+    "./locale/ru_RU.js": "./es/locale/ru_RU.mjs",
+    "./locale/si_LK": "./es/locale/si_LK.mjs",
+    "./locale/si_LK.js": "./es/locale/si_LK.mjs",
+    "./locale/sk_SK": "./es/locale/sk_SK.mjs",
+    "./locale/sk_SK.js": "./es/locale/sk_SK.mjs",
+    "./locale/sl_SI": "./es/locale/sl_SI.mjs",
+    "./locale/sl_SI.js": "./es/locale/sl_SI.mjs",
+    "./locale/sr_Cyrl_RS": "./es/locale/sr_Cyrl_RS.mjs",
+    "./locale/sr_Cyrl_RS.js": "./es/locale/sr_Cyrl_RS.mjs",
+    "./locale/sr_RS": "./es/locale/sr_RS.mjs",
+    "./locale/sr_RS.js": "./es/locale/sr_RS.mjs",
+    "./locale/sv_SE": "./es/locale/sv_SE.mjs",
+    "./locale/sv_SE.js": "./es/locale/sv_SE.mjs",
+    "./locale/ta_IN": "./es/locale/ta_IN.mjs",
+    "./locale/ta_IN.js": "./es/locale/ta_IN.mjs",
+    "./locale/te_IN": "./es/locale/te_IN.mjs",
+    "./locale/te_IN.js": "./es/locale/te_IN.mjs",
+    "./locale/th_TH": "./es/locale/th_TH.mjs",
+    "./locale/th_TH.js": "./es/locale/th_TH.mjs",
+    "./locale/tk_TK": "./es/locale/tk_TK.mjs",
+    "./locale/tk_TK.js": "./es/locale/tk_TK.mjs",
+    "./locale/tl_PH": "./es/locale/tl_PH.mjs",
+    "./locale/tl_PH.js": "./es/locale/tl_PH.mjs",
+    "./locale/tr_TR": "./es/locale/tr_TR.mjs",
+    "./locale/tr_TR.js": "./es/locale/tr_TR.mjs",
+    "./locale/ug_CN": "./es/locale/ug_CN.mjs",
+    "./locale/ug_CN.js": "./es/locale/ug_CN.mjs",
+    "./locale/uk_UA": "./es/locale/uk_UA.mjs",
+    "./locale/uk_UA.js": "./es/locale/uk_UA.mjs",
+    "./locale/ur_PK": "./es/locale/ur_PK.mjs",
+    "./locale/ur_PK.js": "./es/locale/ur_PK.mjs",
+    "./locale/uz_UZ": "./es/locale/uz_UZ.mjs",
+    "./locale/uz_UZ.js": "./es/locale/uz_UZ.mjs",
+    "./locale/vi_VN": "./es/locale/vi_VN.mjs",
+    "./locale/vi_VN.js": "./es/locale/vi_VN.mjs",
+    "./locale/zh_CN": "./es/locale/zh_CN.mjs",
+    "./locale/zh_CN.js": "./es/locale/zh_CN.mjs",
+    "./locale/zh_TW": "./es/locale/zh_TW.mjs",
+    "./locale/zh_TW.js": "./es/locale/zh_TW.mjs"
   },
   "publishConfig": {
     "access": "public"
   },
   "lint-staged": {
     "*": "prettier --write --ignore-unknown"
-  }
+  },
+  "type": "commonjs"
 }
