@@ -54,7 +54,7 @@ export default () => {
           <Picker<Moment>
             {...sharedProps}
             locale={zhCN}
-            suffixIcon="SUFFIX"
+            suffix="SUFFIX"
             rootClassName="bamboo"
             className="little"
             classNames={{

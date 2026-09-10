@@ -31,7 +31,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   active?: boolean;
   /** Used for single picker only */
   showActiveCls?: boolean;
-  suffixIcon?: React.ReactNode;
+  suffix?: React.ReactNode;
   value?: string;
   onChange: (value: string) => void;
   onSubmit: VoidFunction;
@@ -54,7 +54,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     className,
     active,
     showActiveCls = true,
-    suffixIcon,
+    suffix,
     format,
     validateFormat,
     onChange,
@@ -427,7 +427,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
         className={classNames.input}
         style={styles.input}
       />
-      <Icon icon={suffixIcon} />
+      <Icon icon={suffix} />
       {clearIcon}
     </div>
   );

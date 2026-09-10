@@ -165,7 +165,8 @@ const generateConfig: GenerateConfig<Dayjs> = {
     getShortMonths: (locale) => dayjs().locale(parseLocale(locale)).localeData().monthsShort(),
     format: (locale, date, format) => getUDayjs(date).locale(parseLocale(locale)).format(format),
     parse: (locale, text, formats) => {
-      const localeStr = parseLocale(locale);
+      // Preserve Day.js fallback when the requested locale data is not registered.
+      const localeStr = dayjs().locale(parseLocale(locale)).locale();
       for (let i = 0; i < formats.length; i += 1) {
         const format = formats[i];
         const formatText = text;
@@ -183,7 +184,7 @@ const generateConfig: GenerateConfig<Dayjs> = {
           parseNoMatchNotice();
           return null;
         }
-        const date = dayjs(formatText, format, true).locale(localeStr);
+        const date = dayjs(formatText, format, localeStr, true);
         if (date.isValid()) {
           return date;
         }
