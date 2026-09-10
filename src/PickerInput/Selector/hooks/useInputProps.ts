@@ -151,6 +151,11 @@ export default function useInputProps<DateType extends object = any>(
 
       value: getProp(valueTexts) || '',
 
+      preserveInputOnValueChange: (text: string, nextValue: string) => {
+        const parsed = validateFormat(text);
+        return !!parsed && getText(parsed) === nextValue;
+      },
+
       invalid: getProp(invalid),
 
       placeholder: getProp(placeholder),
