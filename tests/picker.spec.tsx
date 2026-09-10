@@ -344,6 +344,42 @@ describe('Picker.Basic', () => {
       expect(isOpen()).toBeFalsy();
     });
 
+    [true, false, { clearIcon: 0 }].forEach((allowClear) => {
+      it(`clears invalid mask text without a selected value: ${JSON.stringify(allowClear)}`, async () => {
+        const onClear = jest.fn();
+        const onChange = jest.fn();
+        const { container } = render(
+          <DayPicker
+            format={{ format: 'YYYY-MM-DD', type: 'mask' }}
+            allowClear={allowClear}
+            onClear={onClear}
+            onChange={onChange}
+          />,
+        );
+        const input = container.querySelector('input');
+        triggerFocus(input);
+        for (const key of '20240231') {
+          fireEvent.keyDown(input, { key });
+        }
+        expect(input).toHaveValue('2024-02-31');
+        expect(onChange).not.toHaveBeenCalled();
+        expect(onClear).not.toHaveBeenCalled();
+
+        input.setSelectionRange(0, input.value.length);
+        fireEvent.change(input, { target: { value: '' } });
+
+        expect(onClear).toHaveBeenCalledTimes(allowClear === false ? 0 : 1);
+        expect(onChange).not.toHaveBeenCalled();
+        if (allowClear !== false) {
+          expect(input).toHaveValue('YYYY-MM-DD');
+          expect(isOpen()).toBeFalsy();
+          triggerBlur(input);
+          await waitFakeTimer();
+          expect(input).toHaveValue('');
+        }
+      });
+    });
+
     it('does not manually clear when allowClear is false', async () => {
       const onChange = jest.fn();
       const { container } = render(

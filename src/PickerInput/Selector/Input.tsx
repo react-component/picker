@@ -148,7 +148,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
     // Empty text is a valid clear action when the picker is clearable.
     // Handle it before the mask logic, which normally ignores invalid text.
-    if (clearable && !text && value) {
+    if (clearable && !text) {
       setInputValue(text);
       onChange(text);
       return;

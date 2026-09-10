@@ -1,4 +1,4 @@
-import { pickAttrs, warning } from '@rc-component/util';
+import { isReactRenderable, pickAttrs, warning } from '@rc-component/util';
 import * as React from 'react';
 import type { SelectorProps } from '../../../interface';
 import { formatValue } from '../../../utils/dateUtil';
@@ -76,6 +76,8 @@ export default function useInputProps<DateType extends object = any>(
     picker,
     clearIcon,
   } = props;
+
+  const canClear = isReactRenderable(clearIcon);
 
   // ======================== Parser ========================
   const parseDate = (str: string, formatStr: string) => {
@@ -163,7 +165,7 @@ export default function useInputProps<DateType extends object = any>(
 
       disabled: getProp(disabled),
 
-      clearable: !!clearIcon,
+      clearable: canClear,
 
       onFocus: (event) => {
         onFocus(event, index);
@@ -188,7 +190,7 @@ export default function useInputProps<DateType extends object = any>(
           return;
         }
 
-        if (!text && clearIcon) {
+        if (!text && canClear) {
           onInvalid(false, index);
           onChange(null, index);
           return;
