@@ -161,6 +161,7 @@ const generateConfig: GenerateConfig<Dayjs> = {
     getWeekFirstDay: (locale) => dayjs().locale(parseLocale(locale)).localeData().firstDayOfWeek(),
     getWeekFirstDate: (locale, date) => getUDayjs(date).locale(parseLocale(locale)).weekday(0),
     getWeek: (locale, date) => getUDayjs(date).locale(parseLocale(locale)).week(),
+    getWeekDays: (locale) => dayjs().locale(parseLocale(locale)).localeData().weekdays(),
     getShortWeekDays: (locale) => dayjs().locale(parseLocale(locale)).localeData().weekdaysMin(),
     getShortMonths: (locale) => dayjs().locale(parseLocale(locale)).localeData().monthsShort(),
     format: (locale, date, format) => getUDayjs(date).locale(parseLocale(locale)).format(format),

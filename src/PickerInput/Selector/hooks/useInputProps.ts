@@ -157,6 +157,8 @@ export default function useInputProps<DateType extends object = any>(
 
       active: activeIndex === index,
 
+      open,
+
       helped: allHelp || (activeHelp && activeIndex === index),
 
       disabled: getProp(disabled),

@@ -440,7 +440,7 @@ describe('NewPicker.Range', () => {
       );
 
       openPicker(container);
-      fireEvent.click(document.querySelector('.rc-picker-presets li'));
+      fireEvent.click(document.querySelector('.rc-picker-presets button'));
 
       expect(onChange).not.toHaveBeenCalled();
       expect(onCalendarChange).toHaveBeenCalled();

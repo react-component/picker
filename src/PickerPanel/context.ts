@@ -131,6 +131,16 @@ export interface PickerHackContextProps {
  */
 export const PickerHackContext = React.createContext<PickerHackContextProps>({});
 
+// ============================== Focus ==============================
+export interface PanelFocusContextProps<DateType extends object = any> {
+  focusedDate: DateType | null;
+  onCellFocusedDateChange: (date: DateType) => void;
+  /** Increments whenever the panel mode changes, telling PanelBody to focus its active cell */
+  focusTrigger: number;
+}
+
+export const PanelFocusContext = React.createContext<PanelFocusContextProps>(null);
+
 if (process.env.NODE_ENV !== 'production') {
   PickerHackContext.displayName = 'PickerHackContext';
 }

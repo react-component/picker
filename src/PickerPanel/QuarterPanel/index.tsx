@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { SharedPanelProps } from '../../interface';
-import { formatValue } from '../../utils/dateUtil';
+import { formatValue, isSameQuarter } from '../../utils/dateUtil';
 import { PanelContext, useInfo } from '../context';
 import PanelBody from '../PanelBody';
 import PanelHeader from '../PanelHeader';
@@ -16,6 +16,11 @@ export default function QuarterPanel<DateType extends object = any>(
   // ========================== Base ==========================
   const [info] = useInfo(props, 'quarter');
   const baseDate = generateConfig.setMonth(pickerValue, 0);
+  const yearLabel = formatValue(pickerValue, {
+    locale,
+    format: locale.yearFormat,
+    generateConfig,
+  });
 
   // ========================= Cells ==========================
   const getCellDate = (date: DateType, offset: number) => {
@@ -34,6 +39,13 @@ export default function QuarterPanel<DateType extends object = any>(
     [`${prefixCls}-cell-in-view`]: true,
   });
 
+  const getCellAttributes = (date: DateType): React.TdHTMLAttributes<HTMLTableCellElement> => {
+    if (isSameQuarter(generateConfig, date, generateConfig.getNow())) {
+      return { 'aria-current': 'date' };
+    }
+    return {};
+  };
+
   // ========================= Header =========================
   const yearNode: React.ReactNode = (
     <button
@@ -43,14 +55,9 @@ export default function QuarterPanel<DateType extends object = any>(
       onClick={() => {
         onModeChange('year');
       }}
-      tabIndex={-1}
       className={`${prefixCls}-year-btn`}
     >
-      {formatValue(pickerValue, {
-        locale,
-        format: locale.yearFormat,
-        generateConfig,
-      })}
+      {yearLabel}
     </button>
   );
 
@@ -65,6 +72,7 @@ export default function QuarterPanel<DateType extends object = any>(
           // Limitation
           getStart={(date) => generateConfig.setMonth(date, 0)}
           getEnd={(date) => generateConfig.setMonth(date, 11)}
+          labels={{ superPrev: locale.previousYear, superNext: locale.nextYear }}
         >
           {yearNode}
         </PanelHeader>
@@ -76,10 +84,12 @@ export default function QuarterPanel<DateType extends object = any>(
           colNum={4}
           rowNum={1}
           baseDate={baseDate}
+          tableLabel={yearLabel}
           // Body
           getCellDate={getCellDate}
           getCellText={getCellText}
           getCellClassName={getCellClassName}
+          getCellAttributes={getCellAttributes}
         />
       </div>
     </PanelContext.Provider>
