@@ -111,7 +111,10 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   // ========================= Cells ==========================
   // >>> Header Cells
   const headerCells: React.ReactNode[] = [];
-  const weekDaysLocale: string[] =
+  const weekDaysLocale: string[] = generateConfig.locale.getWeekDays
+    ? generateConfig.locale.getWeekDays(locale.locale)
+    : [];
+  const shortWeekDaysLocale: string[] =
     locale.shortWeekDays ||
     (generateConfig.locale.getShortWeekDays
       ? generateConfig.locale.getShortWeekDays(locale.locale)
@@ -127,7 +130,12 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
     );
   }
   for (let i = 0; i < WEEK_DAY_COUNT; i += 1) {
-    headerCells.push(<th key={i}>{weekDaysLocale[(i + weekFirstDay) % WEEK_DAY_COUNT]}</th>);
+    const day = (i + weekFirstDay) % WEEK_DAY_COUNT;
+    headerCells.push(
+      <th key={i} aria-label={weekDaysLocale[day]}>
+        {shortWeekDaysLocale[day]}
+      </th>,
+    );
   }
 
   // >>> Body Cells

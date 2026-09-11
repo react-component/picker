@@ -374,29 +374,41 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         class="rc-picker-content"
                         role="grid"
                       >
-                        <thead
-                          aria-hidden="true"
-                        >
+                        <thead>
                           <tr>
-                            <th>
+                            <th
+                              aria-label="星期一"
+                            >
                               一
                             </th>
-                            <th>
+                            <th
+                              aria-label="星期二"
+                            >
                               二
                             </th>
-                            <th>
+                            <th
+                              aria-label="星期三"
+                            >
                               三
                             </th>
-                            <th>
+                            <th
+                              aria-label="星期四"
+                            >
                               四
                             </th>
-                            <th>
+                            <th
+                              aria-label="星期五"
+                            >
                               五
                             </th>
-                            <th>
+                            <th
+                              aria-label="星期六"
+                            >
                               六
                             </th>
-                            <th>
+                            <th
+                              aria-label="星期日"
+                            >
                               日
                             </th>
                           </tr>
@@ -1087,29 +1099,41 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
                         class="rc-picker-content"
                         role="grid"
                       >
-                        <thead
-                          aria-hidden="true"
-                        >
+                        <thead>
                           <tr>
-                            <th>
+                            <th
+                              aria-label="星期一"
+                            >
                               一
                             </th>
-                            <th>
+                            <th
+                              aria-label="星期二"
+                            >
                               二
                             </th>
-                            <th>
+                            <th
+                              aria-label="星期三"
+                            >
                               三
                             </th>
-                            <th>
+                            <th
+                              aria-label="星期四"
+                            >
                               四
                             </th>
-                            <th>
+                            <th
+                              aria-label="星期五"
+                            >
                               五
                             </th>
-                            <th>
+                            <th
+                              aria-label="星期六"
+                            >
                               六
                             </th>
-                            <th>
+                            <th
+                              aria-label="星期日"
+                            >
                               日
                             </th>
                           </tr>

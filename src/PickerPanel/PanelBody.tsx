@@ -276,7 +276,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
         style={styles.content}
       >
         {isNonNullable(headerCells) && (
-          <thead aria-hidden="true">
+          <thead>
             <tr>{headerCells}</tr>
           </thead>
         )}

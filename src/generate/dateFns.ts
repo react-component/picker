@@ -49,7 +49,7 @@ const localeParse = (format: string) => {
 
 const parse = (text: string, format: string, locale: string) => {
   return parseDate(text, localeParse(format), new Date(), { locale: getLocale(locale) });
-}
+};
 
 /**
  * Check if the text is a valid date considering the format and locale
@@ -69,7 +69,7 @@ const isStrictValidDate = (text: string, format: string, locale: string) => {
   }
   const formattedDate = formatDate(date, format, { locale: getLocale(locale) });
   return text === formattedDate;
-}
+};
 
 const generateConfig: GenerateConfig<Date> = {
   // get
@@ -111,6 +111,10 @@ const generateConfig: GenerateConfig<Date> = {
     },
     getWeek: (locale, date) => {
       return getWeek(date, { locale: getLocale(locale) });
+    },
+    getWeekDays: (locale) => {
+      const clone = getLocale(locale);
+      return Array.from({ length: 7 }).map((_, i) => clone.localize.day(i as Day));
     },
     getShortWeekDays: (locale) => {
       const clone = getLocale(locale);

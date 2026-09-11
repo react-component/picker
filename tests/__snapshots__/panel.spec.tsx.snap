@@ -67,29 +67,41 @@ exports[`Picker.Panel append cell with cellRender in date 1`] = `
           class="rc-picker-content"
           role="grid"
         >
-          <thead
-            aria-hidden="true"
-          >
+          <thead>
             <tr>
-              <th>
+              <th
+                aria-label="Sunday"
+              >
                 Su
               </th>
-              <th>
+              <th
+                aria-label="Monday"
+              >
                 Mo
               </th>
-              <th>
+              <th
+                aria-label="Tuesday"
+              >
                 Tu
               </th>
-              <th>
+              <th
+                aria-label="Wednesday"
+              >
                 We
               </th>
-              <th>
+              <th
+                aria-label="Thursday"
+              >
                 Th
               </th>
-              <th>
+              <th
+                aria-label="Friday"
+              >
                 Fr
               </th>
-              <th>
+              <th
+                aria-label="Saturday"
+              >
                 Sa
               </th>
             </tr>
@@ -3687,9 +3699,7 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
           class="rc-picker-content"
           role="grid"
         >
-          <thead
-            aria-hidden="true"
-          >
+          <thead>
             <tr>
               <th>
                 <span
@@ -3698,25 +3708,39 @@ exports[`Picker.Panel append cell with cellRender in week 1`] = `
                   Week
                 </span>
               </th>
-              <th>
+              <th
+                aria-label="Sunday"
+              >
                 Su
               </th>
-              <th>
+              <th
+                aria-label="Monday"
+              >
                 Mo
               </th>
-              <th>
+              <th
+                aria-label="Tuesday"
+              >
                 Tu
               </th>
-              <th>
+              <th
+                aria-label="Wednesday"
+              >
                 We
               </th>
-              <th>
+              <th
+                aria-label="Thursday"
+              >
                 Th
               </th>
-              <th>
+              <th
+                aria-label="Friday"
+              >
                 Fr
               </th>
-              <th>
+              <th
+                aria-label="Saturday"
+              >
                 Sa
               </th>
             </tr>
@@ -5080,29 +5104,41 @@ exports[`Picker.Panel override cell with cellRender in date 1`] = `
           class="rc-picker-content"
           role="grid"
         >
-          <thead
-            aria-hidden="true"
-          >
+          <thead>
             <tr>
-              <th>
+              <th
+                aria-label="Sunday"
+              >
                 Su
               </th>
-              <th>
+              <th
+                aria-label="Monday"
+              >
                 Mo
               </th>
-              <th>
+              <th
+                aria-label="Tuesday"
+              >
                 Tu
               </th>
-              <th>
+              <th
+                aria-label="Wednesday"
+              >
                 We
               </th>
-              <th>
+              <th
+                aria-label="Thursday"
+              >
                 Th
               </th>
-              <th>
+              <th
+                aria-label="Friday"
+              >
                 Fr
               </th>
-              <th>
+              <th
+                aria-label="Saturday"
+              >
                 Sa
               </th>
             </tr>
@@ -7844,9 +7880,7 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
           class="rc-picker-content"
           role="grid"
         >
-          <thead
-            aria-hidden="true"
-          >
+          <thead>
             <tr>
               <th>
                 <span
@@ -7855,25 +7889,39 @@ exports[`Picker.Panel override cell with cellRender in week 1`] = `
                   Week
                 </span>
               </th>
-              <th>
+              <th
+                aria-label="Sunday"
+              >
                 Su
               </th>
-              <th>
+              <th
+                aria-label="Monday"
+              >
                 Mo
               </th>
-              <th>
+              <th
+                aria-label="Tuesday"
+              >
                 Tu
               </th>
-              <th>
+              <th
+                aria-label="Wednesday"
+              >
                 We
               </th>
-              <th>
+              <th
+                aria-label="Thursday"
+              >
                 Th
               </th>
-              <th>
+              <th
+                aria-label="Friday"
+              >
                 Fr
               </th>
-              <th>
+              <th
+                aria-label="Saturday"
+              >
                 Sa
               </th>
             </tr>
@@ -8882,29 +8930,41 @@ exports[`Picker.Panel override cell with cellRender when pass showTime 1`] = `
             class="rc-picker-content"
             role="grid"
           >
-            <thead
-              aria-hidden="true"
-            >
+            <thead>
               <tr>
-                <th>
+                <th
+                  aria-label="Sunday"
+                >
                   Su
                 </th>
-                <th>
+                <th
+                  aria-label="Monday"
+                >
                   Mo
                 </th>
-                <th>
+                <th
+                  aria-label="Tuesday"
+                >
                   Tu
                 </th>
-                <th>
+                <th
+                  aria-label="Wednesday"
+                >
                   We
                 </th>
-                <th>
+                <th
+                  aria-label="Thursday"
+                >
                   Th
                 </th>
-                <th>
+                <th
+                  aria-label="Friday"
+                >
                   Fr
                 </th>
-                <th>
+                <th
+                  aria-label="Saturday"
+                >
                   Sa
                 </th>
               </tr>
@@ -11261,29 +11321,41 @@ exports[`Picker.Panel should render correctly in rtl 1`] = `
           class="rc-picker-content"
           role="grid"
         >
-          <thead
-            aria-hidden="true"
-          >
+          <thead>
             <tr>
-              <th>
+              <th
+                aria-label="Sunday"
+              >
                 Su
               </th>
-              <th>
+              <th
+                aria-label="Monday"
+              >
                 Mo
               </th>
-              <th>
+              <th
+                aria-label="Tuesday"
+              >
                 Tu
               </th>
-              <th>
+              <th
+                aria-label="Wednesday"
+              >
                 We
               </th>
-              <th>
+              <th
+                aria-label="Thursday"
+              >
                 Th
               </th>
-              <th>
+              <th
+                aria-label="Friday"
+              >
                 Fr
               </th>
-              <th>
+              <th
+                aria-label="Saturday"
+              >
                 Sa
               </th>
             </tr>
