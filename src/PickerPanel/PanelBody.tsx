@@ -110,6 +110,8 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
       (singleValue) => singleValue && isSame(generateConfig, locale, date, singleValue, type),
     );
 
+  const isWeekPanel = type === 'week';
+
   // =============================== Body ===============================
   const rows: React.ReactNode[] = [];
 
@@ -159,14 +161,11 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
       // so only the specific navigated cell gets tabIndex=0.
       const isFocused =
         !!focusedDate &&
-        (type === 'week'
+        (isWeekPanel
           ? isSameDate(generateConfig, currentDate, focusedDate)
           : isSame(generateConfig, locale, currentDate, focusedDate, type));
-      const isSelected =
-        !hoverRangeValue &&
-        // WeekPicker use row instead
-        type !== 'week' &&
-        matchValues(currentDate);
+      const isSelected = !hoverRangeValue && matchValues(currentDate);
+      const isCellHighlighted = isSelected && !isWeekPanel;
 
       // Render
       const inner = <div className={`${cellPrefixCls}-inner`}>{getCellText(currentDate)}</div>;
@@ -190,7 +189,7 @@ export default function PanelBody<DateType extends object = any>(props: PanelBod
             [`${cellPrefixCls}-in-range`]: inRange && !rangeStart && !rangeEnd,
             [`${cellPrefixCls}-range-start`]: rangeStart,
             [`${cellPrefixCls}-range-end`]: rangeEnd,
-            [`${prefixCls}-cell-selected`]: isSelected,
+            [`${prefixCls}-cell-selected`]: isCellHighlighted,
             ...getCellClassName(currentDate),
           })}
           style={styles.item}

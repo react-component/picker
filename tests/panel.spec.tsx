@@ -781,6 +781,23 @@ describe('Picker.Panel', () => {
     });
   });
 
+  it('week picker exposes the selected week on every cell of the row', () => {
+    const { container } = render(<DayPickerPanel picker="week" value={getDay('1990-09-03')} />);
+
+    // Screen readers announce the focused cell, so each day of the selected week
+    // has to carry the state itself.
+    const selectedRow = container.querySelector('.rc-picker-week-panel-row-selected');
+    const selectedCells = selectedRow.querySelectorAll('td[role="gridcell"]');
+    expect(selectedCells).toHaveLength(7);
+    selectedCells.forEach((cell) => {
+      expect(cell).toHaveAttribute('aria-selected', 'true');
+      // Highlight stays on the row
+      expect(cell).not.toHaveClass('rc-picker-cell-selected');
+    });
+
+    expect(container.querySelectorAll('td[aria-selected="true"]')).toHaveLength(7);
+  });
+
   it('week picker current should check year', () => {
     const { container } = render(<DayPickerPanel picker="week" value={getDay('1990-09-03')} />);
     expect(
