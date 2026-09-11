@@ -244,6 +244,25 @@ describe('Picker.Panel', () => {
       expectActiveCell(3);
     });
 
+    it('controlled pickerValue keeps the active cell inside the new view', () => {
+      const value = getDay('1990-09-03');
+      const { rerender } = render(
+        <DayPickerPanel value={value} pickerValue={getDay('1990-09-03')} />,
+      );
+      expect(headerText()).toEqual('Sep1990');
+      expectActiveCell(3);
+
+      // Jumping the panel without a mode change used to leave the grid with no
+      // tabbable cell at all.
+      rerender(<DayPickerPanel value={value} pickerValue={getDay('1990-12-25')} />);
+      expect(headerText()).toEqual('Dec1990');
+      expectActiveCell(25);
+
+      // Moving inside the same panel keeps the cell the user navigated to
+      rerender(<DayPickerPanel value={value} pickerValue={getDay('1990-12-01')} />);
+      expectActiveCell(25);
+    });
+
     it('switching mode focuses the active cell of the new panel', () => {
       render(<DayPickerPanel defaultValue={getDay('1990-09-03')} />);
 

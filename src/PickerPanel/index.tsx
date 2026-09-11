@@ -18,7 +18,7 @@ import type {
 } from '../interface';
 import PickerContext from '../PickerInput/context';
 import useCellRender from '../PickerInput/hooks/useCellRender';
-import { isSame } from '../utils/dateUtil';
+import { isSame, isSamePanel } from '../utils/dateUtil';
 import { pickProps, toArray } from '../utils/miscUtil';
 import { PanelFocusContext, PickerHackContext, SharedPanelContext } from './context';
 import DatePanel from './DatePanel';
@@ -308,6 +308,18 @@ function PickerPanel<DateType extends object = any>(
       setFocusedCellDate(mergedValue[0]);
     }
   }, [mergedValue[0]]);
+
+  // A controlled `pickerValue` can move the panel without a mode change
+  // (e.g. Sep -> Dec). Re-anchor the focused cell when it falls outside the new
+  // grid, otherwise no cell is tabbable and Tab walks straight past the panel.
+  React.useEffect(() => {
+    setFocusedCellDate((prevFocusedCellDate) =>
+      isSamePanel(generateConfig, mergedMode, prevFocusedCellDate, mergedPickerValue)
+        ? prevFocusedCellDate
+        : mergedPickerValue,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mergedValue[0], mergedPickerValue, mergedMode]);
 
   const onCellFocusedDateChange = useEvent((date: DateType) => {
     setFocusedCellDate(date);
