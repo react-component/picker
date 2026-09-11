@@ -216,6 +216,7 @@ exports[`Picker.Range panelRender 1`] = `
           style="left: 0px;"
         />
         <div
+          aria-label="选择日期"
           class="rc-picker-panel-container rc-picker-date-panel-container"
           id="test-id-panel"
           role="dialog"
@@ -292,6 +293,7 @@ exports[`Picker.Range use dateRender and monthCellRender in date range picker 1`
           style="left: 0px;"
         />
         <div
+          aria-label="选择日期"
           class="rc-picker-panel-container rc-picker-date-panel-container"
           id="test-id-panel"
           role="dialog"
@@ -1800,6 +1802,7 @@ exports[`Picker.Range use dateRender and monthCellRender in month range picker 1
           style="left: 0px;"
         />
         <div
+          aria-label="选择月份"
           class="rc-picker-panel-container rc-picker-month-panel-container"
           id="test-id-panel"
           role="dialog"

@@ -849,6 +849,21 @@ describe('Picker.Basic', () => {
     );
   });
 
+  it('popup dialog has an accessible name from locale', () => {
+    const { rerender } = render(<DayPicker open />);
+
+    expect(document.querySelector('[role="dialog"]')).toHaveAttribute('aria-label', 'select date');
+
+    rerender(<DayPicker open picker="month" />);
+    expect(document.querySelector('[role="dialog"]')).toHaveAttribute(
+      'aria-label',
+      'Choose a month',
+    );
+
+    rerender(<DayPicker open picker="time" />);
+    expect(document.querySelector('[role="dialog"]')).toHaveAttribute('aria-label', 'select time');
+  });
+
   it('blur should reset invalidate text', async () => {
     const { container } = render(<DayPicker />);
     openPicker(container);
