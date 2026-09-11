@@ -1297,6 +1297,18 @@ describe('Picker.Basic', () => {
     expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('1990-09-04');
   });
 
+  it('presets preview on keyboard focus', () => {
+    render(<DayPicker open presets={[{ label: 'Bamboo', value: dayjs().add(1, 'day') }]} />);
+
+    const presetEle = document.querySelector<HTMLElement>('.rc-picker-presets button');
+
+    triggerFocus(presetEle);
+    expect(findCell(4)).toHaveClass('rc-picker-cell-hover');
+
+    triggerBlur(presetEle);
+    expect(findCell(4)).not.toHaveClass('rc-picker-cell-hover');
+  });
+
   it('presets support callback', () => {
     const onChange = jest.fn();
     const mockPresetValue = jest.fn().mockImplementationOnce(() => getDay('2000-09-03'));

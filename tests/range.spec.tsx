@@ -488,6 +488,31 @@ describe('Picker.Range', () => {
       expect(findCell(12)).not.toHaveClass('rc-picker-cell-in-range');
       expect(findCell(13)).not.toHaveClass('rc-picker-cell-range-end');
     });
+
+    it(`${propsType} focus className`, () => {
+      const { container } = render(
+        <DayRangePicker
+          {...genProps({
+            now: [getDay('1990-09-11'), getDay('1990-09-13')],
+          })}
+          open
+        />,
+      );
+
+      openPicker(container);
+
+      // Keyboard users get the same preview as hovering
+      const presetEle = document.querySelector<HTMLElement>('.rc-picker-presets button');
+      triggerFocus(presetEle);
+      expect(findCell(11)).toHaveClass('rc-picker-cell-range-start');
+      expect(findCell(12)).toHaveClass('rc-picker-cell-in-range');
+      expect(findCell(13)).toHaveClass('rc-picker-cell-range-end');
+
+      triggerBlur(presetEle);
+      expect(findCell(11)).not.toHaveClass('rc-picker-cell-range-start');
+      expect(findCell(12)).not.toHaveClass('rc-picker-cell-in-range');
+      expect(findCell(13)).not.toHaveClass('rc-picker-cell-range-end');
+    });
   }
 
   describe('ranges or presets', () => {

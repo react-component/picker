@@ -28,6 +28,7 @@ export default function PresetPanel<DateType extends object = any>(
           <li key={index}>
             <button
               type="button"
+              className={`${prefixCls}-presets-button`}
               onClick={() => {
                 onClick(executeValue(value));
               }}
@@ -35,6 +36,12 @@ export default function PresetPanel<DateType extends object = any>(
                 onHover(executeValue(value));
               }}
               onMouseLeave={() => {
+                onHover(null);
+              }}
+              onFocus={() => {
+                onHover(executeValue(value));
+              }}
+              onBlur={() => {
                 onHover(null);
               }}
             >
