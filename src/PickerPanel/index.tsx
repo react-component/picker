@@ -201,7 +201,7 @@ function PickerPanel<DateType extends object = any>(
   } = React.useContext(PickerContext) || {};
 
   // When rendered inside a picker popup, the surrounding picker owns
-  // mode-change focus (see `usePopupFocus`), which correctly distinguishes a
+  // mode-change focus, which correctly distinguishes a
   // drill-down from a field switch. Only the standalone `<PickerPanel>` drives
   // focus on mode change itself.
   const standalone = !pickerContext;
@@ -338,7 +338,7 @@ function PickerPanel<DateType extends object = any>(
       setFocusedCellDate(mergedPickerValue);
 
       // Grab DOM focus only when standalone. Inside a picker popup the
-      // surrounding picker owns focus (see `usePopupFocus`), which correctly
+      // surrounding picker owns focus, which correctly
       // tells a drill-down apart from a field switch; bumping here would steal
       // focus into the panel when the user merely switches fields.
       if (standalone) {

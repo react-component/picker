@@ -139,11 +139,7 @@ export interface PanelFocusContextProps<DateType extends object = any> {
   focusTrigger: number;
 }
 
-export const PanelFocusContext = React.createContext<PanelFocusContextProps>({
-  focusedDate: null,
-  onCellFocusedDateChange: () => {},
-  focusTrigger: 0,
-});
+export const PanelFocusContext = React.createContext<PanelFocusContextProps>(null);
 
 if (process.env.NODE_ENV !== 'production') {
   PickerHackContext.displayName = 'PickerHackContext';
