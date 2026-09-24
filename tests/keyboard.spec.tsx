@@ -59,6 +59,62 @@ describe('Picker.Keyboard', () => {
     expect(onChange).toHaveBeenCalledWith(expect.anything(), '2000-03-03');
   });
 
+  it('accepts masked input from Android IME keyboards', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayPicker
+        format={{
+          format: 'YYYYMMDD',
+          type: 'mask',
+        }}
+        onChange={onChange}
+      />,
+    );
+    const input = container.querySelector('input');
+
+    triggerFocus(input);
+    '20000303'.split('').forEach((key) => {
+      fireEvent.keyDown(input, { key: 'Unidentified' });
+      fireEvent.input(input, {
+        target: { value: key },
+        inputType: 'insertText',
+        data: key,
+      });
+    });
+    fireEvent.keyDown(input, { key: 'Enter' });
+
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), '20000303');
+  });
+
+  it('accepts masked range input from Android IME keyboards', () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker
+        format={{
+          format: 'YYYYMMDD',
+          type: 'mask',
+        }}
+        onChange={onChange}
+      />,
+    );
+    const inputs = container.querySelectorAll('input');
+
+    ['20000303', '20000305'].forEach((value, index) => {
+      triggerFocus(inputs[index]);
+      value.split('').forEach((key) => {
+        fireEvent.keyDown(inputs[index], { key: 'Unidentified' });
+        fireEvent.input(inputs[index], {
+          target: { value: key },
+          inputType: 'insertText',
+          data: key,
+        });
+      });
+      fireEvent.keyDown(inputs[index], { key: 'Enter' });
+    });
+
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), ['20000303', '20000305']);
+  });
+
   // Coverage case: replace these tests if a clearer interaction can cover the
   // same behavior. / 覆盖率用例：若有更清晰的交互覆盖相同行为，可直接替换。
   it('should submit typed value on Tab without trapping focus', () => {
