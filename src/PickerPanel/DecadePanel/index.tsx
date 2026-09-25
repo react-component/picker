@@ -61,6 +61,13 @@ export default function DecadePanel<DateType extends object = any>(
     };
   };
 
+  const getCellAttributes = (date: DateType): React.TdHTMLAttributes<HTMLTableCellElement> => {
+    if (isSameDecade(generateConfig, date, generateConfig.getNow())) {
+      return { 'aria-current': 'date' };
+    }
+    return {};
+  };
+
   // ======================== Disabled ========================
   const mergedDisabledDate: DisabledDate<DateType> = disabledDate
     ? (currentDate, disabledInfo) => {
@@ -81,7 +88,7 @@ export default function DecadePanel<DateType extends object = any>(
     : null;
 
   // ========================= Header =========================
-  const yearNode = `${formatValue(startYearDate, {
+  const yearLabel = `${formatValue(startYearDate, {
     locale,
     format: locale.yearFormat,
     generateConfig,
@@ -102,8 +109,9 @@ export default function DecadePanel<DateType extends object = any>(
           // Limitation
           getStart={getStartYear}
           getEnd={getEndYear}
+          labels={{ superPrev: locale.previousCentury, superNext: locale.nextCentury }}
         >
-          {yearNode}
+          {yearLabel}
         </PanelHeader>
 
         {/* Body */}
@@ -113,10 +121,12 @@ export default function DecadePanel<DateType extends object = any>(
           colNum={3}
           rowNum={4}
           baseDate={baseDate}
+          tableLabel={yearLabel}
           // Body
           getCellDate={getCellDate}
           getCellText={getCellText}
           getCellClassName={getCellClassName}
+          getCellAttributes={getCellAttributes}
         />
       </div>
     </PanelContext.Provider>

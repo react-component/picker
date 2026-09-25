@@ -830,6 +830,40 @@ describe('Picker.Basic', () => {
     expect(container.querySelector('input')).toHaveAttribute('autoComplete', 'on');
   });
 
+  it('input is a combobox referencing the popup panel', () => {
+    const { container } = render(<DayPicker />);
+    const input = container.querySelector('input');
+
+    expect(input).toHaveAttribute('role', 'combobox');
+    expect(input).toHaveAttribute('aria-haspopup', 'dialog');
+    expect(input).toHaveAttribute('aria-expanded', 'false');
+    // Popup is not rendered yet, so there is nothing to reference
+    expect(input).not.toHaveAttribute('aria-controls');
+
+    openPicker(container);
+
+    expect(input).toHaveAttribute('aria-expanded', 'true');
+    expect(document.getElementById(input.getAttribute('aria-controls'))).toHaveAttribute(
+      'role',
+      'dialog',
+    );
+  });
+
+  it('popup dialog has an accessible name from locale', () => {
+    const { rerender } = render(<DayPicker open />);
+
+    expect(document.querySelector('[role="dialog"]')).toHaveAttribute('aria-label', 'select date');
+
+    rerender(<DayPicker open picker="month" />);
+    expect(document.querySelector('[role="dialog"]')).toHaveAttribute(
+      'aria-label',
+      'Choose a month',
+    );
+
+    rerender(<DayPicker open picker="time" />);
+    expect(document.querySelector('[role="dialog"]')).toHaveAttribute('aria-label', 'select time');
+  });
+
   it('blur should reset invalidate text', async () => {
     const { container } = render(<DayPicker />);
     openPicker(container);
@@ -1251,16 +1285,28 @@ describe('Picker.Basic', () => {
       />,
     );
 
-    const presetEle = document.querySelector('.rc-picker-presets li');
-    expect(document.querySelector('.rc-picker-presets li').textContent).toBe('Bamboo');
+    const presetEle = document.querySelector('.rc-picker-presets button');
+    expect(document.querySelector('.rc-picker-presets button').textContent).toBe('Bamboo');
 
     // Hover
     fireEvent.mouseEnter(presetEle);
     expect(findCell(4)).toHaveClass('rc-picker-cell-hover');
 
     // Click
-    fireEvent.click(document.querySelector('.rc-picker-presets li'));
+    fireEvent.click(document.querySelector('.rc-picker-presets button'));
     expect(onChange.mock.calls[0][0].format('YYYY-MM-DD')).toEqual('1990-09-04');
+  });
+
+  it('presets preview on keyboard focus', () => {
+    render(<DayPicker open presets={[{ label: 'Bamboo', value: dayjs().add(1, 'day') }]} />);
+
+    const presetEle = document.querySelector<HTMLElement>('.rc-picker-presets button');
+
+    triggerFocus(presetEle);
+    expect(findCell(4)).toHaveClass('rc-picker-cell-hover');
+
+    triggerBlur(presetEle);
+    expect(findCell(4)).not.toHaveClass('rc-picker-cell-hover');
   });
 
   it('presets support callback', () => {
@@ -1280,7 +1326,7 @@ describe('Picker.Basic', () => {
       />,
     );
 
-    const firstPreset = document.querySelector('.rc-picker-presets li');
+    const firstPreset = document.querySelector('.rc-picker-presets button');
     expect(firstPreset.textContent).toBe('Bamboo');
 
     fireEvent.click(firstPreset);

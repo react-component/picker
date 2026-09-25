@@ -197,6 +197,36 @@ describe('Picker.Generate', () => {
         ).toEqual(null);
       });
 
+      it('getWeekDays', () => {
+        expect(generateConfig.locale.getWeekDays!('ko_KR')).toEqual([
+          '일요일',
+          '월요일',
+          '화요일',
+          '수요일',
+          '목요일',
+          '금요일',
+          '토요일',
+        ]);
+        expect(generateConfig.locale.getWeekDays!('zh_CN')).toEqual([
+          '星期日',
+          '星期一',
+          '星期二',
+          '星期三',
+          '星期四',
+          '星期五',
+          '星期六',
+        ]);
+        expect(generateConfig.locale.getWeekDays!('en_US')).toEqual([
+          'Sunday',
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+        ]);
+      });
+
       it('getShortWeekDays', () => {
         expect(generateConfig.locale.getShortWeekDays!('ko_KR')).toEqual([
           '일',

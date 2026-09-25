@@ -84,6 +84,10 @@ const generateConfig: GenerateConfig<Moment> = {
       const result = clone.locale(locale);
       return result.week();
     },
+    getWeekDays: (locale) => {
+      const date = moment().locale(locale);
+      return date.localeData().weekdays();
+    },
     getShortWeekDays: (locale) => {
       const date = moment().locale(locale);
       return date.localeData().weekdaysMin();

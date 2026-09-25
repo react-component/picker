@@ -2,6 +2,8 @@ import { clsx } from 'clsx';
 import ResizeObserver, { type ResizeObserverProps } from '@rc-component/resize-observer';
 import * as React from 'react';
 import type {
+  Locale,
+  PickerMode,
   RangeTimeProps,
   SharedPickerProps,
   SharedTimeProps,
@@ -52,6 +54,21 @@ export interface PopupProps<DateType extends object = any, PresetValue = DateTyp
   styles?: SharedPickerProps['styles'];
 }
 
+function getLocaleAriaLabel(locale: Locale, picker: PickerMode) {
+  switch (picker) {
+    case 'time':
+      return locale.timeSelect;
+    case 'week':
+      return locale.weekSelect;
+    case 'month':
+      return locale.monthSelect;
+    case 'year':
+      return locale.yearSelect;
+    default:
+      return locale.dateSelect;
+  }
+}
+
 export default function Popup<DateType extends object = any>(props: PopupProps<DateType>) {
   const {
     containerRef,
@@ -89,7 +106,7 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
     styles,
   } = props;
 
-  const { prefixCls } = React.useContext(PickerContext);
+  const { prefixCls, popupId, locale } = React.useContext(PickerContext);
   const panelPrefixCls = `${prefixCls}-panel`;
 
   const rtl = direction === 'rtl';
@@ -220,8 +237,11 @@ export default function Popup<DateType extends object = any>(props: PopupProps<D
   let renderNode = (
     <div
       ref={containerRef}
+      id={popupId}
       onMouseDown={onPanelMouseDown}
       tabIndex={-1}
+      role="dialog"
+      aria-label={getLocaleAriaLabel(locale, picker)}
       className={clsx(
         containerPrefixCls,
         // Used for Today Button style, safe to remove if no need
