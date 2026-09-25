@@ -40,6 +40,7 @@ import useRangePickerValue from './hooks/useRangePickerValue';
 import useRangeValue, { useInnerValue } from './hooks/useRangeValue';
 import useRangeValueChange, { type RangeValueChangeSource } from './hooks/useRangeValueChange';
 import useShowNow from './hooks/useShowNow';
+import type { InvalidateDateInfo } from './hooks/useInvalidate';
 import Popup, { type PopupShowTimeConfig } from './Popup';
 import RangeSelector, {
   type RangeSelectorRef,
@@ -293,6 +294,17 @@ function RangePicker<DateType extends object = any>(
     },
   );
 
+  // ======================= Invalidate ======================
+  const isRangeInvalidateDate = useEvent((date: DateType, info?: InvalidateDateInfo<DateType>) => {
+    const infoActiveIndex = info?.activeIndex ?? activeIndex;
+
+    return isInvalidateDate(date, {
+      ...(info || {}),
+      activeIndex: infoActiveIndex,
+      range: getActiveRange(infoActiveIndex),
+    });
+  });
+
   // ======================== Value =========================
   const [
     /** Trigger `onChange` by check `disabledDate` */
@@ -309,7 +321,7 @@ function RangePicker<DateType extends object = any>(
     triggerCalendarChange,
     disabled,
     formatList,
-    isInvalidateDate,
+    isRangeInvalidateDate,
   );
 
   const triggerFieldCalendarChange = useEvent((index: number, date: DateType) => {
@@ -408,7 +420,7 @@ function RangePicker<DateType extends object = any>(
   // ======================= Validate =======================
   const [submitInvalidates, onSelectorInvalid] = useFieldsInvalidate(
     calendarValue,
-    isInvalidateDate,
+    isRangeInvalidateDate,
     allowEmpty,
   );
 
@@ -597,7 +609,7 @@ function RangePicker<DateType extends object = any>(
 
   // >>> invalid
   const isPopupInvalidateDate = useEvent((date: DateType) => {
-    return isInvalidateDate(date, {
+    return isRangeInvalidateDate(date, {
       activeIndex,
     });
   });

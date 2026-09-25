@@ -19,10 +19,12 @@ export default function useRangeDisabledDate<DateType extends object = any>(
 ) {
   const rangeDisabledDate: DisabledDate<DateType> = (date, info) => {
     const [start, end] = values;
+    const range: 'start' | 'end' = activeIndex === 1 ? 'end' : 'start';
 
     const mergedInfo = {
       ...info,
       from: getFromDate(values, triggeredFields, activeIndex),
+      range,
     };
 
     // ============================ Disabled ============================
