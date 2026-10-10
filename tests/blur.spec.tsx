@@ -4,6 +4,7 @@ import {
   closePicker,
   DayPicker,
   DayRangePicker,
+  getDay,
   getMoment,
   openPicker,
   waitFakeTimer,
@@ -63,5 +64,101 @@ describe('Picker.ChangeOnBlur', () => {
     await waitFakeTimer();
     expect(startInputEle).toHaveValue('no valid 1');
     expect(endInputEle).toHaveValue('no valid 2');
+  });
+});
+
+describe('Picker.DiscardRejectedValue', () => {
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(getMoment('1990-09-03 00:00:00').valueOf());
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
+  });
+
+  it('revert the value rejected by disabledDate when popup closed', async () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayPicker
+        format="YYYY-MM-DD"
+        value={getDay('2026-06-15')}
+        disabledDate={(date) => date.isBefore(getDay('2026-06-01'))}
+        onChange={onChange}
+      />,
+    );
+
+    const inputEle = container.querySelector('input');
+
+    openPicker(container);
+    fireEvent.change(inputEle, {
+      target: {
+        value: '2026-03-15',
+      },
+    });
+    expect(inputEle).toHaveValue('2026-03-15');
+
+    // Close from outside instead of pressing Enter
+    closePicker(container);
+    await waitFakeTimer();
+
+    // The rejected value should be discarded
+    expect(inputEle).toHaveValue('2026-06-15');
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('keep the rejected value when preserveInvalidOnBlur is set', async () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayPicker
+        format="YYYY-MM-DD"
+        value={getDay('2026-06-15')}
+        disabledDate={(date) => date.isBefore(getDay('2026-06-01'))}
+        onChange={onChange}
+        preserveInvalidOnBlur
+      />,
+    );
+
+    const inputEle = container.querySelector('input');
+
+    openPicker(container);
+    fireEvent.change(inputEle, {
+      target: {
+        value: '2026-03-15',
+      },
+    });
+    closePicker(container);
+    await waitFakeTimer();
+
+    // `preserveInvalidOnBlur` promises the typed text is not modified on blur
+    expect(inputEle).toHaveValue('2026-03-15');
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('keep the value accepted by disabledDate', async () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayPicker
+        format="YYYY-MM-DD"
+        value={getDay('2026-06-15')}
+        disabledDate={(date) => date.isBefore(getDay('2026-06-01'))}
+        onChange={onChange}
+      />,
+    );
+
+    const inputEle = container.querySelector('input');
+
+    openPicker(container);
+    fireEvent.change(inputEle, {
+      target: {
+        value: '2026-06-20',
+      },
+    });
+
+    closePicker(container);
+    await waitFakeTimer();
+
+    expect(inputEle).toHaveValue('2026-06-20');
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), '2026-06-20');
   });
 });
