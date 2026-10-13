@@ -80,6 +80,15 @@ it('keeps the default clear behavior and locale label', () => {
   expect(getByRole('button', { name: '清除' })).toBeTruthy();
 });
 
+it('falls back to an accessible label when the locale omits clear', () => {
+  const locale = { ...enUS, clear: undefined };
+  const { getByRole, rerender } = render(<DayPicker defaultValue={date} locale={locale} />);
+  expect(getByRole('button', { name: 'Clear' })).toBeTruthy();
+
+  rerender(<DayPicker defaultValue={date} locale={locale} allowClear={{ label: 'Erase' }} />);
+  expect(getByRole('button', { name: 'Erase' })).toBeTruthy();
+});
+
 it('keeps the component and range endpoint disabled restrictions', () => {
   const { container, rerender } = render(
     <DayPicker value={date} disabled allowClear={{ disabled: false }} />,

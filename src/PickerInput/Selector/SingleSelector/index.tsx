@@ -45,7 +45,7 @@ function SingleSelector<DateType extends object = any>(
     open,
 
     prefix,
-    clearConfig = {},
+    clearConfig,
     suffix,
     activeHelp,
     allHelp,

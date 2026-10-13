@@ -495,7 +495,7 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
   picker: PickerMode;
 
   prefix?: React.ReactNode;
-  clearConfig?: AllowClearConfig;
+  clearConfig: AllowClearConfig;
   suffix?: React.ReactNode;
   /** @deprecated Please use `suffix` instead. */
   suffixIcon?: React.ReactNode;

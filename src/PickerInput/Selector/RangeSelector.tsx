@@ -60,7 +60,7 @@ function RangeSelector<DateType extends object = any>(
     id,
 
     prefix,
-    clearConfig = {},
+    clearConfig,
     suffix,
     separator = '~',
     activeIndex,
