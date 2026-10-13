@@ -46,6 +46,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   invalid?: boolean;
 
   clearIcon?: React.ReactNode;
+  clearable?: boolean;
 }
 
 const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
@@ -65,6 +66,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     preserveInvalidOnBlur = false,
     invalid,
     clearIcon,
+    clearable,
     // Pass to input
     ...restProps
   } = props;
@@ -142,10 +144,18 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
   // Directly trigger `onChange` if `format` is empty
   const onInternalChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    const text = event.target.value;
+
+    // Empty text is a valid clear action when the picker is clearable.
+    // Handle it before the mask logic, which normally ignores invalid text.
+    if (clearable && !text) {
+      setInputValue(text);
+      onChange(text);
+      return;
+    }
+
     // Hack `onChange` with format to do nothing
     if (!format) {
-      const text = event.target.value;
-
       onModify(text);
       setInputValue(text);
       onChange(text);
