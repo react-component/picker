@@ -1,4 +1,4 @@
-import { warning } from '@rc-component/util';
+import { type AllowClearConfig, useAllowClear, warning } from '@rc-component/util';
 import * as React from 'react';
 import useLocale from '../../hooks/useLocale';
 import { fillShowTimeConfig, getTimeProps } from '../../hooks/useTimeConfig';
@@ -82,6 +82,7 @@ export default function useFilledProps<
   filledProps: Omit<InProps, keyof UpdaterProps | 'showTime' | 'value' | 'defaultValue'> &
     UpdaterProps & {
       picker: PickerMode;
+      clearConfig: AllowClearConfig;
       showTime?: ExcludeBooleanType<InProps['showTime']>;
       value?: ToArrayType<InProps['value'], DateType>;
       defaultValue?: ToArrayType<InProps['value'], DateType>;
@@ -124,6 +125,7 @@ export default function useFilledProps<
     defaultPickerValue,
   } = props;
 
+  const clearConfig = useAllowClear(allowClear ?? true);
   const values = useList(value);
   const defaultValues = useList(defaultValue);
   const pickerValues = useList(pickerValue);
@@ -176,7 +178,10 @@ export default function useFilledProps<
       order,
       components: { input: inputRender, ...components },
       suffix: suffix ?? suffixIcon,
-      clearIcon: fillClearIcon(prefixCls, allowClear, clearIcon),
+      clearConfig: {
+        ...clearConfig,
+        clearIcon: fillClearIcon(prefixCls, clearConfig, clearIcon),
+      },
       showTime: mergedShowTime,
       value: values,
       defaultValue: defaultValues,
@@ -184,7 +189,7 @@ export default function useFilledProps<
       defaultPickerValue: defaultPickerValues,
       ...updater?.(),
     }),
-    [props],
+    [props, clearConfig],
   );
 
   // ======================== Format ========================

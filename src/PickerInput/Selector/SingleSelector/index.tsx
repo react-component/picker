@@ -45,7 +45,7 @@ function SingleSelector<DateType extends object = any>(
     open,
 
     prefix,
-    clearIcon,
+    clearConfig = {},
     suffix,
     activeHelp,
     allHelp,
@@ -160,7 +160,11 @@ function SingleSelector<DateType extends object = any>(
   );
 
   // ======================== Clear =========================
-  const showClear = isReactRenderable(clearIcon) && Boolean(value.length) && !disabled;
+  const showClear =
+    !clearConfig.disabled &&
+    isReactRenderable(clearConfig.clearIcon) &&
+    Boolean(value.length) &&
+    !disabled;
 
   // ======================= Multiple =======================
   const selectorNode = multiple ? (
@@ -185,7 +189,14 @@ function SingleSelector<DateType extends object = any>(
         tabIndex={tabIndex}
       />
       <Icon icon={suffix} />
-      {showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
+      {showClear && (
+        <ClearIcon
+          icon={clearConfig.clearIcon}
+          tabIndex={clearConfig.tabIndex}
+          label={clearConfig.label}
+          onClear={onClear}
+        />
+      )}
     </>
   ) : (
     <Input
@@ -194,7 +205,16 @@ function SingleSelector<DateType extends object = any>(
       autoFocus={autoFocus}
       tabIndex={tabIndex}
       suffix={suffix}
-      clearIcon={showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
+      clearIcon={
+        showClear && (
+          <ClearIcon
+            icon={clearConfig.clearIcon}
+            tabIndex={clearConfig.tabIndex}
+            label={clearConfig.label}
+            onClear={onClear}
+          />
+        )
+      }
       showActiveCls={false}
     />
   );
