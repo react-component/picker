@@ -7,6 +7,7 @@ import { formatValue, isSame, isSameTimestamp } from '../../utils/dateUtil';
 import { fillIndex } from '../../utils/miscUtil';
 import type { RangePickerProps } from '../RangePicker';
 import type { ReplacedPickerProps } from '../SinglePicker';
+import type { InvalidateDateInfo } from './useInvalidate';
 
 const EMPTY_VALUE: any[] = [];
 
@@ -172,7 +173,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   triggerCalendarChange: TriggerCalendarChange<ValueType>,
   disabled: ReplaceListType<Required<ValueType>, boolean>,
   formatList: FormatType[],
-  isInvalidateDate: (date: DateType, info?: { from?: DateType; activeIndex: number }) => boolean,
+  isInvalidateDate: (date: DateType, info?: InvalidateDateInfo<DateType>) => boolean,
 ): [
   /** Trigger `onChange` by check `disabledDate` */
   flushSubmit: (index: number, needTriggerChange: boolean) => void,
