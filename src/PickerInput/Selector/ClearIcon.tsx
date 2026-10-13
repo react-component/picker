@@ -4,17 +4,18 @@ import { clsx } from 'clsx';
 
 export interface ClearIconProps extends React.HtmlHTMLAttributes<HTMLElement> {
   icon?: React.ReactNode;
+  label?: string;
   onClear: VoidFunction;
 }
 
-export default function ClearIcon({ icon, onClear, ...restProps }: ClearIconProps) {
+export default function ClearIcon({ icon, label, onClear, ...restProps }: ClearIconProps) {
   const { prefixCls, classNames, styles, locale } = React.useContext(PickerContext);
 
   return (
     <button
       {...restProps}
       type="button"
-      aria-label={locale.clear}
+      aria-label={label ?? locale.clear ?? 'Clear'}
       className={clsx(`${prefixCls}-clear`, classNames.suffix)}
       style={styles.suffix}
       onMouseDown={(e) => {
