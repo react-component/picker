@@ -28,6 +28,14 @@ export interface FooterProps<DateType extends object = any> {
   onNow: (now: DateType) => void;
 }
 
+/**
+ * `type` is a native `button` attribute. Custom components (e.g. `antd` Button) use `type`
+ * as their own variant prop, so only pass it when the intrinsic element is rendered.
+ */
+function getNativeTypeProps(Component: React.ComponentType<any> | string) {
+  return Component === 'button' ? ({ type: 'button' } as const) : null;
+}
+
 export default function Footer(props: FooterProps) {
   const {
     mode,
@@ -46,7 +54,9 @@ export default function Footer(props: FooterProps) {
   const {
     prefixCls,
     locale,
-    button: Button = 'button',
+    button = 'button',
+    nowButton,
+    okButton,
     classNames,
     styles,
   } = React.useContext(PickerContext);
@@ -71,35 +81,37 @@ export default function Footer(props: FooterProps) {
     }
   };
 
-  const nowPrefixCls = `${prefixCls}-now`;
-  const nowBtnPrefixCls = `${nowPrefixCls}-btn`;
+  const NowButton = nowButton || button;
+  const OkButton = okButton || button;
 
   const presetNode = showNow && (
-    <li className={nowPrefixCls}>
-      <a
-        className={clsx(nowBtnPrefixCls, nowDisabled && `${nowBtnPrefixCls}-disabled`)}
-        aria-disabled={nowDisabled}
-        onClick={onInternalNow}
-      >
-        {internalMode === 'date' ? locale.today : locale.now}
-      </a>
-    </li>
+    <NowButton
+      {...getNativeTypeProps(NowButton)}
+      className={`${prefixCls}-now`}
+      disabled={nowDisabled}
+      onClick={onInternalNow}
+    >
+      {internalMode === 'date' ? locale.today : locale.now}
+    </NowButton>
   );
 
   // >>> OK
   const okNode = needConfirm && (
-    <li className={`${prefixCls}-ok`}>
-      <Button disabled={invalid} onClick={onSubmit}>
-        {locale.ok}
-      </Button>
-    </li>
+    <OkButton
+      {...getNativeTypeProps(OkButton)}
+      disabled={invalid}
+      className={`${prefixCls}-ok`}
+      onClick={onSubmit}
+    >
+      {locale.ok}
+    </OkButton>
   );
 
   const rangeNode = (presetNode || okNode) && (
-    <ul className={`${prefixCls}-ranges`}>
+    <div className={`${prefixCls}-ranges`}>
       {presetNode}
       {okNode}
-    </ul>
+    </div>
   );
 
   // ======================== Render ========================
