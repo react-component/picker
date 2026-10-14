@@ -317,11 +317,13 @@ function RangePicker<DateType extends object = any>(
   });
 
   const flushFieldSubmit = useEvent((index: number, needTriggerChange: boolean) => {
-    flushSubmit(index, needTriggerChange);
+    const accepted = flushSubmit(index, needTriggerChange);
 
     if (needTriggerChange) {
       triggerOpen(false, { force: true });
     }
+
+    return accepted;
   });
 
   const enabledFieldCount = disabled.filter((fieldDisabled) => !fieldDisabled).length;

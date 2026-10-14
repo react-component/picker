@@ -42,9 +42,12 @@ export type TriggerCalendarChange<FieldValue> = (index: number, value: FieldValu
 
 /**
  * Flush one field and optionally emit the final change.
+ * Returns `false` when the flushed value is rejected by the business
+ * validation (`disabledDate` / order / empty rules).
  * 提交一个 field，并按需触发最终 change。
+ * 返回 `false` 表示提交的值未通过业务校验（`disabledDate` / 顺序 / 空值规则）。
  */
-export type FlushSubmit = (index: number, needTriggerChange: boolean) => void;
+export type FlushSubmit = (index: number, needTriggerChange: boolean) => boolean | void;
 
 /**
  * Reset one field, or all fields when index is omitted.
@@ -226,7 +229,14 @@ export default function useRangeValueChange<FieldValue = unknown>(
     // Trigger final change after every field has participated once.
     // 所有 field 都参与过一次后，触发最终 change。
     const allFieldsTriggered = triggeredFieldsRef.current.length >= fieldCount;
-    flushSubmit(index, allFieldsTriggered);
+    const accepted = flushSubmit(index, allFieldsTriggered);
+
+    // A rejected submit must not keep the temporary value, otherwise the
+    // selector shows a value the committed value never accepted.
+    // 提交被拒绝时不能保留临时值，否则 selector 会显示已提交值从未接受的内容。
+    if (accepted === false) {
+      resetValue();
+    }
 
     if (allFieldsTriggered) {
       reset();
