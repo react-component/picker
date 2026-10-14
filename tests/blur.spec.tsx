@@ -163,40 +163,46 @@ describe('Picker.DiscardRejectedValue', () => {
     expect(onChange).toHaveBeenCalledWith(expect.anything(), '2026-06-20');
   });
 
-  it('reverts rejected values in RangePicker when popup closes', async () => {
-    const onChange = jest.fn();
-    const { container } = render(
-      <DayRangePicker
-        format="YYYY-MM-DD"
-        value={[getDay('2026-06-15'), getDay('2026-06-20')]}
-        disabledDate={(date) => date.isBefore(getDay('2026-06-01'))}
-        onChange={onChange}
-      />,
-    );
+  it.each([
+    { rejected: '2026-03-15', start: '2026-03-15', end: '2026-03-20' },
+    { rejected: '2026-03-20', start: '2026-03-15', end: '2026-03-20' },
+  ])(
+    'reverts a range whose start or end is rejected on popup close ($rejected)',
+    async ({ rejected, start, end }) => {
+      const onChange = jest.fn();
+      const { container } = render(
+        <DayRangePicker
+          format="YYYY-MM-DD"
+          value={[getDay('2026-06-15'), getDay('2026-06-20')]}
+          disabledDate={(date) => date.format('YYYY-MM-DD') === rejected}
+          onChange={onChange}
+        />,
+      );
 
-    const [startInputEle, endInputEle] = container.querySelectorAll('input');
+      const [startInputEle, endInputEle] = container.querySelectorAll('input');
 
-    // Both fields have to participate before the round is submitted.
-    openPicker(container);
-    fireEvent.change(startInputEle, {
-      target: {
-        value: '2026-03-15',
-      },
-    });
+      // Both fields have to participate before the round is submitted.
+      openPicker(container);
+      fireEvent.change(startInputEle, {
+        target: {
+          value: start,
+        },
+      });
 
-    openPicker(container, 1);
-    fireEvent.change(endInputEle, {
-      target: {
-        value: '2026-03-20',
-      },
-    });
+      openPicker(container, 1);
+      fireEvent.change(endInputEle, {
+        target: {
+          value: end,
+        },
+      });
 
-    closePicker(container, 1);
-    await waitFakeTimer();
+      closePicker(container, 1);
+      await waitFakeTimer();
 
-    // The rejected range is discarded as a whole.
-    expect(startInputEle).toHaveValue('2026-06-15');
-    expect(endInputEle).toHaveValue('2026-06-20');
-    expect(onChange).not.toHaveBeenCalled();
-  });
+      // The rejected range is discarded as a whole.
+      expect(startInputEle).toHaveValue('2026-06-15');
+      expect(endInputEle).toHaveValue('2026-06-20');
+      expect(onChange).not.toHaveBeenCalled();
+    },
+  );
 });
