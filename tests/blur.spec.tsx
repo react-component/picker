@@ -107,7 +107,7 @@ describe('Picker.DiscardRejectedValue', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 
-  it('keep the rejected value when preserveInvalidOnBlur is set', async () => {
+  it('still discards the rejected value when preserveInvalidOnBlur is set', async () => {
     const onChange = jest.fn();
     const { container } = render(
       <DayPicker
@@ -130,8 +130,9 @@ describe('Picker.DiscardRejectedValue', () => {
     closePicker(container);
     await waitFakeTimer();
 
-    // `preserveInvalidOnBlur` promises the typed text is not modified on blur
-    expect(inputEle).toHaveValue('2026-03-15');
+    // The prop only covers text that cannot be parsed; a date rejected by
+    // `disabledDate` is discarded on blur either way.
+    expect(inputEle).toHaveValue('2026-06-15');
     expect(onChange).not.toHaveBeenCalled();
   });
 

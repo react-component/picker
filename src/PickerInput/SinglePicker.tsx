@@ -180,7 +180,6 @@ function Picker<DateType extends object = any>(
 
     // Format
     inputReadOnly,
-    preserveInvalidOnBlur,
 
     suffix,
     removeIcon,
@@ -345,7 +344,6 @@ function Picker<DateType extends object = any>(
     triggerFieldCalendarChange,
     flushFieldSubmit,
     resetFieldValue,
-    preserveInvalidOnBlur,
   );
 
   // Finalize the current interaction only after the popup is actually closed.

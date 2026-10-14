@@ -150,14 +150,6 @@ export default function useRangeValueChange<FieldValue = unknown>(
   triggerCalendarChange: TriggerCalendarChange<FieldValue>,
   flushSubmit: FlushSubmit,
   resetValue: ResetValue,
-  /**
-   * Keep the temporary value when a submit is rejected instead of discarding it.
-   * Consumers that promise "do not modify what the user typed on blur"
-   * (`preserveInvalidOnBlur`) pass `true` here.
-   * 提交被拒绝时保留临时值而不是丢弃它。明确承诺"blur 后不修改用户输入"的
-   * 调用方（`preserveInvalidOnBlur`）传 `true`。
-   */
-  preserveRejectedValue = false,
 ): UseRangeValueChangeReturn<FieldValue> {
   // ============================= State =============================
 
@@ -242,7 +234,7 @@ export default function useRangeValueChange<FieldValue = unknown>(
     // A rejected submit must not keep the temporary value, otherwise the
     // selector shows a value the committed value never accepted.
     // 提交被拒绝时不能保留临时值，否则 selector 会显示已提交值从未接受的内容。
-    if (accepted === false && !preserveRejectedValue) {
+    if (accepted === false) {
       resetValue();
     }
 

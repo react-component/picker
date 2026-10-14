@@ -217,7 +217,6 @@ function RangePicker<DateType extends object = any>(
 
     // Format
     inputReadOnly,
-    preserveInvalidOnBlur,
 
     suffix,
 
@@ -343,7 +342,6 @@ function RangePicker<DateType extends object = any>(
     triggerFieldCalendarChange,
     flushFieldSubmit,
     resetValue,
-    preserveInvalidOnBlur,
   );
 
   useFocusLock(rangeValueIndex, forceFocus, selectorRef, popupRef, triggerOpen);
