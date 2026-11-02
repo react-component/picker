@@ -20,6 +20,11 @@ const locale: Locale = {
   monthSelect: '选择月份',
   yearSelect: '选择年份',
   decadeSelect: '选择年代',
+  hourSelect: '选择时',
+  minuteSelect: '选择分',
+  secondSelect: '选择秒',
+  millisecondSelect: '选择毫秒',
+  meridiemSelect: '选择上午/下午',
 
   previousYear: '上一年',
   nextYear: '下一年',

@@ -60,7 +60,7 @@ function RangeSelector<DateType extends object = any>(
     id,
 
     prefix,
-    clearIcon,
+    clearConfig,
     suffix,
     separator = '~',
     activeIndex,
@@ -209,7 +209,9 @@ function RangeSelector<DateType extends object = any>(
 
   // ======================== Clear =========================
   const showClear =
-    isReactRenderable(clearIcon) && ((value[0] && !disabled[0]) || (value[1] && !disabled[1]));
+    !clearConfig.disabled &&
+    isReactRenderable(clearConfig.clearIcon) &&
+    ((value[0] && !disabled[0]) || (value[1] && !disabled[1]));
 
   // ======================= Disabled =======================
   const startAutoFocus = autoFocus && !disabled[0];
@@ -271,7 +273,14 @@ function RangeSelector<DateType extends object = any>(
         />
         <div className={`${prefixCls}-active-bar`} style={activeBarStyle} />
         <Icon icon={suffix} />
-        {showClear && <ClearIcon icon={clearIcon} onClear={onClear} />}
+        {showClear && (
+          <ClearIcon
+            icon={clearConfig.clearIcon}
+            tabIndex={clearConfig.tabIndex}
+            label={clearConfig.label}
+            onClear={onClear}
+          />
+        )}
       </div>
     </ResizeObserver>
   );

@@ -18,6 +18,11 @@ const locale: Locale = {
   monthSelect: 'Choose a month',
   yearSelect: 'Choose a year',
   decadeSelect: 'Choose a decade',
+  hourSelect: 'Select an hour',
+  minuteSelect: 'Select a minute',
+  secondSelect: 'Select a second',
+  millisecondSelect: 'Select a millisecond',
+  meridiemSelect: 'Select a meridiem',
 
   previousMonth: 'Previous month',
   nextMonth: 'Next month',

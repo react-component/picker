@@ -1,3 +1,4 @@
+import type { AllowClearConfig } from '@rc-component/util';
 import type { AlignType, BuildInPlacements } from '@rc-component/trigger';
 import type { GenerateConfig } from './generate';
 
@@ -71,6 +72,11 @@ export type Locale = {
   monthSelect: string;
   yearSelect: string;
   decadeSelect: string;
+  hourSelect?: string;
+  minuteSelect?: string;
+  secondSelect?: string;
+  millisecondSelect?: string;
+  meridiemSelect?: string;
 
   previousYear: string;
   nextYear: string;
@@ -374,11 +380,7 @@ export interface SharedPickerProps<DateType extends object = any>
   suffix?: React.ReactNode;
   /** @deprecated Please use `suffix` instead. */
   suffixIcon?: React.ReactNode;
-  allowClear?:
-    | boolean
-    | {
-        clearIcon?: React.ReactNode;
-      };
+  allowClear?: boolean | AllowClearConfig;
   onClear?: VoidFunction;
 
   /** @deprecated Please use `allowClear.clearIcon` instead */
@@ -496,7 +498,7 @@ export interface SelectorProps<DateType = any> extends SharedHTMLAttrs {
   picker: PickerMode;
 
   prefix?: React.ReactNode;
-  clearIcon?: React.ReactNode;
+  clearConfig: AllowClearConfig;
   suffix?: React.ReactNode;
   /** @deprecated Please use `suffix` instead. */
   suffixIcon?: React.ReactNode;
