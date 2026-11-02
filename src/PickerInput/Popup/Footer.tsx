@@ -81,7 +81,7 @@ export default function Footer(props: FooterProps) {
     }
   };
 
-  const NowButton = nowButton || button;
+  const NowButton = nowButton || 'button';
   const OkButton = okButton || button;
 
   const presetNode = showNow && (

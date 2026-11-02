@@ -165,7 +165,7 @@ export default function useFilledProps<
 
     warning(
       !components.button,
-      `'components.button' is deprecated. Please use 'components.nowButton' and 'components.okButton' instead.`,
+      `'components.button' is deprecated. Please use 'components.okButton' instead.`,
     );
   }
 

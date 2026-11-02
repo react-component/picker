@@ -275,7 +275,7 @@ export interface SharedPanelProps<DateType extends object = any> {
 
 export type Components<DateType extends object = any> = Partial<
   Record<InternalMode, React.ComponentType<SharedPanelProps<DateType>>> & {
-    /** @deprecated Please use `nowButton` and `okButton` instead. Fallback for both when set. */
+    /** @deprecated Please use `okButton` instead. Fallback when set. */
     button?: React.ComponentType<any> | string;
     nowButton?: React.ComponentType<any> | string;
     okButton?: React.ComponentType<any> | string;

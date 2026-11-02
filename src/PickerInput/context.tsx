@@ -9,7 +9,7 @@ export interface PickerContextProps<DateType = any> {
   generateConfig: GenerateConfig<DateType>;
   /**
    * Customize button component.
-   * @deprecated Please use `nowButton` and `okButton` instead.
+   * @deprecated Please use `okButton` instead.
    */
   button?: Components['button'];
   /** Customize the `now` / `today` button component */

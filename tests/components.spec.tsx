@@ -58,33 +58,58 @@ describe('Picker.Components', () => {
         />,
       );
 
-      // Fallback for both 'nowButton' and 'okButton'
-      expect(document.querySelector('.rc-picker-footer').querySelectorAll('h1')).toHaveLength(2);
-      expect(document.querySelector('.rc-picker-now').tagName).toBe('H1');
+      // Fallback 'okButton'
+      expect(document.querySelector('.rc-picker-footer').querySelectorAll('h1')).toHaveLength(1);
       expect(document.querySelector('.rc-picker-ok').tagName).toBe('H1');
 
       // Legacy 'button' should not receive the native 'type' attribute
       expect(document.querySelector('.rc-picker-ok')).not.toHaveAttribute('type');
 
+      // Legacy 'button' should not affect 'nowButton'
+      expect(document.querySelector('.rc-picker-now').tagName).toBe('BUTTON');
+      expect(document.querySelector('.rc-picker-now')).toHaveAttribute('type', 'button');
+
       expect(errorSpy).toHaveBeenCalledWith(
-        "Warning: 'components.button' is deprecated. Please use 'components.nowButton' and 'components.okButton' instead.",
+        "Warning: 'components.button' is deprecated. Please use 'components.okButton' instead.",
       );
 
       errorSpy.mockRestore();
     });
 
-    it(`${name} 'nowButton' and 'okButton' override legacy 'button'`, () => {
+    it(`${name} 'nowButton'`, () => {
+      const Component = component as any;
+      const NowButton: React.FC<any> = (props) => <h2 {...props} />;
+
+      render(
+        <Component
+          components={{
+            nowButton: NowButton,
+          }}
+          picker="time"
+          showNow
+          open
+        />,
+      );
+
+      expect(document.querySelector('.rc-picker-now').tagName).toBe('H2');
+
+      // Custom 'nowButton' should not receive the native 'type' attribute
+      expect(document.querySelector('.rc-picker-now')).not.toHaveAttribute('type');
+
+      // 'okButton' falls back to the native button
+      expect(document.querySelector('.rc-picker-ok').tagName).toBe('BUTTON');
+    });
+
+    it(`${name} 'okButton' overrides legacy 'button'`, () => {
       const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
       const Component = component as any;
       const Legacy: React.FC<any> = (props) => <h1 {...props} />;
-      const NowButton: React.FC<any> = (props) => <h2 {...props} />;
       const OkButton: React.FC<any> = (props) => <h3 {...props} />;
 
       render(
         <Component
           components={{
             button: Legacy,
-            nowButton: NowButton,
             okButton: OkButton,
           }}
           picker="time"
@@ -94,7 +119,6 @@ describe('Picker.Components', () => {
       );
 
       expect(document.querySelector('.rc-picker-footer').querySelectorAll('h1')).toHaveLength(0);
-      expect(document.querySelector('.rc-picker-now').tagName).toBe('H2');
       expect(document.querySelector('.rc-picker-ok').tagName).toBe('H3');
 
       errorSpy.mockRestore();
