@@ -15,6 +15,13 @@ import {
 
 const fakeTime = getDay('1990-09-03 00:00:00').valueOf();
 
+function getHourTexts() {
+  return Array.from(
+    document.querySelector('.rc-picker-time-panel-column').querySelectorAll('li'),
+    (cell) => cell.textContent,
+  );
+}
+
 describe('Picker.DisabledTime', () => {
   beforeEach(() => {
     resetWarned();
@@ -44,6 +51,39 @@ describe('Picker.DisabledTime', () => {
     ).toHaveLength(59);
   });
 
+  it('uses current time for disabledTime on TimePicker', () => {
+    jest.setSystemTime(getDay('1990-09-03 12:00:00').valueOf());
+    const disabledTime = jest.fn((now: Dayjs) => ({
+      disabledHours: () => [now.hour()],
+    }));
+
+    render(<DayPicker open picker="time" hideDisabledOptions disabledTime={disabledTime} />);
+
+    expect(getHourTexts()).not.toContain('12');
+    expect(getHourTexts()).toContain('14');
+
+    const callCountBeforeSelect = disabledTime.mock.calls.length;
+    selectCell('14');
+
+    expect(disabledTime.mock.calls.length).toBeGreaterThan(callCountBeforeSelect);
+    disabledTime.mock.calls.forEach(([now]) => {
+      expect(now.hour()).toBe(12);
+    });
+    expect(getHourTexts()).not.toContain('12');
+    expect(getHourTexts()).toContain('14');
+  });
+
+  it('uses selected date for disabledTime on DatePicker with showTime', () => {
+    const disabledTime = jest.fn((date: Dayjs) => ({
+      disabledHours: () => [date.hour() + 1],
+    }));
+    const selectedDate = getDay('1989-11-28 14:00:00');
+
+    render(<DayPicker open showTime defaultValue={selectedDate} disabledTime={disabledTime} />);
+
+    expect(disabledTime.mock.calls.some(([date]) => date.isSame(selectedDate, 'day'))).toBeTruthy();
+  });
+
   it('disabledTime on TimeRangePicker', () => {
     const { container } = render(
       <DayRangePicker
@@ -69,6 +109,32 @@ describe('Picker.DisabledTime', () => {
         'ul.rc-picker-time-panel-column li.rc-picker-time-panel-cell-disabled',
       ),
     ).toHaveLength(2);
+  });
+
+  it('uses current time for disabledTime on TimeRangePicker', () => {
+    jest.setSystemTime(getDay('1990-09-03 12:00:00').valueOf());
+    const disabledTime = jest.fn((now: Dayjs) => ({
+      disabledHours: () => [now.hour()],
+    }));
+
+    const { container } = render(
+      <DayRangePicker picker="time" hideDisabledOptions disabledTime={disabledTime} />,
+    );
+
+    openPicker(container);
+
+    expect(getHourTexts()).not.toContain('12');
+    expect(getHourTexts()).toContain('14');
+
+    const callCountBeforeSelect = disabledTime.mock.calls.length;
+    selectCell('14');
+
+    expect(disabledTime.mock.calls.length).toBeGreaterThan(callCountBeforeSelect);
+    disabledTime.mock.calls.forEach(([now]) => {
+      expect(now.hour()).toBe(12);
+    });
+    expect(getHourTexts()).not.toContain('12');
+    expect(getHourTexts()).toContain('14');
   });
 
   it('disabledTime', async () => {
