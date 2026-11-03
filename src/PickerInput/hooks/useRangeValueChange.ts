@@ -43,8 +43,9 @@ export type TriggerCalendarChange<FieldValue> = (index: number, value: FieldValu
 /**
  * Flush one field and optionally emit the final change.
  * 提交一个 field，并按需触发最终 change。
+ * Returns `false` when the final change is rejected.
  */
-export type FlushSubmit = (index: number, needTriggerChange: boolean) => void;
+export type FlushSubmit = (index: number, needTriggerChange: boolean) => boolean | void;
 
 /**
  * Reset one field, or all fields when index is omitted.
@@ -220,19 +221,26 @@ export default function useRangeValueChange<FieldValue = unknown>(
   // Index and focus transitions are handled by the resolved action.
   // 提交当前 field，并返回本轮是否已经完成。index 与焦点切换由解析后的
   // action 负责。
-  const submitField = (index: number) => {
+  const submitField = (index: number, closing = false) => {
     recordTriggeredField(index);
 
     // Trigger final change after every field has participated once.
     // 所有 field 都参与过一次后，触发最终 change。
-    const allFieldsTriggered = triggeredFieldsRef.current.length >= fieldCount;
-    flushSubmit(index, allFieldsTriggered);
+    const roundFinished = triggeredFieldsRef.current.length >= fieldCount;
+    const accepted = flushSubmit(index, roundFinished);
 
-    if (allFieldsTriggered) {
+    // A submit rejected on close must not keep the temporary value, otherwise
+    // the selector shows a value that was never accepted. Other submits (e.g. a
+    // field switch) keep the draft for further correction.
+    if (closing && accepted === false) {
+      resetValue();
+    }
+
+    if (roundFinished) {
       reset();
     }
 
-    return allFieldsTriggered;
+    return roundFinished;
   };
 
   // ============================= Resolve ===========================
@@ -425,15 +433,15 @@ export default function useRangeValueChange<FieldValue = unknown>(
             source === 'panel-final' ||
             (source === 'popupClose' && !isLastInputRef.current);
 
-          const allFieldsTriggered = submitField(actionIndex);
+          const roundFinished = submitField(actionIndex, source === 'popupClose');
 
-          if (allFieldsTriggered && source === 'field-switch') {
+          if (roundFinished && source === 'field-switch') {
             // The focus switch finishes the previous round and also starts a
             // new round from its target field.
             // 本次 focus 切换既结束上一轮，也以目标 field 开始新一轮。
             setCurrentIndex(index);
             setForceFocus(false);
-          } else if (!allFieldsTriggered) {
+          } else if (!roundFinished) {
             const nextIndex = (actionIndex + 1) % fieldCount;
             setCurrentIndex(nextIndex);
             setForceFocus(forceFocus);
