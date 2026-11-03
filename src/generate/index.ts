@@ -39,6 +39,8 @@ export type GenerateConfig<DateType> = {
     parse: (locale: string, text: string, formats: string[]) => DateType | null;
 
     /** A proxy for getting locale with moment or other locale library */
+    getWeekDays?: (locale: string) => string[];
+    /** A proxy for getting locale with moment or other locale library */
     getShortWeekDays?: (locale: string) => string[];
     /** A proxy for getting locale with moment or other locale library */
     getShortMonths?: (locale: string) => string[];

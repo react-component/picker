@@ -35,6 +35,17 @@ export default function YearPanel<DateType extends object = any>(
   const endYearDate = getEndYear(pickerValue);
 
   const baseDate = generateConfig.addYear(startYearDate, -1);
+  const startYearLabel = formatValue(startYearDate, {
+    locale,
+    format: locale.yearFormat,
+    generateConfig,
+  });
+  const endYearLabel = formatValue(endYearDate, {
+    locale,
+    format: locale.yearFormat,
+    generateConfig,
+  });
+  const decadeLabel = `${startYearLabel}-${endYearLabel}`;
 
   // ========================= Cells ==========================
   const getCellDate = (date: DateType, offset: number) => {
@@ -56,6 +67,13 @@ export default function YearPanel<DateType extends object = any>(
         isSameYear(generateConfig, date, endYearDate) ||
         isInRange(generateConfig, startYearDate, endYearDate, date),
     };
+  };
+
+  const getCellAttributes = (date: DateType): React.TdHTMLAttributes<HTMLTableCellElement> => {
+    if (isSameYear(generateConfig, date, generateConfig.getNow())) {
+      return { 'aria-current': 'date' };
+    }
+    return {};
   };
 
   // ======================== Disabled ========================
@@ -81,20 +99,9 @@ export default function YearPanel<DateType extends object = any>(
       onClick={() => {
         onModeChange('decade');
       }}
-      tabIndex={-1}
       className={`${prefixCls}-decade-btn`}
     >
-      {formatValue(startYearDate, {
-        locale,
-        format: locale.yearFormat,
-        generateConfig,
-      })}
-      -
-      {formatValue(endYearDate, {
-        locale,
-        format: locale.yearFormat,
-        generateConfig,
-      })}
+      {decadeLabel}
     </button>
   );
 
@@ -109,6 +116,7 @@ export default function YearPanel<DateType extends object = any>(
           // Limitation
           getStart={getStartYear}
           getEnd={getEndYear}
+          labels={{ superPrev: locale.previousDecade, superNext: locale.nextDecade }}
         >
           {yearNode}
         </PanelHeader>
@@ -121,10 +129,12 @@ export default function YearPanel<DateType extends object = any>(
           colNum={3}
           rowNum={4}
           baseDate={baseDate}
+          tableLabel={decadeLabel}
           // Body
           getCellDate={getCellDate}
           getCellText={getCellText}
           getCellClassName={getCellClassName}
+          getCellAttributes={getCellAttributes}
         />
       </div>
     </PanelContext.Provider>
