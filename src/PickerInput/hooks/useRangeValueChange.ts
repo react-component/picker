@@ -21,7 +21,6 @@ export type RangeValueChangeAction =
   | 'modify'
   | 'submitCurrent'
   | 'switchNext'
-  | 'finish'
   | 'abort'
   | 'resetCurrent'
   | 'resetCurrentAndSwitchNext'
@@ -43,8 +42,9 @@ export type TriggerCalendarChange<FieldValue> = (index: number, value: FieldValu
 /**
  * Flush one field and optionally emit the final change.
  * 提交一个 field，并按需触发最终 change。
+ * Returns `false` when the final change is rejected.
  */
-export type FlushSubmit = (index: number, needTriggerChange: boolean) => void;
+export type FlushSubmit = (index: number, needTriggerChange: boolean) => boolean | void;
 
 /**
  * Reset one field, or all fields when index is omitted.
@@ -111,13 +111,12 @@ interface TriggeredField {
  *   `remove` 会明确提交删除后的值，即使 field 不允许为空；`panel-final`
  *   仅在无需确认时推进；`keyboard-submit-weak` 只做局部提交而不推进；
  *   `keyboard-submit` 与 `confirm` 仅在有值或允许空值时推进。
- * - `popupClose` finishes an untouched interaction. Without confirmation it
- *   submits a valid field; with confirmation it submits only after every field
- *   has participated, otherwise it resets all temporary values. A modified
- *   allow-empty field is reset before the final submit.
- *   `popupClose` 会直接结束未修改的交互。无需确认时提交有效 field；需要确认时
- *   仅在所有 field 都参与过后提交，否则重置全部临时值。当前 field 已修改且
- *   允许为空时，会先重置当前值再完成提交。
+ * - `popupClose` resets an untouched interaction. Without confirmation it
+ *   submits the current field: right after typing it ends the editing with a
+ *   final submit, after a panel operation it advances to the next field. With
+ *   confirmation it submits only after every field has participated,
+ *   otherwise it resets all temporary values. A modified allow-empty field is
+ *   reset before the final submit. A submit rejected on close is discarded.
  *
  * Action execution / Action 执行：
  *
@@ -127,8 +126,6 @@ interface TriggeredField {
  *   局部提交当前 field，但不推进。
  * - `switchNext`: submit the current field and advance to the next field.
  *   提交当前 field 并推进到下一个 field。
- * - `finish`: end an interaction in which no field was modified without
- *   resetting values. / 结束所有 field 均未修改的交互，不重置任何值。
  * - `abort`: stop without changing any state.
  *   直接短路，不改变任何状态。
  * - `resetCurrent`: discard only the current field.
@@ -220,19 +217,29 @@ export default function useRangeValueChange<FieldValue = unknown>(
   // Index and focus transitions are handled by the resolved action.
   // 提交当前 field，并返回本轮是否已经完成。index 与焦点切换由解析后的
   // action 负责。
-  const submitField = (index: number) => {
+  const submitField = (index: number, closing = false) => {
     recordTriggeredField(index);
 
     // Trigger final change after every field has participated once.
     // 所有 field 都参与过一次后，触发最终 change。
-    const allFieldsTriggered = triggeredFieldsRef.current.length >= fieldCount;
-    flushSubmit(index, allFieldsTriggered);
+    // Closing the popup right after typing also ends the editing, while a close
+    // after a panel operation moves on to the next field.
+    const roundFinished =
+      triggeredFieldsRef.current.length >= fieldCount || (closing && isLastInputRef.current);
+    const accepted = flushSubmit(index, roundFinished);
 
-    if (allFieldsTriggered) {
+    // A submit rejected on close must not keep the temporary value, otherwise
+    // the selector shows a value that was never accepted. Other submits (e.g. a
+    // field switch) keep the draft for further correction.
+    if (closing && accepted === false) {
+      resetValue();
+    }
+
+    if (roundFinished) {
       reset();
     }
 
-    return allFieldsTriggered;
+    return roundFinished;
   };
 
   // ============================= Resolve ===========================
@@ -249,11 +256,15 @@ export default function useRangeValueChange<FieldValue = unknown>(
       return 'resetAll';
     }
 
+    // Closing the popup without any modification in this round discards the
+    // drafts left behind, e.g. by a controlled value or a rejected field switch.
+    // No submit happens here, so nothing changes when no draft is left.
+    if (source === 'popupClose' && !triggeredFieldsRef.current.some((field) => field.modified)) {
+      return 'resetAll';
+    }
+
     if (currentIndex === null) {
-      // Closing the popup after the interaction has completed still needs to
-      // discard any temporary CalendarValue left by a controlled value.
-      // 一轮交互结束后关闭 popup，仍需清理受控值留下的临时 CalendarValue。
-      return source === 'popupClose' ? 'resetAll' : 'abort';
+      return 'abort';
     }
 
     const currentValue = value === undefined ? getCalendarValue()[currentIndex] : value;
@@ -303,12 +314,6 @@ export default function useRangeValueChange<FieldValue = unknown>(
     }
 
     if (source === 'popupClose') {
-      const interactionModified = triggeredFieldsRef.current.some((field) => field.modified);
-
-      if (!interactionModified) {
-        return 'finish';
-      }
-
       if (needConfirm) {
         const currentModified = triggeredFieldsRef.current.some(
           (field) => field.index === currentIndex && field.modified,
@@ -425,15 +430,15 @@ export default function useRangeValueChange<FieldValue = unknown>(
             source === 'panel-final' ||
             (source === 'popupClose' && !isLastInputRef.current);
 
-          const allFieldsTriggered = submitField(actionIndex);
+          const roundFinished = submitField(actionIndex, source === 'popupClose');
 
-          if (allFieldsTriggered && source === 'field-switch') {
+          if (roundFinished && source === 'field-switch') {
             // The focus switch finishes the previous round and also starts a
             // new round from its target field.
             // 本次 focus 切换既结束上一轮，也以目标 field 开始新一轮。
             setCurrentIndex(index);
             setForceFocus(false);
-          } else if (!allFieldsTriggered) {
+          } else if (!roundFinished) {
             const nextIndex = (actionIndex + 1) % fieldCount;
             setCurrentIndex(nextIndex);
             setForceFocus(forceFocus);
@@ -444,10 +449,6 @@ export default function useRangeValueChange<FieldValue = unknown>(
           }
           break;
         }
-
-        case 'finish':
-          reset();
-          break;
 
         case 'resetCurrent':
           resetValue(actionIndex);

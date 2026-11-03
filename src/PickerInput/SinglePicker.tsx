@@ -324,8 +324,9 @@ function Picker<DateType extends object = any>(
 
   const flushFieldSubmit = useEvent((_index: number, needTriggerChange: boolean) => {
     if (needTriggerChange) {
-      triggerSubmitChange(getCalendarValue());
+      const accepted = triggerSubmitChange(getCalendarValue());
       triggerOpen(false, { force: true });
+      return accepted;
     }
   });
 
