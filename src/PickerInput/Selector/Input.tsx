@@ -33,6 +33,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   showActiveCls?: boolean;
   suffix?: React.ReactNode;
   value?: string;
+  preserveInputOnValueChange?: (inputValue: string, value: string) => boolean;
   onChange: (value: string) => void;
   onSubmit: VoidFunction;
   /** Meaning current is from the hover cell getting the placeholder text */
@@ -65,6 +66,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     preserveInvalidOnBlur = false,
     invalid,
     clearIcon,
+    preserveInputOnValueChange,
     // Pass to input
     ...restProps
   } = props;
@@ -81,16 +83,28 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   // ======================== Value =========================
   const [focused, setFocused] = React.useState(false);
   const [internalInputValue, setInputValue] = React.useState<string>(value);
+  const inputValueRef = React.useRef(value);
   const [focusCellText, setFocusCellText] = React.useState<string>('');
   const [focusCellIndex, setFocusCellIndex] = React.useState<number>(null);
   const [forceSelectionSyncMark, forceSelectionSync] = React.useState<object>(null);
 
   const inputValue = internalInputValue || '';
+  const updateInputValue = useEvent((nextValue: string) => {
+    inputValueRef.current = nextValue;
+    setInputValue(nextValue);
+  });
+
+  const shouldPreserveInput = useEvent(
+    (nextValue: string) =>
+      (focused || active) && preserveInputOnValueChange?.(inputValueRef.current || '', nextValue),
+  );
 
   // Sync value if needed
   React.useEffect(() => {
-    setInputValue(value);
-  }, [value]);
+    if (!shouldPreserveInput(value)) {
+      updateInputValue(value);
+    }
+  }, [value, shouldPreserveInput, updateInputValue]);
 
   // ========================= Refs =========================
   const holderRef = React.useRef<HTMLDivElement>(null);
@@ -133,10 +147,11 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
    * Triggered by paste, keyDown and focus to show format
    */
   const triggerInputChange = useEvent((text: string) => {
+    inputValueRef.current = text;
     if (validateFormat(text)) {
       onChange(text);
     }
-    setInputValue(text);
+    updateInputValue(text);
     onModify(text);
   });
 
@@ -147,7 +162,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
       const text = event.target.value;
 
       onModify(text);
-      setInputValue(text);
+      updateInputValue(text);
       onChange(text);
     }
   };
@@ -211,7 +226,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   // Check if blur need reset input value
   useLockEffect(active, () => {
     if (!active && !preserveInvalidOnBlur) {
-      setInputValue(value);
+      updateInputValue(value);
     }
   });
 
