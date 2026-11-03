@@ -343,4 +343,154 @@ describe('Picker.DiscardRejectedValue', () => {
     expect(inputEle).toHaveValue('2026-03-15');
     expect(onChange).not.toHaveBeenCalled();
   });
+
+  it('reverts a rejected start when only the start is edited before blur', async () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker
+        format="YYYY-MM-DD"
+        defaultValue={[getDay('2026-06-15'), getDay('2026-06-20')]}
+        disabledDate={(date) => date.isBefore(getDay('2026-06-01'), 'day')}
+        onChange={onChange}
+      />,
+    );
+
+    const [startInputEle, endInputEle] = container.querySelectorAll('input');
+
+    openPicker(container);
+    fireEvent.change(startInputEle, {
+      target: {
+        value: '2026-03-15',
+      },
+    });
+
+    closePicker(container);
+    await waitFakeTimer();
+
+    expect(startInputEle).toHaveValue('2026-06-15');
+    expect(endInputEle).toHaveValue('2026-06-20');
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('commits the edited start when only the start is edited before blur', async () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker
+        format="YYYY-MM-DD"
+        defaultValue={[getDay('2026-06-15'), getDay('2026-06-20')]}
+        onChange={onChange}
+      />,
+    );
+
+    const [startInputEle, endInputEle] = container.querySelectorAll('input');
+
+    openPicker(container);
+    fireEvent.change(startInputEle, {
+      target: {
+        value: '2026-06-10',
+      },
+    });
+
+    closePicker(container);
+    await waitFakeTimer();
+
+    expect(startInputEle).toHaveValue('2026-06-10');
+    expect(endInputEle).toHaveValue('2026-06-20');
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange.mock.calls[0][1]).toEqual(['2026-06-10', '2026-06-20']);
+  });
+
+  it('commits the reordered range when only the start is edited before blur', async () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker
+        format="YYYY-MM-DD"
+        defaultValue={[getDay('2026-06-15'), getDay('2026-06-20')]}
+        onChange={onChange}
+      />,
+    );
+
+    const [startInputEle, endInputEle] = container.querySelectorAll('input');
+
+    openPicker(container);
+    fireEvent.change(startInputEle, {
+      target: {
+        value: '2026-06-25',
+      },
+    });
+
+    closePicker(container);
+    await waitFakeTimer();
+
+    expect(startInputEle).toHaveValue('2026-06-20');
+    expect(endInputEle).toHaveValue('2026-06-25');
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange.mock.calls[0][1]).toEqual(['2026-06-20', '2026-06-25']);
+  });
+
+  it('reverts a draft rejected by a field switch when the popup closes untouched', async () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker
+        format="YYYY-MM-DD"
+        defaultValue={[getDay('2026-06-15'), getDay('2026-06-20')]}
+        disabledDate={(date) => date.isBefore(getDay('2026-06-01'), 'day')}
+        onChange={onChange}
+      />,
+    );
+
+    const [startInputEle, endInputEle] = container.querySelectorAll('input');
+
+    openPicker(container);
+    fireEvent.change(startInputEle, {
+      target: {
+        value: '2026-03-15',
+      },
+    });
+
+    openPicker(container, 1);
+    fireEvent.change(endInputEle, {
+      target: {
+        value: '2026-06-25',
+      },
+    });
+
+    // The rejected range is kept while switching back to correct it.
+    triggerFocus(startInputEle);
+    await waitFakeTimer();
+    expect(startInputEle).toHaveValue('2026-03-15');
+
+    // Closing without any further change ends the editing.
+    closePicker(container);
+    await waitFakeTimer();
+
+    expect(startInputEle).toHaveValue('2026-06-15');
+    expect(endInputEle).toHaveValue('2026-06-20');
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('does not touch the value when the popup closes without any change', async () => {
+    const onChange = jest.fn();
+    const onCalendarChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker
+        format="YYYY-MM-DD"
+        defaultValue={[getDay('2026-06-15'), getDay('2026-06-20')]}
+        disabledDate={(date) => date.isBefore(getDay('2026-06-01'), 'day')}
+        onChange={onChange}
+        onCalendarChange={onCalendarChange}
+      />,
+    );
+
+    const [startInputEle, endInputEle] = container.querySelectorAll('input');
+
+    openPicker(container);
+    closePicker(container);
+    await waitFakeTimer();
+
+    expect(startInputEle).toHaveValue('2026-06-15');
+    expect(endInputEle).toHaveValue('2026-06-20');
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onCalendarChange).not.toHaveBeenCalled();
+  });
 });
