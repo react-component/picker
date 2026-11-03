@@ -187,7 +187,7 @@ export function clickButton(type: string) {
 }
 
 export function confirmOK() {
-  fireEvent.click(document.querySelector('.rc-picker-ok > *'));
+  fireEvent.click(document.querySelector('.rc-picker-ok'));
 }
 
 export function clearValue() {
