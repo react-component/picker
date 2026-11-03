@@ -132,7 +132,12 @@ function SingleSelector<DateType extends object = any>(
   const rootProps = useRootProps(restProps);
 
   // ======================== Change ========================
-  const onSingleChange = (date: DateType) => {
+  const onSingleChange = (date: DateType | null) => {
+    if (!date) {
+      onClear();
+      return;
+    }
+
     onChange([date], 'input');
   };
 
