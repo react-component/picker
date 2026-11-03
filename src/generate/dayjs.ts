@@ -39,6 +39,7 @@ const localeMap: IlocaleMapObject = {
   // el_GR:
   en_GB: 'en-gb',
   en_US: 'en',
+  es_US: 'es-us',
   // es_ES:
   // et_EE:
   // fa_IR:

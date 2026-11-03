@@ -31,7 +31,19 @@ import {
 import * as locales from 'date-fns/locale';
 import type { GenerateConfig } from '.';
 
+// date-fns has no es-US locale and its `es` locale starts the week on Monday.
+// The `es_US` picker locale means Spanish with the US week start, so keep the
+// Spanish formatting and override the first day of the week.
+const esUS: Locale = {
+  ...locales.es,
+  options: { ...locales.es.options, weekStartsOn: 0 },
+};
+
 const getLocale = (locale: string): Locale => {
+  if (locale === 'es_US') {
+    return esUS;
+  }
+
   return (
     locales[locale] || locales[locale.replace(/_/g, '')] || locales[locale.replace(/_.*$/g, '')]
   );

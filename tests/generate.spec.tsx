@@ -9,6 +9,7 @@ import { getMoment } from './util/commonUtil';
 import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/ko';
 import 'dayjs/locale/fr';
+import 'dayjs/locale/es-us';
 import type { GenerateConfig } from '../src/generate';
 
 describe('Picker.Generate', () => {
@@ -413,5 +414,26 @@ describe('Generate:date-fns', () => {
     ]);
     expect(dateFnsGenerateConfig.getHour(parsed)).toEqual(14);
     expect(dateFnsGenerateConfig.getMinute(parsed)).toEqual(30);
+  });
+});
+
+
+describe('Generate: es_US', () => {
+  it('dayjs keeps the US week start and formats in Spanish', () => {
+    expect(dayjsGenerateConfig.locale.getWeekFirstDay('es_US')).toEqual(0);
+
+    const date = dayjsGenerateConfig.locale.parse('es_US', '2018-01-15', ['YYYY-MM-DD'])!;
+
+    expect(dayjsGenerateConfig.locale.format('es_US', date, 'MMMM')).toEqual('enero');
+    expect(dayjsGenerateConfig.locale.format('es_US', date, 'dddd')).toEqual('lunes');
+  });
+
+  it('date-fns keeps the US week start and formats in Spanish', () => {
+    expect(dateFnsGenerateConfig.locale.getWeekFirstDay('es_US')).toEqual(0);
+
+    const date = new Date(2018, 0, 15);
+
+    expect(dateFnsGenerateConfig.locale.format('es_US', date, 'MMMM')).toEqual('enero');
+    expect(dateFnsGenerateConfig.locale.format('es_US', date, 'EEEE')).toEqual('lunes');
   });
 });
