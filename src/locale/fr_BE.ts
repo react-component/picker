@@ -13,7 +13,7 @@ const locale: Locale = {
   month: 'Mois',
   year: 'Année',
   timeSelect: "Sélectionner l'heure",
-  dateSelect: "Sélectionner l'heure",
+  dateSelect: 'Sélectionner la date',
   monthSelect: 'Choisissez un mois',
   yearSelect: 'Choisissez une année',
   decadeSelect: 'Choisissez une décennie',
