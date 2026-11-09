@@ -65,3 +65,48 @@ describe('Picker.ChangeOnBlur', () => {
     expect(endInputEle).toHaveValue('no valid 2');
   });
 });
+
+describe.each([
+  ['Picker', DayPicker, 0],
+  ['RangePicker start', DayRangePicker, 0],
+  ['RangePicker end', DayRangePicker, 1],
+] as const)('%s with Activity', (_name, Picker, inputIndex) => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
+  });
+
+  it.each(['outside', 'null'])(
+    'handles a delayed blur to %s after hiding and can reopen after restoring',
+    async (target) => {
+      const onBlur = jest.fn();
+      const onOpenChange = jest.fn();
+      const renderPicker = (mode: 'visible' | 'hidden') => (
+        <React.Activity mode={mode}>
+          <Picker onBlur={onBlur} onOpenChange={onOpenChange} />
+        </React.Activity>
+      );
+      const { container, rerender } = render(renderPicker('visible'));
+      const input = container.querySelectorAll('input')[inputIndex];
+
+      openPicker(container, inputIndex);
+      expect(onOpenChange).toHaveBeenLastCalledWith(true);
+
+      rerender(renderPicker('hidden'));
+      // A native blur can arrive after Activity has detached the selector ref.
+      fireEvent.blur(input, { relatedTarget: target === 'outside' ? document.body : null });
+      await waitFakeTimer();
+      expect(onBlur).toHaveBeenCalledTimes(1);
+      expect(onOpenChange).toHaveBeenLastCalledWith(false);
+
+      rerender(renderPicker('visible'));
+      expect(container.querySelectorAll('input')[inputIndex]).toBe(input);
+      openPicker(container, inputIndex);
+      expect(onOpenChange).toHaveBeenLastCalledWith(true);
+    },
+  );
+});
