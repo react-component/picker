@@ -493,4 +493,39 @@ describe('Picker.DiscardRejectedValue', () => {
     expect(onChange).not.toHaveBeenCalled();
     expect(onCalendarChange).not.toHaveBeenCalled();
   });
+
+  it('keeps the valid start of an unfinished range on blur', async () => {
+    const onChange = jest.fn();
+    const { container } = render(<DayRangePicker format="YYYY-MM-DD" onChange={onChange} />);
+
+    const [startInputEle, endInputEle] = container.querySelectorAll('input');
+
+    openPicker(container);
+    fireEvent.change(startInputEle, {
+      target: {
+        value: '2026-06-15',
+      },
+    });
+
+    closePicker(container);
+    await waitFakeTimer();
+
+    // The required end is still empty, so the editing is not finished yet.
+    expect(startInputEle).toHaveValue('2026-06-15');
+    expect(endInputEle).toHaveValue('');
+    expect(onChange).not.toHaveBeenCalled();
+
+    openPicker(container, 1);
+    fireEvent.change(endInputEle, {
+      target: {
+        value: '2026-06-20',
+      },
+    });
+
+    closePicker(container, 1);
+    await waitFakeTimer();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange.mock.calls[0][1]).toEqual(['2026-06-15', '2026-06-20']);
+  });
 });

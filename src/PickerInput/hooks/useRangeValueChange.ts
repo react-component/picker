@@ -113,7 +113,8 @@ interface TriggeredField {
  *   `keyboard-submit` 与 `confirm` 仅在有值或允许空值时推进。
  * - `popupClose` resets an untouched interaction. Without confirmation it
  *   submits the current field: right after typing it ends the editing with a
- *   final submit, after a panel operation it advances to the next field. With
+ *   final submit unless a required field is still empty, after a panel
+ *   operation it advances to the next field. With
  *   confirmation it submits only after every field has participated,
  *   otherwise it resets all temporary values. A modified allow-empty field is
  *   reset before the final submit. A submit rejected on close is discarded.
@@ -223,9 +224,15 @@ export default function useRangeValueChange<FieldValue = unknown>(
     // Trigger final change after every field has participated once.
     // 所有 field 都参与过一次后，触发最终 change。
     // Closing the popup right after typing also ends the editing, while a close
-    // after a panel operation moves on to the next field.
+    // after a panel operation moves on to the next field. A range with an empty
+    // required field is not finished yet, so its draft is kept.
+    const filled = getCalendarValue().every(
+      (fieldValue, fieldIndex) =>
+        (fieldValue !== null && fieldValue !== undefined) || allowEmpty[fieldIndex],
+    );
     const roundFinished =
-      triggeredFieldsRef.current.length >= fieldCount || (closing && isLastInputRef.current);
+      triggeredFieldsRef.current.length >= fieldCount ||
+      (closing && isLastInputRef.current && filled);
     const accepted = flushSubmit(index, roundFinished);
 
     // A submit rejected on close must not keep the temporary value, otherwise
