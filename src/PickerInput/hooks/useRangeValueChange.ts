@@ -378,9 +378,15 @@ export default function useRangeValueChange<FieldValue = unknown>(
     (index: number, source: RangeValueChangeSource, value?: FieldValue) => {
       let currentIndex = getCurrentIndex();
 
-      // Popup close consumes the previous update type instead of replacing it.
-      // popup 关闭消费上一次更新类型，自身不覆盖该标记。
-      if (source !== 'popupClose') {
+      // Only a value change updates the update type. Popup close, Tab and other
+      // submits consume it instead of replacing it.
+      // 只有修改值的操作会更新该标记；popup 关闭、Tab 等提交操作只消费它。
+      if (
+        source === 'input' ||
+        source === 'remove' ||
+        source === 'panel-intermediate' ||
+        source === 'panel-final'
+      ) {
         isLastInputRef.current = source === 'input';
       }
 

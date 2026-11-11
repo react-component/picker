@@ -528,4 +528,35 @@ describe('Picker.DiscardRejectedValue', () => {
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange.mock.calls[0][1]).toEqual(['2026-06-15', '2026-06-20']);
   });
+
+  it('reverts a rejected end when leaving with Tab', async () => {
+    const onChange = jest.fn();
+    const { container } = render(
+      <DayRangePicker
+        format="YYYY-MM-DD"
+        defaultValue={[getDay('2026-06-15'), getDay('2026-06-20')]}
+        disabledDate={(date) => date.isAfter(getDay('2026-06-30'), 'day')}
+        onChange={onChange}
+      />,
+    );
+
+    const [startInputEle, endInputEle] = container.querySelectorAll('input');
+
+    openPicker(container, 1);
+    fireEvent.change(endInputEle, {
+      target: {
+        value: '2026-07-05',
+      },
+    });
+
+    fireEvent.keyDown(endInputEle, {
+      key: 'Tab',
+    });
+    closePicker(container, 1);
+    await waitFakeTimer();
+
+    expect(startInputEle).toHaveValue('2026-06-15');
+    expect(endInputEle).toHaveValue('2026-06-20');
+    expect(onChange).not.toHaveBeenCalled();
+  });
 });
