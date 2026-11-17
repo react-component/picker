@@ -401,6 +401,8 @@
     "./locale/uk_UA.js": "./es/locale/uk_UA.mjs",
     "./locale/ur_PK": "./es/locale/ur_PK.mjs",
     "./locale/ur_PK.js": "./es/locale/ur_PK.mjs",
+    "./locale/uz_Cyrl_UZ": "./es/locale/uz_Cyrl_UZ.mjs",
+    "./locale/uz_Cyrl_UZ.js": "./es/locale/uz_Cyrl_UZ.mjs",
     "./locale/uz_UZ": "./es/locale/uz_UZ.mjs",
     "./locale/uz_UZ.js": "./es/locale/uz_UZ.mjs",
     "./locale/vi_VN": "./es/locale/vi_VN.mjs",
