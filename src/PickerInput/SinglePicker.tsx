@@ -256,8 +256,9 @@ function Picker<DateType extends object = any>(
   const calendarValue = getCalendarValue();
 
   // ======================== Focus =========================
+  // Activity may detach the selector ref before a pending blur event is handled.
   const isInternalPickerElement = useEvent((element: EventTarget | null) =>
-    isTargetInContainers(element, [selectorRef.current.nativeElement, popupRef.current]),
+    isTargetInContainers(element, [selectorRef.current?.nativeElement, popupRef.current]),
   );
 
   const [focused, onFieldFocus, onFieldBlur] = useFocusEvents(

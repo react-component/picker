@@ -45,6 +45,9 @@ export default function useScrollTo(
         if ((targetLiTop === 0 && targetLi !== firstLi) || !isVisible(ul)) {
           if (scrollRafTimesRef.current <= 5) {
             scrollRafRef.current = raf(doScroll);
+          } else {
+            // Reconnecting with a hidden popup must not leave user scrolling locked.
+            stopScroll();
           }
           return;
         }

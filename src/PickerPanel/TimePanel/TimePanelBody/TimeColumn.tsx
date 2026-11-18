@@ -113,7 +113,8 @@ export default function TimeColumn<DateType extends object>(props: TimeUnitColum
 
     const target = event.target as HTMLUListElement;
 
-    if (!isScrolling() && changeOnScroll) {
+    // Activity may deliver a queued native scroll after detaching the column ref.
+    if (ulRef.current && !isScrolling() && changeOnScroll) {
       checkDelayRef.current = setTimeout(() => {
         const ul = ulRef.current!;
         const firstLiTop = ul.querySelector<HTMLLIElement>(`li`).offsetTop;
