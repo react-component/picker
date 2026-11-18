@@ -49,7 +49,7 @@ const localeParse = (format: string) => {
 
 const parse = (text: string, format: string, locale: string) => {
   return parseDate(text, localeParse(format), new Date(), { locale: getLocale(locale) });
-}
+};
 
 /**
  * Check if the text is a valid date considering the format and locale
@@ -69,7 +69,7 @@ const isStrictValidDate = (text: string, format: string, locale: string) => {
   }
   const formattedDate = formatDate(date, format, { locale: getLocale(locale) });
   return text === formattedDate;
-}
+};
 
 const generateConfig: GenerateConfig<Date> = {
   // get
