@@ -174,8 +174,8 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
   formatList: FormatType[],
   isInvalidateDate: (date: DateType, info?: { from?: DateType; activeIndex: number }) => boolean,
 ): [
-  /** Trigger `onChange` by check `disabledDate` */
-  flushSubmit: (index: number, needTriggerChange: boolean) => void,
+  /** Trigger `onChange` by check `disabledDate`, return `false` when rejected */
+  flushSubmit: (index: number, needTriggerChange: boolean) => boolean | void,
   /** Trigger `onChange` directly without check `disabledDate` */
   triggerSubmitChange: (value: ValueType) => boolean,
   /** Reset calendar and submit values back to the committed value */
@@ -300,7 +300,7 @@ export default function useRangeValue<ValueType extends DateType[], DateType ext
     setSubmitValue(nextSubmitValue);
 
     if (needTriggerChange) {
-      triggerSubmit();
+      return triggerSubmit();
     }
   });
 
