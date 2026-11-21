@@ -97,6 +97,9 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   // When mousedown get focus, defer selection to mouseUp so click position is used
   const mouseDownRef = React.useRef(false);
+  // Android virtual keyboards may report `Unidentified` on keydown. In that
+  // case, use the following native input event to recover the intended key.
+  const nativeInputRef = React.useRef(false);
 
   React.useImperativeHandle(ref, () => ({
     nativeElement: holderRef.current,
@@ -139,18 +142,6 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     setInputValue(text);
     onModify(text);
   });
-
-  // Directly trigger `onChange` if `format` is empty
-  const onInternalChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    // Hack `onChange` with format to do nothing
-    if (!format) {
-      const text = event.target.value;
-
-      onModify(text);
-      setInputValue(text);
-      onChange(text);
-    }
-  };
 
   const onFormatPaste: React.ClipboardEventHandler<HTMLInputElement> = (event) => {
     // Block paste until selection is set (after mouseUp when focus was by mousedown)
@@ -203,6 +194,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
   const onFormatBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
     setFocused(false);
+    nativeInputRef.current = false;
 
     onSharedBlur(event);
   };
@@ -224,17 +216,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     onKeyDown?.(event);
   };
 
-  const onFormatKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
-    // Block key input until selection is set (after mouseUp when focus was by mousedown)
-    if (mouseDownRef.current) {
-      event.preventDefault();
-      return;
-    }
-
-    onSharedKeyDown(event);
-
-    const { key } = event;
-
+  const triggerFormatKey = (key: string) => {
     // Save the cache with cell text
     let nextCellText: string = null;
 
@@ -338,6 +320,49 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
     // Always trigger selection sync after key down
     forceSelectionSync({});
+  };
+
+  const onFormatKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    // Block key input until selection is set (after mouseUp when focus was by mousedown)
+    if (mouseDownRef.current) {
+      event.preventDefault();
+      return;
+    }
+
+    onSharedKeyDown(event);
+
+    const { key } = event;
+    nativeInputRef.current = key === 'Unidentified';
+
+    if (!nativeInputRef.current) {
+      triggerFormatKey(key);
+    }
+  };
+
+  // Directly trigger `onChange` if `format` is empty. Masked inputs normally
+  // use keydown, but Android IMEs expose the inserted text on the input event.
+  const onInternalChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    if (!format) {
+      const text = event.target.value;
+
+      onModify(text);
+      setInputValue(text);
+      onChange(text);
+      return;
+    }
+
+    if (nativeInputRef.current) {
+      nativeInputRef.current = false;
+
+      const nativeEvent = event.nativeEvent as InputEvent;
+      if (nativeEvent.inputType === 'deleteContentBackward') {
+        triggerFormatKey('Backspace');
+      } else if (nativeEvent.inputType === 'deleteContentForward') {
+        triggerFormatKey('Delete');
+      } else if (nativeEvent.data) {
+        triggerFormatKey(nativeEvent.data);
+      }
+    }
   };
 
   // ======================== Format ========================
