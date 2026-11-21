@@ -177,6 +177,30 @@ export function isSame<DateType = any>(
   }
 }
 
+/**
+ * Whether two dates are rendered by the same panel of `mode`.
+ * e.g. a date panel shows one month, a year panel shows one decade.
+ * 判断两个日期是否属于同一个面板。
+ */
+export function isSamePanel<DateType>(
+  generateConfig: GenerateConfig<DateType>,
+  mode: InternalMode,
+  date1: NullableDateType<DateType>,
+  date2: NullableDateType<DateType>,
+) {
+  switch (mode) {
+    case 'year':
+      return isSameDecade(generateConfig, date1, date2);
+
+    case 'month':
+    case 'quarter':
+      return isSameYear(generateConfig, date1, date2);
+
+    default:
+      return isSameMonth(generateConfig, date1, date2);
+  }
+}
+
 /** Between in date but not equal of date */
 export function isInRange<DateType>(
   generateConfig: GenerateConfig<DateType>,

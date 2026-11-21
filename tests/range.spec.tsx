@@ -445,7 +445,7 @@ describe('Picker.Range', () => {
 
       // Basic
       openPicker(container);
-      testNode = document.querySelector('.rc-picker-presets li');
+      testNode = document.querySelector('.rc-picker-presets li button');
       expect(testNode.textContent).toEqual('test');
       // testNode.simulate('click');
       fireEvent.click(testNode);
@@ -457,7 +457,7 @@ describe('Picker.Range', () => {
 
       // Function
       openPicker(container);
-      testNode = document.querySelector('.rc-picker-presets li:last-child');
+      testNode = document.querySelector('.rc-picker-presets li:last-child button');
       expect(testNode.textContent).toEqual('func');
       // testNode.simulate('click');
       fireEvent.click(testNode);
@@ -478,12 +478,37 @@ describe('Picker.Range', () => {
       );
 
       openPicker(container);
-      fireEvent.mouseEnter(document.querySelector('.rc-picker-presets li'));
+      fireEvent.mouseEnter(document.querySelector('.rc-picker-presets button'));
       expect(findCell(11)).toHaveClass('rc-picker-cell-range-start');
       expect(findCell(12)).toHaveClass('rc-picker-cell-in-range');
       expect(findCell(13)).toHaveClass('rc-picker-cell-range-end');
 
-      fireEvent.mouseLeave(document.querySelector('.rc-picker-presets li'));
+      fireEvent.mouseLeave(document.querySelector('.rc-picker-presets button'));
+      expect(findCell(11)).not.toHaveClass('rc-picker-cell-range-start');
+      expect(findCell(12)).not.toHaveClass('rc-picker-cell-in-range');
+      expect(findCell(13)).not.toHaveClass('rc-picker-cell-range-end');
+    });
+
+    it(`${propsType} focus className`, () => {
+      const { container } = render(
+        <DayRangePicker
+          {...genProps({
+            now: [getDay('1990-09-11'), getDay('1990-09-13')],
+          })}
+          open
+        />,
+      );
+
+      openPicker(container);
+
+      // Keyboard users get the same preview as hovering
+      const presetEle = document.querySelector<HTMLElement>('.rc-picker-presets button');
+      triggerFocus(presetEle);
+      expect(findCell(11)).toHaveClass('rc-picker-cell-range-start');
+      expect(findCell(12)).toHaveClass('rc-picker-cell-in-range');
+      expect(findCell(13)).toHaveClass('rc-picker-cell-range-end');
+
+      triggerBlur(presetEle);
       expect(findCell(11)).not.toHaveClass('rc-picker-cell-range-start');
       expect(findCell(12)).not.toHaveClass('rc-picker-cell-in-range');
       expect(findCell(13)).not.toHaveClass('rc-picker-cell-range-end');
@@ -2494,6 +2519,18 @@ describe('Picker.Range', () => {
     expect(startInput).toHaveValue('');
     expect(onChange).not.toHaveBeenCalled();
     expect(isOpen()).toBeFalsy();
+  });
+
+  it('both inputs are comboboxes referencing the same popup panel', () => {
+    const { container } = render(<DayRangePicker />);
+    const [startInput, endInput] = Array.from(container.querySelectorAll('input'));
+
+    openPicker(container);
+
+    const popupId = startInput.getAttribute('aria-controls');
+    expect(document.getElementById(popupId)).toHaveAttribute('role', 'dialog');
+    expect(endInput).toHaveAttribute('aria-controls', popupId);
+    expect(endInput).toHaveAttribute('role', 'combobox');
   });
 
   it('should not update preview value in input when previewValue is false', () => {

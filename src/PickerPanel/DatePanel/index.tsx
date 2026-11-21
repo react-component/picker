@@ -48,7 +48,26 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   const weekFirstDay = generateConfig.locale.getWeekFirstDay(locale.locale);
   const monthStartDate = generateConfig.setDate(pickerValue, 1);
   const baseDate = getWeekStartDate(locale.locale, generateConfig, monthStartDate);
+
+  const yearLabel = formatValue(pickerValue, {
+    locale,
+    format: locale.yearFormat,
+    generateConfig,
+  });
+
+  const monthsLocale: string[] =
+    locale.shortMonths ||
+    (generateConfig.locale.getShortMonths
+      ? generateConfig.locale.getShortMonths(locale.locale)
+      : []);
   const month = generateConfig.getMonth(pickerValue);
+  const monthLabel = locale.monthFormat
+    ? formatValue(pickerValue, {
+        locale,
+        format: locale.monthFormat,
+        generateConfig,
+      })
+    : monthsLocale[month];
 
   // =========================== PrefixColumn ===========================
   const showPrefixColumn = showWeek === undefined ? isWeek : showWeek;
@@ -56,10 +75,13 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
     ? (date: DateType) => {
         // >>> Additional check for disabled
         const disabled = disabledDate?.(date, { type: 'week' });
+        const label = generateConfig.locale.getWeek(locale.locale, date);
 
         return (
           <td
             key="week"
+            role="rowheader"
+            aria-label={`${locale.week} ${label}`}
             className={clsx(cellPrefixCls, `${cellPrefixCls}-week`, {
               [`${cellPrefixCls}-disabled`]: disabled,
             })}
@@ -80,9 +102,7 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
               }
             }}
           >
-            <div className={`${cellPrefixCls}-inner`}>
-              {generateConfig.locale.getWeek(locale.locale, date)}
-            </div>
+            <div className={`${cellPrefixCls}-inner`}>{label}</div>
           </td>
         );
       }
@@ -91,7 +111,10 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
   // ========================= Cells ==========================
   // >>> Header Cells
   const headerCells: React.ReactNode[] = [];
-  const weekDaysLocale: string[] =
+  const weekDaysLocale: string[] = generateConfig.locale.getWeekDays
+    ? generateConfig.locale.getWeekDays(locale.locale)
+    : [];
+  const shortWeekDaysLocale: string[] =
     locale.shortWeekDays ||
     (generateConfig.locale.getShortWeekDays
       ? generateConfig.locale.getShortWeekDays(locale.locale)
@@ -107,7 +130,12 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
     );
   }
   for (let i = 0; i < WEEK_DAY_COUNT; i += 1) {
-    headerCells.push(<th key={i}>{weekDaysLocale[(i + weekFirstDay) % WEEK_DAY_COUNT]}</th>);
+    const day = (i + weekFirstDay) % WEEK_DAY_COUNT;
+    headerCells.push(
+      <th key={i} aria-label={weekDaysLocale[day]}>
+        {shortWeekDaysLocale[day]}
+      </th>,
+    );
   }
 
   // >>> Body Cells
@@ -132,13 +160,14 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
     return classObj;
   };
 
-  // ========================= Header =========================
-  const monthsLocale: string[] =
-    locale.shortMonths ||
-    (generateConfig.locale.getShortMonths
-      ? generateConfig.locale.getShortMonths(locale.locale)
-      : []);
+  const getCellAttributes = (date: DateType): React.TdHTMLAttributes<HTMLTableCellElement> => {
+    if (isSameDate(generateConfig, date, now)) {
+      return { 'aria-current': 'date' };
+    }
+    return {};
+  };
 
+  // ========================= Header =========================
   const yearNode: React.ReactNode = (
     <button
       type="button"
@@ -147,14 +176,9 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
       onClick={() => {
         onModeChange('year', pickerValue);
       }}
-      tabIndex={-1}
       className={`${prefixCls}-year-btn`}
     >
-      {formatValue(pickerValue, {
-        locale,
-        format: locale.yearFormat,
-        generateConfig,
-      })}
+      {yearLabel}
     </button>
   );
   const monthNode: React.ReactNode = (
@@ -165,20 +189,16 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
       onClick={() => {
         onModeChange('month', pickerValue);
       }}
-      tabIndex={-1}
       className={`${prefixCls}-month-btn`}
     >
-      {locale.monthFormat
-        ? formatValue(pickerValue, {
-            locale,
-            format: locale.monthFormat,
-            generateConfig,
-          })
-        : monthsLocale[month]}
+      {monthLabel}
     </button>
   );
 
   const monthYearNodes = locale.monthBeforeYear ? [monthNode, yearNode] : [yearNode, monthNode];
+  const tableLabel = locale.monthBeforeYear
+    ? `${monthLabel} ${yearLabel}`
+    : `${yearLabel} ${monthLabel}`;
 
   // ========================= Render =========================
   return (
@@ -195,6 +215,12 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
             let clone = generateConfig.setDate(date, 1);
             clone = generateConfig.addMonth(clone, 1);
             return generateConfig.addDate(clone, -1);
+          }}
+          labels={{
+            superPrev: locale.previousYear,
+            prev: locale.previousMonth,
+            next: locale.nextMonth,
+            superNext: locale.nextYear,
           }}
         >
           {monthYearNodes}
@@ -213,8 +239,10 @@ export default function DatePanel<DateType extends object = any>(props: DatePane
           getCellDate={getCellDate}
           getCellText={getCellText}
           getCellClassName={getCellClassName}
+          getCellAttributes={getCellAttributes}
           prefixColumn={prefixColumn}
           cellSelection={!isWeek}
+          tableLabel={tableLabel}
         />
       </div>
     </PanelContext.Provider>

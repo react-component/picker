@@ -2,7 +2,7 @@ import { useControlledState, useLayoutEffect } from '@rc-component/util';
 import * as React from 'react';
 import type { GenerateConfig } from '../../generate';
 import type { InternalMode, Locale, PanelMode } from '../../interface';
-import { fillTime, isSame } from '../../utils/dateUtil';
+import { fillTime, isSame, isSamePanel } from '../../utils/dateUtil';
 import type { RangePickerProps } from '../RangePicker';
 
 export function offsetPanelDate<DateType = any>(
@@ -127,21 +127,6 @@ export default function useRangePickerValue<DateType extends object, ValueType e
   };
 
   // ======================== Effect ========================
-  // Check whether two dates belong to the same panel.
-  // 判断两个日期是否属于同一个面板。
-  const isSamePanel = (date1: DateType, date2: DateType) => {
-    if (pickerMode === 'year') {
-      return (
-        Math.floor(generateConfig.getYear(date1) / 10) ===
-        Math.floor(generateConfig.getYear(date2) / 10)
-      );
-    }
-
-    const panelMode: PanelMode =
-      pickerMode === 'month' || pickerMode === 'quarter' ? 'year' : 'month';
-    return isSame(generateConfig, locale, date1, date2, panelMode);
-  };
-
   // Keep both values in the two visible panels when possible. Otherwise put
   // the end value in the second panel.
   // 尽量在双面板内同时展示两个值；无法容纳时，将 end 值放在右侧面板。
@@ -151,7 +136,9 @@ export default function useRangePickerValue<DateType extends object, ValueType e
     }
 
     const nextPanelDate = offsetPanelDate(generateConfig, pickerMode, startDate, 1);
-    const endInPanels = isSamePanel(startDate, endDate) || isSamePanel(nextPanelDate, endDate);
+    const endInPanels =
+      isSamePanel(generateConfig, pickerMode, startDate, endDate) ||
+      isSamePanel(generateConfig, pickerMode, nextPanelDate, endDate);
 
     return endInPanels ? startDate : offsetPanelDate(generateConfig, pickerMode, endDate, -1);
   };
