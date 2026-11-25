@@ -387,6 +387,8 @@
     "./locale/ta_IN.js": "./es/locale/ta_IN.mjs",
     "./locale/te_IN": "./es/locale/te_IN.mjs",
     "./locale/te_IN.js": "./es/locale/te_IN.mjs",
+    "./locale/tg_TJ": "./es/locale/tg_TJ.mjs",
+    "./locale/tg_TJ.js": "./es/locale/tg_TJ.mjs",
     "./locale/th_TH": "./es/locale/th_TH.mjs",
     "./locale/th_TH.js": "./es/locale/th_TH.mjs",
     "./locale/tk_TK": "./es/locale/tk_TK.mjs",
