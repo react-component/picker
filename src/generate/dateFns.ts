@@ -37,19 +37,28 @@ const getLocale = (locale: string): Locale => {
   );
 };
 
-const localeParse = (format: string) => {
-  return format
-    .replace(/Y/g, 'y')
-    .replace(/D/g, 'd')
-    .replace(/gggg/, 'yyyy')
-    .replace(/g/g, 'G')
-    .replace(/([Ww])o/g, 'wo')
-    .replace(/A/g, 'a');
+const dateFnsTokens: Record<string, string> = {
+  Y: 'y',
+  D: 'd',
+  gggg: 'yyyy',
+  g: 'G',
+  Wo: 'wo',
+  wo: 'wo',
+  A: 'a',
 };
 
+const localeParse = (format: string) =>
+  format.replace(/(?:\[[^\]]*\])+|'(?:''|[^'])*'|gggg|[Ww]o|[YDgA]/g, (part) => {
+    if (part.startsWith('[')) {
+      const literal = part.slice(1, -1).replace(/\]\[/g, '').replace(/'/g, "''");
+      return literal ? `'${literal}'` : '';
+    }
+    return dateFnsTokens[part] ?? part;
+  });
+
 const parse = (text: string, format: string, locale: string) => {
-  return parseDate(text, localeParse(format), new Date(), { locale: getLocale(locale) });
-}
+  return parseDate(text, format, new Date(), { locale: getLocale(locale) });
+};
 
 /**
  * Check if the text is a valid date considering the format and locale

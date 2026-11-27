@@ -20,6 +20,20 @@ describe('Picker.Generate', () => {
     MockDate.reset();
   });
 
+  it('round-trips bracketed literals with the date-fns adapter', () => {
+    const { format, parse } = dateFnsGenerateConfig.locale;
+    const date = new Date(2020, 9, 23, 14, 5);
+    for (const pattern of [
+      "YYYY-MM-DD [TODAY at o'clock] HH:mm",
+      "YYYY-MM-DD [TODAY][ at o'clock] HH:mm",
+      "yyyy-MM-dd 'TODAY at o''clock' HH:mm",
+    ]) {
+      const text = "2020-10-23 TODAY at o'clock 14:05";
+      expect(format('en_US', date, pattern)).toBe(text);
+      expect(parse('en_US', text, [pattern])).toEqual(date);
+    }
+  });
+
   const list: { name: string; generateConfig: GenerateConfig<any> }[] = [
     { name: 'moment', generateConfig: momentGenerateConfig },
     { name: 'dayjs', generateConfig: dayjsGenerateConfig },
