@@ -49,6 +49,14 @@ describe('Picker.Generate', () => {
     expect(parse('en_US', text, [pattern])).toEqual(date);
   });
 
+  it.each(["'", '[]', '[][]'])('round-trips an empty date-fns literal %s', (pattern) => {
+    const { format, parse } = dateFnsGenerateConfig.locale;
+    const date = new Date();
+    expect(format('en_US', date, pattern)).toBe('');
+    expect(parse('en_US', '', [pattern])).toEqual(date);
+    expect(parse('en_US', 'x', [pattern])).toBeNull();
+  });
+
   const list: { name: string; generateConfig: GenerateConfig<any> }[] = [
     { name: 'moment', generateConfig: momentGenerateConfig },
     { name: 'dayjs', generateConfig: dayjsGenerateConfig },

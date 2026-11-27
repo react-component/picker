@@ -74,7 +74,9 @@ const localeParse = (format: string) => {
     }
   }
 
-  return result + quoteLiteral(literal);
+  const pattern = result + quoteLiteral(literal);
+  // date-fns uses a lone quote to match empty literal text.
+  return format && !pattern ? "'" : pattern;
 };
 
 const parse = (text: string, format: string, locale: string) => {
