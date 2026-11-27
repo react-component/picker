@@ -678,7 +678,15 @@ function RangePicker<DateType extends object = any>(
   // ========================================================
 
   // ======================== Change ========================
-  const onSelectorChange = (date: DateType, index: number) => {
+  const onSelectorChange = (date: DateType | null, index: number) => {
+    if (!date) {
+      resetRangeValueChange();
+      triggerSubmitChange(allowEmpty[index] ? fillCalendarValue(null, index) : null);
+      triggerOpen(false, { force: true });
+      onClear?.();
+      return;
+    }
+
     triggerRangeValueChange(index, 'input', date);
   };
 
