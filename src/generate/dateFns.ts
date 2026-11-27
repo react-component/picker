@@ -37,19 +37,51 @@ const getLocale = (locale: string): Locale => {
   );
 };
 
+const dateFnsTokens: Record<string, string> = {
+  Y: 'y',
+  D: 'd',
+  gggg: 'yyyy',
+  g: 'G',
+  Wo: 'wo',
+  wo: 'wo',
+  A: 'a',
+};
+
+// date-fns reads a pair of quotes outside a literal as one apostrophe.
+const quoteLiteral = (literal: string) => {
+  const escaped = literal.replace(/'/g, "''");
+  return /[^']/.test(literal) ? `'${escaped}'` : escaped;
+};
+
 const localeParse = (format: string) => {
-  return format
-    .replace(/Y/g, 'y')
-    .replace(/D/g, 'd')
-    .replace(/gggg/, 'yyyy')
-    .replace(/g/g, 'G')
-    .replace(/([Ww])o/g, 'wo')
-    .replace(/A/g, 'a');
+  const tokens = /\[([^\]]*)\]|''|'((?:''|[^'])*)(?:'|$)|gggg|[Ww]o|[\s\S]/g;
+  let result = '';
+  let literal = '';
+
+  for (const [token, bracketed, quoted] of format.matchAll(tokens)) {
+    if (bracketed !== undefined) {
+      literal += bracketed;
+    } else if (token === "''") {
+      literal += "'";
+    } else if (quoted !== undefined) {
+      literal += quoted.replace(/''/g, "'");
+    } else {
+      if (literal) {
+        result += quoteLiteral(literal);
+        literal = '';
+      }
+      result += dateFnsTokens[token] ?? token;
+    }
+  }
+
+  const pattern = result + quoteLiteral(literal);
+  // date-fns uses a lone quote to match empty literal text.
+  return format && !pattern ? "'" : pattern;
 };
 
 const parse = (text: string, format: string, locale: string) => {
-  return parseDate(text, localeParse(format), new Date(), { locale: getLocale(locale) });
-}
+  return parseDate(text, format, new Date(), { locale: getLocale(locale) });
+};
 
 /**
  * Check if the text is a valid date considering the format and locale
