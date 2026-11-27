@@ -47,14 +47,35 @@ const dateFnsTokens: Record<string, string> = {
   A: 'a',
 };
 
-const localeParse = (format: string) =>
-  format.replace(/(?:\[[^\]]*\])+|'(?:''|[^'])*'|gggg|[Ww]o|[YDgA]/g, (part) => {
-    if (part.startsWith('[')) {
-      const literal = part.slice(1, -1).replace(/\]\[/g, '').replace(/'/g, "''");
-      return literal ? `'${literal}'` : '';
+// date-fns reads a pair of quotes outside a literal as one apostrophe.
+const quoteLiteral = (literal: string) => {
+  const escaped = literal.replace(/'/g, "''");
+  return /[^']/.test(literal) ? `'${escaped}'` : escaped;
+};
+
+const localeParse = (format: string) => {
+  const tokens = /\[([^\]]*)\]|''|'((?:''|[^'])*)(?:'|$)|gggg|[Ww]o|[\s\S]/g;
+  let result = '';
+  let literal = '';
+
+  for (const [token, bracketed, quoted] of format.matchAll(tokens)) {
+    if (bracketed !== undefined) {
+      literal += bracketed;
+    } else if (token === "''") {
+      literal += "'";
+    } else if (quoted !== undefined) {
+      literal += quoted.replace(/''/g, "'");
+    } else {
+      if (literal) {
+        result += quoteLiteral(literal);
+        literal = '';
+      }
+      result += dateFnsTokens[token] ?? token;
     }
-    return dateFnsTokens[part] ?? part;
-  });
+  }
+
+  return result + quoteLiteral(literal);
+};
 
 const parse = (text: string, format: string, locale: string) => {
   return parseDate(text, format, new Date(), { locale: getLocale(locale) });
